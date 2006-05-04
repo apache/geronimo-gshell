@@ -107,6 +107,8 @@ class GShellImpl
     }
     
     private String[] shift(final String[] args, int pos) {
+        assert args.length >= pos;
+        
         String[] _args = new String[args.length - pos];
         System.arraycopy(args, pos, _args, 0, _args.length);
         return _args;
