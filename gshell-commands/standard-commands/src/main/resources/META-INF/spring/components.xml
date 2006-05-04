@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- $Id -->
+
+<beans>
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    </bean>
+    
+    <bean id="echo" class="org.apache.geronimo.gshell.commands.standard.EchoCommand" singleton="false">
+        <property name="name" value="echo"/>
+    </bean>
+    
+    <bean id="cat" class="org.apache.geronimo.gshell.commands.standard.CatCommand" singleton="false">
+        <property name="name" value="cat"/>
+    </bean>
+</beans>

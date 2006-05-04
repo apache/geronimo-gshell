@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- $Id -->
+
+<beans>
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    </bean>
+    
+    <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">
+    </bean>
+</beans>

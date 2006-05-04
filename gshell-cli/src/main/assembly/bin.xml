@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id -->
+
+<assembly>
+    <id>bin</id>
+    
+    <formats>
+        <format>tar.gz</format>
+        <format>tar.bz2</format>
+        <format>zip</format>
+    </formats>
+    
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>README.txt</include>
+                <include>LICENSE.txt</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/scripts</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>gshell.bat</include>
+                <include>gshell.conf</include>
+            </includes>
+            <lineEnding>dos</lineEnding>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/scripts</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>gshell</include>
+            </includes>
+            <lineEnding>unix</lineEnding>
+            <fileMode>0755</fileMode>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/config</directory>
+            <outputDirectory>etc</outputDirectory>
+        </fileSet>
+        
+        <fileSet>
+            <directory>target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>gshell-cli-*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>gshell-cli-*-sources.jar</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+    
+    <dependencySets>
+    		<dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <excludes>
+                <exclude>classworlds:classworlds</exclude>
+            </excludes>
+        </dependencySet>
+        
+    		<dependencySet>
+            <outputDirectory>lib/boot</outputDirectory>
+            <includes>
+                <include>classworlds:classworlds</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>
