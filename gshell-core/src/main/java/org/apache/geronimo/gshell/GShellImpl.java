@@ -23,8 +23,6 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesMap;
-import org.apache.geronimo.gshell.commandline.CommandLine;
-import org.apache.geronimo.gshell.commandline.CommandLineParser;
 import org.apache.geronimo.gshell.console.IO;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -42,7 +40,6 @@ class GShellImpl
 
     private IO io;
     private ApplicationContext ctx;
-    private CommandLineParser parser;
     
     public void setIO(final IO io) {
         assert io != null;
@@ -50,24 +47,10 @@ class GShellImpl
         this.io = io;
     }
     
-    public void setCommmandLineParser(final CommandLineParser parser) {
-        assert parser != null;
-        
-        this.parser = parser;
-    }
-    
-    private CommandLineParser getCommandLineParser() {
-        if (parser == null) {
-            throw new IllegalArgumentException("Command line parser not initalized");
-        }
-        return parser;
-    }
-    
     public int execute(final String commandline) throws Exception {
         log.info("Executing (String): " + commandline);
         
-        CommandLine cl = getCommandLineParser().parse(commandline);
-        return cl.execute();
+        throw new Error("Not implemented, pending some parser work");
     }
     
     public int execute(final String commandName, String[] args) throws Exception {
