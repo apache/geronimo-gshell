@@ -25,9 +25,6 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.HelpFormatter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.console.IO;
 
@@ -41,11 +38,29 @@ import org.apache.geronimo.gshell.util.Banner;
  */
 public class Main
 {
-    private static void setConsoleLogLevel(final String level) {
+    //
+    // NOTE: Do not use logging from this class, as it is used to configure
+    //       the logging level with System properties, which will only get
+    //       picked up on the initial loading ofr Log4j
+    //
+
+    private ClassWorld world;
+    private IO io = new IO();
+    private boolean interactive = false;
+
+    public Main(final ClassWorld world) {
+        assert world != null;
+        this.world = world;
+
+        // Default is to be quiet
+        setConsoleLogLevel("WARN");
+    }
+
+    private void setConsoleLogLevel(final String level) {
         System.setProperty("gshell.log.console.level", level);
     }
     
-    private static void setPropertyFrom(final String namevalue) {
+    private void setPropertyFrom(final String namevalue) {
         String name, value;
         int j = namevalue.indexOf("=");
         
@@ -61,51 +76,52 @@ public class Main
         
         System.setProperty(name, value);
     }
-    
-    public static void main(final String[] args, final ClassWorld world) throws Exception {
+
+    public void run(final String[] args) throws Exception {
         assert args != null;
-        assert world != null;
-        
-        // Default is to be quiet
-        setConsoleLogLevel("WARN");
-        boolean interactive = false;
-        
-        IO io = new IO();
-        
+
         Options options = new Options();
-        
+
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("Display this help message")
             .create('h'));
-        
+
         options.addOption(OptionBuilder.withLongOpt("version")
             .withDescription("Display GShell version")
             .create('V'));
-        
+
         options.addOption(OptionBuilder.withLongOpt("define")
             .withDescription("Define a system property")
             .hasArg()
             .withArgName("name=value")
             .create('D'));
-        
+
         options.addOption(OptionBuilder.withLongOpt("interactive")
             .withDescription("Run in interactive mode")
             .create('i'));
-        
+
+        //
+        // TODO: Add these output modifiers to a seperate group
+        //
+
         options.addOption(OptionBuilder.withLongOpt("debug")
-            .withDescription("Enable DEBUG output")
+            .withDescription("Enable DEBUG logging output")
             .create());
-        
+
         options.addOption(OptionBuilder.withLongOpt("verbose")
-            .withDescription("Enable INFO output")
+            .withDescription("Enable INFO logging output")
             .create());
-        
+
+        options.addOption(OptionBuilder.withLongOpt("quiet")
+            .withDescription("Limit logging output to ERROR")
+            .create());
+
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args, true);
-        
+
         if (line.hasOption('h')) {
             io.out.println(Banner.getBanner());
-            
+
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
@@ -117,55 +133,57 @@ public class Main
                 4, // desc pad
                 "",
                 false); // auto usage
-            
+
             io.out.println();
             io.out.flush();
-            
+
             System.exit(0);
         }
-        
+
         if (line.hasOption('V')) {
             io.out.println(Banner.getBanner());
             io.out.println(Version.getInstance());
             io.out.println();
             io.out.flush();
-            
+
             System.exit(0);
         }
-        
+
         if (line.hasOption('D')) {
             String[] values = line.getOptionValues('D');
-            
+
             for (int i=0; i<values.length; i++) {
                 setPropertyFrom(values[i]);
             }
         }
-        
-        // If --debug is set it wins over --verbose
+
+        if (line.hasOption("quiet")) {
+            setConsoleLogLevel("ERROR");
+        }
         if (line.hasOption("debug")) {
             setConsoleLogLevel("DEBUG");
         }
         else if (line.hasOption("verbose")) {
             setConsoleLogLevel("INFO");
         }
-        
+
         if (line.hasOption('i')) {
             interactive = true;
         }
-        
+
         //
         // TODO: Need to pass GShell the ClassWorld, so that the application can add to it if needed
         //
-        
+
         // Startup the shell
         GShell gshell = new GShell(io);
         String[] _args = line.getArgs();
-        
+
         // Force interactive if there are no args
         if (_args.length == 0) {
             interactive = true;
         }
-        
+
         if (interactive) {
             //
             // TODO: Need to check if there are args, and run them and then enter interactive
@@ -176,10 +194,18 @@ public class Main
             int status = gshell.execute(_args);
             System.exit(status);
         }
-        
+
         //
         // TODO: Run interactive
         //
+    }
+    
+    public static void main(final String[] args, final ClassWorld world) throws Exception {
+        assert args != null;
+        assert world != null;
+
+        Main main = new Main(world);
+        main.run(args);
     }
     
     public static void main(final String[] args) throws Exception {

@@ -52,13 +52,13 @@ public class VariablesMap
         return map.get(name);
     }
     
-    public void remove(final String name) {
+    public void unset(final String name) {
         assert name != null;
         
         map.remove(name);
     }
     
-    public boolean isSet(final String name) {
+    public boolean contains(final String name) {
         assert name != null;
         
         return map.containsKey(name);

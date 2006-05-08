@@ -130,13 +130,9 @@ public abstract class CommandSupport
         
         // Make sure that we have been initialized before we go any further
         ensureInitialized();
-        
-        boolean debug = log.isDebugEnabled();
-        
-        if (debug) {
-            log.debug("Executing w/arguments: " + java.util.Arrays.asList(args));
-        }
-        
+
+        log.info("Executing w/arguments: " + java.util.Arrays.asList(args));
+
         int status;
         
         try {
@@ -144,7 +140,7 @@ public abstract class CommandSupport
         }
         catch (Exception e) {
             log.error(e.getMessage());
-            if (debug) {
+            if (log.isDebugEnabled()) {
                 log.debug("Failure details", e);
             }
             
@@ -154,11 +150,9 @@ public abstract class CommandSupport
             // Be sure to flush the commands outputs
             getIO().flush();
         }
-        
-        if (debug) {
-            log.debug("Command exited with status code: " + status);
-        }
-        
+
+        log.info("Command exited with status code: " + status);
+
         return status;
     }
     

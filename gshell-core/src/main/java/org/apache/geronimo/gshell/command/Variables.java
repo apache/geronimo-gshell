@@ -29,9 +29,9 @@ public interface Variables
     
     Object get(String name);
     
-    void remove(String name);
+    void unset(String name);
     
-    boolean isSet(String name);
+    boolean contains(String name);
     
     Iterator names();
 }
