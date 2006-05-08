@@ -41,7 +41,7 @@ public class GShell
         
         this.ctx = new ClassPathXmlApplicationContext(new String[] {
             "classpath*:/gshell.xml",
-            "classpath*:/META-INF/spring/components.xml",
+            "classpath*:/META-INF/org.apache.geronimo.gshell/components.xml",
         });
         
         this.impl = (GShellImpl)ctx.getBean("gshell");
