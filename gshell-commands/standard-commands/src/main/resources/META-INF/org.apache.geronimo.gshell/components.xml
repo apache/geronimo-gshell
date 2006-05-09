@@ -4,6 +4,7 @@
 <!-- $Id -->
 
 <beans>
+
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     </bean>
     
@@ -14,4 +15,8 @@
     <bean id="cat" class="org.apache.geronimo.gshell.commands.standard.CatCommand" singleton="false">
         <property name="name" value="cat"/>
     </bean>
+
+    <bean id="java" class="org.apache.geronimo.gshell.commands.standard.JavaCommand" singleton="false">
+    </bean>
+
 </beans>

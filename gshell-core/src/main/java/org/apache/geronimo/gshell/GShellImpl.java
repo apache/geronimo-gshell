@@ -33,7 +33,7 @@ import org.springframework.context.ApplicationContextAware;
  *
  * @version $Id$
  */
-class GShellImpl
+public class GShellImpl
     implements ApplicationContextAware
 {
     private static final Log log = LogFactory.getLog(GShell.class);
@@ -102,11 +102,11 @@ class GShellImpl
     // Misc
     //
     
-    private String[] shift(final String[] args) {
+    public static String[] shift(final String[] args) {
         return shift(args, 1);
     }
     
-    private String[] shift(final String[] args, int pos) {
+    public static String[] shift(final String[] args, int pos) {
         assert args.length >= pos;
         
         String[] _args = new String[args.length - pos];
