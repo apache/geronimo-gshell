@@ -121,7 +121,7 @@ public class JavaCommand
         log.info("Using method: " + method);
 
         log.info("Invoking w/arguments: " + Arrays.asList(args));
-        Object result = method.invoke(null, args);
+        Object result = method.invoke(null, new Object[] { args });
 
         log.info("Result: " + result);
     }
