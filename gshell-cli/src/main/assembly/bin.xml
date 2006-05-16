@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id -->
+<!-- $Id$ -->
 
 <assembly>
     <id>bin</id>
@@ -57,14 +57,14 @@
     </fileSets>
     
     <dependencySets>
-    		<dependencySet>
+        <dependencySet>
             <outputDirectory>lib</outputDirectory>
             <excludes>
                 <exclude>classworlds:classworlds</exclude>
             </excludes>
         </dependencySet>
         
-    		<dependencySet>
+        <dependencySet>
             <outputDirectory>lib/boot</outputDirectory>
             <includes>
                 <include>classworlds:classworlds</include>

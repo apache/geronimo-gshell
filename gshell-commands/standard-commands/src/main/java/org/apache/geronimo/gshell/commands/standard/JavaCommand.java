@@ -26,6 +26,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.util.Arguments;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -107,7 +108,7 @@ public class JavaCommand
             throw new Exception("Missing classname");
         }
 
-        run(args[0], shift(args));
+        run(args[0], Arguments.shift(args));
     }
 
     private void run(final String classname, final String[] args) throws Exception {
@@ -124,21 +125,5 @@ public class JavaCommand
         Object result = method.invoke(null, new Object[] { args });
 
         log.info("Result: " + result);
-    }
-
-    //
-    // Misc
-    //
-
-    public static String[] shift(final String[] args) {
-        return shift(args, 1);
-    }
-
-    public static String[] shift(final String[] args, int pos) {
-        assert args.length >= pos;
-
-        String[] _args = new String[args.length - pos];
-        System.arraycopy(args, pos, _args, 0, _args.length);
-        return _args;
     }
 }

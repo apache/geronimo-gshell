@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesMap;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.util.Arguments;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -95,23 +96,7 @@ public class GShellImpl
         
         log.info("Executing (String[]): " + java.util.Arrays.asList(args));
         
-        return execute(args[0], shift(args));
-    }
-    
-    //
-    // Misc
-    //
-    
-    public static String[] shift(final String[] args) {
-        return shift(args, 1);
-    }
-    
-    public static String[] shift(final String[] args, int pos) {
-        assert args.length >= pos;
-        
-        String[] _args = new String[args.length - pos];
-        System.arraycopy(args, pos, _args, 0, _args.length);
-        return _args;
+        return execute(args[0], Arguments.shift(args));
     }
     
     //

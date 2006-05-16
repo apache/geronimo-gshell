@@ -16,8 +16,14 @@
 
 package org.apache.geronimo.gshell.util;
 
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
- * ???
+ * Provides externalization of the GShell version details.
+ *
+ * <p>This facilitates syncing up version details with the build system.
  *
  * @version $Id$
  */
@@ -29,20 +35,26 @@ public class Version
         if (instance == null) {
             instance = new Version();
         }
-        
+
         return instance;
     }
-    
+
+    private Properties props = new Properties();
+
     public Version() {
-        //
-        // TODO: Load version.properties
-        //
+        InputStream input = getClass().getResourceAsStream("version.properties");
+        assert input != null;
+
+        try {
+            props.load(input);
+            input.close();
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failed to load version.properties", e);
+        }
     }
-    
+
     public String toString() {
-        //
-        // HACK: Read from properties
-        //
-        return "1.0.0-SNAPSHOT";
+        return props.getProperty("version");
     }
 }
