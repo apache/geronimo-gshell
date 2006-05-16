@@ -29,6 +29,7 @@ import java.io.IOException;
  * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
  */
 public class InteractiveConsole
+    implements Runnable
 {
     private static final Log log = LogFactory.getLog(InteractiveConsole.class);
 
@@ -55,6 +56,11 @@ public class InteractiveConsole
 
                 while ((line = readLine("> ")) != null) {
                     log.debug("Read line: " + line);
+
+                    // Just ignore blank lines
+                    if (line.trim().equals("")) {
+                        continue;
+                    }
 
                     int result = gshell.execute(line);
 
