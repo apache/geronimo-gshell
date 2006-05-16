@@ -49,9 +49,19 @@ public class GShellImpl
     }
     
     public int execute(final String commandline) throws Exception {
+        assert commandline != null;
+
         log.info("Executing (String): " + commandline);
+
+        //
+        // HACK: Just to get something to work...
+        //
         
-        throw new Error("Not implemented, pending some parser work");
+        String[] args = commandline.split("\\s");
+        String name = args[0];
+        args = Arguments.shift(args);
+
+        return execute(name, args);
     }
     
     public int execute(final String commandName, String[] args) throws Exception {
@@ -98,7 +108,7 @@ public class GShellImpl
         
         return execute(args[0], Arguments.shift(args));
     }
-    
+
     //
     // ApplicationContextAware
     //

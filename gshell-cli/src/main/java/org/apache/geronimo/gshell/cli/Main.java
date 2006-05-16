@@ -27,6 +27,7 @@ import org.apache.commons.cli.HelpFormatter;
 
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.console.InteractiveConsole;
 
 import org.apache.geronimo.gshell.util.Version;
 import org.apache.geronimo.gshell.util.Banner;
@@ -185,19 +186,19 @@ public class Main
         }
 
         if (interactive) {
-            //
-            // TODO: Need to check if there are args, and run them and then enter interactive
-            //
-            throw new Error("Interative mode not implemented... yet");
+            InteractiveConsole console = new InteractiveConsole(io, gshell);
+
+            // Check if there are args, and run them and then enter interactive
+            if (_args.length != 0) {
+                gshell.execute(_args);
+            }
+
+            console.run();
         }
         else {
             int status = gshell.execute(_args);
             System.exit(status);
         }
-
-        //
-        // TODO: Run interactive
-        //
     }
     
     public static void main(final String[] args, final ClassWorld world) throws Exception {
