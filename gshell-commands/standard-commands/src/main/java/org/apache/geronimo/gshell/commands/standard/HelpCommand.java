@@ -35,7 +35,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.beans.BeansException;
 
 /**
- * ???
+ * Display command help
  *
  * @version $Id: CatCommand.java 399599 2006-05-04 08:13:57Z jdillon $
  */

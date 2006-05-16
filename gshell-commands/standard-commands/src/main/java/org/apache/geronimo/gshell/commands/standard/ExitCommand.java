@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
- * ???
+ * Exit the virtual machine.
  *
  * @version $Id: CatCommand.java 399599 2006-05-04 08:13:57Z jdillon $
  */
@@ -55,7 +55,7 @@ public class ExitCommand
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("code")
-            .withDescription("Use the give exit code")
+            .withDescription("Use the given exit code")
             .hasArg()
             .create('c'));
 

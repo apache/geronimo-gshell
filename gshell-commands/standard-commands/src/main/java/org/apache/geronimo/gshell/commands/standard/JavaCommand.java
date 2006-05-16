@@ -32,7 +32,11 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
- * ???
+ * Execute a Java standard application.
+ *
+ * <p>By default looks for static main(String[]) to execute, but
+ * you can specify a different static method that takes a String[]
+ * to execute instead.
  *
  * @version $Id: EchoCommand.java 399599 2006-05-04 08:13:57Z jdillon $
  */
