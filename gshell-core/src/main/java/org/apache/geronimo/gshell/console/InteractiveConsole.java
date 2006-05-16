@@ -49,36 +49,31 @@ public class InteractiveConsole
     public void run() {
         log.info("Running...");
 
-        try {
-            String line;
+        while (true) {
+            try {
+                String line;
 
-            //
-            // TODO: Need some prompting support
-            //
+                while ((line = readLine("> ")) != null) {
+                    log.debug("Read line: " + line);
 
-            io.out.print("> ");
-            io.out.flush();
+                    int result = gshell.execute(line);
 
-            while ((line = readLine()) != null) {
-                log.debug("Read line: " + line);
+                    log.debug("Command result: " + result);
+                }
 
-                int result = gshell.execute(line);
-
-                //
-                // ???
-                //
-
-                io.out.print("> ");
-                io.out.flush();
             }
-
-        }
-        catch (Exception e) {
-            log.error("Unhandled failure", e);
+            catch (Exception e) {
+                log.error("Unhandled failure", e);
+            }
         }
     }
 
-    private String readLine() throws IOException {
+    private String readLine(final String prompt) throws IOException {
+        assert prompt != null;
+
+        io.out.print(prompt);
+        io.out.flush();
+
         return reader.readLine();
     }
 }
