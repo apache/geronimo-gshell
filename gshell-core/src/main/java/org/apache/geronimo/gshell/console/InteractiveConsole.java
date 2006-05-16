@@ -20,9 +20,6 @@ import org.apache.geronimo.gshell.GShell;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 /**
  * ???
  *
@@ -34,17 +31,14 @@ public class InteractiveConsole
     private static final Log log = LogFactory.getLog(InteractiveConsole.class);
 
     private GShell gshell;
-    private IO io;
-    private BufferedReader reader;
+    private Console console;
 
-    public InteractiveConsole(final IO io, final GShell gshell) {
-        assert io != null;
+    public InteractiveConsole(final Console console, final GShell gshell) {
+        assert console != null;
         assert gshell != null;
 
-        this.io = io;
+        this.console = console;
         this.gshell = gshell;
-
-        reader = new BufferedReader(io.in);
     }
 
     public void run() {
@@ -52,9 +46,10 @@ public class InteractiveConsole
 
         while (true) {
             try {
+                String prompt = "> ";
                 String line;
 
-                while ((line = readLine("> ")) != null) {
+                while ((line = console.readLine(prompt)) != null) {
                     log.debug("Read line: " + line);
 
                     // Just ignore blank lines
@@ -72,14 +67,5 @@ public class InteractiveConsole
                 log.error("Unhandled failure", e);
             }
         }
-    }
-
-    private String readLine(final String prompt) throws IOException {
-        assert prompt != null;
-
-        io.out.print(prompt);
-        io.out.flush();
-
-        return reader.readLine();
     }
 }

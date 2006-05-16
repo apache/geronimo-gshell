@@ -28,6 +28,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.InteractiveConsole;
+import org.apache.geronimo.gshell.console.SimpleConsole;
 
 import org.apache.geronimo.gshell.util.Version;
 import org.apache.geronimo.gshell.util.Banner;
@@ -186,7 +187,7 @@ public class Main
         }
 
         if (interactive) {
-            InteractiveConsole console = new InteractiveConsole(io, gshell);
+            InteractiveConsole console = new InteractiveConsole(new SimpleConsole(io), gshell);
 
             // Check if there are args, and run them and then enter interactive
             if (_args.length != 0) {

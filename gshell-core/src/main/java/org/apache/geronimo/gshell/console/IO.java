@@ -23,12 +23,16 @@ import java.io.Reader;
 import java.io.PrintWriter;
 
 /**
- * ???
+ * Container for input/output handles.
  *
  * @version $Id$
  */
 public class IO
 {
+    //
+    // TODO: Expose the binary versions, wrap for text readers/writers
+    //
+    
     public final Reader in;
     public final PrintWriter out;
     public final PrintWriter err;

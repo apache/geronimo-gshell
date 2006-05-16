@@ -20,7 +20,7 @@ import java.io.StringWriter;
 import java.io.PrintWriter;
 
 /**
- * ???
+ * Display helper for the sexy GShell banner.
  *
  * @version $Id$
  */

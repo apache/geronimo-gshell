@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.gshell.util;
+package org.apache.geronimo.gshell.console;
+
+import java.io.IOException;
 
 /**
- * Utils for command-line arguments.
+ * Abstraction of a console.
  *
- * @version $Id: GShellImpl.java 405303 2006-05-09 04:55:39Z jdillon $
+ * <p>Allows pluggable implemenations (like to enable readline, etc.)
+ *
+ * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
  */
-public class Arguments
+public interface Console
 {
-    public static String[] shift(final String[] args) {
-        return shift(args, 1);
-    }
-
-    public static String[] shift(final String[] args, int pos) {
-        assert args.length >= pos;
-
-        String[] _args = new String[args.length - pos];
-        System.arraycopy(args, pos, _args, 0, _args.length);
-        return _args;
-    }
+    String readLine(final String prompt) throws IOException;
 }
