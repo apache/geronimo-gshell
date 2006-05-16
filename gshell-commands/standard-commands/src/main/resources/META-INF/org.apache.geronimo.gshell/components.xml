@@ -19,4 +19,10 @@
     <bean id="java" class="org.apache.geronimo.gshell.commands.standard.JavaCommand" singleton="false">
     </bean>
 
+    <bean id="exit" class="org.apache.geronimo.gshell.commands.standard.ExitCommand" singleton="false">
+    </bean>
+
+    <bean id="help" class="org.apache.geronimo.gshell.commands.standard.HelpCommand" singleton="false">
+    </bean>
+
 </beans>
