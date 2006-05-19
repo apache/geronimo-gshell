@@ -53,6 +53,11 @@
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.xbean</groupId>
+            <artifactId>xbean-finder</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

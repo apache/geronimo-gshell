@@ -108,6 +108,14 @@
                 <version>0.9.5</version>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.xbean</groupId>
+                <artifactId>xbean-finder</artifactId>
+                <version>2.4-SNAPSHOT</version>
+                <type>jar</type>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     

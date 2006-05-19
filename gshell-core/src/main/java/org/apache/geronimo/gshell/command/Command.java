@@ -32,6 +32,10 @@ public interface Command
     String getName();
     
     void init(CommandContext context); // throws Exception ?
+
+    //
+    // TODO: Return an Object!
+    //
     
     int execute(String[] args) throws Exception;
     

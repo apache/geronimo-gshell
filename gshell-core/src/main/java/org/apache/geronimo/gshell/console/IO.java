@@ -29,14 +29,42 @@ import java.io.PrintWriter;
  */
 public class IO
 {
+    /**
+     * Raw input stream.
+     *
+     * @see #in
+     */
     public final InputStream inputStream;
+
+    /**
+     * Raw output stream.
+     *
+     * @see #out
+     */
     public final PrintStream outputStream;
+
+    /**
+     * Raw error output stream.
+     *
+     * @see #err
+     */
     public final PrintStream errorStream;
 
+    /**
+     * Prefered input reader.
+     */
     public final Reader in;
+
+    /**
+     * Prefered output writer.
+     */
     public final PrintWriter out;
+
+    /**
+     * Prefered error output writer.
+     */
     public final PrintWriter err;
-    
+
     public IO(final InputStream in, final PrintStream out, final PrintStream err) {
         assert in != null;
         assert out != null;

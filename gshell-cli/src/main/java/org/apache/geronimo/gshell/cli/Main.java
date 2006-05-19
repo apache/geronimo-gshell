@@ -35,7 +35,7 @@ import org.apache.geronimo.gshell.util.Version;
 import org.apache.geronimo.gshell.util.Banner;
 
 /**
- * ???
+ * Command-line interface to bootstrap GShell.
  *
  * @version $Id$
  */
@@ -44,7 +44,7 @@ public class Main
     //
     // NOTE: Do not use logging from this class, as it is used to configure
     //       the logging level with System properties, which will only get
-    //       picked up on the initial loading ofr Log4j
+    //       picked up on the initial loading of Log4j
     //
 
     private ClassWorld world;
