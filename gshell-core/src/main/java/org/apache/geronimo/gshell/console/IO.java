@@ -29,26 +29,26 @@ import java.io.PrintWriter;
  */
 public class IO
 {
-    //
-    // TODO: Expose the binary versions, wrap for text readers/writers
-    //
-    
+    public final InputStream inputStream;
+    public final PrintStream outputStream;
+    public final PrintStream errorStream;
+
     public final Reader in;
     public final PrintWriter out;
     public final PrintWriter err;
     
-    public IO(final Reader in, final PrintWriter out, final PrintWriter err) {
+    public IO(final InputStream in, final PrintStream out, final PrintStream err) {
         assert in != null;
         assert out != null;
         assert err != null;
-        
-        this.in = in;
-        this.out = out;
-        this.err = err;
-    }
-    
-    public IO(final InputStream in, final PrintStream out, final PrintStream err) {
-        this(new InputStreamReader(in), new PrintWriter(out), new PrintWriter(err));
+
+        this.inputStream = in;
+        this.outputStream = out;
+        this.errorStream = err;
+
+        this.in = new InputStreamReader(in);
+        this.out = new PrintWriter(out);
+        this.err = new PrintWriter(err);
     }
     
     public IO() {

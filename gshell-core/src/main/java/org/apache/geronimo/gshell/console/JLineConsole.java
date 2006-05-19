@@ -23,32 +23,31 @@ import org.apache.commons.logging.LogFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import jline.ConsoleReader;
+
 /**
- * A simple console implementation using a buffered reader.
+ * A console backed up by <a href="http://jline.sf.net">JLine</a>.
  *
  * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
  */
-public class SimpleConsole
+public class JLineConsole
     implements Console
 {
     private static final Log log = LogFactory.getLog(SimpleConsole.class);
 
     private IO io;
-    private BufferedReader reader;
+    private ConsoleReader reader;
 
-    public SimpleConsole(final IO io) {
+    public JLineConsole(final IO io) throws IOException {
         assert io != null;
 
         this.io = io;
-        this.reader = new BufferedReader(io.in);
+        this.reader = new ConsoleReader(io.inputStream, io.out);
     }
 
     public String readLine(final String prompt) throws IOException {
         assert prompt != null;
 
-        io.out.print(prompt);
-        io.out.flush();
-
-        return reader.readLine();
+        return reader.readLine(prompt);
     }
 }
