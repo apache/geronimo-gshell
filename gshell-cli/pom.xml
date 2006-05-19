@@ -32,7 +32,13 @@
             <artifactId>standard-commands</artifactId>
             <version>${pom.version}</version>
         </dependency>
-        
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>scripting-commands</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>classworlds</groupId>
             <artifactId>classworlds</artifactId>
