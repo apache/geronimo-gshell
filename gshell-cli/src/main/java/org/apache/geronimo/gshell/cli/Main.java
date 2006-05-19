@@ -26,6 +26,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.HelpFormatter;
 
 import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.InteractiveConsole;
 import org.apache.geronimo.gshell.console.SimpleConsole;
