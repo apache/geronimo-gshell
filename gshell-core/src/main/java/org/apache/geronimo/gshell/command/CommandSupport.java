@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
- * ???
+ * Provides support for {@link Command} implemenations.
  *
  * @version $Id$
  */
