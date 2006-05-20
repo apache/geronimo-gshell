@@ -16,14 +16,11 @@
 
 package org.apache.geronimo.gshell.console;
 
-import org.apache.geronimo.gshell.GShell;
+import jline.ConsoleReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-
-import jline.ConsoleReader;
 
 /**
  * A console backed up by <a href="http://jline.sf.net">JLine</a>.

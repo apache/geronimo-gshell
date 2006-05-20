@@ -18,7 +18,6 @@ package org.apache.geronimo.gshell;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;

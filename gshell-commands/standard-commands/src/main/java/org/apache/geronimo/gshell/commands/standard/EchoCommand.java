@@ -16,13 +16,7 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.HelpFormatter;
-
+import org.apache.commons.cli.*;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
@@ -64,14 +58,14 @@ public class EchoCommand
         CommandLine line = parser.parse(options, args);
         
         if (line.hasOption('h')) {
-            io.out.println("echo -- write arguments to the commands output");
+            io.out.println(getName() + " -- write arguments to the commands output");
             io.out.println();
             
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                "echo [options] [string ...]",
+                getName() + " [options] [string ...]",
                 "",
                 options,
                 4, // left pad

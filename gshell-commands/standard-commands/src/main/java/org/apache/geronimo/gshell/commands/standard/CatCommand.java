@@ -16,25 +16,19 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
+import org.apache.commons.cli.*;
+import org.apache.commons.lang.StringUtils;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.console.IO;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.lang.StringUtils;
-
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.console.IO;
-
 /**
- * ???
+ * Concatenate and print files.
  *
  * @version $Id$
  */
@@ -70,14 +64,14 @@ public class CatCommand
         CommandLine line = parser.parse(options, args);
         
         if (line.hasOption('h')) {
-            io.out.println("cat -- concatenate and print files");
+            io.out.println(getName() + " -- concatenate and print files");
             io.out.println();
             
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                "cat [options] [file ...]",
+                getName() + " [options] [file ...]",
                 "",
                 options,
                 4, // left pad

@@ -19,9 +19,9 @@ package org.apache.geronimo.gshell.command;
 import org.apache.xbean.finder.ResourceFinder;
 
 import java.io.IOException;
-import java.util.Properties;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * ???

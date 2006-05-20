@@ -16,9 +16,9 @@
 
 package org.apache.geronimo.gshell.console;
 
-import org.apache.geronimo.gshell.GShell;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.geronimo.gshell.GShell;
 
 /**
  * ???

@@ -18,11 +18,9 @@ package org.apache.geronimo.gshell;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.geronimo.gshell.console.IO;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import org.apache.geronimo.gshell.console.IO;
 
 /**
  * ???

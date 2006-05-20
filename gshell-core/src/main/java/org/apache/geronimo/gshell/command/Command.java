@@ -25,16 +25,16 @@ public interface Command
 {
     /** Standard command success status code. */
     int SUCCESS = 0;
-    
+
     /** Standard command failure status code. */
     int FAILURE = -1;
-    
+
     String getName();
-    
+
     void init(CommandContext context); // throws Exception ?
 
     //
-    // TODO: Return an Object!
+    // TODO: Return an Object!  Take an Object[]!
     //
     
     int execute(String[] args) throws Exception;

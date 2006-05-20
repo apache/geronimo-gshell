@@ -16,13 +16,7 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.HelpFormatter;
-
+import org.apache.commons.cli.*;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
@@ -73,14 +67,14 @@ public class JavaCommand
         CommandLine line = parser.parse(options, args);
 
         if (line.hasOption('h')) {
-            io.out.println("java -- execute a java application");
+            io.out.println(getName() + " -- execute a java application");
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                "java [options] <classname> [arguments]",
+                getName() + " [options] <classname> [arguments]",
                 "",
                 options,
                 4, // left pad

@@ -16,8 +16,8 @@
 
 package org.apache.geronimo.gshell.util;
 
-import java.io.StringWriter;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * Display helper for the sexy GShell banner.

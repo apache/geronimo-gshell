@@ -16,13 +16,7 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.HelpFormatter;
-
+import org.apache.commons.cli.*;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;

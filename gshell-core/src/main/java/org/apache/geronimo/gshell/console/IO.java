@@ -16,11 +16,7 @@
 
 package org.apache.geronimo.gshell.console;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.Reader;
-import java.io.PrintWriter;
+import java.io.*;
 
 /**
  * Container for input/output handles.
