@@ -26,18 +26,6 @@
             <artifactId>gshell-core</artifactId>
             <version>${pom.version}</version>
         </dependency>
-        
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>standard-commands</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>scripting-commands</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>classworlds</groupId>
@@ -49,32 +37,5 @@
             <artifactId>commons-cli</artifactId>
         </dependency>
     </dependencies>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/bin.xml</descriptor>
-                    </descriptors>
-                    <finalName>gshell-${pom.version}</finalName>
-                </configuration>
-                
-                <!--
-                
-                FIXME: Stupid assembly plugin does not root itself correctly
-                
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>directory</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                -->
-            </plugin>
-        </plugins>
-    </build>
+
 </project>

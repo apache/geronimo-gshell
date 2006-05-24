@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.HashMap;
 
 /**
  * ???
@@ -30,6 +31,8 @@ import java.util.Properties;
  */
 public class CommandManager
 {
+    private Map<String,Properties> commandDefMap = new HashMap<String,Properties>();
+
     public CommandManager() throws IOException {
         ResourceFinder resourceFinder = new ResourceFinder("META-INF/");
 
@@ -37,12 +40,25 @@ public class CommandManager
         Iterator<String> iter = propertiesMap.keySet().iterator();
 
         while (iter.hasNext()) {
-            String name = iter.next();
-            Properties props = propertiesMap.get(name);
-            System.err.println("name: " + name);
-            System.err.println(props);
-            System.err.println("----");
+            String filename = iter.next();
+            Properties props = propertiesMap.get(filename);
+
+            String name = props.getProperty("name");
+            if (name != null) {
+                commandDefMap.put(name, props);
+            }
         }
+    }
+
+    public Command getCommand(final String name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        assert name != null;
+
+        Properties props = commandDefMap.get(name);
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        Class type = cl.loadClass(props.getProperty("class"));
+        Command cmd = (Command)type.newInstance();
+
+        return cmd;
     }
 
     //

@@ -22,6 +22,7 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesMap;
+import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.springframework.beans.BeansException;
@@ -40,7 +41,7 @@ public class GShellImpl
 
     private IO io;
     private ApplicationContext ctx;
-    
+
     public void setIO(final IO io) {
         assert io != null;
         
@@ -72,8 +73,10 @@ public class GShellImpl
         //
         // HACK: Just get something working right now
         //
-        
-        Command cmd = (Command)ctx.getBean(commandName);
+
+        Command cmd = new CommandManager().getCommand(commandName);
+
+        // Command cmd = (Command)ctx.getBean(commandName);
         
         cmd.init(new CommandContext() {
             Variables vars = new VariablesMap();
