@@ -21,16 +21,16 @@ package org.apache.geronimo.gshell.commandline.parser;
  *
  * @version $Id$
  */
-public abstract class ASTStringSupport
+public abstract class StringSupport
     extends SimpleNode
 {
     protected Token token;
 
-    public ASTStringSupport(int id) {
+    public StringSupport(int id) {
         super(id);
     }
 
-    public ASTStringSupport(CommandLineParser p, int id) {
+    public StringSupport(CommandLineParser p, int id) {
         super(p, id);
     }
 

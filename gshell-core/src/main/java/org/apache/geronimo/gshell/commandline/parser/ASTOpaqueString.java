@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.commandline.parser;
  * @version $Id$
  */
 public class ASTOpaqueString
-    extends ASTStringSupport
+    extends StringSupport
 {
     public ASTOpaqueString(int id) {
         super(id);

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.commandline.parser;
  * @version $Id$
  */
 public class ASTQuotedString
-    extends ASTStringSupport
+    extends StringSupport
 {
     public ASTQuotedString(int id) {
         super(id);

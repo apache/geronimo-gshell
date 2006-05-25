@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.commandline.parser;
  * @version $Id$
  */
 public class ASTPlainString
-    extends ASTStringSupport
+    extends StringSupport
 {
     public ASTPlainString(int id) {
         super(id);
