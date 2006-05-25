@@ -61,6 +61,82 @@
     </dependencies>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>javacc-maven-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <id>jjtree</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>jjtree</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${pom.basedir}/src/main/grammar</sourceDirectory>
+                            <outputDirectory>${pom.basedir}/target/generated-sources/jjtree</outputDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>javacc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${pom.basedir}/target/generated-sources/jjtree</sourceDirectory>
+                            <outputDirectory>${pom.basedir}/target/generated-sources/javacc</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Delete generated/overwritten classes to prevent poluting the src tree -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <delete>
+                                    <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
+                                        <include name="ASTPlainArgument.java"/>
+                                        <include name="ASTQuotedArgument.java"/>
+                                    </fileset>
+                                </delete>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${pom.basedir}/target/generated-sources/jjtree</source>
+                                <source>${pom.basedir}/target/generated-sources/javacc</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
         <resources>
             <resource>
                 <directory>${pom.basedir}/src/main/resources</directory>
