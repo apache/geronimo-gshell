@@ -98,4 +98,14 @@ public class CommandLineParserTest
         // TODO: Verify 2 plain arguments + 1 quoted
         //
     }
+
+    public void testOpaqueArguments1() throws Exception {
+        String input = "a 'b -c' d";
+
+        ASTCommandLine cl = parse(input);
+
+        //
+        // TODO: Verify 2 plain arguments + 1 opaque
+        //
+    }
 }

@@ -86,6 +86,19 @@ TOKEN :
       )+
   >
 |
+  < OPAQUE_ARGUMENT:
+      "'"
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "'"
+  >
+|
   < QUOTED_ARGUMENT:
       "\""
       (   (~["\"","\\","\n","\r"])
@@ -115,7 +128,7 @@ void Expression() #Expression: {}
 
 void Argument() : {}
 {
-    QuotedArgument() | PlainArgument()
+    QuotedArgument() | OpaqueArgument() | PlainArgument()
 }
 
 void QuotedArgument() #QuotedArgument:
@@ -124,6 +137,17 @@ void QuotedArgument() #QuotedArgument:
 }
 {
     t=<QUOTED_ARGUMENT>
+    {
+        jjtThis.setToken(t);
+    }
+}
+
+void OpaqueArgument() #OpaqueArgument:
+{
+    Token t;
+}
+{
+    t=<OPAQUE_ARGUMENT>
     {
         jjtThis.setToken(t);
     }

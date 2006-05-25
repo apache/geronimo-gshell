@@ -105,6 +105,7 @@
                                     <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
                                         <include name="ASTPlainArgument.java"/>
                                         <include name="ASTQuotedArgument.java"/>
+                                        <include name="ASTOpaqueArgument.java"/>
                                     </fileset>
                                 </delete>
                             </tasks>
