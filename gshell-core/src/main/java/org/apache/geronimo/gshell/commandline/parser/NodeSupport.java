@@ -17,18 +17,13 @@
 package org.apache.geronimo.gshell.commandline.parser;
 
 /**
- * Represents a quoted (with double quotes) argument.
+ * Support for nodes.
  *
- * @version $Id$
+ * @version $Id: Variables.java 404908 2006-05-08 03:42:51Z jdillon $
  */
-public class ASTQuotedArgument
-    extends ASTArgumentSupport
+public class NodeSupport
 {
-    public ASTQuotedArgument(int id) {
-        super(id);
-    }
-
-    public ASTQuotedArgument(CommandLineParser p, int id) {
-        super(p, id);
-    }
+    //
+    // TODO: ???
+    //
 }

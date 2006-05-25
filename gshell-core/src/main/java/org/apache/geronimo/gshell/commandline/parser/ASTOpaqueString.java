@@ -17,18 +17,18 @@
 package org.apache.geronimo.gshell.commandline.parser;
 
 /**
- * Represents a <em>plain</em> unquoted argument.
+ * Represents an <em>opaque</em> argument.
  *
  * @version $Id$
  */
-public class ASTOpaqueArgument
-    extends ASTArgumentSupport
+public class ASTOpaqueString
+    extends ASTStringSupport
 {
-    public ASTOpaqueArgument(int id) {
+    public ASTOpaqueString(int id) {
         super(id);
     }
 
-    public ASTOpaqueArgument(CommandLineParser p, int id) {
+    public ASTOpaqueString(CommandLineParser p, int id) {
         super(p, id);
     }
 }

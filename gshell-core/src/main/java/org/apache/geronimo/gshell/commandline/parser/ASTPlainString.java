@@ -17,38 +17,18 @@
 package org.apache.geronimo.gshell.commandline.parser;
 
 /**
- * Support for argument types.
+ * Represents a <em>plain</em> unquoted argument.
  *
  * @version $Id$
  */
-public abstract class ASTArgumentSupport
-    extends SimpleNode
+public class ASTPlainString
+    extends ASTStringSupport
 {
-    protected Token token;
-
-    public ASTArgumentSupport(int id) {
+    public ASTPlainString(int id) {
         super(id);
     }
 
-    public ASTArgumentSupport(CommandLineParser p, int id) {
+    public ASTPlainString(CommandLineParser p, int id) {
         super(p, id);
-    }
-
-    public void setToken(final Token token) {
-        assert token != null;
-
-        this.token = token;
-    }
-
-    public Token getToken() {
-        return token;
-    }
-
-    public Object jjtAccept(CommandLineParserVisitor visitor, Object data) {
-        return visitor.visit(this, data);
-    }
-
-    public String toString() {
-        return super.toString() + "{ " + getToken() + " }";
     }
 }

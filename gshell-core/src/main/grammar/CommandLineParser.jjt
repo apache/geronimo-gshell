@@ -17,11 +17,11 @@
 options {
     STATIC = false;
     UNICODE_INPUT = true;
-    OPTIMIZE_TOKEN_MANAGER = true;
     ERROR_REPORTING = true;
     MULTI = true;
     VISITOR = true;
     NODE_DEFAULT_VOID = true;
+    NODE_EXTENDS = "NodeSupport";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -29,6 +29,9 @@ options {
 PARSER_BEGIN(CommandLineParser)
 
 package org.apache.geronimo.gshell.commandline.parser;
+
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * Command line parser.
@@ -38,9 +41,15 @@ package org.apache.geronimo.gshell.commandline.parser;
 public class CommandLineParser
     extends CommandLineParserSupport
 {
-    //
-    // TODO: ???
-    //
+    public CommandLineParser() {
+        this(new StringReader(""));
+    }
+
+    public ASTCommandLine parse(final Reader reader) throws ParseException {
+        this.ReInit(reader);
+
+        return this.commandLine();
+    }
 }
 
 PARSER_END(CommandLineParser)
@@ -66,19 +75,19 @@ SKIP :
 
 SPECIAL_TOKEN :
 {
-  <SINGLE_LINE_COMMENT: "#" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")?>
+  < COMMENT: "#" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")? >
 }
 
 //
-// LITERALS
+// STRINGS
 //
 
 TOKEN :
 {
-  < PLAIN_ARGUMENT:
-      (   (~["\"", "\\", " ", "\t", "\n", "\r", "\f"])
+  < STRING:
+      (   (~["\"","\\"," ","\t","\n","\r","\f",";"])
         | ("\\"
-            ( ["n","t","b","r","f","\\","'","\""]
+            ( ["n","t","b","r","f","\\","'","\"",";"]
             | ["0"-"7"] ( ["0"-"7"] )?
             | ["0"-"3"] ["0"-"7"] ["0"-"7"]
             )
@@ -86,7 +95,7 @@ TOKEN :
       )+
   >
 |
-  < OPAQUE_ARGUMENT:
+  < OPAQUE_STRING:
       "'"
       (   (~["\"","\\","\n","\r"])
         | ("\\"
@@ -99,7 +108,7 @@ TOKEN :
       "'"
   >
 |
-  < QUOTED_ARGUMENT:
+  < QUOTED_STRING:
       "\""
       (   (~["\"","\\","\n","\r"])
         | ("\\"
@@ -113,53 +122,80 @@ TOKEN :
   >
 }
 
+//
+// SEPARATORS
+//
+
+TOKEN :
+{
+  < SEMICOLON: ";" >
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
-ASTCommandLine CommandLine() #CommandLine: {}
+ASTCommandLine commandLine() #CommandLine: {}
 {
-    Expression()
-    { return jjtThis; }
+    (
+        expression() ( ";" expression() )* | <EOF>
+    )
+    {
+        return jjtThis;
+    }
 }
 
-void Expression() #Expression: {}
+void expression() #Expression: {}
 {
-    ( Argument() )*
+    ( argument() )+
 }
 
-void Argument() : {}
+void argument() #void: {}
 {
-    QuotedArgument() | OpaqueArgument() | PlainArgument()
+    string()
+
+    //
+    // TODO: Add variable() to resolve raw $xxx or ${xxx}
+    //       quoted string will have to post parse these values
+    //       into strings, but raw could potentially return object
+    //       references
+    //
 }
 
-void QuotedArgument() #QuotedArgument:
+void string() #void: {}
+{
+    quotedString() | opaqueString() | plainString()
+}
+
+void quotedString() #QuotedString:
 {
     Token t;
 }
 {
-    t=<QUOTED_ARGUMENT>
+    t=<QUOTED_STRING>
     {
         jjtThis.setToken(t);
     }
 }
 
-void OpaqueArgument() #OpaqueArgument:
+void opaqueString() #OpaqueString:
 {
     Token t;
 }
 {
-    t=<OPAQUE_ARGUMENT>
+    t=<OPAQUE_STRING>
     {
         jjtThis.setToken(t);
     }
 }
 
-void PlainArgument() #PlainArgument:
+void plainString() #PlainString:
 {
     Token t;
 }
 {
-    t=<PLAIN_ARGUMENT>
+    t=<STRING>
     {
         jjtThis.setToken(t);
     }
 }
+

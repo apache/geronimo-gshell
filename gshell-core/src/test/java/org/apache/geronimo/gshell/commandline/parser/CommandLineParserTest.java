@@ -33,10 +33,10 @@ public class CommandLineParserTest
         assert input != null;
 
         Reader reader = new StringReader(input);
-        CommandLineParser parser = new CommandLineParser(reader);
-        ASTCommandLine cl = parser.CommandLine();
+        CommandLineParser parser = new CommandLineParser();
+        ASTCommandLine cl = parser.parse(reader);
 
-        cl.dump("");
+        cl.dump("> ");
 
         assertNotNull(cl);
 
@@ -51,61 +51,84 @@ public class CommandLineParserTest
         String input = "# this should be completly ignored";
 
         ASTCommandLine cl = parse(input);
+
+        // Children array is lazy created, so when no children this is null
+        assertNull(cl.children);
     }
 
     public void testSingleComment2() throws Exception {
         String input = "####";
 
         ASTCommandLine cl = parse(input);
+
+        // Children array is lazy created, so when no children this is null
+        assertNull(cl.children);
     }
 
     public void testSingleComment3() throws Exception {
         String input = "# ignored; this too";
 
         ASTCommandLine cl = parse(input);
+
+        // Children array is lazy created, so when no children this is null
+        assertNull(cl.children);
     }
 
     //
-    // Arguments
+    // Strings
     //
 
-    public void testArguments1() throws Exception {
+    public void testStrings1() throws Exception {
         String input = "a b c";
 
         ASTCommandLine cl = parse(input);
 
         //
-        // TODO: Verify 3 plain arguments
+        // TODO: Verify 3 plain strings
         //
     }
 
-    public void testArguments2() throws Exception {
+    public void testStrings2() throws Exception {
         String input = "a -b --c d";
 
         ASTCommandLine cl = parse(input);
 
         //
-        // TODO: Verify 4 plain arguments
+        // TODO: Verify 4 plain strings
         //
     }
 
-    public void testQuotedArguments1() throws Exception {
+    public void testQuotedStrings1() throws Exception {
         String input = "a \"b -c\" d";
 
         ASTCommandLine cl = parse(input);
 
         //
-        // TODO: Verify 2 plain arguments + 1 quoted
+        // TODO: Verify 2 plain strings + 1 quoted
         //
     }
 
-    public void testOpaqueArguments1() throws Exception {
+    public void testOpaqueStrings1() throws Exception {
         String input = "a 'b -c' d";
 
         ASTCommandLine cl = parse(input);
 
         //
-        // TODO: Verify 2 plain arguments + 1 opaque
+        // TODO: Verify 2 plain strings + 1 opaque
+        //
+    }
+
+    //
+    // Compound
+    //
+
+    public void testCompoundCommandLine1() throws Exception {
+        String input = "a b c; d e f";
+
+        ASTCommandLine cl = parse(input);
+
+        //
+        // TODO: Verify 2 expressions
         //
     }
 }

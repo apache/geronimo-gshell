@@ -23,4 +23,11 @@ package org.apache.geronimo.gshell.commandline;
  */
 public class CommandLineBuilder
 {
+    public CommandLine create() {
+        //
+        // TODO:
+        //
+
+        return null;
+    }
 }

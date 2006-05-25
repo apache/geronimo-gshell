@@ -21,9 +21,12 @@ package org.apache.geronimo.gshell.commandline;
  *
  * @version $Id: Variables.java 404908 2006-05-08 03:42:51Z jdillon $
  */
-public class CommandLine
+public interface CommandLine
 {
     //
-    // void execute() throws Exception;
+    // TODO: If we descide on returning an Object from a command, then
+    //       this returns an Object too
     //
+    
+    void execute() throws Exception;
 }

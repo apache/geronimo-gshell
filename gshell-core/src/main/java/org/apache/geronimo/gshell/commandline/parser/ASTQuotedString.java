@@ -17,18 +17,18 @@
 package org.apache.geronimo.gshell.commandline.parser;
 
 /**
- * Represents a <em>plain</em> unquoted argument.
+ * Represents a quoted (with double quotes) argument.
  *
  * @version $Id$
  */
-public class ASTPlainArgument
-    extends ASTArgumentSupport
+public class ASTQuotedString
+    extends ASTStringSupport
 {
-    public ASTPlainArgument(int id) {
+    public ASTQuotedString(int id) {
         super(id);
     }
 
-    public ASTPlainArgument(CommandLineParser p, int id) {
+    public ASTQuotedString(CommandLineParser p, int id) {
         super(p, id);
     }
 }
