@@ -52,8 +52,7 @@ public class CommandLineParserTest
 
         ASTCommandLine cl = parse(input);
 
-        // Children array is lazy created, so when no children this is null
-        assertNull(cl.children);
+        assertEquals(0, cl.jjtGetNumChildren());
     }
 
     public void testSingleComment2() throws Exception {
@@ -61,8 +60,7 @@ public class CommandLineParserTest
 
         ASTCommandLine cl = parse(input);
 
-        // Children array is lazy created, so when no children this is null
-        assertNull(cl.children);
+        assertEquals(0, cl.jjtGetNumChildren());
     }
 
     public void testSingleComment3() throws Exception {
@@ -70,8 +68,7 @@ public class CommandLineParserTest
 
         ASTCommandLine cl = parse(input);
 
-        // Children array is lazy created, so when no children this is null
-        assertNull(cl.children);
+        assertEquals(0, cl.jjtGetNumChildren());
     }
 
     //
@@ -83,9 +80,21 @@ public class CommandLineParserTest
 
         ASTCommandLine cl = parse(input);
 
-        //
-        // TODO: Verify 3 plain strings
-        //
+        // One expression
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        // 3 plain strings
+        Node child = cl.jjtGetChild(0);
+        assertEquals(3, child.jjtGetNumChildren());
+
+        for (int i=0; i<3; i++ ) {
+            Node node = child.jjtGetChild(i);
+            assertEquals(ASTPlainString.class, node.getClass());
+        }
+
+        assertEquals("a", ((ASTPlainString)child.jjtGetChild(0)).getValue());
+        assertEquals("b", ((ASTPlainString)child.jjtGetChild(1)).getValue());
+        assertEquals("c", ((ASTPlainString)child.jjtGetChild(2)).getValue());
     }
 
     public void testStrings2() throws Exception {
@@ -93,9 +102,22 @@ public class CommandLineParserTest
 
         ASTCommandLine cl = parse(input);
 
-        //
-        // TODO: Verify 4 plain strings
-        //
+        // One expression
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        // 4 plain strings
+        Node child = cl.jjtGetChild(0);
+        assertEquals(4, child.jjtGetNumChildren());
+
+        for (int i=0; i<4; i++ ) {
+            Node node = child.jjtGetChild(i);
+            assertEquals(ASTPlainString.class, node.getClass());
+        }
+
+        assertEquals("a", ((ASTPlainString)child.jjtGetChild(0)).getValue());
+        assertEquals("-b", ((ASTPlainString)child.jjtGetChild(1)).getValue());
+        assertEquals("--c", ((ASTPlainString)child.jjtGetChild(2)).getValue());
+        assertEquals("d", ((ASTPlainString)child.jjtGetChild(3)).getValue());
     }
 
     public void testQuotedStrings1() throws Exception {
@@ -103,9 +125,26 @@ public class CommandLineParserTest
 
         ASTCommandLine cl = parse(input);
 
-        //
-        // TODO: Verify 2 plain strings + 1 quoted
-        //
+        // One expression
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        Node child = cl.jjtGetChild(0);
+        assertEquals(3, child.jjtGetNumChildren());
+
+        // Verify 2 plain strings + 1 quoted
+        Node node;
+
+        node = child.jjtGetChild(0);
+        assertEquals(ASTPlainString.class, node.getClass());
+        assertEquals("a", ((StringSupport)node).getValue());
+
+        node = child.jjtGetChild(1);
+        assertEquals(ASTQuotedString.class, node.getClass());
+        assertEquals("\"b -c\"", ((StringSupport)node).getValue());
+
+        node = child.jjtGetChild(2);
+        assertEquals(ASTPlainString.class, node.getClass());
+        assertEquals("d", ((StringSupport)node).getValue());
     }
 
     public void testOpaqueStrings1() throws Exception {
@@ -113,9 +152,25 @@ public class CommandLineParserTest
 
         ASTCommandLine cl = parse(input);
 
-        //
-        // TODO: Verify 2 plain strings + 1 opaque
-        //
+        // One expression
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        Node child = cl.jjtGetChild(0);
+        assertEquals(3, child.jjtGetNumChildren());
+
+        // Verify 2 plain strings + 1 opaque
+        Node node;
+
+        node = child.jjtGetChild(0);
+        assertEquals(ASTPlainString.class, node.getClass());
+        assertEquals("a", ((StringSupport)node).getValue());
+
+        node = child.jjtGetChild(1);
+        assertEquals(ASTOpaqueString.class, node.getClass());
+        assertEquals("'b -c'", ((StringSupport)node).getValue());
+
+        node = child.jjtGetChild(2);
+        assertEquals(ASTPlainString.class, node.getClass());
     }
 
     //
@@ -126,6 +181,8 @@ public class CommandLineParserTest
         String input = "a b c; d e f";
 
         ASTCommandLine cl = parse(input);
+
+        assertEquals(2, cl.jjtGetNumChildren());
 
         //
         // TODO: Verify 2 expressions
