@@ -48,29 +48,27 @@
     
     <build>
         <plugins>
+            
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/bin.xml</descriptor>
-                    </descriptors>
-                    <finalName>gshell-${pom.version}</finalName>
-                </configuration>
-                
-                <!--
-                
-                FIXME: Stupid assembly plugin does not root itself correctly
-                
+                <version>2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>directory</goal>
+                            <goal>attached</goal>
                         </goals>
                     </execution>
                 </executions>
-                -->
+                <configuration>
+                    <descriptors>
+                        <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
+                    </descriptors>
+                    <finalName>gshell-${pom.version}</finalName>
+                </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>
