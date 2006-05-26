@@ -19,7 +19,7 @@ package org.apache.geronimo.gshell.commandline.parser;
 /**
  * Support for nodes.
  *
- * @version $Id: Variables.java 404908 2006-05-08 03:42:51Z jdillon $
+ * @version $Id$
  */
 public class NodeSupport
 {

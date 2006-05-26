@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.console.IO;
 /**
  * Exit the virtual machine.
  *
- * @version $Id: CatCommand.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class ExitCommand
     extends CommandSupport

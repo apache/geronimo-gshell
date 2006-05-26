@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * A simple console implementation using a buffered reader.
  *
- * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class SimpleConsole
     implements Console

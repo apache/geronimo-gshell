@@ -24,7 +24,7 @@ import org.apache.bsf.BSFEngine;
 /**
  * ???
  *
- * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class InteractiveInterpreter
     implements Runnable

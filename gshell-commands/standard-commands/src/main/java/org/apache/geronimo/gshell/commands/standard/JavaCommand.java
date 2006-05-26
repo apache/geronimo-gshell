@@ -37,7 +37,7 @@ import java.util.Arrays;
  * you can specify a different static method that takes a String[]
  * to execute instead.
  *
- * @version $Id: EchoCommand.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class JavaCommand
     extends CommandSupport

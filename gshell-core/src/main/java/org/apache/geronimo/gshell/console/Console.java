@@ -23,7 +23,7 @@ import java.io.IOException;
  *
  * <p>Allows pluggable implemenations (like to enable readline, etc.)
  *
- * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public interface Console
 {

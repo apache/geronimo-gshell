@@ -19,7 +19,7 @@ package org.apache.geronimo.gshell.util;
 /**
  * Utils for command-line arguments.
  *
- * @version $Id: GShellImpl.java 405303 2006-05-09 04:55:39Z jdillon $
+ * @version $Id$
  */
 public class Arguments
 {

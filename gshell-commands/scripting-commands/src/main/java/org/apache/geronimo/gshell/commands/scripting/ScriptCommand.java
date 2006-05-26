@@ -39,7 +39,7 @@ import org.apache.bsf.BSFEngine;
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
  *
- * @version $Id: CatCommand.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class ScriptCommand
     extends CommandSupport

@@ -27,7 +27,7 @@ import java.util.HashMap;
 /**
  * ???
  *
- * @version $Id: Command.java 407908 2006-05-19 13:47:49 -0700 (Fri, 19 May 2006) jdillon $
+ * @version $Id$
  */
 public class CommandManager
 {

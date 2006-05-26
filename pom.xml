@@ -45,7 +45,38 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </snapshots>
         </repository>
+        
+        <repository>
+            <id>apache-snapshots</id>
+            <name>Apache Snapshots Repository</name>
+            <url>http://cvs.apache.org/maven-snapshot-repository</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
     </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>codehaus-snapshots</id>
+            <name>Maven Central Plugins Development Repository</name>
+            <url>http://snapshots.maven.codehaus.org/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
     
     <dependencyManagement>
         <dependencies>

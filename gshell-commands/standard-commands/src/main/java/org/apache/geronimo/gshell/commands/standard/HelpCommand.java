@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Display command help
  *
- * @version $Id: CatCommand.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class HelpCommand
     extends CommandSupport

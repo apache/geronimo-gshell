@@ -19,7 +19,7 @@ package org.apache.geronimo.gshell.commandline;
 /**
  * ???
  *
- * @version $Id: Variables.java 404908 2006-05-08 03:42:51Z jdillon $
+ * @version $Id$
  */
 public interface CommandLine
 {

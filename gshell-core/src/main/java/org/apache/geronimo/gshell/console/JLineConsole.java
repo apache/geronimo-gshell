@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * A console backed up by <a href="http://jline.sf.net">JLine</a>.
  *
- * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class JLineConsole
     implements Console

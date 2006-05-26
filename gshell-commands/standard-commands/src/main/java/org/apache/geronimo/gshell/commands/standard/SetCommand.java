@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.console.IO;
 /**
  * Set a variable or property.
  *
- * @version $Id: CatCommand.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class SetCommand
     extends CommandSupport

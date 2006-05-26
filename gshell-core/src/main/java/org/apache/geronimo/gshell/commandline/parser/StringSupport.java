@@ -48,10 +48,6 @@ public abstract class StringSupport
         return getToken().image;
     }
 
-    public Object jjtAccept(CommandLineParserVisitor visitor, Object data) {
-        return visitor.visit(this, data);
-    }
-
     public String toString() {
         return super.toString() + "( " + getToken() + " )";
     }

@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.GShell;
 /**
  * ???
  *
- * @version $Id: IO.java 399599 2006-05-04 08:13:57Z jdillon $
+ * @version $Id$
  */
 public class InteractiveConsole
     implements Runnable
