@@ -32,11 +32,13 @@ public class JLineConsole
 {
     private static final Log log = LogFactory.getLog(SimpleConsole.class);
 
-    private IO io;
-    private ConsoleReader reader;
+    private final IO io;
+    private final ConsoleReader reader;
 
     public JLineConsole(final IO io) throws IOException {
-        assert io != null;
+        if (io == null) {
+            throw new IllegalArgumentException("IO is null");
+        }
 
         this.io = io;
         this.reader = new ConsoleReader(io.inputStream, io.out);

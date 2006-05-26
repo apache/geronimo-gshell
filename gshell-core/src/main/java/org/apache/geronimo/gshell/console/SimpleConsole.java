@@ -32,11 +32,13 @@ public class SimpleConsole
 {
     private static final Log log = LogFactory.getLog(SimpleConsole.class);
 
-    private IO io;
-    private BufferedReader reader;
+    private final IO io;
+    private final BufferedReader reader;
 
     public SimpleConsole(final IO io) {
-        assert io != null;
+        if (io == null) {
+            throw new IllegalArgumentException("IO is null");
+        }
 
         this.io = io;
         this.reader = new BufferedReader(io.in);

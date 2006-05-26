@@ -16,16 +16,26 @@
 
 package org.apache.geronimo.gshell.console;
 
-import java.io.IOException;
+import junit.framework.TestCase;
 
 /**
- * Abstraction of a console.
- *
- * <p>Allows pluggable implemenations (like to enable jline, editline, etc.)
+ * Unit tests for the {@link JLineConsole} class.
  *
  * @version $Id$
  */
-public interface Console
+public class JLineConsoleTest
+    extends TestCase
 {
-    String readLine(final String prompt) throws IOException;
+    public void testConstructorArgs() throws Exception {
+        try {
+            new JLineConsole(null);
+            fail("Accepted null value");
+        }
+        catch (IllegalArgumentException expected) {
+            // ignore
+        }
+
+        // Happy day
+        new JLineConsole(new IO());
+    }
 }

@@ -28,14 +28,27 @@ import org.apache.geronimo.gshell.GShell;
 public class InteractiveConsole
     implements Runnable
 {
+    //
+    // TODO: Rename to *Runner, since this is not really a Console impl
+    //
+
     private static final Log log = LogFactory.getLog(InteractiveConsole.class);
 
-    private GShell gshell;
-    private Console console;
+    private final GShell gshell;
+
+    private final Console console;
 
     public InteractiveConsole(final Console console, final GShell gshell) {
-        assert console != null;
-        assert gshell != null;
+        if (console == null) {
+            throw new IllegalArgumentException("Console is null");
+        }
+        if (gshell == null) {
+            throw new IllegalArgumentException("GShell is null");
+        }
+
+        //
+        // TODO: Can probaby abstract the GShell bits to just some kind of String executor
+        //
 
         this.console = console;
         this.gshell = gshell;
@@ -44,13 +57,21 @@ public class InteractiveConsole
     public void run() {
         log.info("Running...");
 
+        boolean debug = log.isDebugEnabled();
+
         while (true) {
             try {
+                //
+                // TODO: Need to resolve how to allow the prompt to be changed
+                //
+
                 String prompt = "> ";
                 String line;
 
                 while ((line = console.readLine(prompt)) != null) {
-                    log.debug("Read line: " + line);
+                    if (debug) {
+                        log.debug("Read line: " + line);
+                    }
 
                     // Just ignore blank lines
                     if (line.trim().equals("")) {
@@ -59,9 +80,10 @@ public class InteractiveConsole
 
                     int result = gshell.execute(line);
 
-                    log.debug("Command result: " + result);
+                    if (debug) {
+                        log.debug("Command result: " + result);
+                    }
                 }
-
             }
             catch (Exception e) {
                 log.error("Unhandled failure", e);
