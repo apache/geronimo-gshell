@@ -16,26 +16,21 @@
 
 package org.apache.geronimo.gshell.commandline;
 
-import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
+import junit.framework.TestCase;
 
 /**
- * ???
+ * Unit tests for the {@link CommandLineBuilder} class.
  *
  * @version $Id$
  */
-public class CommandLineBuilder
+public class CommandLineBuilderTest
+    extends TestCase
 {
-    private CommandLineParser parser;
-
-    public CommandLineBuilder() {
-        this.parser = new CommandLineParser();
-    }
-
-    public CommandLine create() {
+    public void testConstructor() throws Exception {
         //
-        // TODO:
+        // NOTE: This is a lame duck test, remove once there is functionality to test
         //
-
-        return null;
+        
+        new CommandLineBuilder();
     }
 }

@@ -62,11 +62,11 @@ PARSER_END(CommandLineParser)
 
 SKIP :
 {
-  " "
-| "\t"
-| "\n"
-| "\r"
-| "\f"
+    " "
+|   "\t"
+|   "\n"
+|   "\r"
+|   "\f"
 }
 
 //
@@ -75,7 +75,7 @@ SKIP :
 
 SPECIAL_TOKEN :
 {
-  < COMMENT: "#" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")? >
+    < COMMENT: "#" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")? >
 }
 
 //
@@ -84,7 +84,7 @@ SPECIAL_TOKEN :
 
 TOKEN :
 {
-  < STRING:
+    < STRING:
       (   (~["\"","\\"," ","\t","\n","\r","\f",";"])
         | ("\\"
             ( ["n","t","b","r","f","\\","'","\"",";"]
@@ -93,9 +93,9 @@ TOKEN :
             )
           )
       )+
-  >
+    >
 |
-  < OPAQUE_STRING:
+    < OPAQUE_STRING:
       "'"
       (   (~["\"","\\","\n","\r"])
         | ("\\"
@@ -106,9 +106,9 @@ TOKEN :
           )
       )*
       "'"
-  >
+    >
 |
-  < QUOTED_STRING:
+    < QUOTED_STRING:
       "\""
       (   (~["\"","\\","\n","\r"])
         | ("\\"
@@ -119,7 +119,7 @@ TOKEN :
           )
       )*
       "\""
-  >
+    >
 }
 
 //
@@ -128,7 +128,7 @@ TOKEN :
 
 TOKEN :
 {
-  < SEMICOLON: ";" >
+    < SEMICOLON: ";" >
 }
 
 
@@ -137,7 +137,7 @@ TOKEN :
 ASTCommandLine commandLine() #CommandLine: {}
 {
     (
-        expression() ( ";" expression() )* | <EOF>
+        expression() ( ";" ( expression() )? )* | <EOF>
     )
     {
         return jjtThis;

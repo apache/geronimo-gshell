@@ -31,6 +31,7 @@ public abstract class CommandSupport
     protected Log log;
     
     private String name;
+
     private CommandContext context;
     
     protected CommandSupport(final String name) {
@@ -42,15 +43,21 @@ public abstract class CommandSupport
     }
     
     public void setName(final String name) {
-        assert name != null;
-        assert name.trim().length() != 0;
+        if (name == null) {
+            throw new IllegalArgumentException("Name is null");
+        }
+        if (name.trim().length() == 0) {
+            throw new IllegalArgumentException("Name is empty");
+        }
         
         this.name = name;
     }
     
     public String getName() {
-        assert name != null;
-        
+        if (name == null) {
+            throw new IllegalStateException("Name was not set");
+        }
+
         return name;
     }
     

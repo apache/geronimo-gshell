@@ -36,6 +36,10 @@ public class CommandLineParserTest
         CommandLineParser parser = new CommandLineParser();
         ASTCommandLine cl = parser.parse(reader);
 
+        //
+        // TODO: Remove eventually, may want to make nodes use logging to dump too
+        //
+
         cl.dump("> ");
 
         assertNotNull(cl);
@@ -186,6 +190,54 @@ public class CommandLineParserTest
 
         //
         // TODO: Verify 2 expressions
+        //
+    }
+
+    public void testCompoundCommandLine2() throws Exception {
+        String input = "a b c;";
+
+        ASTCommandLine cl = parse(input);
+
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        //
+        // TODO: Verify ...
+        //
+    }
+
+    public void testCompoundCommandLine3() throws Exception {
+        String input = "a b c;;;;";
+
+        ASTCommandLine cl = parse(input);
+
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        //
+        // TODO: Verify ...
+        //
+    }
+
+    public void testCompoundCommandLine4() throws Exception {
+        String input = "a b c;;;;d e f";
+
+        ASTCommandLine cl = parse(input);
+
+        assertEquals(2, cl.jjtGetNumChildren());
+
+        //
+        // TODO: Verify ...
+        //
+    }
+
+    public void testNotCompoundCommandLine1() throws Exception {
+        String input = "a b c\\; d e f";
+
+        ASTCommandLine cl = parse(input);
+
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        //
+        // TODO: Verify 1 expression
         //
     }
 }

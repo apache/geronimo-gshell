@@ -65,10 +65,23 @@ public class IO
      */
     public final PrintWriter err;
 
+    /**
+     * Construct a new IO container.
+     *
+     * @param in    The input steam; must not be null
+     * @param out   The output stream; must not be null
+     * @param err   The error output stream; must not be null
+     */
     public IO(final InputStream in, final PrintStream out, final PrintStream err) {
-        assert in != null;
-        assert out != null;
-        assert err != null;
+        if (in == null) {
+            throw new IllegalArgumentException("Input stream is null");
+        }
+        if (out == null) {
+            throw new IllegalArgumentException("Output stream is null");
+        }
+        if (err == null) {
+            throw new IllegalArgumentException("Error output stream is null");
+        }
 
         this.inputStream = in;
         this.outputStream = out;
@@ -78,11 +91,17 @@ public class IO
         this.out = new PrintWriter(out);
         this.err = new PrintWriter(err);
     }
-    
+
+    /**
+     * Helper which uses current values from {@link System}.
+     */
     public IO() {
         this(System.in, System.out, System.err);
     }
-    
+
+    /**
+     * Flush both output streams.
+     */
     public void flush() {
         out.flush();
         err.flush();
