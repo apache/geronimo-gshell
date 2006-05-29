@@ -17,6 +17,14 @@
 package org.apache.geronimo.gshell.commandline;
 
 import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
+import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
+import org.apache.geronimo.gshell.commandline.parser.ParseException;
+import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * ???
@@ -25,17 +33,52 @@ import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
  */
 public class CommandLineBuilder
 {
+    private static final Log log = LogFactory.getLog(CommandLineBuilder.class);
+
+    private CommandExecutor executor;
+
     private CommandLineParser parser;
 
-    public CommandLineBuilder() {
+    public CommandLineBuilder(final CommandExecutor executor) {
+        if (executor == null) {
+            throw new IllegalArgumentException("Executor is null");
+        }
+
+        this.executor = executor;
         this.parser = new CommandLineParser();
     }
 
-    public CommandLine create() {
+    private ASTCommandLine parse(final String input) throws ParseException {
+        assert input != null;
+
+        Reader reader = new StringReader(input);
+        CommandLineParser parser = new CommandLineParser();
+        ASTCommandLine cl = parser.parse(reader);
+
         //
-        // TODO:
+        // TODO: Log results with log visitor
         //
 
-        return null;
+        cl.dump("# ");
+
+        return cl;
+    }
+
+    public CommandLine create(final String commandLine) throws ParseException {
+        if (commandLine == null) {
+            throw new IllegalArgumentException("Command line is null");
+        }
+        if (commandLine.trim().length() == 0) {
+            throw new IllegalArgumentException("Command line is empty");
+        }
+
+        final ASTCommandLine root = parse(commandLine);
+        final CommandLineExecutingVisitor visitor = new CommandLineExecutingVisitor(this.executor);
+
+        return new CommandLine() {
+            public void execute() throws Exception {
+                root.jjtAccept(visitor, null);
+            }
+        };
     }
 }

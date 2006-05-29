@@ -19,6 +19,7 @@ package org.apache.geronimo.gshell;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -28,10 +29,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @version $Id$
  */
 public class GShell
+    implements CommandExecutor
 {
     private static final Log log = LogFactory.getLog(GShell.class);
     
     private ApplicationContext ctx;
+
     private GShellImpl impl;
     
     public GShell(final IO io) {

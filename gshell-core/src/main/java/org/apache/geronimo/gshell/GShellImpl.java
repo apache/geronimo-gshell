@@ -23,8 +23,11 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesMap;
 import org.apache.geronimo.gshell.command.CommandManager;
+import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -35,11 +38,12 @@ import org.springframework.context.ApplicationContextAware;
  * @version $Id$
  */
 public class GShellImpl
-    implements ApplicationContextAware
+    implements CommandExecutor, ApplicationContextAware
 {
     private static final Log log = LogFactory.getLog(GShell.class);
 
     private IO io;
+    
     private ApplicationContext ctx;
 
     public void setIO(final IO io) {
@@ -48,20 +52,25 @@ public class GShellImpl
         this.io = io;
     }
     
-    public int execute(final String commandline) throws Exception {
-        assert commandline != null;
+    public int execute(final String commandLine) throws Exception {
+        assert commandLine != null;
 
-        log.info("Executing (String): " + commandline);
+        log.info("Executing (String): " + commandLine);
 
         //
         // HACK: Just to get something to work...
         //
-        
-        String[] args = commandline.split("\\s");
-        String name = args[0];
-        args = Arguments.shift(args);
 
-        return execute(name, args);
+        CommandLineBuilder builder = new CommandLineBuilder(this);
+        CommandLine cl = builder.create(commandLine);
+        cl.execute();
+
+        //
+        // HACK: Current API needs to be revised to pass data back,
+        //       will be fixed latger, ignore for now
+        //
+
+        return 0;
     }
     
     public int execute(final String commandName, String[] args) throws Exception {
@@ -72,6 +81,10 @@ public class GShellImpl
         
         //
         // HACK: Just get something working right now
+        //
+
+        //
+        // HACK: DI CommandManager...
         //
 
         Command cmd = new CommandManager().getCommand(commandName);

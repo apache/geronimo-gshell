@@ -24,6 +24,8 @@ import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
 import org.apache.geronimo.gshell.commandline.parser.StringSupport;
+import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.geronimo.gshell.command.CommandExecutor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,18 +43,32 @@ public class CommandLineExecutingVisitor
 {
     private static final Log log = LogFactory.getLog(CommandLineExecutingVisitor.class);
 
+    private CommandExecutor executor;
+
+    public CommandLineExecutingVisitor(final CommandExecutor executor) {
+        if (executor == null) {
+            throw new IllegalArgumentException("Executor is null");
+        }
+
+        this.executor = executor;
+    }
+
     public Object visit(final SimpleNode node, final Object data) {
         assert node != null;
-        assert data != null;
+        // assert data != null;
 
         log.error("Unhandled node type: " + node.getClass().getName());
+
+        //
+        // TODO: Exception?  Means impl node does not accept
+        //
 
         return null;
     }
 
     public Object visit(final ASTCommandLine node, final Object data) {
         assert node != null;
-        assert data != null;
+        // assert data != null;
 
         //
         // NOTE: Visiting children will execute seperate commands in serial
@@ -65,17 +81,32 @@ public class CommandLineExecutingVisitor
 
     public Object visit(final ASTExpression node, final Object data) {
         assert node != null;
-        assert data != null;
+        // assert data != null;
 
-        List args = new ArrayList(node.jjtGetNumChildren());
+        // Create the argument list (cmd name + args)
+        List list = new ArrayList(node.jjtGetNumChildren());
+        node.childrenAccept(this, list);
 
-        node.childrenAccept(this, args);
+        String[] args = (String[])list.toArray(new String[list.size()]);
+        assert list.size() >= 1;
 
-        //
-        // TODO: Execute?  Return result?
-        //
+        String commandName = args[0];
+        args = Arguments.shift(args);
 
-        return args;
+        int result;
+
+        try {
+            result = executor.execute(commandName, args);
+        }
+        catch (Exception e) {
+            //
+            // FIXME: !!!
+            //
+
+            throw new RuntimeException(e);
+        }
+
+        return result;
     }
 
     private Object appendString(final StringSupport node, final Object data) {

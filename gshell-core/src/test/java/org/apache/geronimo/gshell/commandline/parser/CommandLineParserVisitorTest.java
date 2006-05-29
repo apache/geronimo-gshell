@@ -46,7 +46,7 @@ public class CommandLineParserVisitorTest
 
         return cl;
     }
-
+    
     public void testVisitor1() throws Exception {
         String input = "a \"b\" 'c' d";
 
