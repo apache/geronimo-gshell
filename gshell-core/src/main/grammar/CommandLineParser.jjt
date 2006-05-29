@@ -60,7 +60,7 @@ PARSER_END(CommandLineParser)
 // WHITE SPACE
 //
 
-SKIP :
+<DEFAULT> SKIP :
 {
     " "
 |   "\t"
@@ -73,7 +73,7 @@ SKIP :
 // COMMENTS
 //
 
-SPECIAL_TOKEN :
+<DEFAULT> SPECIAL_TOKEN :
 {
     < COMMENT: "#" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")? >
 }
@@ -82,10 +82,10 @@ SPECIAL_TOKEN :
 // STRINGS
 //
 
-TOKEN :
+<DEFAULT> TOKEN :
 {
     < STRING:
-      (   (~["\"","\\"," ","\t","\n","\r","\f",";"])
+      (   (~["\"","\\"," ","\t","\n","\r","\f",";","\"","'"])
         | ("\\"
             ( ["n","t","b","r","f","\\","'","\"",";"]
             | ["0"-"7"] ( ["0"-"7"] )?
@@ -126,7 +126,7 @@ TOKEN :
 // SEPARATORS
 //
 
-TOKEN :
+<DEFAULT> TOKEN :
 {
     < SEMICOLON: ";" >
 }
@@ -137,7 +137,7 @@ TOKEN :
 ASTCommandLine commandLine() #CommandLine: {}
 {
     (
-        expression() ( ";" ( expression() )? )* | <EOF>
+        expression() ( ";" [ expression() ] )* | <EOF>
     )
     {
         return jjtThis;

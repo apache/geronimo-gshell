@@ -24,11 +24,20 @@ package org.apache.geronimo.gshell.commandline.parser;
 public class ASTQuotedString
     extends StringSupport
 {
-    public ASTQuotedString(int id) {
+    public ASTQuotedString(final int id) {
         super(id);
     }
 
-    public ASTQuotedString(CommandLineParser p, int id) {
+    public ASTQuotedString(final CommandLineParser p, final int id) {
         super(p, id);
+    }
+
+    public String getValue() {
+        return unquote(super.getValue());
+    }
+
+    /** Accept the visitor. **/
+    public Object jjtAccept(final CommandLineParserVisitor visitor, final Object data) {
+        return visitor.visit(this, data);
     }
 }

@@ -144,7 +144,8 @@ public class CommandLineParserTest
 
         node = child.jjtGetChild(1);
         assertEquals(ASTQuotedString.class, node.getClass());
-        assertEquals("\"b -c\"", ((StringSupport)node).getValue());
+        assertEquals("b -c", ((StringSupport)node).getValue());
+        assertEquals("\"b -c\"", ((StringSupport)node).getToken().image);
 
         node = child.jjtGetChild(2);
         assertEquals(ASTPlainString.class, node.getClass());
@@ -171,9 +172,72 @@ public class CommandLineParserTest
 
         node = child.jjtGetChild(1);
         assertEquals(ASTOpaqueString.class, node.getClass());
-        assertEquals("'b -c'", ((StringSupport)node).getValue());
+        assertEquals("b -c", ((StringSupport)node).getValue());
+        assertEquals("'b -c'", ((StringSupport)node).getToken().image);
 
         node = child.jjtGetChild(2);
+        assertEquals(ASTPlainString.class, node.getClass());
+    }
+
+    public void testMoreStrings1() throws Exception {
+        String input = "a 'b -c' \"d\" e";
+
+        ASTCommandLine cl = parse(input);
+
+        // One expression
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        Node child = cl.jjtGetChild(0);
+        assertEquals(4, child.jjtGetNumChildren());
+
+        Node node;
+
+        node = child.jjtGetChild(0);
+        assertEquals(ASTPlainString.class, node.getClass());
+        assertEquals("a", ((StringSupport)node).getValue());
+
+        node = child.jjtGetChild(1);
+        assertEquals(ASTOpaqueString.class, node.getClass());
+        assertEquals("b -c", ((StringSupport)node).getValue());
+        assertEquals("'b -c'", ((StringSupport)node).getToken().image);
+
+        node = child.jjtGetChild(2);
+        assertEquals(ASTQuotedString.class, node.getClass());
+        assertEquals("d", ((StringSupport)node).getValue());
+        assertEquals("\"d\"", ((StringSupport)node).getToken().image);
+
+        node = child.jjtGetChild(3);
+        assertEquals(ASTPlainString.class, node.getClass());
+    }
+
+    public void testMoreStrings2() throws Exception {
+        String input = "a \"b -c\" 'd' e";
+
+        ASTCommandLine cl = parse(input);
+
+        // One expression
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        Node child = cl.jjtGetChild(0);
+        assertEquals(4, child.jjtGetNumChildren());
+
+        Node node;
+
+        node = child.jjtGetChild(0);
+        assertEquals(ASTPlainString.class, node.getClass());
+        assertEquals("a", ((StringSupport)node).getValue());
+
+        node = child.jjtGetChild(1);
+        assertEquals(ASTQuotedString.class, node.getClass());
+        assertEquals("b -c", ((StringSupport)node).getValue());
+        assertEquals("\"b -c\"", ((StringSupport)node).getToken().image);
+
+        node = child.jjtGetChild(2);
+        assertEquals(ASTOpaqueString.class, node.getClass());
+        assertEquals("d", ((StringSupport)node).getValue());
+        assertEquals("'d'", ((StringSupport)node).getToken().image);
+
+        node = child.jjtGetChild(3);
         assertEquals(ASTPlainString.class, node.getClass());
     }
 

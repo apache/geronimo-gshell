@@ -31,4 +31,13 @@ public class ASTOpaqueString
     public ASTOpaqueString(CommandLineParser p, int id) {
         super(p, id);
     }
+
+    public String getValue() {
+        return unquote(super.getValue());
+    }
+
+    /** Accept the visitor. **/
+    public Object jjtAccept(final CommandLineParserVisitor visitor, final Object data) {
+        return visitor.visit(this, data);
+    }
 }

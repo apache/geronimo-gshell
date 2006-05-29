@@ -26,11 +26,11 @@ public abstract class StringSupport
 {
     protected Token token;
 
-    public StringSupport(int id) {
+    public StringSupport(final int id) {
         super(id);
     }
 
-    public StringSupport(CommandLineParser p, int id) {
+    public StringSupport(final CommandLineParser p, final int id) {
         super(p, id);
     }
 
@@ -45,10 +45,28 @@ public abstract class StringSupport
     }
 
     public String getValue() {
-        return getToken().image;
+        Token t = getToken();
+        if (t == null) {
+            throw new IllegalStateException("Token not set");
+        }
+
+        return t.image;
     }
 
     public String toString() {
         return super.toString() + "( " + getToken() + " )";
+    }
+
+    /**
+     * Returns an unquoted value.
+     *
+     * @param value     String to unquote, must not be null; length must be at least 2
+     * @return          Unquoted value
+     */
+    protected String unquote(String value) {
+        assert value != null;
+        assert value.length() >= 2;
+
+        return value.substring(1, value.length() - 1);
     }
 }
