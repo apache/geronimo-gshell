@@ -36,9 +36,11 @@ public class InteractiveConsole
 
     private final Console console;
 
-    private Executor executor;
+    private final Executor executor;
 
-    private Prompter prompter;
+    private final Prompter prompter;
+
+    private boolean running = false;
 
     private boolean shutdownOnNull = false;
 
@@ -75,40 +77,22 @@ public class InteractiveConsole
         return shutdownOnNull;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
+    //
+    // abort() ?
+    //
+
     public void run() {
         log.info("Running...");
 
-        boolean debug = log.isDebugEnabled();
-        boolean running = true;
+        running = true;
 
         while (running) {
             try {
-                String line;
-
-                while ((line = console.readLine(prompter.getPrompt())) != null) {
-                    if (debug) {
-                        log.debug("Read line: " + line);
-                    }
-
-                    Executor.Result result = executor.execute(line);
-
-                    // Allow executor to request that the loop stop
-                    if (result == Executor.Result.STOP) {
-                        log.debug("Executor requested STOP");
-                        running = false;
-                        break;
-                    }
-                }
-
-                //
-                // TODO: Probably need to expose more configurability for handing/rejecting shutdown
-                //
-
-                // Line was null, maybe shutdown
-                if (shutdownOnNull) {
-                    log.debug("Input was null; which will cause shutdown");
-                    running = false;
-                }
+                doRun();
             }
             catch (Exception e) {
                 log.error("Exception", e);
@@ -121,10 +105,43 @@ public class InteractiveConsole
         log.info("Stopped");
     }
 
+    private void doRun() throws Exception {
+        boolean debug = log.isDebugEnabled();
+        String line;
+
+        while ((line = console.readLine(prompter.getPrompt())) != null) {
+            if (debug) {
+                log.debug("Read line: " + line);
+            }
+
+            Executor.Result result = executor.execute(line);
+
+            // Allow executor to request that the loop stop
+            if (result == Executor.Result.STOP) {
+                log.debug("Executor requested STOP");
+                running = false;
+                break;
+            }
+        }
+
+        // Line was null, maybe shutdown
+        if (shutdownOnNull) {
+            log.debug("Input was null; which will cause shutdown");
+            running = false;
+        }
+
+        //
+        // TODO: Probably need to expose more configurability for handing/rejecting shutdown
+        //
+    }
+
     //
     // Executor
     //
 
+    /**
+     * Allows custom processing, the "do something".
+     */
     public static interface Executor
     {
         enum Result {
@@ -139,6 +156,9 @@ public class InteractiveConsole
     // Prompter
     //
 
+    /**
+     * Allows custom prompt handling.
+     */
     public static interface Prompter
     {
         String getPrompt();
