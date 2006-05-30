@@ -33,7 +33,7 @@ public class SimpleConsole
     private static final Log log = LogFactory.getLog(SimpleConsole.class);
 
     private final IO io;
-    
+
     private final BufferedReader reader;
 
     public SimpleConsole(final IO io) {
@@ -52,5 +52,9 @@ public class SimpleConsole
         io.out.flush();
 
         return reader.readLine();
+    }
+
+    public BufferedReader getReader() {
+        return reader;
     }
 }
