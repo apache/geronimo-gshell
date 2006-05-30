@@ -36,17 +36,11 @@ public class CommandLineParserVisitorTest
         CommandLineParser parser = new CommandLineParser();
         ASTCommandLine cl = parser.parse(reader);
 
-        //
-        // TODO: Remove eventually, may want to make nodes use logging to dump too
-        //
-
-        cl.dump("> ");
-
         assertNotNull(cl);
 
         return cl;
     }
-    
+
     public void testVisitor1() throws Exception {
         String input = "a \"b\" 'c' d";
 
