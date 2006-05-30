@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.console.InteractiveConsole;
 
 import org.apache.bsf.BSFManager;
 import org.apache.bsf.BSFEngine;
