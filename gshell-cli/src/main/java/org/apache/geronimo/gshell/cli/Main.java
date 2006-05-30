@@ -24,6 +24,9 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.console.IO;
@@ -81,6 +84,9 @@ public class Main
 
     public void run(final String[] args) throws Exception {
         assert args != null;
+
+        StopWatch watch = new StopWatch();
+        watch.start();
 
         Options options = new Options();
 
@@ -173,6 +179,9 @@ public class Main
             interactive = true;
         }
 
+        // Its okay to use logging now
+        Log log = LogFactory.getLog(Main.class);
+
         //
         // TODO: Need to pass GShell the ClassWorld, so that the application can add to it if needed
         //
@@ -185,6 +194,8 @@ public class Main
         if (_args.length == 0) {
             interactive = true;
         }
+
+        log.debug("Started in " + watch);
 
         if (interactive) {
             //
