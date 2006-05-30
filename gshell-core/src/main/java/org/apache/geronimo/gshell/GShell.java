@@ -20,8 +20,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandManager;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.VariablesMap;
+import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.commandline.CommandLine;
+import org.apache.geronimo.gshell.util.Arguments;
 
 /**
  * ???
@@ -32,35 +38,90 @@ public class GShell
     implements CommandExecutor
 {
     private static final Log log = LogFactory.getLog(GShell.class);
-    
-    private ApplicationContext ctx;
 
-    private GShellImpl impl;
-    
+    private final IO io;
+
     public GShell(final IO io) {
-        assert io != null;
-        
-        this.ctx = new ClassPathXmlApplicationContext(new String[] {
-            "classpath*:/gshell.xml",
-        });
-        
-        this.impl = (GShellImpl)ctx.getBean("gshell");
-        this.impl.setIO(io);
+        if (io == null) {
+            throw new IllegalArgumentException("IO is null");
+        }
+
+        this.io = io;
     }
     
     public GShell() {
         this(new IO());
     }
-    
-    public int execute(final String args) throws Exception {
-        return impl.execute(args);
+
+    public int execute(final String commandLine) throws Exception {
+        assert commandLine != null;
+
+        log.info("Executing (String): " + commandLine);
+
+        //
+        // HACK: Just to get something to work...
+        //
+
+        CommandLineBuilder builder = new CommandLineBuilder(this);
+        CommandLine cl = builder.create(commandLine);
+        cl.execute();
+
+        //
+        // HACK: Current API needs to be revised to pass data back,
+        //       will be fixed latger, ignore for now
+        //
+
+        return 0;
     }
-    
-    public int execute(final String[] args) throws Exception {
-        return impl.execute(args);
-    }
-    
+
     public int execute(final String commandName, String[] args) throws Exception {
-        return impl.execute(commandName, args);
+        assert commandName != null;
+        assert args != null;
+
+        log.info("Executing (" + commandName + "): " + java.util.Arrays.asList(args));
+
+        //
+        // HACK: Just get something working right now
+        //
+
+        //
+        // HACK: DI CommandManager...
+        //
+
+        Command cmd = new CommandManager().getCommand(commandName);
+
+        // Command cmd = (Command)ctx.getBean(commandName);
+
+        cmd.init(new CommandContext() {
+            Variables vars = new VariablesMap();
+
+            public IO getIO() {
+                return io;
+            }
+
+            public Variables getVariables() {
+                return vars;
+            }
+        });
+
+        int status;
+
+        try {
+            status = cmd.execute(args);
+        }
+        finally {
+            cmd.destroy();
+        }
+
+        return status;
+    }
+
+    public int execute(final String[] args) throws Exception {
+        assert args != null;
+        assert args.length > 1;
+
+        log.info("Executing (String[]): " + java.util.Arrays.asList(args));
+
+        return execute(args[0], Arguments.shift(args));
     }
 }

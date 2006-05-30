@@ -16,18 +16,12 @@
 
 package org.apache.geronimo.gshell.commands.scripting;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.lang.StringUtils;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
@@ -48,8 +42,7 @@ public class ScriptCommand
 
     private boolean interactive = false;
 
-    private String expression
-            ;
+    private String expression;
 
     public ScriptCommand() {
         super("script");

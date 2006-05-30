@@ -60,12 +60,4 @@ public class CommandManager
 
         return cmd;
     }
-
-    //
-    // HACK: Testing...
-    //
-
-    public static void main(final String[] args) throws Exception {
-        new CommandManager();
-    }
 }

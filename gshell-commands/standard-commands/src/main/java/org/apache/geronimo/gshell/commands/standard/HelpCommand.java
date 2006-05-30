@@ -22,15 +22,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Display command help
@@ -39,7 +34,6 @@ import java.util.Map;
  */
 public class HelpCommand
     extends CommandSupport
-    implements ApplicationContextAware
 {
     public HelpCommand() {
         super("help");
@@ -88,6 +82,9 @@ public class HelpCommand
         // HACK: For now just list all know commands
         //
 
+        throw new Exception("Pending re-impl... sorry :-(");
+
+        /*
         Map commands = ctx.getBeansOfType(Command.class);
         Iterator iter = commands.keySet().iterator();
 
@@ -99,17 +96,6 @@ public class HelpCommand
         }
 
         return Command.SUCCESS;
-    }
-
-    //
-    // ApplicationContextAware
-    //
-
-    private ApplicationContext ctx;
-
-    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-        assert applicationContext != null;
-
-        this.ctx = applicationContext;
+        */
     }
 }

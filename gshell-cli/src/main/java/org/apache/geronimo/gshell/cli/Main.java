@@ -110,15 +110,15 @@ public class Main
 
         options.addOption(OptionBuilder.withLongOpt("debug")
             .withDescription("Enable DEBUG logging output")
-            .create());
+            .create("debug"));
 
         options.addOption(OptionBuilder.withLongOpt("verbose")
             .withDescription("Enable INFO logging output")
-            .create());
+            .create("verbose"));
 
         options.addOption(OptionBuilder.withLongOpt("quiet")
             .withDescription("Limit logging output to ERROR")
-            .create());
+            .create("quiet"));
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args, true);
