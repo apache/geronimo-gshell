@@ -34,18 +34,18 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Command line parser visitor which will execute command-lines as parsed.
+ * Visitor which will execute command-lines as parsed.
  *
  * @version $Id$
  */
-public class CommandLineExecutingVisitor
+public class ExecutingVisitor
     implements CommandLineParserVisitor
 {
-    private static final Log log = LogFactory.getLog(CommandLineExecutingVisitor.class);
+    private static final Log log = LogFactory.getLog(ExecutingVisitor.class);
 
     private CommandExecutor executor;
 
-    public CommandLineExecutingVisitor(final CommandExecutor executor) {
+    public ExecutingVisitor(final CommandExecutor executor) {
         if (executor == null) {
             throw new IllegalArgumentException("Executor is null");
         }

@@ -18,44 +18,19 @@ package org.apache.geronimo.gshell.commandline;
 
 import junit.framework.TestCase;
 
-import java.io.Reader;
-import java.io.StringReader;
-
-import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
-import org.apache.geronimo.gshell.commandline.parser.ParseException;
-import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
-import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.MockCommandExecutor;
 
 /**
- * Unit tests for the {@link CommandLineExecutingVisitor} usage.
+ * Unit tests for the {@link ExecutingVisitor} usage.
  *
  * @version $Id$
  */
-public class CommandLineExecutingVisitorTest
+public class ExecutingVisitorTest
     extends TestCase
 {
-    private ASTCommandLine parse(final String input) throws ParseException {
-        assert input != null;
-
-        Reader reader = new StringReader(input);
-        CommandLineParser parser = new CommandLineParser();
-        ASTCommandLine cl = parser.parse(reader);
-
-        //
-        // TODO: Remove eventually, may want to make nodes use logging to dump too
-        //
-
-        cl.dump("> ");
-
-        assertNotNull(cl);
-
-        return cl;
-    }
-
     public void testConstructor() throws Exception {
         try {
-            new CommandLineExecutingVisitor(null);
+            new ExecutingVisitor(null);
             fail("Accepted null value");
         }
         catch (IllegalArgumentException expected) {
@@ -63,6 +38,6 @@ public class CommandLineExecutingVisitorTest
         }
 
         // Happy day
-        new CommandLineExecutingVisitor(new MockCommandExecutor());
+        new ExecutingVisitor(new MockCommandExecutor());
     }
 }

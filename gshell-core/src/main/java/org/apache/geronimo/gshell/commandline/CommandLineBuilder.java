@@ -27,7 +27,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 /**
- * ???
+ * Builds {@link CommandLine} instances ready for executing.
  *
  * @version $Id$
  */
@@ -55,11 +55,11 @@ public class CommandLineBuilder
         CommandLineParser parser = new CommandLineParser();
         ASTCommandLine cl = parser.parse(reader);
 
-        //
-        // TODO: Log results with log visitor
-        //
-
-        cl.dump("# ");
+        // If debug is enabled, the log the parse tree
+        if (log.isDebugEnabled()) {
+            LoggingVisitor logger = new LoggingVisitor(log);
+            cl.jjtAccept(logger, null);
+        }
 
         return cl;
     }
@@ -73,7 +73,7 @@ public class CommandLineBuilder
         }
 
         final ASTCommandLine root = parse(commandLine);
-        final CommandLineExecutingVisitor visitor = new CommandLineExecutingVisitor(this.executor);
+        final ExecutingVisitor visitor = new ExecutingVisitor(this.executor);
 
         return new CommandLine() {
             public void execute() throws Exception {

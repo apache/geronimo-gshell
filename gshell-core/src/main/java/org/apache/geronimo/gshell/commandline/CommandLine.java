@@ -17,7 +17,7 @@
 package org.apache.geronimo.gshell.commandline;
 
 /**
- * ???
+ * A generic abstraction of an executable command-line.
  *
  * @version $Id$
  */
