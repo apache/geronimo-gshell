@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.commandline.parser.ASTExpression;
 import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
-import org.apache.geronimo.gshell.commandline.parser.Node;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,9 +51,9 @@ public class LoggingVisitor
         this.log = log;
     }
 
-    private void log(final Class type, final Node node, final Object data) {
+    private Object log(final Class type, final SimpleNode node, Object data) {
         if (!log.isDebugEnabled()) {
-            return;
+            return data;
         }
 
         StringBuffer buff = new StringBuffer();
@@ -69,13 +68,11 @@ public class LoggingVisitor
         }
 
         //
-        // TODO: May wany to expose DEBUG/INFO switch
+        // TODO: Expose DEBUG/INFO switch?
         //
 
         log.debug(buff);
-    }
 
-    private Object logChildren(final SimpleNode node, Object data) {
         indent++;
         data = node.childrenAccept(this, data);
         indent--;
@@ -84,32 +81,26 @@ public class LoggingVisitor
     }
 
     public Object visit(final SimpleNode node, Object data) {
-        log(SimpleNode.class, node, data);
-        return logChildren(node, data);
+        return log(SimpleNode.class, node, data);
     }
 
     public Object visit(final ASTCommandLine node, Object data) {
-        log(ASTCommandLine.class, node, data);
-        return logChildren(node, data);
+        return log(ASTCommandLine.class, node, data);
     }
 
     public Object visit(final ASTExpression node, Object data) {
-        log(ASTExpression.class, node, data);
-        return logChildren(node, data);
+        return log(ASTExpression.class, node, data);
     }
 
     public Object visit(final ASTQuotedString node, Object data) {
-        log(ASTQuotedString.class, node, data);
-        return logChildren(node, data);
+        return log(ASTQuotedString.class, node, data);
     }
 
     public Object visit(final ASTOpaqueString node, Object data) {
-        log(ASTOpaqueString.class, node, data);
-        return logChildren(node, data);
+        return log(ASTOpaqueString.class, node, data);
     }
 
     public Object visit(final ASTPlainString node, Object data) {
-        log(ASTPlainString.class, node, data);
-        return logChildren(node, data);
+        return log(ASTPlainString.class, node, data);
     }
 }
