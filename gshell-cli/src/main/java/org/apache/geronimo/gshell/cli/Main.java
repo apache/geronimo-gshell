@@ -26,10 +26,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.HelpFormatter;
 
 import org.apache.geronimo.gshell.GShell;
-import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.InteractiveConsole;
-import org.apache.geronimo.gshell.console.SimpleConsole;
 import org.apache.geronimo.gshell.console.JLineConsole;
 
 import org.apache.geronimo.gshell.util.Version;
@@ -180,7 +178,7 @@ public class Main
         //
 
         // Startup the shell
-        GShell gshell = new GShell(io);
+        final GShell gshell = new GShell(io);
         String[] _args = line.getArgs();
 
         // Force interactive if there are no args
@@ -189,7 +187,33 @@ public class Main
         }
 
         if (interactive) {
-            InteractiveConsole console = new InteractiveConsole(new JLineConsole(io), gshell);
+            //
+            // TODO: May want to create a simple class in core to hide these details
+            //
+
+            InteractiveConsole console = new InteractiveConsole(
+                new JLineConsole(io),
+                new InteractiveConsole.Executor() {
+                    public Result execute(final String line) throws Exception {
+                        assert line != null;
+
+                        // Execute unless the line is just blank
+                        if (!line.trim().equals("")) {
+                            gshell.execute(line);
+                        }
+
+                        return Result.CONTINUE;
+                    }
+                },
+                new InteractiveConsole.Prompter() {
+                    public String getPrompt() {
+                        //
+                        // TODO: Need to hook this up to allow it to change
+                        //
+                        
+                        return "> ";
+                    }
+                });
 
             // Check if there are args, and run them and then enter interactive
             if (_args.length != 0) {

@@ -33,6 +33,7 @@ public class JLineConsole
     private static final Log log = LogFactory.getLog(SimpleConsole.class);
 
     private final IO io;
+    
     private final ConsoleReader reader;
 
     public JLineConsole(final IO io) throws IOException {

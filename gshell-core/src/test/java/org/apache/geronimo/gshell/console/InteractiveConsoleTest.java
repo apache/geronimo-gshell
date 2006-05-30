@@ -28,7 +28,7 @@ public class InteractiveConsoleTest
 {
     public void testConstructorArgs() throws Exception {
         try {
-            new InteractiveConsole(null, null);
+            new InteractiveConsole(null, null, null);
             fail("Accepted null value");
         }
         catch (IllegalArgumentException expected) {
@@ -36,15 +36,25 @@ public class InteractiveConsoleTest
         }
 
         try {
-            new InteractiveConsole(new SimpleConsole(new IO()), null);
+            new InteractiveConsole(new SimpleConsole(new IO()), null, null);
             fail("Accepted null value");
         }
         catch (IllegalArgumentException expected) {
             // ignore
         }
 
-        //
-        // TODO: Check happy day
-        //
+        // Happy day
+        new InteractiveConsole(
+            new SimpleConsole(new IO()),
+            new InteractiveConsole.Executor() {
+                public Result execute(String line) throws Exception {
+                    return null;
+                }
+            },
+            new InteractiveConsole.Prompter() {
+                public String getPrompt() {
+                    return null;
+                }
+            });
     }
 }

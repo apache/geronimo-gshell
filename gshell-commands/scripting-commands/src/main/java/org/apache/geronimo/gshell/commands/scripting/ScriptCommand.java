@@ -27,6 +27,8 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.console.InteractiveConsole;
+
 import org.apache.bsf.BSFManager;
 import org.apache.bsf.BSFEngine;
 
@@ -126,7 +128,7 @@ public class ScriptCommand
         }
 
         BSFManager manager = new BSFManager();
-        BSFEngine engine = manager.loadScriptingEngine(language);
+        final BSFEngine engine = manager.loadScriptingEngine(language);
 
         if (this.expression != null) {
             log.info("Evaluating expression: " + expression);
@@ -135,11 +137,37 @@ public class ScriptCommand
 
             log.info("Expression result: " + obj);
         }
+        else {
+            // No expression, assume interactive (else we don't do anything)
+            interactive = true;
+
+            //
+            // TODO: This will change when file/URL processing is added
+            //
+        }
 
         if (this.interactive) {
-            String prompt = "script:" + language + ">";
-            InteractiveInterpreter interp = new InteractiveInterpreter(new JLineConsole(getIO()), engine, prompt);
-            interp.run();
+            InteractiveConsole console = new InteractiveConsole(
+                new JLineConsole(getIO()),
+                new InteractiveConsole.Executor() {
+                    public Result execute(final String line) throws Exception {
+                        // Execute unless the line is just blank
+                        if (!line.trim().equals("")) {
+                            engine.exec("<unknown>", 1, 1, line);
+                        }
+
+                        return Result.CONTINUE;
+                    }
+                },
+                new InteractiveConsole.Prompter() {
+                    public String getPrompt() {
+                        return "script:" + language + "> ";
+                    }
+                });
+
+            // Allow CTRL-D to exit :-)
+            console.setShutdownOnNull(true);
+            console.run();
         }
 
         return Command.SUCCESS;

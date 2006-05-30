@@ -18,10 +18,10 @@ package org.apache.geronimo.gshell.console;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.geronimo.gshell.GShell;
 
 /**
- * ???
+ * Provides the framework to interactivly get input from a console
+ * and "do something" with the line that was read.
  *
  * @version $Id$
  */
@@ -34,60 +34,113 @@ public class InteractiveConsole
 
     private static final Log log = LogFactory.getLog(InteractiveConsole.class);
 
-    private final GShell gshell;
-
     private final Console console;
 
-    public InteractiveConsole(final Console console, final GShell gshell) {
+    private Executor executor;
+
+    private Prompter prompter;
+
+    private boolean shutdownOnNull = false;
+
+    public InteractiveConsole(final Console console, final Executor executor, final Prompter prompter) {
         if (console == null) {
             throw new IllegalArgumentException("Console is null");
         }
-        if (gshell == null) {
-            throw new IllegalArgumentException("GShell is null");
+        if (executor == null) {
+            throw new IllegalArgumentException("Executor is null");
+        }
+        if (prompter == null) {
+            throw new IllegalArgumentException("Prompter is null");
         }
 
-        //
-        // TODO: Can probaby abstract the GShell bits to just some kind of String executor
-        //
-
         this.console = console;
-        this.gshell = gshell;
+        this.executor = executor;
+        this.prompter = prompter;
+    }
+
+    /**
+     * Enable or disable shutting down the interactive loop when
+     * a null value is read from the given console.
+     *
+     * @param flag  True to shutdown when a null is received; else false
+     */
+    public void setShutdownOnNull(final boolean flag) {
+        this.shutdownOnNull = flag;
+    }
+
+    /**
+     * @see #setShutdownOnNull
+     */
+    public boolean isShutdownOnNull() {
+        return shutdownOnNull;
     }
 
     public void run() {
         log.info("Running...");
 
         boolean debug = log.isDebugEnabled();
+        boolean running = true;
 
-        while (true) {
+        while (running) {
             try {
-                //
-                // TODO: Need to resolve how to allow the prompt to be changed
-                //
-
-                String prompt = "> ";
                 String line;
 
-                while ((line = console.readLine(prompt)) != null) {
+                while ((line = console.readLine(prompter.getPrompt())) != null) {
                     if (debug) {
                         log.debug("Read line: " + line);
                     }
 
-                    // Just ignore blank lines
-                    if (line.trim().equals("")) {
-                        continue;
-                    }
+                    Executor.Result result = executor.execute(line);
 
-                    int result = gshell.execute(line);
-
-                    if (debug) {
-                        log.debug("Command result: " + result);
+                    // Allow executor to request that the loop stop
+                    if (result == Executor.Result.STOP) {
+                        log.debug("Executor requested STOP");
+                        running = false;
+                        break;
                     }
+                }
+
+                //
+                // TODO: Probably need to expose more configurability for handing/rejecting shutdown
+                //
+
+                // Line was null, maybe shutdown
+                if (shutdownOnNull) {
+                    log.debug("Input was null; which will cause shutdown");
+                    running = false;
                 }
             }
             catch (Exception e) {
-                log.error("Unhandled failure", e);
+                log.error("Exception", e);
+            }
+            catch (Error e) {
+                log.error("Error", e);
             }
         }
+
+        log.info("Stopped");
+    }
+
+    //
+    // Executor
+    //
+
+    public static interface Executor
+    {
+        enum Result {
+            CONTINUE,
+            STOP
+        }
+
+        Result execute(String line) throws Exception;
+    }
+
+    //
+    // Prompter
+    //
+
+    public static interface Prompter
+    {
+        String getPrompt();
     }
 }
