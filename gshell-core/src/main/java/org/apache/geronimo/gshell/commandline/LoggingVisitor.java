@@ -75,63 +75,41 @@ public class LoggingVisitor
         log.debug(buff);
     }
 
-    public Object visit(final SimpleNode node, Object data) {
-        log(SimpleNode.class, node, data);
-
+    private Object logChildren(final SimpleNode node, Object data) {
         indent++;
         data = node.childrenAccept(this, data);
         indent--;
 
         return data;
+    }
+
+    public Object visit(final SimpleNode node, Object data) {
+        log(SimpleNode.class, node, data);
+        return logChildren(node, data);
     }
 
     public Object visit(final ASTCommandLine node, Object data) {
         log(ASTCommandLine.class, node, data);
-
-        indent++;
-        data = node.childrenAccept(this, data);
-        indent--;
-
-        return data;
+        return logChildren(node, data);
     }
 
     public Object visit(final ASTExpression node, Object data) {
         log(ASTExpression.class, node, data);
-
-        indent++;
-        data = node.childrenAccept(this, data);
-        indent--;
-
-        return data;
+        return logChildren(node, data);
     }
 
     public Object visit(final ASTQuotedString node, Object data) {
         log(ASTQuotedString.class, node, data);
-
-        indent++;
-        data = node.childrenAccept(this, data);
-        indent--;
-
-        return data;
+        return logChildren(node, data);
     }
 
     public Object visit(final ASTOpaqueString node, Object data) {
         log(ASTOpaqueString.class, node, data);
-
-        indent++;
-        data = node.childrenAccept(this, data);
-        indent--;
-
-        return data;
+        return logChildren(node, data);
     }
 
     public Object visit(final ASTPlainString node, Object data) {
         log(ASTPlainString.class, node, data);
-
-        indent++;
-        data = node.childrenAccept(this, data);
-        indent--;
-
-        return data;
+        return logChildren(node, data);
     }
 }
