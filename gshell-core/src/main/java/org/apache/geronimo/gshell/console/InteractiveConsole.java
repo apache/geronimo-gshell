@@ -42,7 +42,7 @@ public class InteractiveConsole
 
     private boolean running = false;
 
-    private boolean shutdownOnNull = false;
+    private boolean shutdownOnNull = true;
 
     public InteractiveConsole(final Console console, final Executor executor, final Prompter prompter) {
         if (console == null) {
@@ -132,6 +132,9 @@ public class InteractiveConsole
 
         //
         // TODO: Probably need to expose more configurability for handing/rejecting shutdown
+        //
+        //       Use-case is that GShell might want to disallow and print a "use exit command",
+        //       but Script interp wants this to exit and return control to GShell.
         //
     }
 

@@ -1,0 +1,81 @@
+/*
+ * Copyright 2006 The Apache Software Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.geronimo.gshell.commands.scripting;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.HelpFormatter;
+
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.console.InteractiveConsole;
+import org.apache.geronimo.gshell.console.Console;
+
+import org.apache.bsf.BSFManager;
+import org.apache.bsf.BSFEngine;
+
+/**
+ * An interactive console extention that knows how to execute lines of script text with a {@link BSFEngine}.
+ *
+ * @version $Id: ScriptCommand.java 410204 2006-05-30 07:26:34Z jdillon $
+ */
+public class InteractiveInterpreter
+    extends InteractiveConsole
+{
+    public InteractiveInterpreter(final Console console, final BSFEngine engine, final String language) {
+        super(console, new EngineExecutor(engine), new EnginePrompter(language));
+    }
+
+    private static class EngineExecutor
+        implements Executor
+    {
+        private BSFEngine engine;
+
+        public EngineExecutor(final BSFEngine engine) {
+            this.engine = engine;
+        }
+
+        public Result execute(final String line) throws Exception {
+            // Execute unless the line is just blank
+            if (!line.trim().equals("")) {
+                engine.exec("<unknown>", 1, 1, line);
+            }
+
+            return Result.CONTINUE;
+        }
+    }
+
+    private static class EnginePrompter
+        implements Prompter
+    {
+        private String language;
+
+        public EnginePrompter(final String language) {
+            this.language = language;
+        }
+
+        public String getPrompt() {
+            return "script(" + language + ")> ";
+        }
+    }
+}
+

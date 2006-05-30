@@ -147,27 +147,8 @@ public class ScriptCommand
         }
 
         if (this.interactive) {
-            InteractiveConsole console = new InteractiveConsole(
-                new JLineConsole(getIO()),
-                new InteractiveConsole.Executor() {
-                    public Result execute(final String line) throws Exception {
-                        // Execute unless the line is just blank
-                        if (!line.trim().equals("")) {
-                            engine.exec("<unknown>", 1, 1, line);
-                        }
-
-                        return Result.CONTINUE;
-                    }
-                },
-                new InteractiveConsole.Prompter() {
-                    public String getPrompt() {
-                        return "script:" + language + "> ";
-                    }
-                });
-
-            // Allow CTRL-D to exit :-)
-            console.setShutdownOnNull(true);
-            console.run();
+            InteractiveInterpreter interp = new InteractiveInterpreter(new JLineConsole(getIO()), engine, language);
+            interp.run();
         }
 
         return Command.SUCCESS;
