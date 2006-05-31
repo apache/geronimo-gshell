@@ -36,6 +36,8 @@ import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.util.Version;
 import org.apache.geronimo.gshell.util.Banner;
 
+import jline.Terminal;
+
 /**
  * Command-line interface to bootstrap GShell.
  *
@@ -49,13 +51,19 @@ public class Main
     //       picked up on the initial loading of Log4j
     //
 
-    private ClassWorld world;
-    private IO io = new IO();
+    private final ClassWorld world;
+
+    private final IO io = new IO();
+
+    private final StopWatch watch = new StopWatch();
+
     private boolean interactive = false;
 
     public Main(final ClassWorld world) {
         assert world != null;
         this.world = world;
+
+        watch.start();
 
         // Default is to be quiet
         setConsoleLogLevel("WARN");
@@ -64,11 +72,11 @@ public class Main
     private void setConsoleLogLevel(final String level) {
         System.setProperty("gshell.log.console.level", level);
     }
-    
+
     private void setPropertyFrom(final String namevalue) {
         String name, value;
         int j = namevalue.indexOf("=");
-        
+
         if (j == -1) {
             name = namevalue;
             value = "true";
@@ -78,15 +86,12 @@ public class Main
             value = namevalue.substring(j + 1, namevalue.length());
         }
         name = name.trim();
-        
+
         System.setProperty(name, value);
     }
 
     public void run(final String[] args) throws Exception {
         assert args != null;
-
-        StopWatch watch = new StopWatch();
-        watch.start();
 
         Options options = new Options();
 
@@ -179,6 +184,10 @@ public class Main
             interactive = true;
         }
 
+        execute(line.getArgs());
+    }
+
+    private void execute(final String[] args) throws Exception {
         // Its okay to use logging now
         Log log = LogFactory.getLog(Main.class);
 
@@ -188,12 +197,19 @@ public class Main
 
         // Startup the shell
         final GShell gshell = new GShell(io);
-        String[] _args = line.getArgs();
 
         // Force interactive if there are no args
-        if (_args.length == 0) {
+        if (args.length == 0) {
             interactive = true;
         }
+
+        //
+        // TEMP: Log some info about the terminal
+        //
+
+        Terminal term = Terminal.setupTerminal();
+        log.debug("Using terminal: " + term);
+        log.debug("Using STDIN: " + System.in);
 
         log.debug("Started in " + watch);
 
@@ -221,24 +237,29 @@ public class Main
                         //
                         // TODO: Need to hook this up to allow it to change
                         //
-                        
+
                         return "> ";
                     }
                 });
 
             // Check if there are args, and run them and then enter interactive
-            if (_args.length != 0) {
-                gshell.execute(_args);
+            if (args.length != 0) {
+                gshell.execute(args);
             }
 
             console.run();
         }
         else {
-            int status = gshell.execute(_args);
+            int status = gshell.execute(args);
+
+            log.debug("Ran for " + watch);
+
             System.exit(status);
         }
+
+        log.debug("Ran for " + watch);
     }
-    
+
     public static void main(final String[] args, final ClassWorld world) throws Exception {
         assert args != null;
         assert world != null;
@@ -246,10 +267,10 @@ public class Main
         Main main = new Main(world);
         main.run(args);
     }
-    
+
     public static void main(final String[] args) throws Exception {
         assert args != null;
-        
+
         ClassWorld world = new ClassWorld();
         main(args, world);
     }
