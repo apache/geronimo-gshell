@@ -98,6 +98,12 @@ public class ExitCommand
     }
 
     private void exit(final int exitCode) {
+        //
+        // TODO: Need to implement this with an exception notification
+        //       To allow sub-shell or sever shells to function w/o
+        //       killing the entire JVM :-(
+        //
+
         log.info("Exiting w/code: " + exitCode);
         System.exit(exitCode);
     }
