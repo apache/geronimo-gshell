@@ -78,6 +78,10 @@ public class GShellServer
         //
 
         try {
+            //
+            // TODO: Abstract Telnet specifics; support other protocols (ie. SSH)
+            //
+
             io = new IO(new TelnetInputStream(in, out), new TelnetPrintStream(out));
             GShell shell = new GShell(io);
 
