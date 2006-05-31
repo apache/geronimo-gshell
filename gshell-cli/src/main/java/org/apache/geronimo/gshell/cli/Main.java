@@ -190,6 +190,7 @@ public class Main
     private void execute(final String[] args) throws Exception {
         // Its okay to use logging now
         Log log = LogFactory.getLog(Main.class);
+        boolean debug = log.isDebugEnabled();
 
         //
         // TODO: Need to pass GShell the ClassWorld, so that the application can add to it if needed
@@ -207,11 +208,26 @@ public class Main
         // TEMP: Log some info about the terminal
         //
 
-        Terminal term = Terminal.setupTerminal();
-        log.debug("Using terminal: " + term);
-        log.debug("Using STDIN: " + System.in);
+        if (debug) {
+            log.debug("Using STDIN: " + System.in);
+            log.debug("Using STDOUT: " + System.out);
+            log.debug("Using STDERR: " + System.err);
+        }
 
-        log.debug("Started in " + watch);
+        Terminal term = Terminal.getTerminal();
+
+        if (debug) {
+            log.debug("Using terminal: " + term);
+            log.debug("  supported: " + term.isSupported());
+            log.debug("  height: " + term.getTerminalHeight());
+            log.debug("  width: " + term.getTerminalWidth());
+            log.debug("  echo: " + term.getEcho());
+            log.debug("  ANSI: " + term.isANSISupported());
+        }
+
+        if (debug) {
+            log.debug("Started in " + watch);
+        }
 
         if (interactive) {
             //
@@ -252,12 +268,16 @@ public class Main
         else {
             int status = gshell.execute(args);
 
-            log.debug("Ran for " + watch);
+            if (debug) {
+                log.debug("Ran for " + watch);
+            }
 
             System.exit(status);
         }
 
-        log.debug("Ran for " + watch);
+        if (debug) {
+            log.debug("Ran for " + watch);
+        }
     }
 
     public static void main(final String[] args, final ClassWorld world) throws Exception {
