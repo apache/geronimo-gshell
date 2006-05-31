@@ -24,7 +24,7 @@ import org.apache.bsf.BSFEngine;
 /**
  * An interactive console extention that knows how to execute lines of script text with a {@link BSFEngine}.
  *
- * @version $Id: ScriptCommand.java 410204 2006-05-30 07:26:34Z jdillon $
+ * @version $Id$
  */
 public class InteractiveInterpreter
     extends InteractiveConsole
