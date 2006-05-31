@@ -18,6 +18,7 @@ package org.apache.geronimo.gshell;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.Command;
@@ -78,6 +79,8 @@ public class GShell
         assert commandName != null;
         assert args != null;
 
+        boolean debug = log.isDebugEnabled();
+
         log.info("Executing (" + commandName + "): " + java.util.Arrays.asList(args));
 
         //
@@ -89,8 +92,6 @@ public class GShell
         //
 
         Command cmd = new CommandManager().getCommand(commandName);
-
-        // Command cmd = (Command)ctx.getBean(commandName);
 
         cmd.init(new CommandContext() {
             Variables vars = new VariablesMap();
@@ -104,10 +105,21 @@ public class GShell
             }
         });
 
+        // Setup command timings
+        StopWatch watch = null;
+        if (debug) {
+            watch = new StopWatch();
+            watch.start();
+        }
+
         int status;
 
         try {
             status = cmd.execute(args);
+
+            if (debug) {
+                log.debug("Command completed in " + watch);
+            }
         }
         finally {
             cmd.destroy();
@@ -116,7 +128,7 @@ public class GShell
         return status;
     }
 
-    public int execute(final String[] args) throws Exception {
+    public int execute(final String... args) throws Exception {
         assert args != null;
         assert args.length > 1;
 

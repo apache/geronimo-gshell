@@ -17,27 +17,19 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Unit tests for the {@link CommandSupport} class.
+ * Thrown to indicate that an operation which requires a named
+ * command has failed because the command was not found.
  *
- * @version $Id$
+ * @version $Revision$ $Date$
  */
-public class MockCommandExecutor
-    implements CommandExecutor
+public class CommandNotFoundException
+   extends CommandException
 {
-    public String[] args;
-
-    public String commandName;
-
-    public int execute(String... args) throws Exception {
-        this.args = args;
-
-        return 0;
+    public CommandNotFoundException(final String path) {
+        this(path, "Command or path was not found");
     }
 
-    public int execute(String commandName, String[] args) throws Exception {
-        this.commandName = commandName;
-        this.args = args;
-
-        return 0;
+    public CommandNotFoundException(final String path, final String msg) {
+        super(msg + ": " + path);
     }
 }

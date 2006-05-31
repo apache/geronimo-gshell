@@ -146,7 +146,8 @@ public class ScriptCommand
         }
 
         if (this.interactive) {
-            InteractiveInterpreter interp = new InteractiveInterpreter(new JLineConsole(getIO()), engine, language);
+            InteractiveInterpreter interp = new InteractiveInterpreter(
+                    new JLineConsole(getIO()), engine, language);
             interp.run();
         }
 

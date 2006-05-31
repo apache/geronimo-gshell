@@ -16,28 +16,17 @@
 
 package org.apache.geronimo.gshell.command;
 
+import junit.framework.TestCase;
+
 /**
- * Unit tests for the {@link CommandSupport} class.
+ * Unit tests for the {@link CommandManager} class.
  *
  * @version $Id$
  */
-public class MockCommandExecutor
-    implements CommandExecutor
+public class CommandManagerTest
+    extends TestCase
 {
-    public String[] args;
-
-    public String commandName;
-
-    public int execute(String... args) throws Exception {
-        this.args = args;
-
-        return 0;
-    }
-
-    public int execute(String commandName, String[] args) throws Exception {
-        this.commandName = commandName;
-        this.args = args;
-
-        return 0;
+    public void testConstructor() throws Exception {
+        new CommandManager();
     }
 }

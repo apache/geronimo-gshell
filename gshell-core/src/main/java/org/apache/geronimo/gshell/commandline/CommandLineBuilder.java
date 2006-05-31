@@ -35,9 +35,9 @@ public class CommandLineBuilder
 {
     private static final Log log = LogFactory.getLog(CommandLineBuilder.class);
 
-    private CommandExecutor executor;
+    private final CommandExecutor executor;
 
-    private CommandLineParser parser;
+    private final CommandLineParser parser;
 
     public CommandLineBuilder(final CommandExecutor executor) {
         if (executor == null) {

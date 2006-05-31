@@ -29,9 +29,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.InteractiveGShell;
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.console.InteractiveConsole;
-import org.apache.geronimo.gshell.console.JLineConsole;
 
 import org.apache.geronimo.gshell.util.Version;
 import org.apache.geronimo.gshell.util.Banner;
@@ -230,40 +229,14 @@ public class Main
         }
 
         if (interactive) {
-            //
-            // TODO: May want to create a simple class in core to hide these details
-            //
-
-            InteractiveConsole console = new InteractiveConsole(
-                new JLineConsole(io),
-                new InteractiveConsole.Executor() {
-                    public Result execute(final String line) throws Exception {
-                        assert line != null;
-
-                        // Execute unless the line is just blank
-                        if (!line.trim().equals("")) {
-                            gshell.execute(line);
-                        }
-
-                        return Result.CONTINUE;
-                    }
-                },
-                new InteractiveConsole.Prompter() {
-                    public String getPrompt() {
-                        //
-                        // TODO: Need to hook this up to allow it to change
-                        //
-
-                        return "> ";
-                    }
-                });
+            InteractiveGShell interp = new InteractiveGShell(io, gshell);
 
             // Check if there are args, and run them and then enter interactive
             if (args.length != 0) {
                 gshell.execute(args);
             }
 
-            console.run();
+            interp.run();
         }
         else {
             int status = gshell.execute(args);

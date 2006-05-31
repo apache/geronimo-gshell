@@ -23,9 +23,7 @@ package org.apache.geronimo.gshell.command;
  */
 public interface CommandExecutor
 {
-    int execute(String commandline) throws Exception;
-
-    int execute(String[] args) throws Exception;
+    int execute(String... args) throws Exception;
 
     int execute(String commandName, String[] args) throws Exception;
 }

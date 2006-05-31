@@ -132,7 +132,7 @@ public abstract class CommandSupport
     // Execute Helpers
     //
     
-    public int execute(final String[] args) throws Exception {
+    public int execute(final String... args) throws Exception {
         assert args != null;
         
         // Make sure that we have been initialized before we go any further
@@ -146,6 +146,10 @@ public abstract class CommandSupport
             status = doExecute(args);
         }
         catch (Exception e) {
+            //
+            // TODO: Handle Errors here too
+            //
+            
             log.error(e.getMessage());
             if (log.isDebugEnabled()) {
                 log.debug("Failure details", e);

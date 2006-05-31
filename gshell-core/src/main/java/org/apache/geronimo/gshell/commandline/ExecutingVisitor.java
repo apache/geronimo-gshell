@@ -43,7 +43,7 @@ public class ExecutingVisitor
 {
     private static final Log log = LogFactory.getLog(ExecutingVisitor.class);
 
-    private CommandExecutor executor;
+    private final CommandExecutor executor;
 
     public ExecutingVisitor(final CommandExecutor executor) {
         if (executor == null) {

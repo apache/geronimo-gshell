@@ -25,6 +25,7 @@ import org.apache.commons.cli.PosixParser;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -79,23 +80,19 @@ public class HelpCommand
         }
 
         //
+        // HACK: Need to DI this guy, but for now this will work
+        //
+        
+        CommandManager manager = new CommandManager();
+
+        //
         // HACK: For now just list all know commands
         //
 
-        throw new Exception("Pending re-impl... sorry :-(");
-
-        /*
-        Map commands = ctx.getBeansOfType(Command.class);
-        Iterator iter = commands.keySet().iterator();
-
-        while (iter.hasNext()) {
-            String name = (String)iter.next();
-            Command cmd = (Command)commands.get(name);
-
+        for (String name : manager.commandNames()) {
             io.out.println(name);
         }
 
         return Command.SUCCESS;
-        */
     }
 }

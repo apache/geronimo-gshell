@@ -17,27 +17,26 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Unit tests for the {@link CommandSupport} class.
+ * A command exception.
  *
- * @version $Id$
+ * @version $Revision$ $Date$
  */
-public class MockCommandExecutor
-    implements CommandExecutor
+public class CommandException
+    extends Exception
 {
-    public String[] args;
-
-    public String commandName;
-
-    public int execute(String... args) throws Exception {
-        this.args = args;
-
-        return 0;
+    public CommandException(String msg) {
+        super(msg);
     }
 
-    public int execute(String commandName, String[] args) throws Exception {
-        this.commandName = commandName;
-        this.args = args;
+    public CommandException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
 
-        return 0;
+    public CommandException(Throwable cause) {
+        super(cause);
+    }
+
+    public CommandException() {
+        super();
     }
 }

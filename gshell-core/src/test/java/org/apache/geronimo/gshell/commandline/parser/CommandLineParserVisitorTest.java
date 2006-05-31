@@ -49,57 +49,59 @@ public class CommandLineParserVisitorTest
         MockCommandLineVisitor v = new MockCommandLineVisitor();
 
         Object result = cl.jjtAccept(v, null);
+
+        assertNull(v.simpleNode);
+        assertNotNull(v.commandLine);
+        assertNotNull(v.expression);
+        assertNotNull(v.quotedString);
+        assertNotNull(v.opaqueString);
+        assertNotNull(v.plainString);
     }
 
     private static class MockCommandLineVisitor
         implements CommandLineParserVisitor
     {
+        private SimpleNode simpleNode;
+        private ASTCommandLine commandLine;
+        private ASTExpression expression;
+        private ASTQuotedString quotedString;
+        private ASTOpaqueString opaqueString;
+        private ASTPlainString plainString;
+
         public Object visit(SimpleNode node, Object data) {
-            System.out.println("SimpleNode: " + node + "; data: " + data);
+            this.simpleNode = node;
 
-            data = node.childrenAccept(this, data);
-
-            return data;
+            return node.childrenAccept(this, data);
         }
 
         public Object visit(ASTCommandLine node, Object data) {
-            System.out.println("CommandLine: " + node + "; data: " + data);
+            this.commandLine = node;
 
-            data = node.childrenAccept(this, data);
-
-            return data;
+            return node.childrenAccept(this, data);
         }
 
         public Object visit(ASTExpression node, Object data) {
-            System.out.println("Expression: " + node + "; data: " + data);
+            this.expression = node;
 
-            data = node.childrenAccept(this, data);
-
-            return data;
+            return node.childrenAccept(this, data);
         }
 
         public Object visit(ASTQuotedString node, Object data) {
-            System.out.println("QuotedString: " + node + "; data: " + data);
+            this.quotedString = node;
 
-            data = node.childrenAccept(this, data);
-
-            return data;
+            return node.childrenAccept(this, data);
         }
 
         public Object visit(ASTOpaqueString node, Object data) {
-            System.out.println("OpaqueString: " + node + "; data: " + data);
+            this.opaqueString = node;
 
-            data = node.childrenAccept(this, data);
-
-            return data;
+            return node.childrenAccept(this, data);
         }
 
         public Object visit(ASTPlainString node, Object data) {
-            System.out.println("PlainString: " + node + "; data: " + data);
+            this.plainString = node;
 
-            data = node.childrenAccept(this, data);
-
-            return data;
+            return node.childrenAccept(this, data);
         }
     }
 }

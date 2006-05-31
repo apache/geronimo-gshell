@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Visitor whichs logs nodes in the tree.
@@ -35,7 +36,14 @@ import org.apache.commons.logging.LogFactory;
 public class LoggingVisitor
     implements CommandLineParserVisitor
 {
+    public static enum Level {
+        INFO,
+        DEBUG
+    }
+
     private final Log log;
+
+    private final Level level;
 
     private int indent = 0;
 
@@ -44,20 +52,39 @@ public class LoggingVisitor
     }
 
     public LoggingVisitor(final Log log) {
+        this(log, Level.DEBUG);
+    }
+
+    public LoggingVisitor(final Log log, final Level level) {
         if (log == null) {
             throw new IllegalArgumentException("Log is null");
         }
+        if (level == null) {
+            throw new IllegalArgumentException("Level is null");
+        }
 
         this.log = log;
+        this.level = level;
     }
 
     private Object log(final Class type, final SimpleNode node, Object data) {
-        if (!log.isDebugEnabled()) {
-            return data;
+        // Short-circuit of logging level does not match
+        switch (level) {
+            case INFO:
+                if (!log.isInfoEnabled()) {
+                    return data;
+                }
+                break;
+
+            case DEBUG:
+                if (!log.isDebugEnabled()) {
+                    return data;
+                }
+                break;
         }
 
         StringBuffer buff = new StringBuffer();
-
+        
         for (int i=0; i<indent; i++) {
             buff.append(" ");
         }
@@ -67,11 +94,15 @@ public class LoggingVisitor
             buff.append("; Data: ").append(data);
         }
 
-        //
-        // TODO: Expose DEBUG/INFO switch?
-        //
+        switch (level) {
+            case INFO:
+                log.info(buff);
+                break;
 
-        log.debug(buff);
+            case DEBUG:
+                log.debug(buff);
+                break;
+        }
 
         indent++;
         data = node.childrenAccept(this, data);

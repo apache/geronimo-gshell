@@ -18,11 +18,13 @@ package org.apache.geronimo.gshell.command;
 
 import org.apache.xbean.finder.ResourceFinder;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.Collections;
 
 /**
  * ???
@@ -33,15 +35,22 @@ public class CommandManager
 {
     private Map<String,Properties> commandDefMap = new HashMap<String,Properties>();
 
-    public CommandManager() throws IOException {
-        ResourceFinder resourceFinder = new ResourceFinder("META-INF/");
+    public CommandManager() throws CommandException {
+        try {
+            discoverCommands();
+        }
+        catch (Exception e) {
+            throw new CommandException(e);
+        }
+    }
 
-        Map<String, Properties> propertiesMap = resourceFinder.mapAllProperties("org.apache.geronimo.gshell.command");
-        Iterator<String> iter = propertiesMap.keySet().iterator();
+    private void discoverCommands() throws Exception {
+        ResourceFinder finder = new ResourceFinder("META-INF/");
+        Map<String, Properties> map = finder.mapAllProperties("org.apache.geronimo.gshell.command");
+        Iterator<String> iter = map.keySet().iterator();
 
-        while (iter.hasNext()) {
-            String filename = iter.next();
-            Properties props = propertiesMap.get(filename);
+        for (String filename : map.keySet()) {
+            Properties props = map.get(filename);
 
             String name = props.getProperty("name");
             if (name != null) {
@@ -50,14 +59,40 @@ public class CommandManager
         }
     }
 
-    public Command getCommand(final String name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        assert name != null;
+    public Command getCommand(final String name) throws CommandNotFoundException, CommandInstantiationException {
+        if (name == null) {
+            throw new IllegalArgumentException("Name is null");
+        }
+        if (name.trim().length() == 0) {
+            throw new IllegalArgumentException("Name is empty");
+        }
 
         Properties props = commandDefMap.get(name);
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        Class type = cl.loadClass(props.getProperty("class"));
-        Command cmd = (Command)type.newInstance();
+
+        // No props means command was not discovered
+        if (props == null) {
+            throw new CommandNotFoundException(name);
+        }
+
+        String classname = props.getProperty("class");
+        if (classname == null) {
+            throw new CommandInstantiationException("Missing 'class' property for command: " + name);
+        }
+
+        Command cmd;
+        try {
+            ClassLoader cl = Thread.currentThread().getContextClassLoader();
+            Class type = cl.loadClass(classname);
+            cmd = (Command)type.newInstance();
+        }
+        catch (Exception e) {
+            throw new CommandInstantiationException(name, e);
+        }
 
         return cmd;
+    }
+    
+    public Set<String> commandNames() {
+        return Collections.unmodifiableSet(commandDefMap.keySet());
     }
 }

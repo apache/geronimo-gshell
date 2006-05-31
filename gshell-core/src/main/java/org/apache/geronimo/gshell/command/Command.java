@@ -37,7 +37,7 @@ public interface Command
     // TODO: Return an Object!  Take an Object[]!
     //
     
-    int execute(String[] args) throws Exception;
+    int execute(String... args) throws Exception;
     
     void abort(); // throws Exception ?
     
