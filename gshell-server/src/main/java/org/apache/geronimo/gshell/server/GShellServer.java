@@ -18,6 +18,21 @@ package org.apache.geronimo.gshell.server;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.InteractiveGShell;
+import org.apache.geronimo.gshell.console.IO;
+
+import org.apache.xbean.terminal.telnet.TelnetInputStream;
+import org.apache.xbean.terminal.telnet.TelnetPrintStream;
+
+import java.net.Socket;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+//
+// NOTE: Some bits lifted from XBean Telnet module
+//
 
 /**
  * ???
@@ -28,7 +43,51 @@ public class GShellServer
 {
     private static final Log log = LogFactory.getLog(GShellServer.class);
 
-    //
-    // TODO: ???
-    //
+    public void service(final Socket socket) throws IOException {
+        if (socket == null) {
+            throw new IllegalArgumentException("Socket is null");
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Servicing socket: " + socket);
+        }
+
+        try {
+            service(socket.getInputStream(), socket.getOutputStream());
+        }
+        finally {
+            if (socket != null) {
+                socket.close();
+            }
+        }
+    }
+
+    public void service(final InputStream in, final OutputStream out) throws IOException {
+        if (in == null) {
+            throw new IllegalArgumentException("Input is null");
+        }
+        if (out == null) {
+            throw new IllegalArgumentException("Output is null");
+        }
+
+        IO io = null;
+
+        //
+        // TODO: Need to figure out how to get the logging stream for this GShell to use
+        //       the given IO streams
+        //
+
+        try {
+            io = new IO(new TelnetInputStream(in, out), new TelnetPrintStream(out));
+            GShell shell = new GShell(io);
+
+            InteractiveGShell interp = new InteractiveGShell(io, shell);
+            interp.run();
+        }
+        finally {
+            if (io != null) {
+                io.close();
+            }
+        }
+    }
 }

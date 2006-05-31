@@ -26,6 +26,11 @@
             <artifactId>gshell-core</artifactId>
             <version>${pom.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.xbean</groupId>
+            <artifactId>xbean-telnet</artifactId>
+        </dependency>
     </dependencies>
     
 </project>

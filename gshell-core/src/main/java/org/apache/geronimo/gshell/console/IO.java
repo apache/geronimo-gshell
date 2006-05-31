@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.IOException;
 
 /**
  * Container for input/output handles.
@@ -93,6 +94,16 @@ public class IO
     }
 
     /**
+     * Construct a new IO container.
+     *
+     * @param in    The input steam; must not be null
+     * @param out   The output stream and error stream; must not be null
+     */
+    public IO(final InputStream in, final PrintStream out) {
+        this(in, out, out);
+    }
+
+    /**
      * Helper which uses current values from {@link System}.
      */
     public IO() {
@@ -105,5 +116,11 @@ public class IO
     public void flush() {
         out.flush();
         err.flush();
+    }
+
+    public void close() throws IOException {
+        in.close();
+        out.close();
+        err.close();
     }
 }
