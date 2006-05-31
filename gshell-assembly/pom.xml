@@ -27,12 +27,18 @@
             <version>${pom.version}</version>
         </dependency>
         
-	<dependency>
+	    <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-cli</artifactId>
             <version>${pom.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-server</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>standard-commands</artifactId>

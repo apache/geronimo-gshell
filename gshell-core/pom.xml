@@ -20,10 +20,6 @@
     <name>GShell :: Core</name>
     <packaging>jar</packaging>
     
-    <properties>
-        <spring.version>1.2.7</spring.version>
-    </properties>
-    
     <dependencies>
         <dependency>
             <groupId>jline</groupId>
