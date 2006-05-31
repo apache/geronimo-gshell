@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: bin.xml 410172 2006-05-30 02:25:59Z jdillon $ -->
+
+<assembly>
+    <id>bin</id>
+    
+    <formats>
+        <format>tar.gz</format>
+        <format>zip</format>
+    </formats>
+    
+    <fileSets>
+        <fileSet>
+            <directory>target/gshell-1.0.0-SNAPSHOT</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>*</include>
+                <include>etc/**</include>
+                <include>lib/**</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>target/gshell-1.0.0-SNAPSHOT/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>gshell.bat</include>
+                <include>gshell.conf</include>
+            </includes>
+            <lineEnding>dos</lineEnding>
+        </fileSet>
+        
+        <fileSet>
+            <directory>target/gshell-1.0.0-SNAPSHOT/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>gshell</include>
+            </includes>
+            <lineEnding>unix</lineEnding>
+            <fileMode>0755</fileMode>
+        </fileSet>
+    </fileSets>
+    
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>net.sf.retrotranslator:retrotranslator-runtime</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+    
+</assembly>
