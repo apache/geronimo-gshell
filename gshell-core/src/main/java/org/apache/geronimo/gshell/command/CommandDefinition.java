@@ -29,15 +29,15 @@ public class CommandDefinition
 
     private final String classname;
 
-    public CommandDefinition(final Properties props) throws CommandException {
+    public CommandDefinition(final Properties props) throws InvalidDefinitionException {
         this.name = props.getProperty("name");
         if (name == null) {
-            throw new CommandInstantiationException("Missing 'name' property for command definition: " + props);
+            throw new MissingPropertyException("name", props);
         }
 
         this.classname = props.getProperty("class");
         if (classname == null) {
-            throw new CommandInstantiationException("Missing 'class' property for command definition: " + props);
+            throw new MissingPropertyException("class", props);
         }
     }
 
@@ -56,5 +56,25 @@ public class CommandDefinition
     public Class loadClass() throws ClassNotFoundException {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         return cl.loadClass(getClassName());
+    }
+
+    //
+    // Exceptions
+    //
+
+    public static class InvalidDefinitionException
+        extends CommandException
+    {
+        public InvalidDefinitionException(String msg) {
+            super(msg);
+        }
+    }
+
+    public static class MissingPropertyException
+        extends InvalidDefinitionException
+    {
+        MissingPropertyException(String name, Properties props) {
+            super("Missing '" + name + "' property in command definition: " + props);
+        }
     }
 }
