@@ -18,7 +18,9 @@ package org.apache.geronimo.gshell.command;
 
 import org.apache.xbean.finder.ResourceFinder;
 
-import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.Map;
 import java.util.Properties;
 import java.util.HashMap;
@@ -32,7 +34,9 @@ import java.util.Collections;
  */
 public class CommandManager
 {
-    private Map<String,Properties> commandDefMap = new HashMap<String,Properties>();
+    private static final Log log = LogFactory.getLog(CommandManager.class);
+
+    private Map<String,CommandDefinition> commandDefMap = new HashMap<String,CommandDefinition>();
 
     public CommandManager() throws CommandException {
         try {
@@ -44,21 +48,31 @@ public class CommandManager
     }
 
     private void discoverCommands() throws Exception {
+        log.info("Discovering commands");
+
         ResourceFinder finder = new ResourceFinder("META-INF/");
         Map<String, Properties> map = finder.mapAllProperties("org.apache.geronimo.gshell.command");
-        Iterator<String> iter = map.keySet().iterator();
 
         for (String filename : map.keySet()) {
             Properties props = map.get(filename);
-
-            String name = props.getProperty("name");
-            if (name != null) {
-                commandDefMap.put(name, props);
-            }
+            CommandDefinition def = new CommandDefinition(props);
+            addCommandDefinition(def);
         }
     }
 
-    public Command getCommand(final String name) throws CommandNotFoundException, CommandInstantiationException {
+    public void addCommandDefinition(final CommandDefinition def) {
+        if (def == null) {
+            throw new IllegalArgumentException("Def is null");
+        }
+
+        commandDefMap.put(def.getName(), def);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Added definition: " + def);
+        }
+    }
+
+    public CommandDefinition getCommandDefinition(final String name) throws CommandNotFoundException {
         if (name == null) {
             throw new IllegalArgumentException("Name is null");
         }
@@ -66,22 +80,22 @@ public class CommandManager
             throw new IllegalArgumentException("Name is empty");
         }
 
-        Properties props = commandDefMap.get(name);
-
-        // No props means command was not discovered
-        if (props == null) {
+        CommandDefinition def = commandDefMap.get(name);
+        if (def == null) {
             throw new CommandNotFoundException(name);
         }
 
-        String classname = props.getProperty("class");
-        if (classname == null) {
-            throw new CommandInstantiationException("Missing 'class' property for command: " + name);
-        }
+        return def;
+    }
+
+    public Command getCommand(final String name) throws CommandNotFoundException, CommandInstantiationException {
+        // name checked by getCommandDefinition()
+
+        CommandDefinition def = getCommandDefinition(name);
 
         Command cmd;
         try {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            Class type = cl.loadClass(classname);
+            Class type = def.loadClass();
             cmd = (Command)type.newInstance();
         }
         catch (Exception e) {
