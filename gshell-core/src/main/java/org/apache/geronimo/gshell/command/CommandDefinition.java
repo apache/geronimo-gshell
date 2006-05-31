@@ -30,6 +30,10 @@ public class CommandDefinition
     private final String classname;
 
     public CommandDefinition(final Properties props) throws InvalidDefinitionException {
+        if (props == null) {
+            throw new IllegalArgumentException("Properties is null");
+        }
+
         this.name = props.getProperty("name");
         if (name == null) {
             throw new MissingPropertyException("name", props);
