@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.gshell.commands.builtin;
+package org.apache.geronimo.gshell.commands.standard;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -25,19 +25,17 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.util.Arguments;
 
 /**
- * Exit the current shell.
+ * Sleep... zzzZ
  *
  * @version $Id$
  */
-public class ExitCommand
+public class SleepCommand
     extends CommandSupport
 {
-    public ExitCommand() {
-        super("exit");
+    public SleepCommand() {
+        super("sleep");
     }
 
     protected int doExecute(String[] args) throws Exception {
@@ -60,26 +58,24 @@ public class ExitCommand
         args = line.getArgs();
 
         boolean usage = false;
-        int exitCode = 0;
+        long time = -1;
 
-        if (args.length > 1) {
-            io.err.println("Unexpected arguments: " + Arguments.asString(args));
-            io.err.println();
+        if (args.length != 1) {
             usage = true;
         }
-        if (args.length == 1) {
-            exitCode = Integer.parseInt(args[0]);
+        else {
+            time = Long.parseLong(args[0]);
         }
 
         if (usage || line.hasOption('h')) {
-            io.out.println(getName() + " -- exit the current shell");
+            io.out.println(getName() + " -- sleep... zzzZ");
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                getName() + " [options] [code]",
+                getName() + " [options] <time>",
                 "",
                 options,
                 4, // left pad
@@ -92,21 +88,17 @@ public class ExitCommand
             return Command.SUCCESS;
         }
 
-        exit(exitCode);
+        log.info("Sleeping for " + time);
 
-        // Should never get this far
-        assert false;
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException ignore) {
+            log.debug("Sleep was interrupted... :-(");
+        }
 
-        return Command.FAILURE;
-    }
+        log.info("Awake now");
 
-    private void exit(final int exitCode) {
-        log.info("Exiting w/code: " + exitCode);
-
-        //
-        // DO NOT Call System.exit() !!!
-        //
-
-        throw new ExitNotification(exitCode);
+        return Command.SUCCESS;
     }
 }
