@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesMap;
 import org.apache.geronimo.gshell.command.CommandException;
+import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -43,6 +44,8 @@ public class GShell
 
     private final IO io;
 
+    private final ShellContainer shellContainer = new ShellContainer();
+
     private final CommandManager commandManager;
 
     private final CommandLineBuilder commandLineBuilder;
@@ -56,14 +59,18 @@ public class GShell
 
         this.io = io;
 
+        shellContainer.registerComponentInstance(this);
+        shellContainer.registerComponentImplementation(CommandManager.class);
+        shellContainer.registerComponentImplementation(CommandLineBuilder.class);
+
         //
-        // HACK: DI components...  Maybe need to setup the top-level container here
+        // TODO: Refactor to use the container, now that we have one
         //
 
-        this.commandManager = new CommandManager();
-        this.commandLineBuilder = new CommandLineBuilder(this);
+        this.commandManager = (CommandManager) shellContainer.getComponentInstanceOfType(CommandManager.class);
+        this.commandLineBuilder = (CommandLineBuilder) shellContainer.getComponentInstanceOfType(CommandLineBuilder.class);
     }
-    
+
     public GShell() throws CommandException {
         this(new IO());
     }
@@ -103,11 +110,16 @@ public class GShell
 
         log.info("Executing (" + commandName + "): " + Arguments.asString(args));
 
-        //
-        // TODO: Insert CommandContainer bits here
-        //
+        // Setup the command container
+        ShellContainer container = new ShellContainer(shellContainer);
 
-        Command cmd = commandManager.getCommand(commandName);
+        CommandDefinition def = commandManager.getCommandDefinition(commandName);
+        container.registerComponentInstance(def);
+        container.registerComponentImplementation(def.loadClass());
+
+        // container.start() ?
+
+        Command cmd = (Command) container.getComponentInstanceOfType(Command.class);
 
         //
         // TODO: DI all bits if we can, then free up "context" to replace "category" as a term
@@ -145,6 +157,9 @@ public class GShell
         }
         finally {
             cmd.destroy();
+
+            shellContainer.removeChildContainer(container);
+            // container.stop() container.dispose() ?
         }
 
         return status;

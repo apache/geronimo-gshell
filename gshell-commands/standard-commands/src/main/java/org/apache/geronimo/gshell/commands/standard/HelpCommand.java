@@ -36,8 +36,30 @@ import org.apache.geronimo.gshell.console.IO;
 public class HelpCommand
     extends CommandSupport
 {
-    public HelpCommand() {
+    private CommandManager commandManager;
+
+    public HelpCommand(final CommandManager commandManager) {
         super("help");
+
+        assert commandManager != null;
+
+        this.commandManager = commandManager;
+    }
+
+    /*
+
+    TODO: Setter injection needs help...
+    
+    public void setCommandManager(final CommandManager commandManager) {
+        this.commandManager = commandManager;
+    }
+    */
+
+    private CommandManager getCommandManager() {
+        if (commandManager == null) {
+            throw new IllegalStateException("Not initialized; missing command manger");
+        }
+        return commandManager;
     }
 
     protected int doExecute(final String[] args) throws Exception {
@@ -96,6 +118,8 @@ public class HelpCommand
             return Command.SUCCESS;
         }
 
+        CommandManager manager = getCommandManager();
+
         //
         // TODO: Reuse our command bits...
         //
@@ -107,12 +131,6 @@ public class HelpCommand
             io.out.println();
         }
         else if (topic.equals("commands")) {
-            //
-            // HACK: Need to DI this guy, but for now this will work
-            //
-
-            CommandManager manager = new CommandManager();
-
             io.out.println("Available commands:");
 
             //

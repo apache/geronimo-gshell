@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell;
+
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
- * Defines the basic interface for executing commands.
- *
- * <p>
- * <b>NOTE</b>: This interface is meant to handle post parsing arguments.
+ * ???
  *
  * @version $Id$
  */
-public interface CommandExecutor
+public class ShellContainer
+    extends DefaultPicoContainer
 {
-    int execute(String... args) throws Exception;
+    public ShellContainer() {
+        super();
+    }
 
-    int execute(String commandName, String[] args) throws Exception;
+    public ShellContainer(final PicoContainer parent) {
+        super(parent);
+    }
+
+    //
+    // TODO: Add access helpers
+    //
 }

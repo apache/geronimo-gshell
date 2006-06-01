@@ -34,6 +34,10 @@ import java.util.Collections;
  */
 public class CommandManager
 {
+    //
+    // TODO: Rename, this has become a registry
+    //
+    
     private static final Log log = LogFactory.getLog(CommandManager.class);
 
     private Map<String,CommandDefinition> commandDefMap = new HashMap<String,CommandDefinition>();
@@ -97,27 +101,6 @@ public class CommandManager
         return def;
     }
 
-    public Command getCommand(final String name) throws CommandNotFoundException, CommandInstantiationException {
-        // name checked by getCommandDefinition()
-
-        CommandDefinition def = getCommandDefinition(name);
-
-        //
-        // TODO: This might change if we DI the class and let the container create
-        //
-
-        Command cmd;
-        try {
-            Class type = def.loadClass();
-            cmd = (Command)type.newInstance();
-        }
-        catch (Exception e) {
-            throw new CommandInstantiationException(name, e);
-        }
-
-        return cmd;
-    }
-    
     public Set<String> commandNames() {
         return Collections.unmodifiableSet(commandDefMap.keySet());
     }
