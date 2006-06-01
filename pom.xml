@@ -286,6 +286,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
+                <module>gshell-api</module>
                 <module>gshell-core</module>
                 <module>gshell-cli</module>
                 <module>gshell-commands</module>
@@ -303,6 +304,7 @@
                 </property>
             </activation>
             <modules>
+                <module>gshell-api</module>
                 <module>gshell-core</module>
                 <module>gshell-cli</module>
                 <module>gshell-commands</module>
