@@ -104,6 +104,7 @@ public class HelpCommand
             io.out.println("Available topics:");
             io.out.println("  topics");
             io.out.println("  commands");
+            io.out.println();
         }
         if (topic.equals("commands")) {
             //
@@ -122,6 +123,8 @@ public class HelpCommand
                 io.out.print("  ");
                 io.out.println(name);
             }
+            
+            io.out.println();
         }
 
         return Command.SUCCESS;
