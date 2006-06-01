@@ -72,13 +72,16 @@ public class CommandManager
         }
     }
 
-    public CommandDefinition getCommandDefinition(final String name) throws CommandNotFoundException {
+    public CommandDefinition getCommandDefinition(String name) throws CommandNotFoundException {
         if (name == null) {
             throw new IllegalArgumentException("Name is null");
         }
         if (name.trim().length() == 0) {
             throw new IllegalArgumentException("Name is empty");
         }
+
+        // Make sure there is not funky whitespace in there (from Telnet or something)
+        name = name.trim();
 
         CommandDefinition def = commandDefMap.get(name);
         if (def == null) {

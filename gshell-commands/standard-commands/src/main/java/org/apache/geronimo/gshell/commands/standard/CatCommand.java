@@ -102,10 +102,10 @@ public class CatCommand
         assert files != null;
         
         IO io = getIO();
-        
-        for (int i=0; i<files.length; i++) {
+
+        for (String filename : files) {
             BufferedReader reader;
-            
+
             //
             // Support "-" if length is one, and read from io.in
             // This will help test command pipelines.
@@ -113,16 +113,15 @@ public class CatCommand
             if (files.length == 1 && "-".equals(files[0])) {
                 log.info("Printing STDIN");
                 reader = new BufferedReader(io.in);
-            }
-            else {
-                File file = new File(files[i]);
+            } else {
+                File file = new File(filename);
                 log.info("Printing file: " + file);
                 reader = new BufferedReader(new FileReader(file));
             }
-            
+
             String line;
             int lineno = 1;
-            
+
             while ((line = reader.readLine()) != null) {
                 if (displayLineNumbers) {
                     String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
@@ -131,7 +130,7 @@ public class CatCommand
                 }
                 io.out.println(line);
             }
-            
+
             reader.close();
         }
     }

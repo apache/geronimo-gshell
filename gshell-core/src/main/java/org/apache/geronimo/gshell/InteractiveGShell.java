@@ -17,8 +17,7 @@
 package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.console.InteractiveConsole;
-import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.console.Console;
 
 import java.io.IOException;
 
@@ -30,9 +29,8 @@ import java.io.IOException;
 public class InteractiveGShell
     extends InteractiveConsole
 {
-    public InteractiveGShell(final IO io, final GShell gshell) throws IOException {
-        super(new JLineConsole(io),
-
+    public InteractiveGShell(final Console console, final GShell gshell) throws IOException {
+        super(console,
             new InteractiveConsole.Executor() {
                 public Result execute(final String line) throws Exception {
                     assert line != null;
@@ -50,7 +48,6 @@ public class InteractiveGShell
                     return Result.CONTINUE;
                 }
             },
-                
             new InteractiveConsole.Prompter() {
                 public String getPrompt() {
                     //

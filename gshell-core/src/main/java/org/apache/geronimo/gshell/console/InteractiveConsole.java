@@ -164,6 +164,11 @@ public class InteractiveConsole
      */
     public static interface Prompter
     {
+        /**
+         * Return the prompt to be displayed.
+         *
+         * @return  The prompt to be displayed; must not be null
+         */
         String getPrompt();
     }
 }

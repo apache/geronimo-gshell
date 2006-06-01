@@ -18,11 +18,10 @@ package org.apache.geronimo.gshell.server;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.NDC;
 
 import java.net.Socket;
 import java.net.ServerSocket;
-
-import java.io.IOException;
 
 //
 // NOTE: Some bits lifted from XBean Telnet module
@@ -99,6 +98,8 @@ public class SocketServerDaemon
 
         Thread d = new Thread(threads, new Runnable() {
             public void run() {
+                NDC.push(socket.toString());
+
                 try {
                     handler.handle(socket);
                 }
@@ -107,13 +108,14 @@ public class SocketServerDaemon
                 }
                 finally {
                     try {
-                        if (socket != null) {
-                            socket.close();
-                        }
+                        // Socket always non-null
+                        socket.close();
                     }
                     catch (Throwable t) {
                         log.error("Failure while closing socket; ignoring", t);
                     }
+
+                    NDC.pop();
                 }
             }
         });
@@ -159,8 +161,8 @@ public class SocketServerDaemon
          *
          * @param socket    The client socket; never null
          *
-         * @throws IOException
+         * @throws Exception
          */
-        void handle(Socket socket) throws IOException;
+        void handle(Socket socket) throws Exception;
     }
 }

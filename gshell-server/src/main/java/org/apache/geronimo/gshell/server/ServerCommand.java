@@ -28,7 +28,6 @@ import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.server.SocketServerDaemon.SocketHandler;
 
 import java.net.Socket;
-import java.io.IOException;
 
 /**
  * Starts a GShell server.
@@ -102,7 +101,7 @@ public class ServerCommand
         SocketHandler handler = new SocketHandler() {
             GShellServer server = new GShellServer();
 
-            public void handle(final Socket socket) throws IOException {
+            public void handle(final Socket socket) throws Exception {
                 assert socket != null;
 
                 server.service(socket);

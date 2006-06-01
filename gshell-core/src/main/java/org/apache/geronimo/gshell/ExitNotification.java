@@ -16,12 +16,6 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.geronimo.gshell.console.InteractiveConsole;
-import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.console.IO;
-
-import java.io.IOException;
-
 /**
  * Thrown to indicate that the current shell should exit.
  *

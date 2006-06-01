@@ -18,10 +18,10 @@ package org.apache.geronimo.gshell.console;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Container for input/output handles.
@@ -42,14 +42,14 @@ public class IO
      *
      * @see #out
      */
-    public final PrintStream outputStream;
+    public final OutputStream outputStream;
 
     /**
      * Raw error output stream.
      *
      * @see #err
      */
-    public final PrintStream errorStream;
+    public final OutputStream errorStream;
 
     /**
      * Prefered input reader.
@@ -73,7 +73,7 @@ public class IO
      * @param out   The output stream; must not be null
      * @param err   The error output stream; must not be null
      */
-    public IO(final InputStream in, final PrintStream out, final PrintStream err) {
+    public IO(final InputStream in, final OutputStream out, final OutputStream err) {
         if (in == null) {
             throw new IllegalArgumentException("Input stream is null");
         }
@@ -99,7 +99,7 @@ public class IO
      * @param in    The input steam; must not be null
      * @param out   The output stream and error stream; must not be null
      */
-    public IO(final InputStream in, final PrintStream out) {
+    public IO(final InputStream in, final OutputStream out) {
         this(in, out, out);
     }
 

@@ -20,15 +20,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.InteractiveGShell;
+import org.apache.geronimo.gshell.server.telnet.TelnetTerminal;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
-
-import org.apache.xbean.terminal.telnet.TelnetInputStream;
-import org.apache.xbean.terminal.telnet.TelnetPrintStream;
+import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.JLineConsole;
 
 import java.net.Socket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import jline.ConsoleReader;
 
 //
 // NOTE: Some bits lifted from XBean Telnet module
@@ -43,7 +46,7 @@ public class GShellServer
 {
     private static final Log log = LogFactory.getLog(GShellServer.class);
 
-    public void service(final Socket socket) throws IOException {
+    public void service(final Socket socket) throws CommandException, IOException {
         if (socket == null) {
             throw new IllegalArgumentException("Socket is null");
         }
@@ -56,13 +59,12 @@ public class GShellServer
             service(socket.getInputStream(), socket.getOutputStream());
         }
         finally {
-            if (socket != null) {
-                socket.close();
-            }
+            // Socket always non-null
+            socket.close();
         }
     }
 
-    public void service(final InputStream in, final OutputStream out) throws IOException {
+    public void service(final InputStream in, final OutputStream out) throws CommandException, IOException {
         if (in == null) {
             throw new IllegalArgumentException("Input is null");
         }
@@ -86,10 +88,28 @@ public class GShellServer
             // TODO: Need access to the Terminal... NVT4J
             //
 
-            io = new IO(new TelnetInputStream(in, out), new TelnetPrintStream(out));
-            GShell shell = new GShell(io);
+            TelnetTerminal term = new TelnetTerminal(in, out);
 
-            InteractiveGShell interp = new InteractiveGShell(io, shell);
+            if (log.isDebugEnabled()) {
+                log.debug("Using terminal: " + term);
+                log.debug("  supported: " + term.isSupported());
+                log.debug("  height: " + term.getTerminalHeight());
+                log.debug("  width: " + term.getTerminalWidth());
+                log.debug("  echo: " + term.getEcho());
+                log.debug("  ANSI: " + term.isANSISupported());
+            }
+
+            io = term.getIO();
+
+            //
+            // HACK: This is specific to JLine... should abstract this
+            //
+
+            ConsoleReader reader = new ConsoleReader(io.inputStream, io.out, /* bindings */ null, term);
+            Console console = new JLineConsole(io, reader);
+
+            GShell shell = new GShell(io);
+            InteractiveGShell interp = new InteractiveGShell(console, shell);
             interp.run();
         }
         finally {

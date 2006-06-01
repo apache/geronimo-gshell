@@ -36,11 +36,23 @@ public class JLineConsole
 
     private final ConsoleReader reader;
 
+    public JLineConsole(final IO io, final ConsoleReader reader) throws IOException {
+        if (io == null) {
+            throw new IllegalArgumentException("IO is null");
+        }
+        if (reader == null) {
+            throw new IllegalArgumentException("Reader is null");
+        }
+
+        this.io = io;
+        this.reader = reader;
+    }
+
     public JLineConsole(final IO io) throws IOException {
         if (io == null) {
             throw new IllegalArgumentException("IO is null");
         }
-
+        
         this.io = io;
         this.reader = new ConsoleReader(io.inputStream, io.out);
     }

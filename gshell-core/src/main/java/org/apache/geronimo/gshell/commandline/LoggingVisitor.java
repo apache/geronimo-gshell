@@ -26,7 +26,6 @@ import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Visitor whichs logs nodes in the tree.
@@ -84,7 +83,7 @@ public class LoggingVisitor
         }
 
         StringBuffer buff = new StringBuffer();
-        
+
         for (int i=0; i<indent; i++) {
             buff.append(" ");
         }

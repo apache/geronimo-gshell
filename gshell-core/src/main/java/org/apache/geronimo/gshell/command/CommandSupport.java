@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.geronimo.gshell.ExitNotification;
 
 /**
  * Provides support for {@link Command} implemenations.
@@ -153,6 +154,13 @@ public abstract class CommandSupport
             }
 
             status = Command.FAILURE;
+        }
+        catch (ExitNotification n) {
+            //
+            // HACK: Propagate the notifciation
+            //
+
+            throw n;
         }
         catch (Error e) {
             log.error(e.getMessage());

@@ -31,6 +31,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.InteractiveGShell;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.JLineConsole;
 
 import org.apache.geronimo.gshell.util.Version;
 import org.apache.geronimo.gshell.util.Banner;
@@ -164,8 +166,8 @@ public class Main
         if (line.hasOption('D')) {
             String[] values = line.getOptionValues('D');
 
-            for (int i=0; i<values.length; i++) {
-                setPropertyFrom(values[i]);
+            for (String value : values) {
+                setPropertyFrom(value);
             }
         }
 
@@ -225,7 +227,16 @@ public class Main
         int status = 0;
 
         if (interactive) {
-            InteractiveGShell interp = new InteractiveGShell(io, gshell);
+            //
+            // HACK: This is JLine specific... refactor
+            //
+
+            //
+            // TODO: Explicitly pass in the terminal
+            //
+
+            Console console = new JLineConsole(io);
+            InteractiveGShell interp = new InteractiveGShell(console, gshell);
 
             // Check if there are args, and run them and then enter interactive
             if (args.length != 0) {

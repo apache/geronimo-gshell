@@ -51,7 +51,7 @@ public class GShell
         }
 
         this.io = io;
-        
+
         //
         // HACK: DI CommandManager...  Maybe need to setup the top-level container here
         //
