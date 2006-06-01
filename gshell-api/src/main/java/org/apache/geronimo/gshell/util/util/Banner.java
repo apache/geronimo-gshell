@@ -36,7 +36,7 @@ public class Banner
         out.println(" | |_| |___) | | | |  __/ | |");
         out.println("  \\____|____/|_| |_|\\___|_|_|");
         out.println();
-        out.println("gshell -- Geronimo command-line shell");
+        out.println(" GShell -- Geronimo command-line shell");
         out.flush();
         
         return writer.toString();

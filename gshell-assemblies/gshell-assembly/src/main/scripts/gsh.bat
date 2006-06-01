@@ -14,6 +14,8 @@ set CLASSWORLDS_VERSION=1.1
 set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.\
 
+if "%PROGNAME%" == "" set PROGNAME=gsh
+
 @rem Determine the command interpreter to execute the "CD" later
 set COMMAND_COM="cmd.exe"
 if exist "%SystemRoot%\system32\cmd.exe" set COMMAND_COM="%SystemRoot%\system32\cmd.exe"
@@ -80,7 +82,7 @@ set CMD_LINE_ARGS=%$
 @rem Setup the command line
 set CLASSWORLDS_CLASSPATH=%GSHELL_HOME%\lib\boot\classworlds-%CLASSWORLDS_VERSION%.jar
 set CLASSWORLDS_MAIN_CLASS=org.codehaus.classworlds.Launcher
-set CLASSWORLDS_CONF=%GSHELL_HOME%\etc\gshell.conf
+set CLASSWORLDS_CONF=%GSHELL_HOME%\etc\gsh.conf
 
 set JAVA_EXE=%JAVA_HOME%\bin\java.exe
 

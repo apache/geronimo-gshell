@@ -25,8 +25,8 @@
             <directory>target/scratch/gshell/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <includes>
-                <include>gshell.bat</include>
-                <include>gshell.conf</include>
+                <include>gsh.bat</include>
+                <include>gsh.conf</include>
             </includes>
             <lineEnding>dos</lineEnding>
         </fileSet>
@@ -35,7 +35,7 @@
             <directory>target/scratch/gshell/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <includes>
-                <include>gshell</include>
+                <include>gsh</include>
             </includes>
             <lineEnding>unix</lineEnding>
             <fileMode>0755</fileMode>
