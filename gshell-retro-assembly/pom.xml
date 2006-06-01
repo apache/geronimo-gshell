@@ -45,7 +45,7 @@
                 <executions>
                     <execution>
                         <id>unpack-assembly</id>
-                        <phase>generate-sources</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
@@ -61,6 +61,27 @@
                             </artifactItems>
                             
                             <outputDirectory>${pom.basedir}/target/scratch</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <copy todir="${pom.basedir}/target/scratch/gshell">
+                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${pom.version}">
+                                        <include name="**"/>
+                                    </fileset>
+                                </copy>
+                            </tasks>
                         </configuration>
                     </execution>
                 </executions>

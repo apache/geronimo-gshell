@@ -12,7 +12,7 @@
     
     <fileSets>
         <fileSet>
-            <directory>scratch/target/gshell-1.0.0-SNAPSHOT</directory>
+            <directory>target/scratch/gshell</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>*</include>
@@ -22,7 +22,7 @@
         </fileSet>
         
         <fileSet>
-            <directory>scratch/target/gshell-1.0.0-SNAPSHOT/bin</directory>
+            <directory>target/scratch/gshell/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <includes>
                 <include>gshell.bat</include>
@@ -32,7 +32,7 @@
         </fileSet>
         
         <fileSet>
-            <directory>scratch/target/gshell-1.0.0-SNAPSHOT/bin</directory>
+            <directory>target/scratch/gshell/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <includes>
                 <include>gshell</include>
