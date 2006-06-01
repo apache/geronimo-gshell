@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.Collections;
 
 /**
- * ???
+ * Manager of command definitions and provides access to command instances.
  *
  * @version $Id$
  */
@@ -80,6 +80,12 @@ public class CommandManager
             throw new IllegalArgumentException("Name is empty");
         }
 
+        //
+        // TODO: Issue warning if there is whitespace, that is a programming error (for someone)
+        //       Investigate auto-trim and complain from the parser too, looks like we are catching
+        //       non-traditional whitespace (ctrl chars, etc).
+        //
+
         // Make sure there is not funky whitespace in there (from Telnet or something)
         name = name.trim();
 
@@ -95,6 +101,10 @@ public class CommandManager
         // name checked by getCommandDefinition()
 
         CommandDefinition def = getCommandDefinition(name);
+
+        //
+        // TODO: This might change if we DI the class and let the container create
+        //
 
         Command cmd;
         try {

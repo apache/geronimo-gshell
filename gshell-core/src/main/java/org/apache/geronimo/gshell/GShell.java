@@ -45,6 +45,8 @@ public class GShell
 
     private final CommandManager commandManager;
 
+    private final Variables vars = new VariablesMap();
+
     public GShell(final IO io) throws CommandException {
         if (io == null) {
             throw new IllegalArgumentException("IO is null");
@@ -63,6 +65,14 @@ public class GShell
         this(new IO());
     }
 
+    public Variables getVariables() {
+        return vars;
+    }
+
+    public IO getIO() {
+        return io;
+    }
+
     public int execute(final String commandLine) throws Exception {
         assert commandLine != null;
 
@@ -70,6 +80,10 @@ public class GShell
 
         //
         // HACK: Just to get something to work...
+        //
+
+        //
+        // TODO: Move builder to field
         //
 
         CommandLineBuilder builder = new CommandLineBuilder(this);
@@ -84,7 +98,11 @@ public class GShell
         return 0;
     }
 
-    public int execute(final String commandName, String[] args) throws Exception {
+    //
+    // CommandExecutor
+    //
+
+    public int execute(final String commandName, final String[] args) throws Exception {
         assert commandName != null;
         assert args != null;
 
@@ -93,13 +111,19 @@ public class GShell
         log.info("Executing (" + commandName + "): " + Arguments.asString(args));
 
         //
-        // HACK: Just get something working right now
+        // TODO: Insert CommandContainer bits here
         //
 
         Command cmd = commandManager.getCommand(commandName);
 
+        //
+        // TODO: DI all bits if we can, then free up "context" to replace "category" as a term
+        //
+
+        final Variables parent = getVariables();
+
         cmd.init(new CommandContext() {
-            Variables vars = new VariablesMap();
+            final Variables vars = new VariablesMap(parent);
 
             public IO getIO() {
                 return io;
