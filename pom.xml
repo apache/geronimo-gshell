@@ -226,12 +226,46 @@
          </plugins>
     </build>
     
-    <modules>
-        <module>gshell-core</module>
-        <module>gshell-cli</module>
-        <module>gshell-commands</module>
-        <module>gshell-server</module>
-        <module>gshell-assembly</module>
-    </modules>
+    <profiles>
+        <profile>
+            <id>default-environment</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>gshell-core</module>
+                <module>gshell-cli</module>
+                <module>gshell-commands</module>
+                <module>gshell-server</module>
+                <module>gshell-assembly</module>
+            </modules>
+        </profile>
+        
+        <profile>
+            <id>release-environment</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>release</value>
+                </property>
+            </activation>
+            <modules>
+                <module>gshell-core</module>
+                <module>gshell-cli</module>
+                <module>gshell-commands</module>
+                <module>gshell-server</module>
+                <module>gshell-assembly</module>
+                
+                <!--
+                
+                FIXME: Seems like the antrun plugin does not properly find plugin depenedencies
+                       when run in a multi-module build.  Need a real retrotransformer plugin
+                       to resolve this.
+                
+                <module>gshell-retro-assembly</module>
+                -->
+            </modules>
+        </profile>
+    </profiles>
     
 </project>

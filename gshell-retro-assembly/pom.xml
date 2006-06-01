@@ -92,6 +92,10 @@
                             <goal>translate</goal>
                         </goals>
                         <configuration>
+                            <verify>false</verify>
+                            <failonwarning>true</failonwarning>
+                            <lazy>true</lazy>
+                            <verbose>false</verbose>
                             <includes>
                                 <include>
                                     <directory>${pom.basedir}/target/gshell-${pom.version}</directory>
