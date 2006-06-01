@@ -37,5 +37,33 @@
             <artifactId>commons-cli</artifactId>
         </dependency>
     </dependencies>
+    
+    <!--
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>minijar-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>minijar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>
+                            <directory>${pom.basedir}/target</directory>
+                            <pattern>gshell*.jar</pattern>
+                        </include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    -->
 
 </project>
