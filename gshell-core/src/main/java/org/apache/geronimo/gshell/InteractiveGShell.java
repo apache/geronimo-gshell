@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.console.IO;
 import java.io.IOException;
 
 /**
- * ???
+ * Provides the user-interaction bits for GShell.
  *
  * @version $Id$
  */
@@ -39,7 +39,12 @@ public class InteractiveGShell
 
                     // Execute unless the line is just blank
                     if (!line.trim().equals("")) {
-                        gshell.execute(line);
+                        try {
+                            gshell.execute(line);
+                        }
+                        catch (ExitNotification n) {
+                            return Result.STOP;
+                        }
                     }
 
                     return Result.CONTINUE;

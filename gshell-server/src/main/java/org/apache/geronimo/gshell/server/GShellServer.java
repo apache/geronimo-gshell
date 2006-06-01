@@ -82,6 +82,10 @@ public class GShellServer
             // TODO: Abstract Telnet specifics; support other protocols (ie. SSH)
             //
 
+            //
+            // TODO: Need access to the Terminal... NVT4J
+            //
+
             io = new IO(new TelnetInputStream(in, out), new TelnetPrintStream(out));
             GShell shell = new GShell(io);
 

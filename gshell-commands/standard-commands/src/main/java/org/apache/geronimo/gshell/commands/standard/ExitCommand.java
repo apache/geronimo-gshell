@@ -25,9 +25,11 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.util.Arguments;
 
 /**
- * Exit the virtual machine.
+ * Exit the current shell.
  *
  * @version $Id$
  */
@@ -53,23 +55,18 @@ public class ExitCommand
             .withDescription("Display this help message")
             .create('h'));
 
-        options.addOption(OptionBuilder.withLongOpt("code")
-            .withDescription("Use the given exit code")
-            .hasArg()
-            .create('c'));
-
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
         if (line.hasOption('h')) {
-            io.out.println(getName() + " -- exit the virtual machine");
+            io.out.println(getName() + " -- exit the current shell");
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                getName() + " [options]",
+                getName() + " [options] [code]",
                 "",
                 options,
                 4, // left pad
@@ -82,14 +79,7 @@ public class ExitCommand
             return Command.SUCCESS;
         }
 
-        // Get the status code to exit with
-        int exitCode = 0;
-        if (line.hasOption('c')) {
-            String value = line.getOptionValue('c');
-            exitCode = Integer.parseInt(value);
-        }
-
-        exit(exitCode);
+        exit(line.getArgs());
 
         // Should never get this far
         assert false;
@@ -97,14 +87,26 @@ public class ExitCommand
         return Command.FAILURE;
     }
 
+    private void exit(final String[] args) {
+        int exitCode = 0;
+
+        if (args.length > 1) {
+            getIO().err.println("Unexpected arguments: " + Arguments.asString(args));
+        }
+        if (args.length == 1) {
+            exitCode = Integer.parseInt(args[0]);
+        }
+
+        exit(exitCode);
+    }
+
     private void exit(final int exitCode) {
+        log.info("Exiting w/code: " + exitCode);
+
         //
-        // TODO: Need to implement this with an exception notification
-        //       To allow sub-shell or sever shells to function w/o
-        //       killing the entire JVM :-(
+        // DO NOT Call System.exit() !!!
         //
 
-        log.info("Exiting w/code: " + exitCode);
-        System.exit(exitCode);
+        throw new ExitNotification(exitCode);
     }
 }

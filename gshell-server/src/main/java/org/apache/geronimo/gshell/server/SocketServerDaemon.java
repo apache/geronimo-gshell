@@ -22,46 +22,39 @@ import org.apache.commons.logging.LogFactory;
 import java.net.Socket;
 import java.net.ServerSocket;
 
+import java.io.IOException;
+
 //
 // NOTE: Some bits lifted from XBean Telnet module
 //
 
 /**
- * Daemon service which listens for socket connections and
- * spawns client shells via {@link GShellServer}.
+ * Daemon service which listens for socket connections and spawns client threads.
  *
  * @version $Id$
  */
-public class GShellDaemon
+public class SocketServerDaemon
     implements Runnable
 {
-    public static final int DEFAULT_PORT = 5057;
+    private static final Log log = LogFactory.getLog(SocketServerDaemon.class);
 
-    private static final Log log = LogFactory.getLog(GShellDaemon.class);
-
-    private final GShellServer server;
+    private final SocketHandler handler;
 
     private final int port;
 
-    private boolean background;
-
     private ServerSocket serverSocket;
 
-    private boolean running = false;
+    private ThreadGroup threads = new ThreadGroup("SocketServerDaemon");
 
-    public GShellDaemon(final int port, final boolean background) {
+    private boolean running;
+
+    public SocketServerDaemon(final int port, final SocketHandler handler) {
+        if (handler == null) {
+            throw new IllegalArgumentException("Socket handler is null");
+        }
+
         this.port = port;
-        this.background = background;
-
-        this.server = new GShellServer();
-    }
-
-    public GShellDaemon(final int port) {
-        this(port, true);
-    }
-
-    public GShellDaemon() {
-        this(DEFAULT_PORT);
+        this.handler = handler;
     }
 
     public void start() throws Exception {
@@ -75,26 +68,21 @@ public class GShellDaemon
 
         serverSocket = new ServerSocket(port, 20);
         Thread d = new Thread(this);
-        d.setName("GShell Daemon@" + d.hashCode());
+        d.setName("SocketServerDaemon@" + d.hashCode());
         d.setDaemon(true);
         d.start();
 
         log.info("Started");
-
-        //
-        // FIXME: This is broken... not what I had wanted at all :-(
-        //
-
-        // Wait for one client session and then return
-        if (!background) {
-            log.debug("Waiting for job to finish");
-
-            running = false;
-            d.join();
-        }
     }
 
     public void stop() throws Exception {
+        if (!running) {
+            throw new IllegalStateException("Not started");
+        }
+
+        serverSocket.close();
+        serverSocket = null;
+
         running = false;
     }
 
@@ -105,10 +93,14 @@ public class GShellDaemon
 
         log.info("Starting new thread for client: " + socket);
 
-        Thread d = new Thread(new Runnable() {
+        //
+        // TODO: Maybe use a thread-pool here?
+        //
+
+        Thread d = new Thread(threads, new Runnable() {
             public void run() {
                 try {
-                    server.service(socket);
+                    handler.handle(socket);
                 }
                 catch (Throwable e) {
                     log.error("Service failure", e);
@@ -126,10 +118,14 @@ public class GShellDaemon
             }
         });
 
-        d.setName("GShell@" + d.hashCode());
+        d.setName("SocketHandler@" + d.hashCode());
         d.setDaemon(true);
         d.start();
     }
+
+    //
+    // Runnable
+    //
 
     public void run() {
         log.info("Listening for connections on port: " + port);
@@ -147,5 +143,24 @@ public class GShellDaemon
                 log.error("Unexpected; ignoring", t);
             }
         }
+    }
+
+    //
+    // SocketHandler
+    //
+
+    /**
+     * Allows custom processing for client socket connections.
+     */
+    public static interface SocketHandler
+    {
+        /**
+         * Handle the client socket.
+         *
+         * @param socket    The client socket; never null
+         *
+         * @throws IOException
+         */
+        void handle(Socket socket) throws IOException;
     }
 }

@@ -28,10 +28,26 @@ public class Arguments
     }
 
     public static String[] shift(final String[] args, int pos) {
+        assert args != null;
         assert args.length >= pos;
 
         String[] _args = new String[args.length - pos];
         System.arraycopy(args, pos, _args, 0, _args.length);
         return _args;
+    }
+
+    public static String asString(final String[] args) {
+        assert args != null;
+
+        StringBuffer buff = new StringBuffer();
+
+        for (int i=0; i<args.length; i++ ) {
+            buff.append(args[i]);
+            if (i + 1 < args.length) {
+                buff.append(", ");
+            }
+        }
+
+        return buff.toString();
     }
 }

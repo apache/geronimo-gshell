@@ -25,6 +25,10 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.server.SocketServerDaemon.SocketHandler;
+
+import java.net.Socket;
+import java.io.IOException;
 
 /**
  * Starts a GShell server.
@@ -34,9 +38,7 @@ import org.apache.geronimo.gshell.console.IO;
 public class ServerCommand
     extends CommandSupport
 {
-    private int port = GShellDaemon.DEFAULT_PORT;
-
-    private boolean background = false;
+    private int port = 5057;
 
     public ServerCommand() {
         super("server");
@@ -61,10 +63,6 @@ public class ServerCommand
             .withDescription("Use a specified port number")
             .hasArg()
             .create('p'));
-
-        options.addOption(OptionBuilder.withLongOpt("background")
-            .withDescription("Run as a daemon in the background")
-            .create('b'));
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
@@ -95,22 +93,23 @@ public class ServerCommand
             port = Integer.parseInt(tmp);
         }
 
-        if (line.hasOption('b')) {
-            background = true;
-        }
-
         server();
 
         return Command.SUCCESS;
     }
 
     private void server() throws Exception {
-        GShellDaemon daemon = new GShellDaemon(port, background);
+        SocketHandler handler = new SocketHandler() {
+            GShellServer server = new GShellServer();
 
-        //
-        // NOTE: Spit this out before hand, since if not --background
-        //       start() will not return right away
-        //
+            public void handle(final Socket socket) throws IOException {
+                assert socket != null;
+
+                server.service(socket);
+            }
+        };
+
+        SocketServerDaemon daemon = new SocketServerDaemon(port, handler);
 
         IO io = getIO();
         io.out.println("Listening for connections on port: " + port);

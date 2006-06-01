@@ -19,6 +19,7 @@ package org.apache.geronimo.gshell.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.util.Arguments;
 
 /**
  * Provides support for {@link Command} implemenations.
@@ -29,19 +30,19 @@ public abstract class CommandSupport
     implements Command
 {
     protected Log log;
-    
+
     private String name;
 
     private CommandContext context;
-    
+
     protected CommandSupport(final String name) {
         setName(name);
     }
-    
+
     protected CommandSupport() {
         // Sub-class must call setName()
     }
-    
+
     public void setName(final String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name is null");
@@ -49,10 +50,10 @@ public abstract class CommandSupport
         if (name.trim().length() == 0) {
             throw new IllegalArgumentException("Name is empty");
         }
-        
+
         this.name = name;
     }
-    
+
     public String getName() {
         if (name == null) {
             throw new IllegalStateException("Name was not set");
@@ -60,101 +61,105 @@ public abstract class CommandSupport
 
         return name;
     }
-    
+
     //
     // Life-cycle
     //
-    
+
     public final void init(final CommandContext context) {
         if (this.context != null) {
             throw new IllegalStateException("Command already initalized");
         }
-        
+
         // Initialize logging with command name
         log = LogFactory.getLog(this.getClass().getName() + "." + getName());
-        
+
         log.debug("Initializing");
-        
+
         this.context = context;
-        
+
         doInit();
     }
-    
+
     protected void doInit() {
         // Sub-class should override to provide custom initialization
     }
-    
+
     private void ensureInitialized() {
         if (context == null) {
             throw new IllegalStateException("Command has not been initialized");
         }
     }
-    
+
     public final void destroy() {
         if (this.context == null) {
             throw new IllegalStateException("Command already destroyed (or never initialized)");
         }
-        
+
         log.debug("Destroying");
-        
+
         doDestroy();
-        
+
         this.context = null;
     }
-    
+
     protected void doDestroy() {
         // Sub-class should override to provide custom cleanup
     }
-    
+
     public void abort() {
         // Sub-calss should override to allow for custom abort functionality
     }
-    
+
     //
     // Context Helpers
     //
-    
+
     protected CommandContext getCommandContext() {
         assert context != null;
-        
+
         return context;
     }
-    
+
     protected Variables getVariables() {
         return getCommandContext().getVariables();
     }
-    
+
     protected IO getIO() {
         return getCommandContext().getIO();
     }
-    
+
     //
     // Execute Helpers
     //
-    
+
     public int execute(final String... args) throws Exception {
         assert args != null;
-        
+
         // Make sure that we have been initialized before we go any further
         ensureInitialized();
 
-        log.info("Executing w/arguments: " + java.util.Arrays.asList(args));
+        log.info("Executing w/arguments: " + Arguments.asString(args));
 
         int status;
-        
+
         try {
             status = doExecute(args);
         }
         catch (Exception e) {
-            //
-            // TODO: Handle Errors here too
-            //
-            
             log.error(e.getMessage());
             if (log.isDebugEnabled()) {
-                log.debug("Failure details", e);
+                log.debug("Exception details", e);
             }
-            
+
+            status = Command.FAILURE;
+        }
+        catch (Error e) {
+            log.error(e.getMessage());
+            if (log.isDebugEnabled()) {
+                log.debug("Error details", e);
+            }
+
             status = Command.FAILURE;
         }
         finally {
@@ -166,10 +171,10 @@ public abstract class CommandSupport
 
         return status;
     }
-    
+
     protected int doExecute(final String[] args) throws Exception {
         // Sub-class should override to perform custom execution
-        
+
         return Command.FAILURE;
     }
 }

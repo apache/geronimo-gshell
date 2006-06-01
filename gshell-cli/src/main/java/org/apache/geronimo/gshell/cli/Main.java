@@ -74,15 +74,15 @@ public class Main
 
     private void setPropertyFrom(final String namevalue) {
         String name, value;
-        int j = namevalue.indexOf("=");
+        int i = namevalue.indexOf("=");
 
-        if (j == -1) {
+        if (i == -1) {
             name = namevalue;
-            value = "true";
+            value = Boolean.TRUE.toString();
         }
         else {
-            name = namevalue.substring(0, j);
-            value = namevalue.substring(j + 1, namevalue.length());
+            name = namevalue.substring(0, i);
+            value = namevalue.substring(i + 1, namevalue.length());
         }
         name = name.trim();
 
@@ -138,7 +138,7 @@ public class Main
             formatter.printHelp(
                 io.out,
                 80, // width
-                "gshell [options] <command> [args]",
+                System.getProperty("program.name", "gshell") + " [options] <command> [args]",
                 "",
                 options,
                 4, // left pad
@@ -207,12 +207,6 @@ public class Main
         // TEMP: Log some info about the terminal
         //
 
-        if (debug) {
-            log.debug("Using STDIN: " + System.in);
-            log.debug("Using STDOUT: " + System.out);
-            log.debug("Using STDERR: " + System.err);
-        }
-
         Terminal term = Terminal.getTerminal();
 
         if (debug) {
@@ -228,6 +222,8 @@ public class Main
             log.debug("Started in " + watch);
         }
 
+        int status = 0;
+
         if (interactive) {
             InteractiveGShell interp = new InteractiveGShell(io, gshell);
 
@@ -239,19 +235,19 @@ public class Main
             interp.run();
         }
         else {
-            int status = gshell.execute(args);
-
-            if (debug) {
-                log.debug("Ran for " + watch);
-            }
-
-            System.exit(status);
+            status = gshell.execute(args);
         }
 
         if (debug) {
             log.debug("Ran for " + watch);
         }
+
+        System.exit(status);
     }
+
+    //
+    // Bootstrap
+    //
 
     public static void main(final String[] args, final ClassWorld world) throws Exception {
         assert args != null;

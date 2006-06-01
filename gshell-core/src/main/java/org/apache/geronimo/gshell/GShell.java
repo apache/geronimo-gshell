@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesMap;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -42,15 +43,23 @@ public class GShell
 
     private final IO io;
 
-    public GShell(final IO io) {
+    private final CommandManager commandManager;
+
+    public GShell(final IO io) throws CommandException {
         if (io == null) {
             throw new IllegalArgumentException("IO is null");
         }
 
         this.io = io;
+        
+        //
+        // HACK: DI CommandManager...  Maybe need to setup the top-level container here
+        //
+
+        this.commandManager = new CommandManager();
     }
     
-    public GShell() {
+    public GShell() throws CommandException {
         this(new IO());
     }
 
@@ -81,17 +90,13 @@ public class GShell
 
         boolean debug = log.isDebugEnabled();
 
-        log.info("Executing (" + commandName + "): " + java.util.Arrays.asList(args));
+        log.info("Executing (" + commandName + "): " + Arguments.asString(args));
 
         //
         // HACK: Just get something working right now
         //
 
-        //
-        // HACK: DI CommandManager...
-        //
-
-        Command cmd = new CommandManager().getCommand(commandName);
+        Command cmd = commandManager.getCommand(commandName);
 
         cmd.init(new CommandContext() {
             Variables vars = new VariablesMap();
@@ -132,7 +137,7 @@ public class GShell
         assert args != null;
         assert args.length > 1;
 
-        log.info("Executing (String[]): " + java.util.Arrays.asList(args));
+        log.info("Executing (String[]): " + Arguments.asString(args));
 
         return execute(args[0], Arguments.shift(args));
     }
