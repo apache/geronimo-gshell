@@ -40,6 +40,11 @@
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-gems</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
