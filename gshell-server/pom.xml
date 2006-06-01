@@ -20,21 +20,6 @@
     <name>GShell :: Server</name>
     <packaging>jar</packaging>
 
-    <repositories>
-        <repository>
-            <id>module-local</id>
-            <name>Module Local Repository</name>
-            <url>file://${pom.basedir}/repository</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
@@ -60,9 +45,6 @@
         <dependency>
             <groupId>nvt4j</groupId>
             <artifactId>nvt4j</artifactId>
-            <version>1.0a1</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     
