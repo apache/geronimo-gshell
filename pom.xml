@@ -178,7 +178,12 @@
                 <type>jar</type>
                 <scope>compile</scope>
             </dependency>
-
+            
+            <!--
+            
+            NOTE: May want to enhance xbean-telnet to behave like nvt4j and be more extendable than nvt4j
+                  Or get lichtner to donate it to xbean :-)
+                  
             <dependency>
                 <groupId>org.apache.xbean</groupId>
                 <artifactId>xbean-telnet</artifactId>
@@ -186,7 +191,16 @@
                 <type>jar</type>
                 <scope>compile</scope>
             </dependency>
-
+            -->
+            
+            <dependency>
+                <groupId>nvt4j</groupId>
+                <artifactId>nvt4j</artifactId>
+                <version>1.0a1</version>
+                <type>jar</type>
+                <scope>compile</scope>
+            </dependency>
+            
             <dependency>
                 <groupId>picocontainer</groupId>
                 <artifactId>picocontainer</artifactId>
