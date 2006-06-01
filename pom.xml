@@ -17,39 +17,39 @@
     
     <repositories>
         <repository>
+            <id>mergere</id>
+            <name>Mergere Repository</name>
+            <url>http://repo.mergere.com/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        
+        <repository>
             <id>maven2-snapshots</id>
             <name>Maven Snapshots Repository</name>
             <url>http://snapshots.maven.codehaus.org/maven2</url>
             <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </snapshots>
         </repository>
         
         <repository>
-            <id>apache-cvs</id>
-            <name>Apache CVS Repository</name>
-            <url>http://cvs.apache.org/repository</url>
-            <layout>legacy</layout>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </snapshots>
-        </repository>
-        
-        <repository>
-            <id>apache-snapshots</id>
-            <name>Apache Snapshots Repository</name>
-            <url>http://cvs.apache.org/maven-snapshot-repository</url>
+            <id>people-jdillon</id>
+            <name>Jason's Repository</name>
+            <url>http://people.apache.org/~jdillon/repository/maven2</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -57,16 +57,32 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
         </repository>
     </repositories>
     
     <pluginRepositories>
         <pluginRepository>
-            <id>codehaus-snapshots</id>
-            <name>Maven Central Plugins Development Repository</name>
+            <id>mergere</id>
+            <name>Mergere Repository</name>
+            <url>http://repo.mergere.com/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <id>maven2-snapshots</id>
+            <name>Maven Snapshots Repository</name>
             <url>http://snapshots.maven.codehaus.org/maven2</url>
+            <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -74,6 +90,21 @@
             </snapshots>
             <releases>
                 <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <id>people-jdillon</id>
+            <name>Jason's Repository</name>
+            <url>http://people.apache.org/~jdillon/repository/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
             </releases>
         </pluginRepository>
     </pluginRepositories>
@@ -255,15 +286,7 @@
                 <module>gshell-commands</module>
                 <module>gshell-server</module>
                 <module>gshell-assembly</module>
-                
-                <!--
-                
-                FIXME: Seems like the antrun plugin does not properly find plugin depenedencies
-                       when run in a multi-module build.  Need a real retrotransformer plugin
-                       to resolve this.
-                
                 <module>gshell-retro-assembly</module>
-                -->
             </modules>
         </profile>
     </profiles>
