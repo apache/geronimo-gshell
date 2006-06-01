@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.gshell.commands.builtin;
+package org.apache.geronimo.gshell.builtins;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
