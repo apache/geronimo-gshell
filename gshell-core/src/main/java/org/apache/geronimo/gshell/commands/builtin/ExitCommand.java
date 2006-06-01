@@ -58,7 +58,19 @@ public class ExitCommand
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
-        if (line.hasOption('h')) {
+        boolean usage = false;
+        int exitCode = 0;
+
+        if (args.length > 1) {
+            io.err.println("Unexpected arguments: " + Arguments.asString(args));
+            io.err.println();
+            usage = true;
+        }
+        if (args.length == 1) {
+            exitCode = Integer.parseInt(args[0]);
+        }
+
+        if (usage || line.hasOption('h')) {
             io.out.println(getName() + " -- exit the current shell");
             io.out.println();
 
@@ -79,25 +91,12 @@ public class ExitCommand
             return Command.SUCCESS;
         }
 
-        exit(line.getArgs());
-
+        exit(exitCode);
+                
         // Should never get this far
         assert false;
 
         return Command.FAILURE;
-    }
-
-    private void exit(final String[] args) {
-        int exitCode = 0;
-
-        if (args.length > 1) {
-            getIO().err.println("Unexpected arguments: " + Arguments.asString(args));
-        }
-        if (args.length == 1) {
-            exitCode = Integer.parseInt(args[0]);
-        }
-
-        exit(exitCode);
     }
 
     private void exit(final int exitCode) {
