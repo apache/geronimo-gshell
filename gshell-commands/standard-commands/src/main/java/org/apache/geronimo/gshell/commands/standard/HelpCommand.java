@@ -81,7 +81,7 @@ public class HelpCommand
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                getName() + " [options] [topic]",
+                getName() + " [options] [topic|command]",
                 "",
                 options,
                 4, // left pad
@@ -106,7 +106,7 @@ public class HelpCommand
             io.out.println("  commands");
             io.out.println();
         }
-        if (topic.equals("commands")) {
+        else if (topic.equals("commands")) {
             //
             // HACK: Need to DI this guy, but for now this will work
             //
@@ -123,8 +123,15 @@ public class HelpCommand
                 io.out.print("  ");
                 io.out.println(name);
             }
-            
+
             io.out.println();
+        }
+        else {
+            //
+            // TODO: ...
+            //
+
+            io.err.println("Pending... sorry");
         }
 
         return Command.SUCCESS;
