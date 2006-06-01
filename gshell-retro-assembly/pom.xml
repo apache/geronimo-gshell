@@ -39,47 +39,32 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dependency-maven-plugin</artifactId>
+                <version>1.0</version>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <id>unpack-assembly</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <tasks>
-                                <taskdef name="retrotranslator" classpathref="maven.plugin.classpath"
-                                    classname="net.sf.retrotranslator.transformer.RetrotranslatorTask"/>
-                                
-                                <mkdir dir="${pom.basedir}/target"/>
-                                <unzip src="${pom.basedir}/../gshell-assembly/target/gshell-${pom.version}-bin.zip"
-                                    dest="${pom.basedir}/target"/>
-                                
-                                <retrotranslator verify="false" failonwarning="true" lazy="true" verbose="false">
-                                    <src>
-                                        <fileset dir="${pom.basedir}/target/gshell-${pom.version}">
-                                            <include name="**/*.jar"/>
-                                        </fileset>
-                                    </src>
-                                </retrotranslator>
-                            </tasks>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${pom.groupId}</groupId>
+                                    <artifactId>gshell-assembly</artifactId>
+                                    <version>${pom.version}</version>
+                                    <type>zip</type>
+                                    <classifier>bin</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            
+                            <outputDirectory>${pom.basedir}/target/scratch</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.sf.retrotranslator</groupId>
-                        <artifactId>retrotranslator-transformer</artifactId>
-                        <version>1.0.4</version>
-                        <type>jar</type>
-                    </dependency>
-                </dependencies>
             </plugin>
-            
-            <!--
-            
-            TODO: Pending application of http://jira.codehaus.org/browse/MOJO-406
             
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -98,7 +83,7 @@
                             <verbose>false</verbose>
                             <includes>
                                 <include>
-                                    <directory>${pom.basedir}/target/gshell-${pom.version}</directory>
+                                    <directory>${pom.basedir}/target/scratch/gshell-${pom.version}</directory>
                                     <pattern>**/*.jar</pattern>
                                 </include>
                             </includes>
@@ -106,7 +91,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
