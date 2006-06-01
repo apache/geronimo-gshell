@@ -278,21 +278,22 @@
             </plugin>
          </plugins>
     </build>
-
+    
+    <modules>
+        <module>gshell-api</module>
+        <module>gshell-core</module>
+        <module>gshell-cli</module>
+        <module>gshell-commands</module>
+        <module>gshell-server</module>
+        <module>gshell-assemblies</module>
+    </modules>
+    
     <profiles>
         <profile>
             <id>default-environment</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <modules>
-                <module>gshell-api</module>
-                <module>gshell-core</module>
-                <module>gshell-cli</module>
-                <module>gshell-commands</module>
-                <module>gshell-server</module>
-                <module>gshell-assembly</module>
-            </modules>
         </profile>
 
         <profile>
@@ -303,16 +304,7 @@
                     <value>release</value>
                 </property>
             </activation>
-            <modules>
-                <module>gshell-api</module>
-                <module>gshell-core</module>
-                <module>gshell-cli</module>
-                <module>gshell-commands</module>
-                <module>gshell-server</module>
-                <module>gshell-assembly</module>
-                <module>gshell-retro-assembly</module>
-            </modules>
-
+            
             <distributionManagement>
                 <repository>
                     <id>gshell-releases</id>
