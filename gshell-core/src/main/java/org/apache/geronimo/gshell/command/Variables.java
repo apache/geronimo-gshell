@@ -25,13 +25,35 @@ import java.util.Iterator;
  */
 public interface Variables
 {
-    void set(String name, Object value);
-    
+    void set(String name, Object value) throws ImmutableVariableException;
+
+    void set(String name, Object value, boolean mutable) throws ImmutableVariableException;
+
     Object get(String name);
-    
-    void unset(String name);
+
+    Object get(String name, Object _default);
+
+    boolean isMutable(String name);
+
+    boolean isCloaked(String name);
+
+    void unset(String name) throws ImmutableVariableException;
     
     boolean contains(String name);
     
-    Iterator names();
+    Iterator<String> names();
+
+    Variables parent();
+
+    //
+    // Exceptions
+    //
+
+    class ImmutableVariableException
+        extends RuntimeException
+    {
+        public ImmutableVariableException(final String name) {
+            super("Variable is immutable: " + name);
+        }
+    }
 }
