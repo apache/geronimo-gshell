@@ -29,6 +29,11 @@ import java.io.IOException;
 public class InteractiveGShell
     extends InteractiveConsole
 {
+    //
+    // TODO: Refactor InteractiveConsole to use method overides for extention
+    //       Seems like that is what we are doing so far anyways (sub-classing that is)
+    //
+
     public InteractiveGShell(final Console console, final GShell gshell) throws IOException {
         super(console,
             new InteractiveConsole.Executor() {
