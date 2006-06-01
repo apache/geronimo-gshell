@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
 
 /**
  * Unit tests for the {@link VariablesMap} class.
@@ -225,5 +226,27 @@ public class VariablesMapTest
         assertNotNull(vars.parent());
 
         assertEquals(parent, vars.parent());
+    }
+
+    public void testNames() throws Exception {
+        VariablesMap vars = new VariablesMap();
+        Iterator<String> iter = vars.names();
+        assertNotNull(iter);
+        assertFalse(iter.hasNext());
+    }
+
+    public void testNamesImmutable() throws Exception {
+        VariablesMap vars = new VariablesMap();
+        vars.set("a", "b");
+
+        Iterator<String> iter = vars.names();
+        iter.next();
+
+        try {
+            iter.remove();
+        }
+        catch (UnsupportedOperationException expected) {
+            // ignore
+        }
     }
 }
