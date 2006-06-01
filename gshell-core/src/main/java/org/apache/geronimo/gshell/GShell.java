@@ -45,6 +45,8 @@ public class GShell
 
     private final CommandManager commandManager;
 
+    private final CommandLineBuilder commandLineBuilder;
+
     private final Variables vars = new VariablesMap();
 
     public GShell(final IO io) throws CommandException {
@@ -55,10 +57,11 @@ public class GShell
         this.io = io;
 
         //
-        // HACK: DI CommandManager...  Maybe need to setup the top-level container here
+        // HACK: DI components...  Maybe need to setup the top-level container here
         //
 
         this.commandManager = new CommandManager();
+        this.commandLineBuilder = new CommandLineBuilder(this);
     }
     
     public GShell() throws CommandException {
@@ -78,21 +81,11 @@ public class GShell
 
         log.info("Executing (String): " + commandLine);
 
-        //
-        // HACK: Just to get something to work...
-        //
-
-        //
-        // TODO: Move builder to field
-        //
-
-        CommandLineBuilder builder = new CommandLineBuilder(this);
-        CommandLine cl = builder.create(commandLine);
+        CommandLine cl = commandLineBuilder.create(commandLine);
         cl.execute();
 
         //
-        // HACK: Current API needs to be revised to pass data back,
-        //       will be fixed latger, ignore for now
+        // TODO: Fix API to allow CL to pass back data
         //
 
         return 0;
