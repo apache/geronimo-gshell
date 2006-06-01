@@ -24,6 +24,8 @@ package org.apache.geronimo.gshell.command;
 public class CommandInstantiationException
     extends CommandException
 {
+    ///CLOVER:OFF
+    
     public CommandInstantiationException(final String msg) {
         super(msg);
     }

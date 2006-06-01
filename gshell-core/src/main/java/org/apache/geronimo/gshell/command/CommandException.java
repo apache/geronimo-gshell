@@ -24,6 +24,8 @@ package org.apache.geronimo.gshell.command;
 public class CommandException
     extends Exception
 {
+    ///CLOVER:OFF
+    
     public CommandException(String msg) {
         super(msg);
     }

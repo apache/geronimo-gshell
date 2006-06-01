@@ -25,6 +25,8 @@ package org.apache.geronimo.gshell.command;
 public class CommandNotFoundException
    extends CommandException
 {
+    ///CLOVER:OFF
+    
     public CommandNotFoundException(final String path) {
         this(path, "Command or path was not found");
     }
