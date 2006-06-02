@@ -51,8 +51,12 @@ public class GShellServer
     private final ConsoleFactory consoleFactory;
 
     public GShellServer() throws Exception {
-        ResourceFinder resourceFinder = new ResourceFinder("META-INF");
-        Map<String, Class> resourcesMap = resourceFinder.mapAvailableImplementations(java.net.URLStreamHandler.class);
+        ResourceFinder resourceFinder = new ResourceFinder("META-INF/");
+        Map<String, Class> resourcesMap = resourceFinder.mapAllImplementations(ConsoleFactory.class);
+
+        //
+        // HACK: Just for now hardcode this
+        //
         String typename = "telnet";
 
         Class type = resourcesMap.get(typename);
@@ -60,8 +64,10 @@ public class GShellServer
             throw new CommandException("Could not load ConsoleFactory of type: " + typename);
         }
 
+        log.debug("Using console factory type: " + type);
         try {
             this.consoleFactory = (ConsoleFactory)type.newInstance();
+            log.debug("Using console factory: " + this.consoleFactory);
         }
         catch (Exception e) {
             throw new CommandException("Failed to create ConsoleFactory of type: " + typename, e);
@@ -102,8 +108,10 @@ public class GShellServer
         IO io = null;
         try {
             Console console = consoleFactory.create(input, output);
+
             io = console.getIO();
             GShell shell = new GShell(io);
+
             InteractiveGShell interp = new InteractiveGShell(console, shell);
             interp.run();
         }
