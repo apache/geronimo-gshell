@@ -16,7 +16,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     
-    <artifactId>scripting-commands</artifactId>
+    <artifactId>gshell-scripting-commands</artifactId>
     <name>GShell Commands :: Scripting</name>
     <packaging>jar</packaging>
 

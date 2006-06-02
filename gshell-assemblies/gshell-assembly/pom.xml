@@ -47,13 +47,13 @@
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>standard-commands</artifactId>
+            <artifactId>gshell-standard-commands</artifactId>
             <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>scripting-commands</artifactId>
+            <artifactId>gshell-scripting-commands</artifactId>
             <version>${pom.version}</version>
         </dependency>
     </dependencies>

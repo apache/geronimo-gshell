@@ -34,8 +34,8 @@
     </dependencies>
     
     <modules>
-        <module>standard-commands</module>
-        <module>scripting-commands</module>
+        <module>gshell-standard-commands</module>
+        <module>gshell-scripting-commands</module>
     </modules>
     
 </project>

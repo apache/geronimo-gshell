@@ -16,7 +16,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     
-    <artifactId>standard-commands</artifactId>
+    <artifactId>gshell-standard-commands</artifactId>
     <name>GShell Commands :: Standard</name>
     <packaging>jar</packaging>
     
