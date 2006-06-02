@@ -28,8 +28,8 @@ import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.geronimo.gshell.GShell;
-import org.apache.geronimo.gshell.InteractiveGShell;
+import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.InteractiveShell;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
@@ -40,7 +40,7 @@ import org.apache.geronimo.gshell.util.Banner;
 import jline.Terminal;
 
 /**
- * Command-line interface to bootstrap GShell.
+ * Command-line interface to bootstrap Shell.
  *
  * @version $Id$
  */
@@ -101,7 +101,7 @@ public class Main
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("version")
-            .withDescription("Display GShell version")
+            .withDescription("Display Shell version")
             .create('V'));
 
         options.addOption(OptionBuilder.withLongOpt("define")
@@ -194,11 +194,11 @@ public class Main
         boolean debug = log.isDebugEnabled();
 
         //
-        // TODO: Need to pass GShell the ClassWorld, so that the application can add to it if needed
+        // TODO: Need to pass Shell the ClassWorld, so that the application can add to it if needed
         //
 
         // Startup the shell
-        final GShell gshell = new GShell(io);
+        final Shell gshell = new Shell(io);
 
         // Force interactive if there are no args
         if (args.length == 0) {
@@ -236,7 +236,7 @@ public class Main
             //
 
             Console console = new JLineConsole(io);
-            InteractiveGShell interp = new InteractiveGShell(console, gshell);
+            InteractiveShell interp = new InteractiveShell(console, gshell);
 
             // Check if there are args, and run them and then enter interactive
             if (args.length != 0) {

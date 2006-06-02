@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.server.SocketServerDaemon.SocketHandler;
 import java.net.Socket;
 
 /**
- * Starts a GShell server.
+ * Starts a Shell server.
  *
  * @version $Id$
  */
@@ -67,7 +67,7 @@ public class ServerCommand
         CommandLine line = parser.parse(options, args);
 
         if (line.hasOption('h')) {
-            io.out.println(getName() + " -- starts a GShell server");
+            io.out.println(getName() + " -- starts a Shell server");
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
@@ -99,7 +99,7 @@ public class ServerCommand
 
     private void server() throws Exception {
         SocketHandler handler = new SocketHandler() {
-            GShellServer server = new GShellServer();
+            ShellServer server = new ShellServer();
 
             public void handle(final Socket socket) throws Exception {
                 assert socket != null;

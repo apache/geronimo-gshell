@@ -21,29 +21,29 @@ import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
 
 /**
- * Unit tests for the {@link GShell} class.
+ * Unit tests for the {@link Shell} class.
  *
  * @version $Id$
  */
-public class GShellTest
+public class ShellTest
     extends TestCase
 {
     public void testConstructorArgs() throws Exception {
         try {
-            new GShell(null);
+            new Shell(null);
             fail("Accepted null value");
         }
         catch (IllegalArgumentException expected) {
             // ignore
         }
 
-        new GShell();
+        new Shell();
 
-        new GShell(new IO());
+        new Shell(new IO());
     }
 
     public void testExecuteVarargs() throws Exception {
-        GShell shell = new GShell();
+        Shell shell = new Shell();
 
         try {
             shell.execute("foo", "bar", "baz");
@@ -54,7 +54,7 @@ public class GShellTest
     }
 
     public void testExecuteArray() throws Exception {
-        GShell shell = new GShell();
+        Shell shell = new Shell();
 
         try {
             shell.execute(new String[]{ "foo", "bar", "baz" });

@@ -38,10 +38,10 @@ import org.apache.geronimo.gshell.util.Arguments;
  *
  * @version $Id$
  */
-public class GShell
+public class Shell
     implements CommandExecutor
 {
-    private static final Log log = LogFactory.getLog(GShell.class);
+    private static final Log log = LogFactory.getLog(Shell.class);
 
     private final IO io;
 
@@ -53,7 +53,7 @@ public class GShell
 
     private final Variables vars = new VariablesImpl();
 
-    public GShell(final IO io) throws CommandException {
+    public Shell(final IO io) throws CommandException {
         if (io == null) {
             throw new IllegalArgumentException("IO is null");
         }
@@ -72,7 +72,7 @@ public class GShell
         this.commandLineBuilder = (CommandLineBuilder) shellContainer.getComponentInstanceOfType(CommandLineBuilder.class);
     }
 
-    public GShell() throws CommandException {
+    public Shell() throws CommandException {
         this(new IO());
     }
 

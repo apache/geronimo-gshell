@@ -18,12 +18,11 @@ package org.apache.geronimo.gshell.server;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.geronimo.gshell.GShell;
-import org.apache.geronimo.gshell.InteractiveGShell;
+import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.InteractiveShell;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.Console;
-import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.ConsoleFactory;
 import org.apache.xbean.finder.ResourceFinder;
 
@@ -32,8 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
-
-import jline.ConsoleReader;
 
 //
 // NOTE: Some bits lifted from XBean Telnet module
@@ -44,15 +41,15 @@ import jline.ConsoleReader;
  *
  * @version $Id$
  */
-public class GShellServer
+public class ShellServer
 {
-    private static final Log log = LogFactory.getLog(GShellServer.class);
+    private static final Log log = LogFactory.getLog(ShellServer.class);
 
     private final ConsoleFactory consoleFactory;
 
-    public GShellServer() throws Exception {
+    public ShellServer() throws Exception {
         ResourceFinder resourceFinder = new ResourceFinder("META-INF/");
-        Map<String, Class> resourcesMap = resourceFinder.mapAllImplementations(ConsoleFactory.class);
+        Map<String, Class> resourcesMap = resourceFinder.mapAvailableImplementations(ConsoleFactory.class);
 
         //
         // HACK: Just for now hardcode this
@@ -101,7 +98,7 @@ public class GShellServer
         }
 
         //
-        // TODO: Need to figure out how to get the logging stream for this GShell to use
+        // TODO: Need to figure out how to get the logging stream for this Shell to use
         //       the given IO streams
         //
 
@@ -110,9 +107,9 @@ public class GShellServer
             Console console = consoleFactory.create(input, output);
 
             io = console.getIO();
-            GShell shell = new GShell(io);
+            Shell shell = new Shell(io);
 
-            InteractiveGShell interp = new InteractiveGShell(console, shell);
+            InteractiveShell interp = new InteractiveShell(console, shell);
             interp.run();
         }
         catch (Exception e) {

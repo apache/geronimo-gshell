@@ -133,8 +133,8 @@ public class InteractiveConsole
         //
         // TODO: Probably need to expose more configurability for handing/rejecting shutdown
         //
-        //       Use-case is that GShell might want to disallow and print a "use exit command",
-        //       but Script interp wants this to exit and return control to GShell.
+        //       Use-case is that Shell might want to disallow and print a "use exit command",
+        //       but Script interp wants this to exit and return control to Shell.
         //
     }
 

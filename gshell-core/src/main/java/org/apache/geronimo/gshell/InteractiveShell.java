@@ -22,11 +22,11 @@ import org.apache.geronimo.gshell.console.Console;
 import java.io.IOException;
 
 /**
- * Provides the user-interaction bits for GShell.
+ * Provides the user-interaction bits for Shell.
  *
  * @version $Id$
  */
-public class InteractiveGShell
+public class InteractiveShell
     extends InteractiveConsole
 {
     //
@@ -34,7 +34,7 @@ public class InteractiveGShell
     //       Seems like that is what we are doing so far anyways (sub-classing that is)
     //
 
-    public InteractiveGShell(final Console console, final GShell gshell) throws IOException {
+    public InteractiveShell(final Console console, final Shell gshell) throws IOException {
         super(console,
             new InteractiveConsole.Executor() {
                 public Result execute(final String line) throws Exception {
