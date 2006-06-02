@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.command;
 
 /**
- * Thrown to indicate that the current shell should exit.
- *
- * <p>
- * Commands should use this instead of {@link System#exit}.
+ * Unit tests for the {@link CommandSupport} class.
  *
  * @version $Id$
  */
-public class ExitNotification
-    extends Error
+public class MockCommandExecutor
+    implements CommandExecutor
 {
-    private final int code;
+    public String[] args;
 
-    public ExitNotification(final int code) {
-        this.code = code;
+    public String commandName;
+
+    public int execute(String... args) throws Exception {
+        this.args = args;
+
+        return 0;
     }
 
-    public ExitNotification() {
-        this(0);
-    }
+    public int execute(String commandName, String[] args) throws Exception {
+        this.commandName = commandName;
+        this.args = args;
 
-    public int getCode() {
-        return code;
+        return 0;
     }
 }
