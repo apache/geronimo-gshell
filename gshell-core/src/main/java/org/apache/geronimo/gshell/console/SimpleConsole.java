@@ -54,6 +54,10 @@ public class SimpleConsole
         return reader.readLine();
     }
 
+    public IO getIO() {
+        return io;
+    }
+
     public BufferedReader getReader() {
         return reader;
     }

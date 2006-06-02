@@ -20,16 +20,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.InteractiveGShell;
-import org.apache.geronimo.gshell.server.telnet.TelnetTerminal;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.console.ConsoleFactory;
+import org.apache.xbean.finder.ResourceFinder;
 
 import java.net.Socket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 import jline.ConsoleReader;
 
@@ -45,6 +47,26 @@ import jline.ConsoleReader;
 public class GShellServer
 {
     private static final Log log = LogFactory.getLog(GShellServer.class);
+
+    private final ConsoleFactory consoleFactory;
+
+    public GShellServer() throws Exception {
+        ResourceFinder resourceFinder = new ResourceFinder("META-INF");
+        Map<String, Class> resourcesMap = resourceFinder.mapAvailableImplementations(java.net.URLStreamHandler.class);
+        String typename = "telnet";
+
+        Class type = resourcesMap.get(typename);
+        if (type == null) {
+            throw new CommandException("Could not load ConsoleFactory of type: " + typename);
+        }
+
+        try {
+            this.consoleFactory = (ConsoleFactory)type.newInstance();
+        }
+        catch (Exception e) {
+            throw new CommandException("Failed to create ConsoleFactory of type: " + typename, e);
+        }
+    }
 
     public void service(final Socket socket) throws CommandException, IOException {
         if (socket == null) {
@@ -64,53 +86,29 @@ public class GShellServer
         }
     }
 
-    public void service(final InputStream in, final OutputStream out) throws CommandException, IOException {
-        if (in == null) {
+    public void service(final InputStream input, final OutputStream output) throws CommandException, IOException {
+        if (input == null) {
             throw new IllegalArgumentException("Input is null");
         }
-        if (out == null) {
+        if (output == null) {
             throw new IllegalArgumentException("Output is null");
         }
-
-        IO io = null;
 
         //
         // TODO: Need to figure out how to get the logging stream for this GShell to use
         //       the given IO streams
         //
 
+        IO io = null;
         try {
-            //
-            // TODO: Abstract Telnet specifics; support other protocols (ie. SSH)
-            //
-
-            //
-            // TODO: Need access to the Terminal... NVT4J
-            //
-
-            TelnetTerminal term = new TelnetTerminal(in, out);
-
-            if (log.isDebugEnabled()) {
-                log.debug("Using terminal: " + term);
-                log.debug("  supported: " + term.isSupported());
-                log.debug("  height: " + term.getTerminalHeight());
-                log.debug("  width: " + term.getTerminalWidth());
-                log.debug("  echo: " + term.getEcho());
-                log.debug("  ANSI: " + term.isANSISupported());
-            }
-
-            io = term.getIO();
-
-            //
-            // HACK: This is specific to JLine... should abstract this
-            //
-
-            ConsoleReader reader = new ConsoleReader(io.inputStream, io.out, /* bindings */ null, term);
-            Console console = new JLineConsole(io, reader);
-
+            Console console = consoleFactory.create(input, output);
+            io = console.getIO();
             GShell shell = new GShell(io);
             InteractiveGShell interp = new InteractiveGShell(console, shell);
             interp.run();
+        }
+        catch (Exception e) {
+            throw new CommandException(e);
         }
         finally {
             if (io != null) {

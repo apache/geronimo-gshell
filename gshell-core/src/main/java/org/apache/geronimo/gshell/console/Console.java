@@ -28,4 +28,6 @@ import java.io.IOException;
 public interface Console
 {
     String readLine(final String prompt) throws IOException;
+
+    IO getIO();
 }

@@ -52,7 +52,7 @@ public class JLineConsole
         if (io == null) {
             throw new IllegalArgumentException("IO is null");
         }
-        
+
         this.io = io;
         this.reader = new ConsoleReader(io.inputStream, io.out);
     }
@@ -61,6 +61,10 @@ public class JLineConsole
         assert prompt != null;
 
         return reader.readLine(prompt);
+    }
+
+    public IO getIO() {
+        return io;
     }
 
     public ConsoleReader getReader() {

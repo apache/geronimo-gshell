@@ -16,14 +16,20 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     
-    <artifactId>gshell-server-core</artifactId>
-    <name>GShell Server :: Core</name>
+    <artifactId>gshell-server-telnet</artifactId>
+    <name>GShell Server :: Telnet</name>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-core</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-server-core</artifactId>
             <version>${pom.version}</version>
         </dependency>
 

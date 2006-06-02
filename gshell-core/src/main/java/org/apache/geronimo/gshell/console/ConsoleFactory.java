@@ -16,6 +16,9 @@
 
 package org.apache.geronimo.gshell.console;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * Interface to abstract creation of {@link Console} instances.
  *
@@ -28,9 +31,5 @@ public interface ConsoleFactory
     //       (like the script command) with out needing to know which is the right flavor
     //
 
-    //
-    // TODO: Re-eval if this needs to be an interface... might not
-    //
-
-    Console create(IO io) throws Exception;
+    Console create(InputStream input, OutputStream output) throws Exception;
 }

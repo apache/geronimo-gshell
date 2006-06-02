@@ -35,10 +35,16 @@
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>gshell-server</artifactId>
+            <artifactId>gshell-server-core</artifactId>
             <version>${pom.version}</version>
         </dependency>
-        
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-server-telnet</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>standard-commands</artifactId>
