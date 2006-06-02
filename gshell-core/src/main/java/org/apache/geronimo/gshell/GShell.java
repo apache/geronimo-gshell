@@ -25,9 +25,10 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.VariablesMap;
+import org.apache.geronimo.gshell.command.VariablesImpl;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandDefinition;
+import org.apache.geronimo.gshell.command.CommandManagerImpl;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -50,7 +51,7 @@ public class GShell
 
     private final CommandLineBuilder commandLineBuilder;
 
-    private final Variables vars = new VariablesMap();
+    private final Variables vars = new VariablesImpl();
 
     public GShell(final IO io) throws CommandException {
         if (io == null) {
@@ -60,7 +61,7 @@ public class GShell
         this.io = io;
 
         shellContainer.registerComponentInstance(this);
-        shellContainer.registerComponentImplementation(CommandManager.class);
+        shellContainer.registerComponentImplementation(CommandManagerImpl.class);
         shellContainer.registerComponentImplementation(CommandLineBuilder.class);
 
         //
@@ -128,7 +129,7 @@ public class GShell
         final Variables parent = getVariables();
 
         cmd.init(new CommandContext() {
-            final Variables vars = new VariablesMap(parent);
+            final Variables vars = new VariablesImpl(parent);
 
             public IO getIO() {
                 return io;

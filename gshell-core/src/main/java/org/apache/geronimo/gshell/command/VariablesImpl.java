@@ -19,7 +19,6 @@ package org.apache.geronimo.gshell.command;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
@@ -29,7 +28,7 @@ import java.util.Collections;
  *
  * @version $Id$
  */
-public class VariablesMap
+public class VariablesImpl
     implements Variables
 {
     private final Map<String,Object> map;
@@ -38,7 +37,7 @@ public class VariablesMap
 
     private final Set<String> immutables = new HashSet<String>();
 
-    public VariablesMap(final Map<String,Object> map, final Variables parent) {
+    public VariablesImpl(final Map<String,Object> map, final Variables parent) {
         if (map == null) {
             throw new IllegalArgumentException("Map is null");
         }
@@ -50,7 +49,7 @@ public class VariablesMap
         this.parent = parent;
     }
 
-    public VariablesMap(final Variables parent) {
+    public VariablesImpl(final Variables parent) {
         if (parent == null) {
             throw new IllegalArgumentException("Parent is null");
         }
@@ -59,7 +58,7 @@ public class VariablesMap
         this.parent = parent;
     }
 
-    public VariablesMap(final Map<String,Object> map) {
+    public VariablesImpl(final Map<String,Object> map) {
         if (map == null) {
             throw new IllegalArgumentException("Map is null");
         }
@@ -68,7 +67,7 @@ public class VariablesMap
         this.parent = null;
     }
 
-    public VariablesMap() {
+    public VariablesImpl() {
         this(new HashMap<String,Object>());
     }
 

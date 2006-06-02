@@ -16,92 +16,18 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.xbean.finder.ResourceFinder;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.util.Map;
-import java.util.Properties;
-import java.util.HashMap;
 import java.util.Set;
-import java.util.Collections;
 
 /**
- * Manager of command definitions and provides access to command instances.
+ * ???
  *
  * @version $Id$
  */
-public class CommandManager
+public interface CommandManager
 {
-    //
-    // TODO: Rename, this has become a registry
-    //
-    
-    private static final Log log = LogFactory.getLog(CommandManager.class);
+    void addCommandDefinition(CommandDefinition def);
 
-    private Map<String,CommandDefinition> commandDefMap = new HashMap<String,CommandDefinition>();
+    CommandDefinition getCommandDefinition(String name) throws CommandNotFoundException;
 
-    public CommandManager() throws CommandException {
-        try {
-            discoverCommands();
-        }
-        catch (Exception e) {
-            throw new CommandException(e);
-        }
-    }
-
-    private void discoverCommands() throws Exception {
-        log.info("Discovering commands");
-
-        ResourceFinder finder = new ResourceFinder("META-INF/");
-        Map<String, Properties> map = finder.mapAllProperties("org.apache.geronimo.gshell.command");
-
-        for (String filename : map.keySet()) {
-            Properties props = map.get(filename);
-            CommandDefinition def = new CommandDefinition(props);
-            addCommandDefinition(def);
-        }
-    }
-
-    public void addCommandDefinition(final CommandDefinition def) {
-        if (def == null) {
-            throw new IllegalArgumentException("Def is null");
-        }
-
-        commandDefMap.put(def.getName(), def);
-
-        if (log.isDebugEnabled()) {
-            log.debug("Added definition: " + def);
-        }
-    }
-
-    public CommandDefinition getCommandDefinition(String name) throws CommandNotFoundException {
-        if (name == null) {
-            throw new IllegalArgumentException("Name is null");
-        }
-        if (name.trim().length() == 0) {
-            throw new IllegalArgumentException("Name is empty");
-        }
-
-        //
-        // TODO: Issue warning if there is whitespace, that is a programming error (for someone)
-        //       Investigate auto-trim and complain from the parser too, looks like we are catching
-        //       non-traditional whitespace (ctrl chars, etc).
-        //
-
-        // Make sure there is not funky whitespace in there (from Telnet or something)
-        name = name.trim();
-
-        CommandDefinition def = commandDefMap.get(name);
-        if (def == null) {
-            throw new CommandNotFoundException(name);
-        }
-
-        return def;
-    }
-
-    public Set<String> commandNames() {
-        return Collections.unmodifiableSet(commandDefMap.keySet());
-    }
+    Set<String> commandNames();
 }

@@ -23,16 +23,16 @@ import java.util.Map;
 import java.util.Iterator;
 
 /**
- * Unit tests for the {@link VariablesMap} class.
+ * Unit tests for the {@link VariablesImpl} class.
  *
  * @version $Id$
  */
-public class VariablesMapTest
+public class VariablesImplTest
     extends TestCase
 {
     public void testConstructorArgsNull() throws Exception {
         try {
-            new VariablesMap((Map<String,Object>)null);
+            new VariablesImpl((Map<String,Object>)null);
             fail("Accepted a null value");
         }
         catch (IllegalArgumentException expected) {
@@ -40,7 +40,7 @@ public class VariablesMapTest
         }
 
         try {
-            new VariablesMap((Variables)null);
+            new VariablesImpl((Variables)null);
             fail("Accepted a null value");
         }
         catch (IllegalArgumentException expected) {
@@ -48,7 +48,7 @@ public class VariablesMapTest
         }
 
         try {
-            new VariablesMap(new HashMap<String,Object>(), null);
+            new VariablesImpl(new HashMap<String,Object>(), null);
             fail("Accepted a null value");
         }
         catch (IllegalArgumentException expected) {
@@ -56,13 +56,13 @@ public class VariablesMapTest
         }
 
         // Happy day
-        new VariablesMap(new HashMap<String,Object>(), new VariablesMap());
+        new VariablesImpl(new HashMap<String,Object>(), new VariablesImpl());
     }
 
     /*
     public void testSetNameIsNull() throws Exception {
         try {
-            new VariablesMap().set(null, null);
+            new VariablesImpl().set(null, null);
             fail("Accepted a null value");
         }
         catch (IllegalArgumentException expected) {
@@ -72,7 +72,7 @@ public class VariablesMapTest
     */
 
     public void testSet() throws Exception {
-        VariablesMap vars = new VariablesMap();
+        VariablesImpl vars = new VariablesImpl();
         String name = "a";
         Object value = new Object();
 
@@ -88,7 +88,7 @@ public class VariablesMapTest
     }
 
     public void testSetAsImmutable() throws Exception {
-        VariablesMap vars = new VariablesMap();
+        VariablesImpl vars = new VariablesImpl();
         String name = "a";
         Object value = new Object();
 
@@ -106,8 +106,8 @@ public class VariablesMapTest
     }
 
     public void testSetAsImmutableInParent() throws Exception {
-        Variables parent = new VariablesMap();
-        VariablesMap vars = new VariablesMap(parent);
+        Variables parent = new VariablesImpl();
+        VariablesImpl vars = new VariablesImpl(parent);
         String name = "a";
         Object value = new Object();
 
@@ -125,7 +125,7 @@ public class VariablesMapTest
     }
 
     public void testGet() throws Exception {
-        VariablesMap vars = new VariablesMap();
+        VariablesImpl vars = new VariablesImpl();
         String name = "a";
         Object value = new Object();
 
@@ -138,7 +138,7 @@ public class VariablesMapTest
     }
 
     public void testGetUsingDefault() throws Exception {
-        VariablesMap vars = new VariablesMap();
+        VariablesImpl vars = new VariablesImpl();
         String name = "a";
         Object value = new Object();
 
@@ -150,8 +150,8 @@ public class VariablesMapTest
     }
 
     public void testGetCloaked() throws Exception {
-        Variables parent = new VariablesMap();
-        VariablesMap vars = new VariablesMap(parent);
+        Variables parent = new VariablesImpl();
+        VariablesImpl vars = new VariablesImpl(parent);
         String name = "a";
         Object value = new Object();
 
@@ -168,7 +168,7 @@ public class VariablesMapTest
     }
 
     public void testUnsetAsImmutable() throws Exception {
-        VariablesMap vars = new VariablesMap();
+        VariablesImpl vars = new VariablesImpl();
         String name = "a";
         Object value = new Object();
 
@@ -186,8 +186,8 @@ public class VariablesMapTest
     }
 
     public void testUnsetAsImmutableInParent() throws Exception {
-        Variables parent = new VariablesMap();
-        VariablesMap vars = new VariablesMap(parent);
+        Variables parent = new VariablesImpl();
+        VariablesImpl vars = new VariablesImpl(parent);
         String name = "a";
         Object value = new Object();
 
@@ -205,8 +205,8 @@ public class VariablesMapTest
     }
 
     public void testCloaking() throws Exception {
-        Variables parent = new VariablesMap();
-        VariablesMap vars = new VariablesMap(parent);
+        Variables parent = new VariablesImpl();
+        VariablesImpl vars = new VariablesImpl(parent);
         String name = "a";
         Object value = new Object();
 
@@ -219,24 +219,24 @@ public class VariablesMapTest
     }
 
     public void testParent() throws Exception {
-        Variables parent = new VariablesMap();
+        Variables parent = new VariablesImpl();
         assertNull(parent.parent());
 
-        VariablesMap vars = new VariablesMap(parent);
+        VariablesImpl vars = new VariablesImpl(parent);
         assertNotNull(vars.parent());
 
         assertEquals(parent, vars.parent());
     }
 
     public void testNames() throws Exception {
-        VariablesMap vars = new VariablesMap();
+        VariablesImpl vars = new VariablesImpl();
         Iterator<String> iter = vars.names();
         assertNotNull(iter);
         assertFalse(iter.hasNext());
     }
 
     public void testNamesImmutable() throws Exception {
-        VariablesMap vars = new VariablesMap();
+        VariablesImpl vars = new VariablesImpl();
         vars.set("a", "b");
 
         Iterator<String> iter = vars.names();

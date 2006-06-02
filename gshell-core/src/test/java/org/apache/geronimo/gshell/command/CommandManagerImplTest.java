@@ -23,10 +23,10 @@ import junit.framework.TestCase;
  *
  * @version $Id$
  */
-public class CommandManagerTest
+public class CommandManagerImplTest
     extends TestCase
 {
     public void testConstructor() throws Exception {
-        new CommandManager();
+        new CommandManagerImpl();
     }
 }
