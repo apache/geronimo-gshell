@@ -102,6 +102,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>remove-overrides</id>
                         <phase>generate-sources</phase>
                         <configuration>
                             <tasks>
@@ -114,6 +115,33 @@
                                 </delete>
                             </tasks>
                         </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    
+                    <!-- Need to put these into a package so that Eclipse does not freak out -->
+                    <execution>
+                        <id>move-to-package</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser"/>
+                                <move todir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser">
+                                    <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
+                                        <include name="*.java"/>
+                                    </fileset>
+                                </move>
+                                
+                                <mkdir dir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser"/>
+                                <move todir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser">
+                                    <fileset dir="${pom.basedir}/target/generated-sources/javacc">
+                                        <include name="*.java"/>
+                                    </fileset>
+                                </move>
+                            </tasks>
+                        </configuration>
+                        
                         <goals>
                             <goal>run</goal>
                         </goals>
