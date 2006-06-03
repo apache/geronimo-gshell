@@ -16,7 +16,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     
-    <artifactId>gshell-assembly</artifactId>
+    <artifactId>gshell-complete-assembly</artifactId>
     <name>GShell Assemblies :: Complete</name>
     <packaging>pom</packaging>
     

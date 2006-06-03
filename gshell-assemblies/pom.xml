@@ -40,7 +40,7 @@
                 </property>
             </activation>
             <modules>
-                <module>gshell-assembly</module>
+                <module>gshell-complete-assembly</module>
                 <module>gshell-retro-assembly</module>
                 <module>gshell-squeezed-assembly</module>
             </modules>
