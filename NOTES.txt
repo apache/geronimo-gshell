@@ -38,8 +38,6 @@ MOTD-like support... Execute a "welcome.gsh" or something?
 
  * * *
 
- * * *
-
 Settings, read from ~/.gshell/...
 
 
@@ -91,3 +89,6 @@ Implement VFS-based commands to access any directory!!!
     /vfs/browser ftp://whatever
     ...
 
+Hook up message bundles to externalized strings for commands,
+    Maybe provide that as a standard hook for commands
+    Try to extern all messages (including --help bits), so we can i18n

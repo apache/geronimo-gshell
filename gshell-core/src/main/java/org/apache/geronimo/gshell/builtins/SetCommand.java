@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.IO;
 
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 /**
  * Set a variable or property.
@@ -51,6 +52,13 @@ public class SetCommand
         assert args != null;
 
         //
+        // TODO: Sub-class, create a Spring-like MessageSource, using Varags + printf
+        //       Add to commmand context interface
+        //
+
+        ResourceBundle resources = ResourceBundle.getBundle(getClass().getName() + "Messages");
+
+        //
         // TODO: Optimize, move common code to CommandSupport
         //
 
@@ -59,11 +67,11 @@ public class SetCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(resources.getString("cli.option.help"))
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("property")
-            .withDescription("Set a system property")
+            .withDescription(resources.getString("cli.option.property"))
             .create('p'));
 
         //
@@ -78,7 +86,9 @@ public class SetCommand
         CommandLine line = parser.parse(options, args);
 
         if (line.hasOption('h')) {
-            io.out.println(getName() + " -- set a variable or property");
+            io.out.print(getName());
+            io.out.print(" -- ");
+            io.out.println(resources.getString("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
@@ -93,6 +103,8 @@ public class SetCommand
                 "",
                 false); // auto usage
 
+            io.out.println();
+            io.out.println(resources.getString("cli.usage.footer")); //
             io.out.println();
 
             return Command.SUCCESS;
