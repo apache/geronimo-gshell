@@ -33,6 +33,8 @@ import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.util.Arguments;
 
+import java.util.Iterator;
+
 /**
  * ???
  *
@@ -51,7 +53,7 @@ public class Shell
 
     private final CommandLineBuilder commandLineBuilder;
 
-    private final Variables vars = new VariablesImpl();
+    private final Variables variables = new VariablesImpl();
 
     public Shell(final IO io) throws CommandException {
         if (io == null) {
@@ -77,7 +79,7 @@ public class Shell
     }
 
     public Variables getVariables() {
-        return vars;
+        return variables;
     }
 
     public IO getIO() {
@@ -103,6 +105,20 @@ public class Shell
     // CommandExecutor
     //
 
+    private void dump(final Variables vars) {
+        Iterator<String> iter = vars.names();
+
+        if (iter.hasNext()) {
+            log.debug("Variables:");
+        }
+
+        while (iter.hasNext()) {
+            String name = iter.next();
+
+            log.debug("    " + name + "=" + vars.get(name));
+        }
+    }
+
     public int execute(final String commandName, final String[] args) throws Exception {
         assert commandName != null;
         assert args != null;
@@ -126,11 +142,9 @@ public class Shell
         // TODO: DI all bits if we can, then free up "context" to replace "category" as a term
         //
 
-        final Variables parent = getVariables();
+        final Variables vars = new VariablesImpl(getVariables());
 
         cmd.init(new CommandContext() {
-            final Variables vars = new VariablesImpl(parent);
-
             public IO getIO() {
                 return io;
             }
@@ -148,7 +162,6 @@ public class Shell
         }
 
         int status;
-
         try {
             status = cmd.execute(args);
 

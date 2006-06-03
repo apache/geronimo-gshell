@@ -22,6 +22,8 @@ import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.ExitNotification;
 
+import java.util.Iterator;
+
 /**
  * Provides support for {@link Command} implemenations.
  *
@@ -67,6 +69,20 @@ public abstract class CommandSupport
     // Life-cycle
     //
 
+    private void dump(final Variables vars) {
+        Iterator<String> iter = vars.names();
+
+        if (iter.hasNext()) {
+            log.debug("Variables:");
+        }
+
+        while (iter.hasNext()) {
+            String name = iter.next();
+
+            log.debug("    " + name + "=" + vars.get(name));
+        }
+    }
+
     public final void init(final CommandContext context) {
         if (this.context != null) {
             throw new IllegalStateException("Command already initalized");
@@ -79,7 +95,13 @@ public abstract class CommandSupport
 
         this.context = context;
 
+        if (log.isDebugEnabled()) {
+            dump(context.getVariables());
+        }
+
         doInit();
+
+        log.debug("Initialized");
     }
 
     protected void doInit() {
@@ -99,9 +121,15 @@ public abstract class CommandSupport
 
         log.debug("Destroying");
 
+        if (log.isDebugEnabled()) {
+            dump(context.getVariables());
+        }
+
         doDestroy();
 
         this.context = null;
+
+        log.debug("Destroyed");
     }
 
     protected void doDestroy() {
@@ -117,7 +145,9 @@ public abstract class CommandSupport
     //
 
     protected CommandContext getCommandContext() {
-        assert context != null;
+        if (context == null) {
+            throw new IllegalStateException("Not initialized; missing command context");
+        }
 
         return context;
     }

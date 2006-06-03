@@ -164,7 +164,30 @@ public class VariablesImpl
     }
 
     public Iterator<String> names() {
-        return Collections.unmodifiableSet(map.keySet()).iterator();
+        // Chain to parent iterator if we have a parent
+        return new Iterator<String>() {
+            Iterator<String> iter = map.keySet().iterator();
+            boolean more = parent() != null;
+
+            public boolean hasNext() {
+                boolean next = iter.hasNext();
+                if (!next && more) {
+                    iter = parent().names();
+                    more = false;
+                    next = hasNext();
+                }
+
+                return next;
+            }
+
+            public String next() {
+                return iter.next();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     public Variables parent() {

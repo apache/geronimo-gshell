@@ -124,6 +124,20 @@ public class VariablesImplTest
         }
     }
 
+    public void testSetParentFromChild() throws Exception {
+        Variables parent = new VariablesImpl();
+        VariablesImpl vars = new VariablesImpl(parent);
+        String name = "a";
+        Object value = new Object();
+
+        // Make sure we can add to parent's scope from child
+        vars.parent().set(name, value);
+        assertEquals(value, parent.get(name));
+
+        // Make sure the iter sees it
+        assertTrue(vars.names().hasNext());
+    }
+
     public void testGet() throws Exception {
         VariablesImpl vars = new VariablesImpl();
         String name = "a";

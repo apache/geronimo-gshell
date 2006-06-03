@@ -17,7 +17,7 @@
     </parent>
     
     <artifactId>gshell-retro-assembly</artifactId>
-    <name>GShell :: Retro Assembly</name>
+    <name>GShell Assemblies :: Retro</name>
     <packaging>pom</packaging>
     
     <dependencies>

@@ -24,6 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -38,7 +39,13 @@ public class SetCommand
         super("set");
     }
 
-    protected int doExecute(final String[] args) throws Exception {
+    enum Mode
+    {
+        VARIABLE,
+        PROPERTY
+    }
+
+    protected int doExecute(String[] args) throws Exception {
         assert args != null;
 
         //
@@ -53,10 +60,29 @@ public class SetCommand
             .withDescription("Display this help message")
             .create('h'));
 
+        options.addOption(OptionBuilder.withLongOpt("property")
+            .withDescription("Set a system property")
+            .create('p'));
+
+        //
+        // TODO: Add support to set immutable
+        //
+
+        //
+        // TODO: Add support to set in parent (parent) scope
+        //
+
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
-        if (line.hasOption('h')) {
+        boolean usage = false;
+        String[] _args = line.getArgs();
+
+        if (_args.length == 0) {
+            usage = true;
+        }
+
+        if (usage || line.hasOption('h')) {
             io.out.println(getName() + " -- set a variable or property");
             io.out.println();
 
@@ -64,7 +90,7 @@ public class SetCommand
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                getName() + " [options] <name=value>",
+                getName() + " [options] (<name=value>)+",
                 "",
                 options,
                 4, // left pad
@@ -77,37 +103,72 @@ public class SetCommand
             return Command.SUCCESS;
         }
 
-        String[] _args = line.getArgs();
-        if (args.length != 1) {
-            log.error("Expected one and only one argument.");
+        Mode mode = Mode.VARIABLE;
+
+        if (line.hasOption('p')) {
+            mode = Mode.PROPERTY;
         }
-        else {
-            //
-            // TODO: Support setting context variables
-            //
-            
-            setPropertyFrom(_args[0]);
+
+        //
+        // FIXME: This does not jive well with the parser, and stuff like foo = "b a r"
+        //
+        
+        for (String arg : _args) {
+            switch (mode) {
+                case PROPERTY:
+                    setProperty(arg);
+                    break;
+
+                case VARIABLE:
+                    setVariable(arg);
+                    break;
+            }
         }
 
         return Command.SUCCESS;
     }
 
-    private void setPropertyFrom(final String namevalue) {
-        String name, value;
-        int j = namevalue.indexOf("=");
+    class NameValue
+    {
+        String name;
+        String value;
+    }
 
-        if (j == -1) {
-            name = namevalue;
-            value = "true";
+    private NameValue parse(final String input) {
+        NameValue nv = new NameValue();
+
+        int i = input.indexOf("=");
+
+        if (i == -1) {
+            nv.name = input;
+            nv.value = "true";
         }
         else {
-            name = namevalue.substring(0, j);
-            value = namevalue.substring(j + 1, namevalue.length());
+            nv.name = input.substring(0, i);
+            nv.value = input.substring(i + 1, input.length());
         }
-        name = name.trim();
 
-        log.info("Setting system property: " + name + "=" + value);
+        nv.name = nv.name.trim();
 
-        System.setProperty(name, value);
+        return nv;
+    }
+
+    private void setProperty(final String namevalue) {
+        NameValue nv = parse(namevalue);
+
+        log.info("Setting system property: " + nv.name + "=" + nv.value);
+
+        System.setProperty(nv.name, nv.value);
+    }
+
+    private void setVariable(final String namevalue) {
+        NameValue nv = parse(namevalue);
+
+        log.info("Setting variable: " + nv.name + "=" + nv.value);
+
+        // Command vars always has a parent, set only makes sence when setting in parent's scope
+        Variables vars = this.getVariables().parent();
+
+        vars.set(nv.name, nv.value);
     }
 }
