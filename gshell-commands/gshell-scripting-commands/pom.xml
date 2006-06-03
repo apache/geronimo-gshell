@@ -21,6 +21,14 @@
     <packaging>jar</packaging>
 
     <dependencies>
+
+        <!-- FIXME: Need to abstract InteractiveConsole and move it to API, until then depend on core -->
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-core</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>bsf</groupId>
             <artifactId>bsf</artifactId>

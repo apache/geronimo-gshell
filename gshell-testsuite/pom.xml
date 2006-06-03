@@ -29,13 +29,31 @@
         
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>gshell-server</artifactId>
+            <artifactId>gshell-cli</artifactId>
             <version>${pom.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>gshell-commands</artifactId>
+            <artifactId>gshell-server-core</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-server-telnet</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-standard-commands</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-scripting-commands</artifactId>
             <version>${pom.version}</version>
         </dependency>
     </dependencies>

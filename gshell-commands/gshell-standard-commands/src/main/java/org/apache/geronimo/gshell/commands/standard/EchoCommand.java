@@ -95,9 +95,11 @@ public class EchoCommand
     private void echo(final String[] args) {
         IO io = getIO();
 
-        for (String arg : args) {
-            io.out.print(arg);
-            io.out.print(" ");
+        for (int i=0; i < args.length; i++) {
+            io.out.print(args[i]);
+            if (i + 1 < args.length) {
+                io.out.print(" ");
+            }
         }
         
         if (trailingNewline) {
