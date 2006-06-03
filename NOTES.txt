@@ -1,0 +1,72 @@
+
+ +-------+
+ | NOTES |
+ +-------+
+
+ $Id$
+
+ ----
+
+enable/disable categories.  Command def sets the initial state, 'enable' command
+    toggles to enable or disable categories:
+
+    # enable all categories ending with debug
+    /gshell/debug *debug
+
+"*" means global for category
+
+Command search path (required for above)
+
+ * * *
+
+Settings, read from ~/.gshell/...
+
+    ~/.gshell/
+        profile.gsh
+        settings.gsh?  settings.properties?  settings.xml?
+
+MOTD-like support... Execute a "welcome.gsh" or something?
+
+ * * *
+
+Implement MiniJar to make the gshell dependencies as small as possible,
+    will require adding more features to minijar (half tested already)
+
+ * * *
+
+Maybe just use the JLine API directly instead of trying to abstract it?
+
+Command line completion ala JLine
+
+Refactor output and verbosity filters...
+
+    IO.trace() -vvv
+    IO.debug() -vv
+Add IO.info()  -v
+    IO.warn()  unless -q
+    IO.error()
+
+ANSI color prompt
+
+ANSI color G-logo (ANSI-art style)
+
+ * * *
+
+Authenticator for server cmd, maybe for normal too?
+
+SSH support?  Can Jsch do this or not?
+
+ * * *
+
+New commands:
+
+    source
+    ssh?
+    subshell
+    exec
+
+Implement VFS-based commands to access any directory!!!
+    /vfs/get ftp://whatever
+    /vfs/browser ftp://whatever
+    ...
+
