@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>org.apache.geronimo.gshell</groupId>
+        <artifactId>gshell-assemblies</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>gshell-retro-squeezed</artifactId>
+    <name>GShell Assemblies :: Squeezed</name>
+    <packaging>pom</packaging>
+    
+    <dependencies>
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-assembly</artifactId>
+            <version>${pom.version}</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dependency-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-assembly</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${pom.groupId}</groupId>
+                                    <artifactId>gshell-assembly</artifactId>
+                                    <version>${pom.version}</version>
+                                    <type>zip</type>
+                                    <classifier>bin</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            
+                            <outputDirectory>${pom.basedir}/target/scratch</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>minijar-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>minijar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>
+                            <directory>${pom.basedir}/target/scratch/gshell-${pom.version}/lib</directory>
+                            <pattern>gshell*.jar</pattern>
+                        </include>
+                    </includes>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <copy todir="${pom.basedir}/target/scratch/gshell">
+                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${pom.version}">
+                                        <include name="**"/>
+                                        <exclude name="lib/*.jar"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="${pom.basedir}/target/scratch/gshell/lib">
+                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${pom.version}/lib">
+                                        <include name="gshell*.jar"/>
+                                    </fileset>
+                                </copy>
+                                <!--
+                                <copy todir="${pom.basedir}/target/scratch/gshell-${pom.version}/lib">
+                                    <fileset dir="${pom.basedir}/target/minijar">
+                                        <include name="*-minimal.jar"/>
+                                        <exclude name="gshell*.jar"/>
+                                        <exclude name="classworlds*.jar"/>
+                                    </fileset>
+                                </copy>
+                                -->
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
+                    </descriptors>
+                    <finalName>gshell-${pom.version}-squeezed</finalName>
+                </configuration>
+            </plugin>
+             
+        </plugins>
+    </build>
+</project>

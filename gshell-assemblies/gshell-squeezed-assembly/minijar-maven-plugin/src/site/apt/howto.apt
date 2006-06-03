@@ -1,0 +1,4 @@
+How to Use
+
+  Just call the 'minijar:minijar' goal and it will generate a set of *-minimal.jar
+  files in the target directory.
