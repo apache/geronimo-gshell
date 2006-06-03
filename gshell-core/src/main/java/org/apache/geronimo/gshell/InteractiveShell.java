@@ -18,6 +18,8 @@ package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.console.InteractiveConsole;
 import org.apache.geronimo.gshell.console.Console;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 
@@ -29,6 +31,8 @@ import java.io.IOException;
 public class InteractiveShell
     extends InteractiveConsole
 {
+    private static final Log log = LogFactory.getLog(InteractiveConsole.class);
+
     //
     // TODO: Refactor InteractiveConsole to use method overides for extention
     //       Seems like that is what we are doing so far anyways (sub-classing that is)

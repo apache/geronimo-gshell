@@ -112,6 +112,21 @@ public class InteractiveConsole
         while ((line = console.readLine(prompter.getPrompt())) != null) {
             if (debug) {
                 log.debug("Read line: " + line);
+
+                // Log the line as hex
+                StringBuffer idx = new StringBuffer();
+                StringBuffer hex = new StringBuffer();
+
+                byte[] bytes = line.getBytes();
+                for (byte b : bytes) {
+                    String h = Integer.toHexString(b);
+
+                    hex.append("x").append(h).append(" ");
+                    idx.append(" ").append((char)b).append("  ");
+                }
+
+                log.debug("HEX: " + hex);
+                log.debug("     "  + idx);
             }
 
             Executor.Result result = executor.execute(line);
