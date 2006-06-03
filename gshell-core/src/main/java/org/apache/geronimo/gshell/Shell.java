@@ -29,6 +29,8 @@ import org.apache.geronimo.gshell.command.VariablesImpl;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManagerImpl;
+import org.apache.geronimo.gshell.command.MessageSource;
+import org.apache.geronimo.gshell.command.MessageSourceImpl;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -130,14 +132,15 @@ public class Shell
         // Setup the command container
         ShellContainer container = new ShellContainer(shellContainer);
 
-        CommandDefinition def = commandManager.getCommandDefinition(commandName);
+        final CommandDefinition def = commandManager.getCommandDefinition(commandName);
+        final Class type = def.loadClass();
 
         //
         // TODO: Pass the command instance the name it was registered with?, could be an alias
         //
 
         container.registerComponentInstance(def);
-        container.registerComponentImplementation(def.loadClass());
+        container.registerComponentImplementation(type);
 
         // container.start() ?
 
@@ -156,6 +159,17 @@ public class Shell
 
             public Variables getVariables() {
                 return vars;
+            }
+
+            MessageSource messageSource;
+
+            public MessageSource getMessageSource() {
+                // Lazy init the messages, commands many not need them
+                if (messageSource == null) {
+                    messageSource = new MessageSourceImpl(type.getName() + "Messages");
+                }
+
+                return messageSource;
             }
         });
 

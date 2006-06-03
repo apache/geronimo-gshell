@@ -16,18 +16,29 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.console.IO;
+import junit.framework.TestCase;
 
 /**
- * Provides the running context (or environment) for a {@link Command}.
+ * Unit tests for the {@link MessageSourceImpl} class.
  *
  * @version $Id$
  */
-public interface CommandContext
+public class MessageSourceImplTest
+    extends TestCase
 {
-    IO getIO();
-    
-    Variables getVariables();
+    public void testLoadAndGetMessage() throws Exception {
+        MessageSourceImpl messages = new MessageSourceImpl(getClass().getName());
 
-    MessageSource getMessageSource();
+        String a = messages.getMessage("a");
+        assertEquals("1", a);
+
+        String b = messages.getMessage("b");
+        assertEquals("2", b);
+
+        String c = messages.getMessage("c");
+        assertEquals("3", c);
+
+        String f = messages.getMessage("f", a, b, c);
+        assertEquals("1 2 3", f);
+    }
 }

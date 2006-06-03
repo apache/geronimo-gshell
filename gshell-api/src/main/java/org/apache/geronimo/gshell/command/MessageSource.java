@@ -16,18 +16,14 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.console.IO;
-
 /**
- * Provides the running context (or environment) for a {@link Command}.
+ * ???
  *
  * @version $Id$
  */
-public interface CommandContext
+public interface MessageSource
 {
-    IO getIO();
-    
-    Variables getVariables();
+    String getMessage(String code);
 
-    MessageSource getMessageSource();
+    String getMessage(String code, Object... args);
 }

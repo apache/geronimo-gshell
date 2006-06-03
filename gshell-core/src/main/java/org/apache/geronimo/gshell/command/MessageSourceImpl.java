@@ -16,18 +16,37 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.console.IO;
+import java.util.ResourceBundle;
+import java.util.Formatter;
 
 /**
- * Provides the running context (or environment) for a {@link Command}.
+ * ???
  *
  * @version $Id$
  */
-public interface CommandContext
+public class MessageSourceImpl
+    implements MessageSource
 {
-    IO getIO();
-    
-    Variables getVariables();
+    private final ResourceBundle bundle;
 
-    MessageSource getMessageSource();
+    public MessageSourceImpl(final String name) {
+        assert name != null;
+
+        bundle = ResourceBundle.getBundle(name);
+    }
+
+    public String getMessage(final String code) {
+        return bundle.getString(code);
+    }
+
+    public String getMessage(final String code, final Object... args) {
+        String format = getMessage(code);
+
+        StringBuilder sb = new StringBuilder();
+        Formatter f = new Formatter(sb);
+        
+        f.format(format, args);
+
+        return sb.toString();
+    }
 }

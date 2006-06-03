@@ -160,6 +160,10 @@ public abstract class CommandSupport
         return getCommandContext().getIO();
     }
 
+    protected MessageSource getMessageSource() {
+        return getCommandContext().getMessageSource();
+    }
+
     //
     // Execute Helpers
     //
