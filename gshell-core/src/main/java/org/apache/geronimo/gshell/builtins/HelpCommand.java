@@ -26,7 +26,9 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.CommandManager;
+import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.util.Arguments;
 
 /**
  * Display help
@@ -53,6 +55,7 @@ public class HelpCommand
     public void setCommandManager(final CommandManager commandManager) {
         this.commandManager = commandManager;
     }
+    
     */
 
     private CommandManager getCommandManager() {
@@ -131,15 +134,25 @@ public class HelpCommand
             io.out.println();
         }
         else if (topic.equals("commands")) {
-            io.out.println("Available commands:");
+            io.out.println("Available commands (and aliases):");
 
             //
             // HACK: For now just list all know commands
             //
 
-            for (String name : manager.commandNames()) {
+            for (CommandDefinition def : manager.commandDefinitions()) {
                 io.out.print("  ");
-                io.out.println(name);
+                io.out.print(def.getName());
+
+                // Include a list of aliases
+                String[] aliases = def.getAliases();
+                if (aliases.length != 0) {
+                    io.out.print(" ( ");
+                    io.out.print(Arguments.asString(aliases));
+                    io.out.print(" )");
+                }
+
+                io.out.println();
             }
 
             io.out.println();

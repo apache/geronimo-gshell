@@ -17,17 +17,24 @@
 package org.apache.geronimo.gshell.command;
 
 import java.util.Set;
+import java.util.Collection;
 
 /**
- * ???
+ * Interface for manager of command definitions and provides access to command instances.
  *
  * @version $Id$
  */
 public interface CommandManager
 {
-    void addCommandDefinition(CommandDefinition def);
+    //
+    // TODO: Rename, this has become a registry
+    //
+
+    boolean addCommandDefinition(CommandDefinition def);
 
     CommandDefinition getCommandDefinition(String name) throws CommandNotFoundException;
+
+    Collection<CommandDefinition> commandDefinitions();
 
     Set<String> commandNames();
 }

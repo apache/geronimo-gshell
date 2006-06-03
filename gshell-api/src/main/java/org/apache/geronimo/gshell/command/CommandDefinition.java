@@ -16,6 +16,8 @@
 
 package org.apache.geronimo.gshell.command;
 
+import org.apache.geronimo.gshell.util.Arguments;
+
 import java.util.Properties;
 
 /**
@@ -28,6 +30,8 @@ public class CommandDefinition
     private final String name;
 
     private final String classname;
+
+    private final String[] aliases;
 
     public CommandDefinition(final Properties props) throws InvalidDefinitionException {
         if (props == null) {
@@ -43,6 +47,28 @@ public class CommandDefinition
         if (classname == null) {
             throw new MissingPropertyException("class", props);
         }
+
+        this.aliases = loadAliasesFrom(props);
+    }
+
+    //
+    // TODO: Add 'alias' and 'unalias' command support
+    //
+
+    private String[] loadAliasesFrom(final Properties props) {
+        String input = props.getProperty("aliases");
+
+        if (input != null) {
+            String[] list = input.split(",");
+            for (int i=0; i < list.length; i++) {
+                list[i] = list[i].trim();
+            }
+
+            return list;
+        }
+        else {
+            return new String[0];
+        }
     }
 
     public String getName() {
@@ -53,8 +79,14 @@ public class CommandDefinition
         return classname;
     }
 
+    public String[] getAliases() {
+        return aliases;
+    }
+
     public String toString() {
-        return getName() + "=" + getClassName();
+        return getName() + "=" + getClassName() + "{ aliases=" +
+                Arguments.asString(getAliases()) +
+                " }";
     }
 
     public Class loadClass() throws ClassNotFoundException {

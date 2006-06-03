@@ -131,6 +131,11 @@ public class Shell
         ShellContainer container = new ShellContainer(shellContainer);
 
         CommandDefinition def = commandManager.getCommandDefinition(commandName);
+
+        //
+        // TODO: Pass the command instance the name it was registered with?, could be an alias
+        //
+
         container.registerComponentInstance(def);
         container.registerComponentImplementation(def.loadClass());
 

@@ -26,6 +26,7 @@ import java.util.Properties;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Collections;
+import java.util.Collection;
 
 /**
  * Manager of command definitions and provides access to command instances.
@@ -35,13 +36,11 @@ import java.util.Collections;
 public class CommandManagerImpl
     implements CommandManager
 {
-    //
-    // TODO: Rename, this has become a registry
-    //
-
     private static final Log log = LogFactory.getLog(CommandManager.class);
 
     private Map<String,CommandDefinition> commandDefMap = new HashMap<String,CommandDefinition>();
+
+    private Map<String,CommandDefinition> commandAliasMap = new HashMap<String,CommandDefinition>();
 
     public CommandManagerImpl() throws CommandException {
         try {
@@ -65,15 +64,36 @@ public class CommandManagerImpl
         }
     }
 
-    public void addCommandDefinition(final CommandDefinition def) {
+    public boolean addCommandDefinition(final CommandDefinition def) {
         if (def == null) {
             throw new IllegalArgumentException("Def is null");
         }
 
-        commandDefMap.put(def.getName(), def);
+        boolean debug = log.isDebugEnabled();
 
-        if (log.isDebugEnabled()) {
+        CommandDefinition prev = commandDefMap.put(def.getName(), def);
+        if (debug) {
             log.debug("Added definition: " + def);
+        }
+
+        addCommandAliases(def);
+
+        return prev != null;
+    }
+
+    private void addCommandAliases(final CommandDefinition def) {
+        assert def != null;
+
+        boolean debug = log.isDebugEnabled();
+
+        for (String alias : def.getAliases()) {
+            CommandDefinition prev = commandAliasMap.put(alias, def);
+            if (debug) {
+                log.debug("Added alias (to " + def.getName() + "): " + def);
+                if (prev != null) {
+                    log.debug("    Replaces previous alias to: " + prev.getName());
+                }
+            }
         }
     }
 
@@ -96,7 +116,11 @@ public class CommandManagerImpl
 
         CommandDefinition def = commandDefMap.get(name);
         if (def == null) {
-            throw new CommandNotFoundException(name);
+            def = commandAliasMap.get(name);
+
+            if (def == null) {
+                throw new CommandNotFoundException(name);
+            }
         }
 
         return def;
@@ -104,5 +128,9 @@ public class CommandManagerImpl
 
     public Set<String> commandNames() {
         return Collections.unmodifiableSet(commandDefMap.keySet());
+    }
+
+    public Collection<CommandDefinition> commandDefinitions() {
+        return Collections.unmodifiableCollection(commandDefMap.values());
     }
 }
