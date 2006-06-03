@@ -33,6 +33,8 @@ public class CommandDefinition
 
     private final String[] aliases;
 
+    private final boolean enabled;
+
     public CommandDefinition(final Properties props) throws InvalidDefinitionException {
         if (props == null) {
             throw new IllegalArgumentException("Properties is null");
@@ -49,6 +51,8 @@ public class CommandDefinition
         }
 
         this.aliases = loadAliasesFrom(props);
+
+        this.enabled = Boolean.getBoolean(props.getProperty("enable"));
     }
 
     //
@@ -81,6 +85,10 @@ public class CommandDefinition
 
     public String[] getAliases() {
         return aliases;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public String toString() {
