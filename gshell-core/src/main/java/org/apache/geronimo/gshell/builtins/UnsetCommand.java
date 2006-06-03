@@ -27,18 +27,16 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.IO;
 
-import java.util.Iterator;
-
 /**
- * Set a variable or property.
+ * Unset a variable or property.
  *
  * @version $Id$
  */
-public class SetCommand
+public class UnsetCommand
     extends CommandSupport
 {
-    public SetCommand() {
-        super("set");
+    public UnsetCommand() {
+        super("unset");
     }
 
     enum Mode
@@ -63,29 +61,32 @@ public class SetCommand
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("property")
-            .withDescription("Set a system property")
+            .withDescription("Unset a system property")
             .create('p'));
 
         //
-        // TODO: Add support to set immutable
-        //
-
-        //
-        // TODO: Add support to set in parent (parent) scope
+        // TODO: Add support to unset in parent (parent) scope
         //
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
-        if (line.hasOption('h')) {
-            io.out.println(getName() + " -- set a variable or property");
+        boolean usage = false;
+        String[] _args = line.getArgs();
+
+        if (_args.length == 0) {
+            usage = true;
+        }
+
+        if (usage || line.hasOption('h')) {
+            io.out.println(getName() + " -- unset a variable or property");
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
                 80, // width (FIXME: Should pull from gshell.columns variable)
-                getName() + " [options] (<name[=value>])*",
+                getName() + " [options] (<name>)+",
                 "",
                 options,
                 4, // left pad
@@ -98,44 +99,20 @@ public class SetCommand
             return Command.SUCCESS;
         }
 
-        String[] _args = line.getArgs();
-
-        // No args... list all variables
-        if (_args.length == 0) {
-            Variables vars = getVariables();
-            Iterator<String> iter = vars.names();
-
-            while (iter.hasNext()) {
-                String name = iter.next();
-                Object value = vars.get(name);
-
-                io.out.print(name);
-                io.out.print("=");
-                io.out.print(value);
-                io.out.println();
-            }
-
-            return Command.SUCCESS;
-        }
-
         Mode mode = Mode.VARIABLE;
 
         if (line.hasOption('p')) {
             mode = Mode.PROPERTY;
         }
 
-        //
-        // FIXME: This does not jive well with the parser, and stuff like foo = "b a r"
-        //
-
         for (String arg : _args) {
             switch (mode) {
                 case PROPERTY:
-                    setProperty(arg);
+                    unsetProperty(arg);
                     break;
 
                 case VARIABLE:
-                    setVariable(arg);
+                    unsetVariable(arg);
                     break;
             }
         }
@@ -143,47 +120,17 @@ public class SetCommand
         return Command.SUCCESS;
     }
 
-    class NameValue
-    {
-        String name;
-        String value;
+    private void unsetProperty(final String name) {
+        log.info("Unsetting system property: " + name);
+        System.getProperties().remove(name);
     }
 
-    private NameValue parse(final String input) {
-        NameValue nv = new NameValue();
-
-        int i = input.indexOf("=");
-
-        if (i == -1) {
-            nv.name = input;
-            nv.value = "true";
-        }
-        else {
-            nv.name = input.substring(0, i);
-            nv.value = input.substring(i + 1, input.length());
-        }
-
-        nv.name = nv.name.trim();
-
-        return nv;
-    }
-
-    private void setProperty(final String namevalue) {
-        NameValue nv = parse(namevalue);
-
-        log.info("Setting system property: " + nv.name + "=" + nv.value);
-
-        System.setProperty(nv.name, nv.value);
-    }
-
-    private void setVariable(final String namevalue) {
-        NameValue nv = parse(namevalue);
-
-        log.info("Setting variable: " + nv.name + "=" + nv.value);
+    private void unsetVariable(final String name) {
+        log.info("Unsetting variable: " + name);
 
         // Command vars always has a parent, set only makes sence when setting in parent's scope
         Variables vars = this.getVariables().parent();
 
-        vars.set(nv.name, nv.value);
+        vars.unset(name);
     }
 }

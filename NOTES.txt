@@ -7,6 +7,20 @@
 
  ----
 
+Variable support, expressions... should the parser do this?
+    Parse out ${...}, then use Jexl or something to eval?
+    Should "xxx ${...} yyy" also be handled by parser... or sub parse by string node when visited?
+
+Switch to Object execute(String name, Object...)
+
+Hook up backtick and execute assign bits... foo=`echo bar`
+    Dunno if this captures the output of 'echo bar' or the return of the command
+    Might need to have both?
+
+    Once object are in and out, this will open up a bunch of op to do fancy stuff.
+
+ * * *
+
 enable/disable categories.  Command def sets the initial state, 'enable' command
     toggles to enable or disable categories:
 
@@ -16,11 +30,6 @@ enable/disable categories.  Command def sets the initial state, 'enable' command
 "*" means global for category
 
 Command search path (required for above)
-
- * * *
-
-Settings, read from ~/.gshell/...
-
     ~/.gshell/
         profile.gsh
         settings.gsh?  settings.properties?  settings.xml?
@@ -28,6 +37,11 @@ Settings, read from ~/.gshell/...
 MOTD-like support... Execute a "welcome.gsh" or something?
 
  * * *
+
+ * * *
+
+Settings, read from ~/.gshell/...
+
 
 Implement MiniJar to make the gshell dependencies as small as possible,
     will require adding more features to minijar (half tested already)
@@ -40,11 +54,15 @@ Command line completion ala JLine
 
 Refactor output and verbosity filters...
 
-    IO.trace() -vvv
-    IO.debug() -vv
-Add IO.info()  -v
-    IO.warn()  unless -q
-    IO.error()
+        IO.trace() -vvv
+        IO.debug() -vv
+    Add IO.info()  -v
+        IO.warn()  unless -q
+        IO.error()
+
+    This means that IO will need to know the verbosity setting... :-(
+
+    Need methods to handle exceptions too, for remoteness can not use logging for error reporting
 
 ANSI color prompt
 
@@ -55,6 +73,9 @@ ANSI color G-logo (ANSI-art style)
 Authenticator for server cmd, maybe for normal too?
 
 SSH support?  Can Jsch do this or not?
+
+Fix the input handing for teling... for some reason input starts with x0 when it shouldn't
+    and using arrows can corrupt... bet these are linked some how
 
  * * *
 
