@@ -114,6 +114,10 @@ public class Main
             .withDescription("Run in interactive mode")
             .create('i'));
 
+        options.addOption(OptionBuilder.withLongOpt("non-interactive")
+            .withDescription("Run in non-interactive mode")
+            .create('n'));
+
         //
         // TODO: Add these output modifiers to a seperate group
         //
@@ -132,6 +136,11 @@ public class Main
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args, true);
+
+        // Force interactive if there are no args
+        if (line.getArgs().length == 0) {
+            interactive = true;
+        }
 
         if (line.hasOption('h')) {
             io.out.println(Banner.getBanner());
@@ -184,6 +193,9 @@ public class Main
         if (line.hasOption('i')) {
             interactive = true;
         }
+        else if (line.hasOption('n')) {
+            interactive = false;
+        }
 
         execute(line.getArgs());
     }
@@ -199,11 +211,6 @@ public class Main
 
         // Startup the shell
         final Shell gshell = new Shell(io);
-
-        // Force interactive if there are no args
-        if (args.length == 0) {
-            interactive = true;
-        }
 
         //
         // TEMP: Log some info about the terminal
@@ -226,7 +233,13 @@ public class Main
 
         int status = 0;
 
+        //
+        // TODO: Pass interactive flags (maybe as property) so gshell knows what mode it is
+        //
+
         if (interactive) {
+            log.debug("Starting interactive console");
+
             //
             // HACK: This is JLine specific... refactor
             //
