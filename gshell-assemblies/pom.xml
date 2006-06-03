@@ -27,7 +27,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>gshell-assembly</module>
+                <module>gshell-complete-assembly</module>
             </modules>
         </profile>
 
