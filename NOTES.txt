@@ -34,12 +34,13 @@ Command search path (required for above)
         profile.gsh
         settings.gsh?  settings.properties?  settings.xml?
 
-MOTD-like support... Execute a "welcome.gsh" or something?
-
  * * *
 
 Settings, read from ~/.gshell/...
 
+MOTD-like support... Execute a "welcome.gsh" or something?
+
+ * * *
 
 Implement MiniJar to make the gshell dependencies as small as possible,
     will require adding more features to minijar (half tested already)
