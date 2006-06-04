@@ -99,12 +99,23 @@ public abstract class CommandSupport
             dump(context.getVariables());
         }
 
-        doInit();
+        try {
+            doInit();
+        }
+        catch (Exception e) {
+            log.error("Initialization failed", e);
+
+            //
+            // HACK:
+            //
+
+            throw new RuntimeException("Command initialization failed", e);
+        }
 
         log.debug("Initialized");
     }
 
-    protected void doInit() {
+    protected void doInit() throws Exception {
         // Sub-class should override to provide custom initialization
     }
 
@@ -125,14 +136,25 @@ public abstract class CommandSupport
             dump(context.getVariables());
         }
 
-        doDestroy();
+        try {
+            doDestroy();
+        }
+        catch (Exception e) {
+            log.error("Destruction failed", e);
+
+            //
+            // HACK:
+            //
+
+            throw new RuntimeException("Command destruction failed", e);
+        }
 
         this.context = null;
 
         log.debug("Destroyed");
     }
 
-    protected void doDestroy() {
+    protected void doDestroy() throws Exception {
         // Sub-class should override to provide custom cleanup
     }
 

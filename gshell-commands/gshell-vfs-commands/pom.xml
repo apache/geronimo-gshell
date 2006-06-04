@@ -11,27 +11,29 @@
     
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <artifactId>gshell-commands</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     
-    <artifactId>gshell-commands</artifactId>
-    <name>GShell :: Commands</name>
-    <packaging>pom</packaging>
-    
+    <artifactId>gshell-vfs-commands</artifactId>
+    <name>GShell Commands :: VFS</name>
+    <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-api</artifactId>
             <version>${pom.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>commons-vfs</groupId>
+            <artifactId>commons-vfs</artifactId>
+            <version>20050307052300</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-    
-    <modules>
-        <module>gshell-standard-commands</module>
-        <module>gshell-scripting-commands</module>
-        <module>gshell-vfs-commands</module>
-    </modules>
     
 </project>

@@ -56,6 +56,12 @@
             <artifactId>gshell-scripting-commands</artifactId>
             <version>${pom.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-vfs-commands</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
     </dependencies>
     
     <build>
