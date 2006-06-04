@@ -193,4 +193,24 @@ public class VariablesImpl
     public Variables parent() {
         return parent;
     }
+
+    public static boolean isIdentifier(final String name) {
+        if (name == null || name.length() == 0) {
+            return false;
+        }
+
+        char[] chars = name.toCharArray();
+
+        if (!Character.isJavaIdentifierStart(chars[0])) {
+            return false;
+        }
+
+        for (int i=1; i<chars.length; i++) {
+            if (!Character.isJavaIdentifierPart(chars[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

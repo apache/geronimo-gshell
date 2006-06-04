@@ -25,6 +25,7 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.VariablesImpl;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -120,14 +121,25 @@ public class UnsetCommand
         return Command.SUCCESS;
     }
 
+    private void ensureIsIdentifier(final String name) {
+        if (!VariablesImpl.isIdentifier(name)) {
+            throw new RuntimeException("Invalid identifer name: " + name);
+        }
+    }
+
     private void unsetProperty(final String name) {
         log.info("Unsetting system property: " + name);
+
+        ensureIsIdentifier(name);
+
         System.getProperties().remove(name);
     }
 
     private void unsetVariable(final String name) {
         log.info("Unsetting variable: " + name);
 
+        ensureIsIdentifier(name);
+        
         // Command vars always has a parent, set only makes sence when setting in parent's scope
         Variables vars = this.getVariables().parent();
 

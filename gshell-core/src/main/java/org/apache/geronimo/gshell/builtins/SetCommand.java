@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.MessageSource;
+import org.apache.geronimo.gshell.command.VariablesImpl;
 import org.apache.geronimo.gshell.console.IO;
 
 import java.util.Iterator;
@@ -176,28 +177,8 @@ public class SetCommand
         return nv;
     }
 
-    private boolean isIdentifier(final String name) {
-        if (name == null || name.length() == 0) {
-            return false;
-        }
-
-        char[] chars = name.toCharArray();
-
-        if (!Character.isJavaIdentifierStart(chars[0])) {
-            return false;
-        }
-
-        for (int i=1; i<chars.length; i++) {
-            if (!Character.isJavaIdentifierPart(chars[i])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private void ensureIsIdentifier(final String name) {
-        if (!isIdentifier(name)) {
+        if (!VariablesImpl.isIdentifier(name)) {
             throw new RuntimeException("Invalid identifer name: " + name);
         }
     }
@@ -208,7 +189,7 @@ public class SetCommand
         log.info("Setting system property: " + nv.name + "=" + nv.value);
 
         ensureIsIdentifier(nv.name);
-        
+
         System.setProperty(nv.name, nv.value);
     }
 
