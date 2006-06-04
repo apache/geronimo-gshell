@@ -55,7 +55,7 @@ public class HelpCommand
     public void setCommandManager(final CommandManager commandManager) {
         this.commandManager = commandManager;
     }
-    
+
     */
 
     private CommandManager getCommandManager() {
@@ -163,6 +163,7 @@ public class HelpCommand
             //
 
             io.err.println("Pending... sorry");
+            io.err.println();
         }
 
         return Command.SUCCESS;

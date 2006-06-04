@@ -20,8 +20,8 @@ import java.util.Set;
 import java.util.Collection;
 
 /**
- * Interface for manager of command definitions and provides access to command instances.
- *
+ * Interface for manager of command definitions.
+ * 
  * @version $Id$
  */
 public interface CommandManager

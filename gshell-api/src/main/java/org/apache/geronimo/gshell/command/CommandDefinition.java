@@ -35,6 +35,8 @@ public class CommandDefinition
 
     private final boolean enabled;
 
+    private final String category;
+
     public CommandDefinition(final Properties props) throws InvalidDefinitionException {
         if (props == null) {
             throw new IllegalArgumentException("Properties is null");
@@ -53,6 +55,19 @@ public class CommandDefinition
         this.aliases = loadAliasesFrom(props);
 
         this.enabled = Boolean.getBoolean(props.getProperty("enable"));
+
+        this.category = props.getProperty("category");
+        if (category == null) {
+            throw new MissingPropertyException("category", props);
+        }
+    }
+
+    public String toString() {
+        return getName() + "=" + getClassName() +
+                "{ aliases=" + Arguments.asString(getAliases()) +
+                ", enabled=" + enabled +
+                ", category=" + category +
+                " }";
     }
 
     //
@@ -91,10 +106,8 @@ public class CommandDefinition
         return enabled;
     }
 
-    public String toString() {
-        return getName() + "=" + getClassName() + "{ aliases=" +
-                Arguments.asString(getAliases()) +
-                " }";
+    public String getCategory() {
+        return category;
     }
 
     public Class loadClass() throws ClassNotFoundException {
