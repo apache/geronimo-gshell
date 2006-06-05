@@ -36,6 +36,9 @@ import org.apache.geronimo.gshell.command.Variables;
  * Parser to handle ${...} expressions using
  * <a href="http://jakarta.apache.org/commons/jexl/">JEXL</a>.
  *
+ * <p>
+ * Supports complex ${xxx} and simple $xxx expressions
+ *
  * @version $Id$
  */
 public class VariableExpressionParser
@@ -152,10 +155,6 @@ public class VariableExpressionParser
         return obj;
     }
 
-    private static final String PREFIX = "${";
-
-    private static final String SUFFIX = "}";
-
     public String parse(final String input) throws SyntaxException {
         if (input == null) {
             throw new NullArgumentException("input");
@@ -168,24 +167,46 @@ public class VariableExpressionParser
 
         StringBuffer buff = new StringBuffer();
 
-        int cur = 0;
-        int prefixLoc = 0;
-        int suffixLoc = 0;
+        int current = 0;
 
-        while (cur < input.length()) {
-            prefixLoc = input.indexOf(PREFIX, cur);
+        while (current < input.length()) {
+            boolean complex = false;
 
-            if (prefixLoc < 0) {
+            int start = input.indexOf("$", current);
+
+            if (start == -1) {
                 break;
             }
-
-            suffixLoc = input.indexOf(SUFFIX, prefixLoc);
-            if (suffixLoc < 0) {
-                throw new SyntaxException("Missing '}': " + input);
+            else if (start + 1 < input.length()) {
+                if (input.charAt(start + 1) == '{') {
+                    complex = true;
+                }
             }
 
-            String expr = input.substring(prefixLoc + 2, suffixLoc);
-            buff.append(input.substring(cur, prefixLoc));
+            int end;
+            if (complex) {
+                end = input.indexOf("}", start);
+                if (end == -1) {
+                    throw new SyntaxException("Missing '}': " + input);
+                }
+            }
+            else {
+                end = input.indexOf(" ", start);
+                if (end == -1) {
+                    end = input.indexOf("\t", start);
+                    
+                    if (end == -1) {
+                        end = input.length();
+                    }
+                }
+            }
+
+            String expr = input.substring(start + (complex ? 2 : 1), end);
+
+            // System.err.println("b: " + buff);
+            String tmp = input.substring(current, start);
+            // System.err.println("t: " + tmp + "<");
+            buff.append(tmp);
 
             try {
                 buff.append(evaluate(expr));
@@ -194,10 +215,21 @@ public class VariableExpressionParser
                 throw new SyntaxException("Failed to evaluate: " + expr, e);
             }
 
-            cur = suffixLoc + 1;
+            // System.err.println("s:" + start);
+            // System.err.println("e:" + end);
+            // System.err.println("c:" + current);
+
+            current = end + (complex ? 1 : 0);
         }
 
-        buff.append(input.substring(cur));
+        // System.err.println("c:" + current);
+
+        if (current < input.length()) {
+            // System.err.println("b: " + buff);
+            String tmp = input.substring(current);
+            // System.err.println("t: " + tmp);
+            buff.append(tmp);
+        }
 
         if (trace) {
             log.trace("Parsed result: " + buff);
@@ -226,7 +258,7 @@ public class VariableExpressionParser
         extends RuntimeException
     {
         ///CLOVER:OFF
-        
+
         public SyntaxException(final String msg) {
             super(msg);
         }

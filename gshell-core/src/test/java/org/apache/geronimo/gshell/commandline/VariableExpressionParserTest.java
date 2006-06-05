@@ -36,38 +36,38 @@ public class VariableExpressionParserTest
         parser = null;
     }
 
-    public void testDefault() throws Exception {
+    public void testComplexDefault() throws Exception {
         String value = "${java.home}";
         String result = parser.parse(value);
-        assertEquals(result, System.getProperty("java.home"));
+        assertEquals(System.getProperty("java.home"), result);
     }
 
-    public void testSubst() throws Exception {
+    public void testComplexSubst() throws Exception {
         String value = "BEFORE${java.home}AFTER";
         String result = parser.parse(value);
-        assertEquals(result, "BEFORE" + System.getProperty("java.home") + "AFTER");
+        assertEquals("BEFORE" + System.getProperty("java.home") + "AFTER", result);
     }
 
-    public void testVariable() throws Exception {
+    public void testComplexVariable() throws Exception {
         String myvar = "this is my variable";
         parser.setVariable("my.var", myvar);
 
         String value = "${my.var}";
         String result = parser.parse(value);
-        assertEquals(result, myvar);
+        assertEquals(myvar, result);
     }
 
-    public void testFlatVariable() throws Exception {
+    public void testComplexFlatVariable() throws Exception {
         String myvar = "this is my variable";
         parser.setVariable("my.var", myvar);
         parser.setVariable("my", "not used");
 
         String value = "${my.var}";
         String result = parser.parse(value);
-        assertEquals(result, myvar);
+        assertEquals(myvar, result);
     }
 
-    public void testSyntax() throws Exception {
+    public void testComplexSyntaxError() throws Exception {
         String value = "${java.home";
 
         try {
@@ -77,5 +77,23 @@ public class VariableExpressionParserTest
         catch (VariableExpressionParser.SyntaxException expected) {
             // ignore
         }
+    }
+
+    public void testSimple() throws Exception {
+        String value = "$java.home";
+        String result = parser.parse(value);
+        assertEquals(System.getProperty("java.home"), result);
+    }
+
+    public void testSimpleSubst() throws Exception {
+        String value = "BEFORE$java.home AFTER";
+        String result = parser.parse(value);
+        assertEquals("BEFORE" + System.getProperty("java.home") + " AFTER", result);
+    }
+
+    public void testSimpleSubst2() throws Exception {
+        String value = "BEFORE$java.home\tAFTER";
+        String result = parser.parse(value);
+        assertEquals("BEFORE" + System.getProperty("java.home") + "\tAFTER", result);
     }
 }

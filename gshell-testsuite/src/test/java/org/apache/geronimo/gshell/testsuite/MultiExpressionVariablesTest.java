@@ -47,4 +47,19 @@ public class MultiExpressionVariablesTest
         assertNotNull(line1);
         assertEquals("1", line1);
     }
+
+    public void testSimple2() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        IO io = new IO(System.in, out);
+
+        Shell shell = new Shell(io);
+        shell.execute("set a=1; echo $a");
+
+        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+        String line1 = reader.readLine();
+        assertNotNull(line1);
+        assertEquals("1", line1);
+    }
 }
