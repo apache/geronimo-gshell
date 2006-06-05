@@ -91,6 +91,10 @@ public class Shell
         return io;
     }
 
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
     public int execute(final String commandLine) throws Exception {
         assert commandLine != null;
 

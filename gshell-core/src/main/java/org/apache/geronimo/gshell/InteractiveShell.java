@@ -18,10 +18,15 @@ package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.console.InteractiveConsole;
 import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
+
+import jline.ConsoleReader;
+import jline.SimpleCompletor;
+import jline.CandidateListCompletionHandler;
 
 /**
  * Provides the user-interaction bits for Shell.
@@ -38,16 +43,16 @@ public class InteractiveShell
     //       Seems like that is what we are doing so far anyways (sub-classing that is)
     //
 
-    public InteractiveShell(final Console console, final Shell gshell) throws IOException {
+    public InteractiveShell(final Console console, final Shell shell) throws IOException {
         super(console,
             new InteractiveConsole.Executor() {
                 public Result execute(final String line) throws Exception {
                     assert line != null;
 
                     // Execute unless the line is just blank
-                    if (!line.trim().equals("")) {
+                    if (line.trim().length() != 0) {
                         try {
-                            gshell.execute(line);
+                            shell.execute(line);
                         }
                         catch (ExitNotification n) {
                             return Result.STOP;
@@ -66,5 +71,20 @@ public class InteractiveShell
                     return "> ";
                 }
             });
+
+        // Add a command completer of we are using JLine
+        if (console instanceof JLineConsole) {
+            ConsoleReader jline = ((JLineConsole)console).getReader();
+
+            //
+            // TODO: Figure out why this does not work!!!!
+            //
+            jline.setCompletionHandler(new CandidateListCompletionHandler());
+
+            String[] commands = (String[])shell.getCommandManager().commandNames().toArray(new String[0]);
+
+            SimpleCompletor c = new SimpleCompletor(commands);
+            jline.addCompletor(c);
+        }
     }
 }

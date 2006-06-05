@@ -110,7 +110,7 @@ public class InteractiveConsole
         boolean debug = log.isDebugEnabled();
         String line;
 
-        while ((line = console.readLine(prompter.getPrompt())) != null) {
+        while ((line = console.readLine(doGetPrompt())) != null) {
             if (debug) {
                 log.debug("Read line: " + line);
 
@@ -130,7 +130,7 @@ public class InteractiveConsole
                 log.debug("     "  + idx);
             }
 
-            Executor.Result result = executor.execute(line);
+            Executor.Result result = doExecute(line);
 
             // Allow executor to request that the loop stop
             if (result == Executor.Result.STOP) {
@@ -152,6 +152,14 @@ public class InteractiveConsole
         //       Use-case is that Shell might want to disallow and print a "use exit command",
         //       but Script interp wants this to exit and return control to Shell.
         //
+    }
+
+    protected Executor.Result doExecute(final String line) throws Exception {
+        return executor.execute(line);
+    }
+
+    protected String doGetPrompt() {
+        return prompter.getPrompt();
     }
 
     //
