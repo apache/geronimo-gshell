@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandDefinition;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 
@@ -68,6 +69,8 @@ public class HelpCommand
     protected int doExecute(final String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -77,7 +80,7 @@ public class HelpCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
         CommandLineParser parser = new PosixParser();
@@ -99,7 +102,8 @@ public class HelpCommand
         }
 
         if (usage || line.hasOption('h')) {
-            io.out.println(getName() + " -- display help");
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
@@ -115,9 +119,9 @@ public class HelpCommand
                 false); // auto usage
 
             io.out.println();
-            io.out.println("For a list of topics try: help topics");
+            io.out.println(messages.getMessage("cli.usage.footer"));
             io.out.println();
-
+            
             return Command.SUCCESS;
         }
 

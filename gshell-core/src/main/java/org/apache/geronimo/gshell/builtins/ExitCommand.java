@@ -24,6 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -43,6 +44,8 @@ public class ExitCommand
     protected int doExecute(String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -52,7 +55,7 @@ public class ExitCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
         CommandLineParser parser = new PosixParser();
@@ -72,9 +75,10 @@ public class ExitCommand
         }
 
         if (usage || line.hasOption('h')) {
-            io.out.println(getName() + " -- exit the current shell");
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
-
+            
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,

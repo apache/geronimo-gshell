@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesImpl;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -49,6 +50,8 @@ public class UnsetCommand
     protected int doExecute(String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -58,11 +61,11 @@ public class UnsetCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("property")
-            .withDescription("Unset a system property")
+            .withDescription(messages.getMessage("cli.option.property"))
             .create('p'));
 
         //
@@ -80,7 +83,8 @@ public class UnsetCommand
         }
 
         if (usage || line.hasOption('h')) {
-            io.out.println(getName() + " -- unset a variable or property");
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
@@ -139,7 +143,7 @@ public class UnsetCommand
         log.info("Unsetting variable: " + name);
 
         ensureIsIdentifier(name);
-        
+
         // Command vars always has a parent, set only makes sence when setting in parent's scope
         Variables vars = this.getVariables().parent();
 

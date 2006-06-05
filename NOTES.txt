@@ -7,9 +7,7 @@
 
  ----
 
-Variable support, expressions... should the parser do this?
-    Parse out ${...}, then use Jexl or something to eval?
-    Should "xxx ${...} yyy" also be handled by parser... or sub parse by string node when visited?
+Add ${...} parsing to the CommandLineParser; remove VariableExpressionParser
 
 Switch to Object execute(String name, Object...)
 
@@ -48,8 +46,6 @@ Implement MiniJar to make the gshell dependencies as small as possible,
  * * *
 
 Maybe just use the JLine API directly instead of trying to abstract it?
-
-Command line completion ala JLine
 
 Refactor output and verbosity filters...
 
