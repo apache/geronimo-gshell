@@ -19,6 +19,7 @@ package org.apache.geronimo.gshell;
 import org.apache.geronimo.gshell.console.InteractiveConsole;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.command.StandardVariables;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -64,11 +65,12 @@ public class InteractiveShell
             },
             new InteractiveConsole.Prompter() {
                 public String getPrompt() {
-                    //
-                    // TODO: Need to hook this up to allow it to change
-                    //
+                    Object prompt = shell.getVariables().get(StandardVariables.PROMPT);
+                    if (prompt == null) {
+                        prompt = "";
+                    }
 
-                    return "> ";
+                    return String.valueOf(prompt);
                 }
             });
 

@@ -31,6 +31,7 @@ import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManagerImpl;
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.MessageSourceImpl;
+import org.apache.geronimo.gshell.command.StandardVariables;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -77,6 +78,12 @@ public class Shell
 
         this.commandManager = (CommandManager) shellContainer.getComponentInstanceOfType(CommandManager.class);
         this.commandLineBuilder = (CommandLineBuilder) shellContainer.getComponentInstanceOfType(CommandLineBuilder.class);
+
+        //
+        // HACK: Set some default variables
+        //
+
+        variables.set(StandardVariables.PROMPT, "> ");
     }
 
     public Shell() throws CommandException {

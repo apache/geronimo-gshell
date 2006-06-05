@@ -137,6 +137,10 @@ public class SetCommand
         // FIXME: This does not jive well with the parser, and stuff like foo = "b a r"
         //
 
+        //
+        // NOTE: May want to make x=b part of the CL grammar
+        //
+
         for (String arg : _args) {
             switch (mode) {
                 case PROPERTY:

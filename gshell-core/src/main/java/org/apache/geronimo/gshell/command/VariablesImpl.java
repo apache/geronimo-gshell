@@ -207,11 +207,17 @@ public class VariablesImpl
             return false;
         }
 
+        /*
+
+        FIXME: This fails for stuff like 'gshell.prompt' which we should allow
+               Eventually need to get this fixed, for now just skip part checking
+
         for (int i=1; i<chars.length; i++) {
             if (!Character.isJavaIdentifierPart(chars[i])) {
                 return false;
             }
         }
+        */
 
         return true;
     }
