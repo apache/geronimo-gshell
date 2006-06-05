@@ -50,7 +50,7 @@ public class VariableExpressionParserTest
 
     public void testVariable() throws Exception {
         String myvar = "this is my variable";
-        parser.getVariables().put("my.var", myvar);
+        parser.setVariable("my.var", myvar);
 
         String value = "${my.var}";
         String result = parser.parse(value);
@@ -59,8 +59,8 @@ public class VariableExpressionParserTest
 
     public void testFlatVariable() throws Exception {
         String myvar = "this is my variable";
-        parser.getVariables().put("my.var", myvar);
-        parser.getVariables().put("my", "not used");
+        parser.setVariable("my.var", myvar);
+        parser.setVariable("my", "not used");
 
         String value = "${my.var}";
         String result = parser.parse(value);

@@ -45,15 +45,12 @@ public class ExecutingVisitor
 
     private final Shell shell;
 
-    private final VariableExpressionParser exprParser;
-
     public ExecutingVisitor(final Shell shell) {
         if (shell == null) {
             throw new NullArgumentException("shell");
         }
 
         this.shell = shell;
-        this.exprParser = new VariableExpressionParser(shell.getVariables());
     }
 
     public Object visit(final SimpleNode node, final Object data) {
@@ -127,6 +124,7 @@ public class ExecutingVisitor
     //
 
     public Object visit(final ASTQuotedString node, final Object data) {
+        VariableExpressionParser exprParser = new VariableExpressionParser(shell.getVariables());
         String value = exprParser.parse(node.getValue());
         return appendString(value, data);
     }
@@ -136,6 +134,7 @@ public class ExecutingVisitor
     }
 
     public Object visit(final ASTPlainString node, final Object data) {
+        VariableExpressionParser exprParser = new VariableExpressionParser(shell.getVariables());
         String value = exprParser.parse(node.getValue());
         return appendString(value, data);
     }
