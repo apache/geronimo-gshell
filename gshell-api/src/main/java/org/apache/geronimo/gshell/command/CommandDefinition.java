@@ -122,6 +122,8 @@ public class CommandDefinition
     public static class InvalidDefinitionException
         extends CommandException
     {
+        ///CLOVER:OFF
+
         public InvalidDefinitionException(String msg) {
             super(msg);
         }
@@ -130,6 +132,8 @@ public class CommandDefinition
     public static class MissingPropertyException
         extends InvalidDefinitionException
     {
+        ///CLOVER:OFF
+        
         MissingPropertyException(String name, Properties props) {
             super("Missing '" + name + "' property in command definition: " + props);
         }

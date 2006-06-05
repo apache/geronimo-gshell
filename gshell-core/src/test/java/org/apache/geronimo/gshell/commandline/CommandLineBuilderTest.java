@@ -17,7 +17,7 @@
 package org.apache.geronimo.gshell.commandline;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.command.MockCommandExecutor;
+import org.apache.geronimo.gshell.MockShell;
 
 /**
  * Unit tests for the {@link CommandLineBuilder} class.
@@ -38,16 +38,16 @@ public class CommandLineBuilderTest
     }
 
     public void testSimple() throws Exception {
-        MockCommandExecutor executor = new MockCommandExecutor();
-        CommandLineBuilder builder = new CommandLineBuilder(executor);
+        MockShell shell = new MockShell();
+        CommandLineBuilder builder = new CommandLineBuilder(shell);
 
         CommandLine cl = builder.create("echo hi");
         assertNotNull(cl);
 
         cl.execute();
 
-        assertEquals("echo", executor.commandName);
-        assertEquals(1, executor.args.length);
-        assertEquals("hi", executor.args[0]);
+        assertEquals("echo", shell.commandName);
+        assertEquals(1, shell.args.length);
+        assertEquals("hi", shell.args[0]);
     }
 }

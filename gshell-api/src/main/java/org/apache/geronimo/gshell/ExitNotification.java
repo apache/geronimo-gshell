@@ -27,6 +27,8 @@ package org.apache.geronimo.gshell;
 public class ExitNotification
     extends Error
 {
+    ///CLOVER:OFF
+    
     //
     // TODO: Need to find a better home for this...
     //

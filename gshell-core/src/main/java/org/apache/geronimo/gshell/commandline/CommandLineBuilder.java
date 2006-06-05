@@ -19,7 +19,8 @@ package org.apache.geronimo.gshell.commandline;
 import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
 import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.commandline.parser.ParseException;
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.Shell;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,16 +36,16 @@ public class CommandLineBuilder
 {
     private static final Log log = LogFactory.getLog(CommandLineBuilder.class);
 
-    private final CommandExecutor executor;
+    private final Shell shell;
 
     private final CommandLineParser parser;
 
-    public CommandLineBuilder(final CommandExecutor executor) {
-        if (executor == null) {
-            throw new IllegalArgumentException("Executor is null");
+    public CommandLineBuilder(final Shell shell) {
+        if (shell == null) {
+            throw new IllegalArgumentException("Shell is null");
         }
 
-        this.executor = executor;
+        this.shell = shell;
         this.parser = new CommandLineParser();
     }
 
@@ -73,7 +74,7 @@ public class CommandLineBuilder
         }
 
         final ASTCommandLine root = parse(commandLine);
-        final ExecutingVisitor visitor = new ExecutingVisitor(this.executor);
+        final ExecutingVisitor visitor = new ExecutingVisitor(this.shell);
 
         return new CommandLine() {
             public void execute() throws Exception {

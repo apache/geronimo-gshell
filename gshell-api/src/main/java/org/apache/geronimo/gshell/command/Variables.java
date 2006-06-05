@@ -52,6 +52,8 @@ public interface Variables
     class ImmutableVariableException
         extends RuntimeException
     {
+        ///CLOVER:OFF
+        
         public ImmutableVariableException(final String name) {
             super("Variable is immutable: " + name);
         }

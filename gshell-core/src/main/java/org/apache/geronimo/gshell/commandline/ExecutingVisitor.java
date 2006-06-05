@@ -23,9 +23,8 @@ import org.apache.geronimo.gshell.commandline.parser.ASTExpression;
 import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
-import org.apache.geronimo.gshell.commandline.parser.StringSupport;
 import org.apache.geronimo.gshell.util.Arguments;
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.Shell;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,14 +42,17 @@ public class ExecutingVisitor
 {
     private static final Log log = LogFactory.getLog(ExecutingVisitor.class);
 
-    private final CommandExecutor executor;
+    private final Shell shell;
 
-    public ExecutingVisitor(final CommandExecutor executor) {
-        if (executor == null) {
-            throw new IllegalArgumentException("Executor is null");
+    private final VariableExpressionParser exprParser;
+
+    public ExecutingVisitor(final Shell shell) {
+        if (shell == null) {
+            throw new IllegalArgumentException("Shell is null");
         }
 
-        this.executor = executor;
+        this.shell = shell;
+        this.exprParser = new VariableExpressionParser(shell.getVariables());
     }
 
     public Object visit(final SimpleNode node, final Object data) {
@@ -84,7 +86,7 @@ public class ExecutingVisitor
         // assert data != null;
 
         // Create the argument list (cmd name + args)
-        List list = new ArrayList(node.jjtGetNumChildren());
+        List<String> list = new ArrayList<String>(node.jjtGetNumChildren());
         node.childrenAccept(this, list);
 
         String[] args = (String[])list.toArray(new String[list.size()]);
@@ -96,7 +98,7 @@ public class ExecutingVisitor
         int result;
 
         try {
-            result = executor.execute(commandName, args);
+            result = shell.execute(commandName, args);
         }
         catch (Exception e) {
             //
@@ -109,27 +111,31 @@ public class ExecutingVisitor
         return result;
     }
 
-    private Object appendString(final StringSupport node, final Object data) {
-        assert node != null;
+    private Object appendString(final String value, final Object data) {
         assert data != null;
         assert data instanceof List;
 
-        List args = (List)data;
-        String value = node.getValue();
+        List<String> args = (List<String>)data;
         args.add(value);
 
         return value;
     }
 
+    //
+    // TODO: Include parsed ${...} strings?
+    //
+
     public Object visit(final ASTQuotedString node, final Object data) {
-        return appendString(node, data);
+        String value = exprParser.parse(node.getValue());
+        return appendString(value, data);
     }
 
     public Object visit(final ASTOpaqueString node, final Object data) {
-        return appendString(node, data);
+        return appendString(node.getValue(), data);
     }
 
     public Object visit(final ASTPlainString node, final Object data) {
-        return appendString(node, data);
+        String value = exprParser.parse(node.getValue());
+        return appendString(value, data);
     }
 }

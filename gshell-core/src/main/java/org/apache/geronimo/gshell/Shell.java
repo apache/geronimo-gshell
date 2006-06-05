@@ -20,7 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandContext;
@@ -43,8 +42,11 @@ import java.util.Iterator;
  * @version $Id$
  */
 public class Shell
-    implements CommandExecutor
 {
+    //
+    // TODO: Introduce Shell interface?
+    //
+
     private static final Log log = LogFactory.getLog(Shell.class);
 
     private final IO io;

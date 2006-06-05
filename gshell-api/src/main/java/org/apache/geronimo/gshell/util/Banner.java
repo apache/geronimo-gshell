@@ -26,6 +26,8 @@ import java.io.StringWriter;
  */
 public class Banner
 {
+    ///CLOVER:OFF
+    
     public static String getBanner() {
         StringWriter writer = new StringWriter();
         PrintWriter out = new PrintWriter(writer);

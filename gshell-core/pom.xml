@@ -46,6 +46,12 @@
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-gems</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>commons-jexl</groupId>
+            <artifactId>commons-jexl</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -103,7 +109,7 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
-                    
+
                     <!-- Need to put these into a package so that Eclipse does not freak out -->
                     <execution>
                         <id>move-to-package</id>
@@ -116,7 +122,7 @@
                                         <include name="*.java"/>
                                     </fileset>
                                 </move>
-                                
+
                                 <mkdir dir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser"/>
                                 <move todir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser">
                                     <fileset dir="${pom.basedir}/target/generated-sources/javacc">
@@ -125,7 +131,7 @@
                                 </move>
                             </tasks>
                         </configuration>
-                        
+
                         <goals>
                             <goal>run</goal>
                         </goals>

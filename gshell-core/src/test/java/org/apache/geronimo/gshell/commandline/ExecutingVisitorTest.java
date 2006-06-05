@@ -18,7 +18,7 @@ package org.apache.geronimo.gshell.commandline;
 
 import junit.framework.TestCase;
 
-import org.apache.geronimo.gshell.command.MockCommandExecutor;
+import org.apache.geronimo.gshell.MockShell;
 
 /**
  * Unit tests for the {@link ExecutingVisitor} usage.
@@ -38,6 +38,6 @@ public class ExecutingVisitorTest
         }
 
         // Happy day
-        new ExecutingVisitor(new MockCommandExecutor());
+        new ExecutingVisitor(new MockShell());
     }
 }

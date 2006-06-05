@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell;
+
+import junit.framework.TestCase;
+import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.command.CommandNotFoundException;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * Unit tests for the {@link CommandSupport} class.
+ * Mock {@link Shell}.
  *
  * @version $Id$
  */
-public class MockCommandExecutor
-    implements CommandExecutor
+public class MockShell
+    extends Shell
 {
     public String[] args;
 
     public String commandName;
+
+    public MockShell() throws CommandException {
+        super(new IO());
+    }
 
     public int execute(String... args) throws Exception {
         this.args = args;

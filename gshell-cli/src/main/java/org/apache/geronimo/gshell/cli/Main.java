@@ -46,6 +46,8 @@ import jline.Terminal;
  */
 public class Main
 {
+    ///CLOVER:OFF
+    
     //
     // NOTE: Do not use logging from this class, as it is used to configure
     //       the logging level with System properties, which will only get
