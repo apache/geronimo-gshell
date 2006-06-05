@@ -16,15 +16,6 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.commons.lang.NullArgumentException;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-
 /**
  * Variables backed up by a map.
  *
