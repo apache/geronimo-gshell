@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.Shell;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class ExecutingVisitor
 
     public ExecutingVisitor(final Shell shell) {
         if (shell == null) {
-            throw new IllegalArgumentException("Shell is null");
+            throw new NullArgumentException("shell");
         }
 
         this.shell = shell;

@@ -16,6 +16,8 @@
 
 package org.apache.geronimo.gshell.command;
 
+import org.apache.commons.lang.NullArgumentException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,7 +26,7 @@ import java.util.HashSet;
 import java.util.Collections;
 
 /**
- * ???
+ * Variables backed up by a map.
  *
  * @version $Id$
  */
@@ -39,10 +41,10 @@ public class VariablesImpl
 
     public VariablesImpl(final Map<String,Object> map, final Variables parent) {
         if (map == null) {
-            throw new IllegalArgumentException("Map is null");
+            throw new NullArgumentException("map");
         }
         if (parent == null) {
-            throw new IllegalArgumentException("Parent is null");
+            throw new NullArgumentException("parent");
         }
 
         this.map = map;
@@ -51,7 +53,7 @@ public class VariablesImpl
 
     public VariablesImpl(final Variables parent) {
         if (parent == null) {
-            throw new IllegalArgumentException("Parent is null");
+            throw new NullArgumentException("parent");
         }
 
         this.map = new HashMap<String,Object>();
@@ -60,7 +62,7 @@ public class VariablesImpl
 
     public VariablesImpl(final Map<String,Object> map) {
         if (map == null) {
-            throw new IllegalArgumentException("Map is null");
+            throw new NullArgumentException("map");
         }
 
         this.map = map;

@@ -18,6 +18,7 @@ package org.apache.geronimo.gshell.console;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class SimpleConsole
 
     public SimpleConsole(final IO io) {
         if (io == null) {
-            throw new IllegalArgumentException("IO is null");
+            throw new NullArgumentException("io");
         }
 
         this.io = io;

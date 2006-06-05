@@ -19,6 +19,7 @@ package org.apache.geronimo.gshell;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandManager;
@@ -61,7 +62,7 @@ public class Shell
 
     public Shell(final IO io) throws CommandException {
         if (io == null) {
-            throw new IllegalArgumentException("IO is null");
+            throw new NullArgumentException("io");
         }
 
         this.io = io;

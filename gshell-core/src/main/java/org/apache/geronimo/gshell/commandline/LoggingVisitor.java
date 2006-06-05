@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 
 /**
  * Visitor whichs logs nodes in the tree.
@@ -56,10 +57,10 @@ public class LoggingVisitor
 
     public LoggingVisitor(final Log log, final Level level) {
         if (log == null) {
-            throw new IllegalArgumentException("Log is null");
+            throw new NullArgumentException("log");
         }
         if (level == null) {
-            throw new IllegalArgumentException("Level is null");
+            throw new NullArgumentException("level");
         }
 
         this.log = log;

@@ -18,6 +18,7 @@ package org.apache.geronimo.gshell.server.telnet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.geronimo.gshell.console.ConsoleFactory;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.IO;
@@ -39,10 +40,10 @@ public class ConsoleFactoryImpl
 
     public Console create(final InputStream in, final OutputStream out) throws Exception {
         if (in == null) {
-            throw new IllegalArgumentException("Input is null");
+            throw new NullArgumentException("in");
         }
         if (out == null) {
-            throw new IllegalArgumentException("Output is null");
+            throw new NullArgumentException("out");
         }
 
         TelnetTerminal term = new TelnetTerminal(in, out);
@@ -58,8 +59,6 @@ public class ConsoleFactoryImpl
 
         IO io = term.getIO();
         ConsoleReader reader = new ConsoleReader(io.inputStream, io.out, /* bindings */ null, term);
-        Console console = new JLineConsole(io, reader);
-
-        return console;
+        return new JLineConsole(io, reader);
     }
 }

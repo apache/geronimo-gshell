@@ -33,6 +33,8 @@ package org.apache.geronimo.gshell.commandline.parser;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.apache.commons.lang.NullArgumentException;
+
 /**
  * Command line parser.
  *
@@ -46,6 +48,10 @@ public class CommandLineParser
     }
 
     public ASTCommandLine parse(final Reader reader) throws ParseException {
+        if (reader == null) {
+            throw new NullArgumentException("reader");
+        }
+
         this.ReInit(reader);
 
         return this.commandLine();

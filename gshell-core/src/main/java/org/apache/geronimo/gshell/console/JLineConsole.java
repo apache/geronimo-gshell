@@ -19,6 +19,7 @@ package org.apache.geronimo.gshell.console;
 import jline.ConsoleReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 
 import java.io.IOException;
 
@@ -38,10 +39,10 @@ public class JLineConsole
 
     public JLineConsole(final IO io, final ConsoleReader reader) throws IOException {
         if (io == null) {
-            throw new IllegalArgumentException("IO is null");
+            throw new NullArgumentException("io");
         }
         if (reader == null) {
-            throw new IllegalArgumentException("Reader is null");
+            throw new NullArgumentException("reader");
         }
 
         this.io = io;
@@ -50,7 +51,7 @@ public class JLineConsole
 
     public JLineConsole(final IO io) throws IOException {
         if (io == null) {
-            throw new IllegalArgumentException("IO is null");
+            throw new NullArgumentException("io");
         }
 
         this.io = io;

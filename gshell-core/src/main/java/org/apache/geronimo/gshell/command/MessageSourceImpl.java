@@ -16,11 +16,13 @@
 
 package org.apache.geronimo.gshell.command;
 
+import org.apache.commons.lang.NullArgumentException;
+
 import java.util.ResourceBundle;
 import java.util.Formatter;
 
 /**
- * ???
+ * Message source backed up by a {@link ResourceBundle}.
  *
  * @version $Id$
  */
@@ -30,7 +32,9 @@ public class MessageSourceImpl
     private final ResourceBundle bundle;
 
     public MessageSourceImpl(final String name) {
-        assert name != null;
+        if (name == null) {
+            throw new NullArgumentException("name");
+        }
 
         bundle = ResourceBundle.getBundle(name);
     }

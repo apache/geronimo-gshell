@@ -18,6 +18,7 @@ package org.apache.geronimo.gshell.server;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.log4j.NDC;
 
 import java.net.Socket;
@@ -49,7 +50,7 @@ public class SocketServerDaemon
 
     public SocketServerDaemon(final int port, final SocketHandler handler) {
         if (handler == null) {
-            throw new IllegalArgumentException("Socket handler is null");
+            throw new NullArgumentException("handler");
         }
 
         this.port = port;
@@ -87,7 +88,7 @@ public class SocketServerDaemon
 
     public void service(final Socket socket) {
         if (socket == null) {
-            throw new IllegalArgumentException("Socket is null");
+            throw new NullArgumentException("socket");
         }
 
         log.info("Starting new thread for client: " + socket);

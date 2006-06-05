@@ -18,6 +18,7 @@ package org.apache.geronimo.gshell.console;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 
 /**
  * Provides the framework to interactivly get input from a console
@@ -46,13 +47,13 @@ public class InteractiveConsole
 
     public InteractiveConsole(final Console console, final Executor executor, final Prompter prompter) {
         if (console == null) {
-            throw new IllegalArgumentException("Console is null");
+            throw new NullArgumentException("console");
         }
         if (executor == null) {
-            throw new IllegalArgumentException("Executor is null");
+            throw new NullArgumentException("executor");
         }
         if (prompter == null) {
-            throw new IllegalArgumentException("Prompter is null");
+            throw new NullArgumentException("prompter");
         }
 
         this.console = console;

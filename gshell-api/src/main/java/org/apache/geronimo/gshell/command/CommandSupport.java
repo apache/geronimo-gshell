@@ -18,6 +18,7 @@ package org.apache.geronimo.gshell.command;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.ExitNotification;
@@ -48,7 +49,7 @@ public abstract class CommandSupport
 
     public void setName(final String name) {
         if (name == null) {
-            throw new IllegalArgumentException("Name is null");
+            throw new NullArgumentException("name");
         }
         if (name.trim().length() == 0) {
             throw new IllegalArgumentException("Name is empty");

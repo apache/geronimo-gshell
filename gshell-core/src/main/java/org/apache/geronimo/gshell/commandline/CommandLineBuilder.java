@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.Shell;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -42,7 +43,7 @@ public class CommandLineBuilder
 
     public CommandLineBuilder(final Shell shell) {
         if (shell == null) {
-            throw new IllegalArgumentException("Shell is null");
+            throw new NullArgumentException("shell");
         }
 
         this.shell = shell;
@@ -67,7 +68,7 @@ public class CommandLineBuilder
 
     public CommandLine create(final String commandLine) throws ParseException {
         if (commandLine == null) {
-            throw new IllegalArgumentException("Command line is null");
+            throw new NullArgumentException("commandLine");
         }
         if (commandLine.trim().length() == 0) {
             throw new IllegalArgumentException("Command line is empty");

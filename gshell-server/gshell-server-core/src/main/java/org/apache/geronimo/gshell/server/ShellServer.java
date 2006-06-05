@@ -18,6 +18,7 @@ package org.apache.geronimo.gshell.server;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.InteractiveShell;
 import org.apache.geronimo.gshell.command.CommandException;
@@ -73,7 +74,7 @@ public class ShellServer
 
     public void service(final Socket socket) throws CommandException, IOException {
         if (socket == null) {
-            throw new IllegalArgumentException("Socket is null");
+            throw new NullArgumentException("socket");
         }
 
         if (log.isDebugEnabled()) {
@@ -91,10 +92,10 @@ public class ShellServer
 
     public void service(final InputStream input, final OutputStream output) throws CommandException, IOException {
         if (input == null) {
-            throw new IllegalArgumentException("Input is null");
+            throw new NullArgumentException("input");
         }
         if (output == null) {
-            throw new IllegalArgumentException("Output is null");
+            throw new NullArgumentException("output");
         }
 
         //

@@ -20,6 +20,7 @@ import org.apache.xbean.finder.ResourceFinder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.NullArgumentException;
 
 import java.util.Map;
 import java.util.Properties;
@@ -99,7 +100,7 @@ public class CommandManagerImpl
 
     public CommandDefinition getCommandDefinition(String name) throws CommandNotFoundException {
         if (name == null) {
-            throw new IllegalArgumentException("Name is null");
+            throw new NullArgumentException("name");
         }
         if (name.trim().length() == 0) {
             throw new IllegalArgumentException("Name is empty");

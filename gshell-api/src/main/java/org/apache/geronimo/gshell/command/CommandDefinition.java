@@ -17,6 +17,7 @@
 package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.commons.lang.NullArgumentException;
 
 import java.util.Properties;
 
@@ -39,7 +40,7 @@ public class CommandDefinition
 
     public CommandDefinition(final Properties props) throws InvalidDefinitionException {
         if (props == null) {
-            throw new IllegalArgumentException("Properties is null");
+            throw new NullArgumentException("props");
         }
 
         this.name = props.getProperty("name");
@@ -133,7 +134,7 @@ public class CommandDefinition
         extends InvalidDefinitionException
     {
         ///CLOVER:OFF
-        
+
         MissingPropertyException(String name, Properties props) {
             super("Missing '" + name + "' property in command definition: " + props);
         }
