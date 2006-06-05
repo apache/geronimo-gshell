@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id: pom.xml 410939 2006-06-01 20:31:50Z jdillon $ -->
+<!-- $Id$ -->
 
 <project
     xmlns="http://maven.apache.org/POM/4.0.0"
