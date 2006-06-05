@@ -17,7 +17,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Variables backed up by a map.
+ * Defines the name of all standard GShell variables.
  *
  * @version $Id$
  */
