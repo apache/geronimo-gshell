@@ -51,7 +51,7 @@ fi
 
 # Use default classworlds config
 if [ -z "$CLASSWORLDS_CONF" ]; then
-    CLASSWORLDS_CONF="$GSHELL_HOME/etc/gsh.conf"
+    CLASSWORLDS_CONF="$GSHELL_HOME/etc/${PROGNAME}.conf"
 fi
 CLASSWORLDS_CLASSPATH="$GSHELL_HOME/lib/boot/classworlds-${CLASSWORLDS_VERSION}.jar"
 

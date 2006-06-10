@@ -82,7 +82,7 @@ set CMD_LINE_ARGS=%$
 @rem Setup the command line
 set CLASSWORLDS_CLASSPATH=%GSHELL_HOME%\lib\boot\classworlds-%CLASSWORLDS_VERSION%.jar
 set CLASSWORLDS_MAIN_CLASS=org.codehaus.classworlds.Launcher
-set CLASSWORLDS_CONF=%GSHELL_HOME%\etc\gsh.conf
+set CLASSWORLDS_CONF=%GSHELL_HOME%\etc\%PROGNAME%.conf
 
 set JAVA_EXE=%JAVA_HOME%\bin\java.exe
 
