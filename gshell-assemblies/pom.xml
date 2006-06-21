@@ -41,8 +41,10 @@
             </activation>
             <modules>
                 <module>gshell-complete-assembly</module>
+                <!--
                 <module>gshell-retro-assembly</module>
                 <module>gshell-squeezed-assembly</module>
+                -->
             </modules>
         </profile>
     </profiles>
