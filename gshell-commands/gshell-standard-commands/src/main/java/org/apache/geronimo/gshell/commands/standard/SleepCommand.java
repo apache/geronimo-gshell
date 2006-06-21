@@ -24,6 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -41,6 +42,8 @@ public class SleepCommand
     protected int doExecute(String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -50,7 +53,7 @@ public class SleepCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
         CommandLineParser parser = new PosixParser();
@@ -68,7 +71,9 @@ public class SleepCommand
         }
 
         if (usage || line.hasOption('h')) {
-            io.out.println(getName() + " -- sleep... zzzZ");
+            io.out.print(getName());
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();

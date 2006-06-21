@@ -24,6 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 
@@ -51,6 +52,8 @@ public class JavaCommand
     protected int doExecute(final String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -60,19 +63,29 @@ public class JavaCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("method")
-            .withDescription("Invoke a named method")
+            .withDescription(messages.getMessage("cli.option.method"))
             .withArgName("method")
             .create('M'));
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
-        if (line.hasOption('h')) {
-            io.out.println(getName() + " -- execute a java application");
+        boolean usage = false;
+        String[] _args = line.getArgs();
+
+        if (_args.length == 0) {
+            io.err.println(messages.getMessage("cli.error.missing_classname"));
+            usage = true;
+        }
+
+        if (usage || line.hasOption('h')) {
+            io.out.print(getName());
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
@@ -96,20 +109,14 @@ public class JavaCommand
             methodName = line.getOptionValue('M');
         }
 
-        run(line.getArgs());
+        run(_args);
 
         return Command.SUCCESS;
     }
 
     private void run(final String[] args) throws Exception {
         assert args != null;
-
-        if (args.length == 0) {
-            //
-            // TODO: Error show usage
-            //
-            throw new Exception("Missing classname");
-        }
+        assert args.length > 0;
 
         run(args[0], Arguments.shift(args));
     }

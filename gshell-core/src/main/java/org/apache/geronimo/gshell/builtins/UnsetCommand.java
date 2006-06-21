@@ -83,6 +83,7 @@ public class UnsetCommand
         }
 
         if (usage || line.hasOption('h')) {
+            io.out.print(getName());
             io.out.print(" -- ");
             io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();

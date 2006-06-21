@@ -24,6 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -42,7 +43,9 @@ public class EchoCommand
     
     protected int doExecute(final String[] args) throws Exception {
         assert args != null;
-        
+
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -50,22 +53,26 @@ public class EchoCommand
         IO io = getIO();
         
         Options options = new Options();
-        
+
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
         
         options.addOption(OptionBuilder
-            .withDescription("Do not print the trailing newline character")
+            .withDescription(messages.getMessage("cli.option.n"))
             .create('n'));
         
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
+
+        String[] _args = line.getArgs();
         
         if (line.hasOption('h')) {
-            io.out.println(getName() + " -- write arguments to the commands output");
+            io.out.print(getName());
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
-            
+
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(
                 io.out,
@@ -87,7 +94,7 @@ public class EchoCommand
             trailingNewline = false;
         }
         
-        echo(line.getArgs());
+        echo(_args);
         
         return Command.SUCCESS;
     }

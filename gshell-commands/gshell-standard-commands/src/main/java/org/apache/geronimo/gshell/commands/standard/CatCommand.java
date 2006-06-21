@@ -25,6 +25,7 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang.StringUtils;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 
 import java.io.BufferedReader;
@@ -52,6 +53,8 @@ public class CatCommand
     protected int doExecute(final String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -61,18 +64,22 @@ public class CatCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
         options.addOption(OptionBuilder
-            .withDescription("Number the output lines, starting at 1")
+            .withDescription(messages.getMessage("cli.option.n"))
             .create('n'));
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
+        String[] _args = line.getArgs();
+
         if (line.hasOption('h')) {
-            io.out.println(getName() + " -- concatenate and print files and/or URLs");
+            io.out.print(getName());
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
@@ -96,7 +103,12 @@ public class CatCommand
             displayLineNumbers = true;
         }
 
-        cat(line.getArgs());
+        // No args, then read from STDIN
+        if (_args.length == 0) {
+            _args = new String[] { "-" };
+        }
+
+        cat(_args);
 
         return Command.SUCCESS;
     }
