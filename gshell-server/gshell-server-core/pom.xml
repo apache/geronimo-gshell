@@ -26,6 +26,11 @@
             <artifactId>gshell-core</artifactId>
             <version>${pom.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo</groupId>
+            <artifactId>geronimo-kernel</artifactId>
+        </dependency>
     </dependencies>
     
 </project>
