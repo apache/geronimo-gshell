@@ -35,7 +35,7 @@ import java.net.Socket;
  * @version $Id$
  */
 public class ShellServerDaemonGBean
-    implements GBeanLifecycle
+    implements ShellServerDaemon, GBeanLifecycle
 {
     private static final Log log = LogFactory.getLog(ShellServerDaemonGBean.class);
 
@@ -115,11 +115,15 @@ public class ShellServerDaemonGBean
     public static final GBeanInfo GBEAN_INFO;
 
     static {
-        GBeanInfoBuilder infoFactory = new GBeanInfoBuilder(
+        GBeanInfoBuilder factory = GBeanInfoBuilder.createStatic(
             "Shell Server Daemon",
             ShellServerDaemonGBean.class);
 
-        GBEAN_INFO = infoFactory.getBeanInfo();
+        factory.addInterface(ShellServerDaemon.class);
+
+        factory.addAttribute("port", Integer.TYPE, true, true);
+
+        GBEAN_INFO = factory.getBeanInfo();
     }
 
     public static GBeanInfo getGBeanInfo() {
