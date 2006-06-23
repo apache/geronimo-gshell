@@ -25,6 +25,7 @@ import org.apache.commons.cli.HelpFormatter;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.JLineConsole;
 
@@ -52,6 +53,8 @@ public class ScriptCommand
     protected int doExecute(final String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -61,28 +64,30 @@ public class ScriptCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
-        options.addOption(OptionBuilder.withLongOpt("lang")
-            .withDescription("Specify the scripting language")
+        options.addOption(OptionBuilder.withLongOpt("language")
+            .withDescription(messages.getMessage("cli.option.language"))
             .hasArg()
             .create('l'));
 
         options.addOption(OptionBuilder.withLongOpt("expression")
-            .withDescription("Evaluate the given expression")
+            .withDescription(messages.getMessage("cli.option.expression"))
             .hasArg()
             .create('e'));
 
         options.addOption(OptionBuilder.withLongOpt("interactive")
-            .withDescription("Run interactive mode")
+            .withDescription(messages.getMessage("cli.option.interactive"))
             .create('i'));
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
         if (line.hasOption('h')) {
-            io.out.println(getName() + " -- scripting language integration");
+            io.out.print(getName());
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
