@@ -24,6 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.server.SocketServerDaemon.SocketHandler;
 
@@ -46,6 +47,8 @@ public class ServerCommand
     protected int doExecute(final String[] args) throws Exception {
         assert args != null;
 
+        MessageSource messages = getMessageSource();
+
         //
         // TODO: Optimize, move common code to CommandSupport
         //
@@ -55,11 +58,11 @@ public class ServerCommand
         Options options = new Options();
 
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
+            .withDescription(messages.getMessage("cli.option.help"))
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("port")
-            .withDescription("Use a specified port number")
+            .withDescription(messages.getMessage("cli.option.port"))
             .hasArg()
             .create('p'));
 
@@ -67,7 +70,9 @@ public class ServerCommand
         CommandLine line = parser.parse(options, args);
 
         if (line.hasOption('h')) {
-            io.out.println(getName() + " -- starts a Shell server");
+            io.out.print(getName());
+            io.out.print(" -- ");
+            io.out.println(messages.getMessage("cli.usage.description"));
             io.out.println();
 
             HelpFormatter formatter = new HelpFormatter();
@@ -111,7 +116,9 @@ public class ServerCommand
         SocketServerDaemon daemon = new SocketServerDaemon(port, handler);
 
         IO io = getIO();
-        io.out.println("Listening for connections on port: " + port);
+        MessageSource messages = getMessageSource();
+
+        io.out.println(messages.getMessage("info.listening", port));
         io.flush();
 
         daemon.start();
