@@ -18,7 +18,6 @@ package org.apache.geronimo.gshell.commands.standard;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
@@ -49,27 +48,31 @@ public class JavaCommand
         super("java");
     }
 
-    protected int doExecute(final String[] args) throws Exception {
-        assert args != null;
-
+    protected Options getOptions() {
         MessageSource messages = getMessageSource();
 
-        //
-        // TODO: Optimize, move common code to CommandSupport
-        //
-
-        IO io = getIO();
-
-        Options options = new Options();
-
-        options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription(messages.getMessage("cli.option.help"))
-            .create('h'));
+        Options options = super.getOptions();
 
         options.addOption(OptionBuilder.withLongOpt("method")
             .withDescription(messages.getMessage("cli.option.method"))
             .withArgName("method")
             .create('M'));
+
+        return options;
+    }
+
+    protected String getUsage() {
+        return super.getUsage() + " <classname> [arguments]";
+    }
+
+    protected int doExecute(final String[] args) throws Exception {
+        assert args != null;
+
+        MessageSource messages = getMessageSource();
+
+        IO io = getIO();
+
+        Options options = getOptions();
 
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
@@ -83,24 +86,7 @@ public class JavaCommand
         }
 
         if (usage || line.hasOption('h')) {
-            io.out.print(getName());
-            io.out.print(" -- ");
-            io.out.println(messages.getMessage("cli.usage.description"));
-            io.out.println();
-
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp(
-                io.out,
-                80, // width (FIXME: Should pull from gshell.columns variable)
-                getName() + " [options] <classname> [arguments]",
-                "",
-                options,
-                4, // left pad
-                4, // desc pad
-                "",
-                false); // auto usage
-
-            io.out.println();
+            displayHelp(options);
 
             return Command.SUCCESS;
         }

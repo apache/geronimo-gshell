@@ -18,7 +18,6 @@ package org.apache.geronimo.gshell.commands.standard;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
@@ -40,52 +39,35 @@ public class EchoCommand
     public EchoCommand() {
         super("echo");
     }
-    
+
+    protected Options getOptions() {
+        MessageSource messages = getMessageSource();
+
+        Options options = super.getOptions();
+
+        options.addOption(OptionBuilder
+            .withDescription(messages.getMessage("cli.option.n"))
+            .create('n'));
+
+        return options;
+    }
+
     protected int doExecute(final String[] args) throws Exception {
         assert args != null;
 
         MessageSource messages = getMessageSource();
 
-        //
-        // TODO: Optimize, move common code to CommandSupport
-        //
-        
         IO io = getIO();
         
-        Options options = new Options();
+        Options options = getOptions();
 
-        options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription(messages.getMessage("cli.option.help"))
-            .create('h'));
-        
-        options.addOption(OptionBuilder
-            .withDescription(messages.getMessage("cli.option.n"))
-            .create('n'));
-        
         CommandLineParser parser = new PosixParser();
         CommandLine line = parser.parse(options, args);
 
         String[] _args = line.getArgs();
         
         if (line.hasOption('h')) {
-            io.out.print(getName());
-            io.out.print(" -- ");
-            io.out.println(messages.getMessage("cli.usage.description"));
-            io.out.println();
-
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp(
-                io.out,
-                80, // width (FIXME: Should pull from gshell.columns variable)
-                getName() + " [options] [string ...]",
-                "",
-                options,
-                4, // left pad
-                4, // desc pad
-                "",
-                false); // auto usage
-            
-            io.out.println();
+            displayHelp(options);
             
             return Command.SUCCESS;
         }

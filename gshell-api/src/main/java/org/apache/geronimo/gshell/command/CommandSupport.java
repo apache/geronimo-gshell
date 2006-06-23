@@ -19,6 +19,9 @@ package org.apache.geronimo.gshell.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.NullArgumentException;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.ExitNotification;
@@ -241,5 +244,55 @@ public abstract class CommandSupport
         // Sub-class should override to perform custom execution
 
         return Command.FAILURE;
+    }
+
+    //
+    // CLI Fluff
+    //
+
+    protected Options getOptions() {
+        MessageSource messages = getMessageSource();
+
+        Options options = new Options();
+
+        options.addOption(OptionBuilder.withLongOpt("help")
+            .withDescription(messages.getMessage("cli.option.help"))
+            .create('h'));
+
+        return options;
+    }
+
+    protected String getUsage() {
+        return "[options]";
+    }
+
+    protected void displayHelp(final Options options) {
+        MessageSource messages = getMessageSource();
+        IO io = getIO();
+
+        io.out.print(getName());
+        io.out.print(" -- ");
+        io.out.println(messages.getMessage("cli.usage.description"));
+        io.out.println();
+
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(
+            io.out,
+            80, // width (FIXME: Should pull from gshell.columns variable)
+            getName() + " " + getUsage(),
+            "",
+            options,
+            4, // left pad
+            4, // desc pad
+            "",
+            false); // auto usage
+
+        io.out.println();
+
+        String footer = messages.getMessage("cli.usage.footer");
+        if (footer.trim().length() != 0) {
+            io.out.println(footer);
+            io.out.println();
+        }
     }
 }
