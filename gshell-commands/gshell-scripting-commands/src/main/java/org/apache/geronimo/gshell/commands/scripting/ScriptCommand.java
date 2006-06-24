@@ -17,15 +17,13 @@
 package org.apache.geronimo.gshell.commands.scripting;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Options;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.JLineConsole;
 
 import org.apache.bsf.BSFManager;
@@ -41,8 +39,8 @@ public class ScriptCommand
 {
     private String language;
 
-    private boolean interactive = false;
-
+    private boolean interactive;
+    
     private String expression;
 
     public ScriptCommand() {
@@ -71,23 +69,10 @@ public class ScriptCommand
         return options;
     }
 
-    protected int doExecute(final String[] args) throws Exception {
-        assert args != null;
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
-
-        if (line.hasOption('h')) {
-            displayHelp(options);
-
-            return Command.SUCCESS;
-        }
+        boolean usage = false;
 
         if (line.hasOption('l')) {
             this.language = line.getOptionValue('l');
@@ -100,6 +85,12 @@ public class ScriptCommand
         if (line.hasOption('i')) {
             this.interactive = true;
         }
+
+        return usage;
+    }
+
+    protected int doExecute(final String[] args) throws Exception {
+        assert args != null;
 
         //
         // TODO: When given a file/url, try to figure out language from ext if language not given

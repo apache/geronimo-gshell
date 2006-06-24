@@ -17,13 +17,13 @@
 package org.apache.geronimo.gshell.server;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.MessageSource;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.server.SocketServerDaemon.SocketHandler;
 
@@ -56,35 +56,22 @@ public class ServerCommand
         return options;
     }
 
-    protected int doExecute(final String[] args) throws Exception {
-        assert args != null;
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
-
-        if (line.hasOption('h')) {
-            displayHelp(options);
-
-            return Command.SUCCESS;
-        }
+        boolean usage = false;
 
         if (line.hasOption('p')) {
             String tmp = line.getOptionValue('p');
             port = Integer.parseInt(tmp);
         }
 
-        server();
-
-        return Command.SUCCESS;
+        return usage;
     }
 
-    private void server() throws Exception {
+    protected int doExecute(final String[] args) throws Exception {
+        assert args != null;
+
         SocketHandler handler = new SocketHandler() {
             ShellServer server = new ShellServer();
 
@@ -104,5 +91,7 @@ public class ServerCommand
         io.flush();
 
         daemon.start();
+
+        return Command.SUCCESS;
     }
 }

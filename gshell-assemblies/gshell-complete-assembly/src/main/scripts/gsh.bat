@@ -90,6 +90,7 @@ if "%JAVA_OPTS%" == "" set JAVA_OPTS=""
 set JAVA_OPTS=%JAVA_OPTS% -Dprogram.name="%PROGNAME%"
 set JAVA_OPTS=%JAVA_OPTS% -Dgshell.home="%GSHELL_HOME%"
 set JAVA_OPTS=%JAVA_OPTS% -Dclassworlds.conf="%CLASSWORLDS_CONF%"
+set JAVA_OPTS=%JAVA_OPTS% -Dlog4j.configuration="%PROGNAME%-log4j.properties"
 
 @rem Execute Gshell
 "%JAVA_EXE%" %JAVA_OPTS% -classpath "%CLASSWORLDS_CLASSPATH%" %CLASSWORLDS_MAIN_CLASS% %CMD_LINE_ARGS%

@@ -17,13 +17,10 @@
 package org.apache.geronimo.gshell.commands.standard;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
  * Sleep... zzzZ
@@ -33,6 +30,8 @@ import org.apache.geronimo.gshell.console.IO;
 public class SleepCommand
     extends CommandSupport
 {
+    private long time = -1;
+
     public SleepCommand() {
         super("sleep");
     }
@@ -41,21 +40,11 @@ public class SleepCommand
         return super.getUsage() + " <time>";
     }
 
-    protected int doExecute(String[] args) throws Exception {
-        assert args != null;
-
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
-        args = line.getArgs();
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
         boolean usage = false;
-        long time = -1;
+        String[] args = line.getArgs();
 
         if (args.length != 1) {
             usage = true;
@@ -64,11 +53,11 @@ public class SleepCommand
             time = Long.parseLong(args[0]);
         }
 
-        if (usage || line.hasOption('h')) {
-            displayHelp(options);
+        return usage;
+    }
 
-            return Command.SUCCESS;
-        }
+    protected int doExecute(String[] args) throws Exception {
+        assert args != null;
 
         log.info("Sleeping for " + time);
 

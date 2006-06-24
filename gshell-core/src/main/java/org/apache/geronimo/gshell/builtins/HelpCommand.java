@@ -17,15 +17,13 @@
 package org.apache.geronimo.gshell.builtins;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.MessageSource;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 
@@ -38,6 +36,8 @@ public class HelpCommand
     extends CommandSupport
 {
     private CommandManager commandManager;
+
+    private String topic;
 
     public HelpCommand(final CommandManager commandManager) {
         super("help");
@@ -68,39 +68,33 @@ public class HelpCommand
         return super.getUsage() + " [topic|command]";
     }
 
-    protected int doExecute(final String[] args) throws Exception {
-        assert args != null;
-
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
         boolean usage = false;
-        String topic = null;
+        String[] args = line.getArgs();
 
-        String[] _args = line.getArgs();
-        if (_args.length > 1) {
-            io.err.println("Too many arguments: " + _args);
-            return Command.FAILURE;
+        IO io = getIO();
+        MessageSource messages = getMessageSource();
+
+        if (args.length > 1) {
+            io.err.println(messages.getMessage("info.unexpected_args", Arguments.asString(args)));
+            usage = true;
         }
-        else if (_args.length == 1) {
-            topic = _args[0];
+        else if (args.length == 1) {
+            topic = args[0];
         }
         else {
             usage = true;
         }
 
-        if (usage || line.hasOption('h')) {
-            displayHelp(options);
+        return usage;
+    }
 
-            return Command.SUCCESS;
-        }
+    protected int doExecute(final String[] args) throws Exception {
+        assert args != null;
 
+        IO io = getIO();
         CommandManager manager = getCommandManager();
 
         //

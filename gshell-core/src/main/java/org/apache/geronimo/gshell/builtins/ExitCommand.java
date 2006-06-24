@@ -17,12 +17,11 @@
 package org.apache.geronimo.gshell.builtins;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.MessageSource;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -35,6 +34,8 @@ import org.apache.geronimo.gshell.util.Arguments;
 public class ExitCommand
     extends CommandSupport
 {
+    private int exitCode = 0;
+
     public ExitCommand() {
         super("exit");
     }
@@ -43,24 +44,17 @@ public class ExitCommand
         return super.getUsage() + " [code]";
     }
 
-    protected int doExecute(String[] args) throws Exception {
-        assert args != null;
-
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
-        args = line.getArgs();
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
         boolean usage = false;
-        int exitCode = 0;
+        String[] args = line.getArgs();
+
+        IO io = getIO();
+        MessageSource messages = getMessageSource();
 
         if (args.length > 1) {
-            io.err.println("Unexpected arguments: " + Arguments.asString(args));
+            io.err.println(messages.getMessage("info.unexpected_args", Arguments.asString(args)));
             io.err.println();
             usage = true;
         }
@@ -68,11 +62,11 @@ public class ExitCommand
             exitCode = Integer.parseInt(args[0]);
         }
 
-        if (usage || line.hasOption('h')) {
-            displayHelp(options);
+        return usage;
+    }
 
-            return Command.SUCCESS;
-        }
+    protected int doExecute(String[] args) throws Exception {
+        assert args != null;
 
         exit(exitCode);
 

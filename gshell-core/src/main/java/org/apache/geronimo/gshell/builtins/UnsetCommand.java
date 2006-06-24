@@ -17,16 +17,15 @@
 package org.apache.geronimo.gshell.builtins;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesImpl;
 import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
  * Unset a variable or property.
@@ -36,14 +35,16 @@ import org.apache.geronimo.gshell.console.IO;
 public class UnsetCommand
     extends CommandSupport
 {
-    public UnsetCommand() {
-        super("unset");
-    }
-
     enum Mode
     {
         VARIABLE,
         PROPERTY
+    }
+
+    private Mode mode = Mode.VARIABLE;
+
+    public UnsetCommand() {
+        super("unset");
     }
 
     protected Options getOptions() {
@@ -62,42 +63,27 @@ public class UnsetCommand
         return super.getUsage() + " (<name>)+";
     }
 
-    protected int doExecute(String[] args) throws Exception {
-        assert args != null;
-
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        //
-        // TODO: Add support to unset in parent (parent) scope
-        //
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
         boolean usage = false;
-        String[] _args = line.getArgs();
+        String[] args = line.getArgs();
 
-        if (_args.length == 0) {
+        if (args.length == 0) {
             usage = true;
         }
-
-        if (usage || line.hasOption('h')) {
-            displayHelp(options);
-
-            return Command.SUCCESS;
-        }
-
-        Mode mode = Mode.VARIABLE;
 
         if (line.hasOption('p')) {
             mode = Mode.PROPERTY;
         }
 
-        for (String arg : _args) {
+        return usage;
+    }
+
+    protected int doExecute(String[] args) throws Exception {
+        assert args != null;
+
+        for (String arg : args) {
             switch (mode) {
                 case PROPERTY:
                     unsetProperty(arg);

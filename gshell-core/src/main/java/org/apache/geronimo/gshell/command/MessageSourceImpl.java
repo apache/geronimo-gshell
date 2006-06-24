@@ -29,6 +29,10 @@ import java.util.Formatter;
 public class MessageSourceImpl
     implements MessageSource
 {
+    //
+    // TODO: Add a global message set that is overridden by command messages
+    //
+    
     private final ResourceBundle bundle;
 
     public MessageSourceImpl(final String name) {

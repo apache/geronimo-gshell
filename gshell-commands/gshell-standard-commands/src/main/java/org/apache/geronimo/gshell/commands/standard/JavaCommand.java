@@ -17,13 +17,13 @@
 package org.apache.geronimo.gshell.commands.standard;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.MessageSource;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 
@@ -65,37 +65,30 @@ public class JavaCommand
         return super.getUsage() + " <classname> [arguments]";
     }
 
-    protected int doExecute(final String[] args) throws Exception {
-        assert args != null;
-
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
         boolean usage = false;
-        String[] _args = line.getArgs();
+        String[] args = line.getArgs();
 
-        if (_args.length == 0) {
+        IO io = getIO();
+        MessageSource messages = getMessageSource();
+
+        if (args.length == 0) {
             io.err.println(messages.getMessage("cli.error.missing_classname"));
             usage = true;
         }
-
-        if (usage || line.hasOption('h')) {
-            displayHelp(options);
-
-            return Command.SUCCESS;
-        }
-
         if (line.hasOption('M')) {
             methodName = line.getOptionValue('M');
         }
 
-        run(_args);
+        return usage;
+    }
+
+    protected int doExecute(final String[] args) throws Exception {
+        assert args != null;
+
+        run(args);
 
         return Command.SUCCESS;
     }

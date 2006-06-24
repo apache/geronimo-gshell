@@ -17,16 +17,15 @@
 package org.apache.geronimo.gshell.builtins;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.VariablesImpl;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 
 import java.util.Iterator;
@@ -39,14 +38,18 @@ import java.util.Iterator;
 public class SetCommand
     extends CommandSupport
 {
-    public SetCommand() {
-        super("set");
-    }
-
     enum Mode
     {
         VARIABLE,
         PROPERTY
+    }
+
+    private boolean displayVariables;
+
+    private Mode mode = Mode.VARIABLE;
+
+    public SetCommand() {
+        super("set");
     }
 
     protected Options getOptions() {
@@ -65,36 +68,30 @@ public class SetCommand
         return super.getUsage() + " (<name[=value>])*";
     }
 
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
+
+        boolean usage = false;
+        String[] args = line.getArgs();
+
+        if (args.length == 0) {
+            displayVariables = true;
+        }
+
+        if (line.hasOption('p')) {
+            mode = Mode.PROPERTY;
+        }
+
+        return usage;
+    }
+
     protected int doExecute(String[] args) throws Exception {
         assert args != null;
 
-        MessageSource messages = getMessageSource();
-
         IO io = getIO();
 
-        Options options = getOptions();
-
-        //
-        // TODO: Add support to set immutable
-        //
-
-        //
-        // TODO: Add support to set in parent (parent) scope
-        //
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
-
-        if (line.hasOption('h')) {
-            displayHelp(options);
-
-            return Command.SUCCESS;
-        }
-
-        String[] _args = line.getArgs();
-
         // No args... list all variables
-        if (_args.length == 0) {
+        if (displayVariables) {
             Variables vars = getVariables();
             Iterator<String> iter = vars.names();
 
@@ -111,12 +108,6 @@ public class SetCommand
             return Command.SUCCESS;
         }
 
-        Mode mode = Mode.VARIABLE;
-
-        if (line.hasOption('p')) {
-            mode = Mode.PROPERTY;
-        }
-
         //
         // FIXME: This does not jive well with the parser, and stuff like foo = "b a r"
         //
@@ -125,7 +116,7 @@ public class SetCommand
         // NOTE: May want to make x=b part of the CL grammar
         //
 
-        for (String arg : _args) {
+        for (String arg : args) {
             switch (mode) {
                 case PROPERTY:
                     setProperty(arg);

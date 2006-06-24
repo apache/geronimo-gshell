@@ -17,14 +17,14 @@
 package org.apache.geronimo.gshell.commands.standard;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.MessageSource;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 
 import java.io.BufferedReader;
@@ -43,8 +43,8 @@ import java.net.MalformedURLException;
 public class CatCommand
     extends CommandSupport
 {
-    private boolean displayLineNumbers = false;
-
+    private boolean displayLineNumbers;
+    
     public CatCommand() {
         super("cat");
     }
@@ -65,36 +65,27 @@ public class CatCommand
         return super.getUsage() + " [<file|url> ...]";
     }
 
-    protected int doExecute(final String[] args) throws Exception {
-        assert args != null;
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
-
-        String[] _args = line.getArgs();
-
-        if (line.hasOption('h')) {
-            displayHelp(options);
-
-            return Command.SUCCESS;
-        }
+        boolean usage = false;
 
         if (line.hasOption('n')) {
             displayLineNumbers = true;
         }
 
+        return usage;
+    }
+
+    protected int doExecute(String[] args) throws Exception {
+        assert args != null;
+
         // No args, then read from STDIN
-        if (_args.length == 0) {
-            _args = new String[] { "-" };
+        if (args.length == 0) {
+            args = new String[] { "-" };
         }
 
-        cat(_args);
+        cat(args);
 
         return Command.SUCCESS;
     }

@@ -121,5 +121,6 @@ else
         -Dprogram.name="$PROGNAME" \
         -Dclassworlds.conf="$CLASSWORLDS_CONF" \
         -Dgshell.home="$GSHELL_HOME" \
+        -Dlog4j.configuration="${PROGNAME}-log4j.properties" \
         org.codehaus.classworlds.Launcher "$@"
 fi

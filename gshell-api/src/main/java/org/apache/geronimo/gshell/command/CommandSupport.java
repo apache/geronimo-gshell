@@ -22,6 +22,9 @@ import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.CommandLine;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.ExitNotification;
@@ -205,7 +208,23 @@ public abstract class CommandSupport
         int status;
 
         try {
-            status = doExecute(args);
+            // Handle the command-line
+            Options options = getOptions();
+            CommandLineParser parser = new PosixParser();
+            CommandLine line = parser.parse(options, args);
+
+            // Custom command-line processing
+            boolean usage = processCommandLine(line);
+
+            // Default command-line processing
+            if (usage || line.hasOption('h')) {
+                displayHelp(options);
+
+                return Command.SUCCESS;
+            }
+
+            // Execute with the remaining arguments post-processing
+            status = doExecute(line.getArgs());
         }
         catch (Exception e) {
             log.error(e.getMessage());
@@ -240,15 +259,33 @@ public abstract class CommandSupport
         return status;
     }
 
+    /**
+     * Sub-class should override to perform custom execution.
+     *
+     * @param args  Post-command-line parsed options.
+     * @return
+     *
+     * @throws Exception
+     */
     protected int doExecute(final String[] args) throws Exception {
-        // Sub-class should override to perform custom execution
-
         return Command.FAILURE;
     }
 
     //
     // CLI Fluff
     //
+
+    /**
+     * Process the command-line.
+     *
+     * @param line  The command-line to process.
+     * @return      True to display help and exit; else false to continue.
+     *
+     * @throws CommandException
+     */
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        return false;
+    }
 
     protected Options getOptions() {
         MessageSource messages = getMessageSource();

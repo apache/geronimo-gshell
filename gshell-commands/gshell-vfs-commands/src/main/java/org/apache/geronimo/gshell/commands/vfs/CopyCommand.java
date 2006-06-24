@@ -16,13 +16,9 @@
 
 package org.apache.geronimo.gshell.commands.vfs;
 
-import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.command.CommandException;
 
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
@@ -44,36 +40,26 @@ public class CopyCommand
         return super.getUsage() + " <source> <target>";
     }
 
-    protected int doExecute(String[] args) throws Exception {
-        assert args != null;
-
-        MessageSource messages = getMessageSource();
-
-        IO io = getIO();
-
-        Options options = getOptions();
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args);
+    protected boolean processCommandLine(final CommandLine line) throws CommandException {
+        assert line != null;
 
         boolean usage = false;
-
-        String[] _args = line.getArgs();
+        String[] args = line.getArgs();
 
         // Need exactly 2 args
-        if (_args.length != 2) {
+        if (args.length != 2) {
             usage = true;
         }
 
-        if (usage || line.hasOption('h')) {
-            displayHelp(options);
+        return usage;
+    }
 
-            return Command.SUCCESS;
-        }
+    protected int doExecute(String[] args) throws Exception {
+        assert args != null;
 
         FileSystemManager fsm = getFileSystemManager();
-        FileObject source = fsm.resolveFile(_args[0]);
-        FileObject target = fsm.resolveFile(_args[1]);
+        FileObject source = fsm.resolveFile(args[0]);
+        FileObject target = fsm.resolveFile(args[1]);
 
         log.info("Copying " + source + " -> " + target);
 

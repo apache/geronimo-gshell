@@ -24,7 +24,9 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.HelpFormatter;
+
 import org.apache.commons.lang.time.StopWatch;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -60,7 +62,7 @@ public class Main
 
     private final StopWatch watch = new StopWatch();
 
-    private boolean interactive = false;
+    private boolean interactive;
 
     public Main(final ClassWorld world) {
         assert world != null;
