@@ -27,7 +27,6 @@ import java.io.IOException;
 
 import jline.ConsoleReader;
 import jline.SimpleCompletor;
-import jline.CandidateListCompletionHandler;
 
 /**
  * Provides the user-interaction bits for Shell.
@@ -77,12 +76,11 @@ public class InteractiveShell
         // Add a command completer of we are using JLine
         if (console instanceof JLineConsole) {
             ConsoleReader jline = ((JLineConsole)console).getReader();
+            jline.setCompletionHandler(new CompletionHandlerImpl());
 
             //
-            // TODO: Figure out why this does not work!!!!
+            // TODO: Need to include aliases too
             //
-            jline.setCompletionHandler(new CandidateListCompletionHandler());
-
             String[] commands = (String[])shell.getCommandManager().commandNames().toArray(new String[0]);
 
             SimpleCompletor c = new SimpleCompletor(commands);
