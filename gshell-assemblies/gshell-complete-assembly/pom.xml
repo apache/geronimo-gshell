@@ -62,6 +62,13 @@
             <artifactId>gshell-vfs-commands</artifactId>
             <version>${pom.version}</version>
         </dependency>
+
+        <!-- Thridparty Dependencies -->
+        
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging-adapters</artifactId>
+        </dependency>
     </dependencies>
     
     <build>

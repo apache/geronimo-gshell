@@ -69,9 +69,6 @@ public class Main
         this.world = world;
 
         watch.start();
-
-        // Default is to be quiet
-        setConsoleLogLevel("WARN");
     }
 
     private void setConsoleLogLevel(final String level) {
@@ -187,11 +184,15 @@ public class Main
         if (line.hasOption("quiet")) {
             setConsoleLogLevel("ERROR");
         }
-        if (line.hasOption("debug")) {
+        else if (line.hasOption("debug")) {
             setConsoleLogLevel("DEBUG");
         }
         else if (line.hasOption("verbose")) {
             setConsoleLogLevel("INFO");
+        }
+        else {
+            // Default is to be quiet
+            setConsoleLogLevel("WARN");
         }
 
         if (line.hasOption('i')) {

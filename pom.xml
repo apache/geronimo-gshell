@@ -139,8 +139,16 @@
 
             <dependency>
                 <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>1.0.4</version>
+                <artifactId>commons-logging-api</artifactId>
+                <version>1.1</version>
+                <type>jar</type>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging-adapters</artifactId>
+                <version>1.1</version>
                 <type>jar</type>
                 <scope>compile</scope>
             </dependency>
@@ -159,6 +167,13 @@
                 <version>1.0</version>
                 <type>jar</type>
                 <scope>compile</scope>
+                <exclusions>
+                    <!-- Includes commons-logging-1.0 -->
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -236,8 +251,16 @@
                 <version>1.2</version>
                 <type>jar</type>
                 <scope>compile</scope>
+                <exclusions>
+                    <!-- Includes commons-logging-1.0.4 -->
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
+            <!--
             <dependency>
                 <groupId>picocontainer</groupId>
                 <artifactId>picocontainer-gems</artifactId>
@@ -251,13 +274,14 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            -->
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <dependency>
-            <artifactId>commons-logging</artifactId>
             <groupId>commons-logging</groupId>
+            <artifactId>commons-logging-api</artifactId>
         </dependency>
 
         <dependency>

@@ -43,11 +43,6 @@
         </dependency>
 
         <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-gems</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>commons-jexl</groupId>
             <artifactId>commons-jexl</artifactId>
             <version>1.0</version>
