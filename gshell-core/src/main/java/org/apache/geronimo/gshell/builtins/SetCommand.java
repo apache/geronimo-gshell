@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * Set a variable or property.
@@ -44,7 +45,7 @@ public class SetCommand
         PROPERTY
     }
 
-    private boolean displayVariables;
+    private boolean display;
 
     private Mode mode = Mode.VARIABLE;
 
@@ -75,7 +76,7 @@ public class SetCommand
         String[] args = line.getArgs();
 
         if (args.length == 0) {
-            displayVariables = true;
+            display = true;
         }
 
         if (line.hasOption('p')) {
@@ -90,19 +91,40 @@ public class SetCommand
 
         IO io = getIO();
 
-        // No args... list all variables
-        if (displayVariables) {
-            Variables vars = getVariables();
-            Iterator<String> iter = vars.names();
+        // No args... list all properties or variables
+        if (display) {
+            switch (mode) {
+                case PROPERTY: {
+                    Properties props = System.getProperties();
+                    Iterator iter = props.keySet().iterator();
 
-            while (iter.hasNext()) {
-                String name = iter.next();
-                Object value = vars.get(name);
+                    while (iter.hasNext()) {
+                        String name = (String)iter.next();
+                        String value = props.getProperty(name);
 
-                io.out.print(name);
-                io.out.print("=");
-                io.out.print(value);
-                io.out.println();
+                        io.out.print(name);
+                        io.out.print("=");
+                        io.out.print(value);
+                        io.out.println();
+                    }
+                    break;
+                }
+
+                case VARIABLE: {
+                    Variables vars = getVariables();
+                    Iterator<String> iter = vars.names();
+
+                    while (iter.hasNext()) {
+                        String name = iter.next();
+                        Object value = vars.get(name);
+
+                        io.out.print(name);
+                        io.out.print("=");
+                        io.out.print(value);
+                        io.out.println();
+                    }
+                    break;
+                }
             }
 
             return Command.SUCCESS;
