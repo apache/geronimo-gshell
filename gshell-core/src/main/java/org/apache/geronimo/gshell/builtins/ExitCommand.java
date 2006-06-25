@@ -68,15 +68,6 @@ public class ExitCommand
     protected int doExecute(String[] args) throws Exception {
         assert args != null;
 
-        exit(exitCode);
-
-        // Should never get this far
-        assert false;
-
-        return Command.FAILURE;
-    }
-
-    private void exit(final int exitCode) {
         log.info("Exiting w/code: " + exitCode);
 
         //
