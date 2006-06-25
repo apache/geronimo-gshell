@@ -21,6 +21,10 @@ import org.apache.commons.lang.NullArgumentException;
 import java.util.ResourceBundle;
 import java.util.Formatter;
 
+//
+// TODO: Move this to util or something, it is generally useful
+//
+
 /**
  * Message source backed up by a {@link ResourceBundle}.
  *
