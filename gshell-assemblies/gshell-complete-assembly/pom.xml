@@ -69,6 +69,14 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging-adapters</artifactId>
         </dependency>
+
+        <!-- Include at least one scripting language for now (bsh is nice and small) -->
+        <dependency>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh</artifactId>
+            <version>2.0b4</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
     <build>
