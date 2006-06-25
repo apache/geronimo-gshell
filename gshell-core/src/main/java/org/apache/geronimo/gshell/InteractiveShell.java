@@ -79,7 +79,8 @@ public class InteractiveShell
             jline.setCompletionHandler(new CompletionHandlerImpl());
 
             //
-            // TODO: Need to include aliases too
+            // TODO: Need to include aliases too.  Probably want to add a custom completor
+            //       to complete command options, etc.
             //
             String[] commands = (String[])shell.getCommandManager().commandNames().toArray(new String[0]);
 
