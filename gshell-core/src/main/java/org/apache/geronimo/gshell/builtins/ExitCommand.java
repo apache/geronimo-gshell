@@ -18,7 +18,6 @@ package org.apache.geronimo.gshell.builtins;
 
 import org.apache.commons.cli.CommandLine;
 
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.CommandException;
