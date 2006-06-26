@@ -27,7 +27,6 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
-import org.apache.geronimo.gshell.ExitNotification;
 
 import java.util.Iterator;
 
@@ -116,7 +115,7 @@ public abstract class CommandSupport
             log.error("Initialization failed", e);
 
             //
-            // HACK:
+            // HACK: Need to handle or descide to ignore this exception
             //
 
             throw new RuntimeException("Command initialization failed", e);
@@ -153,7 +152,7 @@ public abstract class CommandSupport
             log.error("Destruction failed", e);
 
             //
-            // HACK:
+            // HACK: Need to handle or descide to ignore this exception
             //
 
             throw new RuntimeException("Command destruction failed", e);
@@ -241,15 +240,15 @@ public abstract class CommandSupport
 
             result = Command.FAILURE;
         }
-        catch (ExitNotification n) {
+        catch (Notification n) {
             //
-            // HACK: Propagate the notifciation
+            // Always rethrow notifications
             //
-
             throw n;
         }
         catch (Error e) {
             log.error(e.getMessage());
+
             if (log.isDebugEnabled()) {
                 log.debug("Error details", e);
             }

@@ -16,6 +16,8 @@
 
 package org.apache.geronimo.gshell;
 
+import org.apache.geronimo.gshell.command.Notification;
+
 /**
  * Thrown to indicate that the current shell should exit.
  *
@@ -25,13 +27,9 @@ package org.apache.geronimo.gshell;
  * @version $Id$
  */
 public class ExitNotification
-    extends Error
+    extends Notification
 {
     ///CLOVER:OFF
-    
-    //
-    // TODO: Need to find a better home for this...
-    //
     
     private final int code;
 

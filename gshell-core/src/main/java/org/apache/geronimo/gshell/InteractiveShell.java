@@ -55,6 +55,10 @@ public class InteractiveShell
                             shell.execute(line);
                         }
                         catch (ExitNotification n) {
+                            //
+                            // TODO: Propagate the exit status ?
+                            //
+
                             return Result.STOP;
                         }
                     }

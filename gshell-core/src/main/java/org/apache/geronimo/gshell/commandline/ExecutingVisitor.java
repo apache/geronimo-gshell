@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.ErrorNotification;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,20 +56,16 @@ public class ExecutingVisitor
 
     public Object visit(final SimpleNode node, final Object data) {
         assert node != null;
-        // assert data != null;
-
-        log.error("Unhandled node type: " + node.getClass().getName());
 
         //
-        // TODO: Exception?  Means impl node does not accept
+        // It is an error if we forgot to implement a node handler
         //
 
-        return null;
+        throw new Error("Unhandled node type: " + node.getClass().getName());
     }
 
     public Object visit(final ASTCommandLine node, final Object data) {
         assert node != null;
-        // assert data != null;
 
         //
         // NOTE: Visiting children will execute seperate commands in serial
@@ -79,7 +76,6 @@ public class ExecutingVisitor
 
     public Object visit(final ASTExpression node, final Object data) {
         assert node != null;
-        // assert data != null;
 
         // Create the argument list (cmd name + args)
         List<Object> list = new ArrayList<Object>(node.jjtGetNumChildren());
@@ -97,13 +93,7 @@ public class ExecutingVisitor
             result = shell.execute(commandName, args);
         }
         catch (Exception e) {
-            //
-            // FIXME: Need to resolve how to pass back this exception to the calling code
-            //        Maybe a custom RuntimeException or Error that can be caust by upper layer
-            //        and then decoded and rethrown?
-            //
-
-            throw new RuntimeException(e);
+            throw new ErrorNotification(e);
         }
 
         return result;

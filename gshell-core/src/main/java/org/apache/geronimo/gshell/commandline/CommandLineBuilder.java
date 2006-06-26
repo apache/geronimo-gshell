@@ -54,7 +54,6 @@ public class CommandLineBuilder
         assert input != null;
 
         Reader reader = new StringReader(input);
-        CommandLineParser parser = new CommandLineParser();
         ASTCommandLine cl = parser.parse(reader);
 
         // If debug is enabled, the log the parse tree
@@ -79,6 +78,11 @@ public class CommandLineBuilder
 
         return new CommandLine() {
             public void execute() throws Exception {
+
+                //
+                // TODO: Handle ErrorNotification
+                //
+
                 root.jjtAccept(visitor, null);
             }
         };
