@@ -66,18 +66,17 @@ public class UnsetCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
         String[] args = line.getArgs();
 
         if (args.length == 0) {
-            usage = true;
+            return true;
         }
 
         if (line.hasOption('p')) {
             mode = Mode.PROPERTY;
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(Object[] args) throws Exception {

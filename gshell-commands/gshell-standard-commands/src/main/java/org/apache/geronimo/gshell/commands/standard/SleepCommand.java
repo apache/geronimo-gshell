@@ -43,17 +43,16 @@ public class SleepCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
         String[] args = line.getArgs();
 
         if (args.length != 1) {
-            usage = true;
+            return true;
         }
         else {
             time = Long.parseLong(args[0]);
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(Object[] args) throws Exception {

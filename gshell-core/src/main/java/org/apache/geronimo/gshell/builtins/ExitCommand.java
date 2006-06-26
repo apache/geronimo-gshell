@@ -46,7 +46,6 @@ public class ExitCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
         String[] args = line.getArgs();
 
         IO io = getIO();
@@ -55,13 +54,13 @@ public class ExitCommand
         if (args.length > 1) {
             io.err.println(messages.getMessage("info.unexpected_args", Arguments.asString(args)));
             io.err.println();
-            usage = true;
+            return true;
         }
         if (args.length == 1) {
             exitCode = Integer.parseInt(args[0]);
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(Object[] args) throws Exception {

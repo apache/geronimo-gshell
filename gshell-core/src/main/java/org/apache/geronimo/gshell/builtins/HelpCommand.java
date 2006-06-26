@@ -71,24 +71,20 @@ public class HelpCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
         String[] args = line.getArgs();
 
         IO io = getIO();
         MessageSource messages = getMessageSource();
 
-        if (args.length > 1) {
+        if (args.length == 0 || args.length > 1) {
             io.err.println(messages.getMessage("info.unexpected_args", Arguments.asString(args)));
-            usage = true;
+            return true;
         }
         else if (args.length == 1) {
             topic = args[0];
         }
-        else {
-            usage = true;
-        }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(final Object[] args) throws Exception {

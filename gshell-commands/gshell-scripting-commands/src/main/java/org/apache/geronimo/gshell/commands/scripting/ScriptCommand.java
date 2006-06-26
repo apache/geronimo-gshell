@@ -72,8 +72,6 @@ public class ScriptCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
-
         if (line.hasOption('l')) {
             this.language = line.getOptionValue('l');
         }
@@ -86,7 +84,7 @@ public class ScriptCommand
             this.interactive = true;
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(final Object[] args) throws Exception {

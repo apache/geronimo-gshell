@@ -67,7 +67,6 @@ public class JavaCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
         String[] args = line.getArgs();
 
         IO io = getIO();
@@ -75,13 +74,13 @@ public class JavaCommand
 
         if (args.length == 0) {
             io.err.println(messages.getMessage("cli.error.missing_classname"));
-            usage = true;
+            return true;
         }
         if (line.hasOption('M')) {
             methodName = line.getOptionValue('M');
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(final Object[] args) throws Exception {

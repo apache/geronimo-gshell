@@ -43,15 +43,14 @@ public class CopyCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
         String[] args = line.getArgs();
 
         // Need exactly 2 args
         if (args.length != 2) {
-            usage = true;
+            return true;
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(Object[] args) throws Exception {

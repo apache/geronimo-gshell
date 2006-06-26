@@ -68,13 +68,11 @@ public class CatCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
-
         if (line.hasOption('n')) {
             displayLineNumbers = true;
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(final Object[] args) throws Exception {

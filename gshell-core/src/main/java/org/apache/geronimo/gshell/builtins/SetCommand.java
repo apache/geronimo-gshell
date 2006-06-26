@@ -72,7 +72,6 @@ public class SetCommand
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
         assert line != null;
 
-        boolean usage = false;
         String[] args = line.getArgs();
 
         if (args.length == 0) {
@@ -83,7 +82,7 @@ public class SetCommand
             mode = Mode.PROPERTY;
         }
 
-        return usage;
+        return false;
     }
 
     protected Object doExecute(Object[] args) throws Exception {
