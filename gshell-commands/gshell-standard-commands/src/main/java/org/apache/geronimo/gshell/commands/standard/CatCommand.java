@@ -31,7 +31,6 @@ import org.apache.geronimo.gshell.util.Arguments;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.MalformedURLException;
@@ -78,21 +77,18 @@ public class CatCommand
         return usage;
     }
 
-    protected Object doExecute(Object[] args) throws Exception {
+    protected Object doExecute(final Object[] args) throws Exception {
         assert args != null;
+
+        String[] files;
 
         // No args, then read from STDIN
         if (args.length == 0) {
-            args = new String[] { "-" };
+            files = new String[] { "-" };
         }
-
-        cat(Arguments.toStringArray(args));
-
-        return Command.SUCCESS;
-    }
-
-    private void cat(final String[] files) throws IOException {
-        assert files != null;
+        else {
+            files = Arguments.toStringArray(args);
+        }
 
         IO io = getIO();
 
@@ -136,5 +132,7 @@ public class CatCommand
 
             reader.close();
         }
+
+        return Command.SUCCESS;
     }
 }
