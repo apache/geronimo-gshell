@@ -17,11 +17,21 @@
 package org.apache.geronimo.gshell.commandline;
 
 /**
- * A generic abstraction of an executable command-line.
+ * A abstraction of an executable command-line.
+ *
+ * <p>
+ * Could be a simple command or a complex command pipe-line.
  *
  * @version $Id$
  */
 public interface CommandLine
 {
+    /**
+     * Execute the command-line.
+     *
+     * @return  The final result of the command-line.
+     *
+     * @throws Exception    Failed to execute command-line.
+     */
     Object execute() throws Exception;
 }
