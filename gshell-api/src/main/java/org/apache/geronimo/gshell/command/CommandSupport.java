@@ -285,6 +285,9 @@ public abstract class CommandSupport
     /**
      * Process the command-line.
      *
+     * <p>
+     * The default is to provide no additional processing.
+     *
      * @param line  The command-line to process.
      * @return      True to display help and exit; else false to continue.
      *
@@ -294,6 +297,14 @@ public abstract class CommandSupport
         return false;
     }
 
+    /**
+     * Get the command-line options to process.
+     *
+     * <p>
+     * The default is to provide --help and -h support.
+     *
+     * @return  The command-line options; never null;
+     */
     protected Options getOptions() {
         MessageSource messages = getMessageSource();
 
@@ -306,6 +317,11 @@ public abstract class CommandSupport
         return options;
     }
 
+    /**
+     * Returns the command-line usage.
+     *
+     * @return  The command-line usage.
+     */
     protected String getUsage() {
         return "[options]";
     }
