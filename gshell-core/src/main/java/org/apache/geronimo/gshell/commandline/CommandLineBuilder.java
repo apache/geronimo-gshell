@@ -77,13 +77,13 @@ public class CommandLineBuilder
         final ExecutingVisitor visitor = new ExecutingVisitor(this.shell);
 
         return new CommandLine() {
-            public void execute() throws Exception {
+            public Object execute() throws Exception {
 
                 //
                 // TODO: Handle ErrorNotification
                 //
 
-                root.jjtAccept(visitor, null);
+                return root.jjtAccept(visitor, null);
             }
         };
     }

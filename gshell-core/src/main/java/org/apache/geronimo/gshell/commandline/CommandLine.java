@@ -23,10 +23,5 @@ package org.apache.geronimo.gshell.commandline;
  */
 public interface CommandLine
 {
-    //
-    // TODO: If we descide on returning an Object from a command, then
-    //       this returns an Object too
-    //
-    
-    void execute() throws Exception;
+    Object execute() throws Exception;
 }

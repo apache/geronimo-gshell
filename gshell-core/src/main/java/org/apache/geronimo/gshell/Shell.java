@@ -110,13 +110,7 @@ public class Shell
         }
 
         CommandLine cl = commandLineBuilder.create(commandLine);
-        cl.execute();
-
-        //
-        // TODO: Fix API to allow CL to pass back data
-        //
-
-        return Command.SUCCESS;
+        return cl.execute();
     }
 
     //
