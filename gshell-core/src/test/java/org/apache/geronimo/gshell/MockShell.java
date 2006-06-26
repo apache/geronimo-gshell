@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.command.CommandException;
 public class MockShell
     extends Shell
 {
-    public String[] args;
+    public Object[] args;
 
     public String commandName;
 
@@ -37,13 +37,13 @@ public class MockShell
         super(new IO());
     }
 
-    public int execute(String... args) throws Exception {
+    public Object execute(Object... args) throws Exception {
         this.args = args;
 
         return 0;
     }
 
-    public int execute(String commandName, String[] args) throws Exception {
+    public Object execute(String commandName, Object[] args) throws Exception {
         this.commandName = commandName;
         this.args = args;
 

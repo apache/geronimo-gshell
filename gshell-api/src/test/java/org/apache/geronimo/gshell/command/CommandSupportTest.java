@@ -70,5 +70,9 @@ public class CommandSupportTest
         public MockCommand(final String name) {
             super(name);
         }
+
+        protected Object doExecute(final Object[] args) throws Exception {
+            return null;
+        }
     }
 }

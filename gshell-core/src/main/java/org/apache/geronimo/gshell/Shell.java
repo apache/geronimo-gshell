@@ -39,7 +39,7 @@ import org.apache.geronimo.gshell.util.Arguments;
 import java.util.Iterator;
 
 /**
- * ???
+ * This is the primary interface to executing named commands.
  *
  * @version $Id$
  */
@@ -102,10 +102,12 @@ public class Shell
         return commandManager;
     }
 
-    public int execute(final String commandLine) throws Exception {
+    public Object execute(final String commandLine) throws Exception {
         assert commandLine != null;
 
-        log.info("Executing (String): " + commandLine);
+        if (log.isInfoEnabled()) {
+            log.info("Executing (String): " + commandLine);
+        }
 
         CommandLine cl = commandLineBuilder.create(commandLine);
         cl.execute();
@@ -114,7 +116,7 @@ public class Shell
         // TODO: Fix API to allow CL to pass back data
         //
 
-        return 0;
+        return Command.SUCCESS;
     }
 
     //
@@ -135,13 +137,15 @@ public class Shell
         }
     }
 
-    public int execute(final String commandName, final String[] args) throws Exception {
+    public Object execute(final String commandName, final Object[] args) throws Exception {
         assert commandName != null;
         assert args != null;
 
         boolean debug = log.isDebugEnabled();
 
-        log.info("Executing (" + commandName + "): " + Arguments.asString(args));
+        if (log.isInfoEnabled()) {
+            log.info("Executing (" + commandName + "): " + Arguments.asString(args));
+        }
 
         // Setup the command container
         ShellContainer container = new ShellContainer(shellContainer);
@@ -194,9 +198,9 @@ public class Shell
             watch.start();
         }
 
-        int status;
+        Object result;
         try {
-            status = cmd.execute(args);
+            result = cmd.execute(args);
 
             if (debug) {
                 log.debug("Command completed in " + watch);
@@ -209,15 +213,17 @@ public class Shell
             // container.stop() container.dispose() ?
         }
 
-        return status;
+        return result;
     }
 
-    public int execute(final String... args) throws Exception {
+    public Object execute(final Object... args) throws Exception {
         assert args != null;
         assert args.length > 1;
 
-        log.info("Executing (String[]): " + Arguments.asString(args));
+        if (log.isInfoEnabled()) {
+            log.info("Executing (Object...): " + Arguments.asString(args));
+        }
 
-        return execute(args[0], Arguments.shift(args));
+        return execute(String.valueOf(args[0]), Arguments.shift(args));
     }
 }

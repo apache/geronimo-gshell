@@ -57,7 +57,7 @@ public class ShellTest
         Shell shell = new Shell();
 
         try {
-            shell.execute(new String[]{ "foo", "bar", "baz" });
+            shell.execute(new Object[]{ "foo", "bar", "baz" });
         }
         catch (CommandNotFoundException expected) {
             // ignore

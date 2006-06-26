@@ -64,7 +64,7 @@ public class EchoCommand
         return usage;
     }
 
-    protected int doExecute(final String[] args) throws Exception {
+    protected Object doExecute(final Object[] args) throws Exception {
         assert args != null;
 
         IO io = getIO();

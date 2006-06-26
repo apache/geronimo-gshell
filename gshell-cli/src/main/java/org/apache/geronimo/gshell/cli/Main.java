@@ -236,7 +236,7 @@ public class Main
             log.debug("Started in " + watch);
         }
 
-        int status = 0;
+        Object result = null;
 
         //
         // TODO: Pass interactive flags (maybe as property) so gshell knows what mode it is
@@ -264,14 +264,20 @@ public class Main
             interp.run();
         }
         else {
-            status = gshell.execute(args);
+            result = gshell.execute(args);
         }
 
         if (debug) {
             log.debug("Ran for " + watch);
         }
 
-        System.exit(status);
+        // If the result is a number, then pass that back to the calling shell
+        if (result instanceof Number) {
+            System.exit(((Number)result).intValue());
+        }
+        else {
+            System.exit(0);
+        }
     }
 
     //

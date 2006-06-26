@@ -86,7 +86,7 @@ public class SetCommand
         return usage;
     }
 
-    protected int doExecute(String[] args) throws Exception {
+    protected Object doExecute(Object[] args) throws Exception {
         assert args != null;
 
         IO io = getIO();
@@ -138,14 +138,16 @@ public class SetCommand
         // NOTE: May want to make x=b part of the CL grammar
         //
 
-        for (String arg : args) {
+        for (Object arg : args) {
+            String namevalue = String.valueOf(arg);
+
             switch (mode) {
                 case PROPERTY:
-                    setProperty(arg);
+                    setProperty(namevalue);
                     break;
 
                 case VARIABLE:
-                    setVariable(arg);
+                    setVariable(namevalue);
                     break;
             }
         }

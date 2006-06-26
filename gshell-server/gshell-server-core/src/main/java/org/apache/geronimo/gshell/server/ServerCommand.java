@@ -69,7 +69,7 @@ public class ServerCommand
         return usage;
     }
 
-    protected int doExecute(final String[] args) throws Exception {
+    protected Object doExecute(final Object[] args) throws Exception {
         assert args != null;
 
         SocketHandler handler = new SocketHandler() {

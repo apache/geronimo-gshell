@@ -80,17 +80,19 @@ public class UnsetCommand
         return usage;
     }
 
-    protected int doExecute(String[] args) throws Exception {
+    protected Object doExecute(Object[] args) throws Exception {
         assert args != null;
 
-        for (String arg : args) {
+        for (Object arg : args) {
+            String namevalue = String.valueOf(arg);
+
             switch (mode) {
                 case PROPERTY:
-                    unsetProperty(arg);
+                    unsetProperty(namevalue);
                     break;
 
                 case VARIABLE:
-                    unsetVariable(arg);
+                    unsetVariable(namevalue);
                     break;
             }
         }

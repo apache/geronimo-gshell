@@ -74,9 +74,7 @@ public class ExecutingVisitor
         // NOTE: Visiting children will execute seperate commands in serial
         //
 
-        Object result = node.childrenAccept(this, data);
-
-        return result;
+        return node.childrenAccept(this, data);
     }
 
     public Object visit(final ASTExpression node, final Object data) {
@@ -84,23 +82,25 @@ public class ExecutingVisitor
         // assert data != null;
 
         // Create the argument list (cmd name + args)
-        List<String> list = new ArrayList<String>(node.jjtGetNumChildren());
+        List<Object> list = new ArrayList<Object>(node.jjtGetNumChildren());
         node.childrenAccept(this, list);
 
-        String[] args = (String[])list.toArray(new String[list.size()]);
+        Object[] args = (Object[])list.toArray(new Object[list.size()]);
         assert list.size() >= 1;
 
-        String commandName = args[0];
+        String commandName = String.valueOf(args[0]);
         args = Arguments.shift(args);
 
-        int result;
+        Object result;
 
         try {
             result = shell.execute(commandName, args);
         }
         catch (Exception e) {
             //
-            // FIXME: !!!
+            // FIXME: Need to resolve how to pass back this exception to the calling code
+            //        Maybe a custom RuntimeException or Error that can be caust by upper layer
+            //        and then decoded and rethrown?
             //
 
             throw new RuntimeException(e);
@@ -113,7 +113,7 @@ public class ExecutingVisitor
         assert data != null;
         assert data instanceof List;
 
-        List<String> args = (List<String>)data;
+        List<Object> args = (List<Object>)data;
         args.add(value);
 
         return value;

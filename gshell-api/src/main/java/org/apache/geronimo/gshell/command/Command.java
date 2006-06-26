@@ -33,11 +33,7 @@ public interface Command
 
     void init(CommandContext context); // throws Exception ?
 
-    //
-    // TODO: Return an Object!  Take an Object[]!
-    //
-    
-    int execute(String... args) throws Exception;
+    Object execute(Object... args) throws Exception;
     
     void abort(); // throws Exception ?
     

@@ -49,8 +49,11 @@ public abstract class CommandSupport
         setName(name);
     }
 
+    /**
+     * Sub-class <b>must</b> call {@link #setName(String)}.
+     */
     protected CommandSupport() {
-        // Sub-class must call setName()
+        super();
     }
 
     public void setName(final String name) {
@@ -197,21 +200,25 @@ public abstract class CommandSupport
     // Execute Helpers
     //
 
-    public int execute(final String... args) throws Exception {
+    public Object execute(final Object... args) throws Exception {
         assert args != null;
 
         // Make sure that we have been initialized before we go any further
         ensureInitialized();
 
-        log.info("Executing w/arguments: " + Arguments.asString(args));
+        boolean info = log.isInfoEnabled();
 
-        int status;
+        if (info) {
+            log.info("Executing w/arguments: " + Arguments.asString(args));
+        }
+
+        Object result;
 
         try {
             // Handle the command-line
             Options options = getOptions();
             CommandLineParser parser = new PosixParser();
-            CommandLine line = parser.parse(options, args);
+            CommandLine line = parser.parse(options, Arguments.toStringArray(args));
 
             // Custom command-line processing
             boolean usage = processCommandLine(line);
@@ -224,7 +231,7 @@ public abstract class CommandSupport
             }
 
             // Execute with the remaining arguments post-processing
-            status = doExecute(line.getArgs());
+            result = doExecute(line.getArgs());
         }
         catch (Exception e) {
             log.error(e.getMessage());
@@ -232,7 +239,7 @@ public abstract class CommandSupport
                 log.debug("Exception details", e);
             }
 
-            status = Command.FAILURE;
+            result = Command.FAILURE;
         }
         catch (ExitNotification n) {
             //
@@ -247,16 +254,18 @@ public abstract class CommandSupport
                 log.debug("Error details", e);
             }
 
-            status = Command.FAILURE;
+            result = Command.FAILURE;
         }
         finally {
             // Be sure to flush the commands outputs
             getIO().flush();
         }
 
-        log.info("Command exited with status code: " + status);
+        if (info) {
+            log.info("Command exited with result: " + result);
+        }
 
-        return status;
+        return result;
     }
 
     /**
@@ -267,9 +276,10 @@ public abstract class CommandSupport
      *
      * @throws Exception
      */
-    protected int doExecute(final String[] args) throws Exception {
-        return Command.FAILURE;
-    }
+//    protected Object doExecute(final Object[] args) throws Exception {
+//        throw new Error("Not implemented; Command should have overridden doExecute(Object[])");
+//    }
+    protected abstract Object doExecute(final Object[] args) throws Exception;
 
     //
     // CLI Fluff

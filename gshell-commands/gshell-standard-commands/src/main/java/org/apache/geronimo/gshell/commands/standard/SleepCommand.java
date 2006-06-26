@@ -56,7 +56,7 @@ public class SleepCommand
         return usage;
     }
 
-    protected int doExecute(String[] args) throws Exception {
+    protected Object doExecute(Object[] args) throws Exception {
         assert args != null;
 
         log.info("Sleeping for " + time);

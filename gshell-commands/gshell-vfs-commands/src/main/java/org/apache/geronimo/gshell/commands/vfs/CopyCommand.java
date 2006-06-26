@@ -54,12 +54,12 @@ public class CopyCommand
         return usage;
     }
 
-    protected int doExecute(String[] args) throws Exception {
+    protected Object doExecute(Object[] args) throws Exception {
         assert args != null;
 
         FileSystemManager fsm = getFileSystemManager();
-        FileObject source = fsm.resolveFile(args[0]);
-        FileObject target = fsm.resolveFile(args[1]);
+        FileObject source = fsm.resolveFile(String.valueOf(args[0]));
+        FileObject target = fsm.resolveFile(String.valueOf(args[1]));
 
         log.info("Copying " + source + " -> " + target);
 

@@ -23,11 +23,11 @@ package org.apache.geronimo.gshell.util;
  */
 public class Arguments
 {
-    public static String[] shift(final String[] args) {
+    public static Object[] shift(final Object[] args) {
         return shift(args, 1);
     }
 
-    public static String[] shift(final String[] args, int pos) {
+    public static Object[] shift(final Object[] args, int pos) {
         assert args != null;
         assert args.length >= pos;
 
@@ -36,7 +36,7 @@ public class Arguments
         return _args;
     }
 
-    public static String asString(final String[] args) {
+    public static String asString(final Object[] args) {
         assert args != null;
 
         StringBuffer buff = new StringBuffer();
@@ -49,5 +49,17 @@ public class Arguments
         }
 
         return buff.toString();
+    }
+
+    public static String[] toStringArray(final Object[] args) {
+        assert args != null;
+
+        String[] strings = new String[args.length];
+
+        for (int i=0; i<args.length; i++ ) {
+            strings[i] = String.valueOf(args[i]);
+        }
+
+        return strings;
     }
 }

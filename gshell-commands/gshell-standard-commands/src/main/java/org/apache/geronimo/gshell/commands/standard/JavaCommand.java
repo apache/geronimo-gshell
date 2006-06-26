@@ -28,7 +28,6 @@ import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 /**
  * Execute a Java standard application.
@@ -85,34 +84,39 @@ public class JavaCommand
         return usage;
     }
 
-    protected int doExecute(final String[] args) throws Exception {
+    protected Object doExecute(final Object[] args) throws Exception {
         assert args != null;
 
-        run(args);
+        run(String.valueOf(args[0]), Arguments.toStringArray(Arguments.shift(args)));
 
         return Command.SUCCESS;
     }
 
-    private void run(final String[] args) throws Exception {
-        assert args != null;
-        assert args.length > 0;
-
-        run(args[0], Arguments.shift(args));
-    }
 
     private void run(final String classname, final String[] args) throws Exception {
         assert classname != null;
         assert args != null;
 
+        boolean info = log.isInfoEnabled();
+
         Class type = Thread.currentThread().getContextClassLoader().loadClass(classname);
-        log.info("Using type: " + type);
+        if (info) {
+            log.info("Using type: " + type);
+        }
 
         Method method = type.getMethod(methodName, new Class[] { String[].class });
-        log.info("Using method: " + method);
+        if (info) {
+            log.info("Using method: " + method);
+        }
 
-        log.info("Invoking w/arguments: " + Arrays.asList(args));
+        if (info) {
+            log.info("Invoking w/arguments: " + Arguments.asString(args));
+        }
+
         Object result = method.invoke(null, new Object[] { args });
 
-        log.info("Result: " + result);
+        if (info) {
+            log.info("Result: " + result);
+        }
     }
 }

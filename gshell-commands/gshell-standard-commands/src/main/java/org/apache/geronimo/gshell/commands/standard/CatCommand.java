@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.util.Arguments;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -77,7 +78,7 @@ public class CatCommand
         return usage;
     }
 
-    protected int doExecute(String[] args) throws Exception {
+    protected Object doExecute(Object[] args) throws Exception {
         assert args != null;
 
         // No args, then read from STDIN
@@ -85,7 +86,7 @@ public class CatCommand
             args = new String[] { "-" };
         }
 
-        cat(args);
+        cat(Arguments.toStringArray(args));
 
         return Command.SUCCESS;
     }
