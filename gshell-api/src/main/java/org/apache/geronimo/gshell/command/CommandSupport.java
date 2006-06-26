@@ -276,9 +276,6 @@ public abstract class CommandSupport
      *
      * @throws Exception
      */
-//    protected Object doExecute(final Object[] args) throws Exception {
-//        throw new Error("Not implemented; Command should have overridden doExecute(Object[])");
-//    }
     protected abstract Object doExecute(final Object[] args) throws Exception;
 
     //
