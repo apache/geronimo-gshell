@@ -43,6 +43,20 @@
         </repository>
 
         <repository>
+            <id>codehaus</id>
+            <name>Codehaus Repository</name>
+            <url>http://repository.codehaus.org</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+
+        <!--
+        <repository>
             <id>maven2-snapshots</id>
             <name>Maven Snapshots Repository</name>
             <url>http://snapshots.maven.codehaus.org/maven2</url>
@@ -56,6 +70,7 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
+        -->
 
         <repository>
             <id>people-jdillon</id>
@@ -90,9 +105,23 @@
         </pluginRepository>
 
         <pluginRepository>
+            <id>codehaus</id>
+            <name>Codehaus Repository</name>
+            <url>http://repository.codehaus.org</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+
+        <!--
+        <pluginRepository>
             <id>maven2-snapshots</id>
             <name>Maven Snapshots Repository</name>
-            <url>http://snapshots.maven.codehaus.org/maven2</url>
+            <url>http://snapshots.repository.codehaus.org</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -103,7 +132,25 @@
                 <enabled>false</enabled>
             </releases>
         </pluginRepository>
+        -->
 
+        <!--
+        <pluginRepository>
+            <id>maven2-snapshots</id>
+            <name>Maven Snapshots Repository</name>
+            <url>http://snapshots.maven.codehaus.org</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+        -->
+        
         <pluginRepository>
             <id>people-jdillon</id>
             <name>Jason's Repository</name>
