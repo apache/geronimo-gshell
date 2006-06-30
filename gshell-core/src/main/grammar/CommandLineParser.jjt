@@ -33,6 +33,9 @@ package org.apache.geronimo.gshell.commandline.parser;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.commons.lang.NullArgumentException;
 
 /**
@@ -43,6 +46,8 @@ import org.apache.commons.lang.NullArgumentException;
 public class CommandLineParser
     extends CommandLineParserSupport
 {
+    private static final Log log = LogFactory.getLog(CommandLineParser.class);
+
     public CommandLineParser() {
         this(new StringReader(""));
     }
@@ -50,6 +55,10 @@ public class CommandLineParser
     public ASTCommandLine parse(final Reader reader) throws ParseException {
         if (reader == null) {
             throw new NullArgumentException("reader");
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Parsing from reader: " + reader);
         }
 
         this.ReInit(reader);
