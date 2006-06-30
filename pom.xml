@@ -55,11 +55,10 @@
             </releases>
         </repository>
 
-        <!--
         <repository>
-            <id>maven2-snapshots</id>
-            <name>Maven Snapshots Repository</name>
-            <url>http://snapshots.maven.codehaus.org/maven2</url>
+            <id>codehaus-snapshots</id>
+            <name>Codehaus Snapshots Repository</name>
+            <url>http://snapshots.repository.codehaus.org</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -70,7 +69,6 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-        -->
 
         <repository>
             <id>people-jdillon</id>
@@ -117,10 +115,9 @@
             </releases>
         </pluginRepository>
 
-        <!--
         <pluginRepository>
-            <id>maven2-snapshots</id>
-            <name>Maven Snapshots Repository</name>
+            <id>codehaus-snapshots</id>
+            <name>Codehaus Snapshots Repository</name>
             <url>http://snapshots.repository.codehaus.org</url>
             <layout>default</layout>
             <snapshots>
@@ -132,24 +129,6 @@
                 <enabled>false</enabled>
             </releases>
         </pluginRepository>
-        -->
-
-        <!--
-        <pluginRepository>
-            <id>maven2-snapshots</id>
-            <name>Maven Snapshots Repository</name>
-            <url>http://snapshots.maven.codehaus.org</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-        -->
         
         <pluginRepository>
             <id>people-jdillon</id>
@@ -269,20 +248,6 @@
                 <type>jar</type>
                 <scope>compile</scope>
             </dependency>
-
-            <!--
-
-            NOTE: May want to enhance xbean-telnet to behave like nvt4j and be more extendable than nvt4j
-                  Or get lichtner to donate it to xbean :-)
-
-            <dependency>
-                <groupId>org.apache.xbean</groupId>
-                <artifactId>xbean-telnet</artifactId>
-                <version>2.4-SNAPSHOT</version>
-                <type>jar</type>
-                <scope>compile</scope>
-            </dependency>
-            -->
 
             <dependency>
                 <groupId>nvt4j</groupId>
@@ -409,12 +374,12 @@
             <distributionManagement>
                 <repository>
                     <id>gshell-releases</id>
-                    <name>PayByTouch Repository</name>
+                    <name>GShell Repository</name>
                     <url>scp://people.apache.org/home/jdillon/public_html/repository/maven2</url>
                 </repository>
                 <site>
                     <id>gshell-site</id>
-                    <name>PayByTouch Website Repository</name>
+                    <name>GShell Website</name>
                     <url>scp://people.apache.org/home/jdillon/public_html/site/${pom.groupId}/${pom.artifactId}</url>
                 </site>
             </distributionManagement>
