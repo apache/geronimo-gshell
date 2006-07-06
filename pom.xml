@@ -373,10 +373,10 @@
                 <site>
                     <id>gshell-site</id>
                     <name>GShell Website</name>
-                    <url>scp://people.apache.org/home/jdillon/public_html/site/${pom.groupId}/${pom.artifactId}</url>
+                    <url>scp://people.apache.org/home/jdillon/public_html/site/${pom.groupId}</url>
                 </site>
             </distributionManagement>
-
+            
             <build>
                 <defaultGoal>deploy</defaultGoal>
                 
