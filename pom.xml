@@ -6,7 +6,7 @@
     <artifactId>gshell</artifactId>
     <name>GShell</name>
     <packaging>pom</packaging>
-    <version>0.1.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     
     <organization>
         <name>Apache Geronimo</name>
@@ -14,9 +14,9 @@
     </organization>
     
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/tags/gshell-0.1.0</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/tags/gshell-0.1.0</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/tags/gshell-0.1.0</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</connection>
+        <developerConnection>scm:svn:https://${maven.username}@svn.apache.org/repos/asf/geronimo/sandbox/gshell/</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</url>
     </scm>
     
     <repositories>
