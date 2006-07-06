@@ -61,7 +61,7 @@ public class SyntaxParser
         CommandLine root = CommandLine();
         
         if (log.isDebugEnabled()) {
-            log.debug("Root node: " + node);
+            log.debug("Root node: " + root);
         }
         
         return root;
@@ -164,10 +164,10 @@ void Expression() : {}
 
 void Argument() : {}
 {
-    String()
+    AnyString()
 }
 
-void String() : {}
+void AnyString() : {}
 {
     QuotedString() | QpaqueString() | PlainString()
 }
