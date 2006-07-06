@@ -47,8 +47,49 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>javacc-maven-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.2-SNAPSHOT</version>
                 <executions>
+                    <execution>
+                        <id>jtb</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>jtb</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${pom.basedir}/src/main/grammar</sourceDirectory>
+                            <outputDirectory>${pom.basedir}/target/generated-sources/jtb</outputDirectory>
+                            <timestampDirectory>${pom.basedir}/target/generated-sources/jtb</timestampDirectory>
+                            
+                            <packageName>org.apache.geronimo.gshell.syntax</packageName>
+                            <!--
+                            <nodePackageName>org.apache.geronimo.gshell.syntax</nodePackageName>
+                            <visitorPackageName>org.apache.geronimo.gshell.syntax.visitor</visitorPackageName>
+                            -->
+                            
+                            <supressErrorChecking>false</supressErrorChecking>
+                            <javadocFriendlyComments>true</javadocFriendlyComments>
+                            <descriptiveFieldNames>true</descriptiveFieldNames>
+                            <!--
+                            <nodeParentClass>org.apache.geronimo.gshell.syntax.NodeSupport</nodeParentClass>
+                            -->
+                            <parentPointers>true</parentPointers>
+                            <specialTokens>false</specialTokens>
+                            <printer>true</printer>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>jtb-javacc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${pom.basedir}/target/generated-sources/jtb</sourceDirectory>
+                            <outputDirectory>${pom.basedir}/target/generated-sources/jtb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    
                     <execution>
                         <id>jjtree</id>
                         <phase>generate-sources</phase>
@@ -62,7 +103,7 @@
                     </execution>
 
                     <execution>
-                        <id>javacc</id>
+                        <id>jjtree-javacc</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>javacc</goal>
@@ -104,14 +145,21 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser" />
+                                <mkdir dir="${pom.basedir}/target/generated-sources/jtb/org/apache/geronimo/gshell/syntax/parser"/>
+                                <move todir="${pom.basedir}/target/generated-sources/jtb/org/apache/geronimo/gshell/syntax/parser">
+                                    <fileset dir="${pom.basedir}/target/generated-sources/jtb">
+                                        <include name="*.java" />
+                                    </fileset>
+                                </move>
+                                
+                                <mkdir dir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser"/>
                                 <move todir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser">
                                     <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
                                         <include name="*.java" />
                                     </fileset>
                                 </move>
 
-                                <mkdir dir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser" />
+                                <mkdir dir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser"/>
                                 <move todir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser">
                                     <fileset dir="${pom.basedir}/target/generated-sources/javacc">
                                         <include name="*.java" />
