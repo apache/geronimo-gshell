@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
-
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,7 +6,7 @@
     <artifactId>gshell</artifactId>
     <name>GShell</name>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     
     <organization>
         <name>Apache Geronimo</name>
@@ -21,9 +14,9 @@
     </organization>
     
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</connection>
-        <developerConnection>scm:svn:https://${maven.username}@svn.apache.org/repos/asf/geronimo/sandbox/gshell/</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/tags/gshell-0.1.0</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/tags/gshell-0.1.0</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/tags/gshell-0.1.0</url>
     </scm>
     
     <repositories>

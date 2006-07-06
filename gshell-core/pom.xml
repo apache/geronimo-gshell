@@ -1,18 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
-
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     
@@ -93,9 +86,9 @@
                             <tasks>
                                 <delete>
                                     <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
-                                        <include name="ASTPlainString.java"/>
-                                        <include name="ASTQuotedString.java"/>
-                                        <include name="ASTOpaqueString.java"/>
+                                        <include name="ASTPlainString.java" />
+                                        <include name="ASTQuotedString.java" />
+                                        <include name="ASTOpaqueString.java" />
                                     </fileset>
                                 </delete>
                             </tasks>
@@ -111,17 +104,17 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser"/>
+                                <mkdir dir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser" />
                                 <move todir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser">
                                     <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
-                                        <include name="*.java"/>
+                                        <include name="*.java" />
                                     </fileset>
                                 </move>
 
-                                <mkdir dir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser"/>
+                                <mkdir dir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser" />
                                 <move todir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser">
                                     <fileset dir="${pom.basedir}/target/generated-sources/javacc">
-                                        <include name="*.java"/>
+                                        <include name="*.java" />
                                     </fileset>
                                 </move>
                             </tasks>
