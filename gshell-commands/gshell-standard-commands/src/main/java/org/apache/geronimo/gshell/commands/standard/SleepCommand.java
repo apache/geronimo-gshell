@@ -37,7 +37,7 @@ public class SleepCommand
     }
 
     protected String getUsage() {
-        return super.getUsage() + " <time>";
+        return super.getUsage() + " <milliseconds>";
     }
 
     protected boolean processCommandLine(final CommandLine line) throws CommandException {
@@ -55,7 +55,7 @@ public class SleepCommand
         return false;
     }
 
-    protected Object doExecute(Object[] args) throws Exception {
+    protected Object doExecute(final Object[] args) throws Exception {
         assert args != null;
 
         log.info("Sleeping for " + time);

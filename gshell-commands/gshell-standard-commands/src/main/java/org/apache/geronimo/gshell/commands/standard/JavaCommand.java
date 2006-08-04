@@ -74,6 +74,7 @@ public class JavaCommand
 
         if (args.length == 0) {
             io.err.println(messages.getMessage("cli.error.missing_classname"));
+
             return true;
         }
         if (line.hasOption('M')) {
@@ -103,7 +104,7 @@ public class JavaCommand
             log.info("Using type: " + type);
         }
 
-        Method method = type.getMethod(methodName, new Class[] { String[].class });
+        Method method = type.getMethod(methodName, String[].class);
         if (info) {
             log.info("Using method: " + method);
         }
@@ -112,7 +113,7 @@ public class JavaCommand
             log.info("Invoking w/arguments: " + Arguments.asString(args));
         }
 
-        Object result = method.invoke(null, new Object[] { args });
+        Object result = method.invoke(null, args);
 
         if (info) {
             log.info("Result: " + result);
