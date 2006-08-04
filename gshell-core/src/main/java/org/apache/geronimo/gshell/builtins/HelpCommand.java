@@ -76,11 +76,17 @@ public class HelpCommand
         IO io = getIO();
         MessageSource messages = getMessageSource();
 
-        if (args.length == 0 || args.length > 1) {
+        if (args.length == 0) {
+            // No args, so help
+            return true;
+        }
+        else if (args.length > 1) {
+            // more than 1 arg complain
             io.err.println(messages.getMessage("info.unexpected_args", Arguments.asString(args)));
             return true;
         }
         else if (args.length == 1) {
+            // first arg becomes help topic name
             topic = args[0];
         }
 
@@ -92,6 +98,10 @@ public class HelpCommand
 
         IO io = getIO();
         CommandManager manager = getCommandManager();
+
+        //
+        // TODO: Externalize strings
+        //
 
         //
         // TODO: Reuse our command bits...
@@ -129,10 +139,10 @@ public class HelpCommand
         }
         else {
             //
-            // TODO: ...
+            // TODO: When given a command name as a topic, then execute cmd --help
             //
 
-            io.err.println("Pending... sorry");
+            io.err.println("Unknown help topic: " + topic);
             io.err.println();
         }
 
