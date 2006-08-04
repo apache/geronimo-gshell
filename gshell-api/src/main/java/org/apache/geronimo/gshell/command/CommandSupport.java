@@ -219,11 +219,16 @@ public abstract class CommandSupport
             CommandLineParser parser = new PosixParser();
             CommandLine line = parser.parse(options, Arguments.toStringArray(args));
 
+            // First check for help flags
+            boolean usage = line.hasOption('h');
+
             // Custom command-line processing
-            boolean usage = processCommandLine(line);
+            if (!usage) {
+                usage = processCommandLine(line);
+            }
 
             // Default command-line processing
-            if (usage || line.hasOption('h')) {
+            if (usage) {
                 displayHelp(options);
 
                 return Command.SUCCESS;
