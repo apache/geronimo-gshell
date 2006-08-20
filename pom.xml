@@ -224,7 +224,7 @@
                     <artifactId>maven-clover-plugin</artifactId>
                     <configuration>
                         <generateHtml>true</generateHtml>
-                        <jdk>1.4</jdk>
+                        <jdk>1.5</jdk>
                         <!-- Pulled as resource from clover-config plugin -->
                         <licenseLocation>org/apache/geronimo/clover.license</licenseLocation>
                     </configuration>
