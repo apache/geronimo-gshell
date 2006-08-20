@@ -15,21 +15,18 @@
     limitations under the License.
 -->
 
-<!-- $Rev$ $Date$ -->
+<!-- $Id$ -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project name="${project.name}">
     
-    <modelVersion>4.0.0</modelVersion>
-    
-    <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell-commands</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-    
-    <artifactId>gshell-standard-commands</artifactId>
-    <name>GShell Commands :: Standard</name>
-    <packaging>jar</packaging>
-    
+    <body>
+        
+        ${modules}
+        
+        ${reports}
+        
+    </body>
+
 </project>
+
+
