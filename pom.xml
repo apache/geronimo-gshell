@@ -36,7 +36,7 @@
     
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</connection>
-        <developerConnection>scm:svn:https://${maven.username}@svn.apache.org/repos/asf/geronimo/sandbox/gshell/</developerConnection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</developerConnection>
         <url>https://svn.apache.org/viewvc/geronimo/sandbox/gshell/</url>
     </scm>
     
