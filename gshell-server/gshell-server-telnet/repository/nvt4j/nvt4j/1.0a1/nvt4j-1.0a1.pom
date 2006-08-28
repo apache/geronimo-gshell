@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>nvt4j</groupId>
+    <artifactId>nvt4j</artifactId>
+    <name>NVT4J</name>
+    <version>1.0a1</version>
+</project>

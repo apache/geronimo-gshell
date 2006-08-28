@@ -221,17 +221,6 @@
                     <artifactId>retrotranslator-maven-plugin</artifactId>
                     <version>1.0-SNAPSHOT</version>
                 </plugin>
-                
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clover-plugin</artifactId>
-                    <configuration>
-                        <generateHtml>true</generateHtml>
-                        <jdk>1.5</jdk>
-                        <!-- Pulled as resource from clover-config plugin -->
-                        <licenseLocation>org/apache/geronimo/clover.license</licenseLocation>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
         
@@ -308,24 +297,6 @@
             </snapshots>
             <releases>
                 <enabled>false</enabled>
-            </releases>
-        </repository>
-        
-        <!--
-        TODO: See why we need this...
-        -->
-        <repository>
-            <id>people-jdillon</id>
-            <name>Jason's Repository</name>
-            <url>http://people.apache.org/~jdillon/repository/maven2</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
             </releases>
         </repository>
     </repositories>
