@@ -61,7 +61,6 @@
         <dependency>
             <groupId>commons-jexl</groupId>
             <artifactId>commons-jexl</artifactId>
-            <version>1.0</version>
         </dependency>
         
     </dependencies>
