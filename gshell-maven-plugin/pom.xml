@@ -35,6 +35,10 @@
     <name>GShell Maven Plugin</name>
     <packaging>maven-plugin</packaging>
     
+    <description>
+        Provides support to build GShell application assemblies from Maven.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.genesis.plugins</groupId>
