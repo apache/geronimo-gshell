@@ -67,6 +67,8 @@ public class Main
 
     private boolean interactive;
 
+    private String commands;
+
     public Main(final ClassWorld world) {
         assert world != null;
         this.world = world;
@@ -114,6 +116,12 @@ public class Main
             .withArgName("name=value")
             .create('D'));
 
+        options.addOption(OptionBuilder.withLongOpt("commands")
+            .withDescription("Read commands from string")
+            .hasArg()
+            .withArgName("string")
+            .create('c'));
+        
         options.addOption(OptionBuilder.withLongOpt("interactive")
             .withDescription("Run in interactive mode")
             .create('i'));
@@ -198,6 +206,10 @@ public class Main
             setConsoleLogLevel("WARN");
         }
 
+        if (line.hasOption('c')) {
+            commands = line.getOptionValue('c');
+        }
+
         if (line.hasOption('i')) {
             interactive = true;
         }
@@ -244,8 +256,11 @@ public class Main
         //
         // TODO: Pass interactive flags (maybe as property) so gshell knows what mode it is
         //
-
-        if (interactive) {
+        
+        if (commands != null) {
+            gshell.execute(commands);
+        }
+        else if (interactive) {
             log.debug("Starting interactive console");
 
             //
