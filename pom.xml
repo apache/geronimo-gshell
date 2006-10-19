@@ -203,6 +203,10 @@
             <plugin>
                 <groupId>org.apache.geronimo.genesis.plugins</groupId>
                 <artifactId>tools-maven-plugin</artifactId>
+
+                <!-- Tools includes custom packagings, install as extension to pick them up -->
+                <extensions>true</extensions>
+                
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -212,6 +216,14 @@
                         <configuration>
                             <version>1.5+</version>
                         </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>install-legal-files</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-legal-files</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -230,6 +242,7 @@
                 <artifactId>maven-idea-plugin</artifactId>
                 <configuration>
                     <jdkName>1.5</jdkName>
+                    <jdkLevel>5.0</jdkLevel>
                     <linkModules>true</linkModules>
                 </configuration>
             </plugin>
