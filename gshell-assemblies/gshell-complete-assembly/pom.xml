@@ -33,7 +33,7 @@
     
     <artifactId>gshell-complete-assembly</artifactId>
     <name>GShell Assemblies :: Complete</name>
-    <packaging>pom</packaging>
+    <packaging>application-assembly</packaging>
     
     <dependencies>
         
