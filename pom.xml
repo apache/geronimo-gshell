@@ -314,7 +314,7 @@
         <module>gshell-server</module>
         <module>gshell-maven-plugin</module>
         <module>gshell-testsuite</module>
-        <module>gshell-assemblies</module>
+        <module>gshell-assembly</module>
     </modules>
     
     <repositories>
