@@ -1,9 +1,0 @@
-Introduction
-
- This plugin can be used to strip down not needed classes from
- the dependencies. If you call 'minijar:minijar' it will analyse
- the class level dependencies and create a minimal jar of every
- dependency.
-
- 
-

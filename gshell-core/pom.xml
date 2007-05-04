@@ -72,9 +72,11 @@
                     <execution>
                         <id>jtb</id>
                         <phase>generate-sources</phase>
+                        <!--
                         <goals>
                             <goal>jtb</goal>
                         </goals>
+                        -->
                         <configuration>
                             <sourceDirectory>${pom.basedir}/src/main/grammar</sourceDirectory>
                             <outputDirectory>${pom.basedir}/target/generated-sources/jtb</outputDirectory>
@@ -98,6 +100,7 @@
                         </configuration>
                     </execution>
                     
+                    <!--
                     <execution>
                         <id>jtb-javacc</id>
                         <phase>generate-sources</phase>
@@ -109,6 +112,7 @@
                             <outputDirectory>${pom.basedir}/target/generated-sources/jtb</outputDirectory>
                         </configuration>
                     </execution>
+                    -->
                     
                     <execution>
                         <id>jjtree</id>
@@ -148,9 +152,14 @@
                             <tasks>
                                 <delete>
                                     <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
-                                        <include name="ASTPlainString.java"/>
-                                        <include name="ASTQuotedString.java"/>
-                                        <include name="ASTOpaqueString.java"/>
+                                        <include name="**/ASTPlainString.java"/>
+                                        <include name="**/ASTQuotedString.java"/>
+                                        <include name="**/ASTOpaqueString.java"/>
+                                    </fileset>
+                                    <fileset dir="${pom.basedir}/target/generated-sources/javacc">
+                                        <include name="**/ASTPlainString.java"/>
+                                        <include name="**/ASTQuotedString.java"/>
+                                        <include name="**/ASTOpaqueString.java"/>
                                     </fileset>
                                 </delete>
                             </tasks>
@@ -161,6 +170,7 @@
                     </execution>
 
                     <!-- Need to put these into a package so that Eclipse does not freak out -->
+                    <!--
                     <execution>
                         <id>move-to-package</id>
                         <phase>generate-sources</phase>
@@ -193,6 +203,7 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
+                    -->
                 </executions>
             </plugin>
         </plugins>
