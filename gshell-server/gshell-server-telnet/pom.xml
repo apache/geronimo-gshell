@@ -42,7 +42,6 @@
         </dependency>
 
         <!--
-
         NOTE: May want to enhance xbean-telnet to behave like nvt4j and be more extendable than nvt4j
 
         <dependency>
@@ -56,21 +55,5 @@
             <artifactId>nvt4j</artifactId>
         </dependency>
     </dependencies>
-    
-    <repositories>
-        <repository>
-            <id>module-local</id>
-            <url>file://${pom.basedir}/repository</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    
+
 </project>
