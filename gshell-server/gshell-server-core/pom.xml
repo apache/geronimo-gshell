@@ -33,21 +33,18 @@
     
     <artifactId>gshell-server-core</artifactId>
     <name>GShell Server :: Core</name>
-    <packaging>jar</packaging>
 
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo</groupId>
             <artifactId>geronimo-kernel</artifactId>
         </dependency>
-        
     </dependencies>
     
 </project>

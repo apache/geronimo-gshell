@@ -42,7 +42,7 @@
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-assembly</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
             <type>pom</type>
         </dependency>
     </dependencies>
@@ -65,7 +65,7 @@
                                 <artifactItem>
                                     <groupId>${pom.groupId}</groupId>
                                     <artifactId>gshell-assembly</artifactId>
-                                    <version>${pom.version}</version>
+                                    <version>${version}</version>
                                     <type>zip</type>
                                     <classifier>bin</classifier>
                                 </artifactItem>
@@ -92,7 +92,7 @@
                 <configuration>
                     <includes>
                         <include>
-                            <directory>${pom.basedir}/target/scratch/gshell-${pom.version}/lib</directory>
+                            <directory>${pom.basedir}/target/scratch/gshell-${version}/lib</directory>
                             <pattern>gshell*.jar</pattern>
                         </include>
                     </includes>
@@ -110,18 +110,18 @@
                         <configuration>
                             <tasks>
                                 <copy todir="${pom.basedir}/target/scratch/gshell">
-                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${pom.version}">
+                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${version}">
                                         <include name="**"/>
                                         <exclude name="lib/*.jar"/>
                                     </fileset>
                                 </copy>
                                 <copy todir="${pom.basedir}/target/scratch/gshell/lib">
-                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${pom.version}/lib">
+                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${version}/lib">
                                         <include name="gshell*.jar"/>
                                     </fileset>
                                 </copy>
                                 <!--
-                                <copy todir="${pom.basedir}/target/scratch/gshell-${pom.version}/lib">
+                                <copy todir="${pom.basedir}/target/scratch/gshell-${version}/lib">
                                     <fileset dir="${pom.basedir}/target/minijar">
                                         <include name="*-minimal.jar"/>
                                         <exclude name="gshell*.jar"/>
@@ -151,7 +151,7 @@
                     <descriptors>
                         <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
                     </descriptors>
-                    <finalName>gshell-${pom.version}-squeezed</finalName>
+                    <finalName>gshell-${version}-squeezed</finalName>
                 </configuration>
             </plugin>
              

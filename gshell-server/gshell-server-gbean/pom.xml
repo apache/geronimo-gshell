@@ -33,22 +33,19 @@
     
     <artifactId>gshell-server-gbean</artifactId>
     <name>GShell Server :: GBean</name>
-    <packaging>jar</packaging>
 
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
         
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-telnet</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
-        
     </dependencies>
     
 </project>

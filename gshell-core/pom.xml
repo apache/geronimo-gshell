@@ -33,14 +33,12 @@
     
     <artifactId>gshell-core</artifactId>
     <name>GShell Core</name>
-    <packaging>jar</packaging>
     
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-api</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
@@ -62,7 +60,6 @@
             <groupId>commons-jexl</groupId>
             <artifactId>commons-jexl</artifactId>
         </dependency>
-        
     </dependencies>
 
     <build>
@@ -151,9 +148,9 @@
                             <tasks>
                                 <delete>
                                     <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
-                                        <include name="ASTPlainString.java" />
-                                        <include name="ASTQuotedString.java" />
-                                        <include name="ASTOpaqueString.java" />
+                                        <include name="ASTPlainString.java"/>
+                                        <include name="ASTQuotedString.java"/>
+                                        <include name="ASTOpaqueString.java"/>
                                     </fileset>
                                 </delete>
                             </tasks>
@@ -195,55 +192,6 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>retrotranslator-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>translate</goal>
-                        </goals>
-                        <configuration>
-                            <verify>false</verify>
-                            <failonwarning>true</failonwarning>
-                            <lazy>true</lazy>
-                            <verbose>false</verbose>
-                            <destjar>${pom.basedir}/target/${pom.artifactId}-${pom.version}-retro.jar</destjar>
-                            <includes>
-                                <include>
-                                    <directory>${pom.basedir}/target</directory>
-                                    <pattern>${pom.artifactId}-${pom.version}.jar</pattern>
-                                </include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-artifacts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${pom.basedir}/target/${pom.artifactId}-${pom.version}-retro.jar</file>
-                                    <type>jar</type>
-                                    <classifier>retro</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

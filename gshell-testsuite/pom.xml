@@ -33,46 +33,43 @@
     
     <artifactId>gshell-testsuite</artifactId>
     <name>GShell Testsuite</name>
-    <packaging>jar</packaging>
     
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
         
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-cli</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-telnet</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-standard-commands</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-scripting-commands</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
-        
     </dependencies>
     
 </project>

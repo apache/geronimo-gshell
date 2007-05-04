@@ -33,14 +33,12 @@
     
     <artifactId>gshell-vfs-commands</artifactId>
     <name>GShell Commands :: VFS</name>
-    <packaging>jar</packaging>
 
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-api</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
         
         <dependency>
@@ -48,7 +46,6 @@
             <artifactId>commons-vfs</artifactId>
             <version>20050307052300</version>
         </dependency>
-        
     </dependencies>
     
 </project>

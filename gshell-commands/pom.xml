@@ -36,13 +36,11 @@
     <packaging>pom</packaging>
     
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-api</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
-        
     </dependencies>
     
     <modules>

@@ -36,47 +36,46 @@
     <packaging>application-assembly</packaging>
     
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
         
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-cli</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-telnet</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-standard-commands</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-scripting-commands</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-vfs-commands</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <!-- Thridparty Dependencies -->
@@ -93,12 +92,10 @@
             <version>2.0b4</version>
             <type>jar</type>
         </dependency>
-        
     </dependencies>
     
     <build>
         <plugins>
-            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -116,10 +113,10 @@
                     <descriptors>
                         <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
                     </descriptors>
-                    <finalName>gshell-${pom.version}</finalName>
+                    <finalName>gshell-${version}</finalName>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
 </project>

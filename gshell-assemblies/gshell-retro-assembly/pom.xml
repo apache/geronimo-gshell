@@ -40,7 +40,7 @@
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-assembly</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
             <type>pom</type>
         </dependency>
         
@@ -70,7 +70,7 @@
                                 <artifactItem>
                                     <groupId>${pom.groupId}</groupId>
                                     <artifactId>gshell-assembly</artifactId>
-                                    <version>${pom.version}</version>
+                                    <version>${version}</version>
                                     <type>zip</type>
                                     <classifier>bin</classifier>
                                 </artifactItem>
@@ -94,7 +94,7 @@
                         <configuration>
                             <tasks>
                                 <copy todir="${pom.basedir}/target/scratch/gshell">
-                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${pom.version}">
+                                    <fileset dir="${pom.basedir}/target/scratch/gshell-${version}">
                                         <include name="**"/>
                                     </fileset>
                                 </copy>
@@ -120,7 +120,7 @@
                             <verbose>false</verbose>
                             <includes>
                                 <include>
-                                    <directory>${pom.basedir}/target/scratch/gshell-${pom.version}</directory>
+                                    <directory>${pom.basedir}/target/scratch/gshell-${version}</directory>
                                     <pattern>**/*.jar</pattern>
                                 </include>
                             </includes>
@@ -144,7 +144,7 @@
                     <descriptors>
                         <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
                     </descriptors>
-                    <finalName>gshell-${pom.version}-retro</finalName>
+                    <finalName>gshell-${version}-retro</finalName>
                 </configuration>
             </plugin>
         </plugins>

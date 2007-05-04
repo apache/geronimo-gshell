@@ -33,6 +33,5 @@
     
     <artifactId>gshell-standard-commands</artifactId>
     <name>GShell Commands :: Standard</name>
-    <packaging>jar</packaging>
     
 </project>

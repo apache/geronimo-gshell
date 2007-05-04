@@ -33,14 +33,12 @@
     
     <artifactId>gshell-server-telnet</artifactId>
     <name>GShell Server :: Telnet</name>
-    <packaging>jar</packaging>
 
     <dependencies>
-        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <!--
@@ -57,7 +55,6 @@
             <groupId>nvt4j</groupId>
             <artifactId>nvt4j</artifactId>
         </dependency>
-        
     </dependencies>
     
     <repositories>

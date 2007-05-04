@@ -33,13 +33,12 @@
     
     <artifactId>gshell-server-ssh</artifactId>
     <name>GShell Server :: SSH</name>
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-server-core</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>

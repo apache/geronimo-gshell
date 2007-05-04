@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.genesis.config</groupId>
         <artifactId>project-config</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1</version>
     </parent>
 
     <groupId>org.apache.geronimo.gshell</groupId>
@@ -42,6 +42,18 @@
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</developerConnection>
         <url>https://svn.apache.org/viewvc/geronimo/sandbox/gshell/</url>
     </scm>
+    
+    <properties>
+        <!--
+        NOTE: Project version, to be used instead of ${version} since that
+              value magically changes when using SNAPSHOT versions.
+
+              This value *must* be kept in sync with the value of the <version>
+              element, and it will need to be changed manually before a release,
+              as the maven-release-plugin will not update this value.
+        -->
+        <version>1.0.0-SNAPSHOT</version>
+    </properties>
     
     <dependencyManagement>
         <dependencies>
@@ -116,7 +128,7 @@
             <dependency>
                 <groupId>jline</groupId>
                 <artifactId>jline</artifactId>
-                <version>0.9.9</version>
+                <version>0.9.91</version>
             </dependency>
 
             <dependency>
@@ -192,38 +204,74 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.0-alpha-2</version>
+                </plugin>
+                
+                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>retrotranslator-maven-plugin</artifactId>
-                    <version>1.0-alpha-1</version>
+                    <version>1.0-alpha-2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
         
         <plugins>
             <plugin>
-                <groupId>org.apache.geronimo.genesis.plugins</groupId>
-                <artifactId>tools-maven-plugin</artifactId>
-
-                <!-- Tools includes custom packagings, install as extension to pick them up -->
-                <extensions>true</extensions>
-                
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>validate</phase>
                         <goals>
-                            <goal>require-java-version</goal>
+                            <goal>enforce</goal>
                         </goals>
                         <configuration>
-                            <version>1.5+</version>
+                            <rules>
+                                <!-- Allow any Java >= 1.5, but not 1.6 or above -->
+                                <requireJavaVersion>
+                                    <version>[1.5,1.6)</version>
+                                </requireJavaVersion>
+                                
+                                <!-- Allow any Maven >= 2.0.5 -->
+                                <requireMavenVersion>
+                                    <version>[2.0.5,)</version>
+                                </requireMavenVersion>
+                            </rules>
                         </configuration>
                     </execution>
-
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.geronimo.genesis.plugins</groupId>
+                <artifactId>tools-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                
+                <executions>
                     <execution>
                         <id>install-legal-files</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-legal-files</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>retrotranslator-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>translate-project</goal>
+                        </goals>
+                        <configuration>
+                            <failonwarning>true</failonwarning>
+                            <lazy>true</lazy>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
