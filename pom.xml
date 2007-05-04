@@ -306,6 +306,7 @@
     </build>
     
     <modules>
+        <module>repository</module>
         <module>gshell-api</module>
         <module>gshell-core</module>
         <module>gshell-cli</module>
