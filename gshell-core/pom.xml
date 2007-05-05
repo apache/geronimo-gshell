@@ -70,51 +70,6 @@
                 <version>2.2-SNAPSHOT</version>
                 <executions>
                     <execution>
-                        <id>jtb</id>
-                        <phase>generate-sources</phase>
-                        <!--
-                        <goals>
-                            <goal>jtb</goal>
-                        </goals>
-                        -->
-                        <configuration>
-                            <sourceDirectory>${pom.basedir}/src/main/grammar</sourceDirectory>
-                            <outputDirectory>${pom.basedir}/target/generated-sources/jtb</outputDirectory>
-                            <timestampDirectory>${pom.basedir}/target/generated-sources/jtb</timestampDirectory>
-                            
-                            <packageName>org.apache.geronimo.gshell.syntax</packageName>
-                            <!--
-                            <nodePackageName>org.apache.geronimo.gshell.syntax</nodePackageName>
-                            <visitorPackageName>org.apache.geronimo.gshell.syntax.visitor</visitorPackageName>
-                            -->
-                            
-                            <supressErrorChecking>false</supressErrorChecking>
-                            <javadocFriendlyComments>true</javadocFriendlyComments>
-                            <descriptiveFieldNames>true</descriptiveFieldNames>
-                            <!--
-                            <nodeParentClass>org.apache.geronimo.gshell.syntax.NodeSupport</nodeParentClass>
-                            -->
-                            <parentPointers>true</parentPointers>
-                            <specialTokens>false</specialTokens>
-                            <printer>true</printer>
-                        </configuration>
-                    </execution>
-                    
-                    <!--
-                    <execution>
-                        <id>jtb-javacc</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>javacc</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirectory>${pom.basedir}/target/generated-sources/jtb</sourceDirectory>
-                            <outputDirectory>${pom.basedir}/target/generated-sources/jtb</outputDirectory>
-                        </configuration>
-                    </execution>
-                    -->
-                    
-                    <execution>
                         <id>jjtree</id>
                         <phase>generate-sources</phase>
                         <goals>
