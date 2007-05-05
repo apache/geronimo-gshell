@@ -71,6 +71,18 @@ public class SshTerminal
         return false;
     }
     
+    public void disableEcho() {
+        // TODO
+    }
+    
+    public void enableEcho() {
+        // TODO
+    }
+    
+    public boolean isEchoEnabled() {
+        return false;
+    }
+    
     private InputStream createInputStream() {
         return new InputStream() {
             public int read() throws IOException {

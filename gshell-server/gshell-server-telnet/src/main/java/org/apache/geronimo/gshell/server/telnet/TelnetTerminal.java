@@ -66,7 +66,19 @@ public class TelnetTerminal
     public boolean isSupported() {
         return true;
     }
-
+    
+    public void disableEcho() {
+        // TODO
+    }
+    
+    public void enableEcho() {
+        // TODO
+    }
+    
+    public boolean isEchoEnabled() {
+        return false;
+    }
+    
     public boolean getEcho() {
         return false;
     }
