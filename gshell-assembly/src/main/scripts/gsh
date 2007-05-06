@@ -28,9 +28,6 @@ DIRNAME=`dirname "$0"`
 # Use the maximum available, or set MAX_FD != -1 to use that
 MAX_FD="maximum"
 
-# The version of classworlds to boot with
-CLASSWORLDS_VERSION="1.1"
-
 warn() {
     echo "${PROGNAME}: $*"
 }
@@ -72,7 +69,7 @@ fi
 if [ -z "$CLASSWORLDS_CONF" ]; then
     CLASSWORLDS_CONF="$GSHELL_HOME/etc/${PROGNAME}.conf"
 fi
-CLASSWORLDS_CLASSPATH="$GSHELL_HOME/lib/boot/classworlds-${CLASSWORLDS_VERSION}.jar"
+CLASSWORLDS_CLASSPATH="$GSHELL_HOME/lib/boot/classworlds.jar"
 
 # Determine the Java command to use to start the JVM
 if [ -z "$JAVACMD" ]; then
@@ -86,12 +83,6 @@ if [ -z "$JAVACMD" ]; then
     else
         JAVACMD="java"
     fi
-fi
-if [ ! -x "$JAVACMD" ]; then
-    die "JAVA_HOME is not defined correctly; can not execute: $JAVACMD"
-fi
-if [ -z "$JAVA_HOME" ] ; then
-    warn "JAVA_HOME environment variable is not set"
 fi
 
 # Increase the maximum file descriptors if we can

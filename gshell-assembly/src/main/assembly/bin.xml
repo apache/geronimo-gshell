@@ -84,6 +84,7 @@
         
         <dependencySet>
             <outputDirectory>lib/boot</outputDirectory>
+            <outputFileNameMapping>classworlds.jar</outputFileNameMapping>
             <includes>
                 <include>classworlds:classworlds</include>
             </includes>

@@ -25,9 +25,6 @@ rem
 @rem Set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" setlocal
 
-@rem The version of classworlds to boot with
-set CLASSWORLDS_VERSION=1.1
-
 :begin
 @rem Determine what directory it is in.
 set DIRNAME=%~dp0
@@ -99,7 +96,7 @@ set CMD_LINE_ARGS=%$
 
 :execute
 @rem Setup the command line
-set CLASSWORLDS_CLASSPATH=%GSHELL_HOME%\lib\boot\classworlds-%CLASSWORLDS_VERSION%.jar
+set CLASSWORLDS_CLASSPATH=%GSHELL_HOME%\lib\boot\classworlds.jar
 set CLASSWORLDS_MAIN_CLASS=org.codehaus.classworlds.Launcher
 set CLASSWORLDS_CONF=%GSHELL_HOME%\etc\%PROGNAME%.conf
 
