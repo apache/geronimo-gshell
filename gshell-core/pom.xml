@@ -65,9 +65,9 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
+                <groupId>${pom.groupId}</groupId>
                 <artifactId>javacc-maven-plugin</artifactId>
-                <version>2.2-SNAPSHOT</version>
+                <version>1.0-alpha-1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>jjtree</id>
@@ -76,89 +76,30 @@
                             <goal>jjtree</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${pom.basedir}/src/main/grammar</sourceDirectory>
-                            <outputDirectory>${pom.basedir}/target/generated-sources/jjtree</outputDirectory>
+                            <grammars>
+                                <directory>${project.basedir}/src/main/grammar</directory>
+                                <includes>
+                                    <include>*.jjt</include>
+                                </includes>
+                            </grammars>
                         </configuration>
                     </execution>
-
+                    
                     <execution>
-                        <id>jjtree-javacc</id>
+                        <id>javacc</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>javacc</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${pom.basedir}/target/generated-sources/jjtree</sourceDirectory>
-                            <outputDirectory>${pom.basedir}/target/generated-sources/javacc</outputDirectory>
+                            <grammars>
+                                <directory>${project.build.directory}/generated-sources/jjtree</directory>
+                                <includes>
+                                    <include>*.jj</include>
+                                </includes>
+                            </grammars>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>
-
-            <!-- Delete generated/overwritten classes to prevent poluting the src tree -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>remove-overrides</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <tasks>
-                                <delete>
-                                    <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
-                                        <include name="**/ASTPlainString.java"/>
-                                        <include name="**/ASTQuotedString.java"/>
-                                        <include name="**/ASTOpaqueString.java"/>
-                                    </fileset>
-                                    <fileset dir="${pom.basedir}/target/generated-sources/javacc">
-                                        <include name="**/ASTPlainString.java"/>
-                                        <include name="**/ASTQuotedString.java"/>
-                                        <include name="**/ASTOpaqueString.java"/>
-                                    </fileset>
-                                </delete>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-
-                    <!-- Need to put these into a package so that Eclipse does not freak out -->
-                    <!--
-                    <execution>
-                        <id>move-to-package</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <tasks>
-                                <mkdir dir="${pom.basedir}/target/generated-sources/jtb/org/apache/geronimo/gshell/syntax/parser"/>
-                                <move todir="${pom.basedir}/target/generated-sources/jtb/org/apache/geronimo/gshell/syntax/parser">
-                                    <fileset dir="${pom.basedir}/target/generated-sources/jtb">
-                                        <include name="*.java" />
-                                    </fileset>
-                                </move>
-                                
-                                <mkdir dir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser"/>
-                                <move todir="${pom.basedir}/target/generated-sources/jjtree/org/apache/geronimo/gshell/commandline/parser">
-                                    <fileset dir="${pom.basedir}/target/generated-sources/jjtree">
-                                        <include name="*.java" />
-                                    </fileset>
-                                </move>
-
-                                <mkdir dir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser"/>
-                                <move todir="${pom.basedir}/target/generated-sources/javacc/org/apache/geronimo/gshell/commandline/parser">
-                                    <fileset dir="${pom.basedir}/target/generated-sources/javacc">
-                                        <include name="*.java" />
-                                    </fileset>
-                                </move>
-                            </tasks>
-                        </configuration>
-
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                    -->
                 </executions>
             </plugin>
         </plugins>

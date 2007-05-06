@@ -307,6 +307,7 @@
     
     <modules>
         <module>repository</module>
+        <module>javacc-maven-plugin</module>
         <module>gshell-api</module>
         <module>gshell-core</module>
         <module>gshell-cli</module>
