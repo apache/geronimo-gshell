@@ -34,7 +34,7 @@ import java.io.IOException;
 public class JLineConsole
     implements Console
 {
-    private static final Log log = LogFactory.getLog(SimpleConsole.class);
+    private static final Log log = LogFactory.getLog(JLineConsole.class);
 
     private final IO io;
 
@@ -63,7 +63,11 @@ public class JLineConsole
 
     public String readLine(final String prompt) throws IOException {
         assert prompt != null;
-
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Reading line, w/prompt: " + prompt);
+        }
+        
         return reader.readLine(prompt);
     }
 

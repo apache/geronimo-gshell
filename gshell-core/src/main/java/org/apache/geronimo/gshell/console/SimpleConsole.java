@@ -51,7 +51,11 @@ public class SimpleConsole
 
     public String readLine(final String prompt) throws IOException {
         assert prompt != null;
-
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Reading line, w/prompt: " + prompt);
+        }
+        
         io.out.print(prompt);
         io.out.flush();
 
