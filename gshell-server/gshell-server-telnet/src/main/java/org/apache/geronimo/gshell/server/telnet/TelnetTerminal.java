@@ -31,7 +31,8 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Telnet <a href="http://jline.sf.net">JLine</a> terminal implementation
- * backed up by a <a href="http://www.bway.net/~lichtner/nvt4j.html">NVT4J</a> terminal instance.
+ * backed up by a <a href="http://www.bway.net/~lichtner/nvt4j.html">NVT4J</a>
+ * terminal instance.
  *
  * @version $Rev$ $Date$
  */
@@ -122,7 +123,27 @@ public class TelnetTerminal
     public static final short HOME_CODE = 72;
 
     public static final short END_CODE = 70;
-
+    
+    public static final short O_PREFIX = 79;
+    
+    public int readCharacter(final InputStream in) throws IOException {
+        int c = in.read();
+        
+        if (log.isDebugEnabled()) {
+            String ch;
+            if (c == 0xd) {
+                ch = "\\n";
+            }
+            else {
+                ch = new String(new char[] { (char)c });
+            }
+            
+            log.debug("Read char: " + ch + " (0x" + Integer.toHexString(c) + ")");
+        }
+        
+        return c;
+    }
+    
     public int readVirtualKey(final InputStream in) throws IOException {
         assert in != null;
 
@@ -139,7 +160,7 @@ public class TelnetTerminal
         if (c == ARROW_START) {
             c = readCharacter(in);
 
-            if (c == ARROW_PREFIX) {
+            if (c == ARROW_PREFIX || c == O_PREFIX) {
                 c = readCharacter(in);
 
                 switch (c) {
@@ -162,6 +183,10 @@ public class TelnetTerminal
                         return CTRL_E;
                 }
             }
+        }
+        
+        if (c > 128) {
+            throw new IOException("UTF-8 not supported");
         }
 
         return c;
