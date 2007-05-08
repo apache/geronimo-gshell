@@ -109,7 +109,7 @@ public abstract class TerminalSupport
                 ch = new String(new char[] { (char)c });
             }
             
-            log.debug("Read char: " + ch + " (0x" + Integer.toHexString(c) + ")");
+            log.debug("Read char: " + ch + " (x" + Integer.toHexString(c) + ")");
         }
         
         return c;
