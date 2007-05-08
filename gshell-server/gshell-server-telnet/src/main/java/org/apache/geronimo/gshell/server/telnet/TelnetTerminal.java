@@ -26,8 +26,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.geronimo.gshell.server.TerminalSupport;
 
 /**
  * Telnet <a href="http://jline.sf.net">JLine</a> terminal implementation
@@ -37,10 +36,8 @@ import org.apache.commons.logging.LogFactory;
  * @version $Rev$ $Date$
  */
 public class TelnetTerminal
-    extends jline.Terminal
+    extends TerminalSupport
 {
-    private static final Log log = LogFactory.getLog(TelnetTerminal.class);
-
     private final Terminal term;
 
     private final IO io;
@@ -50,38 +47,12 @@ public class TelnetTerminal
         this.io =  new IO(createInputStream(), createOutputStream());
     }
 
-    public void initializeTerminal() throws Exception {
-        //
-        // NVT4j does all init in Terminal.init() which is called from constructor
-        //
-    }
-
     public int getTerminalWidth() {
         return term.getColumns();
     }
 
     public int getTerminalHeight() {
         return term.getRows();
-    }
-
-    public boolean isSupported() {
-        return true;
-    }
-    
-    public void disableEcho() {
-        // TODO
-    }
-    
-    public void enableEcho() {
-        // TODO
-    }
-    
-    public boolean isEchoEnabled() {
-        return false;
-    }
-    
-    public boolean getEcho() {
-        return false;
     }
 
     private InputStream createInputStream() {
@@ -102,93 +73,5 @@ public class TelnetTerminal
 
     public IO getIO() {
         return io;
-    }
-
-    //
-    // NOTE: Copied (and modified) from jline.UnixTerminal
-    //
-
-    public static final short ARROW_START = 27;
-
-    public static final short ARROW_PREFIX = 91;
-
-    public static final short ARROW_LEFT = 68;
-
-    public static final short ARROW_RIGHT = 67;
-
-    public static final short ARROW_UP = 65;
-
-    public static final short ARROW_DOWN = 66;
-
-    public static final short HOME_CODE = 72;
-
-    public static final short END_CODE = 70;
-    
-    public static final short O_PREFIX = 79;
-    
-    public int readCharacter(final InputStream in) throws IOException {
-        int c = in.read();
-        
-        if (log.isDebugEnabled()) {
-            String ch;
-            if (c == 0xd) {
-                ch = "\\n";
-            }
-            else {
-                ch = new String(new char[] { (char)c });
-            }
-            
-            log.debug("Read char: " + ch + " (0x" + Integer.toHexString(c) + ")");
-        }
-        
-        return c;
-    }
-    
-    public int readVirtualKey(final InputStream in) throws IOException {
-        assert in != null;
-
-        int c = readCharacter(in);
-
-        //
-        // TODO: Need to check if this is correct... arrow handling is a tad off
-        //
-
-        // in Unix terminals, arrow keys are represented by
-        // a sequence of 3 characters. E.g., the up arrow
-        // key yields 27, 91, 68
-
-        if (c == ARROW_START) {
-            c = readCharacter(in);
-
-            if (c == ARROW_PREFIX || c == O_PREFIX) {
-                c = readCharacter(in);
-
-                switch (c) {
-                    case ARROW_UP:
-                        return CTRL_P;
-
-                    case ARROW_DOWN:
-                        return CTRL_N;
-
-                    case ARROW_LEFT:
-                        return CTRL_B;
-
-                    case ARROW_RIGHT:
-                        return CTRL_F;
-
-                    case HOME_CODE:
-                        return CTRL_A;
-
-                    case END_CODE:
-                        return CTRL_E;
-                }
-            }
-        }
-        
-        if (c > 128) {
-            throw new IOException("UTF-8 not supported");
-        }
-
-        return c;
     }
 }

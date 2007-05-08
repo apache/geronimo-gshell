@@ -24,9 +24,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 import org.apache.geronimo.gshell.console.IO;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.geronimo.gshell.server.TerminalSupport;
 
 /**
  * SSH <a href="http://jline.sf.net">JLine</a> terminal implementation
@@ -35,10 +33,8 @@ import org.apache.commons.logging.LogFactory;
  * @version $Rev$ $Date$
  */
 public class SshTerminal
-    extends jline.Terminal
+    extends TerminalSupport
 {
-    private static final Log log = LogFactory.getLog(SshTerminal.class);
-    
     private final IO io;
 
     public SshTerminal(final InputStream input, final OutputStream output) throws IOException {
@@ -49,38 +45,12 @@ public class SshTerminal
         this.io =  new IO(createInputStream(), createOutputStream());
     }
 
-    public void initializeTerminal() throws Exception {
-        //
-        // TODO:
-        //
-    }
-
     public int getTerminalWidth() {
         throw new Error("TODO");
     }
 
     public int getTerminalHeight() {
         throw new Error("TODO");
-    }
-    
-    public boolean isSupported() {
-        return true;
-    }
-
-    public boolean getEcho() {
-        return false;
-    }
-    
-    public void disableEcho() {
-        // TODO
-    }
-    
-    public void enableEcho() {
-        // TODO
-    }
-    
-    public boolean isEchoEnabled() {
-        return false;
     }
     
     private InputStream createInputStream() {
@@ -101,69 +71,5 @@ public class SshTerminal
     
     public IO getIO() {
         return io;
-    }
-
-    //
-    // NOTE: Copied (and modified) from jline.UnixTerminal
-    //
-
-    public static final short ARROW_START = 27;
-
-    public static final short ARROW_PREFIX = 91;
-
-    public static final short ARROW_LEFT = 68;
-
-    public static final short ARROW_RIGHT = 67;
-
-    public static final short ARROW_UP = 65;
-
-    public static final short ARROW_DOWN = 66;
-
-    public static final short HOME_CODE = 72;
-
-    public static final short END_CODE = 70;
-
-    public int readVirtualKey(final InputStream in) throws IOException {
-        assert in != null;
-
-        int c = readCharacter(in);
-
-        //
-        // TODO: Need to check if this is correct... arrow handling is a tad off
-        //
-
-        // in Unix terminals, arrow keys are represented by
-        // a sequence of 3 characters. E.g., the up arrow
-        // key yields 27, 91, 68
-
-        if (c == ARROW_START) {
-            c = readCharacter(in);
-
-            if (c == ARROW_PREFIX) {
-                c = readCharacter(in);
-
-                switch (c) {
-                    case ARROW_UP:
-                        return CTRL_P;
-
-                    case ARROW_DOWN:
-                        return CTRL_N;
-
-                    case ARROW_LEFT:
-                        return CTRL_B;
-
-                    case ARROW_RIGHT:
-                        return CTRL_F;
-
-                    case HOME_CODE:
-                        return CTRL_A;
-
-                    case END_CODE:
-                        return CTRL_E;
-                }
-            }
-        }
-
-        return c;
     }
 }
