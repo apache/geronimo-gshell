@@ -74,4 +74,19 @@ public class TelnetTerminal
     public IO getIO() {
         return io;
     }
+    
+    public int readVirtualKey(final InputStream in) throws IOException {
+        int c = super.readVirtualKey(in);
+        
+        // We need to gobble up the char after a newline (which should be a 0x0) to avoid weird
+        // prompt corruption muck
+        if (c == 0xd) {
+            int nc = super.readVirtualKey(in);
+            if (nc != 0x0) {
+                throw new IOException("Expected 0x0 after 0xd, found: " + Integer.toHexString(c));
+            }
+        }
+        
+        return c;
+    }
 }
