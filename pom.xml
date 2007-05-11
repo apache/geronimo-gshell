@@ -313,7 +313,6 @@
         <module>gshell-cli</module>
         <module>gshell-commands</module>
         <module>gshell-server</module>
-        <module>gshell-maven-plugin</module>
         <module>gshell-testsuite</module>
         <module>gshell-assembly</module>
     </modules>
