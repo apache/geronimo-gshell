@@ -44,7 +44,7 @@ public class TelnetTerminal
 
     public TelnetTerminal(final InputStream input, final OutputStream output) throws IOException {
         this.term = new Terminal(input, output);
-        this.io =  new IO(createInputStream(), createOutputStream());
+        this.io = new IO(createInputStream(), createOutputStream());
     }
 
     public int getTerminalWidth() {

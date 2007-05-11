@@ -30,11 +30,12 @@ import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.ConsoleFactory;
 import org.apache.xbean.finder.ResourceFinder;
 
-import java.net.Socket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.util.Map;
+import java.net.Socket;
 
 //
 // NOTE: Some bits lifted from XBean Telnet module
