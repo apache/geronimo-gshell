@@ -40,19 +40,10 @@
             <artifactId>gshell-server-core</artifactId>
             <version>${version}</version>
         </dependency>
-
-        <!--
-        NOTE: May want to enhance xbean-telnet to behave like nvt4j and be more extendable than nvt4j
-
+        
         <dependency>
-            <groupId>org.apache.xbean</groupId>
-            <artifactId>xbean-telnet</artifactId>
-        </dependency>
-        -->
-
-        <dependency>
-            <groupId>nvt4j</groupId>
-            <artifactId>nvt4j</artifactId>
+            <groupId>net.sourceforge.telnetd</groupId>
+            <artifactId>telnetd</artifactId>
         </dependency>
     </dependencies>
 

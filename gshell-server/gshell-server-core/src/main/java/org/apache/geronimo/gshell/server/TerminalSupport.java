@@ -124,6 +124,8 @@ public abstract class TerminalSupport
         // TODO: Need to check if this is correct... arrow handling is a tad off
         //
 
+        log.info("Read virtual key: " + c);
+        
         // in Unix terminals, arrow keys are represented by
         // a sequence of 3 characters. E.g., the up arrow
         // key yields 27, 91, 68
