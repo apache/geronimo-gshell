@@ -40,7 +40,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.codehaus.mojo</groupId>
+            <groupId>org.codehaus.mojo.groovy</groupId>
             <artifactId>groovy-mojo-support</artifactId>
             <version>1.0-alpha-3-SNAPSHOT</version>
         </dependency>
@@ -48,13 +48,13 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-project</artifactId>
-            <version>2.0.4</version>
+            <version>2.0.5</version>
         </dependency>
         
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-artifact</artifactId>
-            <version>2.0.4</version>
+            <version>2.0.5</version>
         </dependency>
         
         <dependency>
@@ -130,8 +130,9 @@
             </plugin>
             
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
+                <groupId>org.codehaus.mojo.groovy</groupId>
                 <artifactId>groovy-maven-plugin</artifactId>
+                <version>1.0-alpha-3-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <goals>
@@ -146,7 +147,7 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <dependencies>
                     <dependency>
-                        <groupId>org.codehaus.mojo</groupId>
+                        <groupId>org.codehaus.mojo.groovy</groupId>
                         <artifactId>groovy-mojo-tools</artifactId>
                         <version>1.0-alpha-3-SNAPSHOT</version>
                     </dependency>
