@@ -54,6 +54,11 @@ if [ -z "$JAVACMD" ]; then
     fi
 fi
 
+BOOTJAR="$GSHELL_HOME/lib/boot/gshell-bootstrap.jar"
+if $cygwin ; then
+    BOOTJAR=`cygpath --windows "$BOOTJAR"`
+fi
+
 # Start the JVM
-exec "$JAVACMD" $JAVA_OPTS -jar "$GSHELL_HOME/lib/boot/gshell-bootstrap.jar" "$@"
+exec "$JAVACMD" $JAVA_OPTS -jar "$BOOTJAR" "$@"
 
