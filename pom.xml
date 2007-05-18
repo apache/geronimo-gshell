@@ -35,7 +35,7 @@
     <name>GShell</name>
     <packaging>pom</packaging>
     
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</connection>
@@ -52,7 +52,7 @@
               element, and it will need to be changed manually before a release,
               as the maven-release-plugin will not update this value.
         -->
-        <version>1.0.0-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
     </properties>
     
     <dependencyManagement>

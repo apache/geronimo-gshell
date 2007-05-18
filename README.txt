@@ -6,8 +6,8 @@
 # Helpful to build & test...
 
 mvn "$@"
-rm -rf gshell-1.0.0-SNAPSHOT
-gunzip -c ./gshell-assemblies/gshell-complete-assembly/target/gshell-*-bin.tar.gz | tar xf -
+rm -rf gshell-*-SNAPSHOT
+gunzip -c ./gshell-assembly/target/gshell-*-bin.tar.gz | tar xf -
 
 ./gshell-*/bin/gsh "$@"
 
