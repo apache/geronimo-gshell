@@ -63,6 +63,12 @@
             <artifactId>j2ssh-ant</artifactId>
             <version>0.2.7</version>
         </dependency>
+        
+        <dependency>
+            <groupId>net.sourceforge.telnetd</groupId>
+            <artifactId>telnetd</artifactId>
+            <version>2.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
