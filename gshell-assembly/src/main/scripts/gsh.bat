@@ -69,8 +69,11 @@ rem Get arguments from the 4NT Shell from JP Software
 set ARGS=%$
 
 :execute
+
+BOOTJAR=%GSHELL_HOME%\lib\boot\gshell-bootstrap.jar
+
 rem Start the JVM
-"%JAVACMD%" %JAVA_OPTS% -jar "%GSHELL_HOME%\lib\boot\gshell-bootstrap.jar" %ARGS%
+"%JAVACMD%" %JAVA_OPTS% -jar "%BOOTJAR% %ARGS%
 
 :end
 
