@@ -38,6 +38,12 @@
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
+            <artifactId>gshell-bootstrap</artifactId>
+            <version>${version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-core</artifactId>
             <version>${version}</version>
         </dependency>
@@ -84,7 +90,12 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging-adapters</artifactId>
         </dependency>
-
+        
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        
         <!-- Include at least one scripting language for now (bsh is nice and small) -->
         <dependency>
             <groupId>org.beanshell</groupId>

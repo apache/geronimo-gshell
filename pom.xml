@@ -178,6 +178,7 @@
         </dependencies>
     </dependencyManagement>
 
+    <!--
     <dependencies>
         <dependency>
             <groupId>commons-logging</groupId>
@@ -199,7 +200,8 @@
             <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
-
+    -->
+    
     <build>
         <pluginManagement>
             <plugins>
@@ -307,6 +309,7 @@
     
     <modules>
         <module>repository</module>
+        <module>gshell-bootstrap</module>
         <module>javacc-maven-plugin</module>
         <module>gshell-api</module>
         <module>gshell-core</module>
