@@ -27,7 +27,7 @@ import net.wimpi.telnetd.io.BasicTerminalIO;
 import org.apache.geronimo.gshell.server.TerminalSupport;
 
 /**
- * ???
+ * JLine support for Telnetd shells.
  *
  * @version $Rev$ $Date$
  */
