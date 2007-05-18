@@ -39,7 +39,6 @@
         <module>gshell-server-core</module>
         <module>gshell-server-telnet</module>
         <module>gshell-server-ssh</module>
-        <module>gshell-server-gbean</module>
     </modules>
     
 </project>

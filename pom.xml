@@ -138,12 +138,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.geronimo</groupId>
-                <artifactId>geronimo-kernel</artifactId>
-                <version>1.0</version>
-            </dependency>
-
-            <dependency>
                 <groupId>nvt4j</groupId>
                 <artifactId>nvt4j</artifactId>
                 <version>1.0a1</version>
@@ -177,30 +171,6 @@
             -->
         </dependencies>
     </dependencyManagement>
-
-    <!--
-    <dependencies>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-    </dependencies>
-    -->
     
     <build>
         <pluginManagement>
