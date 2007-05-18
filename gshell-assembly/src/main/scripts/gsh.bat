@@ -28,7 +28,6 @@ if "%OS%"=="Windows_NT" setlocal
 
 set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.\
-if "%PROGNAME%" == "" set PROGNAME=gsh
 
 :check_JAVACMD
 if not "%JAVACMD%" == "" goto check_GSHELL_HOME

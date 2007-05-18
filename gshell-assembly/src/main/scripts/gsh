@@ -22,7 +22,6 @@
 ## $Rev$ $Date$
 ##
 
-PROGNAME=`basename "$0"`
 DIRNAME=`dirname "$0"`
 
 # OS specific support (must be 'true' or 'false').
