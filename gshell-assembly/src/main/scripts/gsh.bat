@@ -69,7 +69,7 @@ set ARGS=%$
 
 :execute
 
-BOOTJAR=%GSHELL_HOME%\lib\boot\gshell-bootstrap.jar
+set BOOTJAR=%GSHELL_HOME%\lib\boot\gshell-bootstrap.jar
 
 rem Start the JVM
 "%JAVACMD%" %JAVA_OPTS% -jar "%BOOTJAR% %ARGS%
