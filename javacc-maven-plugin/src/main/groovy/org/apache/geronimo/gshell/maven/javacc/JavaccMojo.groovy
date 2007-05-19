@@ -23,8 +23,6 @@ import org.apache.maven.plugin.MojoExecutionException
 import org.apache.maven.shared.model.fileset.FileSet
 import org.apache.maven.shared.model.fileset.util.FileSetManager
 
-import com.thoughtworks.qdox.JavaDocBuilder
-
 /**
  * ???
  *
