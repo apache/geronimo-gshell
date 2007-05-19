@@ -58,7 +58,7 @@ class JjtreeMojo
         def fsm = new FileSetManager(log, log.debugEnabled)
         def includes = fsm.getIncludedFiles(grammars)
         if (includes.length == 0) {
-            throw new MojoExecutionException('No grammers selected')
+            throw new MojoExecutionException('No grammars selected')
         }
         
         // Generate sources to a temporary location, will install them after gen has occured
