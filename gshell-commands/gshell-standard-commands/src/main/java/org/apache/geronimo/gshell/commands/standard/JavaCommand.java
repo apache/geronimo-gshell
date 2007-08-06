@@ -57,6 +57,7 @@ public class JavaCommand
 
         options.addOption(OptionBuilder.withLongOpt("method")
             .withDescription(messages.getMessage("cli.option.method"))
+            .hasArg()
             .withArgName("method")
             .create('M'));
 

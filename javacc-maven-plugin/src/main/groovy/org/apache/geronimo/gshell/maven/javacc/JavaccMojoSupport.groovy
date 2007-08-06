@@ -36,27 +36,23 @@ abstract class JavaccMojoSupport
     extends GroovyMojoSupport
 {
     /**
-     * The maven project.
-     *
      * @parameter expression="${project}"
      * @required
      * @readonly
      */
-    protected MavenProject project
+    MavenProject project
     
     /**
-     * Map of of plugin artifacts.
-     *
      * @parameter expression="${plugin.artifactMap}"
      * @required
      * @readonly
      */
-    protected Map pluginArtifactMap
+    Map pluginArtifactMap
     
     protected Artifact getPluginArtifact(final String name) throws MojoExecutionException {
-        Artifact artifact = (Artifact) pluginArtifactMap.get(name)
+        def artifact = pluginArtifactMap.get(name)
         if (artifact == null) {
-            throw new MojoExecutionException("Unable to locate '${name}' in the list of plugin artifacts")
+            fail("Unable to locate '${name}' in the list of plugin artifacts")
         }
 
         return artifact
@@ -67,7 +63,7 @@ abstract class JavaccMojoSupport
      */
     protected void installGeneratedSources(File sourceDir) {
         // Discover which classes were generated
-        JavaDocBuilder builder = new JavaDocBuilder()
+        def builder = new JavaDocBuilder()
         builder.addSourceTree(sourceDir)
         
         // Install generated classes which were not overridden in some source root

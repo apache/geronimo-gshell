@@ -39,7 +39,7 @@ class JavaccMojo
      * @parameter expression="${project.build.directory}/generated-sources/javacc"
      * @required
      */
-    private File outputDirectory
+    File outputDirectory
     
     /**
      * ???
@@ -47,7 +47,7 @@ class JavaccMojo
      * @parameter
      * @required
      */
-    private FileSet grammars
+    FileSet grammars
 
     void execute() {
         ant.mkdir(dir: outputDirectory)
@@ -55,7 +55,7 @@ class JavaccMojo
         def fsm = new FileSetManager(log, log.debugEnabled)
         def includes = fsm.getIncludedFiles(grammars)
         if (includes.length == 0) {
-            throw new MojoExecutionException('No grammars selected')
+            fail('No grammars selected')
         }
         
         // Generate sources to a temporary location, will install them after gen has occured
