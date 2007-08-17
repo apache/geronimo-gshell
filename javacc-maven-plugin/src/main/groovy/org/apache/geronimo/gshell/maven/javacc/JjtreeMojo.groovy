@@ -34,7 +34,7 @@ class JjtreeMojo
     extends JavaccMojoSupport
 {
     /**
-     * ???
+     * Where to output generated sources.
      *
      * @parameter expression="${project.build.directory}/generated-sources/jjtree"
      * @required
@@ -42,12 +42,14 @@ class JjtreeMojo
     File outputDirectory
     
     /**
+     * The package for AST node classes.
+     *
      * @parameter
      */
     String nodePackage
     
     /**
-     * ???
+     * A set of grammar files to process.
      *
      * @parameter
      * @required
@@ -55,6 +57,8 @@ class JjtreeMojo
     FileSet grammars
 
     void execute() {
+        ant.mkdir(dir: outputDirectory)
+        
         def fsm = new FileSetManager(log, log.debugEnabled)
         def includes = fsm.getIncludedFiles(grammars)
         if (includes.length == 0) {

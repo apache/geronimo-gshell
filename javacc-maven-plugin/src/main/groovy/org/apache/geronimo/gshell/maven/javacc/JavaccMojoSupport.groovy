@@ -50,6 +50,8 @@ abstract class JavaccMojoSupport
     Map pluginArtifactMap
     
     protected Artifact getPluginArtifact(final String name) throws MojoExecutionException {
+        assert name
+        
         def artifact = pluginArtifactMap.get(name)
         if (artifact == null) {
             fail("Unable to locate '${name}' in the list of plugin artifacts")
@@ -62,6 +64,8 @@ abstract class JavaccMojoSupport
      * Install generated sources which have not been overridden.
      */
     protected void installGeneratedSources(File sourceDir) {
+        assert sourceDir
+        
         // Discover which classes were generated
         def builder = new JavaDocBuilder()
         builder.addSourceTree(sourceDir)

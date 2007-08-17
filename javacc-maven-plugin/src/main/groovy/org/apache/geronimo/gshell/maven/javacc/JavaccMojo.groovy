@@ -34,7 +34,7 @@ class JavaccMojo
     extends JavaccMojoSupport
 {
     /**
-     * ???
+     * Where to output generated sources.
      *
      * @parameter expression="${project.build.directory}/generated-sources/javacc"
      * @required
@@ -42,7 +42,7 @@ class JavaccMojo
     File outputDirectory
     
     /**
-     * ???
+     * A set of grammar files to process.
      *
      * @parameter
      * @required
