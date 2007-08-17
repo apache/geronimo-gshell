@@ -74,7 +74,8 @@ abstract class JavaccMojoSupport
                 def filepath = "${clazz.getPackage()}/${clazz.name}".replace('.', '/') + '.java'
                 
                 for (String sourceRoot in project.compileSourceRoots) {
-                    def file = new File("$sourceRoot/$filepath")
+                    def dir = new File(sourceRoot)
+                    def file = new File(dir, filepath)
                     
                     if (file.exists()) {
                         log.info("Omitting $clazz.name, already exists in source tree")
