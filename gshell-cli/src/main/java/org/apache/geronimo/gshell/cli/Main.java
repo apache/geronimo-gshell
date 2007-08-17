@@ -107,7 +107,7 @@ public class Main
             .create('h'));
 
         options.addOption(OptionBuilder.withLongOpt("version")
-            .withDescription("Display Shell version")
+            .withDescription("Display GShell version")
             .create('V'));
 
         options.addOption(OptionBuilder.withLongOpt("define")
