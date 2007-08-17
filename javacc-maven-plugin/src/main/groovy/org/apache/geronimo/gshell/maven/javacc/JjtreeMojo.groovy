@@ -24,7 +24,7 @@ import org.apache.maven.shared.model.fileset.FileSet
 import org.apache.maven.shared.model.fileset.util.FileSetManager
 
 /**
- * ???
+ * Invokes the JJTree AST generator pre-processor.
  *
  * @goal jjtree
  *

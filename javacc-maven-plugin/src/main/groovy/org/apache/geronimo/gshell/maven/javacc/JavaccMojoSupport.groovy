@@ -28,7 +28,7 @@ import org.apache.maven.artifact.Artifact
 import com.thoughtworks.qdox.JavaDocBuilder
 
 /**
- * ???
+ * Provides support for JavaCC mojos.
  *
  * @version $Id$
  */
@@ -71,7 +71,7 @@ abstract class JavaccMojoSupport
         ant.copy(todir: outputDirectory) {
             // Check source roots for overrides, only copy if not found
             builder.classes.each { clazz ->
-                def filepath = "${clazz.getPackage()}/${clazz.name}".replace('.', File.separator) + '.java'
+                def filepath = "${clazz.getPackage()}/${clazz.name}".replace('.', '/') + '.java'
                 
                 for (String sourceRoot in project.compileSourceRoots) {
                     def file = new File("$sourceRoot/$filepath")
