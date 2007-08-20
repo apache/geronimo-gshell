@@ -94,8 +94,8 @@ public class IO
         this.errorStream = err;
 
         this.in = new InputStreamReader(in);
-        this.out = new PrintWriter(out);
-        this.err = new PrintWriter(err);
+        this.out = new PrintWriter(out, true);
+        this.err = new PrintWriter(err, true);
     }
 
     /**
