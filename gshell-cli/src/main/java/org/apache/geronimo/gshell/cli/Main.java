@@ -217,14 +217,25 @@ public class Main
             interactive = false;
         }
 
-        execute(line.getArgs());
+        int code;
+        
+        try {
+            code = execute(line.getArgs());
+        }
+        finally {
+            LogFactory.releaseAll();
+            
+            io.flush();
+        }
+        
+        System.exit(code);
     }
 
-    private void execute(final String[] args) throws Exception {
+    private int execute(final String[] args) throws Exception {
         // Its okay to use logging now
         Log log = LogFactory.getLog(Main.class);
         boolean debug = log.isDebugEnabled();
-
+        
         //
         // TODO: Need to pass Shell the ClassWorld, so that the application can add to it if needed
         //
@@ -256,7 +267,7 @@ public class Main
         //
         // TODO: Pass interactive flags (maybe as property) so gshell knows what mode it is
         //
-        
+
         if (commands != null) {
             gshell.execute(commands);
         }
@@ -290,12 +301,17 @@ public class Main
         }
 
         // If the result is a number, then pass that back to the calling shell
+        int code = 0;
+        
         if (result instanceof Number) {
-            System.exit(((Number)result).intValue());
+            code = ((Number)result).intValue();
         }
-        else {
-            System.exit(0);
+        
+        if (debug) {
+            log.debug("Exiting with code: " + code);
         }
+        
+        return code;
     }
 
     //
