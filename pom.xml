@@ -35,12 +35,12 @@
     <name>GShell</name>
     <packaging>pom</packaging>
     
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0-alpha-1-SNAPSHOT</version>
     
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/</developerConnection>
-        <url>https://svn.apache.org/viewvc/geronimo/sandbox/gshell/</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</developerConnection>
+        <url>https://svn.apache.org/viewvc/geronimo/sandbox/gshell/trunk/</url>
     </scm>
     
     <properties>
@@ -52,7 +52,7 @@
               element, and it will need to be changed manually before a release,
               as the maven-release-plugin will not update this value.
         -->
-        <version>0.0.2-SNAPSHOT</version>
+        <version>1.0-alpha-1-SNAPSHOT</version>
     </properties>
     
     <dependencyManagement>
@@ -298,14 +298,12 @@
     </build>
     
     <modules>
-        <module>repository</module>
         <module>gshell-bootstrap</module>
         <module>javacc-maven-plugin</module>
         <module>gshell-api</module>
         <module>gshell-core</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
-        <module>gshell-server</module>
         <module>gshell-testsuite</module>
         <module>gshell-assembly</module>
     </modules>
