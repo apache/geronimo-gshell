@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.genesis.config</groupId>
         <artifactId>project-config</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
     </parent>
 
     <groupId>org.apache.geronimo.gshell</groupId>
@@ -135,12 +135,6 @@
                 <groupId>org.apache.xbean</groupId>
                 <artifactId>xbean-finder</artifactId>
                 <version>3.0</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>net.sourceforge.telnetd</groupId>
-                <artifactId>telnetd</artifactId>
-                <version>2.0</version>
             </dependency>
             
             <dependency>
@@ -252,6 +246,7 @@
                 </executions>
             </plugin>
             
+            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>retrotranslator-maven-plugin</artifactId>
@@ -267,6 +262,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
