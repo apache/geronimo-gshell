@@ -48,7 +48,7 @@ public class Launcher
         setProperty("classworlds.conf", classworldsConf.getCanonicalPath());
 
         File log4jConf = getLog4jConf();
-        setProperty("log4j.configuration", log4jConf.toURL().toString());
+        setProperty("log4j.configuration", log4jConf.toURI().toURL().toString());
 
         // Delegate to the Classworlds launcher to finish booting
         org.codehaus.classworlds.Launcher.main(args);
