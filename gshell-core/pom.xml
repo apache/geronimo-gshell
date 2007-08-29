@@ -57,6 +57,12 @@
         </dependency>
         
         <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-diet-plexus-utils</artifactId>
+            <version>${version}</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-container-default</artifactId>
         </dependency>

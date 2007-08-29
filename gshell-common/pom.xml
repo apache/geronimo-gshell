@@ -39,114 +39,16 @@
     
     <dependencies>
         <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-diet-commons-lang</artifactId>
+            <version>${version}</version>
+        </dependency>
+        
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
-    <!--
-    NOTE: We only use a few bits from plexus-utils and commons-lang, so pull them out here to avoid
-          getting all that other cruft.
-    -->
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>commons-lang</groupId>
-                                    <artifactId>commons-lang</artifactId>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.codehaus.plexus</groupId>
-                                    <artifactId>plexus-utils</artifactId>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <mkdir dir="${project.build.directory}/generated-source/diet"/>
-                                <copy todir="${project.build.directory}/generated-source/diet">
-                                    <fileset dir="${project.build.directory}/dependency">
-                                        <!-- Include ~100k of commons-lang -->
-                                        <include name="org/apache/commons/lang/ArrayUtils.java"/>
-                                        <include name="org/apache/commons/lang/BooleanUtils.java"/>
-                                        <include name="org/apache/commons/lang/CharUtils.java"/>
-                                        <include name="org/apache/commons/lang/CharSet.java"/>
-                                        <include name="org/apache/commons/lang/CharSetUtils.java"/>
-                                        <include name="org/apache/commons/lang/CharRange.java"/>
-                                        <include name="org/apache/commons/lang/ClassUtils.java"/>
-                                        <include name="org/apache/commons/lang/Entities.java"/>
-                                        <include name="org/apache/commons/lang/IntHashMap.java"/>
-                                        <include name="org/apache/commons/lang/NullArgumentException.java"/>
-                                        <include name="org/apache/commons/lang/SystemUtils.java"/>
-                                        <include name="org/apache/commons/lang/StringUtils.java"/>
-                                        <include name="org/apache/commons/lang/StringEscapeUtils.java"/>
-                                        <include name="org/apache/commons/lang/ObjectUtils.java"/>
-                                        <include name="org/apache/commons/lang/UnhandledException.java"/>
-                                        <include name="org/apache/commons/lang/Validate.java"/>
-                                        <include name="org/apache/commons/lang/WordUtils.java"/>
-                                        <include name="org/apache/commons/lang/exception/**/*.java"/>
-                                        <include name="org/apache/commons/lang/builder/**/*.java"/>
-                                        <include name="org/apache/commons/lang/math/NumberUtils.java"/>
-                                        <include name="org/apache/commons/lang/time/**/*.java"/>
-                                        
-                                        <!-- Include ~160k of plexus-utils -->
-                                        <include name="org/codehaus/plexus/util/*.java"/>
-                                        <include name="org/codehaus/plexus/util/dag/**/*.java"/>
-                                        <include name="org/codehaus/plexus/util/xml/**/*.java"/>
-                                        <include name="org/codehaus/plexus/util/reflection/**/*.java"/>
-                                    </fileset>
-                                </copy>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-source/diet</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
