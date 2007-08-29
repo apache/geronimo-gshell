@@ -60,19 +60,6 @@
             <directory>src/main/config</directory>
             <outputDirectory>etc</outputDirectory>
         </fileSet>
-        
-        <!--
-        <fileSet>
-            <directory>target</directory>
-            <outputDirectory>lib</outputDirectory>
-            <includes>
-                <include>gshell-cli-*.jar</include>
-            </includes>
-            <excludes>
-                <exclude>gshell-cli-*-sources.jar</exclude>
-            </excludes>
-        </fileSet>
-        -->
     </fileSets>
     
     <dependencySets>

@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDefinition;
@@ -184,26 +185,20 @@ public class Shell
             }
         });
 
-        // FIXME:
-        /*
         // Setup command timings
         StopWatch watch = null;
         if (debug) {
             watch = new StopWatch();
             watch.start();
         }
-        */
 
         Object result;
         try {
             result = cmd.execute(args);
 
-            // FIXME:
-            /*
             if (debug) {
                 log.debug("Command completed in " + watch);
             }
-            */
         }
         finally {
             cmd.destroy();

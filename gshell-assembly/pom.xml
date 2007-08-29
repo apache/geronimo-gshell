@@ -36,38 +36,38 @@
 
     <dependencies>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-bootstrap</artifactId>
             <version>${version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-core</artifactId>
             <version>${version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-cli</artifactId>
             <version>${version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-standard-commands</artifactId>
             <version>${version}</version>
         </dependency>
 
         <!--
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-scripting-commands</artifactId>
             <version>${version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-vfs-commands</artifactId>
             <version>${version}</version>
         </dependency>
@@ -81,11 +81,21 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <exclusions>
+                <!--
+                NOTE: Using our *diet* version of Log4j instead to save some pounds of unwanted fat.
+                -->
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
+        
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-log4j</artifactId>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 

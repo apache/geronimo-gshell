@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+    
+     http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<!-- $Rev$ $Date$ -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>org.apache.geronimo.gshell</groupId>
+        <artifactId>gshell</artifactId>
+        <version>1.0-alpha-1-SNAPSHOT</version>
+    </parent>
+    
+    <artifactId>gshell-common</artifactId>
+    <name>GShell Common</name>
+    
+    <description>
+        Common support classes.
+    </description>
+    
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
+    <!--
+    NOTE: We only use a few bits from commons-lang, so pull them out here to avoid getting all that other cruft.
+          Though really, its a bunch of crap we pull in anyways, but the following saves ~100k
+    -->
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>commons-lang</groupId>
+                                    <artifactId>commons-lang</artifactId>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${project.build.directory}/generated-source/commons-lang"/>
+                                <copy todir="${project.build.directory}/generated-source/commons-lang">
+                                    <fileset dir="${project.build.directory}/dependency">
+                                        <include name="org/apache/commons/lang/ArrayUtils.java"/>
+                                        <include name="org/apache/commons/lang/BooleanUtils.java"/>
+                                        <include name="org/apache/commons/lang/CharUtils.java"/>
+                                        <include name="org/apache/commons/lang/CharSet.java"/>
+                                        <include name="org/apache/commons/lang/CharSetUtils.java"/>
+                                        <include name="org/apache/commons/lang/CharRange.java"/>
+                                        <include name="org/apache/commons/lang/ClassUtils.java"/>
+                                        <include name="org/apache/commons/lang/Entities.java"/>
+                                        <include name="org/apache/commons/lang/IntHashMap.java"/>
+                                        <include name="org/apache/commons/lang/NullArgumentException.java"/>
+                                        <include name="org/apache/commons/lang/SystemUtils.java"/>
+                                        <include name="org/apache/commons/lang/StringUtils.java"/>
+                                        <include name="org/apache/commons/lang/StringEscapeUtils.java"/>
+                                        <include name="org/apache/commons/lang/ObjectUtils.java"/>
+                                        <include name="org/apache/commons/lang/UnhandledException.java"/>
+                                        <include name="org/apache/commons/lang/Validate.java"/>
+                                        <include name="org/apache/commons/lang/WordUtils.java"/>
+                                        <include name="org/apache/commons/lang/exception/**/*.java"/>
+                                        <include name="org/apache/commons/lang/builder/**/*.java"/>
+                                        <include name="org/apache/commons/lang/math/NumberUtils.java"/>
+                                        <include name="org/apache/commons/lang/time/**/*.java"/>
+                                    </fileset>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-source/commons-lang</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -27,6 +27,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Command;
@@ -92,12 +94,8 @@ public class CatCommand
 
             while ((line = reader.readLine()) != null) {
                 if (displayLineNumbers) {
-                    // FIXME:
-                    // String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
-                    // io.out.print(gutter);
-
-
-                    io.out.println(lineno++);
+                    String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
+                    io.out.print(gutter);
                     io.out.print("  ");
                 }
                 io.out.println(line);

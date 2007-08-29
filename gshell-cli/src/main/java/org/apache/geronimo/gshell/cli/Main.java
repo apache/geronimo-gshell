@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.cli;
 import java.util.List;
 
 import jline.Terminal;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.geronimo.gshell.InteractiveShell;
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;
@@ -56,15 +57,14 @@ public class Main
 
     private final IO io = new IO();
 
-    // FIXME
-    // private final StopWatch watch = new StopWatch();
+    private final StopWatch watch = new StopWatch();
 
     public Main(final ClassWorld world) {
         assert world != null;
+
         this.world = world;
 
-        // FIXME:
-        // watch.start();
+        watch.start();
     }
 
     private void setConsoleLogLevel(final String level) {
@@ -220,19 +220,15 @@ public class Main
 
         if (debug) {
             log.debug("Using terminal: " + term);
-            log.debug("  supported: " + term.isSupported());
-            log.debug("  height: " + term.getTerminalHeight());
-            log.debug("  width: " + term.getTerminalWidth());
-            log.debug("  echo: " + term.getEcho());
+            log.debug("  Supported: " + term.isSupported());
+            log.debug("  H x W: " + term.getTerminalHeight() + " x " + term.getTerminalWidth());
+            log.debug("  Echo: " + term.getEcho());
             log.debug("  ANSI: " + term.isANSISupported());
         }
 
-        // FIXME:
-        /*
         if (debug) {
             log.debug("Started in " + watch);
         }
-        */
 
         Object result = null;
 
@@ -268,12 +264,9 @@ public class Main
             result = gshell.execute(args);
         }
 
-        // FIXME:
-        /*
         if (debug) {
             log.debug("Ran for " + watch);
         }
-        */
         
         // If the result is a number, then pass that back to the calling shell
         int code = 0;
