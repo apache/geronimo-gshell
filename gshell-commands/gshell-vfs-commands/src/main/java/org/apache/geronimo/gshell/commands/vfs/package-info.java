@@ -18,8 +18,8 @@
  */
 
 /**
- * Provides standard commands, which add useful functionality.
+ * Commands to provide file operations based on <a href="http://jakarta.apache.org/commons/vfs">VFS</a>.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.commands.standard;
+package org.apache.geronimo.gshell.commands.vfs;

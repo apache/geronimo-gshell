@@ -19,13 +19,11 @@
 
 package org.apache.geronimo.gshell.commands.vfs;
 
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandException;
-
-import org.apache.commons.cli.CommandLine;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileUtil;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.Command;
 
 /**
  * Copy files.
@@ -35,6 +33,12 @@ import org.apache.commons.vfs.FileUtil;
 public class CopyCommand
     extends VFSCommandSupport
 {
+    @Argument(index=0, required=true, description="Source")
+    private String sourceName;
+
+    @Argument(index=1, required=true, description="Target")
+    private String targetName;
+
     public CopyCommand() {
         super("copy");
     }
@@ -43,25 +47,10 @@ public class CopyCommand
         return super.getUsage() + " <source> <target>";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        // Need exactly 2 args
-        if (args.length != 2) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(Object[] args) throws Exception {
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         FileSystemManager fsm = getFileSystemManager();
-        FileObject source = fsm.resolveFile(String.valueOf(args[0]));
-        FileObject target = fsm.resolveFile(String.valueOf(args[1]));
+        FileObject source = fsm.resolveFile(sourceName);
+        FileObject target = fsm.resolveFile(targetName);
 
         log.info("Copying " + source + " -> " + target);
 

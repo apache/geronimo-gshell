@@ -53,7 +53,7 @@ public class EchoCommand
 
             for (String arg : args) {
                 io.out.print(arg);
-                if (c++ < args.size()) {
+                if (++c + 1 < args.size()) {
                     io.out.print(" ");
                 }
             }

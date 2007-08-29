@@ -19,10 +19,9 @@
 
 package org.apache.geronimo.gshell.commands.scripting;
 
-import org.apache.geronimo.gshell.console.InteractiveConsole;
-import org.apache.geronimo.gshell.console.Console;
-
 import org.apache.bsf.BSFEngine;
+import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.InteractiveConsole;
 
 /**
  * An interactive console extention that knows how to execute lines of script text with a {@link BSFEngine}.

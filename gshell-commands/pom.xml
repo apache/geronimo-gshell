@@ -44,10 +44,8 @@
     
     <modules>
         <module>gshell-standard-commands</module>
-        <!--
         <module>gshell-scripting-commands</module>
         <module>gshell-vfs-commands</module>
-        -->
     </modules>
     
 </project>

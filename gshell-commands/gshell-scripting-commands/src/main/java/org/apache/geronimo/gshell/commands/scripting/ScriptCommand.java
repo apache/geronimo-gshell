@@ -19,18 +19,12 @@
 
 package org.apache.geronimo.gshell.commands.scripting;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-
+import org.apache.bsf.BSFEngine;
+import org.apache.bsf.BSFManager;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.JLineConsole;
-
-import org.apache.bsf.BSFManager;
-import org.apache.bsf.BSFEngine;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
@@ -40,66 +34,23 @@ import org.apache.bsf.BSFEngine;
 public class ScriptCommand
     extends CommandSupport
 {
+    @Option(name="l", aliases={"--language"}, required=true, description="Specify the scripting language")
     private String language;
 
+    @Option(name="i", aliases={"--interactive"}, description="Run interactive mode")
     private boolean interactive;
-    
+
+    @Option(name="e", aliases={"--expression"}, description="Evaluate the given expression")
     private String expression;
 
     public ScriptCommand() {
         super("script");
     }
 
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = super.getOptions();
-
-        options.addOption(OptionBuilder.withLongOpt("language")
-            .withDescription(messages.getMessage("cli.option.language"))
-            .hasArg()
-            .create('l'));
-
-        options.addOption(OptionBuilder.withLongOpt("expression")
-            .withDescription(messages.getMessage("cli.option.expression"))
-            .hasArg()
-            .create('e'));
-
-        options.addOption(OptionBuilder.withLongOpt("interactive")
-            .withDescription(messages.getMessage("cli.option.interactive"))
-            .create('i'));
-
-        return options;
-    }
-
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        if (line.hasOption('l')) {
-            this.language = line.getOptionValue('l');
-        }
-
-        if (line.hasOption('e')) {
-            this.expression = line.getOptionValue('e');
-        }
-
-        if (line.hasOption('i')) {
-            this.interactive = true;
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         //
         // TODO: When given a file/url, try to figure out language from ext if language not given
         //
-
-        if (language == null) {
-            throw new RuntimeException("Must specify a language");
-        }
 
         if (!BSFManager.isLanguageRegistered(language)) {
             throw new RuntimeException("Language is not registered: " + language);

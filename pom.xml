@@ -270,9 +270,7 @@
         <module>gshell-core</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
-        <!--
         <module>gshell-testsuite</module>
-        -->
         <module>gshell-assembly</module>
     </modules>
     

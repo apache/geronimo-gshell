@@ -18,8 +18,8 @@
  */
 
 /**
- * Provides standard commands, which add useful functionality.
+ * Provides scripting language support.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.commands.standard;
+package org.apache.geronimo.gshell.commands.scripting;
