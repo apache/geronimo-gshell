@@ -68,6 +68,11 @@
             <excludes>
                 <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
                 <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
+                
+                <!--
+                FIXME: Why is this making it in here?
+                -->
+                <exclude>junit:junit</exclude>
             </excludes>
         </dependencySet>
 
