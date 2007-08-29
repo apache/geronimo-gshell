@@ -26,12 +26,12 @@
     
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <artifactId>gshell-diet</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-classworlds</artifactId>
-    <name>GShell *Diet* Classworlds</name>
+    <artifactId>gshell-diet-classworlds</artifactId>
+    <name>GShell Diet :: Classworlds</name>
     
     <description>
         A diet version of the Classworlds distribution.

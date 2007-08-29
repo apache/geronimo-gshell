@@ -26,12 +26,12 @@
     
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <artifactId>gshell-diet</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-log4j</artifactId>
-    <name>GShell *Diet* Log4j</name>
+    <artifactId>gshell-diet-log4j</artifactId>
+    <name>GShell Diet :: Log4j</name>
     
     <description>
         A diet version of the Log4j distribution.

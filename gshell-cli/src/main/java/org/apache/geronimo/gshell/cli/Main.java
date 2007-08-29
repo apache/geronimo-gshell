@@ -292,8 +292,6 @@ public class Main
         assert args != null;
         assert world != null;
 
-        System.err.println("Launching enhanced");
-        
         Main main = new Main(world);
         main.run(args);
     }

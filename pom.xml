@@ -310,7 +310,7 @@
     </build>
     
     <modules>
-        <module>gshell-classworlds</module>
+        <module>gshell-diet</module>
         <module>gshell-common</module>
         <module>gshell-clp</module>
         <module>gshell-prefs</module>
@@ -320,7 +320,6 @@
         <module>gshell-core</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
-        <module>gshell-log4j</module>
         <module>gshell-testsuite</module>
         <module>gshell-assembly</module>
     </modules>

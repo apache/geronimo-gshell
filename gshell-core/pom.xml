@@ -42,7 +42,7 @@
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-classworlds</artifactId>
+            <artifactId>gshell-diet-classworlds</artifactId>
             <version>${version}</version>
         </dependency>
         
