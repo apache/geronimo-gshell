@@ -68,10 +68,6 @@
             <excludes>
                 <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
                 <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
-                <!--
-                <exclude>org.apache.geronimo.gshell:gshell-assembly</exclude>
-                <exclude>xml-apis:xml-apis</exclude>
-                -->
             </excludes>
         </dependencySet>
 
