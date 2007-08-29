@@ -109,9 +109,8 @@ public class Main
     @Option(name="-c", aliases={"commands"}, description="Read commands from string")
     private String commands;
 
-    @Argument
+    @Argument(description="Command")
     private List<String> args;
-
 
     //
     // TODO: Change this to --interactive false
