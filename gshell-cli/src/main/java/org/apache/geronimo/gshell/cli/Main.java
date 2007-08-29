@@ -75,23 +75,6 @@ public class Main
         System.setProperty("gshell.log.console.level", level);
     }
 
-    private void setPropertyFrom(final String namevalue) {
-        String name, value;
-        int i = namevalue.indexOf("=");
-
-        if (i == -1) {
-            name = namevalue;
-            value = Boolean.TRUE.toString();
-        }
-        else {
-            name = namevalue.substring(0, i);
-            value = namevalue.substring(i + 1, namevalue.length());
-        }
-        name = name.trim();
-
-        System.setProperty(name, value);
-    }
-
     @Option(name="-h", aliases={"--help"}, description="Display this help message")
     private boolean help;
 
@@ -110,23 +93,34 @@ public class Main
     @Option(name="-quite", aliases={"--quiet"}, description="Limit logging output to ERROR")
     private boolean quiet;
 
-    @Option(name="-c", aliases={"commands"}, description="Read commands from string")
+    @Option(name="-c", aliases={"--commands"}, description="Read commands from string")
     private String commands;
 
     @Argument(description="Command")
     private List<String> args;
 
+    @Option(name="-D", aliases={"--define"}, metaVar="NAME=VALUE", description="Define system properties")
+    private void setSystemProperty(final String nameValue) {
+        assert nameValue != null;
+
+        String name, value;
+        int i = namevVlue.indexOf("=");
+
+        if (i == -1) {
+            name = nameValue;
+            value = Boolean.TRUE.toString();
+        }
+        else {
+            name = nameValue.substring(0, i);
+            value = nameValue.substring(i + 1, nameValue.length());
+        }
+        name = name.trim();
+
+        System.setProperty(name, value);
+    }
+
     public void run(final String[] args) throws Exception {
         assert args != null;
-
-        // FIXME:
-        /*
-        options.addOption(OptionBuilder.withLongOpt("define")
-            .withDescription("Define a system property")
-            .hasArg()
-            .withArgName("name=value")
-            .create('D'));
-        */
 
         CommandLineProcessor clp = new CommandLineProcessor(this);
         clp.setStopAtNonOption(true);
@@ -156,17 +150,6 @@ public class Main
 
             System.exit(0);
         }
-
-        // FIXME:
-        /*
-        if (line.hasOption('D')) {
-            String[] values = line.getOptionValues('D');
-
-            for (String value : values) {
-                setPropertyFrom(value);
-            }
-        }
-        */
 
         if (quiet) {
             setConsoleLogLevel("ERROR");
