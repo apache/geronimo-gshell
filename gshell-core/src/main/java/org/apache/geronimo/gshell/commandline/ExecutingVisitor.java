@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.geronimo.gshell.ErrorNotification;
 import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.commandline.parser.ASTExpression;
 import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
@@ -32,6 +33,9 @@ import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.commandline.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.commandline.parser.SimpleNode;
 import org.apache.geronimo.gshell.util.Arguments;
+import org.codehaus.plexus.evaluator.EvaluatorException;
+import org.codehaus.plexus.evaluator.ExpressionEvaluator;
+import org.codehaus.plexus.evaluator.ExpressionSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,13 +49,11 @@ public class ExecutingVisitor
 {
     private static final Logger log = LoggerFactory.getLogger(ExecutingVisitor.class);
 
-    private final Shell shell;
+    // @Requirement
+    private Shell shell;
 
-    public ExecutingVisitor(final Shell shell) {
-        assert shell != null;
-
-        this.shell = shell;
-    }
+    // @Requirement
+    private ExpressionEvaluator evaluator;
 
     public Object visit(final SimpleNode node, final Object data) {
         assert node != null;
@@ -112,9 +114,42 @@ public class ExecutingVisitor
     // TODO: Include parsed ${...} strings?
     //
 
+    private String evaluate(final String expr) {
+        final Variables vars = shell.getVariables();
+
+        ExpressionSource source = new ExpressionSource() {
+            public String getExpressionValue(String expr) {
+                Object value = vars.get(expr);
+                if (value != null) {
+                    return String.valueOf(value);
+                }
+
+                return null;
+            }
+        };
+
+        evaluator.addExpressionSource(source);
+
+        String value = null;
+        try {
+            value = evaluator.expand(expr);
+        }
+        catch (EvaluatorException e) {
+            //
+            // HACK: Just make it work...
+            //
+            throw new RuntimeException(e);
+        }
+        finally {
+            evaluator.removeExpressionSource(source);
+        }
+
+        return value;
+    }
+
     public Object visit(final ASTQuotedString node, final Object data) {
-        VariableExpressionParser exprParser = new VariableExpressionParser(shell.getVariables());
-        String value = exprParser.parse(node.getValue());
+        String value = evaluate(node.getValue());
+
         return appendString(value, data);
     }
 
@@ -123,8 +158,8 @@ public class ExecutingVisitor
     }
 
     public Object visit(final ASTPlainString node, final Object data) {
-        VariableExpressionParser exprParser = new VariableExpressionParser(shell.getVariables());
-        String value = exprParser.parse(node.getValue());
+        String value = evaluate(node.getValue());
+        
         return appendString(value, data);
     }
 }

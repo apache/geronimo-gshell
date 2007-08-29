@@ -69,20 +69,19 @@ public class CommandLineBuilder
         }
 
         //
-        // HACK: Look up the Shell instance late to avoid circular dependencies while injecting right now
+        // HACK: Look up the vistor... just make it work for now
         //
-
-        final Shell shell;
+        
+        final ExecutingVisitor visitor;
         try {
-            shell = (Shell) container.lookup(Shell.class);
+            visitor = (ExecutingVisitor) container.lookup(ExecutingVisitor.class);
         }
         catch (ComponentLookupException e) {
             throw new RuntimeException(e);
         }
 
         final ASTCommandLine root = parse(commandLine);
-        final ExecutingVisitor visitor = new ExecutingVisitor(shell);
-
+        
         return new CommandLine() {
             public Object execute() throws Exception {
 

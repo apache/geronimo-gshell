@@ -102,14 +102,6 @@
                 <version>1.0-alpha-32</version>
                 <exclusions>
                     <!--
-                    NOTE: Use our *diet* version of Plexus Classwords to save a few grams.
-                    -->
-                    <exclusion>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-classworlds</artifactId>
-                    </exclusion>
-                    
-                    <!--
                     NOTE: Use our *diet* version of Plexus Utils to save a few grams.
                     -->
                     <exclusion>
@@ -131,18 +123,6 @@
                 <version>2.3</version>
             </dependency>
             
-            <dependency>
-                <groupId>commons-jexl</groupId>
-                <artifactId>commons-jexl</artifactId>
-                <version>1.1</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
             <dependency>
                 <groupId>jline</groupId>
                 <artifactId>jline</artifactId>

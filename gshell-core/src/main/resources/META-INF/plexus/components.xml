@@ -81,7 +81,28 @@
                 </requirement>
             </requirements>
         </component>
-        
+
+        <!--
+        HACK: Just make it work for now...
+        -->
+        <component>
+            <role>org.apache.geronimo.gshell.commandline.ExecutingVisitor</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.commandline.ExecutingVisitor</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+            <requirements>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.Shell</role>
+                    <field-name>shell</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.codehaus.plexus.evaluator.ExpressionEvaluator</role>
+                    <field-name>evaluator</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
         <!--
         HACK: This is defs not right...
         -->

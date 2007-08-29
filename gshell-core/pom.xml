@@ -41,11 +41,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-classworlds</artifactId>
-        </dependency>
-        
-        <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
         </dependency>
@@ -67,20 +62,11 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-jexl</groupId>
-            <artifactId>commons-jexl</artifactId>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-expression-evaluator</artifactId>
+            <version>1.0-alpha-1</version>
         </dependency>
         
-        <!--
-        NOTE: This is to support use of commons-jexl, which uses JCL internally.
-        -->
-        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl104-over-slf4j</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
