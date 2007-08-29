@@ -37,6 +37,10 @@
     
     <version>1.0-alpha-1-SNAPSHOT</version>
     
+    <description>
+        GShell is a framework for building rich command-line applications.
+    </description>
+    
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</developerConnection>
