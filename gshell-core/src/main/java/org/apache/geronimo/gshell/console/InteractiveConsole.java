@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.console;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.NullArgumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides the framework to interactivly get input from a console
@@ -36,7 +35,7 @@ public class InteractiveConsole
     // TODO: Rename to *Runner, since this is not really a Console impl
     //
 
-    private static final Log log = LogFactory.getLog(InteractiveConsole.class);
+    private static final Logger log = LoggerFactory.getLogger(InteractiveConsole.class);
 
     private final Console console;
 
@@ -49,15 +48,9 @@ public class InteractiveConsole
     private boolean shutdownOnNull = true;
 
     public InteractiveConsole(final Console console, final Executor executor, final Prompter prompter) {
-        if (console == null) {
-            throw new NullArgumentException("console");
-        }
-        if (executor == null) {
-            throw new NullArgumentException("executor");
-        }
-        if (prompter == null) {
-            throw new NullArgumentException("prompter");
-        }
+        assert console != null;
+        assert executor != null;
+        assert prompter != null;
 
         this.console = console;
         this.executor = executor;

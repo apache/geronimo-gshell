@@ -19,17 +19,16 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.geronimo.gshell.console.InteractiveConsole;
-import org.apache.geronimo.gshell.console.Console;
-import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.command.StandardVariables;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.IOException;
 
 import jline.ConsoleReader;
 import jline.SimpleCompletor;
+import org.apache.geronimo.gshell.command.StandardVariables;
+import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.InteractiveConsole;
+import org.apache.geronimo.gshell.console.JLineConsole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides the user-interaction bits for Shell.
@@ -39,7 +38,7 @@ import jline.SimpleCompletor;
 public class InteractiveShell
     extends InteractiveConsole
 {
-    private static final Log log = LogFactory.getLog(InteractiveConsole.class);
+    private static final Logger log = LoggerFactory.getLogger(InteractiveConsole.class);
 
     //
     // TODO: Refactor InteractiveConsole to use method overides for extention

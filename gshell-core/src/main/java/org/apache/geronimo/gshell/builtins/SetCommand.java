@@ -19,20 +19,17 @@
 
 package org.apache.geronimo.gshell.builtins;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.VariablesImpl;
-import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
-
-import java.util.Iterator;
-import java.util.Properties;
 
 /**
  * Set a variable or property.
@@ -48,53 +45,25 @@ public class SetCommand
         PROPERTY
     }
 
-    private boolean display;
-
+    @Option(name="-m", aliases={"--mode"})
     private Mode mode = Mode.VARIABLE;
+
+    @Argument
+    private List<String> args;
 
     public SetCommand() {
         super("set");
-    }
-
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = super.getOptions();
-
-        options.addOption(OptionBuilder.withLongOpt("property")
-            .withDescription(messages.getMessage("cli.option.property"))
-            .create('p'));
-
-        return options;
     }
 
     protected String getUsage() {
         return super.getUsage() + " (<name[=value>])*";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        if (args.length == 0) {
-            display = true;
-        }
-
-        if (line.hasOption('p')) {
-            mode = Mode.PROPERTY;
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(Object[] args) throws Exception {
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         IO io = getIO();
 
         // No args... list all properties or variables
-        if (display) {
+        if (args == null || args.size() == 0) {
             switch (mode) {
                 case PROPERTY: {
                     Properties props = System.getProperties();

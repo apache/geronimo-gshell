@@ -19,16 +19,14 @@
 
 package org.apache.geronimo.gshell.builtins;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
+import java.util.List;
 
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesImpl;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.CommandException;
 
 /**
  * Unset a variable or property.
@@ -44,48 +42,22 @@ public class UnsetCommand
         PROPERTY
     }
 
+    @Option(name="-m", aliases={"--mode"})
     private Mode mode = Mode.VARIABLE;
+
+    @Argument(required=true)
+    private List<String> args;
 
     public UnsetCommand() {
         super("unset");
-    }
-
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = super.getOptions();
-
-        options.addOption(OptionBuilder.withLongOpt("property")
-            .withDescription(messages.getMessage("cli.option.property"))
-            .create('p'));
-
-        return options;
     }
 
     protected String getUsage() {
         return super.getUsage() + " (<name>)+";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        if (args.length == 0) {
-            return true;
-        }
-
-        if (line.hasOption('p')) {
-            mode = Mode.PROPERTY;
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(Object[] args) throws Exception {
-        assert args != null;
-
-        for (Object arg : args) {
+    protected Object doExecute() throws Exception {
+        for (String arg : args) {
             String namevalue = String.valueOf(arg);
 
             switch (mode) {

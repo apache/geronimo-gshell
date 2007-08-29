@@ -19,14 +19,11 @@
 
 package org.apache.geronimo.gshell.builtins;
 
-import org.apache.commons.cli.CommandLine;
-
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandDefinition;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.CommandException;
+import org.apache.geronimo.gshell.command.CommandManager;
+import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
 
@@ -40,7 +37,8 @@ public class HelpCommand
 {
     private CommandManager commandManager;
 
-    private String topic;
+    @Argument
+    private String topic = "topics";
 
     public HelpCommand(final CommandManager commandManager) {
         super("help");
@@ -71,33 +69,7 @@ public class HelpCommand
         return super.getUsage() + " [topic|command]";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        IO io = getIO();
-        MessageSource messages = getMessageSource();
-
-        if (args.length == 0) {
-            // No args, so help
-            return true;
-        }
-        else if (args.length > 1) {
-            // more than 1 arg complain
-            io.err.println(messages.getMessage("info.unexpected_args", Arguments.asString(args)));
-            return true;
-        }
-        else if (args.length == 1) {
-            // first arg becomes help topic name
-            topic = args[0];
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
+    protected Object doExecute() throws Exception {
 
         IO io = getIO();
         CommandManager manager = getCommandManager();

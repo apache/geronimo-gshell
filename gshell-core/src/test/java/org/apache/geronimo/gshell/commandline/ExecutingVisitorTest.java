@@ -36,7 +36,7 @@ public class ExecutingVisitorTest
             new ExecutingVisitor(null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 

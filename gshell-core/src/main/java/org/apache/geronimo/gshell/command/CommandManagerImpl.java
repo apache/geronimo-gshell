@@ -19,18 +19,16 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.xbean.finder.ResourceFinder;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.NullArgumentException;
-
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.HashMap;
 import java.util.Set;
-import java.util.Collections;
-import java.util.Collection;
+
+import org.apache.xbean.finder.ResourceFinder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manager of command definitions and provides access to command instances.
@@ -40,7 +38,7 @@ import java.util.Collection;
 public class CommandManagerImpl
     implements CommandManager
 {
-    private static final Log log = LogFactory.getLog(CommandManager.class);
+    private static final Logger log = LoggerFactory.getLogger(CommandManager.class);
 
     private Map<String,CommandDefinition> commandDefMap = new HashMap<String,CommandDefinition>();
 
@@ -69,9 +67,7 @@ public class CommandManagerImpl
     }
 
     public boolean addCommandDefinition(final CommandDefinition def) {
-        if (def == null) {
-            throw new IllegalArgumentException("Def is null");
-        }
+        assert def != null;
 
         boolean debug = log.isDebugEnabled();
 
@@ -102,13 +98,9 @@ public class CommandManagerImpl
     }
 
     public CommandDefinition getCommandDefinition(String name) throws CommandNotFoundException {
-        if (name == null) {
-            throw new NullArgumentException("name");
-        }
-        if (name.trim().length() == 0) {
-            throw new IllegalArgumentException("Name is empty");
-        }
-
+        assert name != null;
+        assert name.trim().length() != 0;
+        
         //
         // TODO: Issue warning if there is whitespace, that is a programming error (for someone)
         //       Investigate auto-trim and complain from the parser too, looks like we are catching

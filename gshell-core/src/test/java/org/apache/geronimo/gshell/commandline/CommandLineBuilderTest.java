@@ -35,7 +35,7 @@ public class CommandLineBuilderTest
             new CommandLineBuilder(null);
             fail("Accepted null argument");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
     }

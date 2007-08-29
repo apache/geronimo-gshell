@@ -34,7 +34,7 @@ public class IOTest
             new IO(null, null, null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 
@@ -42,7 +42,7 @@ public class IOTest
             new IO(System.in, null, null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 
@@ -50,7 +50,7 @@ public class IOTest
             new IO(System.in, System.out, null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 

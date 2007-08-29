@@ -19,18 +19,15 @@
 
 package org.apache.geronimo.gshell.commandline;
 
-import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
-import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
-import org.apache.geronimo.gshell.commandline.parser.ParseException;
-import org.apache.geronimo.gshell.Shell;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.lang.NullArgumentException;
-
 import java.io.Reader;
 import java.io.StringReader;
+
+import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
+import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
+import org.apache.geronimo.gshell.commandline.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Builds {@link CommandLine} instances ready for executing.
@@ -39,16 +36,14 @@ import java.io.StringReader;
  */
 public class CommandLineBuilder
 {
-    private static final Log log = LogFactory.getLog(CommandLineBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(CommandLineBuilder.class);
 
     private final Shell shell;
 
     private final CommandLineParser parser;
 
     public CommandLineBuilder(final Shell shell) {
-        if (shell == null) {
-            throw new NullArgumentException("shell");
-        }
+        assert shell != null;
 
         this.shell = shell;
         this.parser = new CommandLineParser();
@@ -70,9 +65,8 @@ public class CommandLineBuilder
     }
 
     public CommandLine create(final String commandLine) throws ParseException {
-        if (commandLine == null) {
-            throw new NullArgumentException("commandLine");
-        }
+        assert commandLine != null;
+
         if (commandLine.trim().length() == 0) {
             throw new IllegalArgumentException("Command line is empty");
         }

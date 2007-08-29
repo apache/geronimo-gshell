@@ -19,19 +19,15 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.NullArgumentException;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.CommandLine;
+import java.util.Iterator;
+
+import org.apache.geronimo.gshell.clp.CommandLineProcessor;
+import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
-
-import java.util.Iterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides support for {@link Command} implemenations.
@@ -41,11 +37,14 @@ import java.util.Iterator;
 public abstract class CommandSupport
     implements Command
 {
-    protected Log log;
+    protected Logger log;
 
     private String name;
 
     private CommandContext context;
+
+    @Option(name="-h", aliases={"--help"}, description="Display this help message")
+    private boolean displayHelp;
 
     protected CommandSupport(final String name) {
         setName(name);
@@ -59,9 +58,8 @@ public abstract class CommandSupport
     }
 
     public void setName(final String name) {
-        if (name == null) {
-            throw new NullArgumentException("name");
-        }
+        assert name != null;
+        
         if (name.trim().length() == 0) {
             throw new IllegalArgumentException("Name is empty");
         }
@@ -101,12 +99,16 @@ public abstract class CommandSupport
         }
 
         // Initialize logging with command name
-        log = LogFactory.getLog(this.getClass().getName() + "." + getName());
+        log = LoggerFactory.getLogger(this.getClass().getName() + "." + getName());
 
         log.debug("Initializing");
 
         this.context = context;
 
+        //
+        // TODO: Add preference support
+        //
+        
         if (log.isDebugEnabled()) {
             dump(context.getVariables());
         }
@@ -217,28 +219,16 @@ public abstract class CommandSupport
         Object result;
 
         try {
-            // Handle the command-line
-            Options options = getOptions();
-            CommandLineParser parser = new PosixParser();
-            CommandLine line = parser.parse(options, Arguments.toStringArray(args));
+            CommandLineProcessor clp = new CommandLineProcessor(this);
+            clp.process(Arguments.toStringArray(args));
 
-            // First check for help flags
-            boolean usage = line.hasOption('h');
-
-            // Custom command-line processing
-            if (!usage) {
-                usage = processCommandLine(line);
+            // Handle --help/-h automatically for the command
+            if (displayHelp) {
+                displayHelp(clp);
             }
-
-            // Default command-line processing
-            if (usage) {
-                displayHelp(options);
-
-                return Command.SUCCESS;
-            }
-
-            // Execute with the remaining arguments post-processing
-            result = doExecute(line.getArgs());
+            
+            // Invoke the command's action
+            result = doExecute();
         }
         catch (Exception e) {
             log.error(e.getMessage());
@@ -249,9 +239,7 @@ public abstract class CommandSupport
             result = Command.FAILURE;
         }
         catch (Notification n) {
-            //
-            // Always rethrow notifications
-            //
+            // Always re-throw notifications
             throw n;
         }
         catch (Error e) {
@@ -277,52 +265,12 @@ public abstract class CommandSupport
 
     /**
      * Sub-class should override to perform custom execution.
-     *
-     * @param args  Post-command-line parsed options.
-     * @return
-     *
-     * @throws Exception
      */
-    protected abstract Object doExecute(final Object[] args) throws Exception;
+    protected abstract Object doExecute() throws Exception;
 
     //
     // CLI Fluff
     //
-
-    /**
-     * Process the command-line.
-     *
-     * <p>
-     * The default is to provide no additional processing.
-     *
-     * @param line  The command-line to process.
-     * @return      True to display help and exit; else false to continue.
-     *
-     * @throws CommandException
-     */
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        return false;
-    }
-
-    /**
-     * Get the command-line options to process.
-     *
-     * <p>
-     * The default is to provide --help and -h support.
-     *
-     * @return  The command-line options; never null;
-     */
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = new Options();
-
-        options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription(messages.getMessage("cli.option.help"))
-            .create('h'));
-
-        return options;
-    }
 
     /**
      * Returns the command-line usage.
@@ -333,7 +281,9 @@ public abstract class CommandSupport
         return "[options]";
     }
 
-    protected void displayHelp(final Options options) {
+    protected void displayHelp(final CommandLineProcessor clp) {
+        assert clp != null;
+
         MessageSource messages = getMessageSource();
         IO io = getIO();
 
@@ -342,18 +292,8 @@ public abstract class CommandSupport
         io.out.println(messages.getMessage("cli.usage.description"));
         io.out.println();
 
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(
-            io.out,
-            80, // width (FIXME: Should pull from gshell.columns variable)
-            getName() + " " + getUsage(),
-            "",
-            options,
-            4, // left pad
-            4, // desc pad
-            "",
-            false); // auto usage
-
+        Printer printer = new Printer(clp);
+        printer.printUsage(io.out);
         io.out.println();
 
         String footer = messages.getMessage("cli.usage.footer");

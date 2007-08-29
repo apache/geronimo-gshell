@@ -38,7 +38,7 @@ public class VariablesImplTest
             new VariablesImpl((Map<String,Object>)null);
             fail("Accepted a null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 
@@ -46,7 +46,7 @@ public class VariablesImplTest
             new VariablesImpl((Variables)null);
             fail("Accepted a null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 
@@ -54,7 +54,7 @@ public class VariablesImplTest
             new VariablesImpl(new HashMap<String,Object>(), null);
             fail("Accepted a null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 

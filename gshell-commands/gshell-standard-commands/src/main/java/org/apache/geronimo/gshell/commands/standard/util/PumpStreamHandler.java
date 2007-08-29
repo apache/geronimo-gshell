@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.commands.standard.util;
 
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ import java.io.OutputStream;
  */
 public class PumpStreamHandler
 {
-    private static final Log log = LogFactory.getLog(PumpStreamHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(PumpStreamHandler.class);
 
     private InputStream in;
 

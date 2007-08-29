@@ -19,10 +19,8 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.commons.lang.NullArgumentException;
-
-import java.util.ResourceBundle;
 import java.util.Formatter;
+import java.util.ResourceBundle;
 
 //
 // TODO: Move this to util or something, it is generally useful
@@ -43,10 +41,8 @@ public class MessageSourceImpl
     private final ResourceBundle bundle;
 
     public MessageSourceImpl(final String name) {
-        if (name == null) {
-            throw new NullArgumentException("name");
-        }
-
+        assert name != null;
+        
         bundle = ResourceBundle.getBundle(name);
     }
 

@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.commands.standard.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ import java.io.OutputStream;
 public class StreamPumper
     implements Runnable
 {
-    private static final Log log = LogFactory.getLog(StreamPumper.class);
+    private static final Logger log = LoggerFactory.getLogger(StreamPumper.class);
 
     private InputStream in;
 

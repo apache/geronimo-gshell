@@ -21,20 +21,20 @@
 <!-- $Rev$ $Date$ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    
+
     <artifactId>gshell-assembly</artifactId>
     <name>GShell Assembly</name>
-    <packaging>application-assembly</packaging>
-    
+    <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
@@ -47,19 +47,20 @@
             <artifactId>gshell-core</artifactId>
             <version>${version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-cli</artifactId>
             <version>${version}</version>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-standard-commands</artifactId>
             <version>${version}</version>
         </dependency>
-
+        
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-scripting-commands</artifactId>
@@ -71,34 +72,64 @@
             <artifactId>gshell-vfs-commands</artifactId>
             <version>${version}</version>
         </dependency>
+        -->
 
-        <!-- Thridparty Dependencies -->
-        
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging-adapters</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl104-over-slf4j</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
-        
-        <!-- Include at least one scripting language for now (bsh is nice and small) -->
-        <dependency>
-            <groupId>org.beanshell</groupId>
-            <artifactId>bsh</artifactId>
-            <version>2.0b4</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
+            <!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>shade-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        HACK: Turn this off, its just for testing
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>junit:junit</exclude>
+                                    <exclude>jtidy:jtidy</exclude>
+                                    <exclude>xml-apis:xml-apis</exclude>
+                                    <exclude>ant:ant</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.codehaus.plexus.util</pattern>
+                                    <excludes>
+                                        <exclude>org.codehaus.plexus.util.xml.Xpp3Dom</exclude>
+                                        <exclude>org.codehaus.plexus.util.xml.pull.*</exclude>
+                                    </excludes>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -107,7 +138,6 @@
                         </goals>
                     </execution>
                 </executions>
-                
                 <configuration>
                     <descriptors>
                         <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>

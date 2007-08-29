@@ -19,22 +19,18 @@
 
 package org.apache.geronimo.gshell.builtins;
 
-import java.io.File;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URL;
 
-import org.apache.commons.cli.CommandLine;
-
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
 
 /**
  * Read and execute commands from a file/url in the current shell environment.
@@ -46,6 +42,9 @@ public class SourceCommand
 {
     private Shell shell;
 
+    @Argument(required=true)
+    private File file;
+
     public SourceCommand(final Shell shell) {
         super("source");
 
@@ -56,30 +55,8 @@ public class SourceCommand
         return super.getUsage() + " <file|url>";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        IO io = getIO();
-        MessageSource messages = getMessageSource();
-
-        if (args.length == 0) {
-            io.err.println(messages.getMessage("cli.error.missing_source"));
-
-            return true;
-        }
-        else if (args.length > 1) {
-            io.err.println(messages.getMessage("cli.error.unexpected_args", args));
-
-            return true;
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        BufferedReader reader = openReader(args[0]);
+    protected Object doExecute() throws Exception {
+        BufferedReader reader = openReader(file);
 
         String line;
         while ((line = reader.readLine()) != null) {

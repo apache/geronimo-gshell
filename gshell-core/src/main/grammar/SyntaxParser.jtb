@@ -32,8 +32,8 @@ package org.apache.geronimo.gshell.syntax.parser;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang.NullArgumentException;
 
@@ -44,7 +44,7 @@ import org.apache.commons.lang.NullArgumentException;
  */
 public class SyntaxParser
 {
-    private static final Log log = LogFactory.getLog(SyntaxParser.class);
+    private static final Logger log = LoggerFactory.getLogger(SyntaxParser.class);
 
     public SyntaxParser() {
         this(new StringReader(""));

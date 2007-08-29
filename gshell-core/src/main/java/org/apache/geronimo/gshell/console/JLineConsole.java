@@ -19,12 +19,11 @@
 
 package org.apache.geronimo.gshell.console;
 
-import jline.ConsoleReader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.NullArgumentException;
-
 import java.io.IOException;
+
+import jline.ConsoleReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A console backed up by <a href="http://jline.sf.net">JLine</a>.
@@ -34,29 +33,23 @@ import java.io.IOException;
 public class JLineConsole
     implements Console
 {
-    private static final Log log = LogFactory.getLog(JLineConsole.class);
+    private static final Logger log = LoggerFactory.getLogger(JLineConsole.class);
 
     private final IO io;
 
     private final ConsoleReader reader;
 
     public JLineConsole(final IO io, final ConsoleReader reader) throws IOException {
-        if (io == null) {
-            throw new NullArgumentException("io");
-        }
-        if (reader == null) {
-            throw new NullArgumentException("reader");
-        }
+        assert io != null;
+        assert reader != null;
 
         this.io = io;
         this.reader = reader;
     }
 
     public JLineConsole(final IO io) throws IOException {
-        if (io == null) {
-            throw new NullArgumentException("io");
-        }
-
+        assert io != null;
+        
         this.io = io;
         this.reader = new ConsoleReader(io.inputStream, io.out);
     }

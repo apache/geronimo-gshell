@@ -19,21 +19,18 @@
 
 package org.apache.geronimo.gshell.commandline;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.jexl.JexlHelper;
-import org.apache.commons.jexl.JexlContext;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
+import org.apache.commons.jexl.JexlContext;
+import org.apache.commons.jexl.JexlHelper;
 import org.apache.commons.jexl.resolver.FlatResolver;
-import org.apache.commons.lang.NullArgumentException;
-
 import org.apache.geronimo.gshell.command.Variables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parser to handle ${...} expressions using
@@ -51,14 +48,12 @@ public class VariableExpressionParser
     //       This sub-parser is probably only short-term so we can get soemthing working
     //
 
-    private static final Log log = LogFactory.getLog(VariableExpressionParser.class);
+    private static final Logger log = LoggerFactory.getLogger(VariableExpressionParser.class);
 
     protected JexlContext context;
 
     public VariableExpressionParser(final Map vars) {
-        if (vars == null) {
-            throw new NullArgumentException("vars");
-        }
+        assert vars != null;
 
         context = JexlHelper.createContext();
         context.setVars(vars);
@@ -69,9 +64,7 @@ public class VariableExpressionParser
     }
 
     private static Map convertToMap(final Variables vars) {
-        if (vars == null) {
-            throw new NullArgumentException("vars");
-        }
+        assert vars != null;
 
         Map map = new HashMap();
         Iterator<String> iter = vars.names();
@@ -97,33 +90,25 @@ public class VariableExpressionParser
     }
 
     public Object getVariable(final Object name) {
-        if (name == null) {
-            throw new NullArgumentException("name");
-        }
+        assert name != null;
 
         return getVariables().get(name);
     }
 
     public Object setVariable(final Object name, final Object value) {
-        if (name == null) {
-            throw new NullArgumentException("name");
-        }
+        assert name != null;
 
         return getVariables().put(name, value);
     }
 
     public Object unsetVariable(final Object name) {
-        if (name == null) {
-            throw new NullArgumentException("name");
-        }
+        assert name != null;
 
         return getVariables().remove(name);
     }
 
     public void addVariables(final Map map) {
-        if (map == null) {
-            throw new NullArgumentException("map");
-        }
+        assert map != null;
 
         getVariables().putAll(map);
     }
@@ -140,9 +125,7 @@ public class VariableExpressionParser
     }
 
     public Object evaluate(final String expression) throws Exception {
-        if (expression == null) {
-            throw new NullArgumentException("expression");
-        }
+        assert expression != null;
 
         boolean trace = log.isTraceEnabled();
         if (trace) {
@@ -159,9 +142,7 @@ public class VariableExpressionParser
     }
 
     public String parse(final String input) throws SyntaxException {
-        if (input == null) {
-            throw new NullArgumentException("input");
-        }
+        assert input != null;
 
         boolean trace = log.isTraceEnabled();
         if (trace) {

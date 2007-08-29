@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.util.Arguments;
-import org.apache.commons.lang.NullArgumentException;
 
 import java.util.Properties;
 
@@ -42,10 +41,8 @@ public class CommandDefinition
     private final String category;
 
     public CommandDefinition(final Properties props) throws InvalidDefinitionException {
-        if (props == null) {
-            throw new NullArgumentException("props");
-        }
-
+        assert props != null;
+        
         this.name = props.getProperty("name");
         if (name == null) {
             throw new MissingPropertyException("name", props);

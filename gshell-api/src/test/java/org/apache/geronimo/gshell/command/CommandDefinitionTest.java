@@ -34,7 +34,7 @@ public class CommandDefinitionTest
             new CommandDefinition(null);
             fail("Accepted a null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
     }

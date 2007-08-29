@@ -19,27 +19,25 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.time.StopWatch;
-import org.apache.commons.lang.NullArgumentException;
-import org.apache.geronimo.gshell.console.IO;
+import java.util.Iterator;
+
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.VariablesImpl;
-import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandDefinition;
+import org.apache.geronimo.gshell.command.CommandException;
+import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandManagerImpl;
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.MessageSourceImpl;
 import org.apache.geronimo.gshell.command.StandardVariables;
-import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.VariablesImpl;
 import org.apache.geronimo.gshell.commandline.CommandLine;
+import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
-
-import java.util.Iterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the primary interface to executing named commands.
@@ -52,7 +50,7 @@ public class Shell
     // TODO: Introduce Shell interface?
     //
 
-    private static final Log log = LogFactory.getLog(Shell.class);
+    private static final Logger log = LoggerFactory.getLogger(Shell.class);
 
     private final IO io;
 
@@ -65,10 +63,8 @@ public class Shell
     private final Variables variables = new VariablesImpl();
 
     public Shell(final IO io) throws CommandException {
-        if (io == null) {
-            throw new NullArgumentException("io");
-        }
-
+        assert io != null;
+        
         this.io = io;
 
         shellContainer.registerComponentInstance(this);
@@ -188,20 +184,26 @@ public class Shell
             }
         });
 
+        // FIXME:
+        /*
         // Setup command timings
         StopWatch watch = null;
         if (debug) {
             watch = new StopWatch();
             watch.start();
         }
+        */
 
         Object result;
         try {
             result = cmd.execute(args);
 
+            // FIXME:
+            /*
             if (debug) {
                 log.debug("Command completed in " + watch);
             }
+            */
         }
         finally {
             cmd.destroy();

@@ -34,7 +34,7 @@ public class InteractiveConsoleTest
             new InteractiveConsole(null, null, null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 
@@ -42,7 +42,7 @@ public class InteractiveConsoleTest
             new InteractiveConsole(new SimpleConsole(new IO()), null, null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 

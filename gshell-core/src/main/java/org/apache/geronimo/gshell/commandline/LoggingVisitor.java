@@ -19,17 +19,15 @@
 
 package org.apache.geronimo.gshell.commandline;
 
-import org.apache.geronimo.gshell.commandline.parser.CommandLineParserVisitor;
-import org.apache.geronimo.gshell.commandline.parser.SimpleNode;
 import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.commandline.parser.ASTExpression;
-import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.NullArgumentException;
+import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
+import org.apache.geronimo.gshell.commandline.parser.CommandLineParserVisitor;
+import org.apache.geronimo.gshell.commandline.parser.SimpleNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Visitor whichs logs nodes in the tree.
@@ -44,27 +42,23 @@ public class LoggingVisitor
         DEBUG
     }
 
-    private final Log log;
+    private final Logger log;
 
     private final Level level;
 
     private int indent = 0;
 
     public LoggingVisitor() {
-        this(LogFactory.getLog(LoggingVisitor.class));
+        this(LoggerFactory.getLogger(LoggingVisitor.class));
     }
 
-    public LoggingVisitor(final Log log) {
+    public LoggingVisitor(final Logger log) {
         this(log, Level.DEBUG);
     }
 
-    public LoggingVisitor(final Log log, final Level level) {
-        if (log == null) {
-            throw new NullArgumentException("log");
-        }
-        if (level == null) {
-            throw new NullArgumentException("level");
-        }
+    public LoggingVisitor(final Logger log, final Level level) {
+        assert log != null;
+        assert level != null;
 
         this.log = log;
         this.level = level;
@@ -99,11 +93,11 @@ public class LoggingVisitor
 
         switch (level) {
             case INFO:
-                log.info(buff);
+                log.info(buff.toString());
                 break;
 
             case DEBUG:
-                log.debug(buff);
+                log.debug(buff.toString());
                 break;
         }
 

@@ -19,14 +19,9 @@
 
 package org.apache.geronimo.gshell.builtins;
 
-import org.apache.commons.cli.CommandLine;
-
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandSupport;
 
 /**
  * Exit the current shell.
@@ -36,6 +31,7 @@ import org.apache.geronimo.gshell.util.Arguments;
 public class ExitCommand
     extends CommandSupport
 {
+    @Argument
     private int exitCode = 0;
 
     public ExitCommand() {
@@ -46,29 +42,7 @@ public class ExitCommand
         return super.getUsage() + " [code]";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        IO io = getIO();
-        MessageSource messages = getMessageSource();
-
-        if (args.length > 1) {
-            io.err.println(messages.getMessage("info.unexpected_args", Arguments.asString(args)));
-            io.err.println();
-            return true;
-        }
-        if (args.length == 1) {
-            exitCode = Integer.parseInt(args[0]);
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(Object[] args) throws Exception {
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         log.info("Exiting w/code: " + exitCode);
 
         //

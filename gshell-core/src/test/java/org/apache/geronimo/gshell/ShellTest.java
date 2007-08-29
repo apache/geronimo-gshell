@@ -36,7 +36,7 @@ public class ShellTest
             new Shell(null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 

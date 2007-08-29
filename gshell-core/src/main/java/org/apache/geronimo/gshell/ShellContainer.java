@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * ???

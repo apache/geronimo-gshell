@@ -79,6 +79,7 @@
             <excludes>
                 <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
                 <exclude>classworlds:classworlds</exclude>
+                <exclude>xml-apis:xml-apis</exclude>
             </excludes>
         </dependencySet>
 

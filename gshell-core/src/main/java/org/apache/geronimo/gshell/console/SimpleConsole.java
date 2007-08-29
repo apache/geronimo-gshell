@@ -19,12 +19,11 @@
 
 package org.apache.geronimo.gshell.console;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.NullArgumentException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A simple console implementation using a buffered reader.
@@ -34,17 +33,15 @@ import java.io.IOException;
 public class SimpleConsole
     implements Console
 {
-    private static final Log log = LogFactory.getLog(SimpleConsole.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleConsole.class);
 
     private final IO io;
 
     private final BufferedReader reader;
 
     public SimpleConsole(final IO io) {
-        if (io == null) {
-            throw new NullArgumentException("io");
-        }
-
+        assert io != null;
+        
         this.io = io;
         this.reader = new BufferedReader(io.in);
     }

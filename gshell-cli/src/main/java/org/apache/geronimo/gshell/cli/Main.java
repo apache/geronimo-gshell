@@ -19,30 +19,23 @@
 
 package org.apache.geronimo.gshell.cli;
 
-import org.codehaus.classworlds.ClassWorld;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.HelpFormatter;
-
-import org.apache.commons.lang.time.StopWatch;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.geronimo.gshell.Shell;
-import org.apache.geronimo.gshell.InteractiveShell;
-import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.console.Console;
-import org.apache.geronimo.gshell.console.JLineConsole;
-
-import org.apache.geronimo.gshell.util.Version;
-import org.apache.geronimo.gshell.util.Banner;
+import java.util.List;
 
 import jline.Terminal;
+import org.apache.geronimo.gshell.InteractiveShell;
+import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.CommandLineProcessor;
+import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.clp.Printer;
+import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.util.Banner;
+import org.apache.geronimo.gshell.util.Version;
+import org.codehaus.classworlds.ClassWorld;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Command-line interface to bootstrap Shell.
@@ -63,17 +56,15 @@ public class Main
 
     private final IO io = new IO();
 
-    private final StopWatch watch = new StopWatch();
-
-    private boolean interactive;
-
-    private String commands;
+    // FIXME
+    // private final StopWatch watch = new StopWatch();
 
     public Main(final ClassWorld world) {
         assert world != null;
         this.world = world;
 
-        watch.start();
+        // FIXME:
+        // watch.start();
     }
 
     private void setConsoleLogLevel(final String level) {
@@ -97,77 +88,62 @@ public class Main
         System.setProperty(name, value);
     }
 
+    @Option(name="-h", aliases={"--help"}, description="Display this help message")
+    private boolean help;
+
+    @Option(name="-V", aliases={"--version"}, description="Display GShell version")
+    private boolean version;
+
+    @Option(name="-i", aliases={"--interactive"}, argumentRequired=false, description="Run in interactive mode")
+    private boolean interactive = true;
+
+    @Option(name="-debug", aliases={"--debug"}, description="Enable DEBUG logging output")
+    private boolean debug;
+
+    @Option(name="-verbose", aliases={"--verbose"}, description="Enable INFO logging output")
+    private boolean verbose;
+
+    @Option(name="-quite", aliases={"--quiet"}, description="Limit logging output to ERROR")
+    private boolean quiet;
+
+    @Option(name="-c", aliases={"commands"}, description="Read commands from string")
+    private String commands;
+
+    @Argument
+    private List<String> args;
+
+
+    //
+    // TODO: Change this to --interactive false
+    //
+
+    @Option(name="-n", aliases={"--non-interactive"}, description="Run in non-interactive mode")
+    private boolean nonInteractive;
+
     public void run(final String[] args) throws Exception {
         assert args != null;
 
-        Options options = new Options();
-
-        options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("Display this help message")
-            .create('h'));
-
-        options.addOption(OptionBuilder.withLongOpt("version")
-            .withDescription("Display GShell version")
-            .create('V'));
-
+        /*
         options.addOption(OptionBuilder.withLongOpt("define")
             .withDescription("Define a system property")
             .hasArg()
             .withArgName("name=value")
             .create('D'));
+        */
 
-        options.addOption(OptionBuilder.withLongOpt("commands")
-            .withDescription("Read commands from string")
-            .hasArg()
-            .withArgName("string")
-            .create('c'));
-        
-        options.addOption(OptionBuilder.withLongOpt("interactive")
-            .withDescription("Run in interactive mode")
-            .create('i'));
+        CommandLineProcessor clp = new CommandLineProcessor(this);
+        clp.setStopAtNonOption(true);
+        clp.process(args);
 
-        options.addOption(OptionBuilder.withLongOpt("non-interactive")
-            .withDescription("Run in non-interactive mode")
-            .create('n'));
-
-        //
-        // TODO: Add these output modifiers to a seperate group
-        //
-
-        options.addOption(OptionBuilder.withLongOpt("debug")
-            .withDescription("Enable DEBUG logging output")
-            .create("debug"));
-
-        options.addOption(OptionBuilder.withLongOpt("verbose")
-            .withDescription("Enable INFO logging output")
-            .create("verbose"));
-
-        options.addOption(OptionBuilder.withLongOpt("quiet")
-            .withDescription("Limit logging output to ERROR")
-            .create("quiet"));
-
-        CommandLineParser parser = new PosixParser();
-        CommandLine line = parser.parse(options, args, true);
-
-        // Force interactive if there are no args
-        if (line.getArgs().length == 0) {
-            interactive = true;
-        }
-
-        if (line.hasOption('h')) {
+        if (help) {
             io.out.println(Banner.getBanner());
 
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp(
-                io.out,
-                80, // width
-                System.getProperty("program.name", "gshell") + " [options] <command> [args]",
-                "",
-                options,
-                4, // left pad
-                4, // desc pad
-                "",
-                false); // auto usage
+            io.out.println();
+            io.out.println(System.getProperty("program.name", "gshell") + " [options] <command> [args]");
+            io.out.println();
+
+            Printer printer = new Printer(clp);
+            printer.printUsage(io.out);
 
             io.out.println();
             io.out.flush();
@@ -175,7 +151,7 @@ public class Main
             System.exit(0);
         }
 
-        if (line.hasOption('V')) {
+        if (version) {
             io.out.println(Banner.getBanner());
             io.out.println(Version.getInstance());
             io.out.println();
@@ -184,6 +160,7 @@ public class Main
             System.exit(0);
         }
 
+        /*
         if (line.hasOption('D')) {
             String[] values = line.getOptionValues('D');
 
@@ -191,14 +168,15 @@ public class Main
                 setPropertyFrom(value);
             }
         }
+        */
 
-        if (line.hasOption("quiet")) {
+        if (quiet) {
             setConsoleLogLevel("ERROR");
         }
-        else if (line.hasOption("debug")) {
+        else if (debug) {
             setConsoleLogLevel("DEBUG");
         }
-        else if (line.hasOption("verbose")) {
+        else if (verbose) {
             setConsoleLogLevel("INFO");
         }
         else {
@@ -206,25 +184,17 @@ public class Main
             setConsoleLogLevel("WARN");
         }
 
-        if (line.hasOption('c')) {
-            commands = line.getOptionValue('c');
-        }
-
-        if (line.hasOption('i')) {
-            interactive = true;
-        }
-        else if (line.hasOption('n')) {
-            interactive = false;
-        }
-
         int code;
         
         try {
-            code = execute(line.getArgs());
+            if (this.args == null || this.args.size() == 0) {
+                code = execute(new String[0]);
+            }
+            else {
+                code = execute(this.args.toArray(new String[this.args.size()]));
+            }
         }
         finally {
-            LogFactory.releaseAll();
-            
             io.flush();
         }
         
@@ -233,7 +203,7 @@ public class Main
 
     private int execute(final String[] args) throws Exception {
         // Its okay to use logging now
-        Log log = LogFactory.getLog(Main.class);
+        Logger log = LoggerFactory.getLogger(Main.class);
         boolean debug = log.isDebugEnabled();
         
         //
@@ -258,9 +228,12 @@ public class Main
             log.debug("  ANSI: " + term.isANSISupported());
         }
 
+        // FIXME:
+        /*
         if (debug) {
             log.debug("Started in " + watch);
         }
+        */
 
         Object result = null;
 
@@ -296,10 +269,13 @@ public class Main
             result = gshell.execute(args);
         }
 
+        // FIXME:
+        /*
         if (debug) {
             log.debug("Ran for " + watch);
         }
-
+        */
+        
         // If the result is a number, then pass that back to the calling shell
         int code = 0;
         

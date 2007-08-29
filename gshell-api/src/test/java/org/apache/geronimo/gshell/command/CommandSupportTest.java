@@ -34,7 +34,7 @@ public class CommandSupportTest
             new MockCommand(null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
     }
@@ -45,7 +45,7 @@ public class CommandSupportTest
             cmd.setName(null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
     }
@@ -74,7 +74,7 @@ public class CommandSupportTest
             super(name);
         }
 
-        protected Object doExecute(final Object[] args) throws Exception {
+        protected Object doExecute() throws Exception {
             return null;
         }
     }

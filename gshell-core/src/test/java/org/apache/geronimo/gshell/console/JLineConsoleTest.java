@@ -34,7 +34,7 @@ public class JLineConsoleTest
             new JLineConsole(null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 

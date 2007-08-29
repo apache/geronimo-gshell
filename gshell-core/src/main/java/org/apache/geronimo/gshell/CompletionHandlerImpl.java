@@ -19,22 +19,20 @@
 
 package org.apache.geronimo.gshell;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import jline.CompletionHandler;
 import jline.ConsoleReader;
 import jline.CursorBuffer;
-
-import java.util.List;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.ArrayList;
-import java.io.IOException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.MessageSourceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //
 // NOTE: Based on jline.CandidateListCompletionHandler.  CLCH that comes with
@@ -53,7 +51,7 @@ import org.apache.geronimo.gshell.command.MessageSourceImpl;
 public class CompletionHandlerImpl
     implements CompletionHandler
 {
-    private static final Log log = LogFactory.getLog(CompletionHandlerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(CompletionHandlerImpl.class);
 
     private static MessageSource messages = new MessageSourceImpl(CompletionHandlerImpl.class.getName());
 

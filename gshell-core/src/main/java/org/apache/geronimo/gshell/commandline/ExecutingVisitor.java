@@ -19,23 +19,21 @@
 
 package org.apache.geronimo.gshell.commandline;
 
-import org.apache.geronimo.gshell.commandline.parser.CommandLineParserVisitor;
-import org.apache.geronimo.gshell.commandline.parser.SimpleNode;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.geronimo.gshell.ErrorNotification;
+import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.commandline.parser.ASTExpression;
-import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
+import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
+import org.apache.geronimo.gshell.commandline.parser.CommandLineParserVisitor;
+import org.apache.geronimo.gshell.commandline.parser.SimpleNode;
 import org.apache.geronimo.gshell.util.Arguments;
-import org.apache.geronimo.gshell.Shell;
-import org.apache.geronimo.gshell.ErrorNotification;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.NullArgumentException;
-
-import java.util.List;
-import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Visitor which will execute command-lines as parsed.
@@ -45,14 +43,12 @@ import java.util.ArrayList;
 public class ExecutingVisitor
     implements CommandLineParserVisitor
 {
-    private static final Log log = LogFactory.getLog(ExecutingVisitor.class);
+    private static final Logger log = LoggerFactory.getLogger(ExecutingVisitor.class);
 
     private final Shell shell;
 
     public ExecutingVisitor(final Shell shell) {
-        if (shell == null) {
-            throw new NullArgumentException("shell");
-        }
+        assert shell != null;
 
         this.shell = shell;
     }

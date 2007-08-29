@@ -34,7 +34,7 @@ public class SimpleConsoleTest
             new SimpleConsole(null);
             fail("Accepted null value");
         }
-        catch (IllegalArgumentException expected) {
+        catch (AssertionError expected) {
             // ignore
         }
 

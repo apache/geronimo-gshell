@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.console;
 
-import org.apache.commons.lang.NullArgumentException;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -79,15 +77,9 @@ public class IO
      * @param err   The error output stream; must not be null
      */
     public IO(final InputStream in, final OutputStream out, final OutputStream err) {
-        if (in == null) {
-            throw new NullArgumentException("in");
-        }
-        if (out == null) {
-            throw new NullArgumentException("out");
-        }
-        if (err == null) {
-            throw new NullArgumentException("err");
-        }
+        assert in != null;
+        assert out != null;
+        assert err != null;
 
         this.inputStream = in;
         this.outputStream = out;

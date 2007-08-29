@@ -19,14 +19,11 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.commons.lang.NullArgumentException;
-
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
 
 /**
  * Variables backed up by a map.
@@ -43,30 +40,22 @@ public class VariablesImpl
     private final Set<String> immutables = new HashSet<String>();
 
     public VariablesImpl(final Map<String,Object> map, final Variables parent) {
-        if (map == null) {
-            throw new NullArgumentException("map");
-        }
-        if (parent == null) {
-            throw new NullArgumentException("parent");
-        }
+        assert map != null;
+        assert parent != null;
 
         this.map = map;
         this.parent = parent;
     }
 
     public VariablesImpl(final Variables parent) {
-        if (parent == null) {
-            throw new NullArgumentException("parent");
-        }
+        assert parent != null;
 
         this.map = new HashMap<String,Object>();
         this.parent = parent;
     }
 
     public VariablesImpl(final Map<String,Object> map) {
-        if (map == null) {
-            throw new NullArgumentException("map");
-        }
+        assert map != null;
 
         this.map = map;
         this.parent = null;
