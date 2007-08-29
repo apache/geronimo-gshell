@@ -74,10 +74,10 @@ public class Printer
     	String meta = getMetaVariable(handler, bundle);
 
         if (meta != null) {
-    		if (str.length() > 0) {
-    			str += " ";
-    		}
-    		str += meta;
+            if (str.length() > 0) {
+                str += " ";
+            }
+            str += meta;
     	}
         
         return str;
@@ -87,11 +87,11 @@ public class Printer
         assert handler != null;
 
         if (handler.descriptor.description().length() == 0) {
-			return 0;
+            return 0;
         }
 
         return getNameAndMeta(handler, bundle).length();
-	}
+    }
 
     public void printUsage(final Writer writer, final ResourceBundle bundle) {
         assert writer != null;
@@ -106,10 +106,10 @@ public class Printer
 
         // For display purposes, we like the argument handlers in argument order, but the option handlers in alphabetical order
         Collections.sort(optionHandlers, new Comparator<Handler>() {
-			public int compare(Handler a, Handler b) {
-				return a.descriptor.toString().compareTo(b.descriptor.toString());
-			}
-		});
+            public int compare(Handler a, Handler b) {
+                return a.descriptor.toString().compareTo(b.descriptor.toString());
+            }
+        });
 
         // Compute the maximum length of the syntax column
         int len = 0;
@@ -126,11 +126,11 @@ public class Printer
 
         // And then render the handler usage
         for (Handler handler : argumentHandlers) {
-        	printHandler(out, handler, len, bundle);
+            printHandler(out, handler, len, bundle);
         }
 
         for (Handler handler : optionHandlers) {
-        	printHandler(out, handler, len, bundle);
+            printHandler(out, handler, len, bundle);
         }
 
         out.flush();
@@ -206,7 +206,7 @@ public class Printer
         }
     }
 
-	private void indent(final PrintWriter out, int i) {
+    private void indent(final PrintWriter out, int i) {
         assert out != null;
 
         for (; i>0; i--) {

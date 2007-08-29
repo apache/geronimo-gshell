@@ -27,12 +27,12 @@ package org.apache.geronimo.gshell.clp;
 public class ArgumentDescriptor
     extends Descriptor
 {
-	public ArgumentDescriptor(Argument argument, boolean forceMultiValued) {
-		super(argument.description(), argument.metaVar(), argument.required(), argument.handler(), argument.multiValued() || forceMultiValued);
-	}
+    public ArgumentDescriptor(Argument argument, boolean forceMultiValued) {
+        super(argument.description(), argument.metaVar(), argument.required(), argument.handler(), argument.multiValued() || forceMultiValued);
+    }
 
-	@Override
-	public String toString() {
-		return metaVar() != null ? metaVar() : "ARG";
-	}
+    @Override
+    public String toString() {
+        return metaVar() != null ? metaVar() : "ARG";
+    }
 }

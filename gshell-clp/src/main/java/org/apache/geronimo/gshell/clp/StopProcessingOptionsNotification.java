@@ -27,4 +27,5 @@ package org.apache.geronimo.gshell.clp;
 public class StopProcessingOptionsNotification
     extends Error
 {
+    // empty
 }

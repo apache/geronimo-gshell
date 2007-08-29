@@ -117,9 +117,9 @@ public class CommandLineProcessor
 
         // Sanity check the argument indexes
         for (int i=0; i< argumentHandlers.size(); i++) {
-        	if (argumentHandlers.get(i) == null) {
+            if (argumentHandlers.get(i) == null) {
                 throw new IllegalAnnotationError("No argument annotation for index: " + i);
-        	}
+            }
         }
     }
     
@@ -140,7 +140,7 @@ public class CommandLineProcessor
 
         // Make sure the argument will fit in the list
     	while (index >= argumentHandlers.size()) {
-    		argumentHandlers.add(null);
+            argumentHandlers.add(null);
     	}
 
         if (argumentHandlers.get(index) != null) {
@@ -155,17 +155,17 @@ public class CommandLineProcessor
         checkOptionNotInMap(option.name());
 
         for (String alias : option.aliases()) {
-        	checkOptionNotInMap(alias);
+            checkOptionNotInMap(alias);
         }
 
         optionHandlers.add(handler);
     }
 
-	private void checkOptionNotInMap(final String name) throws IllegalAnnotationError {
-		if (findOptionByName(name) != null) {
+    private void checkOptionNotInMap(final String name) throws IllegalAnnotationError {
+        if (findOptionByName(name) != null) {
             throw new IllegalAnnotationError("Duplicate option name: " + name);
         }
-	}
+    }
 
     //
     // Processing
@@ -203,7 +203,7 @@ public class CommandLineProcessor
         }
 
         public String get(final int idx) throws ProcessingException {
-			if (pos + idx >= args.length) {
+            if (pos + idx >= args.length) {
                 throw new ProcessingException(Messages.MISSING_OPERAND.format(getOptionName()));
             }
 
@@ -250,14 +250,14 @@ public class CommandLineProcessor
             else {
                 // Complain if we have more arguments than we have handlers configured
                 if (argIndex >= argumentHandlers.size()) {
-            		Messages msg = argumentHandlers.size() == 0 ? Messages.NO_ARGUMENT_ALLOWED : Messages.TOO_MANY_ARGUMENTS;
+                    Messages msg = argumentHandlers.size() == 0 ? Messages.NO_ARGUMENT_ALLOWED : Messages.TOO_MANY_ARGUMENTS;
                     throw new ProcessingException(msg.format(arg));
             	}
 
             	// known argument
             	handler = argumentHandlers.get(argIndex);
             	if (!handler.descriptor.isMultiValued()) {
-            		argIndex++;
+                    argIndex++;
                 }
             }
 
@@ -299,63 +299,52 @@ public class CommandLineProcessor
     //
     
     private Handler findOptionHandler(String name) {
-		Handler handler = findOptionByName(name);
+        Handler handler = findOptionByName(name);
 
         if (handler == null) {
-			// Have not found by its name, maybe its a property?
-			// Search for parts of the name (=prefix) - most specific first 
-			for (int i=name.length(); i>1; i--) {
-				String prefix = name.substring(0, i);
-				Map<String, Handler> possibleHandlers = filter(optionHandlers, prefix);
-				handler = possibleHandlers.get(prefix);
+            // Have not found by its name, maybe its a property?
+            // Search for parts of the name (=prefix) - most specific first 
+            for (int i=name.length(); i>1; i--) {
+                String prefix = name.substring(0, i);
+                Map<String, Handler> possibleHandlers = filter(optionHandlers, prefix);
+                handler = possibleHandlers.get(prefix);
 
                 if (handler != null) {
                     return handler;
                 }
-			}
-		}
+            }
+        }
 
         return handler;
-	}
+    }
 
     private Map<String, Handler> filter(List<Handler> handlers, String keyFilter) {
-		Map<String, Handler> map = new TreeMap<String, Handler>();
+        Map<String, Handler> map = new TreeMap<String, Handler>();
 
         for (Handler handler : handlers) {
-			if (handlers.toString().startsWith(keyFilter)) {
+            if (handlers.toString().startsWith(keyFilter)) {
                 map.put(handlers.toString(), handler);
             }
-		}
+        }
 
         return map;
-	}
+    }
     
     private Handler findOptionByName(String name) {
-		for (Handler handler : optionHandlers) {
-			OptionDescriptor option = (OptionDescriptor)handler.descriptor;
+        for (Handler handler : optionHandlers) {
+            OptionDescriptor option = (OptionDescriptor)handler.descriptor;
 
             if (name.equals(option.name())) {
-				return handler;
-			}
+                return handler;
+            }
 
             for (String alias : option.aliases()) {
-				if (name.equals(alias)) {
-					return handler;
-				}
-			}
-		}
+                if (name.equals(alias)) {
+                    return handler;
+                }
+            }
+        }
 
         return null;
-	}
-
-    //
-    // Static Helpers
-    //
-
-    /*
-    public static void process(final Object bean, final String... args) throws ProcessingException {
-        CommandLineProcessor clp = new CommandLineProcessor(bean);
-        clp.process(args);
     }
-    */
 }

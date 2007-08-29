@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.clp.setter.Setter;
 public class BooleanHandler
     extends Handler<Boolean>
 {
-	public BooleanHandler(final Descriptor desc, final Setter<? super Boolean> setter) {
+    public BooleanHandler(final Descriptor desc, final Setter<? super Boolean> setter) {
         super(desc, setter);
     }
 

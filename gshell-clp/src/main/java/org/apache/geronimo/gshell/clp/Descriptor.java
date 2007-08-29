@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.clp.handler.Handler;
  */
 public abstract class Descriptor
 {
-	private final String description;
+    private final String description;
 
     private final String metaVar;
 
@@ -38,31 +38,31 @@ public abstract class Descriptor
 
     private final Class<? extends Handler> handler;
 
-	protected Descriptor(final String description, final String metaVar, final boolean required, final Class<? extends Handler> handler, final boolean multiValued) {
-		this.description = description;
-		this.metaVar = metaVar;
-		this.required = required;
-		this.handler = handler;
-		this.multiValued = multiValued;
-	}
+    protected Descriptor(final String description, final String metaVar, final boolean required, final Class<? extends Handler> handler, final boolean multiValued) {
+        this.description = description;
+        this.metaVar = metaVar;
+        this.required = required;
+        this.handler = handler;
+        this.multiValued = multiValued;
+    }
 
-	public String description() {
-		return description;
-	}
+    public String description() {
+        return description;
+    }
 
-	public String metaVar() {
-		return metaVar;
-	}
+    public String metaVar() {
+        return metaVar;
+    }
 
-	public boolean required() {
-		return required;
-	}
+    public boolean required() {
+        return required;
+    }
 
-	public Class<? extends Handler> handler() {
-		return handler;
-	}
+    public Class<? extends Handler> handler() {
+        return handler;
+    }
 
-	public boolean isMultiValued() {
-		return multiValued;
-	}
+    public boolean isMultiValued() {
+        return multiValued;
+    }
 }

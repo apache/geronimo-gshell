@@ -222,6 +222,10 @@ public abstract class CommandSupport
             CommandLineProcessor clp = new CommandLineProcessor(this);
             clp.process(Arguments.toStringArray(args));
 
+            //
+            // TODO: Need to mark this option as superceeding other required arguments/options
+            //
+            
             // Handle --help/-h automatically for the command
             if (displayHelp) {
                 displayHelp(clp);

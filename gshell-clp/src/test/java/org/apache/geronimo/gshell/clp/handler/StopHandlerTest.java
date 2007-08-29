@@ -59,7 +59,6 @@ public class StopHandlerTest
         assertEquals(2, bean.args.size());
         assertEquals("-foo", bean.args.get(0));
         assertEquals("bar", bean.args.get(1));
-
     }
 
     private static class TestBean

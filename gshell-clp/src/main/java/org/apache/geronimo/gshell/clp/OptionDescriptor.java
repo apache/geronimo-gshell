@@ -56,14 +56,14 @@ public class OptionDescriptor
     @Override
     public String toString() {
     	if (aliases.length > 0) {
-    		String str = "";
+            String str = "";
 
             for (String alias : aliases) {
-    			if (str.length() > 0) {
-    				str += ", ";
-    			}
-    			str += alias;
-    		}
+                if (str.length() > 0) {
+                    str += ", ";
+                }
+                str += alias;
+            }
             
             return name() + " (" + str + ")";
     	}

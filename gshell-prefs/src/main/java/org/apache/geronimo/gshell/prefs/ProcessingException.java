@@ -27,9 +27,9 @@ package org.apache.geronimo.gshell.prefs;
 public class ProcessingException
     extends Exception
 {
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	public ProcessingException(String message) {
+    public ProcessingException(String message) {
         super(message);
     }
 

@@ -27,17 +27,17 @@ package org.apache.geronimo.gshell.clp;
 public class ProcessingException
     extends Exception
 {
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	public ProcessingException(String message) {
-        super(message);
+    public ProcessingException(String msg) {
+        super(msg);
     }
 
-    public ProcessingException(String message, Throwable cause) {
-        super(message, cause);
+    public ProcessingException(String msg, Throwable cause) {
+        super(msg, cause);
     }
 
     public ProcessingException(Throwable cause) {
-        super(cause);
+        super(msg);
     }
 }

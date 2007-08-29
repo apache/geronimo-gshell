@@ -70,8 +70,8 @@ public class EnumHandler<T extends Enum<T>>
     	buff.append("[");
 
         for (T constants : enumType.getEnumConstants()) {
-			buff.append(constants).append(" | ");
-		}
+            buff.append(constants).append(" | ");
+        }
 
         buff.delete(buff.length()-3, buff.length());
     	buff.append("]");

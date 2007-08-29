@@ -26,7 +26,7 @@ package org.apache.geronimo.gshell.prefs;
  */
 public class PreferenceDescriptor
 {
-	private final String key;
+    private final String key;
 
     public PreferenceDescriptor(final Preference pref) {
         this(pref.key());

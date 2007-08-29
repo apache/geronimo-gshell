@@ -27,14 +27,14 @@ package org.apache.geronimo.gshell.clp;
 public class IllegalAnnotationError
     extends Error
 {
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	public IllegalAnnotationError(String message) {
-        super(message);
+    public IllegalAnnotationError(String msg) {
+        super(msg);
     }
 
-    public IllegalAnnotationError(String message, Throwable cause) {
-        super(message, cause);
+    public IllegalAnnotationError(String msg, Throwable cause) {
+        super(msg, cause);
     }
 
     public IllegalAnnotationError(Throwable cause) {

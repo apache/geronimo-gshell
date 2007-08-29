@@ -27,9 +27,9 @@ package org.apache.geronimo.gshell.prefs;
 public class IllegalAnnotationError
     extends Error
 {
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	public IllegalAnnotationError(String message) {
+    public IllegalAnnotationError(String message) {
         super(message);
     }
 

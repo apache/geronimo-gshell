@@ -31,23 +31,23 @@ import org.apache.geronimo.gshell.clp.setter.Setter;
 public class IntegerHandler
     extends Handler<Integer>
 {
-	public IntegerHandler(final Descriptor desc, final Setter<? super Integer> setter) {
-		super(desc, setter);
-	}
+    public IntegerHandler(final Descriptor desc, final Setter<? super Integer> setter) {
+        super(desc, setter);
+    }
 
     @Override
-	public int handle(final Parameters params) throws ProcessingException {
-		assert params != null;
+    public int handle(final Parameters params) throws ProcessingException {
+        assert params != null;
 
         String token = params.get(0);
         int value = Integer.parseInt(token);
         setter.set(value);
         
         return 1;
-	}
+    }
 
     @Override
-	public String getDefaultMetaVariable() {
-		return "N";
-	}
+    public String getDefaultMetaVariable() {
+        return "N";
+    }
 }
