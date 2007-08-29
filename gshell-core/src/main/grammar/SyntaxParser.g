@@ -70,6 +70,10 @@ OpaqueStringLiteral
 	:  	'\'' ( EscapeSequence | ~('\'') )* '\''
     ;
 
+//
+// TODO: Figure out how to parse out ${foo.bar} and "$foo bar", for variable expansion
+//
+
 StringLiteral
     :  	'"' ( EscapeSequence | ~('"') )* '"'
     ;
