@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
 
 //
 // HACK: This is a temporary to handle shells which need to keep around after running
@@ -39,9 +39,7 @@ public class WaitCommand
         super("wait");
     }
 
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         log.info("Waiting...");
 
         synchronized (this) {

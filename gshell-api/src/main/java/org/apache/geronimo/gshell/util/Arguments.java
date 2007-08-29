@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.util;
 
+import java.util.List;
+
 /**
  * Utils for command-line arguments.
  *
@@ -47,6 +49,21 @@ public class Arguments
         for (int i=0; i<args.length; i++ ) {
             buff.append(args[i]);
             if (i + 1 < args.length) {
+                buff.append(", ");
+            }
+        }
+
+        return buff.toString();
+    }
+
+    public static String asString(final List args) {
+        assert args != null;
+
+        StringBuffer buff = new StringBuffer();
+
+        for (int i=0; i<args.size(); i++ ) {
+            buff.append(args.get(i));
+            if (i + 1 < args.size()) {
                 buff.append(", ");
             }
         }

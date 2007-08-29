@@ -19,24 +19,19 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.util.Arguments;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.console.IO;
 
 /**
  * Concatenate and print files and/or URLs.
@@ -46,56 +41,28 @@ import java.net.MalformedURLException;
 public class CatCommand
     extends CommandSupport
 {
+    @Option(name="-n", description="Number the output lines, starting at 1")
     private boolean displayLineNumbers;
-    
+
+    @Argument(description="File or URL", required=true)
+    private List<String> args;
+
     public CatCommand() {
         super("cat");
-    }
-
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = super.getOptions();
-
-        options.addOption(OptionBuilder
-            .withDescription(messages.getMessage("cli.option.n"))
-            .create('n'));
-
-        return options;
     }
 
     protected String getUsage() {
         return super.getUsage() + " [<file|url> ...]";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        if (line.hasOption('n')) {
-            displayLineNumbers = true;
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
-
-        String[] files;
-
-        // No args, then read from STDIN
-        if (args.length == 0) {
-            files = new String[] { "-" };
-        }
-        else {
-            files = Arguments.toStringArray(args);
-        }
-
+    protected Object doExecute() throws Exception {
         IO io = getIO();
 
-        for (String filename : files) {
+        for (String filename : args) {
             BufferedReader reader;
 
+            // FIXME:
+            /*
             //
             // Support "-" if length is one, and read from io.in
             // This will help test command pipelines.
@@ -105,6 +72,7 @@ public class CatCommand
                 reader = new BufferedReader(io.in);
             }
             else {
+            */
                 // First try a URL
                 try {
                     URL url = new URL(filename);
@@ -117,15 +85,19 @@ public class CatCommand
                     log.info("Printing file: " + file);
                     reader = new BufferedReader(new FileReader(file));
                 }
-            }
+            /*}*/
 
             String line;
             int lineno = 1;
 
             while ((line = reader.readLine()) != null) {
                 if (displayLineNumbers) {
-                    String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
-                    io.out.print(gutter);
+                    // FIXME:
+                    // String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
+                    // io.out.print(gutter);
+
+
+                    io.out.println(lineno++);
                     io.out.print("  ");
                 }
                 io.out.println(line);

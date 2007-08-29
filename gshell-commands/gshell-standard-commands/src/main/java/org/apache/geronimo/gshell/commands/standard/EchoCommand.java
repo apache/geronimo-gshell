@@ -19,14 +19,12 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
+import java.util.List;
 
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -37,50 +35,34 @@ import org.apache.geronimo.gshell.console.IO;
 public class EchoCommand
     extends CommandSupport
 {
+    @Option(name="-n", description="Do not print the trailing newline character")
     private boolean trailingNewline = true;
-    
+
+    @Argument(description="Arguments")
+    private List<String> args;
+
     public EchoCommand() {
         super("echo");
     }
 
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = super.getOptions();
-
-        options.addOption(OptionBuilder
-            .withDescription(messages.getMessage("cli.option.n"))
-            .create('n'));
-
-        return options;
-    }
-
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        if (line.hasOption('n')) {
-            trailingNewline = false;
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         IO io = getIO();
 
-        for (int i=0; i < args.length; i++) {
-            io.out.print(args[i]);
-            if (i + 1 < args.length) {
-                io.out.print(" ");
+        if (args != null) {
+            int c=0;
+
+            for (String arg : args) {
+                io.out.print(arg);
+                if (c++ < args.size()) {
+                    io.out.print(" ");
+                }
             }
         }
 
         if (trailingNewline) {
             io.out.println();
         }
-        
+
         return Command.SUCCESS;
     }
 }

@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell.commands.standard.util;
 
-import org.apache.geronimo.gshell.console.IO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import org.apache.geronimo.gshell.console.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //
 // Based on Apache Ant 1.6.5

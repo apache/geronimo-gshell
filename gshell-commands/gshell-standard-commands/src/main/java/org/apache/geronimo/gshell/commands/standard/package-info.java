@@ -17,27 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.clp;
-
 /**
- * Thrown to indicate a problem processing command line arguments and options.
+ * Provides standard commands, which add useful functionality.
  *
  * @version $Rev$ $Date$
  */
-public class ProcessingException
-    extends Exception
-{
-    private static final long serialVersionUID = 1;
-
-    public ProcessingException(String msg) {
-        super(msg);
-    }
-
-    public ProcessingException(String msg, Throwable cause) {
-        super(msg, cause);
-    }
-
-    public ProcessingException(Throwable cause) {
-        super(cause);
-    }
-}
+package org.apache.geronimo.gshell.cli;

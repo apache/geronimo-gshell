@@ -19,18 +19,13 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.util.Arguments;
-
 import java.lang.reflect.Method;
+import java.util.List;
+
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.util.Arguments;
 
 /**
  * Execute a Java standard application.
@@ -44,66 +39,27 @@ import java.lang.reflect.Method;
 public class JavaCommand
     extends CommandSupport
 {
+    @Option(name="-m", aliases={"--method"}, description="Invoke a named method")
     private String methodName = "main";
+
+    @Argument(index=0, description="Class name", required=true)
+    private String className;
+
+    @Argument(index=1, description="Arguments")
+    private List<String> args;
 
     public JavaCommand() {
         super("java");
-    }
-
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = super.getOptions();
-
-        options.addOption(OptionBuilder.withLongOpt("method")
-            .withDescription(messages.getMessage("cli.option.method"))
-            .hasArg()
-            .withArgName("method")
-            .create('M'));
-
-        return options;
     }
 
     protected String getUsage() {
         return super.getUsage() + " <classname> [arguments]";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        IO io = getIO();
-        MessageSource messages = getMessageSource();
-
-        if (args.length == 0) {
-            io.err.println(messages.getMessage("cli.error.missing_classname"));
-
-            return true;
-        }
-        if (line.hasOption('M')) {
-            methodName = line.getOptionValue('M');
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
-
-        run(String.valueOf(args[0]), Arguments.toStringArray(Arguments.shift(args)));
-
-        return Command.SUCCESS;
-    }
-
-
-    private void run(final String classname, final String[] args) throws Exception {
-        assert classname != null;
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         boolean info = log.isInfoEnabled();
 
-        Class type = Thread.currentThread().getContextClassLoader().loadClass(classname);
+        Class type = Thread.currentThread().getContextClassLoader().loadClass(className);
         if (info) {
             log.info("Using type: " + type);
         }
@@ -122,5 +78,7 @@ public class JavaCommand
         if (info) {
             log.info("Result: " + result);
         }
+
+        return SUCCESS;
     }
 }

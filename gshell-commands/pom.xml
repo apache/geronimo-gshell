@@ -28,7 +28,6 @@
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     
     <artifactId>gshell-commands</artifactId>
@@ -45,8 +44,10 @@
     
     <modules>
         <module>gshell-standard-commands</module>
+        <!--
         <module>gshell-scripting-commands</module>
         <module>gshell-vfs-commands</module>
+        -->
     </modules>
     
 </project>

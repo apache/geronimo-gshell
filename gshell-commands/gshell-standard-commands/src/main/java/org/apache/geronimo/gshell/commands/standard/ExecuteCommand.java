@@ -19,14 +19,12 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
+import java.util.List;
 
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.commands.standard.util.PumpStreamHandler;
+import org.apache.geronimo.gshell.console.IO;
 
 /**
  * Execute system processes.
@@ -38,64 +36,18 @@ public class ExecuteCommand
 {
     private ProcessBuilder builder;
 
+    @Argument(description="Argument", required=true)
+    private List<String> args;
+
     public ExecuteCommand() {
         super("exec");
-    }
-
-    protected Options getOptions() {
-        MessageSource messages = getMessageSource();
-
-        Options options = super.getOptions();
-
-//        options.addOption(OptionBuilder
-//            .withDescription(messages.getMessage("cli.option.n"))
-//            .create('n'));
-
-        return options;
     }
 
     protected String getUsage() {
         return super.getUsage() + " <command> (<arg>)*";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        // Need at least one argument
-        if (args.length < 1) {
-            return true;
-        }
-        else {
-            builder = new ProcessBuilder(args);
-        }
-
-        //
-        // TODO: Allow ENV to be changed (default is given environ)
-        //
-
-        //
-        // TODO: Allow working dir to be set (default is user.dir)
-        //
-
-        //
-        // TODO: Allow error redirection to be enabled (default is false)
-        //
-
-        //
-        // TODO: Add timeout; default is no timeout
-        //
-
-        //
-        // TODO: Add spawn flag (process not killed when vm exits; default is not to spawn)
-        //
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
+    protected Object doExecute() throws Exception {
         assert builder != null;
 
         boolean info = log.isInfoEnabled();

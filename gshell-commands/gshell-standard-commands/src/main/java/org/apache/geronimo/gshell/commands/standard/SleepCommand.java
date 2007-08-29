@@ -19,11 +19,9 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.commons.cli.CommandLine;
-
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.CommandException;
 
 /**
  * Sleep... zzzZ
@@ -33,7 +31,8 @@ import org.apache.geronimo.gshell.command.CommandException;
 public class SleepCommand
     extends CommandSupport
 {
-    private long time = -1;
+    @Argument(description="Time in milliseconds", required=true)
+    private int time = -1;
 
     public SleepCommand() {
         super("sleep");
@@ -43,24 +42,7 @@ public class SleepCommand
         return super.getUsage() + " <milliseconds>";
     }
 
-    protected boolean processCommandLine(final CommandLine line) throws CommandException {
-        assert line != null;
-
-        String[] args = line.getArgs();
-
-        if (args.length != 1) {
-            return true;
-        }
-        else {
-            time = Long.parseLong(args[0]);
-        }
-
-        return false;
-    }
-
-    protected Object doExecute(final Object[] args) throws Exception {
-        assert args != null;
-
+    protected Object doExecute() throws Exception {
         log.info("Sleeping for " + time);
 
         try {

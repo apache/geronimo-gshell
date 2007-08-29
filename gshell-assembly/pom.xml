@@ -28,7 +28,6 @@
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>gshell-assembly</artifactId>
@@ -54,13 +53,13 @@
             <version>${version}</version>
         </dependency>
 
-        <!--
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-standard-commands</artifactId>
             <version>${version}</version>
         </dependency>
-        
+
+        <!--
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>gshell-scripting-commands</artifactId>
