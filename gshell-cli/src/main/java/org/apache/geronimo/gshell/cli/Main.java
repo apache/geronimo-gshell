@@ -104,7 +104,7 @@ public class Main
         assert nameValue != null;
 
         String name, value;
-        int i = namevVlue.indexOf("=");
+        int i = nameValue.indexOf("=");
 
         if (i == -1) {
             name = nameValue;
