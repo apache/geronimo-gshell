@@ -67,8 +67,8 @@
             <outputDirectory>lib</outputDirectory>
             <excludes>
                 <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
+                <exclude>org.apache.geronimo.gshell:gshell-classworlds</exclude>
                 <exclude>org.apache.geronimo.gshell:gshell-assembly</exclude>
-                <exclude>classworlds:classworlds</exclude>
                 <exclude>xml-apis:xml-apis</exclude>
             </excludes>
         </dependencySet>
@@ -76,7 +76,7 @@
         <dependencySet>
             <outputDirectory>lib/boot</outputDirectory>
             <includes>
-                <include>classworlds:classworlds</include>
+                <include>org.apache.geronimo.gshell:gshell-classworlds</include>
             </includes>
         </dependencySet>
         

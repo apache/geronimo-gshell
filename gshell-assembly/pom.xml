@@ -81,15 +81,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <exclusions>
-                <!--
-                NOTE: Using our *diet* version of Log4j instead to save some pounds of unwanted fat.
-                -->
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         
         <dependency>
@@ -101,41 +92,6 @@
 
     <build>
         <plugins>
-            <!--
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>shade-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        HACK: Turn this off, its just for testing
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <excludes>
-                                    <exclude>junit:junit</exclude>
-                                    <exclude>jtidy:jtidy</exclude>
-                                    <exclude>xml-apis:xml-apis</exclude>
-                                    <exclude>ant:ant</exclude>
-                                </excludes>
-                            </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.codehaus.plexus.util</pattern>
-                                    <excludes>
-                                        <exclude>org.codehaus.plexus.util.xml.Xpp3Dom</exclude>
-                                        <exclude>org.codehaus.plexus.util.xml.pull.*</exclude>
-                                    </excludes>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

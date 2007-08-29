@@ -35,8 +35,9 @@
     
     <dependencies>
         <dependency>
-            <groupId>classworlds</groupId>
-            <artifactId>classworlds</artifactId>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-classworlds</artifactId>
+            <version>${version}</version>
         </dependency>
     </dependencies>
     

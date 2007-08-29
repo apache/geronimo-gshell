@@ -46,8 +46,8 @@
     </dependencies>
     
     <!--
-    NOTE: We only use a few bits from commons-lang, so pull them out here to avoid getting all that other cruft.
-          Though really, its a bunch of crap we pull in anyways, but the following saves ~100k
+    NOTE: We only use a few bits from plexus-utils and commons-lang, so pull them out here to avoid
+          getting all that other cruft.
     -->
     
     <build>
@@ -68,6 +68,11 @@
                                     <artifactId>commons-lang</artifactId>
                                     <classifier>sources</classifier>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.codehaus.plexus</groupId>
+                                    <artifactId>plexus-utils</artifactId>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -85,9 +90,10 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${project.build.directory}/generated-source/commons-lang"/>
-                                <copy todir="${project.build.directory}/generated-source/commons-lang">
+                                <mkdir dir="${project.build.directory}/generated-source/diet"/>
+                                <copy todir="${project.build.directory}/generated-source/diet">
                                     <fileset dir="${project.build.directory}/dependency">
+                                        <!-- Include ~100k of commons-lang -->
                                         <include name="org/apache/commons/lang/ArrayUtils.java"/>
                                         <include name="org/apache/commons/lang/BooleanUtils.java"/>
                                         <include name="org/apache/commons/lang/CharUtils.java"/>
@@ -109,6 +115,12 @@
                                         <include name="org/apache/commons/lang/builder/**/*.java"/>
                                         <include name="org/apache/commons/lang/math/NumberUtils.java"/>
                                         <include name="org/apache/commons/lang/time/**/*.java"/>
+                                        
+                                        <!-- Include ~160k of plexus-utils -->
+                                        <include name="org/codehaus/plexus/util/*.java"/>
+                                        <include name="org/codehaus/plexus/util/dag/**/*.java"/>
+                                        <include name="org/codehaus/plexus/util/xml/**/*.java"/>
+                                        <include name="org/codehaus/plexus/util/reflection/**/*.java"/>
                                     </fileset>
                                 </copy>
                             </tasks>
@@ -128,7 +140,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.build.directory}/generated-source/commons-lang</source>
+                                <source>${project.build.directory}/generated-source/diet</source>
                             </sources>
                         </configuration>
                     </execution>

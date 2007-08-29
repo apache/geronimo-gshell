@@ -34,7 +34,9 @@ import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.util.Banner;
 import org.apache.geronimo.gshell.util.Version;
-import org.codehaus.classworlds.ClassWorld;
+
+import org.codehaus.plexus.classworlds.ClassWorld;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -290,6 +292,8 @@ public class Main
         assert args != null;
         assert world != null;
 
+        System.err.println("Launching enhanced");
+        
         Main main = new Main(world);
         main.run(args);
     }

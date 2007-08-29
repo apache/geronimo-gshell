@@ -37,6 +37,11 @@ import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +73,24 @@ public class Shell
         
         this.io = io;
 
+        /*
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+
+        config.setName("gshell.core");
+        config.setClassWorld(new ClassWorld("gshell.core", Thread.currentThread().getContextClassLoader()));
+
+        try {
+            PlexusContainer plexus = new DefaultPlexusContainer(config);
+            
+            System.err.println("Booted plexus container: " + plexus);
+
+            plexus.lookup("fuckfuckfuck");
+        }
+        catch (Exception e) {
+            throw new CommandException(e);
+        }
+        */
+        
         shellContainer.registerComponentInstance(this);
         shellContainer.registerComponentImplementation(CommandManagerImpl.class);
         shellContainer.registerComponentImplementation(CommandLineBuilder.class);

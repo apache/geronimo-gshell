@@ -30,15 +30,15 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-log4j</artifactId>
-    <name>GShell *Diet* Log4j</name>
+    <artifactId>gshell-classworlds</artifactId>
+    <name>GShell *Diet* Classworlds</name>
     
     <description>
-        A diet version of the Log4j distribution.
+        A diet version of the Classworlds distribution.
     </description>
     
     <!--
-    NOTE: The log4j distribution contains a bunch of cruft, so we put it on a diet here for our usage.
+    NOTE: We don't care about the legacy support classes for Classworlds, so put it on a diet.
     -->
     
     <build>
@@ -55,8 +55,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>log4j</groupId>
-                                    <artifactId>log4j</artifactId>
+                                    <groupId>org.codehaus.plexus</groupId>
+                                    <artifactId>plexus-classworlds</artifactId>
                                     <classifier>sources</classifier>
                                 </artifactItem>
                             </artifactItems>
@@ -79,11 +79,7 @@
                                 <mkdir dir="${project.build.directory}/generated-source/diet"/>
                                 <copy todir="${project.build.directory}/generated-source/diet">
                                     <fileset dir="${project.build.directory}/dependency">
-                                        <include name="org/apache/log4j/*.java"/>
-                                        <include name="org/apache/log4j/spi/*.java"/>
-                                        <include name="org/apache/log4j/helpers/*.java"/>
-                                        <include name="org/apache/log4j/or/*.java"/>
-                                        <include name="org/apache/log4j/config/*.java"/>
+                                        <include name="org/codehaus/plexus/classworlds/**"/>
                                     </fileset>
                                 </copy>
                             </tasks>

@@ -51,7 +51,7 @@ public class Launcher
         setProperty("log4j.configuration", log4jConf.toURI().toURL().toString());
 
         // Delegate to the Classworlds launcher to finish booting
-        org.codehaus.classworlds.Launcher.main(args);
+        org.codehaus.plexus.classworlds.launcher.Launcher.main(args);
     }
 
     private static void debug(final String message) {

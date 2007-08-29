@@ -79,6 +79,15 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>1.4.3</version>
+                <exclusions>
+                    <!--
+                    NOTE: Using our *diet* version of Log4j instead to save some pounds of unwanted fat.
+                    -->
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             
             <dependency>
@@ -93,7 +102,48 @@
                 <version>3.8.2</version>
                 <scope>test</scope>
             </dependency>
-
+            
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-classworlds</artifactId>
+                <version>1.2-alpha-10</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-component-api</artifactId>
+                <version>1.0-alpha-32</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-container-default</artifactId>
+                <version>1.0-alpha-32</version>
+                <exclusions>
+                    <!--
+                    NOTE: Use our *diet* version of Plexus Classwords to save a few grams.
+                    -->
+                    <exclusion>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-classworlds</artifactId>
+                    </exclusion>
+                    
+                    <!--
+                    NOTE: Use our *diet* version of Plexus Utils to save a few grams.
+                    -->
+                    <exclusion>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-utils</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>1.4.5</version>
+            </dependency>
+            
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
@@ -110,12 +160,6 @@
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>classworlds</groupId>
-                <artifactId>classworlds</artifactId>
-                <version>1.1</version>
             </dependency>
 
             <dependency>
@@ -266,6 +310,7 @@
     </build>
     
     <modules>
+        <module>gshell-classworlds</module>
         <module>gshell-common</module>
         <module>gshell-clp</module>
         <module>gshell-prefs</module>
