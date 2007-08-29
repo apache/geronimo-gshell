@@ -34,10 +34,6 @@ options {
   	package org.apache.geronimo.gshell.commandline.parser;
 }
 
-//
-// FIXME: How can we allow EOF to terminate and expression?
-//
-
 compilationUnit
 	:	( expression ( ';' | NewLine ) | expression EOF )+
 	;
