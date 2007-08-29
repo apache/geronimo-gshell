@@ -37,7 +37,7 @@ public class HelpCommand
 {
     private CommandManager commandManager;
 
-    @Argument
+    @Argument(description="Help topic")
     private String topic = "topics";
 
     public HelpCommand(final CommandManager commandManager) {

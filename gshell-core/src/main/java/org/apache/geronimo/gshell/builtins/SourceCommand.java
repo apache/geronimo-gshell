@@ -42,7 +42,7 @@ public class SourceCommand
 {
     private Shell shell;
 
-    @Argument(required=true)
+    @Argument(required=true, description="Source file")
     private File file;
 
     public SourceCommand(final Shell shell) {

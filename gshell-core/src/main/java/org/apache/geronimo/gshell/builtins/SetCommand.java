@@ -45,10 +45,10 @@ public class SetCommand
         PROPERTY
     }
 
-    @Option(name="-m", aliases={"--mode"})
+    @Option(name="-m", aliases={"--mode"}, description="Set mode")
     private Mode mode = Mode.VARIABLE;
 
-    @Argument
+    @Argument(description="Variable definition")
     private List<String> args;
 
     public SetCommand() {

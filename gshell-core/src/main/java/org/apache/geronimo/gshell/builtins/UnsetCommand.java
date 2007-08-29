@@ -42,10 +42,10 @@ public class UnsetCommand
         PROPERTY
     }
 
-    @Option(name="-m", aliases={"--mode"})
+    @Option(name="-m", aliases={"--mode"}, description="Unset mode")
     private Mode mode = Mode.VARIABLE;
 
-    @Argument(required=true)
+    @Argument(required=true, description="Variable name")
     private List<String> args;
 
     public UnsetCommand() {

@@ -31,7 +31,7 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 public class ExitCommand
     extends CommandSupport
 {
-    @Argument
+    @Argument(description="System exit code")
     private int exitCode = 0;
 
     public ExitCommand() {

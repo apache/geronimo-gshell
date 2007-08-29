@@ -61,6 +61,7 @@
             <outputDirectory>etc</outputDirectory>
         </fileSet>
         
+        <!--
         <fileSet>
             <directory>target</directory>
             <outputDirectory>lib</outputDirectory>
@@ -71,6 +72,7 @@
                 <exclude>gshell-cli-*-sources.jar</exclude>
             </excludes>
         </fileSet>
+        -->
     </fileSets>
     
     <dependencySets>

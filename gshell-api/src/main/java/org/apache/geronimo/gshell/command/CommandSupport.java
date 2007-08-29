@@ -216,7 +216,7 @@ public abstract class CommandSupport
             log.info("Executing w/arguments: " + Arguments.asString(args));
         }
 
-        Object result;
+        Object result = null;
 
         try {
             CommandLineProcessor clp = new CommandLineProcessor(this);
@@ -226,9 +226,10 @@ public abstract class CommandSupport
             if (displayHelp) {
                 displayHelp(clp);
             }
-            
-            // Invoke the command's action
-            result = doExecute();
+            else {
+                // Invoke the command's action
+                result = doExecute();
+            }
         }
         catch (Exception e) {
             log.error(e.getMessage());
