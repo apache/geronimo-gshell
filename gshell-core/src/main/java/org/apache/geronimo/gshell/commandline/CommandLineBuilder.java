@@ -28,6 +28,8 @@ import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
 import org.apache.geronimo.gshell.commandline.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Builds {@link CommandLine} instances ready for executing.
@@ -36,18 +38,13 @@ import org.slf4j.LoggerFactory;
  */
 public class CommandLineBuilder
 {
-    private static final Logger log = LoggerFactory.getLogger(CommandLineBuilder.class);
+    private Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Shell shell;
+    // @Requirement
+    private PlexusContainer container;
 
-    private final CommandLineParser parser;
-
-    public CommandLineBuilder(final Shell shell) {
-        assert shell != null;
-
-        this.shell = shell;
-        this.parser = new CommandLineParser();
-    }
+    // @Requirement
+    private CommandLineParser parser;
 
     private ASTCommandLine parse(final String input) throws ParseException {
         assert input != null;
@@ -71,8 +68,20 @@ public class CommandLineBuilder
             throw new IllegalArgumentException("Command line is empty");
         }
 
+        //
+        // HACK: Look up the Shell instance late to avoid circular dependencies while injecting right now
+        //
+
+        final Shell shell;
+        try {
+            shell = (Shell) container.lookup(Shell.class);
+        }
+        catch (ComponentLookupException e) {
+            throw new RuntimeException(e);
+        }
+
         final ASTCommandLine root = parse(commandLine);
-        final ExecutingVisitor visitor = new ExecutingVisitor(this.shell);
+        final ExecutingVisitor visitor = new ExecutingVisitor(shell);
 
         return new CommandLine() {
             public Object execute() throws Exception {

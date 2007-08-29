@@ -22,22 +22,21 @@
 
 <plexus>
     <!--
-    <component-discoverer-manager implementation="org.codehaus.plexus.component.discovery.DefaultComponentDiscovererManager">
-        <listeners>
-            <listener implementation="org.codehaus.plexus.component.discovery.DiscoveryListenerDescriptor">
-                <role>org.apache.maven.plugin.MavenPluginCollector</role>
-            </listener>
-        </listeners>
-        <component-discoverers>
-            <component-discoverer implementation="org.apache.maven.plugin.MavenPluginDiscoverer"/>
-        </component-discoverers>
-    </component-discoverer-manager>
-    -->
-    
     <components>
         <component>
-            <role>test</role>
-            <implementation>ing</implementation>
+            <role>org.apache.geronimo.gshell.Shell</role>
+            <implementation>org.apache.geronimo.gshell.Shell</implementation>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.command.CommandManager</role>
+            <implementation>org.apache.geronimo.gshell.command.CommandManagerImpl</implementation>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.commandline.CommandLineBuilder</role>
+            <implementation>org.apache.geronimo.gshell.commandline.CommandLineBuilder</implementation>
         </component>
     </components>
+    -->
 </plexus>

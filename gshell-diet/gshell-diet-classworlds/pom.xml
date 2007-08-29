@@ -79,7 +79,10 @@
                                 <mkdir dir="${project.build.directory}/generated-source/diet"/>
                                 <copy todir="${project.build.directory}/generated-source/diet">
                                     <fileset dir="${project.build.directory}/dependency">
+                                        <!--
                                         <include name="org/codehaus/plexus/classworlds/**"/>
+                                        -->
+                                        <include name="org/codehaus/**"/>
                                     </fileset>
                                 </copy>
                             </tasks>

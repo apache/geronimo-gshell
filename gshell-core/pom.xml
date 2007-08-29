@@ -68,11 +68,6 @@
         </dependency>
 
         <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>commons-jexl</groupId>
             <artifactId>commons-jexl</artifactId>
         </dependency>

@@ -35,28 +35,19 @@ import org.apache.geronimo.gshell.util.Arguments;
 public class HelpCommand
     extends CommandSupport
 {
+    // @Requirement
     private CommandManager commandManager;
 
     @Argument(description="Help topic")
     private String topic = "topics";
 
-    public HelpCommand(final CommandManager commandManager) {
+    public HelpCommand() {
         super("help");
-
-        assert commandManager != null;
-
-        this.commandManager = commandManager;
     }
 
-    /*
-
-    TODO: Setter injection needs help...
-    
     public void setCommandManager(final CommandManager commandManager) {
         this.commandManager = commandManager;
     }
-
-    */
 
     private CommandManager getCommandManager() {
         if (commandManager == null) {

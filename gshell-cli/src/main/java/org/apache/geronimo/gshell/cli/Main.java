@@ -34,9 +34,11 @@ import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.util.Banner;
 import org.apache.geronimo.gshell.util.Version;
-
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,16 +57,16 @@ public class Main
     //       picked up on the initial loading of Log4j
     //
 
-    private final ClassWorld world;
+    private final ClassWorld classWorld;
 
     private final IO io = new IO();
 
     private final StopWatch watch = new StopWatch();
 
-    public Main(final ClassWorld world) {
-        assert world != null;
+    public Main(final ClassWorld classWorld) {
+        assert classWorld != null;
 
-        this.world = world;
+        this.classWorld = classWorld;
 
         watch.start();
     }
@@ -96,7 +98,7 @@ public class Main
     @Option(name="-V", aliases={"--version"}, description="Display GShell version")
     private boolean version;
 
-    @Option(name="-i", aliases={"--interactive"}, argumentRequired=false, description="Run in interactive mode")
+    @Option(name="-i", aliases={"--interactive"}, description="Run in interactive mode")
     private boolean interactive = true;
 
     @Option(name="-debug", aliases={"--debug"}, description="Enable DEBUG logging output")
@@ -114,16 +116,10 @@ public class Main
     @Argument(description="Command")
     private List<String> args;
 
-    //
-    // TODO: Change this to --interactive false
-    //
-
-    @Option(name="-n", aliases={"--non-interactive"}, description="Run in non-interactive mode")
-    private boolean nonInteractive;
-
     public void run(final String[] args) throws Exception {
         assert args != null;
 
+        // FIXME:
         /*
         options.addOption(OptionBuilder.withLongOpt("define")
             .withDescription("Define a system property")
@@ -161,6 +157,7 @@ public class Main
             System.exit(0);
         }
 
+        // FIXME:
         /*
         if (line.hasOption('D')) {
             String[] values = line.getOptionValues('D');
@@ -206,13 +203,20 @@ public class Main
         // Its okay to use logging now
         Logger log = LoggerFactory.getLogger(Main.class);
         boolean debug = log.isDebugEnabled();
-        
-        //
-        // TODO: Need to pass Shell the ClassWorld, so that the application can add to it if needed
-        //
 
-        // Startup the shell
-        final Shell gshell = new Shell(io);
+        // Boot up the container
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+        config.setName("gshell.core");
+        config.setClassWorld(classWorld);
+
+        DefaultPlexusContainer container = new DefaultPlexusContainer(config);
+
+        //
+        // TODO: We need to pass in our I/O context to the container directly
+        //
+        
+        // Load the GShell instance
+        final Shell gshell = (Shell) container.lookup(Shell.class);
 
         //
         // TEMP: Log some info about the terminal
@@ -226,16 +230,14 @@ public class Main
             log.debug("  H x W: " + term.getTerminalHeight() + " x " + term.getTerminalWidth());
             log.debug("  Echo: " + term.getEcho());
             log.debug("  ANSI: " + term.isANSISupported());
-        }
 
-        if (debug) {
             log.debug("Started in " + watch);
         }
 
         Object result = null;
 
         //
-        // TODO: Pass interactive flags (maybe as property) so gshell knows what mode it is
+        // TODO: Pass interactive flags (maybe as property) so gshell knows what modfooe it is
         //
 
         if (commands != null) {
@@ -289,17 +291,11 @@ public class Main
     //
 
     public static void main(final String[] args, final ClassWorld world) throws Exception {
-        assert args != null;
-        assert world != null;
-
         Main main = new Main(world);
         main.run(args);
     }
 
     public static void main(final String[] args) throws Exception {
-        assert args != null;
-
-        ClassWorld world = new ClassWorld();
-        main(args, world);
+        main(args, new ClassWorld("gshell.legacy", Thread.currentThread().getContextClassLoader()));
     }
 }

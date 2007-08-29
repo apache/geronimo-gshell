@@ -25,9 +25,7 @@ import org.apache.commons.lang.time.StopWatch;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDefinition;
-import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandManager;
-import org.apache.geronimo.gshell.command.CommandManagerImpl;
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.MessageSourceImpl;
 import org.apache.geronimo.gshell.command.StandardVariables;
@@ -37,11 +35,10 @@ import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.DefaultContainerConfiguration;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.classworlds.ClassWorld;
+
+import org.codehaus.plexus.MutablePlexusContainer;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,58 +47,26 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+// @Component(role = Shell.class)
 public class Shell
 {
-    //
-    // TODO: Introduce Shell interface?
-    //
+    private Logger log = LoggerFactory.getLogger(getClass());
 
-    private static final Logger log = LoggerFactory.getLogger(Shell.class);
+    // @Requirement
+    private IO io;
 
-    private final IO io;
+    // @Requirement
+    private MutablePlexusContainer container;
 
-    private final ShellContainer shellContainer = new ShellContainer();
+    // @Requirement
+    private CommandManager commandManager;
 
-    private final CommandManager commandManager;
+    // @Requirement
+    private CommandLineBuilder commandLineBuilder;
 
-    private final CommandLineBuilder commandLineBuilder;
+    private Variables variables = new VariablesImpl();
 
-    private final Variables variables = new VariablesImpl();
-
-    public Shell(final IO io) throws CommandException {
-        assert io != null;
-        
-        this.io = io;
-
-        /*
-        ContainerConfiguration config = new DefaultContainerConfiguration();
-
-        config.setName("gshell.core");
-        config.setClassWorld(new ClassWorld("gshell.core", Thread.currentThread().getContextClassLoader()));
-
-        try {
-            PlexusContainer plexus = new DefaultPlexusContainer(config);
-            
-            System.err.println("Booted plexus container: " + plexus);
-
-            plexus.lookup("fuckfuckfuck");
-        }
-        catch (Exception e) {
-            throw new CommandException(e);
-        }
-        */
-        
-        shellContainer.registerComponentInstance(this);
-        shellContainer.registerComponentImplementation(CommandManagerImpl.class);
-        shellContainer.registerComponentImplementation(CommandLineBuilder.class);
-
-        //
-        // TODO: Refactor to use the container, now that we have one
-        //
-
-        this.commandManager = (CommandManager) shellContainer.getComponentInstanceOfType(CommandManager.class);
-        this.commandLineBuilder = (CommandLineBuilder) shellContainer.getComponentInstanceOfType(CommandLineBuilder.class);
-
+    public Shell() {
         //
         // HACK: Set some default variables
         //
@@ -109,10 +74,14 @@ public class Shell
         variables.set(StandardVariables.PROMPT, "> ");
     }
 
-    public Shell() throws CommandException {
-        this(new IO());
+    //
+    // HACK: This is for testing, need to weed out and refactor all this shiz
+    //
+    
+    public Shell(final IO io) {
+        this.io = io;
     }
-
+    
     public Variables getVariables() {
         return variables;
     }
@@ -127,7 +96,7 @@ public class Shell
 
     public Object execute(final String commandLine) throws Exception {
         assert commandLine != null;
-
+        
         if (log.isInfoEnabled()) {
             log.info("Executing (String): " + commandLine);
         }
@@ -164,22 +133,36 @@ public class Shell
             log.info("Executing (" + commandName + "): " + Arguments.asString(args));
         }
 
-        // Setup the command container
-        ShellContainer container = new ShellContainer(shellContainer);
-
-        final CommandDefinition def = commandManager.getCommandDefinition(commandName);
-        final Class type = def.loadClass();
+        //
+        // HACK: For now we need to make sure we get a mutable container
+        //
+        MutablePlexusContainer childContainer = (MutablePlexusContainer)
+                container.createChildContainer("command", container.getContainerRealm());
 
         //
-        // TODO: Pass the command instance the name it was registered with?, could be an alias
+        // HACK: Register the command def crapo as a component descriptor in the child container
+        //
+        
+        CommandDefinition def = commandManager.getCommandDefinition(commandName);
+
+        ComponentDescriptor desc = new ComponentDescriptor();
+        desc.setRole(Command.class.getName());
+        desc.setImplementation(def.getClassName());
+        desc.setRoleHint(def.getName());
+
+        childContainer.getComponentRepository().addComponentDescriptor(desc);
+
+        //
+        // HACK: Pull out the damn command
         //
 
-        container.registerComponentInstance(def);
-        container.registerComponentImplementation(type);
+        final Command command = (Command)childContainer.lookup(Command.class, def.getName());
 
-        // container.start() ?
-
-        Command cmd = (Command) container.getComponentInstanceOfType(Command.class);
+        //
+        // HACK: Auto-wire setter-based dependencies for now
+        //
+        
+        childContainer.autowire(command);
 
         //
         // TODO: DI all bits if we can, then free up "context" to replace "category" as a term
@@ -187,7 +170,7 @@ public class Shell
 
         final Variables vars = new VariablesImpl(getVariables());
 
-        cmd.init(new CommandContext() {
+        command.init(new CommandContext() {
             public IO getIO() {
                 return io;
             }
@@ -201,7 +184,7 @@ public class Shell
             public MessageSource getMessageSource() {
                 // Lazy init the messages, commands many not need them
                 if (messageSource == null) {
-                    messageSource = new MessageSourceImpl(type.getName() + "Messages");
+                    messageSource = new MessageSourceImpl(command.getClass().getName() + "Messages");
                 }
 
                 return messageSource;
@@ -217,17 +200,20 @@ public class Shell
 
         Object result;
         try {
-            result = cmd.execute(args);
+            result = command.execute(args);
 
             if (debug) {
                 log.debug("Command completed in " + watch);
             }
         }
         finally {
-            cmd.destroy();
+            command.destroy();
 
-            shellContainer.removeChildContainer(container);
-            // container.stop() container.dispose() ?
+            //
+            // HACK: Nuke the child container now
+            //
+            
+            container.removeChildContainer("command");
         }
 
         return result;

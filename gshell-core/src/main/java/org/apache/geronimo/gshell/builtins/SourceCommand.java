@@ -40,14 +40,17 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 public class SourceCommand
     extends CommandSupport
 {
+    // @Requirement
     private Shell shell;
 
     @Argument(required=true, description="Source file")
     private File file;
 
-    public SourceCommand(final Shell shell) {
+    public SourceCommand() {
         super("source");
+    }
 
+    public void setShell(final Shell shell) {
         this.shell = shell;
     }
 
