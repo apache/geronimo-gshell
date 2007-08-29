@@ -41,9 +41,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-diet-classworlds</artifactId>
-            <version>${pom.version}</version>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-classworlds</artifactId>
         </dependency>
     </dependencies>
 
