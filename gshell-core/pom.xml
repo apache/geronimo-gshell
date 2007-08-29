@@ -37,13 +37,13 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-api</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-diet-classworlds</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
         
         <dependency>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-diet-plexus-utils</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
         
         <dependency>

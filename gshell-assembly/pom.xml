@@ -38,38 +38,38 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-bootstrap</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-core</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-cli</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-standard-commands</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!--
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-scripting-commands</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-vfs-commands</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
         -->
 
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-diet-log4j</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
     </dependencies>
 
@@ -107,7 +107,7 @@
                     <descriptors>
                         <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
                     </descriptors>
-                    <finalName>gshell-${version}</finalName>
+                    <finalName>gshell-${pom.version}</finalName>
                 </configuration>
             </plugin>
         </plugins>

@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-diet-commons-lang</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
         
         <dependency>

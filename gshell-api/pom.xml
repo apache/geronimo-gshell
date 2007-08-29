@@ -41,19 +41,19 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-common</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-clp</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-prefs</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
         </dependency>
         
         <dependency>

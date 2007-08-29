@@ -43,18 +43,6 @@
         <url>https://svn.apache.org/viewvc/geronimo/sandbox/gshell/trunk/</url>
     </scm>
     
-    <properties>
-        <!--
-        NOTE: Project version, to be used instead of ${version} since that
-              value magically changes when using SNAPSHOT versions.
-
-              This value *must* be kept in sync with the value of the <version>
-              element, and it will need to be changed manually before a release,
-              as the maven-release-plugin will not update this value.
-        -->
-        <version>1.0-alpha-1-SNAPSHOT</version>
-    </properties>
-    
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -97,13 +85,6 @@
             </dependency>
 
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>3.8.2</version>
-                <scope>test</scope>
-            </dependency>
-            
-            <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-classworlds</artifactId>
                 <version>1.2-alpha-10</version>
@@ -137,7 +118,7 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-utils</artifactId>
@@ -185,6 +166,13 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8.2</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     
@@ -193,16 +181,64 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.0.2</version>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>1.0-alpha-3</version>
                 </plugin>
-                
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.3</version>
                 </plugin>
-                
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2-beta-1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.0-beta-4</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.3</version>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -223,11 +259,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-idea-plugin</artifactId>
                     <version>2.1</version>
-                    <configuration>
-                        <jdkName>1.5</jdkName>
-                        <jdkLevel>5.0</jdkLevel>
-                        <linkModules>true</linkModules>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -262,8 +293,6 @@
             <plugin>
                 <groupId>org.apache.geronimo.genesis.plugins</groupId>
                 <artifactId>tools-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                
                 <executions>
                     <execution>
                         <id>install-legal-files</id>
@@ -278,7 +307,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
                 <configuration>
                     <optimize>true</optimize>
                     <debug>true</debug>
@@ -296,14 +324,6 @@
                     <jdkName>1.5</jdkName>
                     <jdkLevel>5.0</jdkLevel>
                     <linkModules>true</linkModules>
-                </configuration>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <tagBase>https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/tags</tagBase>
                 </configuration>
             </plugin>
          </plugins>
@@ -325,11 +345,6 @@
     </modules>
     
     <repositories>
-        <!--
-        NOTE: The default repositories are picked up by Genesis, but need to
-              specify where Genesis lives to pick it up + any additional repositories.
-        -->
-        
         <repository>
             <id>apache-snapshots</id>
             <name>Apache Snapshots Repository</name>
