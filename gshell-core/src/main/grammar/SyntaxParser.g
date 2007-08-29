@@ -25,6 +25,9 @@ grammar SyntaxParser;
 
 options {
 	output=AST;
+	// k=2;
+	// backtrack=true;
+	// memoize=true;
 }
 
 @header {
@@ -34,12 +37,16 @@ options {
   	package org.apache.geronimo.gshell.commandline.parser;
 }
 
+//
+// FIXME: Still need to work out whitespace muck, this isn't always happy... :-(
+//
+
 compilationUnit
-	:	( expression ( ';' | NewLine ) | expression EOF )+
+	:	( expression ( ';' | NewLine ) | expression EOF )*
 	;
 
 expression
-	:	( ( WhiteSpace )* argument ( WhiteSpace )* )+
+	:	( WhiteSpace )* ( argument ( WhiteSpace )* )+
 	;
 
 argument
@@ -47,15 +54,21 @@ argument
 	;
 
 literal
-	:	OpaqueStringLiteral | StringLiteral | PlainStringLiteral
+	:	OpaqueStringLiteral
+	| 	StringLiteral
+	| 	PlainStringLiteral
 	;	
 
 //
 // Lexer
 //
 
+//
+// FIXME: Need to figure out how to handle \r\n too
+//
+
 NewLine
-	:	( '\r\n' | '\n' )
+	:	( '\n' )
 	;
 
 WhiteSpace
@@ -63,11 +76,11 @@ WhiteSpace
 	;
 
 PlainStringLiteral
-	: 	( ~( ';'| '\'' | '"' | WhiteSpace | NewLine ) )+
+	: 	( ~( ';' | '\'' | '"' | WhiteSpace | NewLine ) )+
 	;
 
 OpaqueStringLiteral
-	:  	'\'' ( EscapeSequence | ~('\'') )* '\''
+	:  	'\'' ( EscapeSequence | ~( '\\' | '\'' ) )* '\''
     ;
 
 //
@@ -75,29 +88,10 @@ OpaqueStringLiteral
 //
 
 StringLiteral
-    :  	'"' ( EscapeSequence | ~('"') )* '"'
+    :  	'"' ( EscapeSequence | ~( '\\' | '"' ) )* '"'
     ;
 
 fragment
 EscapeSequence
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
-    |   UnicodeEscape
-    |   OctalEscape
 	;
-
-fragment
-OctalEscape
-    :   '\\' ('0'..'3') ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7')
-    ;
-
-fragment
-HexDigit
-	:	('0'..'9'|'a'..'f'|'A'..'F')
-	;
-
-fragment
-UnicodeEscape
-    :   '\\' 'u' HexDigit HexDigit HexDigit HexDigit
-    ;
