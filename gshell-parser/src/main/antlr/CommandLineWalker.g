@@ -21,78 +21,29 @@
 // $Rev$ $Id$
 //
 
-grammar CommandLine;
+tree grammar CommandLineWalker;
 
 options {
 	language=Java;
-	output=AST;
-	// k=2;
-	// backtrack=true;
-	// memoize=true;
+	tokenVocab=CommandLine;
+    	ASTLabelType=CommonTree;
 }
 
 @header {
 	package org.apache.geronimo.gshell.parser;
 }
-@lexer::header {
-  	package org.apache.geronimo.gshell.parser;
-}
 
-//
-// FIXME: Still need to work out whitespace muck, this isn't always happy... :-(
-//
-
-compilationUnit
-	:	( expression ( ';' | NewLine | EOF ) )*
+commandLine
+	:	expression*
 	;
 
 expression
-	:	( WhiteSpace )* ( argument ( WhiteSpace )* )+
+	:	argument*
 	;
 
 argument
-	:	literal
-	;
-
-literal
 	:	OpaqueStringLiteral
 	| 	StringLiteral
 	| 	PlainStringLiteral
-	;	
-
-//
-// Lexer
-//
-
-//
-// FIXME: Need to figure out how to handle \r\n too
-//
-
-NewLine
-	:	( '\n' )
 	;
-
-WhiteSpace
-	:	( ' ' | '\t' | '\r' ) // { $channel=HIDDEN; }
-	;
-
-PlainStringLiteral
-	: 	( ~( ';' | '\'' | '"' | WhiteSpace ) )+
-	;
-
-OpaqueStringLiteral
-	:  	'\'' ( EscapeSequence | ~( '\\' | '\'' ) )* '\''
-    ;
-
-//
-// TODO: Figure out how to parse out ${foo.bar} and "$foo bar", for variable expansion
-//
-
-StringLiteral
-    :  	'"' ( EscapeSequence | ~( '\\' | '"' ) )* '"'
-    ;
-
-fragment
-EscapeSequence
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
-	;
+    

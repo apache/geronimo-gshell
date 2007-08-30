@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
 /**
@@ -38,7 +39,7 @@ public class CommandLineParserTest
         CharStream stream = new ANTLRStringStream(input);
 
         CommandLineLexer lex = new CommandLineLexer(stream);
-        CommonTokenStream tokens = new CommonTokenStream(lex);
+        CommonTokenStream ts = new CommonTokenStream(lex);
 
         /*
         CommonTreeNodeStream nodes = new CommonTreeNodeStream((Tree)r.tree);
@@ -47,8 +48,14 @@ public class CommandLineParserTest
 		walker.program();
         */
         
-        CommandLineParser parser = new CommandLineParser(tokens);
+        CommandLineParser parser = new CommandLineParser(ts);
         CommandLineParser.compilationUnit_return r = parser.compilationUnit();
         System.out.println("tree="+((Tree)r.tree).toStringTree());
+
+
+        CommonTreeNodeStream nodes = new CommonTreeNodeStream((Tree)r.tree);
+		nodes.setTokenStream(ts);
+		CommandLineWalker walker = new CommandLineWalker(nodes);
+		walker.commandLine();
     }
 }
