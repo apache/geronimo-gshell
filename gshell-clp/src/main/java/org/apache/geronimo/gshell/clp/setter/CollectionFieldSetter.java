@@ -61,8 +61,9 @@ public class CollectionFieldSetter
                 return (Class)type;
             }
         }
-
-        // FIXME: This is certainly not valid, Should default to String probably
+        
+        // If collection types don't have a parameter type, then the ObjectHandler will be used
+        // which basically is the same as the StringHandler
         return Object.class;
     }
 

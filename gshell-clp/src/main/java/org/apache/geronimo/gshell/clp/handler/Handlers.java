@@ -120,5 +120,6 @@ public class Handlers
         register(Double.class, DoubleHandler.class);
         register(double.class, DoubleHandler.class);
         register(String.class, StringHandler.class);
+        register(Object.class, ObjectHandler.class);
     }
 }
