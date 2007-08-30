@@ -42,7 +42,7 @@ options {
 //
 
 compilationUnit
-	:	( expression ( ';' | NewLine ) | expression EOF )*
+	:	( expression ( ';' | NewLine | EOF ) )*
 	;
 
 expression
@@ -76,7 +76,7 @@ WhiteSpace
 	;
 
 PlainStringLiteral
-	: 	( ~( ';' | '\'' | '"' | WhiteSpace | NewLine ) )+
+	: 	( ~( ';' | '\'' | '"' | WhiteSpace ) )+
 	;
 
 OpaqueStringLiteral
