@@ -50,12 +50,6 @@
                         <goals>
                             <goal>antlr</goal>
                         </goals>
-                        <configuration>
-                            <sourceDirectory>${pom.basedir}/src/main/grammar</sourceDirectory>
-                            <inclues>
-                                <include>CommandLine.g</include>
-                            </inclues>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
