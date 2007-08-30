@@ -21,9 +21,10 @@
 // $Rev$ $Id$
 //
 
-grammar SyntaxParser;
+grammar CommandLine;
 
 options {
+        language=Java;
 	output=AST;
 	// k=2;
 	// backtrack=true;
@@ -31,10 +32,10 @@ options {
 }
 
 @header {
-	package org.apache.geronimo.gshell.commandline.parser;
+	package org.apache.geronimo.gshell.parser;
 }
 @lexer::header {
-  	package org.apache.geronimo.gshell.commandline.parser;
+  	package org.apache.geronimo.gshell.parser;
 }
 
 //
@@ -42,11 +43,11 @@ options {
 //
 
 compilationUnit
-	:	( expression ( ';' | NewLine | EOF ) )*
+	:	( expression^ ( ';' | NewLine | EOF ) )*
 	;
 
 expression
-	:	( WhiteSpace )* ( argument ( WhiteSpace )* )+
+	:	( WhiteSpace )* ( argument^ ( WhiteSpace )* )+
 	;
 
 argument

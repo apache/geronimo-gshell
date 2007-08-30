@@ -31,7 +31,6 @@
     <artifactId>javacc-maven-plugin</artifactId>
     <name>JavaCC Maven Plugin</name>
     <packaging>maven-plugin</packaging>
-    <version>1.0-alpha-1-SNAPSHOT</version>
 
     <description>
         Provides integration with JavaCC.
