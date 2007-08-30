@@ -327,6 +327,7 @@
     <modules>
         <module>gshell-diet</module>
         <module>gshell-common</module>
+        <module>gshell-i18n</module>
         <module>gshell-clp</module>
         <module>gshell-prefs</module>
         <module>gshell-ansi</module>
