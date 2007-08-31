@@ -25,13 +25,13 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.commands</groupId>
+        <artifactId>gshell-commands</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
     <artifactId>gshell-builtins</artifactId>
-    <name>GShell Built-in Commands</name>
+    <name>GShell Commands :: Built-in</name>
     
     <dependencies>
         <dependency>

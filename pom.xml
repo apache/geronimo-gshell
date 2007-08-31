@@ -312,11 +312,10 @@
         <module>gshell-ansi</module>
         <module>gshell-bootstrap</module>
         <module>javacc-maven-plugin</module>
-        <module>gshell-parser</module>
         <module>gshell-api</module>
-        <module>gshell-core</module>
-        <module>gshell-builtins</module>
+        <module>gshell-parser</module>
         <module>gshell-layout</module>
+        <module>gshell-core</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
         <module>gshell-testsuite</module>
