@@ -84,14 +84,26 @@ public class Main
     @Option(name="-i", aliases={"--interactive"}, description="Run in interactive mode")
     private boolean interactive = true;
 
-    @Option(name="-debug", aliases={"--debug"}, description="Enable DEBUG logging output")
-    private boolean debug;
+    @Option(name="-d", aliases={"--debug"}, description="Enable DEBUG logging output")
+    private void setDebug(boolean flag) {
+        if (flag) {
+            setConsoleLogLevel("DEBUG");
+        }
+    }
 
-    @Option(name="-verbose", aliases={"--verbose"}, description="Enable INFO logging output")
-    private boolean verbose;
+    @Option(name="-v", aliases={"--verbose"}, description="Enable INFO logging output")
+    private void setVerbose(boolean flag) {
+        if (flag) {
+            setConsoleLogLevel("INFO");
+        }
+    }
 
-    @Option(name="-quite", aliases={"--quiet"}, description="Limit logging output to ERROR")
-    private boolean quiet;
+    @Option(name="-q", aliases={"--quiet"}, description="Limit logging output to ERROR")
+    private void setQuiet(boolean flag) {
+        if (flag) {
+            setConsoleLogLevel("ERROR");
+        }
+    }
 
     @Option(name="-c", aliases={"--commands"}, description="Read commands from string")
     private String commands;
@@ -122,6 +134,9 @@ public class Main
     public void run(final String[] args) throws Exception {
         assert args != null;
 
+        // Default is to be quiet
+        setConsoleLogLevel("WARN");
+        
         CommandLineProcessor clp = new CommandLineProcessor(this);
         clp.setStopAtNonOption(true);
         clp.process(args);
@@ -149,20 +164,6 @@ public class Main
             io.out.flush();
 
             System.exit(0);
-        }
-
-        if (quiet) {
-            setConsoleLogLevel("ERROR");
-        }
-        else if (debug) {
-            setConsoleLogLevel("DEBUG");
-        }
-        else if (verbose) {
-            setConsoleLogLevel("INFO");
-        }
-        else {
-            // Default is to be quiet
-            setConsoleLogLevel("WARN");
         }
 
         int code;
