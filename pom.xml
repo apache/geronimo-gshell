@@ -98,15 +98,6 @@
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-container-default</artifactId>
                 <version>1.0-alpha-32</version>
-                <exclusions>
-                    <!--
-                    NOTE: Use our *diet* version of Plexus Utils to save a few grams.
-                    -->
-                    <exclusion>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-utils</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
