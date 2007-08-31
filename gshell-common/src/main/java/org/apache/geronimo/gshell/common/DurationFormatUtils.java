@@ -495,7 +495,7 @@ public class DurationFormatUtils
      */
     static Token[] lexx(String format) {
         char[] array = format.toCharArray();
-        ArrayList list = new ArrayList(array.length);
+        ArrayList<Token> list = new ArrayList<Token>(array.length);
 
         boolean inLiteral = false;
         StringBuffer buffer = null;
@@ -546,7 +546,7 @@ public class DurationFormatUtils
                 buffer = null;
             }
         }
-        return (Token[]) list.toArray( new Token[list.size()] );
+        return list.toArray( new Token[list.size()] );
     }
 
     /**
