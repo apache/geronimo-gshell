@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<!-- $Rev$ $Date$ -->
+
+<component-set>
+    <components>
+        <component>
+            <role>org.apache.geronimo.gshell.Shell</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.Shell</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.PlexusContainer</role>
+                    <field-name>container</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.command.CommandManager</role>
+                    <field-name>commandManager</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.console.IO</role>
+                    <field-name>io</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.commandline.CommandLineBuilder</role>
+                    <field-name>commandLineBuilder</field-name>
+                </requirement>
+            </requirements>
+        </component>
+        
+        <component>
+            <role>org.apache.geronimo.gshell.command.CommandManager</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.command.CommandManagerImpl</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.PlexusContainer</role>
+                    <field-name>container</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.commandline.parser.CommandLineParser</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.commandline.parser.CommandLineParser</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.commandline.CommandLineBuilder</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.commandline.CommandLineBuilder</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.PlexusContainer</role>
+                    <field-name>container</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.commandline.parser.CommandLineParser</role>
+                    <field-name>parser</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <!--
+        HACK: Just make it work for now...
+        -->
+        <component>
+            <role>org.apache.geronimo.gshell.commandline.ExecutingVisitor</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.commandline.ExecutingVisitor</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+            <requirements>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.Shell</role>
+                    <field-name>shell</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.codehaus.plexus.evaluator.ExpressionEvaluator</role>
+                    <field-name>evaluator</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <!--
+        HACK: This is defs not right...
+        -->
+        <component>
+            <role>org.apache.geronimo.gshell.console.IO</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.console.IO</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+        </component>
+
+        <!--
+        Builtin Commands
+        -->
+
+        <component>
+            <role>org.apache.geronimo.gshell.command.Command</role>
+            <role-hint>exit</role-hint>
+            <implementation>org.apache.geronimo.gshell.builtins.ExitCommand</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.command.Command</role>
+            <role-hint>help</role-hint>
+            <implementation>org.apache.geronimo.gshell.builtins.HelpCommand</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+            <requirements>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.command.CommandManager</role>
+                    <field-name>commandManager</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.command.Command</role>
+            <role-hint>set</role-hint>
+            <implementation>org.apache.geronimo.gshell.builtins.SetCommand</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+        </component>
+        
+        <component>
+            <role>org.apache.geronimo.gshell.command.Command</role>
+            <role-hint>source</role-hint>
+            <implementation>org.apache.geronimo.gshell.builtins.SourceCommand</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.command.Command</role>
+            <role-hint>unset</role-hint>
+            <implementation>org.apache.geronimo.gshell.builtins.UnsetCommand</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+        </component>
+    </components>
+</component-set>
