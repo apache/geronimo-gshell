@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.scripting;
+package org.apache.geronimo.gshell.commands.bsf;
 
 import org.apache.bsf.BSFEngine;
 import org.apache.geronimo.gshell.console.Console;

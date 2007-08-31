@@ -25,7 +25,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>script</role-hint>
-            <implementation>org.apache.geronimo.gshell.commands.scripting.ScriptCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.bsf.ScriptCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>

@@ -22,4 +22,4 @@
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.commands.scripting;
+package org.apache.geronimo.gshell.commands.bsf;
