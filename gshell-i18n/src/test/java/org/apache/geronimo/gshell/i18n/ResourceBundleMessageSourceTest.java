@@ -22,18 +22,18 @@ package org.apache.geronimo.gshell.i18n;
 import junit.framework.TestCase;
 
 /**
- * Unit tests for the {@link MessageSource} class.
+ * Unit tests for the {@link ResourceBundleMessageSource} class.
  *
  * @version $Id$
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class MessageSourceTest
+public class ResourceBundleMessageSourceTest
     extends TestCase
 {
     MessageSource messages;
 
     protected void setUp() throws Exception {
-        messages = new MessageSource(getClass());
+        messages = new ResourceBundleMessageSource(getClass());
     }
 
     public void testLoadAndGetMessage() {
@@ -48,5 +48,12 @@ public class MessageSourceTest
 
         String f = messages.format("f", a, b, c);
         assertEquals("1 2 3", f);
+    }
+
+    public void testMissingResource() throws Exception {
+        try {
+            messages.getMessage("no-such-code");
+        }
+        catch (ResourceBundleMessageSource.ResourceNotFoundException expected) {}
     }
 }
