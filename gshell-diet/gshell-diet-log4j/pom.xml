@@ -84,6 +84,10 @@
                                         <include name="org/apache/log4j/helpers/*.java"/>
                                         <include name="org/apache/log4j/or/*.java"/>
                                         <include name="org/apache/log4j/config/*.java"/>
+
+                                        <!-- Pick off some deprecated/unsed bits from the list -->
+                                        <exclude name="org/apache/log4j/Dispatcher.java"/>
+                                        <exclude name="org/apache/log4j/spi/RootCategory.java"/>
                                     </fileset>
                                 </copy>
                             </tasks>
