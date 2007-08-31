@@ -22,33 +22,35 @@ package org.apache.geronimo.gshell.ansi;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 
 /**
- * Message source implementation which supports automatic ANSI color rendering.
+ * Message source adapter which supports automatic ANSI color rendering.
  *
  * @version $Rev$ $Date$
  */
 public class RenderMessageSource
-    extends MessageSource
+    implements MessageSource
 {
     private final Renderer renderer = new Renderer();
 
-    public RenderMessageSource(final String[] names) {
-        super(names);
-    }
+    private final MessageSource source;
 
-    public RenderMessageSource(final String name) {
-        super(name);
-    }
+    public RenderMessageSource(final MessageSource source) {
+        assert source != null;
 
-    public RenderMessageSource(final Class[] types) {
-        super(types);
+        this.source = source;
     }
-
-    public RenderMessageSource(final Class type) {
-        super(type);
-    }
-
+    
     public String getMessage(final String code) {
-        final String msg = super.getMessage(code);
+        String msg = source.getMessage(code);
+
+        if (Renderer.test(msg)) {
+            return renderer.render(msg);
+        }
+
+        return msg;
+    }
+
+    public String format(String code, Object... args) {
+        String msg = source.format(code, args);
 
         if (Renderer.test(msg)) {
             return renderer.render(msg);
