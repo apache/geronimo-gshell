@@ -45,17 +45,6 @@ public class HelpCommand
         super("help");
     }
 
-    public void setCommandManager(final CommandManager commandManager) {
-        this.commandManager = commandManager;
-    }
-
-    private CommandManager getCommandManager() {
-        if (commandManager == null) {
-            throw new IllegalStateException("Not initialized; missing command manger");
-        }
-        return commandManager;
-    }
-
     protected String getUsage() {
         return super.getUsage() + " [topic|command]";
     }
@@ -63,7 +52,6 @@ public class HelpCommand
     protected Object doExecute() throws Exception {
 
         IO io = getIO();
-        CommandManager manager = getCommandManager();
 
         //
         // TODO: Externalize strings
@@ -86,7 +74,7 @@ public class HelpCommand
             // HACK: For now just list all know commands
             //
 
-            for (CommandDefinition def : manager.commandDefinitions()) {
+            for (CommandDefinition def : commandManager.commandDefinitions()) {
                 io.out.print("  ");
                 io.out.print(def.getName());
 

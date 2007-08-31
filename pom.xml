@@ -132,12 +132,6 @@
                 <artifactId>jline</artifactId>
                 <version>0.9.91</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.apache.xbean</groupId>
-                <artifactId>xbean-finder</artifactId>
-                <version>3.1</version>
-            </dependency>
             
             <dependency>
                 <groupId>org.antlr</groupId>
@@ -336,6 +330,7 @@
         <module>gshell-parser</module>
         <module>gshell-api</module>
         <module>gshell-core</module>
+        <module>gshell-layout</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
         <module>gshell-testsuite</module>

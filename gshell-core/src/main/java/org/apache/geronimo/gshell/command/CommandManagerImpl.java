@@ -22,11 +22,15 @@ package org.apache.geronimo.gshell.command;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.xbean.finder.ResourceFinder;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public class CommandManagerImpl
-    implements CommandManager
+    implements CommandManager, Initializable
 {
     private static final Logger log = LoggerFactory.getLogger(CommandManager.class);
 
@@ -44,23 +48,34 @@ public class CommandManagerImpl
 
     private Map<String,CommandDefinition> commandAliasMap = new HashMap<String,CommandDefinition>();
 
-    public CommandManagerImpl() throws CommandException {
+    // @Requirement
+    private PlexusContainer container;
+
+    public void initialize() throws InitializationException {
         try {
             discoverCommands();
         }
         catch (Exception e) {
-            throw new CommandException(e);
+            throw new InitializationException("Failed to discover commands", e);
         }
     }
 
     private void discoverCommands() throws Exception {
         log.info("Discovering commands");
 
-        ResourceFinder finder = new ResourceFinder("META-INF/");
-        Map<String, Properties> map = finder.mapAllProperties("org.apache.geronimo.gshell.command");
+        List<ComponentDescriptor> descriptors = container.getComponentDescriptorList(Command.class.getName());
+        for (ComponentDescriptor desc : descriptors) {
+            //
+            // HACK: Bridge old def from descriptor
+            //
 
-        for (String filename : map.keySet()) {
-            Properties props = map.get(filename);
+            Properties props = new Properties();
+
+            props.put("name", desc.getRoleHint());
+            props.put("class", desc.getImplementation());
+            props.put("enable", true);
+            props.put("category", "ignored");
+            
             CommandDefinition def = new CommandDefinition(props);
             addCommandDefinition(def);
         }

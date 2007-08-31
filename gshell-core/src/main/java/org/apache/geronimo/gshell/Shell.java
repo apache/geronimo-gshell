@@ -24,7 +24,6 @@ import java.util.Iterator;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.MessageSource;
 import org.apache.geronimo.gshell.command.MessageSourceImpl;
@@ -35,10 +34,8 @@ import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
-
 import org.codehaus.plexus.MutablePlexusContainer;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-
+import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,35 +131,11 @@ public class Shell
         }
 
         //
-        // HACK: For now we need to make sure we get a mutable container
-        //
-        MutablePlexusContainer childContainer = (MutablePlexusContainer)
-                container.createChildContainer("command", container.getContainerRealm());
-
-        //
-        // HACK: Register the command def crapo as a component descriptor in the child container
-        //
-        
-        CommandDefinition def = commandManager.getCommandDefinition(commandName);
-
-        ComponentDescriptor desc = new ComponentDescriptor();
-        desc.setRole(Command.class.getName());
-        desc.setImplementation(def.getClassName());
-        desc.setRoleHint(def.getName());
-
-        childContainer.getComponentRepository().addComponentDescriptor(desc);
-
-        //
-        // HACK: Pull out the damn command
+        // FIXME: Probably need to pick a better way to name the command invocation container, or do we even really need this?
         //
 
-        final Command command = (Command)childContainer.lookup(Command.class, def.getName());
-
-        //
-        // HACK: Auto-wire setter-based dependencies for now
-        //
-        
-        childContainer.autowire(command);
+        final PlexusContainer childContainer = container.createChildContainer("command-invocation", container.getContainerRealm());
+        final Command command = (Command)childContainer.lookup(Command.class, commandName);
 
         //
         // TODO: DI all bits if we can, then free up "context" to replace "category" as a term
@@ -213,7 +186,7 @@ public class Shell
             // HACK: Nuke the child container now
             //
             
-            container.removeChildContainer("command");
+            container.removeChildContainer("command-invocation");
         }
 
         return result;
