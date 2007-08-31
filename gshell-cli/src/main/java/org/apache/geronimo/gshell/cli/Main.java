@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.cli;
 import java.util.List;
 
 import jline.Terminal;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.InteractiveShell;
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;

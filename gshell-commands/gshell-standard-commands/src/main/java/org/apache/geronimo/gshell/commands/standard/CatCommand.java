@@ -23,17 +23,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Concatenate and print files and/or URLs.
@@ -60,21 +61,18 @@ public class CatCommand
     protected Object doExecute() throws Exception {
         IO io = getIO();
 
-        for (String filename : args) {
-            BufferedReader reader;
+        //
+        // Support "-" if length is one, and read from io.in
+        // This will help test command pipelines.
+        //
+        if (args.size() == 1 && "-".equals(args.get(0))) {
+            log.info("Printing STDIN");
+            cat(new BufferedReader(io.in), io);
+        }
+        else {
+            for (String filename : args) {
+                BufferedReader reader;
 
-            // FIXME:
-            /*
-            //
-            // Support "-" if length is one, and read from io.in
-            // This will help test command pipelines.
-            //
-            if (files.length == 1 && "-".equals(files[0])) {
-                log.info("Printing STDIN");
-                reader = new BufferedReader(io.in);
-            }
-            else {
-            */
                 // First try a URL
                 try {
                     URL url = new URL(filename);
@@ -87,23 +85,27 @@ public class CatCommand
                     log.info("Printing file: " + file);
                     reader = new BufferedReader(new FileReader(file));
                 }
-            /*}*/
 
-            String line;
-            int lineno = 1;
+                cat(reader, io);
 
-            while ((line = reader.readLine()) != null) {
-                if (displayLineNumbers) {
-                    String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
-                    io.out.print(gutter);
-                    io.out.print("  ");
-                }
-                io.out.println(line);
+                reader.close();
             }
-
-            reader.close();
         }
 
         return Command.SUCCESS;
+    }
+
+    private void cat(final BufferedReader reader, final IO io) throws IOException {
+        String line;
+        int lineno = 1;
+
+        while ((line = reader.readLine()) != null) {
+            if (displayLineNumbers) {
+                String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
+                io.out.print(gutter);
+                io.out.print("  ");
+            }
+            io.out.println(line);
+        }
     }
 }

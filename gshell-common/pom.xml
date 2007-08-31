@@ -40,7 +40,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-diet-commons-lang</artifactId>
+            <artifactId>gshell-diet-plexus-utils</artifactId>
             <version>${pom.version}</version>
         </dependency>
         

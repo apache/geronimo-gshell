@@ -39,7 +39,6 @@
     </description>
     
     <modules>
-        <module>gshell-diet-commons-lang</module>
         <module>gshell-diet-plexus-utils</module>
         <module>gshell-diet-log4j</module>
     </modules>

@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell;
 
 import java.util.Iterator;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandManager;
