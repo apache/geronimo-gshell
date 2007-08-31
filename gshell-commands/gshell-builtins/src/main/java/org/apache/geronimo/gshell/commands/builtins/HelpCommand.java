@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandSupport;
@@ -37,67 +36,31 @@ public class HelpCommand
     // @Requirement
     private CommandManager commandManager;
 
-    @Argument(description="Help topic")
-    private String topic = "topics";
-
     public HelpCommand() {
         super("help");
     }
 
-    protected String getUsage() {
-        return super.getUsage() + " [topic|command]";
-    }
-
     protected Object doExecute() throws Exception {
-
         IO io = getIO();
 
-        //
-        // TODO: Externalize strings
-        //
+        io.out.println("Available commands:");
 
-        //
-        // TODO: Reuse our command bits...
-        //
+        for (CommandDefinition def : commandManager.commandDefinitions()) {
+            io.out.print("  ");
+            io.out.print(def.getName());
 
-        if (topic.equals("topics")) {
-            io.out.println("Available topics:");
-            io.out.println("  topics");
-            io.out.println("  commands");
-            io.out.println();
-        }
-        else if (topic.equals("commands")) {
-            io.out.println("Available commands (and aliases):");
-
-            //
-            // HACK: For now just list all know commands
-            //
-
-            for (CommandDefinition def : commandManager.commandDefinitions()) {
-                io.out.print("  ");
-                io.out.print(def.getName());
-
-                // Include a list of aliases
-                String[] aliases = def.getAliases();
-                if (aliases.length != 0) {
-                    io.out.print(" ( ");
-                    io.out.print(Arguments.asString(aliases));
-                    io.out.print(" )");
-                }
-
-                io.out.println();
+            // Include a list of aliases
+            String[] aliases = def.getAliases();
+            if (aliases.length != 0) {
+                io.out.print(" ( ");
+                io.out.print(Arguments.asString(aliases));
+                io.out.print(" )");
             }
 
             io.out.println();
         }
-        else {
-            //
-            // TODO: When given a command name as a topic, then execute cmd --help
-            //
 
-            io.err.println("Unknown help topic: " + topic);
-            io.err.println();
-        }
+        io.out.println();
 
         return SUCCESS;
     }
