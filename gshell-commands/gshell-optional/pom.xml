@@ -33,4 +33,8 @@
     <artifactId>gshell-optional</artifactId>
     <name>GShell Commands :: Optional</name>
     
+    <description>
+        Provides some optional commands.
+    </description>
+
 </project>

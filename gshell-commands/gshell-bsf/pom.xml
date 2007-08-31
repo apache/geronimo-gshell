@@ -32,7 +32,11 @@
     
     <artifactId>gshell-bsf</artifactId>
     <name>GShell Commands :: BSF</name>
-
+    
+    <description>
+        Commands for using BSF for scripting integration.
+    </description>
+    
     <dependencies>
         <!--
             FIXME: Need to abstract InteractiveConsole and move it to API, until

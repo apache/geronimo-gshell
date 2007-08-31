@@ -33,6 +33,10 @@
     <artifactId>gshell-vfs</artifactId>
     <name>GShell Commands :: VFS</name>
 
+    <description>
+        Provides integration with Jakarta Commons VFS.
+    </description>
+
     <dependencies>
         <dependency>
             <groupId>commons-vfs</groupId>

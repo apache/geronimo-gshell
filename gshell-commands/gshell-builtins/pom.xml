@@ -33,6 +33,10 @@
     <artifactId>gshell-builtins</artifactId>
     <name>GShell Commands :: Built-in</name>
     
+    <description>
+        Provides the default "built-in" commands.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
