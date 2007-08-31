@@ -30,7 +30,21 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-standard-commands</artifactId>
-    <name>GShell Commands :: Standard</name>
+    <artifactId>gshell-vfs</artifactId>
+    <name>GShell Commands :: VFS</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-api</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-vfs</groupId>
+            <artifactId>commons-vfs</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
     
 </project>

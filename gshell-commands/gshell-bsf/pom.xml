@@ -30,20 +30,24 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-vfs-commands</artifactId>
-    <name>GShell Commands :: VFS</name>
+    <artifactId>gshell-bsf</artifactId>
+    <name>GShell Commands :: BSF</name>
 
     <dependencies>
+        <!--
+            FIXME: Need to abstract InteractiveConsole and move it to API, until
+                   then depend on core.
+        -->
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-api</artifactId>
+            <artifactId>gshell-core</artifactId>
             <version>${pom.version}</version>
         </dependency>
-        
+
         <dependency>
-            <groupId>commons-vfs</groupId>
-            <artifactId>commons-vfs</artifactId>
-            <version>1.0</version>
+            <groupId>bsf</groupId>
+            <artifactId>bsf</artifactId>
+            <version>2.3.0</version>
         </dependency>
     </dependencies>
     

@@ -43,9 +43,9 @@
     </dependencies>
     
     <modules>
-        <module>gshell-standard-commands</module>
-        <module>gshell-scripting-commands</module>
-        <module>gshell-vfs-commands</module>
+        <module>gshell-optional</module>
+        <module>gshell-bsf</module>
+        <module>gshell-vfs</module>
     </modules>
     
 </project>
