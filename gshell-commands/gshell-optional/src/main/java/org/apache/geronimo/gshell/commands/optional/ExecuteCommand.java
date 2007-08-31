@@ -17,51 +17,67 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.standard;
+package org.apache.geronimo.gshell.commands.optional;
 
 import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.commands.optional.util.PumpStreamHandler;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
- * A simple command to <em>echo</em> all given arguments to the commands standard output.
+ * Execute system processes.
  *
  * @version $Rev$ $Date$
  */
-public class EchoCommand
+public class ExecuteCommand
     extends CommandSupport
 {
-    @Option(name="-n", description="Do not print the trailing newline character")
-    private boolean trailingNewline = true;
+    private ProcessBuilder builder;
 
-    @Argument(description="Arguments")
+    @Argument(description="Argument", required=true)
     private List<String> args;
 
-    public EchoCommand() {
-        super("echo");
+    public ExecuteCommand() {
+        super("exec");
+    }
+
+    protected String getUsage() {
+        return super.getUsage() + " <command> (<arg>)*";
     }
 
     protected Object doExecute() throws Exception {
+        assert builder != null;
+
+        boolean info = log.isInfoEnabled();
+
+        if (info) {
+            log.info("Executing: " + builder.command());
+        }
+
         IO io = getIO();
 
-        if (args != null) {
-            int c=0;
+        //
+        // TODO: May need to expose the Process's destroy() if Command abort() is issued?
+        //
 
-            for (String arg : args) {
-                io.out.print(arg);
-                if (++c + 1 < args.size()) {
-                    io.out.print(" ");
-                }
-            }
+        Process p = builder.start();
+
+        PumpStreamHandler handler = new PumpStreamHandler(io);
+        handler.attach(p);
+        handler.start();
+
+        log.debug("Waiting for process to exit...");
+
+        int status = p.waitFor();
+
+        if (info) {
+            log.info("Process exited w/status: " + status);
         }
 
-        if (trailingNewline) {
-            io.out.println();
-        }
+        handler.stop();
 
-        return SUCCESS;
+        return status;
     }
 }

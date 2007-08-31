@@ -25,7 +25,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>cat</role-hint>
-            <implementation>org.apache.geronimo.gshell.commands.standard.CatCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.optional.CatCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -33,7 +33,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>echo</role-hint>
-            <implementation>org.apache.geronimo.gshell.commands.standard.EchoCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.optional.EchoCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -41,7 +41,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>exec</role-hint>
-            <implementation>org.apache.geronimo.gshell.commands.standard.ExecuteCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.optional.ExecuteCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -49,7 +49,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>java</role-hint>
-            <implementation>org.apache.geronimo.gshell.commands.standard.JavaCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.optional.JavaCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -57,7 +57,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>sleep</role-hint>
-            <implementation>org.apache.geronimo.gshell.commands.standard.SleepCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.optional.SleepCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -65,7 +65,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>wait</role-hint>
-            <implementation>org.apache.geronimo.gshell.commands.standard.WaitCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.optional.WaitCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>

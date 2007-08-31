@@ -17,67 +17,51 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.standard;
+package org.apache.geronimo.gshell.commands.optional;
 
 import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.commands.standard.util.PumpStreamHandler;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
- * Execute system processes.
+ * A simple command to <em>echo</em> all given arguments to the commands standard output.
  *
  * @version $Rev$ $Date$
  */
-public class ExecuteCommand
+public class EchoCommand
     extends CommandSupport
 {
-    private ProcessBuilder builder;
+    @Option(name="-n", description="Do not print the trailing newline character")
+    private boolean trailingNewline = true;
 
-    @Argument(description="Argument", required=true)
+    @Argument(description="Arguments")
     private List<String> args;
 
-    public ExecuteCommand() {
-        super("exec");
-    }
-
-    protected String getUsage() {
-        return super.getUsage() + " <command> (<arg>)*";
+    public EchoCommand() {
+        super("echo");
     }
 
     protected Object doExecute() throws Exception {
-        assert builder != null;
-
-        boolean info = log.isInfoEnabled();
-
-        if (info) {
-            log.info("Executing: " + builder.command());
-        }
-
         IO io = getIO();
 
-        //
-        // TODO: May need to expose the Process's destroy() if Command abort() is issued?
-        //
+        if (args != null) {
+            int c=0;
 
-        Process p = builder.start();
-
-        PumpStreamHandler handler = new PumpStreamHandler(io);
-        handler.attach(p);
-        handler.start();
-
-        log.debug("Waiting for process to exit...");
-
-        int status = p.waitFor();
-
-        if (info) {
-            log.info("Process exited w/status: " + status);
+            for (String arg : args) {
+                io.out.print(arg);
+                if (++c + 1 < args.size()) {
+                    io.out.print(" ");
+                }
+            }
         }
 
-        handler.stop();
+        if (trailingNewline) {
+            io.out.println();
+        }
 
-        return status;
+        return SUCCESS;
     }
 }

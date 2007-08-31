@@ -17,34 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.standard;
-
-import org.apache.geronimo.gshell.command.CommandSupport;
-
-//
-// HACK: This is a temporary to handle shells which need to keep around after running
-//       commands that return.  Need to have better jobs support to get rid of this.
-//
-
 /**
- * Wait... just blocks command execution.
+ * Provides standard commands, which add useful functionality.
  *
  * @version $Rev$ $Date$
  */
-public class WaitCommand
-    extends CommandSupport
-{
-    public WaitCommand() {
-        super("wait");
-    }
-
-    protected Object doExecute() throws Exception {
-        log.info("Waiting...");
-
-        synchronized (this) {
-            wait();
-        }
-        
-        return SUCCESS;
-    }
-}
+package org.apache.geronimo.gshell.commands.optional;
