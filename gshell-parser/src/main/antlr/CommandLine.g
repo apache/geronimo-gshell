@@ -24,18 +24,19 @@
 grammar CommandLine;
 
 options {
-	language=Java;
-	output=AST;
-	// k=2;
-	// backtrack=true;
-	// memoize=true;
+    language=Java;
+    output=AST;
+    // k=2;
+    // backtrack=true;
+    // memoize=true;
 }
 
 @header {
-	package org.apache.geronimo.gshell.parser;
+package org.apache.geronimo.gshell.parser;
 }
+
 @lexer::header {
-  	package org.apache.geronimo.gshell.parser;
+package org.apache.geronimo.gshell.parser;
 }
 
 //
@@ -43,22 +44,22 @@ options {
 //
 
 compilationUnit
-	:	( expression ( ';' | NewLine | EOF ) )*
-	;
+    : ( expression ( ';' | NewLine | EOF ) )*
+    ;
 
 expression
-	:	( WhiteSpace )* ( argument ( WhiteSpace )* )+
-	;
+    : ( WhiteSpace )* ( argument ( WhiteSpace )* )+
+    ;
 
 argument
-	:	literal
-	;
+    : literal
+    ;
 
 literal
-	:	OpaqueStringLiteral
-	| 	StringLiteral
-	| 	PlainStringLiteral
-	;	
+    : OpaqueStringLiteral
+    | StringLiteral
+    | PlainStringLiteral
+    ;	
 
 //
 // Lexer
@@ -69,19 +70,19 @@ literal
 //
 
 NewLine
-	:	( '\n' )
-	;
+    : ( '\n' )
+    ;
 
 WhiteSpace
-	:	( ' ' | '\t' | '\r' ) // { $channel=HIDDEN; }
-	;
+    : ( ' ' | '\t' | '\r' ) // { $channel=HIDDEN; }
+    ;
 
 PlainStringLiteral
-	: 	( ~( ';' | '\'' | '"' | WhiteSpace ) )+
-	;
+    : ( ~( ';' | '\'' | '"' | WhiteSpace ) )+
+    ;
 
 OpaqueStringLiteral
-	:  	'\'' ( EscapeSequence | ~( '\\' | '\'' ) )* '\''
+    : '\'' ( EscapeSequence | ~( '\\' | '\'' ) )* '\''
     ;
 
 //
@@ -95,4 +96,4 @@ StringLiteral
 fragment
 EscapeSequence
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
-	;
+    ;
