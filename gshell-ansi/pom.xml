@@ -33,6 +33,10 @@
     <artifactId>gshell-ansi</artifactId>
     <name>GShell ANSI</name>
     
+    <description>
+        Provides support for using ANSI color escape-codes.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>

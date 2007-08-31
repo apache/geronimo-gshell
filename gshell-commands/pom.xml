@@ -35,6 +35,10 @@
     <name>GShell Commands</name>
     <packaging>pom</packaging>
     
+    <description>
+        Collection of commands for GShell functionality.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>

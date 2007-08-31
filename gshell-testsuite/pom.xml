@@ -33,6 +33,10 @@
     <artifactId>gshell-testsuite</artifactId>
     <name>GShell Testsuite</name>
     
+    <description>
+        The GShell integration Testsuite.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>

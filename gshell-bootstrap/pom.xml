@@ -33,6 +33,10 @@
     <artifactId>gshell-bootstrap</artifactId>
     <name>GShell Bootstrap</name>
     
+    <description>
+        Provides the tiny GShell bootstrap jar to keep platform scripts as simple as possible.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>

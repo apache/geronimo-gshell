@@ -33,6 +33,10 @@
     <artifactId>gshell-layout</artifactId>
     <name>GShell Layout</name>
     
+    <description>
+        Provides the GShell layout abstraction muck.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

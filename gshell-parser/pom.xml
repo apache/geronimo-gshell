@@ -33,6 +33,10 @@
     <artifactId>gshell-parser</artifactId>
     <name>GShell Parser</name>
     
+    <description>
+        Provides the command-line syntax parsing muck.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.antlr</groupId>

@@ -33,6 +33,10 @@
     <artifactId>gshell-core</artifactId>
     <name>GShell Core</name>
     
+    <description>
+        Provides the core of what is GShell ;-)
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>

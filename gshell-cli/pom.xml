@@ -33,6 +33,10 @@
     <artifactId>gshell-cli</artifactId>
     <name>GShell CLI</name>
     
+    <description>
+        The main command-line interface for GShell.
+    </description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>

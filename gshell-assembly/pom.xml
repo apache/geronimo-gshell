@@ -34,6 +34,10 @@
     <name>GShell Assembly</name>
     <packaging>jar</packaging>
 
+    <description>
+        The GShell assembly
+    </description>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
