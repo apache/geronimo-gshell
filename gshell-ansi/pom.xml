@@ -35,6 +35,17 @@
     
     <dependencies>
         <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-i18n</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
