@@ -26,6 +26,7 @@ grammar CommandLine;
 options {
     language=Java;
     output=AST;
+    ASTLabelType=CommonTree;
     // k=2;
     // backtrack=true;
     // memoize=true;
@@ -44,11 +45,11 @@ package org.apache.geronimo.gshell.parser;
 //
 
 compilationUnit
-    : ( expression ( ';' | NewLine | EOF ) )*
+    :  ( expression ( ';' | NewLine | EOF ) )*
     ;
 
 expression
-    : ( WhiteSpace )* ( argument ( WhiteSpace )* )+
+    : ( WhiteSpace* argument WhiteSpace* )+
     ;
 
 argument

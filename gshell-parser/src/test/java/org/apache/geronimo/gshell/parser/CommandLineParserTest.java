@@ -52,10 +52,11 @@ public class CommandLineParserTest
         CommandLineParser.compilationUnit_return r = parser.compilationUnit();
         System.out.println("tree="+((Tree)r.tree).toStringTree());
 
-
+        /*
         CommonTreeNodeStream nodes = new CommonTreeNodeStream((Tree)r.tree);
 		nodes.setTokenStream(ts);
 		CommandLineWalker walker = new CommandLineWalker(nodes);
 		walker.commandLine();
+		*/
     }
 }
