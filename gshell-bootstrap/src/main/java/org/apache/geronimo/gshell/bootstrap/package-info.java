@@ -18,8 +18,8 @@
  */
 
 /**
- * Built-in commands.  These are commands that are availabe for any GShell application.
+ * Provides the tiny GShell bootstrap jar to keep platform scripts as simple as possible.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.commands.builtins;
+package org.apache.geronimo.gshell.bootstrap;

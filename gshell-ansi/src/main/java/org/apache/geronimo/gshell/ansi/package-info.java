@@ -18,8 +18,8 @@
  */
 
 /**
- * Built-in commands.  These are commands that are availabe for any GShell application.
+ * Provides support for using ANSI color escape-codes.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.commands.builtins;
+package org.apache.geronimo.gshell.ansi;

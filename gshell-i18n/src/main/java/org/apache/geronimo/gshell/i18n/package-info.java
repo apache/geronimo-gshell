@@ -18,8 +18,8 @@
  */
 
 /**
- * Provides concreate implemenations for core interfaces in the GShell API.
+ * Internationalization support.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.i18n;

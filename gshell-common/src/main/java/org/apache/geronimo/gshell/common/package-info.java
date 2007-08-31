@@ -18,8 +18,8 @@
  */
 
 /**
- * Concrete console implementations.
+ * Common support classes.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.console;
+package org.apache.geronimo.gshell.common;
