@@ -330,6 +330,7 @@
         <module>gshell-parser</module>
         <module>gshell-api</module>
         <module>gshell-core</module>
+        <module>gshell-builtins</module>
         <module>gshell-layout</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
