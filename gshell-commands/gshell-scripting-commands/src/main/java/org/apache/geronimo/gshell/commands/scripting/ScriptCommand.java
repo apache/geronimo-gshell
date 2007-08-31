@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.commands.scripting;
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.JLineConsole;
 
@@ -80,6 +79,6 @@ public class ScriptCommand
             interp.run();
         }
 
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 }

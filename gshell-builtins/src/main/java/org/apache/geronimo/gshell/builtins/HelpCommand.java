@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.builtins;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandSupport;
@@ -100,6 +99,6 @@ public class HelpCommand
             io.err.println();
         }
 
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 }

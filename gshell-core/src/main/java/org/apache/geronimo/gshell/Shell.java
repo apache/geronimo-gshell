@@ -21,20 +21,17 @@ package org.apache.geronimo.gshell;
 
 import java.util.Iterator;
 
-import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandManager;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.MessageSourceImpl;
 import org.apache.geronimo.gshell.command.StandardVariables;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesImpl;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Arguments;
-import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +50,7 @@ public class Shell
     private IO io;
 
     // @Requirement
-    private MutablePlexusContainer container;
+    private PlexusContainer container;
 
     // @Requirement
     private CommandManager commandManager;
@@ -131,7 +128,7 @@ public class Shell
         }
 
         //
-        // FIXME: Probably need to pick a better way to name the command invocation container, or do we even really need this?
+        // HACK: Probably need to pick a better way to name the command invocation container, or do we even really need this?
         //
 
         final PlexusContainer childContainer = container.createChildContainer("command-invocation", container.getContainerRealm());
@@ -150,17 +147,6 @@ public class Shell
 
             public Variables getVariables() {
                 return vars;
-            }
-
-            MessageSource messageSource;
-
-            public MessageSource getMessageSource() {
-                // Lazy init the messages, commands many not need them
-                if (messageSource == null) {
-                    messageSource = new MessageSourceImpl(command.getClass().getName() + "Messages");
-                }
-
-                return messageSource;
             }
         });
 

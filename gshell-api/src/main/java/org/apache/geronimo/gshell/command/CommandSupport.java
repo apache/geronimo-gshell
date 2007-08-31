@@ -195,11 +195,7 @@ public abstract class CommandSupport
     protected IO getIO() {
         return getCommandContext().getIO();
     }
-
-    protected MessageSource getMessageSource() {
-        return getCommandContext().getMessageSource();
-    }
-
+    
     //
     // Execute Helpers
     //
@@ -289,22 +285,14 @@ public abstract class CommandSupport
     protected void displayHelp(final CommandLineProcessor clp) {
         assert clp != null;
 
-        MessageSource messages = getMessageSource();
         IO io = getIO();
 
         io.out.print(getName());
         io.out.print(" -- ");
-        io.out.println(messages.getMessage("cli.usage.description"));
         io.out.println();
 
         Printer printer = new Printer(clp);
         printer.printUsage(io.out);
         io.out.println();
-
-        String footer = messages.getMessage("cli.usage.footer");
-        if (footer.trim().length() != 0) {
-            io.out.println(footer);
-            io.out.println();
-        }
     }
 }

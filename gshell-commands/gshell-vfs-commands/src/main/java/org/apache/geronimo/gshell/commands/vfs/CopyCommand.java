@@ -23,7 +23,6 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileUtil;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 
 /**
  * Copy files.
@@ -56,6 +55,6 @@ public class CopyCommand
 
         FileUtil.copyContent(source, target);
 
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 }

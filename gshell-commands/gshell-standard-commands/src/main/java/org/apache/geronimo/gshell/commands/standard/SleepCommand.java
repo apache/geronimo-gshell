@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.commands.standard;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 
 /**
@@ -54,6 +53,6 @@ public class SleepCommand
 
         log.info("Awake now");
 
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 }

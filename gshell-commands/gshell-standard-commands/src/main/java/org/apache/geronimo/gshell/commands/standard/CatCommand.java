@@ -22,16 +22,14 @@ package org.apache.geronimo.gshell.commands.standard;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.console.IO;
 import org.codehaus.plexus.util.StringUtils;
@@ -92,7 +90,7 @@ public class CatCommand
             }
         }
 
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 
     private void cat(final BufferedReader reader, final IO io) throws IOException {

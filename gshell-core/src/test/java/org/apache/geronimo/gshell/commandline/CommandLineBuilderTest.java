@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.commandline;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.MockShell;
 
 /**
  * Unit tests for the {@link CommandLineBuilder} class.

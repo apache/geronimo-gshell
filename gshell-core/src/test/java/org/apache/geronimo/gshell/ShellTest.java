@@ -20,8 +20,6 @@
 package org.apache.geronimo.gshell;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.command.CommandNotFoundException;
 
 /**
  * Unit tests for the {@link Shell} class.

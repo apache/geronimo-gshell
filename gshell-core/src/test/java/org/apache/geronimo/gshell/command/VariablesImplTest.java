@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.command;
 
-import junit.framework.TestCase;
-
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
+
+import junit.framework.TestCase;
 
 /**
  * Unit tests for the {@link VariablesImpl} class.

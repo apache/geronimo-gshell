@@ -29,8 +29,8 @@ import java.util.Set;
 import jline.CompletionHandler;
 import jline.ConsoleReader;
 import jline.CursorBuffer;
-import org.apache.geronimo.gshell.command.MessageSource;
-import org.apache.geronimo.gshell.command.MessageSourceImpl;
+import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +53,7 @@ public class CompletionHandlerImpl
 {
     private static final Logger log = LoggerFactory.getLogger(CompletionHandlerImpl.class);
 
-    private static MessageSource messages = new MessageSourceImpl(CompletionHandlerImpl.class.getName());
+    private static MessageSource messages = new ResourceBundleMessageSource(CompletionHandlerImpl.class);
 
     public boolean complete(final ConsoleReader reader, final List candidates, final int pos)
         throws IOException
@@ -112,7 +112,7 @@ public class CompletionHandlerImpl
         Set<String> distinct = new HashSet<String>(candidates);
 
         if (distinct.size() > reader.getAutoprintThreshhold()) {
-            reader.printString(messages.getMessage("display-candidates", candidates.size()) + " ");
+            reader.printString(messages.format("display-candidates", candidates.size()) + " ");
             reader.flushConsole();
 
             int c;

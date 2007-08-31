@@ -25,7 +25,6 @@ import java.util.Properties;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.VariablesImpl;
@@ -98,7 +97,7 @@ public class SetCommand
                 }
             }
 
-            return Command.SUCCESS;
+            return SUCCESS;
         }
 
         //
@@ -123,7 +122,7 @@ public class SetCommand
             }
         }
 
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 
     class NameValue

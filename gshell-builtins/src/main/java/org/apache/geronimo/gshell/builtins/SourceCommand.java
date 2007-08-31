@@ -29,7 +29,6 @@ import java.net.URL;
 
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 
 /**
@@ -66,7 +65,7 @@ public class SourceCommand
             shell.execute(line);
         }
 
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 
     private BufferedReader openReader(final Object source) throws IOException {

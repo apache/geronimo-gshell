@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.commandline.parser;
 
-import junit.framework.TestCase;
-
 import java.io.Reader;
 import java.io.StringReader;
+
+import junit.framework.TestCase;
 
 /**
  * Unit tests for the {@link CommandLineParserVisitor} usage.

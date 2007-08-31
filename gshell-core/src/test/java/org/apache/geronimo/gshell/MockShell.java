@@ -19,10 +19,8 @@
 
 package org.apache.geronimo.gshell;
 
-import junit.framework.TestCase;
-import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.CommandException;
+import org.apache.geronimo.gshell.console.IO;
 
 /**
  * Mock {@link Shell}.

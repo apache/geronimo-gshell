@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.standard;
 
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 
 //
@@ -46,6 +45,6 @@ public class WaitCommand
             wait();
         }
         
-        return Command.SUCCESS;
+        return SUCCESS;
     }
 }
