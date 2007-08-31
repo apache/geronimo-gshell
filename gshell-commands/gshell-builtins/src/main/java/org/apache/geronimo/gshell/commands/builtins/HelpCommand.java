@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.builtins;
+package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandDefinition;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.builtins;
+package org.apache.geronimo.gshell.commands.builtins;
 
 import java.io.BufferedReader;
 import java.io.File;

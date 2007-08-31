@@ -25,7 +25,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>exit</role-hint>
-            <implementation>org.apache.geronimo.gshell.builtins.ExitCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.ExitCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -33,7 +33,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>help</role-hint>
-            <implementation>org.apache.geronimo.gshell.builtins.HelpCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.HelpCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
             <requirements>
@@ -47,7 +47,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>set</role-hint>
-            <implementation>org.apache.geronimo.gshell.builtins.SetCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.SetCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -55,7 +55,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>source</role-hint>
-            <implementation>org.apache.geronimo.gshell.builtins.SourceCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.SourceCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -63,7 +63,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.Command</role>
             <role-hint>unset</role-hint>
-            <implementation>org.apache.geronimo.gshell.builtins.UnsetCommand</implementation>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.UnsetCommand</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
