@@ -47,13 +47,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
+            <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-optional</artifactId>
             <version>${pom.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
+            <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-bsf</artifactId>
             <version>${pom.version}</version>
         </dependency>

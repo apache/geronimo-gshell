@@ -30,6 +30,7 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
+    <groupId>org.apache.geronimo.gshell.commands</groupId>
     <artifactId>gshell-commands</artifactId>
     <name>GShell Commands</name>
     <packaging>pom</packaging>
