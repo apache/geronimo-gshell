@@ -51,7 +51,7 @@
         <component>
             <role>org.apache.geronimo.gshell.command.CommandManager</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.command.CommandManagerImpl</implementation>
+            <implementation>org.apache.geronimo.gshell.CommandManagerImpl</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
             <requirements>

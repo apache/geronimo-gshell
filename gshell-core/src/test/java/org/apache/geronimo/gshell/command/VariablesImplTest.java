@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import org.apache.geronimo.gshell.VariablesImpl;
 
 /**
  * Unit tests for the {@link VariablesImpl} class.

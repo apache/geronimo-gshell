@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 import junit.framework.TestCase;
+import org.apache.geronimo.gshell.CommandManagerImpl;
 
 /**
  * Unit tests for the {@link CommandManager} class.
