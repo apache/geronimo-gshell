@@ -36,16 +36,36 @@
     <description>
         Provides the command-line syntax parsing muck.
     </description>
-    
+
     <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!--
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr-runtime</artifactId>
         </dependency>
+        -->
     </dependencies>
-
+    
     <build>
         <plugins>
+            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>antlr3-maven-plugin</artifactId>
@@ -54,6 +74,46 @@
                         <goals>
                             <goal>antlr</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+            
+            <plugin>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>javacc-maven-plugin</artifactId>
+                <version>${pom.version}</version>
+                <executions>
+                    <execution>
+                        <id>jjtree</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>jjtree</goal>
+                        </goals>
+                        <configuration>
+                            <grammars>
+                                <directory>${project.basedir}/src/main/grammar</directory>
+                                <includes>
+                                    <include>*.jjt</include>
+                                </includes>
+                            </grammars>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>javacc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <grammars>
+                                <directory>${project.build.directory}/generated-sources/jjtree</directory>
+                                <includes>
+                                    <include>*.jj</include>
+                                </includes>
+                            </grammars>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

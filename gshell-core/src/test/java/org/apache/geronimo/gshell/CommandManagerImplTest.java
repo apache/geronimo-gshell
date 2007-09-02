@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.CommandManagerImpl;
 import org.apache.geronimo.gshell.command.CommandManager;
 
 /**

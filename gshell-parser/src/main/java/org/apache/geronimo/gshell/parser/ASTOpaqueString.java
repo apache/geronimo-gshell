@@ -17,16 +17,30 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commandline.parser;
+package org.apache.geronimo.gshell.parser;
 
 /**
- * Support for nodes.
+ * Represents an <em>opaque</em> argument.
  *
  * @version $Rev$ $Date$
  */
-public class NodeSupport
+public class ASTOpaqueString
+    extends StringSupport
 {
-    //
-    // TODO: ???
-    //
+    public ASTOpaqueString(int id) {
+        super(id);
+    }
+
+    public ASTOpaqueString(CommandLineParser p, int id) {
+        super(p, id);
+    }
+
+    public String getValue() {
+        return unquote(super.getValue());
+    }
+
+    /** Accept the visitor. **/
+    public Object jjtAccept(final CommandLineParserVisitor visitor, final Object data) {
+        return visitor.visit(this, data);
+    }
 }

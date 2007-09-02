@@ -51,6 +51,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-parser</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
         </dependency>
@@ -71,48 +77,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>javacc-maven-plugin</artifactId>
-                <version>${pom.version}</version>
-                <executions>
-                    <execution>
-                        <id>jjtree</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>jjtree</goal>
-                        </goals>
-                        <configuration>
-                            <grammars>
-                                <directory>${project.basedir}/src/main/grammar</directory>
-                                <includes>
-                                    <include>*.jjt</include>
-                                </includes>
-                            </grammars>
-                        </configuration>
-                    </execution>
-                    
-                    <execution>
-                        <id>javacc</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>javacc</goal>
-                        </goals>
-                        <configuration>
-                            <grammars>
-                                <directory>${project.build.directory}/generated-sources/jjtree</directory>
-                                <includes>
-                                    <include>*.jj</include>
-                                </includes>
-                            </grammars>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
     
 </project>

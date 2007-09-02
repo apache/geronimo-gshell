@@ -27,16 +27,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandDefinition;
+import org.apache.geronimo.gshell.command.CommandManager;
+import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.geronimo.gshell.command.CommandManager;
-import org.apache.geronimo.gshell.command.CommandDefinition;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandNotFoundException;
 
 /**
  * Manager of command definitions and provides access to command instances.

@@ -31,7 +31,7 @@ options {
 
 PARSER_BEGIN(CommandLineParser)
 
-package org.apache.geronimo.gshell.commandline.parser;
+package org.apache.geronimo.gshell.parser;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public class CommandLineParser
     extends CommandLineParserSupport
 {
-    private static final Logger log = LoggerFactory.getLogger(CommandLineParser.class);
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     public CommandLineParser() {
         this(new StringReader(""));

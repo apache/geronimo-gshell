@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commandline.parser;
+package org.apache.geronimo.gshell.parser;
 
 import java.io.Reader;
 import java.io.StringReader;

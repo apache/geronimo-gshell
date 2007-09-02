@@ -22,12 +22,9 @@ package org.apache.geronimo.gshell;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
-import org.apache.geronimo.gshell.commandline.parser.CommandLineParser;
-import org.apache.geronimo.gshell.commandline.parser.ParseException;
-import org.apache.geronimo.gshell.LoggingVisitor;
-import org.apache.geronimo.gshell.ExecutingVisitor;
-import org.apache.geronimo.gshell.CommandLine;
+import org.apache.geronimo.gshell.parser.ASTCommandLine;
+import org.apache.geronimo.gshell.parser.CommandLineParser;
+import org.apache.geronimo.gshell.parser.ParseException;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.slf4j.Logger;

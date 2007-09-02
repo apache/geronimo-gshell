@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
-import org.apache.geronimo.gshell.commandline.parser.ASTExpression;
-import org.apache.geronimo.gshell.commandline.parser.ASTOpaqueString;
-import org.apache.geronimo.gshell.commandline.parser.ASTPlainString;
-import org.apache.geronimo.gshell.commandline.parser.ASTQuotedString;
-import org.apache.geronimo.gshell.commandline.parser.CommandLineParserVisitor;
-import org.apache.geronimo.gshell.commandline.parser.SimpleNode;
+import org.apache.geronimo.gshell.parser.ASTCommandLine;
+import org.apache.geronimo.gshell.parser.ASTExpression;
+import org.apache.geronimo.gshell.parser.ASTOpaqueString;
+import org.apache.geronimo.gshell.parser.ASTPlainString;
+import org.apache.geronimo.gshell.parser.ASTQuotedString;
+import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
+import org.apache.geronimo.gshell.parser.SimpleNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

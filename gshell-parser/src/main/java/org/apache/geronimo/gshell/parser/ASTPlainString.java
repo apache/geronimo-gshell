@@ -17,16 +17,26 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commandline.parser;
+package org.apache.geronimo.gshell.parser;
 
 /**
- * Support for {@link CommandLineParser}.
+ * Represents a <em>plain</em> unquoted argument.
  *
  * @version $Rev$ $Date$
  */
-public abstract class CommandLineParserSupport
+public class ASTPlainString
+    extends StringSupport
 {
-    //
-    // TODO: ???
-    //
+    public ASTPlainString(int id) {
+        super(id);
+    }
+
+    public ASTPlainString(CommandLineParser p, int id) {
+        super(p, id);
+    }
+
+    /** Accept the visitor. **/
+    public Object jjtAccept(final CommandLineParserVisitor visitor, final Object data) {
+        return visitor.visit(this, data);
+    }
 }

@@ -17,21 +17,21 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commandline.parser;
+package org.apache.geronimo.gshell.parser;
 
 /**
- * Represents an <em>opaque</em> argument.
+ * Represents a quoted (with double quotes) argument.
  *
  * @version $Rev$ $Date$
  */
-public class ASTOpaqueString
+public class ASTQuotedString
     extends StringSupport
 {
-    public ASTOpaqueString(int id) {
+    public ASTQuotedString(final int id) {
         super(id);
     }
 
-    public ASTOpaqueString(CommandLineParser p, int id) {
+    public ASTQuotedString(final CommandLineParser p, final int id) {
         super(p, id);
     }
 
