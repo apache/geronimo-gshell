@@ -22,4 +22,4 @@
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.commandline.parser;
+package org.apache.geronimo.gshell.parser;
