@@ -24,14 +24,14 @@ import java.util.List;
 
 import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.JLineShellRunner;
+import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.Shell;
-import org.apache.geronimo.gshell.ShellRunner;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.common.StopWatch;
+import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.util.Banner;
 import org.apache.geronimo.gshell.util.Version;
@@ -224,10 +224,8 @@ public class Main
         else if (interactive) {
             log.debug("Starting interactive console");
 
-            JLineShellRunner runner = new JLineShellRunner(shell);
-
-            runner.setExecutor(new ShellRunner.Executor() {
-                public Result execute(Shell shell, String line) throws Exception {
+            Console.Executor executor = new Console.Executor() {
+                public Result execute(String line) throws Exception {
                     try {
                         Object result = shell.execute(line);
                     }
@@ -237,9 +235,11 @@ public class Main
 
                     return Result.CONTINUE;
                 }
-            });
+            };
 
-            runner.setErrorHandler(new ShellRunner.ErrorHandler() {
+            JLineConsole runner = new JLineConsole(executor, shell);
+
+            runner.setErrorHandler(new Console.ErrorHandler() {
                 public Result handleError(Throwable error) {
                     log.error("Execution failed: " + error, error);
                     

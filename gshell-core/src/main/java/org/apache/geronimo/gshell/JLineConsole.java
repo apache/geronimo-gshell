@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import jline.ConsoleReader;
 import jline.History;
 
+import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.IO;
 
 /**
@@ -33,8 +34,8 @@ import org.apache.geronimo.gshell.console.IO;
  *
  * @version $Rev$ $Date$
  */
-public class JLineShellRunner
-    extends ShellRunner
+public class JLineConsole
+    extends Console
 {
     private final ConsoleReader reader;
 
@@ -44,8 +45,8 @@ public class JLineShellRunner
     // TODO: Pass in the terminal instance to be used
     //
     
-    public JLineShellRunner(final Shell shell) throws IOException {
-        super(shell);
+    public JLineConsole(final Executor executor, final Shell shell) throws IOException {
+        super(executor);
 
         IO io = shell.getIO();
         this.reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true));

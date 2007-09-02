@@ -30,29 +30,28 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-cli</artifactId>
-    <name>GShell CLI</name>
+    <artifactId>gshell-console</artifactId>
+    <name>GShell Console</name>
     
     <description>
-        The main command-line interface for GShell.
+        Console abstraction muck.
     </description>
     
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-console</artifactId>
-            <version>${pom.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-core</artifactId>
-            <version>${pom.version}</version>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-classworlds</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

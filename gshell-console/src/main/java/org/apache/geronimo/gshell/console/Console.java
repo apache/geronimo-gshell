@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.console;
 
 import java.io.IOException;
 
@@ -25,16 +25,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Support for running a {@link Shell}.
+ * Provides an abstraction of a console.
  *
  * @version $Rev$ $Date$
  */
-public abstract class ShellRunner
+public abstract class Console
     implements Runnable
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
-
-    protected final Shell shell;
 
     protected boolean running = false;
 
@@ -50,23 +48,18 @@ public abstract class ShellRunner
         }
     };
 
-    protected Executor executor = new Executor() {
-        public Result execute(final Shell shell, final String line) throws Exception {
-            Object result = shell.execute(line);
-            return Result.CONTINUE;
-        }
-    };
-    
+    protected Executor executor;
+
     protected ErrorHandler errorHandler = new ErrorHandler() {
         public Result handleError(Throwable error) {
             return Result.STOP;
         }
     };
 
-    public ShellRunner(final Shell shell) {
-        assert shell != null;
+    public Console(final Executor executor) {
+        assert executor != null;
 
-        this.shell = shell;
+        this.executor = executor;
     }
 
     public boolean isRunning() {
@@ -134,9 +127,6 @@ public abstract class ShellRunner
             try {
                 running = work();
             }
-            catch (ExitNotification n) {
-                throw n;
-            }
             catch (Throwable t) {
                 log.debug("Work failed: {}", t);
                 
@@ -193,7 +183,7 @@ public abstract class ShellRunner
         }
 
         // Execute the line
-        Executor.Result result = executor.execute(shell, line);
+        Executor.Result result = executor.execute(line);
 
         // Allow executor to request that the loop stop
         if (result == Executor.Result.STOP) {
@@ -226,7 +216,7 @@ public abstract class ShellRunner
             STOP
         }
 
-        Result execute(Shell shell, String line) throws Exception;
+        Result execute(String line) throws Exception;
     }
 
     //
