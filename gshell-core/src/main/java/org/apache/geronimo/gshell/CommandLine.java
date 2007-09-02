@@ -17,20 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
-
-import junit.framework.TestCase;
-import org.apache.geronimo.gshell.CommandManagerImpl;
+package org.apache.geronimo.gshell;
 
 /**
- * Unit tests for the {@link CommandManager} class.
+ * A abstraction of an executable command-line.
+ *
+ * <p>
+ * Could be a simple command or a complex command pipe-line.
  *
  * @version $Rev$ $Date$
  */
-public class CommandManagerImplTest
-    extends TestCase
+public interface CommandLine
 {
-    public void testConstructor() throws Exception {
-        new CommandManagerImpl();
-    }
+    /**
+     * Execute the command-line.
+     *
+     * @return  The final result of the command-line.
+     *
+     * @throws Exception    Failed to execute command-line.
+     */
+    Object execute() throws Exception;
 }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,6 +25,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.VariablesImpl;
+import org.apache.geronimo.gshell.command.Variables;
 
 /**
  * Unit tests for the {@link VariablesImpl} class.

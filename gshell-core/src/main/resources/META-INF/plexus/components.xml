@@ -42,7 +42,7 @@
                     <field-name>io</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.commandline.CommandLineBuilder</role>
+                    <role>org.apache.geronimo.gshell.CommandLineBuilder</role>
                     <field-name>commandLineBuilder</field-name>
                 </requirement>
             </requirements>
@@ -71,9 +71,9 @@
         </component>
 
         <component>
-            <role>org.apache.geronimo.gshell.commandline.CommandLineBuilder</role>
+            <role>org.apache.geronimo.gshell.CommandLineBuilder</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.commandline.CommandLineBuilder</implementation>
+            <implementation>org.apache.geronimo.gshell.CommandLineBuilder</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
             <requirements>
@@ -92,9 +92,9 @@
         HACK: Just make it work for now...
         -->
         <component>
-            <role>org.apache.geronimo.gshell.commandline.ExecutingVisitor</role>
+            <role>org.apache.geronimo.gshell.ExecutingVisitor</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.commandline.ExecutingVisitor</implementation>
+            <implementation>org.apache.geronimo.gshell.ExecutingVisitor</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
             <requirements>

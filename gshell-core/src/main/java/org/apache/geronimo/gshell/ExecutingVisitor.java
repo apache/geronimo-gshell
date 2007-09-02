@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commandline;
+package org.apache.geronimo.gshell;
 
 import java.util.ArrayList;
 import java.util.List;

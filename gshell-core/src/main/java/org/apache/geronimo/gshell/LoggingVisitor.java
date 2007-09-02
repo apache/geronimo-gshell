@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commandline;
+package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.commandline.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.commandline.parser.ASTExpression;

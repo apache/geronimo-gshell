@@ -17,9 +17,21 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell;
+
+import junit.framework.TestCase;
+import org.apache.geronimo.gshell.CommandManagerImpl;
+import org.apache.geronimo.gshell.command.CommandManager;
+
 /**
- * Provides support for command-line interpretation.
+ * Unit tests for the {@link CommandManager} class.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.commandline;
+public class CommandManagerImplTest
+    extends TestCase
+{
+    public void testConstructor() throws Exception {
+        new CommandManagerImpl();
+    }
+}

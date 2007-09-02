@@ -34,8 +34,8 @@
         </component>
 
         <component>
-            <role>org.apache.geronimo.gshell.commandline.CommandLineBuilder</role>
-            <implementation>org.apache.geronimo.gshell.commandline.CommandLineBuilder</implementation>
+            <role>org.apache.geronimo.gshell.CommandLineBuilder</role>
+            <implementation>org.apache.geronimo.gshell.CommandLineBuilder</implementation>
         </component>
     </components>
     -->
