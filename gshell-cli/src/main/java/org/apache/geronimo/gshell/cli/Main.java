@@ -23,16 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jline.Terminal;
-import org.apache.geronimo.gshell.InteractiveShell;
+import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.JLineShellRunner;
 import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.ShellRunner;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.common.StopWatch;
-import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.util.Banner;
 import org.apache.geronimo.gshell.util.Version;
 import org.codehaus.plexus.ContainerConfiguration;
@@ -182,7 +182,7 @@ public class Main
 
     private int execute(final String[] args) throws Exception {
         // Its okay to use logging now
-        Logger log = LoggerFactory.getLogger(Main.class);
+        final Logger log = LoggerFactory.getLogger(Main.class);
 
         // Boot up the container
         ContainerConfiguration config = new DefaultContainerConfiguration();
@@ -196,7 +196,7 @@ public class Main
         //
         
         // Load the GShell instance
-        final Shell gshell = (Shell) container.lookup(Shell.class);
+        final Shell shell = (Shell) container.lookup(Shell.class);
 
         //
         // TEMP: Log some info about the terminal
@@ -219,31 +219,43 @@ public class Main
         //
 
         if (commands != null) {
-            gshell.execute(commands);
+            shell.execute(commands);
         }
         else if (interactive) {
             log.debug("Starting interactive console");
 
-            //
-            // HACK: This is JLine specific... refactor
-            //
+            JLineShellRunner runner = new JLineShellRunner(shell);
 
-            //
-            // TODO: Explicitly pass in the terminal
-            //
+            runner.setExecutor(new ShellRunner.Executor() {
+                public Result execute(Shell shell, String line) throws Exception {
+                    try {
+                        Object result = shell.execute(line);
+                    }
+                    catch (ExitNotification n) {
+                        return Result.STOP;
+                    }
 
-            Console console = new JLineConsole(io);
-            InteractiveShell interp = new InteractiveShell(console, gshell);
+                    return Result.CONTINUE;
+                }
+            });
+
+            runner.setErrorHandler(new ShellRunner.ErrorHandler() {
+                public Result handleError(Throwable error) {
+                    log.error("Execution failed: " + error, error);
+                    
+                    return Result.CONTINUE;
+                }
+            });
 
             // Check if there are args, and run them and then enter interactive
             if (args.length != 0) {
-                gshell.execute(args);
+                shell.execute(args);
             }
 
-            interp.run();
+            runner.run();
         }
         else {
-            result = gshell.execute(args);
+            result = shell.execute(args);
         }
 
         log.debug("Ran for {}", watch);

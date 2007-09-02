@@ -50,7 +50,9 @@
     <modules>
         <module>gshell-builtins</module>
         <module>gshell-optional</module>
+        <!--
         <module>gshell-bsf</module>
+        -->
         <module>gshell-vfs</module>
     </modules>
     

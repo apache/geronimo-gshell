@@ -53,9 +53,6 @@ public abstract class ShellRunner
     protected Executor executor = new Executor() {
         public Result execute(final Shell shell, final String line) throws Exception {
             Object result = shell.execute(line);
-
-            log.debug("Result: {}", result);
-
             return Result.CONTINUE;
         }
     };
