@@ -19,16 +19,17 @@
 
 package org.apache.geronimo.gshell.cli;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jline.Terminal;
-import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.InteractiveShell;
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
+import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.console.JLineConsole;
@@ -108,8 +109,9 @@ public class Main
     @Option(name="-c", aliases={"--commands"}, description="Read commands from string")
     private String commands;
 
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(description="Command")
-    private List<String> args;
+    private List<String> args = new ArrayList<String>(0);
 
     @Option(name="-D", aliases={"--define"}, metaVar="NAME=VALUE", description="Define system properties")
     private void setSystemProperty(final String nameValue) {
@@ -169,12 +171,7 @@ public class Main
         int code;
         
         try {
-            if (this.args == null || this.args.size() == 0) {
-                code = execute(new String[0]);
-            }
-            else {
-                code = execute(this.args.toArray(new String[this.args.size()]));
-            }
+            code = execute(this.args.toArray(new String[this.args.size()]));
         }
         finally {
             io.flush();
@@ -186,14 +183,13 @@ public class Main
     private int execute(final String[] args) throws Exception {
         // Its okay to use logging now
         Logger log = LoggerFactory.getLogger(Main.class);
-        boolean debug = log.isDebugEnabled();
 
         // Boot up the container
         ContainerConfiguration config = new DefaultContainerConfiguration();
         config.setName("gshell.core");
         config.setClassWorld(classWorld);
 
-        DefaultPlexusContainer container = new DefaultPlexusContainer(config);
+        PlexusContainer container = new DefaultPlexusContainer(config);
 
         //
         // TODO: We need to pass in our I/O context to the container directly
@@ -208,15 +204,13 @@ public class Main
 
         Terminal term = Terminal.getTerminal();
 
-        if (debug) {
-            log.debug("Using terminal: " + term);
-            log.debug("  Supported: " + term.isSupported());
-            log.debug("  H x W: " + term.getTerminalHeight() + " x " + term.getTerminalWidth());
-            log.debug("  Echo: " + term.getEcho());
-            log.debug("  ANSI: " + term.isANSISupported());
+        log.debug("Using terminal: {}", term);
+        log.debug("  Supported: {}", term.isSupported());
+        log.debug("  H x W: {} x {}", term.getTerminalHeight(), term.getTerminalWidth());
+        log.debug("  Echo: {}", term.getEcho());
+        log.debug("  ANSI: {} ", term.isANSISupported());
 
-            log.debug("Started in " + watch);
-        }
+        log.debug("Started in {}", watch);
 
         Object result = null;
 
@@ -252,21 +246,17 @@ public class Main
             result = gshell.execute(args);
         }
 
-        if (debug) {
-            log.debug("Ran for " + watch);
-        }
-        
+        log.debug("Ran for {}", watch);
+
         // If the result is a number, then pass that back to the calling shell
         int code = 0;
         
         if (result instanceof Number) {
             code = ((Number)result).intValue();
         }
-        
-        if (debug) {
-            log.debug("Exiting with code: " + code);
-        }
-        
+
+        log.debug("Exiting with code: {}", code);
+
         return code;
     }
 
