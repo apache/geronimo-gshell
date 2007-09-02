@@ -17,34 +17,33 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commandline;
+package org.apache.geronimo.gshell;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.ExecutingVisitor;
+import org.apache.geronimo.gshell.CommandLineBuilder;
 
 /**
- * Unit tests for the {@link ExecutingVisitor} usage.
+ * Unit tests for the {@link CommandLineBuilder} class.
  *
  * @version $Rev$ $Date$
  */
-public class ExecutingVisitorTest
+public class CommandLineBuilderTest
     extends TestCase
 {
-    public void testFIXME() {}
-    
-    // FIXME: Have to use plexus...
-    /*
-    public void testConstructor() throws Exception {
-        try {
-            new ExecutingVisitor(null);
-            fail("Accepted null value");
-        }
-        catch (AssertionError expected) {
-            // ignore
-        }
+    public void testSimple() throws Exception {
+        // FIXME: Need to use plexus to test now...
+        /*
+        MockShell shell = new MockShell();
+        CommandLineBuilder builder = new CommandLineBuilder(shell);
 
-        // Happy day
-        new ExecutingVisitor(new MockShell());
+        CommandLine cl = builder.create("echo hi");
+        assertNotNull(cl);
+
+        cl.execute();
+
+        assertEquals("echo", shell.commandName);
+        assertEquals(1, shell.args.length);
+        assertEquals("hi", shell.args[0]);
+        */
     }
-    */
 }
