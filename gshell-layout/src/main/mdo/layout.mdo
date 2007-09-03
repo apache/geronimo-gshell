@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+    
+     http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<!-- $Rev: 571641 $ $Date: 2007-08-31 16:02:14 -0700 (Fri, 31 Aug 2007) $ -->
+
+<model>
+    <id>layout</id>
+    <name>Layout</name>
+    <description>
+        Contains the definition of a command/filesystem-like layout.
+    </description>
+    
+    <defaults>
+        <default>
+            <key>package</key>
+            <value>org.apache.geronimo.gshell.layout.model</value>
+        </default>
+    </defaults>
+    
+    <classes>
+        <!--
+        FIXME: This should be abstract, but Modello generates things like "new Node();" in teh xpp3 stuff :-(
+        
+        <class java.abstract="true">
+        -->
+        <class>
+            <name>Node</name>
+            <version>1.0.0+</version>
+            <description>
+                Support for layout nodes
+            </description>
+            <fields>
+                <field>
+                    <name>groups</name>
+                    <version>1.0.0+</version>
+                    <description>
+                    </description>
+                    <association>
+                        <type>Group</type>
+                        <multiplicity>*</multiplicity>
+                    </association>
+                </field>
+                
+                <field>
+                    <name>commands</name>
+                    <version>1.0.0+</version>
+                    <description>
+                    </description>
+                    <association>
+                        <type>Command</type>
+                        <multiplicity>*</multiplicity>
+                    </association>
+                </field>
+                
+                <field>
+                    <name>aliases</name>
+                    <version>1.0.0+</version>
+                    <description>
+                    </description>
+                    <association>
+                        <type>Alias</type>
+                        <multiplicity>*</multiplicity>
+                    </association>
+                </field>
+            </fields>
+        </class>
+        
+        <class rootElement="true" xml.tagName="layout">
+            <name>Layout</name>
+            <superClass>Node</superClass>
+            <version>1.0.0+</version>
+            <description>
+                The root node of the layout.
+            </description>
+        </class>
+        
+        <class>
+            <name>Group</name>
+            <superClass>Node</superClass>
+            <version>1.0.0+</version>
+            <description>
+                Provides a grouping mechanism for layout nodes.
+            </description>
+        </class>
+        
+        <class>
+            <name>Command</name>
+            <version>1.0.0+</version>
+            <description>
+                Defines a command node (kinda like a file).
+            </description>
+            <fields>
+                <field>
+                    <name>name</name>
+                    <version>1.0.0+</version>
+                    <description>
+                    </description>
+                    <type>String</type>
+                </field>
+                
+                <field>
+                    <name>implementation</name>
+                    <version>1.0.0+</version>
+                    <description>
+                    </description>
+                    <type>String</type>
+                </field>
+            </fields>
+        </class>
+        
+        <class>
+            <name>Alias</name>
+            <version>1.0.0+</version>
+            <description>
+                Define a command alias node (kinda like a symlink).
+            </description>
+            <fields>
+                <field>
+                    <name>name</name>
+                    <version>1.0.0+</version>
+                    <description>
+                    </description>
+                    <type>String</type>
+                </field>
+                
+                <field>
+                    <name>command</name>
+                    <version>1.0.0+</version>
+                    <description>
+                    </description>
+                    <type>String</type>
+                </field>
+            </fields>
+        </class>
+    </classes>
+</model>
+
