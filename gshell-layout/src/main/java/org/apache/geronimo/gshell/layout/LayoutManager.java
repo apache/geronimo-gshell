@@ -19,11 +19,20 @@
 
 package org.apache.geronimo.gshell.layout;
 
+import org.apache.geronimo.gshell.layout.model.Layout;
+
 /**
- * ???
+ * Provies the shell with a simple mechanism to organize commands.
  *
  * @version $Rev$ $Date$
  */
 public interface LayoutManager
 {
+    Layout getLayout();
+
+    //
+    // TODO: Add lookup() command, to find a suitable command to execute from the layout.
+    //       Need to have the Command's context/env passed in to query the current location
+    //       as well as any additional search path muck
+    //
 }

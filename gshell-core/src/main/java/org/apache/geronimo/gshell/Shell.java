@@ -30,6 +30,8 @@ import org.apache.geronimo.gshell.console.IO;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 // @Component(role = Shell.class)
 public class Shell
+    implements Initializable
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -86,6 +89,16 @@ public class Shell
 
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public void initialize() throws InitializationException {
+        // Dump some debug to crapski
+        if (log.isDebugEnabled()) {
+            log.debug("Container: {}", container);
+            log.debug("Layout manager: {}", layoutManager);
+            log.debug("Command manager: {}", commandManager);
+            log.debug("Builder: {}", commandLineBuilder);
+        }
     }
 
     public Object execute(final String commandLine) throws Exception {

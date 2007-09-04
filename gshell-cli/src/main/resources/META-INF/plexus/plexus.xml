@@ -21,22 +21,43 @@
 <!-- $Rev$ $Date$ -->
 
 <plexus>
-    <!--
+    <component-discoverer-manager implementation="org.codehaus.plexus.component.discovery.DefaultComponentDiscovererManager">
+        <listeners>
+            <listener implementation="org.codehaus.plexus.component.discovery.DiscoveryListenerDescriptor">
+                <role>org.apache.geronimo.gshell.GShellPluginCollector</role>
+            </listener>
+        </listeners>
+
+        <component-discoverers>
+            <component-discoverer implementation="org.apache.geronimo.gshell.GShellPluginDiscoverer"/>
+        </component-discoverers>
+    </component-discoverer-manager>
+
     <components>
         <component>
-            <role>org.apache.geronimo.gshell.Shell</role>
-            <implementation>org.apache.geronimo.gshell.Shell</implementation>
+            <role>org.apache.geronimo.gshell.GShellPluginCollector</role>
+            <implementation>org.apache.geronimo.gshell.GShellPluginCollector</implementation>
         </component>
 
         <component>
-            <role>org.apache.geronimo.gshell.command.CommandManager</role>
-            <implementation>org.apache.geronimo.gshell.command.CommandManagerImpl</implementation>
-        </component>
-
-        <component>
-            <role>org.apache.geronimo.gshell.CommandLineBuilder</role>
-            <implementation>org.apache.geronimo.gshell.CommandLineBuilder</implementation>
+            <role>org.apache.geronimo.gshell.layout.XMLLayoutLoader</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.layout.XMLLayoutLoader</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.PlexusContainer</role>
+                    <field-name>container</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.parser.CommandLineParser</role>
+                    <field-name>parser</field-name>
+                </requirement>
+            </requirements>
+            <configuration>
+                <url>file://${gshell.home}/etc/layout.xml</url>
+            </configuration>
         </component>
     </components>
-    -->
 </plexus>

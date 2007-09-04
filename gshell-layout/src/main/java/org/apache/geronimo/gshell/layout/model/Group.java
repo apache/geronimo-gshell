@@ -25,7 +25,7 @@ import java.util.List;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * ???
+ * A group of nodes.
  *
  * @version $Rev$ $Date$
  */

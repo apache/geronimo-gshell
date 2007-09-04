@@ -19,13 +19,10 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * ???
+ * The root container for a layout tree.
  *
  * @version $Rev$ $Date$
  */
@@ -35,5 +32,12 @@ public class Layout
 {
     public Layout(final String name) {
         super(name);
+    }
+
+    /**
+     * Constructs the root layout.
+     */
+    public Layout() {
+        super("/");
     }
 }

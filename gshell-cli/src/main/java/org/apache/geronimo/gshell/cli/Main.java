@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.cli;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,9 +74,6 @@ public class Main
         watch.start();
     }
 
-    private void setConsoleLogLevel(final String level) {
-        System.setProperty("gshell.log.console.level", level);
-    }
 
     @Option(name="-h", aliases={"--help"}, description="Display this help message")
     private boolean help;
@@ -84,6 +83,10 @@ public class Main
 
     @Option(name="-i", aliases={"--interactive"}, description="Run in interactive mode")
     private boolean interactive = true;
+
+    private void setConsoleLogLevel(final String level) {
+        System.setProperty("gshell.log.console.level", level);
+    }
 
     @Option(name="-d", aliases={"--debug"}, description="Enable DEBUG logging output")
     private void setDebug(boolean flag) {

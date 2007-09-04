@@ -50,8 +50,8 @@ public class BasicModelValidationTest
     }
     
     public void testDumpLayout1() throws Exception {
-        Layout layout = new Layout("default");
-
+        Layout layout = new Layout();
+        
         layout.nodes().add(new Command("foo", "bar"));
         layout.nodes().add(new Alias("f", "foo"));
 

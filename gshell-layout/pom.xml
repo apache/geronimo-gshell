@@ -43,23 +43,16 @@
             <artifactId>gshell-api</artifactId>
             <version>${pom.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-component-api</artifactId>
+            <artifactId>plexus-container-default</artifactId>
         </dependency>
-
+        
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
         </dependency>
-        
-        <!--
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-        </dependency>
-        -->
         
         <dependency>
             <groupId>junit</groupId>

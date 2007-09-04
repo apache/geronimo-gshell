@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.layout.model;
 
 /**
- * ???
+ * The rudimentary elemnet of a layout.
  *
  * @version $Rev$ $Date$
  */

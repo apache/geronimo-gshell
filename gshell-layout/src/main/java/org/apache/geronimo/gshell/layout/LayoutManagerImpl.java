@@ -19,10 +19,21 @@
 
 package org.apache.geronimo.gshell.layout;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.annotations.Annotations;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.apache.geronimo.gshell.layout.model.Alias;
+import org.apache.geronimo.gshell.layout.model.Command;
+import org.apache.geronimo.gshell.layout.model.Layout;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +42,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+// @Component(role = LayoutManager.class)
 public class LayoutManagerImpl
     implements LayoutManager, Initializable
 {
@@ -39,9 +51,62 @@ public class LayoutManagerImpl
     // @Requirement
     private PlexusContainer container;
 
+    private Layout layout;
+    
     public void initialize() throws InitializationException {
         //
-        // TODO: Load up the model... from configuration
+        // HACK: For now just hard code it... Really need to expose a helper object to find the Shell's basic directory config muck
         //
+
+        String homePath = System.getProperty("gshell.home");
+        if (homePath == null) {
+            throw new InitializationException("The 'gsell.home' property must be set for the shell to function correctly");
+        }
+
+        File homeDir = new File(homePath);
+        URL url = null;
+        try {
+            url = new File(homeDir, "etc/layout.xml").toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new InitializationException("Invalid URL for layout configuration", e);
+        }
+
+        log.debug("Loading layout from XML: {}", url);
+
+        InputStream input;
+        try {
+            input = url.openStream();
+        }
+        catch (IOException e) {
+            throw new InitializationException("Failed to initialize the shell layout", e);
+        }
+
+        // Setup the XStream marshallar and configure it with the aliases for the model we are working with
+        XStream xs = new XStream(new DomDriver());
+        Annotations.configureAliases(xs, Layout.class, Command.class, Alias.class);
+
+        Layout layout;
+        try {
+            layout = (Layout)xs.fromXML(input);
+            
+            assert layout != null;
+        }
+        finally {
+            try {
+                input.close();
+            }
+            catch (IOException ignore) {}
+        }
+
+        log.debug("Loaded layout: {}", layout);
+
+        //
+        // TODO: Do some kind post-parsing validation or someting?
+
+        this.layout = layout;
+    }
+
+    public Layout getLayout() {
+        return layout;
     }
 }

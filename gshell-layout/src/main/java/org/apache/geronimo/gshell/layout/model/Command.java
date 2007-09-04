@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.layout.model;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * ???
+ * A command instance.
  *
  * @version $Rev$ $Date$
  */

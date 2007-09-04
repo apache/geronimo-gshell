@@ -20,20 +20,18 @@
 
 <!-- $Rev$ $Date$ -->
 
-<component-set>
-    <components>
-        <component>
-            <role>org.apache.geronimo.gshell.layout.LayoutManager</role>
-            <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.layout.LayoutManagerImpl</implementation>
-            <instantiation-strategy>singleton</instantiation-strategy>
-            <lifecycle-handler>plexus</lifecycle-handler>
-            <requirements>
-                <requirement>
-                    <role>org.codehaus.plexus.PlexusContainer</role>
-                    <field-name>container</field-name>
-                </requirement>
-            </requirements>
-        </component>
-    </components>
-</component-set>
+<layout>
+    <name>/</name>
+
+    <nodes>
+        <command>
+            <name>help</name>
+            <implementation>org.apache.geronimo.gshell.commands.buildins.HelpCommand</implementation>
+        </command>
+
+        <alias>
+            <name>?</name>
+            <command>/help</command>
+        </alias>
+    </nodes>
+</layout>
