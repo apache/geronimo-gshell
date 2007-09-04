@@ -28,13 +28,16 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.VariablesImpl;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Set a variable or property.
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="set")
 public class SetCommand
     extends CommandSupport
 {

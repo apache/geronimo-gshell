@@ -24,12 +24,14 @@ import java.util.Iterator;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandManager;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.common.StopWatch;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
+import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
@@ -40,25 +42,25 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-// @Component(role = Shell.class)
+@Component(role = Shell.class)
 public class Shell
     implements Initializable
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    // @Requirement
+    @Requirement
     private IO io;
 
-    // @Requirement
+    @Requirement
     private PlexusContainer container;
 
-    // @Requirement
+    @Requirement
     private LayoutManager layoutManager;
 
-    // @Requirement
+    @Requirement
     private CommandManager commandManager;
 
-    // @Requirement
+    @Requirement
     private CommandLineBuilder commandLineBuilder;
 
     private Variables variables = new VariablesImpl();

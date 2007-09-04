@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.ASTExpression;
 import org.apache.geronimo.gshell.parser.ASTOpaqueString;
@@ -30,7 +31,8 @@ import org.apache.geronimo.gshell.parser.ASTPlainString;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
-import org.apache.geronimo.gshell.common.Arguments;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.evaluator.EvaluatorException;
 import org.codehaus.plexus.evaluator.ExpressionEvaluator;
 import org.codehaus.plexus.evaluator.ExpressionSource;
@@ -42,16 +44,16 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-// @Component(role=ExecutingVisitor.class)
+@Component(role=ExecutingVisitor.class)
 public class ExecutingVisitor
     implements CommandLineParserVisitor
 {
     private static final Logger log = LoggerFactory.getLogger(ExecutingVisitor.class);
 
-    // @Requirement
+    @Requirement
     private Shell shell;
 
-    // @Requirement
+    @Requirement
     private ExpressionEvaluator evaluator;
 
     public Object visit(final SimpleNode node, final Object data) {

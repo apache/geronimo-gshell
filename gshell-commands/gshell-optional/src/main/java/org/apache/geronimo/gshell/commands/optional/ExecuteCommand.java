@@ -25,12 +25,15 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.common.io.PumpStreamHandler;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.Command;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Execute system processes.
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="exec")
 public class ExecuteCommand
     extends CommandSupport
 {

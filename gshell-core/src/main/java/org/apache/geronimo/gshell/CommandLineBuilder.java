@@ -26,6 +26,8 @@ import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,15 +37,15 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-// @Component(role=CommandLineBuilder.class)
+@Component(role=CommandLineBuilder.class)
 public class CommandLineBuilder
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    // @Requirement
+    @Requirement
     private PlexusContainer container;
 
-    // @Requirement
+    @Requirement
     private CommandLineParser parser;
 
     private ASTCommandLine parse(final String input) throws ParseException {

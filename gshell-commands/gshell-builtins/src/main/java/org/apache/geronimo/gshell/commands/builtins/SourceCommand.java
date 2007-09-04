@@ -29,17 +29,21 @@ import java.net.URL;
 
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Read and execute commands from a file/url in the current shell environment.
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="source")
 public class SourceCommand
     extends CommandSupport
 {
-    // @Requirement
+    @Requirement
     private Shell shell;
 
     @Argument(required=true, description="Source file")

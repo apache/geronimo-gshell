@@ -32,6 +32,8 @@ import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -43,7 +45,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-// @Component(role=CommandManager.class)
+@Component(role=CommandManager.class)
 public class CommandManagerImpl
     implements CommandManager, Initializable
 {
@@ -53,7 +55,7 @@ public class CommandManagerImpl
 
     private Map<String,CommandDefinition> commandAliasMap = new HashMap<String,CommandDefinition>();
 
-    // @Requirement
+    @Requirement
     private PlexusContainer container;
 
     public void initialize() throws InitializationException {

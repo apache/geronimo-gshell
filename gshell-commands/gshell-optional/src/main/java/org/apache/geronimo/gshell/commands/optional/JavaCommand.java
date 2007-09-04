@@ -25,7 +25,9 @@ import java.util.List;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.common.Arguments;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Execute a Java standard application.
@@ -36,6 +38,7 @@ import org.apache.geronimo.gshell.common.Arguments;
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="java")
 public class JavaCommand
     extends CommandSupport
 {

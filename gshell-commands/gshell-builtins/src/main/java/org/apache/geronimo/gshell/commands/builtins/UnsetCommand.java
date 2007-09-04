@@ -25,13 +25,16 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.VariablesImpl;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Unset a variable or property.
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="exit")
 public class UnsetCommand
     extends CommandSupport
 {

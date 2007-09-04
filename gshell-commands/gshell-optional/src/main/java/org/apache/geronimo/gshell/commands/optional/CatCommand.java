@@ -32,13 +32,16 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.Command;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Concatenate and print files and/or URLs.
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="cat")
 public class CatCommand
     extends CommandSupport
 {

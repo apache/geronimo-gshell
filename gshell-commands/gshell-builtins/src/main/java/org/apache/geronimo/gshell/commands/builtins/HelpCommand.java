@@ -19,21 +19,25 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.common.Arguments;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Display help
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="help")
 public class HelpCommand
     extends CommandSupport
 {
-    // @Requirement
+    @Requirement
     private CommandManager commandManager;
 
     public HelpCommand() {

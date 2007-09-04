@@ -22,18 +22,19 @@ package org.apache.geronimo.gshell;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.geronimo.gshell.command.Environment;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.geronimo.gshell.command.Environment;
 
 /**
  * The default/standard/whatever implementation of {@link Environment}.
  *
  * @version $Rev$ $Date$
  */
-// @Component(role=Environment.class)
+@Component(role=Environment.class)
 public class EnvironmentImpl
     implements Environment, Initializable
 {

@@ -25,13 +25,16 @@ import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.console.Console;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="script")
 public class ScriptCommand
     extends CommandSupport
 {

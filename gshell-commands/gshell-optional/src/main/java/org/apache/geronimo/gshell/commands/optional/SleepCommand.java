@@ -21,12 +21,15 @@ package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.Command;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Sleep... zzzZ
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="sleep")
 public class SleepCommand
     extends CommandSupport
 {

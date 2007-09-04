@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.Command;
+import org.codehaus.plexus.component.annotations.Component;
 
 //
 // HACK: This is a temporary to handle shells which need to keep around after running
@@ -31,6 +33,7 @@ import org.apache.geronimo.gshell.command.CommandSupport;
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="wait")
 public class WaitCommand
     extends CommandSupport
 {

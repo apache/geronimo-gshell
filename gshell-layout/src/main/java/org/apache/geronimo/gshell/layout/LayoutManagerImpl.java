@@ -32,7 +32,8 @@ import org.apache.geronimo.gshell.command.Environment;
 import org.apache.geronimo.gshell.layout.model.Alias;
 import org.apache.geronimo.gshell.layout.model.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;
-
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
@@ -43,13 +44,13 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-// @Component(role = LayoutManager.class)
+@Component(role=LayoutManager.class)
 public class LayoutManagerImpl
     implements LayoutManager, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    // @Requirement
+    @Requirement
     private Environment env;
 
     private Layout layout;

@@ -19,11 +19,8 @@
 
 package org.apache.geronimo.gshell;
 
-import java.io.Reader;
-
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.DefaultComponentDiscoverer;
-import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +29,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-// @Component(role=GShellPluginDiscoverer.class)
+@Component(role=GShellPluginDiscoverer.class)
 public class GShellPluginDiscoverer
     extends DefaultComponentDiscoverer// AbstractComponentDiscoverer
 {

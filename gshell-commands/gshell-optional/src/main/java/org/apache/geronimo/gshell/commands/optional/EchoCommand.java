@@ -25,12 +25,15 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.Command;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * A simple command to <em>echo</em> all given arguments to the commands standard output.
  *
  * @version $Rev$ $Date$
  */
+@Component(role= Command.class, hint="echo")
 public class EchoCommand
     extends CommandSupport
 {

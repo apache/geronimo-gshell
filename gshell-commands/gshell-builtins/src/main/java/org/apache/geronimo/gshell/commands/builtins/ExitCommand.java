@@ -21,13 +21,16 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Exit the current shell.
  *
  * @version $Rev$ $Date$
  */
+@Component(role=Command.class, hint="exit")
 public class ExitCommand
     extends CommandSupport
 {
