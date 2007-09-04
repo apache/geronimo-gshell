@@ -23,6 +23,7 @@
 <model>
     <id>layout</id>
     <name>Layout</name>
+    
     <description>
         Contains the definition of a command/filesystem-like layout.
     </description>
@@ -33,122 +34,127 @@
             <value>org.apache.geronimo.gshell.layout.model</value>
         </default>
     </defaults>
-    
-    <classes>
-        <!--
-        FIXME: This should be abstract, but Modello generates things like "new Node();" in teh xpp3 stuff :-(
-        
-        <class java.abstract="true">
-        -->
-        <class>
+
+    <interfaces>
+        <interface>
             <name>Node</name>
             <version>1.0.0+</version>
-            <description>
-                Support for layout nodes
-            </description>
+            <description>TODO</description>
+            <codeSegments>
+                <codeSegment>
+                    <version>1.0.0+</version>
+                    <code><![CDATA[
+                        /**
+                         * Returns the name of the current node.
+                         *
+                         * @return The name of the node; never null.
+                         */
+                        String getName();
+                    ]]></code>
+                </codeSegment>
+            </codeSegments>
+        </interface>
+    </interfaces>
+    
+    <classes>
+        <class>
+            <name>NodeSupport</name>
+            <interfaces>
+                <interface>Node</interface>
+            </interfaces>
+            <version>1.0.0+</version>
+            <description>TODO</description>
             <fields>
+                <field>
+                    <name>name</name>
+                    <version>1.0.0+</version>
+                    <description>TODO</description>
+                    <type>String</type>
+                    <required>true</required>
+                </field>
+            </fields>
+        </class>
+
+        <class>
+            <name>NodeGroup</name>
+            <superClass>NodeSupport</superClass>
+            <version>1.0.0+</version>
+            <description>TODO</description>
+            <fields>
+                <field>
+                    <name>nodes</name>
+                    <version>1.0.0+</version>
+                    <description>TODO</description>
+                    <association java.use-interface="org.apache.geronimo.gshell.layout.model.Node">
+                        <type>Node</type>
+                        <multiplicity>*</multiplicity>
+                    </association>
+                </field>
+            </fields>
+        </class>
+
+        <class rootElement="true" xml.tagName="layout">
+            <name>Layout</name>
+            <superClass>NodeSupport</superClass>
+            <version>1.0.0+</version>
+            <description>TODO</description>
+            <fields>
+                <field>
+                    <name>nodes</name>
+                    <version>1.0.0+</version>
+                    <description>TODO</description>
+                    <association java.use-interface="Node">
+                        <type>Node</type>
+                        <multiplicity>*</multiplicity>
+                    </association>
+                </field>
+
                 <field>
                     <name>groups</name>
                     <version>1.0.0+</version>
-                    <description>
-                    </description>
-                    <association>
-                        <type>Group</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-                
-                <field>
-                    <name>commands</name>
-                    <version>1.0.0+</version>
-                    <description>
-                    </description>
-                    <association>
-                        <type>Command</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-                
-                <field>
-                    <name>aliases</name>
-                    <version>1.0.0+</version>
-                    <description>
-                    </description>
-                    <association>
-                        <type>Alias</type>
+                    <description>TODO</description>
+                    <association java.use-interface="Node">
+                        <type>NodeGroup</type>
                         <multiplicity>*</multiplicity>
                     </association>
                 </field>
             </fields>
         </class>
         
-        <class rootElement="true" xml.tagName="layout">
-            <name>Layout</name>
-            <superClass>Node</superClass>
-            <version>1.0.0+</version>
-            <description>
-                The root node of the layout.
-            </description>
-        </class>
-        
-        <class>
-            <name>Group</name>
-            <superClass>Node</superClass>
-            <version>1.0.0+</version>
-            <description>
-                Provides a grouping mechanism for layout nodes.
-            </description>
-        </class>
-        
+        <!--
         <class>
             <name>Command</name>
+            <superClass>Node</superClass>
             <version>1.0.0+</version>
-            <description>
-                Defines a command node (kinda like a file).
-            </description>
+            <description>TODO</description>
             <fields>
                 <field>
-                    <name>name</name>
+                    <name>j</name>
+                    <alias>className</alias>
                     <version>1.0.0+</version>
-                    <description>
-                    </description>
+                    <description>TODO</description>
                     <type>String</type>
-                </field>
-                
-                <field>
-                    <name>implementation</name>
-                    <version>1.0.0+</version>
-                    <description>
-                    </description>
-                    <type>String</type>
+                    <required>true</required>
                 </field>
             </fields>
         </class>
         
         <class>
             <name>Alias</name>
+            <superClass>Node</superClass>
             <version>1.0.0+</version>
-            <description>
-                Define a command alias node (kinda like a symlink).
-            </description>
+            <description>TODO</description>
             <fields>
-                <field>
-                    <name>name</name>
-                    <version>1.0.0+</version>
-                    <description>
-                    </description>
-                    <type>String</type>
-                </field>
-                
                 <field>
                     <name>command</name>
                     <version>1.0.0+</version>
-                    <description>
-                    </description>
+                    <description>TODO</description>
                     <type>String</type>
+                    <required>true</required>
                 </field>
             </fields>
         </class>
+        -->
     </classes>
 </model>
 

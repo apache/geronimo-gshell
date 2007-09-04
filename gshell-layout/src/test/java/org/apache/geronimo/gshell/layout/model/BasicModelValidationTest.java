@@ -19,8 +19,10 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.annotations.Annotations;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.layout.model.io.xpp3.LayoutXpp3Reader;
 
 /**
  * Basic validation of the layout model muck.
@@ -30,14 +32,37 @@ import org.apache.geronimo.gshell.layout.model.io.xpp3.LayoutXpp3Reader;
 public class BasicModelValidationTest
     extends TestCase
 {
-    LayoutXpp3Reader reader;
+    private XStream xs;
 
     protected void setUp() throws Exception {
-        reader = new LayoutXpp3Reader();
+        xs = new XStream(new DomDriver());
+        Annotations.configureAliases(xs, Layout.class, Command.class, Alias.class);
     }
 
     public void testReadLayout1() throws Exception {
-        Layout layout = reader.read(getClass().getResourceAsStream("layout1.xml"), true);
+        Layout layout = (Layout) xs.fromXML(getClass().getResourceAsStream("layout1.xml"));
         assertNotNull(layout);
+    }
+
+    public void testReadLayout2() throws Exception {
+        Layout layout = (Layout) xs.fromXML(getClass().getResourceAsStream("layout2.xml"));
+        assertNotNull(layout);
+    }
+    
+    public void testDumpLayout1() throws Exception {
+        Layout layout = new Layout("default");
+
+        layout.nodes().add(new Command("foo", "bar"));
+        layout.nodes().add(new Alias("f", "foo"));
+
+        Group g = new  Group("test");
+        g.nodes().add(new Command("a", "b"));
+        g.nodes().add(new Command("c", "d"));
+
+        layout.nodes().add(g);
+        
+        String xml = xs.toXML(layout);
+
+        System.err.println("XML: " + xml);
     }
 }
