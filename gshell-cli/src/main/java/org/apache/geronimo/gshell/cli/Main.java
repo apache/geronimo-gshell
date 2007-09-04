@@ -191,8 +191,6 @@ public class Main
 
         PlexusContainer container = new DefaultPlexusContainer(config);
 
-        System.err.println("Logger manager: " + container.getLoggerManager());
-
         //
         // TODO: We need to pass in our I/O context to the container directly
         //
