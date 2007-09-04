@@ -109,6 +109,10 @@ public class LayoutManagerImpl
     }
 
     public Layout getLayout() {
+        if (layout == null) {
+            throw new IllegalStateException("Layout has not been initalized");
+        }
+        
         return layout;
     }
 }
