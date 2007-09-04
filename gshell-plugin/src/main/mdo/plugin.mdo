@@ -43,6 +43,13 @@
             <version>1.0.0+</version>
             <description>TODO</description>
             <fields>
+                <field xml.attribute="true">
+                    <name>id</name>
+                    <version>1.0.0+</version>
+                    <description>TODO</description>
+                    <type>String</type>
+                </field>
+                
                 <field>
                     <name>description</name>
                     <version>1.0.0+</version>

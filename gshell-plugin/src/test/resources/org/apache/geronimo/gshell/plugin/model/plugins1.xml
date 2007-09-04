@@ -20,7 +20,7 @@
 
 <!-- $Rev$ $Date$ -->
 
-<plugin>
+<plugin id="foo">
     <name>testing</name>
     
     <commands>

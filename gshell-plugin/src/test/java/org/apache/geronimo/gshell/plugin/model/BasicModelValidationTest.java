@@ -19,8 +19,11 @@
 
 package org.apache.geronimo.gshell.plugin.model;
 
+import java.io.StringWriter;
+
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.plugin.model.io.xpp3.PluginXpp3Reader;
+import org.apache.geronimo.gshell.plugin.model.io.xpp3.PluginXpp3Writer;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 /**
@@ -35,6 +38,8 @@ public class BasicModelValidationTest
         PluginXpp3Reader reader = new PluginXpp3Reader();
         Plugin plugin = reader.read(getClass().getResourceAsStream("plugins1.xml"));
 
+        System.out.println(plugin.getId());
+        
         assertNotNull(plugin);
         assertEquals("testing", plugin.getName());
 
@@ -61,5 +66,16 @@ public class BasicModelValidationTest
         //
         // TODO: Validate the configuration bits...
         //
+    }
+
+    public void testDump1() throws Exception {
+        Plugin plugin = new Plugin();
+        plugin.setId("foo");
+
+        PluginXpp3Writer writer = new PluginXpp3Writer();
+        StringWriter out = new StringWriter();
+        writer.write(out, plugin);
+        
+        System.out.println(out.getBuffer());
     }
 }
