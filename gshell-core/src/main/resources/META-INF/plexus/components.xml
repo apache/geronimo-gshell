@@ -42,7 +42,7 @@
                     <field-name>commandManager</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.IO</role>
+                    <role>org.apache.geronimo.gshell.command.IO</role>
                     <field-name>io</field-name>
                 </requirement>
                 <requirement>
@@ -109,9 +109,9 @@
         HACK: This is defs not right...
         -->
         <component>
-            <role>org.apache.geronimo.gshell.IO</role>
+            <role>org.apache.geronimo.gshell.command.IO</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.IO</implementation>
+            <implementation>org.apache.geronimo.gshell.command.IO</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
@@ -120,7 +120,7 @@
         FIXME: Probably need to use a component factory and a thread-local here to properly keep track of the shell's environment
         -->
         <component>
-            <role>org.apache.geronimo.gshell.Environment</role>
+            <role>org.apache.geronimo.gshell.command.Environment</role>
             <role-hint>default</role-hint>
             <implementation>org.apache.geronimo.gshell.EnvironmentImpl</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>

@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.IO;
+import org.apache.geronimo.gshell.command.IO;
 
 /**
  * Provides the running context (or environment) for a {@link Command}.

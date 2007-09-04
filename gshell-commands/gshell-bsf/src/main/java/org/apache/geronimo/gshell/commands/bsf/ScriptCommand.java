@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.commands.bsf;
 
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
-import org.apache.geronimo.gshell.IO;
+import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;

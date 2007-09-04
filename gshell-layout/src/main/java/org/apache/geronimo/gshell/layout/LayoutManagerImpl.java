@@ -28,7 +28,7 @@ import java.net.URL;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import org.apache.geronimo.gshell.Environment;
+import org.apache.geronimo.gshell.command.Environment;
 import org.apache.geronimo.gshell.layout.model.Alias;
 import org.apache.geronimo.gshell.layout.model.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;

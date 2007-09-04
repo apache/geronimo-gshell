@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.IO;
+import org.apache.geronimo.gshell.command.IO;
 
 /**
  * Mock {@link Shell}.

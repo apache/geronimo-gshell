@@ -27,8 +27,8 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.VariablesImpl;
-import org.apache.geronimo.gshell.IO;
 
 /**
  * Set a variable or property.

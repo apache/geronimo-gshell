@@ -22,6 +22,8 @@
 
 <component-set>
     <components>
+
+        <!--
         <component>
             <role>org.apache.geronimo.gshell.layout.LayoutManager</role>
             <role-hint>default</role-hint>
@@ -35,5 +37,7 @@
                 </requirement>
             </requirements>
         </component>
+        -->
+        
     </components>
 </component-set>
