@@ -25,7 +25,9 @@
     <name>Plugin</name>
     <version>1.0.0+</version>
     
-    <description>TODO</description>
+    <description>
+        GShell command plugin descriptor model.
+    </description>
     
     <defaults>
         <default>
@@ -35,56 +37,51 @@
     </defaults>
 
     <classes>
-         <!--
-         FIXME: This should really be abstract :-(
-         -->
         <class java.abstract="true">
             <name>Element</name>
             <version>1.0.0+</version>
-            <description>TODO</description>
+            <description>
+                Represents the base element of the model.
+            </description>
             <fields>
                 <field xml.attribute="true">
                     <name>id</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                 </field>
                 
                 <field>
                     <name>description</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                 </field>
 
                 <field>
                     <name>comment</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                 </field>
 
                 <field>
                     <name>name</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                     <required>true</required>
                 </field>
             </fields>
         </class>
 
-
         <class rootElement="true" xml.tagName="plugin">
             <name>Plugin</name>
             <superClass>Element</superClass>
             <version>1.0.0+</version>
-            <description>TODO</description>
+            <description>
+                The root of the plugin descriptor.
+            </description>
             <fields>
                 <field>
                     <name>commands</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <association>
                         <type>Command</type>
                         <multiplicity>*</multiplicity>
@@ -98,13 +95,14 @@
             <name>Command</name>
             <superClass>Element</superClass>
             <version>1.0.0+</version>
-            <description>TODO</description>
+            <description>
+                Provides the basic configuration of a command.
+            </description>
             <fields>
                 <field>
                     <name>implementation</name>
                     <alias>classname</alias>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                     <required>true</required>
                 </field>
@@ -112,14 +110,12 @@
                 <field>
                     <name>configuration</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>DOM</type>
                 </field>
 
                 <field>
                     <name>requirements</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <association>
                         <type>Requirement</type>
                         <multiplicity>*</multiplicity>
@@ -135,12 +131,13 @@
         <class>
             <name>Requirement</name>
             <version>1.0.0+</version>
-            <description>TODO</description>
+            <description>
+                The Plexus requirements for the commands to be injected by the container.
+            </description>
             <fields>
                 <field>
                     <name>role</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                     <required>true</required>
                 </field>
@@ -148,14 +145,12 @@
                 <field>
                     <name>hint</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                 </field>
 
                 <field>
                     <name>field</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                     <required>true</required>
                 </field>

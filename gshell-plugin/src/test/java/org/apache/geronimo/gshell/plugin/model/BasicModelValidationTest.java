@@ -38,7 +38,7 @@ public class BasicModelValidationTest
         PluginXpp3Reader reader = new PluginXpp3Reader();
         Plugin plugin = reader.read(getClass().getResourceAsStream("plugins1.xml"));
 
-        System.out.println(plugin.getId());
+        assertEquals("foo", plugin.getId());
         
         assertNotNull(plugin);
         assertEquals("testing", plugin.getName());
