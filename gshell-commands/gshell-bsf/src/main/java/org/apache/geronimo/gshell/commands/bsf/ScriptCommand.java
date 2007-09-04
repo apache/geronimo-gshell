@@ -21,9 +21,11 @@ package org.apache.geronimo.gshell.commands.bsf;
 
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
+import org.apache.geronimo.gshell.IO;
+import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.console.Console;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
@@ -33,13 +35,23 @@ import org.apache.geronimo.gshell.console.JLineConsole;
 public class ScriptCommand
     extends CommandSupport
 {
-    @Option(name="l", aliases={"--language"}, required=true, description="Specify the scripting language")
     private String language;
 
-    @Option(name="i", aliases={"--interactive"}, description="Run interactive mode")
+    @Option(name="-l", aliases={"--language"}, required=true, description="Specify the scripting language")
+    private void setLanguage(final String language) {
+        assert language != null;
+        
+        if (!BSFManager.isLanguageRegistered(language)) {
+            throw new RuntimeException("Language is not registered: " + language);
+        }
+
+        this.language = language;
+    }
+
+    @Option(name="-i", aliases={"--interactive"}, description="Run interactive mode")
     private boolean interactive;
 
-    @Option(name="e", aliases={"--expression"}, description="Evaluate the given expression")
+    @Option(name="-e", aliases={"--expression"}, description="Evaluate the given expression")
     private String expression;
 
     public ScriptCommand() {
@@ -50,10 +62,6 @@ public class ScriptCommand
         //
         // TODO: When given a file/url, try to figure out language from ext if language not given
         //
-
-        if (!BSFManager.isLanguageRegistered(language)) {
-            throw new RuntimeException("Language is not registered: " + language);
-        }
 
         BSFManager manager = new BSFManager();
         final BSFEngine engine = manager.loadScriptingEngine(language);
@@ -75,8 +83,39 @@ public class ScriptCommand
         }
 
         if (this.interactive) {
-            InteractiveInterpreter interp = new InteractiveInterpreter(new JLineConsole(getIO()), engine, language);
-            interp.run();
+            log.debug("Starting interactive console...");
+            
+            IO io = getIO();
+            
+            Console.Executor executor = new Console.Executor() {
+                public Result execute(final String line) throws Exception {
+                    // Execute unless the line is just blank
+                    
+                    if (!line.trim().equals("")) {
+                        engine.exec("<unknown>", 1, 1, line);
+                    }
+
+                    return Result.CONTINUE;
+                }
+            };
+
+            JLineConsole runner = new JLineConsole(executor, io);
+
+            runner.setErrorHandler(new Console.ErrorHandler() {
+                public Result handleError(final Throwable error) {
+                    log.error("Script evalutation failed: " + error, error);
+
+                    return Result.CONTINUE;
+                }
+            });
+
+            runner.setPrompter(new Console.Prompter() {
+                public String prompt() {
+                    return language + "> ";
+                }
+            });
+
+            runner.run();
         }
 
         return SUCCESS;

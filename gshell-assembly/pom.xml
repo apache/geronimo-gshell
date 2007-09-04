@@ -69,20 +69,6 @@
             <version>${pom.version}</version>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-bsf</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-vfs</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-        -->
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -117,5 +103,31 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>full</id>
+            
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.geronimo.gshell.commands</groupId>
+                    <artifactId>gshell-bsf</artifactId>
+                    <version>${pom.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.beanshell</groupId>
+                    <artifactId>bsh</artifactId>
+                    <version>2.0b4</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.geronimo.gshell.commands</groupId>
+                    <artifactId>gshell-vfs</artifactId>
+                    <version>${pom.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>

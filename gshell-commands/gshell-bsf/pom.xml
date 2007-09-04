@@ -38,9 +38,20 @@
     </description>
     
     <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-api</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-console</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
         <!--
-            FIXME: Need to abstract InteractiveConsole and move it to API, until
-                   then depend on core.
+        NOTE: Currently only here to pick some the Jline conosole bits which should eventually be relocated.
         -->
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>

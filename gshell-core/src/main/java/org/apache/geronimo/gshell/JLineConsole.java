@@ -44,10 +44,11 @@ public class JLineConsole
     // TODO: Pass in the terminal instance to be used
     //
     
-    public JLineConsole(final Executor executor, final Shell shell) throws IOException {
+    public JLineConsole(final Executor executor, final IO io) throws IOException {
         super(executor);
 
-        IO io = shell.getIO();
+        assert io != null;
+
         this.reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true));
 
         // this.completor = new CommandsMultiCompletor()

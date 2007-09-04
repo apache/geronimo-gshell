@@ -224,6 +224,8 @@ public class Main
         else if (interactive) {
             log.debug("Starting interactive console");
 
+            IO io = shell.getIO();
+            
             Console.Executor executor = new Console.Executor() {
                 public Result execute(String line) throws Exception {
                     try {
@@ -237,7 +239,7 @@ public class Main
                 }
             };
 
-            JLineConsole runner = new JLineConsole(executor, shell);
+            JLineConsole runner = new JLineConsole(executor, io);
 
             runner.setErrorHandler(new Console.ErrorHandler() {
                 public Result handleError(Throwable error) {

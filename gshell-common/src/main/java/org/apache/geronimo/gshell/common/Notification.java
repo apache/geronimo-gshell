@@ -29,8 +29,16 @@ public abstract class Notification
 {
     ///CLOVER:OFF
 
+    public Notification(final String msg, final Throwable cause) {
+        super(msg, cause);
+    }
+
     public Notification(final String msg) {
         super(msg);
+    }
+
+    public Notification(final Throwable cause) {
+        super(cause);
     }
 
     public Notification() {
