@@ -17,15 +17,11 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.optional.util;
+package org.apache.geronimo.gshell.common.io;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.apache.geronimo.gshell.IO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 //
 // Based on Apache Ant 1.6.5
@@ -38,8 +34,6 @@ import org.slf4j.LoggerFactory;
  */
 public class PumpStreamHandler
 {
-    private static final Logger log = LoggerFactory.getLogger(PumpStreamHandler.class);
-
     private InputStream in;
 
     private OutputStream out;
@@ -64,10 +58,6 @@ public class PumpStreamHandler
         this.in = in;
         this.out = out;
         this.err = err;
-    }
-
-    public PumpStreamHandler(final IO io) {
-        this(io.inputStream, io.outputStream, io.errorStream);
     }
 
     public PumpStreamHandler(final OutputStream out, final OutputStream err) {

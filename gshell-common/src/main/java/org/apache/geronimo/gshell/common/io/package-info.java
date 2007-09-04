@@ -17,23 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.common;
-
 /**
- * Thrown to indicate a notification state.
+ * Common bits to support IO stuff.
  *
  * @version $Rev$ $Date$
  */
-public abstract class Notification
-    extends Error
-{
-    ///CLOVER:OFF
-
-    public Notification(final String msg) {
-        super(msg);
-    }
-
-    public Notification() {
-        super();
-    }
-}
+package org.apache.geronimo.gshell.common.io;

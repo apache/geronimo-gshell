@@ -17,14 +17,11 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.optional.util;
+package org.apache.geronimo.gshell.common.io;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 //
 // Based on Apache Ant 1.6.5
@@ -38,8 +35,6 @@ import org.slf4j.LoggerFactory;
 public class StreamPumper
     implements Runnable
 {
-    private static final Logger log = LoggerFactory.getLogger(StreamPumper.class);
-
     private InputStream in;
 
     private OutputStream out;
