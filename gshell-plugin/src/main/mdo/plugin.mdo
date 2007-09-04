@@ -38,12 +38,7 @@
          <!--
          FIXME: This should really be abstract :-(
          -->
-        <class java.abstract="true"
-               java.generate-add="false"
-               java.generate-remove="false"
-               java.generate-break="false"
-               java.generate-create="false">
-            
+        <class java.abstract="true">
             <name>Element</name>
             <version>1.0.0+</version>
             <description>TODO</description>

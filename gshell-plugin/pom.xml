@@ -83,6 +83,11 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--
+            FIXME: For this to work correctly with abstract classes for xpp3-reader generation
+                   we need to get modello patched up...
+            -->
             
             <plugin>
                 <groupId>org.codehaus.modello</groupId>
