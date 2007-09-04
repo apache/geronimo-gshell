@@ -21,11 +21,11 @@ package org.apache.geronimo.gshell.commands.bsf;
 
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
-import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -56,10 +56,6 @@ public class ScriptCommand
 
     @Option(name="-e", aliases={"--expression"}, description="Evaluate the given expression")
     private String expression;
-
-    public ScriptCommand() {
-        super("script");
-    }
 
     protected Object doExecute() throws Exception {
         //

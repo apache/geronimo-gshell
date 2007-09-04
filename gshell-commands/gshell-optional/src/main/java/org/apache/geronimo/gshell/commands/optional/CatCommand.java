@@ -30,11 +30,11 @@ import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.command.Command;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Concatenate and print files and/or URLs.
@@ -50,10 +50,6 @@ public class CatCommand
 
     @Argument(description="File or URL", required=true)
     private List<String> args;
-
-    public CatCommand() {
-        super("cat");
-    }
 
     protected String getUsage() {
         return super.getUsage() + " [<file|url> ...]";

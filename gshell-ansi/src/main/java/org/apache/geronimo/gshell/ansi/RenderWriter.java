@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.ansi;
 
-import java.io.PrintWriter;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.Writer;
 
 /**

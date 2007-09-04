@@ -65,9 +65,24 @@
                     <field-name>parser</field-name>
                 </requirement>
             </requirements>
+
+            <!--
+            TODO: Really should expose this URL to the user... or maybe have a simple config.xml (or props even) which
+                  it can be pulled from.
+            -->
+            
             <configuration>
                 <url>file://${gshell.home}/etc/layout.xml</url>
             </configuration>
+        </component>
+
+        <!--
+        HACK: This is a massive hackinstine just to get things moving along... and will be tossed as soon as a palatable solution crosses my path.
+        -->
+        
+        <component>
+            <role>org.apache.geronimo.gshell.command.IO</role>
+            <implementation>org.apache.geronimo.gshell.command.IO</implementation>
         </component>
     </components>
 </plexus>

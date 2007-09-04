@@ -37,10 +37,6 @@ public class ExitCommand
     @Argument(description="System exit code")
     private int exitCode = 0;
 
-    public ExitCommand() {
-        super("exit");
-    }
-
     protected String getUsage() {
         return super.getUsage() + " [code]";
     }

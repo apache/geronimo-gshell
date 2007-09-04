@@ -22,10 +22,10 @@ package org.apache.geronimo.gshell.commands.optional;
 import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.common.io.PumpStreamHandler;
-import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.common.io.PumpStreamHandler;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -41,11 +41,7 @@ public class ExecuteCommand
 
     @Argument(description="Argument", required=true)
     private List<String> args;
-
-    public ExecuteCommand() {
-        super("exec");
-    }
-
+    
     protected String getUsage() {
         return super.getUsage() + " <command> (<arg>)*";
     }

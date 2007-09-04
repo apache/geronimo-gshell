@@ -23,7 +23,6 @@ import java.util.Iterator;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
@@ -58,9 +57,6 @@ public class Shell
     private LayoutManager layoutManager;
 
     @Requirement
-    private CommandManager commandManager;
-
-    @Requirement
     private CommandLineBuilder commandLineBuilder;
 
     private Variables variables = new VariablesImpl();
@@ -89,16 +85,11 @@ public class Shell
         return io;
     }
 
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
-
     public void initialize() throws InitializationException {
         // Dump some debug to crapski
         if (log.isDebugEnabled()) {
             log.debug("Container: {}", container);
             log.debug("Layout manager: {}", layoutManager);
-            log.debug("Command manager: {}", commandManager);
             log.debug("Builder: {}", commandLineBuilder);
         }
     }
@@ -127,8 +118,7 @@ public class Shell
 
         while (iter.hasNext()) {
             String name = iter.next();
-
-            log.debug("    " + name + "=" + vars.get(name));
+            log.debug("    {}={}", name, vars.get(name));
         }
     }
 
@@ -148,11 +138,6 @@ public class Shell
 
         final PlexusContainer childContainer = container.createChildContainer("command-invocation", container.getContainerRealm());
         final Command command = (Command)childContainer.lookup(Command.class, commandName);
-
-        //
-        // TODO: DI all bits if we can, then free up "context" to replace "category" as a term
-        //
-
         final Variables vars = new VariablesImpl(getVariables());
 
         command.init(new CommandContext() {

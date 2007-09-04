@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Hook to get some details about the Plexus components which are loaded.
  * 
  * @version $Rev$ $Date$
  */
@@ -39,87 +39,6 @@ public class GShellPluginCollector
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    /*
-    private Set pluginsInProcess = new HashSet();
-
-    private Map pluginDescriptors = new HashMap();
-
-    private Map pluginIdsByPrefix = new HashMap();
-
-    // ----------------------------------------------------------------------
-    // Mojo discovery
-    // ----------------------------------------------------------------------
-    
-    public void componentDiscovered( ComponentDiscoveryEvent event )
-    {
-        ComponentSetDescriptor componentSetDescriptor = event.getComponentSetDescriptor();
-
-        if ( componentSetDescriptor instanceof PluginDescriptor )
-        {
-            PluginDescriptor pluginDescriptor = (PluginDescriptor) componentSetDescriptor;
-
-            // TODO: see comment in getPluginDescriptor
-            String key = Plugin.constructKey( pluginDescriptor.getGroupId(), pluginDescriptor.getArtifactId() );
-
-            if ( !pluginsInProcess.contains( key ) )
-            {
-                pluginsInProcess.add( key );
-
-                getLogger().debug( this + ": Discovered plugin: " + key );
-
-                pluginDescriptors.put( key, pluginDescriptor );
-
-                // TODO: throw an (not runtime) exception if there is a prefix overlap - means doing so elsewhere
-                // we also need to deal with multiple versions somehow - currently, first wins
-                if ( !pluginIdsByPrefix.containsKey( pluginDescriptor.getGoalPrefix() ) )
-                {
-                    pluginIdsByPrefix.put( pluginDescriptor.getGoalPrefix(), pluginDescriptor );
-                }
-            }
-        }
-    }
-
-    public String getId()
-    {
-        return "maven-plugin-collector";
-    }
-
-    public PluginDescriptor getPluginDescriptor( Plugin plugin )
-    {
-        // TODO: include version, but can't do this in the plugin manager as it is not resolved to the right version
-        // at that point. Instead, move the duplication check to the artifact container, or store it locally based on
-        // the unresolved version?
-        return (PluginDescriptor) pluginDescriptors.get( plugin.getKey() );
-    }
-
-    public boolean isPluginInstalled( Plugin plugin )
-    {
-        // TODO: see comment in getPluginDescriptor
-        return pluginDescriptors.containsKey( plugin.getKey() );
-    }
-
-    public PluginDescriptor getPluginDescriptorForPrefix( String prefix )
-    {
-        return (PluginDescriptor) pluginIdsByPrefix.get( prefix );
-    }
-
-    public void flushPluginDescriptor( Plugin plugin )
-    {
-        pluginsInProcess.remove( plugin.getKey() );
-        pluginDescriptors.remove( plugin.getKey() );
-
-        for ( Iterator it = pluginIdsByPrefix.entrySet().iterator(); it.hasNext(); )
-        {
-            Map.Entry entry = (Map.Entry) it.next();
-
-            if ( plugin.getKey().equals( entry.getValue() ) )
-            {
-                it.remove();
-            }
-        }
-    }
-    */
-
     public String getId() {
         return ID;
     }

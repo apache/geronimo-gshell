@@ -32,23 +32,9 @@ public interface Command
     /** Standard command failure status code. */
     int FAILURE = -1;
 
-    String getName();
-
     void init(CommandContext context); // throws Exception ?
 
     Object execute(Object... args) throws Exception;
     
-    void abort(); // throws Exception ?
-    
     void destroy(); // throws Exception ?
-
-    //
-    // 'help' command helpers to allow external inspection of command help
-    //
-
-    // String usage() // single line used to render help page
-
-    // String about() // single line to describe the command
-
-    // String help() // full help page (includes usage + about + command line options)
 }

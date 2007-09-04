@@ -23,13 +23,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.geronimo.gshell.VariablesImpl;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.VariablesImpl;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.Variables;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -52,10 +52,6 @@ public class SetCommand
 
     @Argument(description="Variable definition")
     private List<String> args;
-
-    public SetCommand() {
-        super("set");
-    }
 
     protected String getUsage() {
         return super.getUsage() + " (<name[=value>])*";

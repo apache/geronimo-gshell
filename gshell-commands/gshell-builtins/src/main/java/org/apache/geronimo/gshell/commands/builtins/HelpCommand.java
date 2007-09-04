@@ -19,14 +19,15 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import java.util.List;
+
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandDefinition;
-import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.common.Arguments;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
  * Display help
@@ -38,29 +39,20 @@ public class HelpCommand
     extends CommandSupport
 {
     @Requirement
-    private CommandManager commandManager;
-
-    public HelpCommand() {
-        super("help");
-    }
+    private PlexusContainer container;
 
     protected Object doExecute() throws Exception {
+        assert container != null;
+
         IO io = getIO();
 
         io.out.println("Available commands:");
 
-        for (CommandDefinition def : commandManager.commandDefinitions()) {
+        List<ComponentDescriptor> list = container.getComponentDescriptorList(Command.class.getName());
+
+        for (ComponentDescriptor desc : list) {
             io.out.print("  ");
-            io.out.print(def.getName());
-
-            // Include a list of aliases
-            String[] aliases = def.getAliases();
-            if (aliases.length != 0) {
-                io.out.print(" ( ");
-                io.out.print(Arguments.asString(aliases));
-                io.out.print(" )");
-            }
-
+            io.out.print(desc.getRoleHint());
             io.out.println();
         }
 

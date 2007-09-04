@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.command;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.command.IO;
 
 /**
  * Unit tests for the {@link IO} class.

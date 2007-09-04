@@ -21,12 +21,12 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import java.util.List;
 
+import org.apache.geronimo.gshell.VariablesImpl;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.VariablesImpl;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -49,14 +49,6 @@ public class UnsetCommand
 
     @Argument(required=true, description="Variable name")
     private List<String> args;
-
-    public UnsetCommand() {
-        super("unset");
-    }
-
-    protected String getUsage() {
-        return super.getUsage() + " (<name>)+";
-    }
 
     protected Object doExecute() throws Exception {
         for (String arg : args) {

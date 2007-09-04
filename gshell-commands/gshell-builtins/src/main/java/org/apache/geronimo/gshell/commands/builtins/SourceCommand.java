@@ -49,14 +49,6 @@ public class SourceCommand
     @Argument(required=true, description="Source file")
     private File file;
 
-    public SourceCommand() {
-        super("source");
-    }
-
-    public void setShell(final Shell shell) {
-        this.shell = shell;
-    }
-
     protected String getUsage() {
         return super.getUsage() + " <file|url>";
     }

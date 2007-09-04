@@ -41,10 +41,6 @@ public class CopyCommand
     @Argument(index=1, required=true, description="Target")
     private String targetName;
 
-    public CopyCommand() {
-        super("copy");
-    }
-
     protected String getUsage() {
         return super.getUsage() + " <source> <target>";
     }

@@ -33,11 +33,11 @@ public abstract class VFSCommandSupport
 {
     private FileSystemManager fsManager;
 
-    protected VFSCommandSupport(final String name) {
-        super(name);
-    }
-
     protected void doInit() throws Exception {
+        //
+        // TODO: Should probably bind this pupping into the container and let plexus handle it for us
+        //
+        
         fsManager = VFS.getManager();
     }
 

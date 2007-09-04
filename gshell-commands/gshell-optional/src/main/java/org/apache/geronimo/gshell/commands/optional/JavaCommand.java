@@ -24,8 +24,8 @@ import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -50,10 +50,6 @@ public class JavaCommand
 
     @Argument(index=1, description="Arguments")
     private List<String> args;
-
-    public JavaCommand() {
-        super("java");
-    }
 
     protected String getUsage() {
         return super.getUsage() + " <classname> [arguments]";

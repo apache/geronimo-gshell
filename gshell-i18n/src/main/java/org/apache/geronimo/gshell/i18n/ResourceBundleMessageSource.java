@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.i18n;
 
-import java.util.ResourceBundle;
-import java.util.MissingResourceException;
 import java.text.MessageFormat;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.codehaus.plexus.util.StringUtils;
 

@@ -24,7 +24,6 @@ import java.util.Iterator;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
-import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.Notification;
 import org.slf4j.Logger;
@@ -40,40 +39,13 @@ public abstract class CommandSupport
 {
     protected Logger log;
 
-    private String name;
-
     private CommandContext context;
 
     @Option(name="-h", aliases={"--help"}, description="Display this help message")
     private boolean displayHelp;
 
-    protected CommandSupport(final String name) {
-        setName(name);
-    }
-
-    /**
-     * Sub-class <b>must</b> call {@link #setName(String)}.
-     */
     protected CommandSupport() {
         super();
-    }
-
-    public void setName(final String name) {
-        assert name != null;
-        
-        if (name.trim().length() == 0) {
-            throw new IllegalArgumentException("Name is empty");
-        }
-
-        this.name = name;
-    }
-
-    public String getName() {
-        if (name == null) {
-            throw new IllegalStateException("Name was not set");
-        }
-
-        return name;
     }
 
     //
@@ -99,8 +71,13 @@ public abstract class CommandSupport
             throw new IllegalStateException("Command already initalized");
         }
 
+        //
+        // FIXME: Need to get the descriptor from the env to get the bound name
+        //
+
         // Initialize logging with command name
-        log = LoggerFactory.getLogger(this.getClass().getName() + "." + getName());
+        // log = LoggerFactory.getLogger(this.getClass().getName() + "." + getName());
+        log = LoggerFactory.getLogger(getClass());
 
         log.debug("Initializing");
 
@@ -171,10 +148,6 @@ public abstract class CommandSupport
 
     protected void doDestroy() throws Exception {
         // Sub-class should override to provide custom cleanup
-    }
-
-    public void abort() {
-        // Sub-calss should override to allow for custom abort functionality
     }
 
     //
@@ -283,14 +256,25 @@ public abstract class CommandSupport
         return "[options]";
     }
 
+    //
+    // NOTE: I think this should probably just go the f away...  The usage mucko oh top too... gotta either be able
+    //       to generate that, or configure it via an annotation.  For the help, well we can add some header/footer muck
+    //       but for 95%, maybe even 99% of the folks they don't really need to override this... blah.  And really they
+    //       shouldn't cause that introduces incosistencies, which is one of the benefits of GShell... :-P
+    //
+    
     protected void displayHelp(final CommandLineProcessor clp) {
         assert clp != null;
 
         IO io = getIO();
 
-        io.out.print(getName());
-        io.out.print(" -- ");
-        io.out.println();
+        //
+        // FIXME: Need to get the command name from the env
+        //
+
+        // io.out.print(getName());
+        // io.out.print(" -- ");
+        // io.out.println();
 
         Printer printer = new Printer(clp);
         printer.printUsage(io.out);
