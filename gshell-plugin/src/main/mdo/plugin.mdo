@@ -38,7 +38,12 @@
          <!--
          FIXME: This should really be abstract :-(
          -->
-        <class>
+        <class java.abstract="true"
+               java.generate-add="false"
+               java.generate-remove="false"
+               java.generate-break="false"
+               java.generate-create="false">
+            
             <name>Element</name>
             <version>1.0.0+</version>
             <description>TODO</description>
@@ -106,11 +111,7 @@
                     <name>configuration</name>
                     <version>1.0.0+</version>
                     <description>TODO</description>
-                    <type>Properties</type>
-                    <association xml.mapStyle="inline">
-                        <type>String</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
+                    <type>DOM</type>
                 </field>
 
                 <field>

@@ -279,6 +279,11 @@ public class CommandLineProcessor
             present.add(handler);
         }
 
+        //
+        // FIXME: Some options, like --help or --version may be used in conjunction with other options which are marked as required.
+        //        We need to set a little flag on the --help|--verison options to override this  required handling crapo...
+        //
+        
         // Ensure that all required option handlers are present
         for (Handler handler : optionHandlers) {
             if (handler.descriptor.required() && !present.contains(handler)) {

@@ -35,12 +35,14 @@ public abstract class VFSCommandSupport
 
     protected void doInit() throws Exception {
         //
-        // TODO: Should probably bind this pupping into the container and let plexus handle it for us
+        // TODO: Should probably bind this pupping into the container and let plexus handle it for us... though
+        //       the components.xml generation will clobber anything which we add, it won't merge like a good like
+        //       plugin should... :-(
         //
         
         fsManager = VFS.getManager();
     }
-
+    
     protected FileSystemManager getFileSystemManager() {
         if (fsManager == null) {
             throw new IllegalStateException("Not initialized; Missing FileSystemManager");
