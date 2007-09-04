@@ -36,21 +36,21 @@ public class IO
     /**
      * Raw input stream.
      *
-     * @see #in
+     * @see #in     For general usage, please use the reader.
      */
     public final InputStream inputStream;
 
     /**
      * Raw output stream.
      *
-     * @see #out
+     * @see #out    For general usage, please use the writer.
      */
     public final OutputStream outputStream;
 
     /**
      * Raw error output stream.
      *
-     * @see #err
+     * @see #err    For general usage, please use the writer.
      */
     public final OutputStream errorStream;
 
@@ -68,6 +68,12 @@ public class IO
      * Prefered error output writer.
      */
     public final PrintWriter err;
+
+    /**
+     * The verbosity setting, which commands (and framework) should inspect and respect when
+     * spitting up output to the user.
+     */
+    private Verbosity verbosity = Verbosity.INFO;
 
     /**
      * Construct a new IO container.
@@ -108,6 +114,48 @@ public class IO
     }
 
     /**
+     * Set the verbosity level.
+     *
+     * @param verbosity
+     */
+    public void setVerbosity(final Verbosity verbosity) {
+        assert verbosity != null;
+        
+        this.verbosity = verbosity;
+    }
+
+    /**
+     * Check if the verbosity level is set to {@link Verbosity#QUIET}.
+     */
+    public boolean isQuiet() {
+        return verbosity == Verbosity.QUIET;
+    }
+
+    /**
+     * Check if the verbosity level is set to {@link Verbosity#INFO}.
+     */
+    public boolean isInfo() {
+        return verbosity == Verbosity.INFO;
+    }
+
+    /**
+     * Check if the verbosity level is set to {@link Verbosity#VERBOSE}.
+     */
+    public boolean isVerbose() {
+        return verbosity == Verbosity.VERBOSE;
+    }
+
+    /**
+     * Check if the verbosity level is set to {@link Verbosity#DEBUG}.
+     *
+     * <p>For generaly usage, when debug output is required, it is better
+     * to use the logging facility instead.
+     */
+    public boolean isDebug() {
+        return verbosity == Verbosity.DEBUG;
+    }
+
+    /**
      * Flush both output streams.
      */
     public void flush() {
@@ -119,5 +167,20 @@ public class IO
         in.close();
         out.close();
         err.close();
+    }
+
+    //
+    // Verbosity
+    //
+
+    /**
+     * Defines the valid values of the {@link IO} containers verbosity settings.
+     */
+    public static enum Verbosity
+    {
+        QUIET,
+        INFO,
+        VERBOSE,
+        DEBUG
     }
 }
