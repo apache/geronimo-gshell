@@ -30,6 +30,7 @@ import java.util.Properties;
  *
  * @version $Rev$ $Date$
  */
+@Deprecated()// NOTE: Need to setup a SPI system to allow branding of this stuff easily
 public class Version
 {
     private static Version instance;

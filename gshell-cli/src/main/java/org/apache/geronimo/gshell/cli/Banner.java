@@ -27,6 +27,7 @@ import java.io.StringWriter;
  *
  * @version $Rev$ $Date$
  */
+@Deprecated()// NOTE: Need to setup a SPI system to allow branding of this stuff easily
 public class Banner
 {
     ///CLOVER:OFF
