@@ -29,15 +29,15 @@ public class CommandException
 {
     ///CLOVER:OFF
     
-    public CommandException(String msg) {
+    public CommandException(final String msg) {
         super(msg);
     }
 
-    public CommandException(String msg, Throwable cause) {
+    public CommandException(final String msg, final Throwable cause) {
         super(msg, cause);
     }
 
-    public CommandException(Throwable cause) {
+    public CommandException(final Throwable cause) {
         super(cause);
     }
 

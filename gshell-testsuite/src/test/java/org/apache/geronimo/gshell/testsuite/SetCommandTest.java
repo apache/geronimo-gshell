@@ -20,13 +20,6 @@
 package org.apache.geronimo.gshell.testsuite;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.Shell;
-import org.apache.geronimo.gshell.console.IO;
-
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 
 /**
  * ???

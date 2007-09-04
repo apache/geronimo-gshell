@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.common.Arguments;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.IO;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;

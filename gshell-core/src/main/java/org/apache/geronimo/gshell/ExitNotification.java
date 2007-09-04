@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.geronimo.gshell.command.Notification;
+import org.apache.geronimo.gshell.common.Notification;
 
 /**
  * Thrown to indicate that the current shell should exit.

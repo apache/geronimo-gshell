@@ -17,11 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
-
-//
-// TODO: May want to move to util, not command-specific
-//
+package org.apache.geronimo.gshell.common;
 
 /**
  * Thrown to indicate a notification state.
@@ -33,15 +29,15 @@ public abstract class Notification
 {
     ///CLOVER:OFF
 
-    public Notification(String msg) {
+    public Notification(final String msg) {
         super(msg);
     }
 
-    public Notification(String msg, Throwable cause) {
+    public Notification(final String msg, final Throwable cause) {
         super(msg, cause);
     }
 
-    public Notification(Throwable cause) {
+    public Notification(final Throwable cause) {
         super(cause);
     }
 

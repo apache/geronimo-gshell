@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.commands.optional.util.PumpStreamHandler;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.IO;
 
 /**
  * Execute system processes.

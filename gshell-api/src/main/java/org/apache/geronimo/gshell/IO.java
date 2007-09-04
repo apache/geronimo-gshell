@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.console;
+package org.apache.geronimo.gshell;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

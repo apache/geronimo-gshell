@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.commands.builtins;
 import org.apache.geronimo.gshell.command.CommandDefinition;
 import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.IO;
 import org.apache.geronimo.gshell.common.Arguments;
 
 /**

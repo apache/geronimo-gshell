@@ -26,7 +26,7 @@ import java.io.PrintWriter;
 import jline.ConsoleReader;
 import jline.History;
 import org.apache.geronimo.gshell.console.Console;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.IO;
 
 /**
  * Support for running a {@link Shell} using the <a href="http://jline.sf.net">JLine</a> library.

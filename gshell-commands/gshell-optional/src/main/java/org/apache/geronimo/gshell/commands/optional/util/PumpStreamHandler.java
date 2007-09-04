@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

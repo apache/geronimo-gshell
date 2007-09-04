@@ -24,8 +24,9 @@ import java.util.Iterator;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
-import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.IO;
 import org.apache.geronimo.gshell.common.Arguments;
+import org.apache.geronimo.gshell.common.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

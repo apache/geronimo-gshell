@@ -42,7 +42,7 @@
                     <field-name>commandManager</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.console.IO</role>
+                    <role>org.apache.geronimo.gshell.IO</role>
                     <field-name>io</field-name>
                 </requirement>
                 <requirement>
@@ -109,9 +109,9 @@
         HACK: This is defs not right...
         -->
         <component>
-            <role>org.apache.geronimo.gshell.console.IO</role>
+            <role>org.apache.geronimo.gshell.IO</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.console.IO</implementation>
+            <implementation>org.apache.geronimo.gshell.IO</implementation>
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>

@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.console;
+package org.apache.geronimo.gshell;
 
 import junit.framework.TestCase;
+import org.apache.geronimo.gshell.IO;
 
 /**
  * Unit tests for the {@link IO} class.
