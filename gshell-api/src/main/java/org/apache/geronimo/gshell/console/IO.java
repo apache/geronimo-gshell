@@ -163,6 +163,9 @@ public class IO
         err.flush();
     }
 
+    /**
+     * Close all streams.
+     */
     public void close() throws IOException {
         in.close();
         out.close();
