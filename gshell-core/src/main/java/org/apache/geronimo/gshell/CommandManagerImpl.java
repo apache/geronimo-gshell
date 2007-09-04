@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+// @Component(role=CommandManager.class)
 public class CommandManagerImpl
     implements CommandManager, Initializable
 {

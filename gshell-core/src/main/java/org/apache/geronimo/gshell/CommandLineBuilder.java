@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+// @Component(role=CommandLineBuilder.class)
 public class CommandLineBuilder
 {
     private Logger log = LoggerFactory.getLogger(getClass());

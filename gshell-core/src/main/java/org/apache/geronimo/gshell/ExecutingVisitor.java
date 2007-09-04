@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+// @Component(role=ExecutingVisitor.class)
 public class ExecutingVisitor
     implements CommandLineParserVisitor
 {

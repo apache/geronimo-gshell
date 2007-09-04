@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+// @Component(role=GShellPluginDiscoverer.class)
 public class GShellPluginDiscoverer
     extends DefaultComponentDiscoverer// AbstractComponentDiscoverer
 {

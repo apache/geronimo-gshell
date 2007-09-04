@@ -33,6 +33,7 @@ import org.apache.geronimo.gshell.command.Environment;
  *
  * @version $Rev$ $Date$
  */
+// @Component(role=Environment.class)
 public class EnvironmentImpl
     implements Environment, Initializable
 {

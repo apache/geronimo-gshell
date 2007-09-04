@@ -68,7 +68,7 @@ public class Shell
         // HACK: Set some default variables
         //
 
-        variables.set(StandardVariables.PROMPT, "> ");
+        variables.set("gshell.prompt", "> ");
     }
 
     //

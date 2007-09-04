@@ -25,10 +25,6 @@ import org.codehaus.plexus.logging.BaseLoggerManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//
-// TODO: Move me some place more approrpiate?
-//
-
 /**
  * Adapts the Plexus logging system to GShell.
  *
