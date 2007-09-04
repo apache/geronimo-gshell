@@ -115,5 +115,16 @@
             <instantiation-strategy>singleton</instantiation-strategy>
             <lifecycle-handler>plexus</lifecycle-handler>
         </component>
+
+        <!--
+        FIXME: Probably need to use a component factory and a thread-local here to properly keep track of the shell's environment
+        -->
+        <component>
+            <role>org.apache.geronimo.gshell.Environment</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.EnvironmentImpl</implementation>
+            <instantiation-strategy>singleton</instantiation-strategy>
+            <lifecycle-handler>plexus</lifecycle-handler>
+        </component>
     </components>
 </component-set>

@@ -30,8 +30,8 @@
             <lifecycle-handler>plexus</lifecycle-handler>
             <requirements>
                 <requirement>
-                    <role>org.codehaus.plexus.PlexusContainer</role>
-                    <field-name>container</field-name>
+                    <role>org.apache.geronimo.gshell.Environment</role>
+                    <field-name>env</field-name>
                 </requirement>
             </requirements>
         </component>

@@ -35,6 +35,16 @@
 
     <components>
         <component>
+            <role>org.codehaus.plexus.logging.LoggerManager</role>
+            <implementation>org.apache.geronimo.gshell.cli.PlexusLoggingAdapter$LoggerManagerImpl</implementation>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.GShellPluginCollector</role>
+            <implementation>org.apache.geronimo.gshell.GShellPluginCollector</implementation>
+        </component>
+
+        <component>
             <role>org.apache.geronimo.gshell.GShellPluginCollector</role>
             <implementation>org.apache.geronimo.gshell.GShellPluginCollector</implementation>
         </component>

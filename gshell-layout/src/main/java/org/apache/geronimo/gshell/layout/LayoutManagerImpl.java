@@ -28,10 +28,11 @@ import java.net.URL;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.apache.geronimo.gshell.Environment;
 import org.apache.geronimo.gshell.layout.model.Alias;
 import org.apache.geronimo.gshell.layout.model.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;
-import org.codehaus.plexus.PlexusContainer;
+
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
@@ -47,26 +48,18 @@ public class LayoutManagerImpl
     implements LayoutManager, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
+    
     // @Requirement
-    private PlexusContainer container;
+    private Environment env;
 
     private Layout layout;
     
     public void initialize() throws InitializationException {
-        //
-        // HACK: For now just hard code it... Really need to expose a helper object to find the Shell's basic directory config muck
-        //
+        assert env != null;
 
-        String homePath = System.getProperty("gshell.home");
-        if (homePath == null) {
-            throw new InitializationException("The 'gsell.home' property must be set for the shell to function correctly");
-        }
-
-        File homeDir = new File(homePath);
         URL url = null;
         try {
-            url = new File(homeDir, "etc/layout.xml").toURI().toURL();
+            url = new File(env.getHomeDir(), "etc/layout.xml").toURI().toURL();
         } catch (MalformedURLException e) {
             throw new InitializationException("Invalid URL for layout configuration", e);
         }

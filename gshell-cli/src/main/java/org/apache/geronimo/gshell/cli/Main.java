@@ -33,13 +33,12 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.cli.Banner;
-import org.apache.geronimo.gshell.cli.Version;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -191,6 +190,8 @@ public class Main
         config.setClassWorld(classWorld);
 
         PlexusContainer container = new DefaultPlexusContainer(config);
+
+        System.err.println("Logger manager: " + container.getLoggerManager());
 
         //
         // TODO: We need to pass in our I/O context to the container directly
