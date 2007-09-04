@@ -24,16 +24,15 @@ import org.apache.geronimo.gshell.common.Notification;
 /**
  * Thrown to indicate that the current shell should exit.
  *
- * <p>
- * Commands should use this instead of {@link System#exit}.
- *
  * @version $Rev$ $Date$
  */
 public class ExitNotification
     extends Notification
 {
     ///CLOVER:OFF
-    
+
+    public static final int DEFAULT_CODE = 0;
+
     private final int code;
 
     public ExitNotification(final int code) {
@@ -41,10 +40,18 @@ public class ExitNotification
     }
 
     public ExitNotification() {
-        this(0);
+        this(DEFAULT_CODE);
     }
 
     public int getCode() {
         return code;
+    }
+
+    public static void exit(final int code) {
+        throw new ExitNotification(code);
+    }
+
+    public static void exit() {
+        throw new ExitNotification();
     }
 }
