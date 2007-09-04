@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.util;
+package org.apache.geronimo.gshell.common;
 
 import java.util.List;
 

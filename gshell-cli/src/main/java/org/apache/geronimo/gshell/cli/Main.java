@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.cli;
 
-import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +33,8 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.IO;
-import org.apache.geronimo.gshell.util.Banner;
-import org.apache.geronimo.gshell.util.Version;
+import org.apache.geronimo.gshell.cli.Banner;
+import org.apache.geronimo.gshell.cli.Version;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;

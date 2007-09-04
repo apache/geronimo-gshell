@@ -21,6 +21,8 @@ package org.apache.geronimo.gshell;
 
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,8 @@ import org.slf4j.LoggerFactory;
 public class GShellPluginCollector
     implements ComponentDiscoveryListener
 {
+    public static final String ID = "gshell-plugin-collector";
+
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     /*
@@ -115,11 +119,15 @@ public class GShellPluginCollector
     }
     */
 
-    public void componentDiscovered(ComponentDiscoveryEvent event) {
-        // TODOD:
-    }
-
     public String getId() {
-        return "gshell-plugin-collector";
+        return ID;
+    }
+    
+    public void componentDiscovered(final ComponentDiscoveryEvent event) {
+        assert event != null;
+
+        ComponentSetDescriptor desc = event.getComponentSetDescriptor();
+
+        log.debug("Component(s) discovered: {}", desc);
     }
 }

@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.geronimo.gshell.common.Arguments;
 
 import java.util.Properties;
 

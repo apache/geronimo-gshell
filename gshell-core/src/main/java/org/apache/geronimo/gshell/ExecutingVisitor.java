@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.parser.ASTPlainString;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
-import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.geronimo.gshell.common.Arguments;
 import org.codehaus.plexus.evaluator.EvaluatorException;
 import org.codehaus.plexus.evaluator.ExpressionEvaluator;
 import org.codehaus.plexus.evaluator.ExpressionSource;
