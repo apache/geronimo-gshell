@@ -18,7 +18,7 @@
  */
 
 /**
- * Provides scripting language support.
+ * Provides scripting language support via the <a href="http://jakarta.apache.org/bsf">Bean Scripting Framework</a>.
  *
  * @version $Rev$ $Date$
  */
