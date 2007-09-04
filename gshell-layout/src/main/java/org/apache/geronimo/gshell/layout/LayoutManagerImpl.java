@@ -71,15 +71,20 @@ public class LayoutManagerImpl
             throw new InitializationException("Invalid URL for layout configuration", e);
         }
 
-        log.debug("Loading layout from XML: {}", url);
-
-        InputStream input;
         try {
-            input = url.openStream();
+            this.layout = load(url);
         }
         catch (IOException e) {
-            throw new InitializationException("Failed to initialize the shell layout", e);
+            throw new InitializationException("Failed to load layout from URL: " + url, e);
         }
+    }
+
+    private Layout load(final URL url) throws IOException {
+        assert url != null;
+
+        log.debug("Loading layout from XML: {}", url);
+
+        InputStream input = url.openStream();
 
         // Setup the XStream marshallar and configure it with the aliases for the model we are working with
         XStream xs = new XStream(new DomDriver());
@@ -92,10 +97,7 @@ public class LayoutManagerImpl
             assert layout != null;
         }
         finally {
-            try {
-                input.close();
-            }
-            catch (IOException ignore) {}
+           input.close();
         }
 
         log.debug("Loaded layout: {}", layout);
@@ -103,7 +105,7 @@ public class LayoutManagerImpl
         //
         // TODO: Do some kind post-parsing validation or someting?
 
-        this.layout = layout;
+        return layout;
     }
 
     public Layout getLayout() {
