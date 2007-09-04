@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.CommandManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.console.IO;
+import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ public class Shell
 
     // @Requirement
     private PlexusContainer container;
+
+    // @Requirement
+    private LayoutManager layoutManager;
 
     // @Requirement
     private CommandManager commandManager;

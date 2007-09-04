@@ -34,6 +34,10 @@
                     <field-name>container</field-name>
                 </requirement>
                 <requirement>
+                    <role>org.apache.geronimo.gshell.layout.LayoutManager</role>
+                    <field-name>layoutManager</field-name>
+                </requirement>
+                <requirement>
                     <role>org.apache.geronimo.gshell.command.CommandManager</role>
                     <field-name>commandManager</field-name>
                 </requirement>
@@ -63,14 +67,6 @@
         </component>
 
         <component>
-            <role>org.apache.geronimo.gshell.commandline.parser.CommandLineParser</role>
-            <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.commandline.parser.CommandLineParser</implementation>
-            <instantiation-strategy>singleton</instantiation-strategy>
-            <lifecycle-handler>plexus</lifecycle-handler>
-        </component>
-
-        <component>
             <role>org.apache.geronimo.gshell.CommandLineBuilder</role>
             <role-hint>default</role-hint>
             <implementation>org.apache.geronimo.gshell.CommandLineBuilder</implementation>
@@ -82,7 +78,7 @@
                     <field-name>container</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.commandline.parser.CommandLineParser</role>
+                    <role>org.apache.geronimo.gshell.parser.CommandLineParser</role>
                     <field-name>parser</field-name>
                 </requirement>
             </requirements>
