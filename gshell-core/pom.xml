@@ -40,7 +40,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-api</artifactId>
+            <artifactId>gshell-command-api</artifactId>
             <version>${pom.version}</version>
         </dependency>
         

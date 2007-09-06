@@ -30,8 +30,8 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-api</artifactId>
-    <name>GShell API</name>
+    <artifactId>gshell-command-api</artifactId>
+    <name>GShell Command API</name>
 
     <description>
         Profides the basic interface for GShell commands.
