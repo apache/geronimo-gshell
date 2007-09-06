@@ -26,7 +26,7 @@
     <nodes>
         <command>
             <name>help</name>
-            <implementation>org.apache.geronimo.gshell.commands.builtins.HelpCommand</implementation>
+            <id>org.apache.geronimo.gshell.commands.builtins.HelpCommand</id>
         </command>
 
         <alias>
@@ -40,7 +40,7 @@
             <nodes>
                 <command>
                     <name>start-server</name>
-                    <implementation>org.apache.geronimo.server.commands.StartServerCommand</implementation>
+                    <id>org.apache.geronimo.server.commands.StartServerCommand</id>
                 </command>
 
                 <alias>

@@ -26,7 +26,7 @@
     <nodes>
         <command>
             <name>help</name>
-            <implementation>org.apache.geronimo.gshell.commands.buildins.HelpCommand</implementation>
+            <id>org.apache.geronimo.gshell.commands.buildins.HelpCommand</id>
         </command>
 
         <alias>

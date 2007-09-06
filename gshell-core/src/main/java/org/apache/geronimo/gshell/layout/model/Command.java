@@ -30,22 +30,17 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class Command
     extends Node
 {
-    //
-    // FIXME: This isn't really goning to be the implementation, but its a key to reference a command which has been discovered previously
-    //        So, rename this shizzz
-    //
-    
-    protected String implementation;
+    protected String id;
 
-    public Command(final String name, final String implementation) {
+    public Command(final String name, final String id) {
         super(name);
 
-        assert implementation != null;
+        assert id != null;
 
-        this.implementation = implementation;
+        this.id = id;
     }
 
-    public String getImplementation() {
-        return implementation;
+    public String getId() {
+        return id;
     }
 }
