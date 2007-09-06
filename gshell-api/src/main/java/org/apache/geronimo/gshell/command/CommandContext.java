@@ -21,16 +21,20 @@ package org.apache.geronimo.gshell.command;
 
 import java.io.File;
 
+import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+
 /**
  * Provides commands with the context of its execution.
  *
- * @version $Rev$ $Date$
+ * @version $Rev: 572562 $ $Date: 2007-09-04 00:43:23 -0700 (Tue, 04 Sep 2007) $
  */
 public interface CommandContext
 {
     IO getIO();
 
     Variables getVariables();
+
+    CommandDescriptor getCommandDescriptor();
 
 
     //

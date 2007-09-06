@@ -23,14 +23,14 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileUtil;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.annotation.Command;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 
 /**
  * Copy files.
  *
  * @version $Rev$ $Date$
  */
-@Command(name="copy")
+@CommandComponent(name="copy")
 public class CopyCommand
     extends VFSCommandSupport
 {

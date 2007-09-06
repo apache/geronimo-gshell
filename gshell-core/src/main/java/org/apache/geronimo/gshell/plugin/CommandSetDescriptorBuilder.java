@@ -22,6 +22,8 @@ package org.apache.geronimo.gshell.plugin;
 import java.io.Reader;
 
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.command.descriptor.CommandSetDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -30,37 +32,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Helper to build {@link PluginDescriptor} instances from configuration stream.
+ * Helper to build {@link CommandSetDescriptor} instances from configuration stream.
  *
  * @version $Rev$ $Date$
  */
-public class PluginDescriptorBuilder
+public class CommandSetDescriptorBuilder
 {
     private Logger log = LoggerFactory.getLogger(getClass());
     
-    public PluginDescriptor build(final Reader reader, final String source) throws PlexusConfigurationException {
+    public CommandSetDescriptor build(final Reader reader, final String source) throws PlexusConfigurationException {
         assert reader != null;
         assert source != null;
 
         PlexusConfiguration c = PlexusTools.buildConfiguration(source, reader);
 
-        PluginDescriptor pd = new PluginDescriptor();
+        CommandSetDescriptor setDescriptor = new CommandSetDescriptor();
 
-        pd.setName(c.getChild("name").getValue());
-        pd.setDescription(c.getChild("description").getValue());
-        pd.setComment(c.getChild("comment").getValue());
+        setDescriptor.setName(c.getChild("name").getValue());
+        setDescriptor.setDescription(c.getChild("description").getValue());
 
-        log.debug("Loading plugin: {}", pd.getName());
+        log.debug("Loading command set: {}", setDescriptor.getName());
 
         // Commands
         PlexusConfiguration[] commands = c.getChild("commands").getChildren("command");
 
         for (PlexusConfiguration command : commands) {
             CommandDescriptor d = createCommandDescriptor(command);
-            pd.addCommandDescriptor(d);
+            setDescriptor.addCommandDescriptor(d);
         }
         
-        return pd;
+        return setDescriptor;
     }
 
     private CommandDescriptor createCommandDescriptor(final PlexusConfiguration c) throws PlexusConfigurationException {
@@ -70,18 +71,12 @@ public class PluginDescriptorBuilder
 
         d.setName(c.getChild("name").getValue());
         d.setDescription(c.getChild("description").getValue());
-        d.setComment(c.getChild("comment").getValue());
         d.setImplementation(c.getChild("implementation").getValue());
-        d.setCommandConfiguration(c.getChild("configuration"));
 
         log.debug("Loading command: {}", d.getName());
 
         d.setRole(Command.class.getName());
         d.setRoleHint(d.getName());
-
-        //
-        // HACK: For now just use this, make it configurable later, look at ComponentDescriptor and see what else we want to expose
-        //
         d.setInstantiationStrategy("per-lookup");
         
         // Requirements

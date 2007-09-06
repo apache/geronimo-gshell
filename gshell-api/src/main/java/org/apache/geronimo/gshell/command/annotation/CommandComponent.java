@@ -24,10 +24,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//
-// FIXME:  Rename to CommandComponent... so this doesn't class with the Command interface
-//
-
 /**
  * Annotation to mark classes as GShell commands implementations.
  *
@@ -35,11 +31,9 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Command
+public @interface CommandComponent
 {
     String name();
 
     String description() default "";
-
-    String comment() default "";
 }

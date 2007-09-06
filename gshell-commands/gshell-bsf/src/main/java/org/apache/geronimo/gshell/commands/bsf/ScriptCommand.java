@@ -24,8 +24,7 @@ import org.apache.bsf.BSFManager;
 import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.command.annotation.Command;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.console.Console;
 
 /**
@@ -33,7 +32,7 @@ import org.apache.geronimo.gshell.console.Console;
  *
  * @version $Rev$ $Date$
  */
-@Command(name="script")
+@CommandComponent(name="script")
 public class ScriptCommand
     extends CommandSupport
 {

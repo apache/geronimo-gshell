@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.layout.LayoutManager;
@@ -112,8 +113,8 @@ public class ShellImpl
         String realmId = "command-invocation";
 
         final PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
+        final CommandDescriptor commandDescriptor = (CommandDescriptor) childContainer.getComponentDescriptor(Command.class.getName(), commandName);
         final Command command = (Command)childContainer.lookup(Command.class, commandName);
-
 
         //
         // NOTE: For now, until we can figure out a better way to have the container deal with this stuff, pass in
@@ -129,6 +130,10 @@ public class ShellImpl
 
             public Variables getVariables() {
                 return vars;
+            }
+
+            public CommandDescriptor getCommandDescriptor() {
+                return commandDescriptor;
             }
         };
 

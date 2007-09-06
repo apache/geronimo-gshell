@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.annotation.Command;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.common.Arguments;
 
 /**
@@ -37,7 +37,7 @@ import org.apache.geronimo.gshell.common.Arguments;
  *
  * @version $Rev$ $Date$
  */
-@Command(name="java")
+@CommandComponent(name="java")
 public class JavaCommand
     extends CommandSupport
 {

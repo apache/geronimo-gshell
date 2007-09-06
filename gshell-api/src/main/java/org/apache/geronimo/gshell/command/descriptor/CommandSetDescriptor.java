@@ -17,33 +17,21 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.plugin;
+package org.apache.geronimo.gshell.command.descriptor;
 
-import java.util.List;
-
-import org.apache.geronimo.gshell.plugin.model.Command;
-import org.codehaus.plexus.component.composition.Requirement;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 
 /**
- * Container for additional component information for GShell plugins.
+ * Descriptor for a set of commands.
  *
  * @version $Rev$ $Date$
  */
-public class PluginDescriptor
+public class CommandSetDescriptor
     extends ComponentSetDescriptor
 {
     private String name;
 
     private String description;
-
-    private String comment;
-
-    private List<Command> commands;
-
-    private Object configuration;
-    
-    private List<Requirement> requirements;
 
     public String getName() {
         return name;
@@ -51,7 +39,7 @@ public class PluginDescriptor
 
     public void setName(final String name) {
         assert name != null;
-        
+
         this.name = name;
     }
 
@@ -62,43 +50,7 @@ public class PluginDescriptor
     public void setDescription(final String description) {
         this.description = description;
     }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(final String comment) {
-        this.comment = comment;
-    }
-
-    public List<Command> getCommands() {
-        return commands;
-    }
-
-    public void setCommands(final List<Command> commands) {
-        assert name != null;
-        
-        this.commands = commands;
-    }
-
-    public Object getConfiguration() {
-        return configuration;
-    }
-
-    public void setConfiguration(final Object configuration) {
-        this.configuration = configuration;
-    }
-
-    public List<Requirement> getRequirements() {
-        return requirements;
-    }
-
-    public void setRequirements(final List<Requirement> requirements) {
-        assert name != null;
-        
-        this.requirements = requirements;
-    }
-
+    
     public void addCommandDescriptor(final CommandDescriptor desc) {
         assert desc != null;
 

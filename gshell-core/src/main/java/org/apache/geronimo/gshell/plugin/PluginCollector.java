@@ -19,40 +19,44 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import java.io.Reader;
-
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
-import org.codehaus.plexus.component.discovery.ComponentDiscoverer;
+import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
+import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Custom Plexus component discovery component to handle the GShell plugin.xml muck.
- *
+ * Hook to get some details about the Plexus components which are loaded.
+ * 
  * @version $Rev$ $Date$
  */
-@Component(role= ComponentDiscoverer.class, hint="gshell")
-public class PluginDiscoverer
-    extends AbstractComponentDiscoverer
+@Component(role=ComponentDiscoveryListener.class, hint="gshell")
+public class PluginCollector
+    implements ComponentDiscoveryListener
 {
-    public static final String PLUGIN_XML_LOCATION = "META-INF/gshell/plugin.xml";
+    public static final String ID = "gshell-plugin-collector";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    private final PluginDescriptorBuilder builder = new PluginDescriptorBuilder();
-
-    public String getComponentDescriptorLocation() {
-        return PLUGIN_XML_LOCATION;
+    public String getId() {
+        return ID;
     }
+    
+    public void componentDiscovered(final ComponentDiscoveryEvent event) {
+        assert event != null;
 
-    public ComponentSetDescriptor createComponentDescriptors(final Reader reader, final String source)
-        throws PlexusConfigurationException
-    {
-        log.debug("Creating components from: {}", source);
-        
-        return builder.build(reader, source);
+        ComponentSetDescriptor setDescriptor = event.getComponentSetDescriptor();
+
+        for (Object obj : setDescriptor.getComponents()) {
+            ComponentDescriptor componentDescriptor = (ComponentDescriptor)obj;
+
+            //
+            // TODO: Do something useful here... for now just log what we have found
+            //
+            
+            log.debug("Component discovered: {}", componentDescriptor.getHumanReadableKey());
+        }
     }
 }

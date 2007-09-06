@@ -110,23 +110,12 @@ public abstract class CommandSupport
      */
     protected abstract Object doExecute() throws Exception;
 
-    //
-    // CLI Fluff
-    //
-
-    //
-    // NOTE: I think this should probably just go the f away...  The usage mucko oh top too... gotta either be able
-    //       to generate that, or configure it via an annotation.  For the help, well we can add some header/footer muck
-    //       but for 95%, maybe even 99% of the folks they don't really need to override this... blah.  And really they
-    //       shouldn't cause that introduces incosistencies, which is one of the benefits of GShell... :-P
-    //
-    
     protected void displayHelp(final CommandLineProcessor clp) {
         assert clp != null;
 
-        // io.out.print(getName());
-        // io.out.print(" -- ");
-        // io.out.println();
+        io.out.println(context.getCommandDescriptor().getName());
+        io.out.println(" -- ");
+        io.out.println();
 
         Printer printer = new Printer(clp);
         printer.printUsage(io.out);

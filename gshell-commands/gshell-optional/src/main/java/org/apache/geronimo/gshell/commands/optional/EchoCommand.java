@@ -24,15 +24,14 @@ import java.util.List;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.command.annotation.Command;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 
 /**
  * A simple command to <em>echo</em> all given arguments to the commands standard output.
  *
  * @version $Rev$ $Date$
  */
-@Command(name="echo")
+@CommandComponent(name="echo")
 public class EchoCommand
     extends CommandSupport
 {

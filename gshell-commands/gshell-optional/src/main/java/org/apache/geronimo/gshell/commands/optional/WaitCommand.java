@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.annotation.Command;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 
 //
 // HACK: This is a temporary to handle shells which need to keep around after running
@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.command.annotation.Command;
  *
  * @version $Rev$ $Date$
  */
-@Command(name="wait")
+@CommandComponent(name="wait")
 public class WaitCommand
     extends CommandSupport
 {

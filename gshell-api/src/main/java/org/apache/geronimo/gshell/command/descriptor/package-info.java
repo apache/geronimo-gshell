@@ -17,32 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.builtins;
-
-import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-
 /**
- * Exit the current shell.
+ * Command component descriptors.
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="exit")
-public class ExitCommand
-    extends CommandSupport
-{
-    @Argument(description="System exit code")
-    private int exitCode = 0;
-
-    protected Object doExecute() throws Exception {
-        log.info("Exiting w/code: {}", exitCode);
-        
-        //
-        // DO NOT Call System.exit() !!!
-        //
-
-        throw new ExitNotification(exitCode);
-    }
-}
+package org.apache.geronimo.gshell.command.descriptor;

@@ -27,16 +27,15 @@ import org.apache.geronimo.gshell.VariablesImpl;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.annotation.Command;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 
 /**
  * Set a variable or property.
  *
  * @version $Rev$ $Date$
  */
-@Command(name="set")
+@CommandComponent(name="set")
 public class SetCommand
     extends CommandSupport
 {

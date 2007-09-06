@@ -17,32 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.builtins;
+package org.apache.geronimo.gshell.command.descriptor;
 
-import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
- * Exit the current shell.
+ * Descriptor for a command.
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="exit")
-public class ExitCommand
-    extends CommandSupport
+public class CommandDescriptor
+    extends ComponentDescriptor
 {
-    @Argument(description="System exit code")
-    private int exitCode = 0;
+    private String name;
 
-    protected Object doExecute() throws Exception {
-        log.info("Exiting w/code: {}", exitCode);
-        
-        //
-        // DO NOT Call System.exit() !!!
-        //
+    public String getName() {
+        return name;
+    }
 
-        throw new ExitNotification(exitCode);
+    public void setName(final String name) {
+        assert name != null;
+
+        this.name = name;
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<command-set>
+    <name>gshell-builtins</name>
+    
+    <commands>
+        <command>
+            <name>exit</name>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.ExitCommand</implementation>
+        </command>
+        
+        <command>
+            <name>help</name>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.HelpCommand</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.PlexusContainer</role>
+                    <field-name>container</field-name>
+                </requirement>
+            </requirements>
+        </command>
+        
+        <command>
+            <name>set</name>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.SetCommand</implementation>
+        </command>
+        
+        <command>
+            <name>source</name>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.SourceCommand</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.Shell</role>
+                    <field-name>shell</field-name>
+                </requirement>
+            </requirements>
+        </command>
+        
+        <command>
+            <name>unset</name>
+            <implementation>org.apache.geronimo.gshell.commands.builtins.UnsetCommand</implementation>
+        </command>
+    </commands>
+</command-set>

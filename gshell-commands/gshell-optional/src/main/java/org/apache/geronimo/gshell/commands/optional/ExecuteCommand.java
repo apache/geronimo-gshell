@@ -23,8 +23,7 @@ import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.command.annotation.Command;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.common.io.PumpStreamHandler;
 
 /**
@@ -32,7 +31,7 @@ import org.apache.geronimo.gshell.common.io.PumpStreamHandler;
  *
  * @version $Rev$ $Date$
  */
-@Command(name="exec")public class ExecuteCommand
+@CommandComponent(name="exec")public class ExecuteCommand
     extends CommandSupport
 {
     private ProcessBuilder builder;
