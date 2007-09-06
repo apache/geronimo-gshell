@@ -30,25 +30,34 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-prefs</artifactId>
-    <name>GShell Preferences</name>
+    <artifactId>gshell-support</artifactId>
+    <name>GShell Support</name>
+    <packaging>pom</packaging>
     
     <description>
-        Annotation-based preferences support.
+        Support modules for GShell fluff.
     </description>
     
+    <modules>
+        <module>gshell-ansi</module>
+        <module>gshell-clp</module>
+        <module>gshell-common</module>
+        <module>gshell-i18n</module>
+        <module>gshell-prefs</module>
+    </modules>
+    
     <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-common</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
+    
 </project>

@@ -26,28 +26,22 @@
     
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-i18n</artifactId>
-    <name>GShell i18n</name>
-
+    <artifactId>gshell-prefs</artifactId>
+    <name>GShell Support :: Preferences</name>
+    
     <description>
-        Internationalization support.
+        Annotation-based preferences support.
     </description>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-common</artifactId>
             <version>${pom.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

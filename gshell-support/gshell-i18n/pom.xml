@@ -26,27 +26,22 @@
     
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-common</artifactId>
-    <name>GShell Common</name>
-    
+    <artifactId>gshell-i18n</artifactId>
+    <name>GShell Support :: i18n</name>
+
     <description>
-        Common support classes.
+        Internationalization support.
     </description>
-    
+
     <dependencies>
         <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-common</artifactId>
+            <version>${pom.version}</version>
         </dependency>
     </dependencies>
 

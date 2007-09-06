@@ -26,12 +26,12 @@
     
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
     <artifactId>gshell-clp</artifactId>
-    <name>GShell Command-Line Processor (CLP)</name>
+    <name>GShell Support :: Command-Line Processor (CLP)</name>
     
     <description>
         Annotation-based command-line processing support.
@@ -42,12 +42,6 @@
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-common</artifactId>
             <version>${pom.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
