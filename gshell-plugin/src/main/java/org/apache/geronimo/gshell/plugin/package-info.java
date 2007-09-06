@@ -17,32 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
-
-import junit.framework.TestCase;
-
 /**
- * Unit tests for the {@link CommandLineBuilder} class.
+ * Plugin support.
  *
  * @version $Rev$ $Date$
  */
-public class CommandLineBuilderTest
-    extends TestCase
-{
-    public void testSimple() throws Exception {
-        // FIXME: Need to use plexus to test now...
-        /*
-        MockShell shell = new MockShell();
-        CommandLineBuilder builder = new CommandLineBuilder(shell);
-
-        CommandLine cl = builder.create("echo hi");
-        assertNotNull(cl);
-
-        cl.execute();
-
-        assertEquals("echo", shell.commandName);
-        assertEquals(1, shell.args.length);
-        assertEquals("hi", shell.args[0]);
-        */
-    }
-}
+package org.apache.geronimo.gshell.plugin;

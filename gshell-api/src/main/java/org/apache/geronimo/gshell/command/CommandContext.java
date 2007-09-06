@@ -19,14 +19,23 @@
 
 package org.apache.geronimo.gshell.command;
 
+import java.io.File;
+
 /**
- * Provides the running context (or environment) for a {@link Command}.
+ * Provides commands with the context of its execution.
  *
  * @version $Rev$ $Date$
  */
 public interface CommandContext
 {
     IO getIO();
-    
+
     Variables getVariables();
+
+
+    //
+    // TODO: Split up the Shell's bits from the commands bits maybe?  Or expose a ShellInfo object for these bits maybe?
+    //
+
+    // File getHomeDir();
 }

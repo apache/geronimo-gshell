@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.geronimo.gshell.command.Environment;
+import org.apache.geronimo.gshell.command.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -30,13 +30,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The default/standard/whatever implementation of {@link Environment}.
+ * Provides some runtime information about the shell.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=Environment.class)
-public class EnvironmentImpl
-    implements Environment, Initializable
+@Component(role=ShellInfo.class)
+public class ShellInfoImpl
+    implements ShellInfo, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -62,7 +62,7 @@ public class EnvironmentImpl
         String homePath = System.getProperty("gshell.home");
 
         if (homePath == null) {
-            throw new InitializationException("The 'gsell.home' property must be set for the shell to function correctly");
+            throw new InitializationException("The 'gshell.home' property must be set for the shell to function correctly");
         }
 
         // And now lets resolve this sucker
@@ -81,15 +81,4 @@ public class EnvironmentImpl
 
         return dir;
     }
-
-    //
-    // TODO: Merge in the other command-context and variable access muck here.  The Environment for the shell should be the one place
-    //       were all state is stored, so we can use this to multiplex shells and provide commands with a simple/single interface
-    //       for interacting with the user.
-    //
-    //       IO
-    //       Variables
-    //       Shell information
-    //       Current command descriptor
-    //
 }

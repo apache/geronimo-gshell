@@ -30,6 +30,11 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class Command
     extends Node
 {
+    //
+    // FIXME: This isn't really goning to be the implementation, but its a key to reference a command which has been discovered previously
+    //        So, rename this shizzz
+    //
+    
     protected String implementation;
 
     public Command(final String name, final String implementation) {

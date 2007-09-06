@@ -17,37 +17,42 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.plugin;
+
+import java.io.Reader;
 
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
-import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
+import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
+import org.codehaus.plexus.component.discovery.ComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Hook to get some details about the Plexus components which are loaded.
- * 
+ * Custom Plexus component discovery component to handle the GShell plugin.xml muck.
+ *
  * @version $Rev$ $Date$
  */
-@Component(role=GShellPluginCollector.class)
-public class GShellPluginCollector
-    implements ComponentDiscoveryListener
+@Component(role= ComponentDiscoverer.class, hint="gshell")
+public class PluginDiscoverer
+    extends AbstractComponentDiscoverer
 {
-    public static final String ID = "gshell-plugin-collector";
+    public static final String PLUGIN_XML_LOCATION = "META-INF/gshell/plugin.xml";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    public String getId() {
-        return ID;
+    private final PluginDescriptorBuilder builder = new PluginDescriptorBuilder();
+
+    public String getComponentDescriptorLocation() {
+        return PLUGIN_XML_LOCATION;
     }
-    
-    public void componentDiscovered(final ComponentDiscoveryEvent event) {
-        assert event != null;
 
-        ComponentSetDescriptor desc = event.getComponentSetDescriptor();
-
-        log.debug("Component(s) discovered: {}", desc);
+    public ComponentSetDescriptor createComponentDescriptors(final Reader reader, final String source)
+        throws PlexusConfigurationException
+    {
+        log.debug("Creating components from: {}", source);
+        
+        return builder.build(reader, source);
     }
 }

@@ -20,14 +20,16 @@
 
 <!-- $Rev$ $Date$ -->
 
-<component-set>
-    <components>
-        <component>
-            <role>org.apache.commons.vfs.FileSystemManager</role>
-            <role-hint>default</role-hint>
-            <implementation>org.apache.commons.vfs.impl.StandardFileSystemManager</implementation>
-            <instantiation-strategy>singleton</instantiation-strategy>
-            <lifecycle-handler>plexus</lifecycle-handler>
-        </component>
-    </components>
-</component-set>
+<plexus>
+
+    <!--
+    <component-factory-manager implementation="org.codehaus.plexus.component.factory.DefaultComponentFactoryManager">
+        <component-factories>
+            <component-factory implementation="org.apache.geronimo.gshell.EnvironmentManagerImpl">
+                <id>environment</id>
+            </component-factory>
+        </component-factories>
+    </component-factory-manager>
+    -->
+
+</plexus>

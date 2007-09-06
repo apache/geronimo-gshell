@@ -24,12 +24,12 @@
     <component-discoverer-manager implementation="org.codehaus.plexus.component.discovery.DefaultComponentDiscovererManager">
         <listeners>
             <listener implementation="org.codehaus.plexus.component.discovery.DiscoveryListenerDescriptor">
-                <role>org.apache.geronimo.gshell.GShellPluginCollector</role>
+                <role>org.apache.geronimo.gshell.plugin.PluginCollector</role>
             </listener>
         </listeners>
 
         <component-discoverers>
-            <component-discoverer implementation="org.apache.geronimo.gshell.GShellPluginDiscoverer"/>
+            <component-discoverer implementation="org.apache.geronimo.gshell.plugin.PluginDiscoverer"/>
         </component-discoverers>
     </component-discoverer-manager>
 
@@ -40,13 +40,8 @@
         </component>
 
         <component>
-            <role>org.apache.geronimo.gshell.GShellPluginCollector</role>
-            <implementation>org.apache.geronimo.gshell.GShellPluginCollector</implementation>
-        </component>
-
-        <component>
-            <role>org.apache.geronimo.gshell.GShellPluginCollector</role>
-            <implementation>org.apache.geronimo.gshell.GShellPluginCollector</implementation>
+            <role>org.apache.geronimo.gshell.plugin.PluginCollector</role>
+            <implementation>org.apache.geronimo.gshell.plugin.PluginCollector</implementation>
         </component>
         
         <component>

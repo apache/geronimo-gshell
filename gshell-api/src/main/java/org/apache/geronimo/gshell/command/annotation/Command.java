@@ -17,37 +17,29 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.command.annotation;
 
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.IO;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+//
+// FIXME:  Rename to CommandComponent... so this doesn't class with the Command interface
+//
 
 /**
- * Mock {@link Shell}.
+ * Annotation to mark classes as GShell commands implementations.
  *
  * @version $Rev$ $Date$
  */
-public class MockShell
-    extends Shell
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Command
 {
-    public Object[] args;
+    String name();
 
-    public String commandName;
+    String description() default "";
 
-    public MockShell() throws CommandException {
-        super(new IO());
-    }
-
-    public Object execute(Object... args) throws Exception {
-        this.args = args;
-
-        return 0;
-    }
-
-    public Object execute(String commandName, Object[] args) throws Exception {
-        this.commandName = commandName;
-        this.args = args;
-
-        return 0;
-    }
+    String comment() default "";
 }

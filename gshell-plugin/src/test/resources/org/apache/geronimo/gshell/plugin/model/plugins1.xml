@@ -27,15 +27,18 @@
         <command>
             <name>builtins.HelpCommand</name>
             <implementation>org.apache.geronimo.gshell.commands.builtins.HelpCommand</implementation>
+
             <requirements>
                 <requirement>
                     <role>org.codehaus.plexus.PlexusContainer</role>
-                    <field>container</field>
+                    <field-name>container</field-name>
                 </requirement>
             </requirements>
+
             <configuration>
                 <foo>bar</foo>
             </configuration>
         </command>
     </commands>
+
 </plugin>

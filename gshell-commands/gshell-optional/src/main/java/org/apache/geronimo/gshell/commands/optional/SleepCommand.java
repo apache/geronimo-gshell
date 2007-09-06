@@ -20,26 +20,21 @@
 package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.command.annotation.Command;
 
 /**
  * Sleep... zzzZ
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="sleep")
+@Command(name="sleep")
 public class SleepCommand
     extends CommandSupport
 {
     @Argument(description="Time in milliseconds", required=true)
     private int time = -1;
-
-    protected String getUsage() {
-        return super.getUsage() + " <milliseconds>";
-    }
-
+    
     protected Object doExecute() throws Exception {
         log.info("Sleeping for " + time);
 

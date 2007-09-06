@@ -17,33 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
-
-import junit.framework.TestCase;
-
 /**
- * Unit tests for the {@link ExecutingVisitor} usage.
+ * Provides annotations for GShell.
  *
  * @version $Rev$ $Date$
  */
-public class ExecutingVisitorTest
-    extends TestCase
-{
-    public void testFIXME() {}
-    
-    // FIXME: Have to use plexus...
-    /*
-    public void testConstructor() throws Exception {
-        try {
-            new ExecutingVisitor(null);
-            fail("Accepted null value");
-        }
-        catch (AssertionError expected) {
-            // ignore
-        }
-
-        // Happy day
-        new ExecutingVisitor(new MockShell());
-    }
-    */
-}
+package org.apache.geronimo.gshell.command.annotation;

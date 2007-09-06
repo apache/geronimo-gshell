@@ -28,7 +28,7 @@ import java.net.URL;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import org.apache.geronimo.gshell.command.Environment;
+import org.apache.geronimo.gshell.command.ShellInfo;
 import org.apache.geronimo.gshell.layout.model.Alias;
 import org.apache.geronimo.gshell.layout.model.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;
@@ -51,16 +51,16 @@ public class LayoutManagerImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     @Requirement
-    private Environment env;
+    private ShellInfo info;
 
     private Layout layout;
     
     public void initialize() throws InitializationException {
-        assert env != null;
+        assert info != null;
 
         URL url = null;
         try {
-            url = new File(env.getHomeDir(), "etc/layout.xml").toURI().toURL();
+            url = new File(info.getHomeDir(), "etc/layout.xml").toURI().toURL();
         } catch (MalformedURLException e) {
             throw new InitializationException("Invalid URL for layout configuration", e);
         }

@@ -21,29 +21,24 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.command.annotation.Command;
 
 /**
  * Exit the current shell.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=Command.class, hint="exit")
+@Command(name="exit")
 public class ExitCommand
     extends CommandSupport
 {
     @Argument(description="System exit code")
     private int exitCode = 0;
 
-    protected String getUsage() {
-        return super.getUsage() + " [code]";
-    }
-
     protected Object doExecute() throws Exception {
-        log.info("Exiting w/code: " + exitCode);
-
+        log.info("Exiting w/code: {}", exitCode);
+        
         //
         // DO NOT Call System.exit() !!!
         //

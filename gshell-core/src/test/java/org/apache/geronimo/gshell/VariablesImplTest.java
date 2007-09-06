@@ -34,47 +34,6 @@ import org.apache.geronimo.gshell.command.Variables;
 public class VariablesImplTest
     extends TestCase
 {
-    public void testConstructorArgsNull() throws Exception {
-        try {
-            new VariablesImpl((Map<String,Object>)null);
-            fail("Accepted a null value");
-        }
-        catch (AssertionError expected) {
-            // ignore
-        }
-
-        try {
-            new VariablesImpl((Variables)null);
-            fail("Accepted a null value");
-        }
-        catch (AssertionError expected) {
-            // ignore
-        }
-
-        try {
-            new VariablesImpl(new HashMap<String,Object>(), null);
-            fail("Accepted a null value");
-        }
-        catch (AssertionError expected) {
-            // ignore
-        }
-
-        // Happy day
-        new VariablesImpl(new HashMap<String,Object>(), new VariablesImpl());
-    }
-
-    /*
-    public void testSetNameIsNull() throws Exception {
-        try {
-            new VariablesImpl().set(null, null);
-            fail("Accepted a null value");
-        }
-        catch (IllegalArgumentException expected) {
-            // ignore
-        }
-    }
-    */
-
     public void testSet() throws Exception {
         VariablesImpl vars = new VariablesImpl();
         String name = "a";

@@ -20,21 +20,35 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * ???
+ * Provides the basic interface for commands.
  *
  * @version $Rev$ $Date$
  */
 public interface Command
 {
     /** Standard command success status code. */
-    int SUCCESS = 0;
+    Result SUCCESS = Result.SUCCESS;
 
     /** Standard command failure status code. */
-    int FAILURE = -1;
+    Result FAILURE = Result.FAILURE;
 
-    void init(CommandContext context); // throws Exception ?
+    /**
+     * Initialize the command with its execution context.
+     */
+    void init(CommandContext context);
 
+    /**
+     * Execute the commands behavior.
+     */
     Object execute(Object... args) throws Exception;
-    
-    void destroy(); // throws Exception ?
+
+    //
+    // Result
+    //
+
+    enum Result
+    {
+        SUCCESS,
+        FAILURE
+    }
 }

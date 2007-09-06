@@ -69,13 +69,13 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-java5-maven-plugin</artifactId>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-maven-plugin</artifactId>
+                <version>${pom.version}</version>
                 <executions>
                     <execution>
-                        <phase>process-classes</phase>
                         <goals>
-                            <goal>descriptor</goal>
+                            <goal>plugin-descriptor</goal>
                         </goals>
                     </execution>
                 </executions>

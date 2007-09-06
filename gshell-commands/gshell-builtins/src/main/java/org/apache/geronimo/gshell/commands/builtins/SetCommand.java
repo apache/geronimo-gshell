@@ -26,18 +26,17 @@ import java.util.Properties;
 import org.apache.geronimo.gshell.VariablesImpl;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.command.annotation.Command;
 
 /**
  * Set a variable or property.
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="set")
+@Command(name="set")
 public class SetCommand
     extends CommandSupport
 {
@@ -53,22 +52,15 @@ public class SetCommand
     @Argument(description="Variable definition")
     private List<String> args;
 
-    protected String getUsage() {
-        return super.getUsage() + " (<name[=value>])*";
-    }
-
     protected Object doExecute() throws Exception {
-        IO io = getIO();
-
         // No args... list all properties or variables
         if (args == null || args.size() == 0) {
             switch (mode) {
                 case PROPERTY: {
                     Properties props = System.getProperties();
-                    Iterator iter = props.keySet().iterator();
 
-                    while (iter.hasNext()) {
-                        String name = (String)iter.next();
+                    for (Object o : props.keySet()) {
+                        String name = (String) o;
                         String value = props.getProperty(name);
 
                         io.out.print(name);
@@ -80,12 +72,11 @@ public class SetCommand
                 }
 
                 case VARIABLE: {
-                    Variables vars = getVariables();
-                    Iterator<String> iter = vars.names();
+                    Iterator<String> iter = variables.names();
 
                     while (iter.hasNext()) {
                         String name = iter.next();
-                        Object value = vars.get(name);
+                        Object value = variables.get(name);
 
                         io.out.print(name);
                         io.out.print("=");
@@ -173,7 +164,7 @@ public class SetCommand
         ensureIsIdentifier(nv.name);
 
         // Command vars always has a parent, set only makes sence when setting in parent's scope
-        Variables vars = this.getVariables().parent();
+        Variables vars = variables.parent();
 
         vars.set(nv.name, nv.value);
     }

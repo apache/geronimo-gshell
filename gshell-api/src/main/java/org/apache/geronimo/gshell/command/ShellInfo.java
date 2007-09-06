@@ -22,11 +22,11 @@ package org.apache.geronimo.gshell.command;
 import java.io.File;
 
 /**
- * Provides a general abstraction of the shell's current executing environment.
+ * Provides some runtime information about the shell.
  *
  * @version $Rev$ $Date$
  */
-public interface Environment
+public interface ShellInfo
 {
     File getHomeDir();
 }

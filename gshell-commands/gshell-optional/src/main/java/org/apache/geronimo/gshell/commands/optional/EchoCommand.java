@@ -23,17 +23,16 @@ import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.command.annotation.Command;
 
 /**
  * A simple command to <em>echo</em> all given arguments to the commands standard output.
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="echo")
+@Command(name="echo")
 public class EchoCommand
     extends CommandSupport
 {
@@ -44,8 +43,6 @@ public class EchoCommand
     private List<String> args;
 
     protected Object doExecute() throws Exception {
-        IO io = getIO();
-
         if (args != null) {
             int c=0;
 

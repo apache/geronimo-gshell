@@ -92,6 +92,12 @@ public class StopWatch
         super();
     }
 
+    public StopWatch(final boolean start) {
+        if (start) {
+            start();
+        }
+    }
+
     /**
      * <p>Start the stopwatch.</p>
      *

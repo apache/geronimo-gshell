@@ -33,6 +33,11 @@ public class ArgumentDescriptor
 
     @Override
     public String toString() {
-        return metaVar() != null ? metaVar() : "ARG";
+        String tmp = metaVar();
+        if (tmp != null && tmp.length() != 0) {
+            return tmp;
+        }
+
+        return "ARG";
     }
 }

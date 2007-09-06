@@ -186,4 +186,8 @@ public class IO
         VERBOSE,
         DEBUG
     }
+
+    //
+    // TODO: Add vararg-based helpers to make dealing with verbosity levels easier on developers
+    //
 }

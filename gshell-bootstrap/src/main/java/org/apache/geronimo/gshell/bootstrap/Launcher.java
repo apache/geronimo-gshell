@@ -39,8 +39,7 @@ public class Launcher
         assert args != null;
 
         //
-        // FIXME: Maybe want to add some kinda of support to allow these "gshell.*" bits to be named
-        //        for custom branding?
+        // FIXME: Maybe want to add some kinda of support to allow these "gshell.*" bits to be named for custom branding?
         //
         
         programName = getProgramName();

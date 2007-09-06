@@ -24,17 +24,16 @@ import java.util.List;
 import org.apache.geronimo.gshell.VariablesImpl;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.Variables;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.command.annotation.Command;
 
 /**
  * Unset a variable or property.
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="exit")
+@Command(name="unset")
 public class UnsetCommand
     extends CommandSupport
 {
@@ -88,7 +87,7 @@ public class UnsetCommand
         ensureIsIdentifier(name);
 
         // Command vars always has a parent, set only makes sence when setting in parent's scope
-        Variables vars = this.getVariables().parent();
+        Variables vars = variables.parent();
 
         vars.unset(name);
     }

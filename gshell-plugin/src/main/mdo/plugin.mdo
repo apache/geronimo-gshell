@@ -36,6 +36,10 @@
         </default>
     </defaults>
 
+    <!--
+    TODO: Add configuration for the command manager/container to handle init and other shiz...
+    -->
+
     <classes>
         <class java.abstract="true">
             <name>Element</name>
@@ -70,6 +74,10 @@
                 </field>
             </fields>
         </class>
+
+        <!--
+        FIXME: Use some kinda suffix on these class names, like *Model, or *Element er something so these names don't clash with our other classes of the same name.
+        -->
 
         <class rootElement="true" xml.tagName="plugin">
             <name>Plugin</name>
@@ -142,14 +150,14 @@
                     <required>true</required>
                 </field>
 
-                <field>
-                    <name>hint</name>
+                <field xml.tagName="role-hint">
+                    <name>roleHint</name>
                     <version>1.0.0+</version>
                     <type>String</type>
                 </field>
 
-                <field>
-                    <name>field</name>
+                <field xml.tagName="field-name">
+                    <name>fieldName</name>
                     <version>1.0.0+</version>
                     <type>String</type>
                     <required>true</required>

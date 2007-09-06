@@ -23,18 +23,17 @@ import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
 import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.annotation.Command;
 import org.apache.geronimo.gshell.console.Console;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="script")
+@Command(name="script")
 public class ScriptCommand
     extends CommandSupport
 {
@@ -83,8 +82,6 @@ public class ScriptCommand
 
         if (this.interactive) {
             log.debug("Starting interactive console...");
-            
-            IO io = getIO();
             
             Console.Executor executor = new Console.Executor() {
                 public Result execute(final String line) throws Exception {

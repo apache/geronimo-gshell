@@ -24,10 +24,9 @@ import java.util.List;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.annotation.Command;
 import org.apache.geronimo.gshell.common.Arguments;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Execute a Java standard application.
@@ -38,22 +37,18 @@ import org.codehaus.plexus.component.annotations.Component;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="java")
+@Command(name="java")
 public class JavaCommand
     extends CommandSupport
 {
-    @Option(name="-m", aliases={"--method"}, description="Invoke a named method")
+    @Option(name="-m", aliases={"--method"}, metaVar="METHOD", description="Invoke a named method")
     private String methodName = "main";
 
-    @Argument(index=0, description="Class name", required=true)
+    @Argument(index=0, metaVar="CLASSNAME", description="The name of the class to invoke", required=true)
     private String className;
 
-    @Argument(index=1, description="Arguments")
+    @Argument(index=1, metaVar="ARG", description="Arguments to pass to the METHOD of CLASSNAME")
     private List<String> args;
-
-    protected String getUsage() {
-        return super.getUsage() + " <classname> [arguments]";
-    }
 
     protected Object doExecute() throws Exception {
         boolean info = log.isInfoEnabled();

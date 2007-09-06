@@ -57,7 +57,7 @@ public class BasicModelValidationTest
         Requirement req = (Requirement) command.getRequirements().get(0);
         assertNotNull(req);
         assertEquals("org.codehaus.plexus.PlexusContainer", req.getRole());
-        assertEquals("container", req.getField());
+        assertEquals("container", req.getFieldName());
 
         assertNotNull(command.getConfiguration());
 

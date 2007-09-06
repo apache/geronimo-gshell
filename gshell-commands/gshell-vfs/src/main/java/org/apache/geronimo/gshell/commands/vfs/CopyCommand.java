@@ -23,15 +23,14 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileUtil;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.command.annotation.Command;
 
 /**
  * Copy files.
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="copy")
+@Command(name="copy")
 public class CopyCommand
     extends VFSCommandSupport
 {
@@ -41,17 +40,13 @@ public class CopyCommand
     @Argument(index=1, required=true, description="Target")
     private String targetName;
 
-    protected String getUsage() {
-        return super.getUsage() + " <source> <target>";
-    }
-
     protected Object doExecute() throws Exception {
         FileSystemManager fsm = getFileSystemManager();
         FileObject source = fsm.resolveFile(sourceName);
         FileObject target = fsm.resolveFile(targetName);
 
-        log.info("Copying " + source + " -> " + target);
-
+        log.info("Copying {} -> {}", source, target);
+        
         FileUtil.copyContent(source, target);
 
         return SUCCESS;

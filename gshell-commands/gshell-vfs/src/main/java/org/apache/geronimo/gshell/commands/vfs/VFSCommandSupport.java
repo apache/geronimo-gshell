@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.VFS;
+import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.command.CommandSupport;
 
 /**
@@ -33,19 +34,14 @@ public abstract class VFSCommandSupport
 {
     private FileSystemManager fsManager;
 
-    protected void doInit() throws Exception {
-        //
-        // TODO: Should probably bind this pupping into the container and let plexus handle it for us... though
-        //       the components.xml generation will clobber anything which we add, it won't merge like a good like
-        //       plugin should... :-(
-        //
-        
-        fsManager = VFS.getManager();
-    }
-    
     protected FileSystemManager getFileSystemManager() {
         if (fsManager == null) {
-            throw new IllegalStateException("Not initialized; Missing FileSystemManager");
+            try {
+                fsManager = VFS.getManager();
+            }
+            catch (FileSystemException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return fsManager;

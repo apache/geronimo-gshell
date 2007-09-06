@@ -17,25 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
-
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.discovery.DefaultComponentDiscoverer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * Custom Plexus component discovery compoentn to handle the GShell plugin.xml muck.
+ * Provides the model for the plugin configuration.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=GShellPluginDiscoverer.class)
-public class GShellPluginDiscoverer
-    extends DefaultComponentDiscoverer// AbstractComponentDiscoverer
-{
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    //
-    // TODO: Put the custom plugin.xml descriptor muck here...
-    //
-}
+package org.apache.geronimo.gshell.plugin.model;

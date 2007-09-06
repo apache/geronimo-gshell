@@ -55,7 +55,7 @@ public class OptionDescriptor
     
     @Override
     public String toString() {
-    	if (aliases.length > 0) {
+    	if (aliases != null && aliases.length > 0) {
             String str = "";
 
             for (String alias : aliases) {

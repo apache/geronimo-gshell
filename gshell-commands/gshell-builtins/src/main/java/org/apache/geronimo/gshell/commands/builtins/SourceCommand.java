@@ -29,9 +29,8 @@ import java.net.URL;
 
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.command.annotation.Command;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
@@ -39,7 +38,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="source")
+@Command(name="source")
 public class SourceCommand
     extends CommandSupport
 {
@@ -48,10 +47,6 @@ public class SourceCommand
 
     @Argument(required=true, description="Source file")
     private File file;
-
-    protected String getUsage() {
-        return super.getUsage() + " <file|url>";
-    }
 
     protected Object doExecute() throws Exception {
         BufferedReader reader = openReader(file);

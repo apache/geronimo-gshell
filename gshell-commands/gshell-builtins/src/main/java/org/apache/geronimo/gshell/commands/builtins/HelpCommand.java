@@ -21,11 +21,10 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import java.util.List;
 
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.annotation.Command;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
@@ -34,7 +33,7 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= Command.class, hint="help")
+@Command(name="help")
 public class HelpCommand
     extends CommandSupport
 {
@@ -44,18 +43,16 @@ public class HelpCommand
     protected Object doExecute() throws Exception {
         assert container != null;
 
-        IO io = getIO();
-
         io.out.println("Available commands:");
 
-        List<ComponentDescriptor> list = container.getComponentDescriptorList(Command.class.getName());
+        List<ComponentDescriptor> list = container.getComponentDescriptorList(org.apache.geronimo.gshell.command.Command.class.getName());
 
         for (ComponentDescriptor desc : list) {
             io.out.print("  ");
             io.out.print(desc.getRoleHint());
             io.out.println();
         }
-
+        
         io.out.println();
 
         return SUCCESS;
