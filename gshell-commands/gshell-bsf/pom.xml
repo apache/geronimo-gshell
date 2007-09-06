@@ -46,15 +46,6 @@
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-console</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-
-        <!--
-        NOTE: Currently only here to pick some the Jline conosole bits which should eventually be relocated.
-        -->
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-core</artifactId>
             <version>${pom.version}</version>
         </dependency>

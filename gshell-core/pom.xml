@@ -43,13 +43,7 @@
             <artifactId>gshell-api</artifactId>
             <version>${pom.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-console</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-
+        
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-parser</artifactId>
@@ -69,6 +63,11 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
         </dependency>
         
         <dependency>
