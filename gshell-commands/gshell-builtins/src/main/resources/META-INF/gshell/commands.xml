@@ -13,8 +13,12 @@
             <implementation>org.apache.geronimo.gshell.commands.builtins.HelpCommand</implementation>
             <requirements>
                 <requirement>
-                    <role>org.codehaus.plexus.PlexusContainer</role>
-                    <field-id>container</field-id>
+                    <role>org.apache.geronimo.gshell.plugin.PluginCollector</role>
+                    <field-id>pluginCollector</field-id>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.layout.LayoutManager</role>
+                    <field-id>layoutManager</field-id>
                 </requirement>
             </requirements>
         </command>

@@ -19,11 +19,16 @@
 
 package org.apache.geronimo.gshell.plugin;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.command.descriptor.CommandSetDescriptor;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +44,9 @@ public class PluginCollector
     public static final String ID = "gshell-plugin-collector";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
+
+    private Map<String,CommandDescriptor> commandDescriptors = new HashMap<String,CommandDescriptor>();
+
     public String getId() {
         return ID;
     }
@@ -49,14 +56,24 @@ public class PluginCollector
 
         ComponentSetDescriptor setDescriptor = event.getComponentSetDescriptor();
 
-        for (Object obj : setDescriptor.getComponents()) {
-            ComponentDescriptor componentDescriptor = (ComponentDescriptor)obj;
+        if (setDescriptor instanceof CommandSetDescriptor) {
+            CommandSetDescriptor commands = (CommandSetDescriptor) setDescriptor;
 
-            //
-            // TODO: Do something useful here... for now just log what we have found
-            //
-            
-            log.debug("Component discovered: {}", componentDescriptor.getHumanReadableKey());
+            for (CommandDescriptor desc : commands.getCommandDescriptors()) {
+                String id = desc.getId();
+
+                if (commandDescriptors.containsKey(id)) {
+                    log.error("Ignoring duplicate command id: {}", id);
+                }
+                else {
+                    log.debug("Command discovered; id: {}", id);
+                    commandDescriptors.put(id, desc);
+                }
+            }
         }
+    }
+
+    public Collection<CommandDescriptor> getCommandDescriptors() {
+        return commandDescriptors.values();
     }
 }

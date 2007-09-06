@@ -19,15 +19,14 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.util.List;
+import java.util.Collection;
 
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.codehaus.plexus.PlexusContainer;
+import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.layout.LayoutManager;
+import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
  * Display help
@@ -39,21 +38,24 @@ public class HelpCommand
     extends CommandSupport
 {
     @Requirement
-    private PlexusContainer container;
+    private PluginCollector pluginCollector;
+
+    @Requirement
+    private LayoutManager layoutManager;
 
     protected Object doExecute() throws Exception {
-        assert container != null;
+        assert pluginCollector != null;
+        assert layoutManager != null;
 
         io.out.println("Available commands:");
 
-        //noinspection unchecked
-        List<CommandDescriptor> list = container.getComponentDescriptorList(Command.class.getName());
+        Collection<CommandDescriptor> commands = pluginCollector.getCommandDescriptors();
 
         //
         // TODO: Need to ask the LayoutManager...
         //
 
-        for (CommandDescriptor desc : list) {
+        for (CommandDescriptor desc : commands) {
             io.out.print("  ");
             io.out.print(desc.getId());
             io.out.println();

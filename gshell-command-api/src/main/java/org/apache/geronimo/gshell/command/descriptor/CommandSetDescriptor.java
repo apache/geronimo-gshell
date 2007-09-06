@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.command.descriptor;
 
+import java.util.List;
+
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 
 /**
@@ -55,5 +57,9 @@ public class CommandSetDescriptor
         assert desc != null;
 
         addComponentDescriptor(desc);
+    }
+
+    public List<CommandDescriptor> getCommandDescriptors() {
+        return getComponents();
     }
 }
