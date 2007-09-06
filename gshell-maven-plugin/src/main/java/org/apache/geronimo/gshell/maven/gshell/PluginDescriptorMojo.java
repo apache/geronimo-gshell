@@ -30,11 +30,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.geronimo.gshell.plugin.model.Command;
-import org.apache.geronimo.gshell.plugin.model.Plugin;
-import org.apache.geronimo.gshell.plugin.model.io.xpp3.PluginXpp3Writer;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -129,6 +124,7 @@ public class PluginDescriptorMojo
         scanner.setIncludes(new String[]{"**/*.class"});
         scanner.scan();
 
+        /*
         //
         // FIXME: Probably better to use QDox instead of this crapo...
         //
@@ -219,5 +215,6 @@ public class PluginDescriptorMojo
         catch (IOException e) {
             throw new MojoExecutionException("Failed to write plugin descriptor", e);
         }
+        */
     }
 }

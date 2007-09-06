@@ -342,10 +342,8 @@
         <module>javacc-maven-plugin</module>
         <module>gshell-parser</module>
         <module>gshell-core</module>
-        <module>gshell-cli</module>
-        <!--
         <module>gshell-maven-plugin</module>
-        -->
+        <module>gshell-cli</module>
         <module>gshell-commands</module>
         <module>gshell-testsuite</module>
         <module>gshell-assembly</module>
