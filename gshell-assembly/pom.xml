@@ -63,12 +63,14 @@
             <version>${pom.version}</version>
         </dependency>
         
+        <!--
         <dependency>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-optional</artifactId>
             <version>${pom.version}</version>
         </dependency>
-
+        -->
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
