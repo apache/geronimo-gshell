@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface CommandComponent
 {
-    String name();
+    String id();
 
     String description() default "";
 }

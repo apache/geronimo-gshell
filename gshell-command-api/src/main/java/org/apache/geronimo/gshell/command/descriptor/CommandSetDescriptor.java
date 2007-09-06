@@ -29,18 +29,18 @@ import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 public class CommandSetDescriptor
     extends ComponentSetDescriptor
 {
-    private String name;
+    private String id;
 
     private String description;
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(final String name) {
-        assert name != null;
+    public void setId(final String id) {
+        assert id != null;
 
-        this.name = name;
+        this.id = id;
     }
 
     public String getDescription() {

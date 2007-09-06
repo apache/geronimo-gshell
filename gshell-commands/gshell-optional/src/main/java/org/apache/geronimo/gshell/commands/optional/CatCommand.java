@@ -40,7 +40,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="cat")
+@CommandComponent(id="cat")
 public class CatCommand
     extends CommandSupport
 {

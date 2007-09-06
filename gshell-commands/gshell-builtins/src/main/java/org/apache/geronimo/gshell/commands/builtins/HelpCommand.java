@@ -34,7 +34,7 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="help")
+@CommandComponent(id="help")
 public class HelpCommand
     extends CommandSupport
 {
@@ -49,9 +49,13 @@ public class HelpCommand
         //noinspection unchecked
         List<CommandDescriptor> list = container.getComponentDescriptorList(Command.class.getName());
 
+        //
+        // TODO: Need to ask the LayoutManager...
+        //
+
         for (CommandDescriptor desc : list) {
             io.out.print("  ");
-            io.out.print(desc.getName());
+            io.out.print(desc.getId());
             io.out.println();
         }
         

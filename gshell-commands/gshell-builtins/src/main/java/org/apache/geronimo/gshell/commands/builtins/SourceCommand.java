@@ -38,7 +38,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="source")
+@CommandComponent(id="source")
 public class SourceCommand
     extends CommandSupport
 {

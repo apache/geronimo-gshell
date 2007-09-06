@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="wait")
+@CommandComponent(id="wait")
 public class WaitCommand
     extends CommandSupport
 {

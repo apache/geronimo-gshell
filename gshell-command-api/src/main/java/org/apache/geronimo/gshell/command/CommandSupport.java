@@ -113,7 +113,11 @@ public abstract class CommandSupport
     protected void displayHelp(final CommandLineProcessor clp) {
         assert clp != null;
 
-        io.out.println(context.getCommandDescriptor().getName());
+        //
+        // TODO: Need to ask the LayoutManager what the real name is for our command's ID
+        //
+        
+        io.out.println(context.getCommandDescriptor().getId());
         io.out.println(" -- ");
         io.out.println();
 

@@ -37,7 +37,7 @@ import org.apache.geronimo.gshell.common.Arguments;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="java")
+@CommandComponent(id="java")
 public class JavaCommand
     extends CommandSupport
 {

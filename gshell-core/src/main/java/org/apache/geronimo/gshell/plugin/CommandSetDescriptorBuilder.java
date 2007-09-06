@@ -48,10 +48,10 @@ public class CommandSetDescriptorBuilder
 
         CommandSetDescriptor setDescriptor = new CommandSetDescriptor();
 
-        setDescriptor.setName(c.getChild("name").getValue());
+        setDescriptor.setId(c.getChild("id").getValue());
         setDescriptor.setDescription(c.getChild("description").getValue());
 
-        log.debug("Loading command set: {}", setDescriptor.getName());
+        log.debug("Loading command set: {}", setDescriptor.getId());
 
         // Commands
         PlexusConfiguration[] commands = c.getChild("commands").getChildren("command");
@@ -69,14 +69,14 @@ public class CommandSetDescriptorBuilder
 
         CommandDescriptor d = new CommandDescriptor();
 
-        d.setName(c.getChild("name").getValue());
+        d.setId(c.getChild("id").getValue());
         d.setDescription(c.getChild("description").getValue());
         d.setImplementation(c.getChild("implementation").getValue());
 
-        log.debug("Loading command: {}", d.getName());
+        log.debug("Loading command: {}", d.getId());
 
         d.setRole(Command.class.getName());
-        d.setRoleHint(d.getName());
+        d.setRoleHint(d.getId());
         d.setInstantiationStrategy("per-lookup");
         
         // Requirements

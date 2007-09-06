@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="copy")
+@CommandComponent(id="copy")
 public class CopyCommand
     extends VFSCommandSupport
 {

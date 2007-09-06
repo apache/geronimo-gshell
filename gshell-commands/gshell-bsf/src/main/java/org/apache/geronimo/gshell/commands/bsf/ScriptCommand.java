@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.console.Console;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(name="script")
+@CommandComponent(id="script")
 public class ScriptCommand
     extends CommandSupport
 {
