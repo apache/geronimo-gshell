@@ -242,6 +242,7 @@ public class Main
 
             runner.setErrorHandler(new Console.ErrorHandler() {
                 public Result handleError(Throwable error) {
+                    // Must use string concat here to get the error passed in as a Throwable for rendering
                     log.error("Execution failed: " + error, error);
                     
                     return Result.CONTINUE;

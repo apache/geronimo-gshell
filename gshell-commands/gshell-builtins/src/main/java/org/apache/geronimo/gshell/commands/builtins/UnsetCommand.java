@@ -74,7 +74,7 @@ public class UnsetCommand
     }
 
     private void unsetProperty(final String name) {
-        log.info("Unsetting system property: " + name);
+        log.info("Unsetting system property: {}", name);
 
         ensureIsIdentifier(name);
 
@@ -82,7 +82,7 @@ public class UnsetCommand
     }
 
     private void unsetVariable(final String name) {
-        log.info("Unsetting variable: " + name);
+        log.info("Unsetting variable: {}", name);
 
         ensureIsIdentifier(name);
 

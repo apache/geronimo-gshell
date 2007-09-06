@@ -148,7 +148,7 @@ public class SetCommand
     private void setProperty(final String namevalue) {
         NameValue nv = parse(namevalue);
 
-        log.info("Setting system property: " + nv.name + "=" + nv.value);
+        log.info("Setting system property: {}={}", nv.name, nv.value);
 
         ensureIsIdentifier(nv.name);
 
@@ -158,7 +158,7 @@ public class SetCommand
     private void setVariable(final String namevalue) {
         NameValue nv = parse(namevalue);
 
-        log.info("Setting variable: " + nv.name + "=" + nv.value);
+        log.info("Setting variable: {}={}", nv.name, nv.value);
 
         ensureIsIdentifier(nv.name);
 
