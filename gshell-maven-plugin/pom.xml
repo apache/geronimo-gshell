@@ -39,7 +39,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-plugin</artifactId>
+            <artifactId>gshell-core</artifactId>
             <version>${pom.version}</version>
         </dependency>
         

@@ -118,6 +118,7 @@
                             <model>src/main/mdo/layout.mdo</model>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>layout-site</id>
                         <phase>pre-site</phase>
