@@ -80,9 +80,7 @@ public abstract class CommandSupport
         }
         catch (Exception e) {
             log.error(e.getMessage());
-            if (log.isDebugEnabled()) {
-                log.debug("Exception details", e);
-            }
+            log.debug("Exception details", e);
 
             result = Command.FAILURE;
         }
@@ -92,10 +90,7 @@ public abstract class CommandSupport
         }
         catch (Error e) {
             log.error(e.getMessage());
-
-            if (log.isDebugEnabled()) {
-                log.debug("Error details", e);
-            }
+            log.debug("Error details", e);
 
             result = Command.FAILURE;
         }

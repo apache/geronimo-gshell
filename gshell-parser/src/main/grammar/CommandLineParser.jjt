@@ -59,9 +59,7 @@ public class CommandLineParser
     public ASTCommandLine parse(final Reader reader) throws ParseException {
         assert reader != null;
 
-        if (log.isDebugEnabled()) {
-            log.debug("Parsing from reader: " + reader);
-        }
+        log.debug("Parsing from reader: {}", reader);
 
         this.ReInit(reader);
 

@@ -30,8 +30,6 @@ import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 @Component(role=Shell.class)
 public class ShellImpl
-    implements Shell, Initializable
+    implements Shell
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -78,15 +76,6 @@ public class ShellImpl
 
     public IO getIO() {
         return io;
-    }
-
-    public void initialize() throws InitializationException {
-        // Dump some debug to crapski
-        if (log.isDebugEnabled()) {
-            log.debug("Container: {}", container);
-            log.debug("Layout manager: {}", layoutManager);
-            log.debug("Builder: {}", commandLineBuilder);
-        }
     }
 
     public Object execute(final String commandLine) throws Exception {
