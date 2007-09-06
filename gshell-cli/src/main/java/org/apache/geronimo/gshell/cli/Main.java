@@ -24,7 +24,6 @@ import java.util.List;
 
 import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
@@ -33,6 +32,7 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.JLineConsole;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;

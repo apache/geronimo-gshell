@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.console;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +25,9 @@ import java.io.PrintWriter;
 
 import jline.ConsoleReader;
 import jline.History;
+
+import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.console.Console;
 
 /**
  * Support for running a {@link Shell} using the <a href="http://jline.sf.net">JLine</a> library.
