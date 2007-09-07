@@ -19,7 +19,14 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * The root container for a layout tree.
@@ -28,16 +35,45 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("layout")
 public class Layout
-    extends Group
 {
+    protected String name;
+
+    protected List<Node> nodes = new ArrayList<Node>();
+
     public Layout(final String name) {
-        super(name);
+        assert name != null;
+
+        this.name = name;
     }
 
-    /**
-     * Constructs the root layout.
-     */
-    public Layout() {
-        super("/");
+    public List<Node> nodes() {
+        return nodes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    //
+    // XML Conversion
+    //
+    
+    private static XStream createXStream() {
+        XStream xs = new XStream(new DomDriver());
+        Annotations.configureAliases(xs, Layout.class, CommandNode.class, AliasNode.class);
+
+        return xs;
+    }
+
+    public static Layout fromXML(final InputStream input) {
+        assert input != null;
+
+        return (Layout) createXStream().fromXML(input);
+    }
+
+    public static String toXML(final Layout layout) {
+        assert layout != null;
+
+        return createXStream().toXML(layout);
     }
 }

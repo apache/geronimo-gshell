@@ -22,25 +22,25 @@ package org.apache.geronimo.gshell.layout.model;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * A command instance.
+ * An alias to a command.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("command")
-public class Command
+@XStreamAlias("alias")
+public class AliasNode
     extends Node
 {
-    protected String id;
+    protected String command;
 
-    public Command(final String name, final String id) {
+    public AliasNode(final String name, final String command) {
         super(name);
 
-        assert id != null;
+        assert command != null;
 
-        this.id = id;
+        this.command = command;
     }
 
-    public String getId() {
-        return id;
+    public String getCommand() {
+        return command;
     }
 }

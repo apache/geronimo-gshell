@@ -25,13 +25,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.Annotations;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.geronimo.gshell.command.ShellInfo;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.layout.model.Alias;
-import org.apache.geronimo.gshell.layout.model.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;
 import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.codehaus.plexus.component.annotations.Component;
@@ -89,13 +84,9 @@ public class LayoutManagerImpl
 
         InputStream input = url.openStream();
 
-        // Setup the XStream marshallar and configure it with the aliases for the model we are working with
-        XStream xs = new XStream(new DomDriver());
-        Annotations.configureAliases(xs, Layout.class, Command.class, Alias.class);
-
         Layout layout;
         try {
-            layout = (Layout)xs.fromXML(input);
+            layout = Layout.fromXML(input);
             
             assert layout != null;
         }
@@ -104,9 +95,6 @@ public class LayoutManagerImpl
         }
 
         log.debug("Loaded layout: {}", layout);
-
-        //
-        // TODO: Do some kind post-parsing validation or someting?
 
         return layout;
     }
@@ -133,8 +121,6 @@ public class LayoutManagerImpl
         // HACK: For now, assume the path is just the id... should eventually change this
         //
 
-        CommandDescriptor desc = pluginCollector.getCommandDescriptor(path);
-
-        return desc;
+        return pluginCollector.getCommandDescriptor(path);
     }
 }

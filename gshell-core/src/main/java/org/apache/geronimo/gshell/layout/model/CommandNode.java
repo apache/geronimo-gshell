@@ -19,27 +19,28 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * A group of nodes.
+ * A command instance.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("group")
-public class Group
+@XStreamAlias("command")
+public class CommandNode
     extends Node
 {
-    protected List<Node> nodes = new ArrayList<Node>();
+    protected String id;
 
-    public Group(final String name) {
+    public CommandNode(final String name, final String id) {
         super(name);
+
+        assert id != null;
+
+        this.id = id;
     }
 
-    public List<Node> nodes() {
-        return nodes;
+    public String getId() {
+        return id;
     }
 }

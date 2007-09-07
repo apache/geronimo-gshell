@@ -32,36 +32,29 @@ import junit.framework.TestCase;
 public class BasicModelValidationTest
     extends TestCase
 {
-    private XStream xs;
-
-    protected void setUp() throws Exception {
-        xs = new XStream(new DomDriver());
-        Annotations.configureAliases(xs, Layout.class, Command.class, Alias.class);
-    }
-
     public void testReadLayout1() throws Exception {
-        Layout layout = (Layout) xs.fromXML(getClass().getResourceAsStream("layout1.xml"));
+        Layout layout = Layout.fromXML(getClass().getResourceAsStream("layout1.xml"));
         assertNotNull(layout);
     }
 
     public void testReadLayout2() throws Exception {
-        Layout layout = (Layout) xs.fromXML(getClass().getResourceAsStream("layout2.xml"));
+        Layout layout = Layout.fromXML(getClass().getResourceAsStream("layout2.xml"));
         assertNotNull(layout);
     }
     
     public void testDumpLayout1() throws Exception {
-        Layout layout = new Layout();
+        Layout layout = new Layout("/");
         
-        layout.nodes().add(new Command("foo", "bar"));
-        layout.nodes().add(new Alias("f", "foo"));
+        layout.nodes().add(new CommandNode("foo", "bar"));
+        layout.nodes().add(new AliasNode("f", "foo"));
 
-        Group g = new  Group("test");
-        g.nodes().add(new Command("a", "b"));
-        g.nodes().add(new Command("c", "d"));
+        GroupNode g = new GroupNode("test");
+        g.nodes().add(new CommandNode("a", "b"));
+        g.nodes().add(new CommandNode("c", "d"));
 
         layout.nodes().add(g);
         
-        String xml = xs.toXML(layout);
+        String xml = Layout.toXML(layout);
 
         System.err.println("XML: " + xml);
     }
