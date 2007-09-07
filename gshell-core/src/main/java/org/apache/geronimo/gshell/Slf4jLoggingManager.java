@@ -19,31 +19,28 @@
 
 package org.apache.geronimo.gshell;
 
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.logging.AbstractLogger;
 import org.codehaus.plexus.logging.BaseLoggerManager;
+import org.codehaus.plexus.logging.LoggerManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Adapts the Plexus logging system to GShell.
+ * Adapts the Plexus logging system to SLF4J.
  *
  * @version $Rev$ $Date$
  */
-public class PlexusLoggingAdapter
+@Component(role=LoggerManager.class, hint="slf4j")
+public class Slf4jLoggingManager
+    extends BaseLoggerManager
 {
-    /**
-     * Adapts the Plexus {@link org.codehaus.plexus.logging.LoggerManager} interface to the GShell interface.
-     */
-    public static class LoggerManagerImpl
-        extends BaseLoggerManager
-    {
-        protected org.codehaus.plexus.logging.Logger createLogger(final String key) {
-            return new LoggerImpl(getThreshold(), LoggerFactory.getLogger(key));
-        }
+    protected org.codehaus.plexus.logging.Logger createLogger(final String key) {
+        return new LoggerImpl(getThreshold(), LoggerFactory.getLogger(key));
     }
-    
+
     /**
-     * Adapts the Plexus {@link org.codehaus.plexus.logging.Logger} interface to the GShell interface.
+     * Adapts the Plexus {@link org.codehaus.plexus.logging.Logger} interface to SLF4J
      */
     public static class LoggerImpl
         extends AbstractLogger

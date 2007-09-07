@@ -57,7 +57,7 @@ public abstract class CommandSupport
     public Object execute(final Object... args) throws Exception {
         assert args != null;
 
-        log.info("Executing w/arguments: {}", Arguments.asString(args));
+        log.info("Executing w/args: [{}]", Arguments.asString(args));
 
         Object result = null;
 

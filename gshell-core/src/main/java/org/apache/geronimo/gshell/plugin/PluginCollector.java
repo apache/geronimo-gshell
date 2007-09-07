@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @version $Rev$ $Date$
  */
-@Component(role=ComponentDiscoveryListener.class, hint="gshell")
+@Component(role=PluginCollector.class)
 public class PluginCollector
     implements ComponentDiscoveryListener
 {

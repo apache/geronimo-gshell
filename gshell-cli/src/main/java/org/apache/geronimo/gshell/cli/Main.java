@@ -60,16 +60,13 @@ public class Main
 
     private final IO io = new IO();
 
-    private final StopWatch watch = new StopWatch();
+    private final StopWatch watch = new StopWatch(true);
 
     public Main(final ClassWorld classWorld) {
         assert classWorld != null;
 
         this.classWorld = classWorld;
-
-        watch.start();
     }
-
 
     @Option(name="-h", aliases={"--help"}, description="Display this help message")
     private boolean help;
@@ -108,7 +105,6 @@ public class Main
     @Option(name="-c", aliases={"--commands"}, description="Read commands from string")
     private String commands;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(description="Command")
     private List<String> args = new ArrayList<String>(0);
 
@@ -143,9 +139,6 @@ public class Main
         clp.process(args);
 
         if (help) {
-            io.out.println(Banner.getBanner());
-
-            io.out.println();
             io.out.println(System.getProperty("program.name", "gshell") + " [options] <command> [args]");
             io.out.println();
 
@@ -159,7 +152,6 @@ public class Main
         }
 
         if (version) {
-            io.out.println(Banner.getBanner());
             io.out.println(Version.getInstance());
             io.out.println();
             io.out.flush();
@@ -197,10 +189,7 @@ public class Main
         // Load the GShell instance
         final Shell shell = (Shell) container.lookup(Shell.class);
 
-        //
-        // TEMP: Log some info about the terminal
-        //
-
+        // Log some information about our terminal
         Terminal term = Terminal.getTerminal();
 
         log.debug("Using terminal: {}", term);
@@ -228,7 +217,7 @@ public class Main
             Console.Executor executor = new Console.Executor() {
                 public Result execute(String line) throws Exception {
                     try {
-                        Object result = shell.execute(line);
+                        /* Object result =*/ shell.execute(line);
                     }
                     catch (ExitNotification n) {
                         return Result.STOP;
@@ -260,8 +249,6 @@ public class Main
             result = shell.execute(args);
         }
 
-        log.debug("Ran for {}", watch);
-
         // If the result is a number, then pass that back to the calling shell
         int code = 0;
         
@@ -269,7 +256,7 @@ public class Main
             code = ((Number)result).intValue();
         }
 
-        log.debug("Exiting with code: {}", code);
+        log.debug("Exiting with code: {}, after running for: {}", code, watch);
 
         return code;
     }

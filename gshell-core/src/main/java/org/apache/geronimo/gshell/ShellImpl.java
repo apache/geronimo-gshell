@@ -89,7 +89,7 @@ public class ShellImpl
         assert commandName != null;
         assert args != null;
 
-        log.info("Executing ({}): {}", commandName, Arguments.asString(args));
+        log.info("Executing ({}): [{}]", commandName, Arguments.asString(args));
 
         //
         // HACK: Probably need to pick a better way to name the command invocation container, or do we even really need this?
