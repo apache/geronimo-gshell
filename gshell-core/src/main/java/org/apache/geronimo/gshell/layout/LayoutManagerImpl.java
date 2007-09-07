@@ -58,6 +58,10 @@ public class LayoutManagerImpl
     public void initialize() throws InitializationException {
         assert info != null;
 
+        //
+        // TODO: Move to a layout loader to abstract how this is loaded and allow for better configuration
+        //
+        
         URL url = null;
         try {
             url = new File(info.getHomeDir(), "etc/layout.xml").toURI().toURL();
