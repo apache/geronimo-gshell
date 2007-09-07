@@ -60,7 +60,8 @@ public class Layout
     
     private static XStream createXStream() {
         XStream xs = new XStream(new DomDriver());
-        Annotations.configureAliases(xs, Layout.class, CommandNode.class, AliasNode.class);
+        
+        Annotations.configureAliases(xs, Layout.class, GroupNode.class, CommandNode.class, AliasNode.class);
 
         return xs;
     }

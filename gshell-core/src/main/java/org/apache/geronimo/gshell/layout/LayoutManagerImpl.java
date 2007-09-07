@@ -62,10 +62,11 @@ public class LayoutManagerImpl
         // TODO: Move to a layout loader to abstract how this is loaded and allow for better configuration
         //
         
-        URL url = null;
+        URL url;
         try {
             url = new File(info.getHomeDir(), "etc/layout.xml").toURI().toURL();
-        } catch (MalformedURLException e) {
+        }
+        catch (MalformedURLException e) {
             throw new InitializationException("Invalid URL for layout configuration", e);
         }
 
@@ -87,8 +88,6 @@ public class LayoutManagerImpl
         Layout layout;
         try {
             layout = Layout.fromXML(input);
-            
-            assert layout != null;
         }
         finally {
            input.close();
