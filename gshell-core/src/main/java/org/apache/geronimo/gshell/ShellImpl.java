@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
@@ -91,24 +92,25 @@ public class ShellImpl
 
         log.info("Executing ({}): [{}]", commandName, Arguments.asString(args));
 
-        //
-        // HACK: Probably need to pick a better way to name the command invocation container, or do we even really need this?
-        //
+        // Look up the command descriptor for the given commandName
+        final CommandDescriptor desc = layoutManager.find(commandName);
+        if (desc == null) {
+            throw new CommandNotFoundException(commandName);
+        }
 
+        // Create a new child container for the invocation and lookup the command instance
         String realmId = "command-invocation";
-
         final PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
-        final CommandDescriptor commandDescriptor = (CommandDescriptor) childContainer.getComponentDescriptor(Command.class.getName(), commandName);
-        final Command command = (Command)childContainer.lookup(Command.class, commandName);
+        final Command command = (Command)childContainer.lookup(desc.getRole(), desc.getRoleHint());
 
         //
         // NOTE: For now, until we can figure out a better way to have the container deal with this stuff, pass in
         //       the execution context manually
         //
-        
-        CommandContext context = new CommandContext() {
-            final Variables vars = new VariablesImpl(ShellImpl.this.getVariables());
 
+        // Setup the command context and pass it to the command instance
+        final Variables vars = new VariablesImpl(getVariables());
+        CommandContext context = new CommandContext() {
             public IO getIO() {
                 return io;
             }
@@ -118,10 +120,9 @@ public class ShellImpl
             }
 
             public CommandDescriptor getCommandDescriptor() {
-                return commandDescriptor;
+                return desc;
             }
         };
-
         command.init(context);
 
         // Setup command timings
@@ -140,10 +141,7 @@ public class ShellImpl
             }
             catch (Exception ignore) {}
 
-            //
-            // HACK: Nuke the child container now
-            //
-
+            // Nuke the child container
             container.removeChildContainer(realmId);
         }
 
@@ -154,7 +152,7 @@ public class ShellImpl
         assert args != null;
         assert args.length > 1;
 
-        log.info("Executing (Object...): {}", Arguments.asString(args));
+        log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
         return execute(String.valueOf(args[0]), Arguments.shift(args));
     }

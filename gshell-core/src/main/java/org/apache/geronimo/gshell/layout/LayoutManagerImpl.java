@@ -29,9 +29,11 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.geronimo.gshell.command.ShellInfo;
+import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.layout.model.Alias;
 import org.apache.geronimo.gshell.layout.model.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;
+import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -52,6 +54,9 @@ public class LayoutManagerImpl
     
     @Requirement
     private ShellInfo info;
+
+    @Requirement
+    private PluginCollector pluginCollector;
 
     private Layout layout;
     
@@ -112,5 +117,23 @@ public class LayoutManagerImpl
         }
         
         return layout;
+    }
+
+    public CommandDescriptor find(final String path) {
+        assert path != null;
+
+        log.debug("Searching for command descriptor for path: {}", path);
+
+        //
+        // HACK: For now, assume the path is just the id... should eventually change this
+        //
+
+        for (CommandDescriptor desc : pluginCollector.getCommandDescriptors()) {
+            if (path.equals(desc.getId())) {
+                return desc;
+            }
+        }
+
+        return null;
     }
 }
