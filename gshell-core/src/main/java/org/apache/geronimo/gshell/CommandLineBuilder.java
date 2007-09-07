@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.evaluator.ExpressionEvaluator;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
@@ -37,16 +38,24 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandLineBuilder.class)
 public class CommandLineBuilder
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
-    private PlexusContainer container;
-
-    @Requirement
     private CommandLineParser parser;
+
+    private Shell shell;
+
+    private ExpressionEvaluator evaluator;
+
+    public CommandLineBuilder(final Shell shell, final ExpressionEvaluator evaluator) {
+        assert shell != null;
+        assert evaluator != null;
+
+        this.shell = shell;
+        this.evaluator = evaluator;
+        this.parser = new CommandLineParser();
+    }
 
     private ASTCommandLine parse(final String input) throws ParseException {
         assert input != null;
@@ -70,18 +79,7 @@ public class CommandLineBuilder
             throw new IllegalArgumentException("Command line is empty");
         }
 
-        //
-        // HACK: Look up the vistor... just make it work for now
-        //
-        
-        final ExecutingVisitor visitor;
-        try {
-            visitor = (ExecutingVisitor) container.lookup(ExecutingVisitor.class);
-        }
-        catch (ComponentLookupException e) {
-            throw new RuntimeException(e);
-        }
-
+        final ExecutingVisitor visitor = new ExecutingVisitor(shell, evaluator);
         final ASTCommandLine root = parse(commandLine);
         
         return new CommandLine() {

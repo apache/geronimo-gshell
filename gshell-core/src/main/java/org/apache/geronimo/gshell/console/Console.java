@@ -128,7 +128,8 @@ public abstract class Console
                 running = work();
             }
             catch (Throwable t) {
-                log.debug("Work failed: {}", t);
+                // Don't use {} here so we get the throwable detail in the log stream
+                log.debug("Work failed: " + t, t);
                 
                 if (errorHandler != null) {
                     ErrorHandler.Result result = errorHandler.handleError(t);

@@ -30,6 +30,9 @@ import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.evaluator.ExpressionEvaluator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 @Component(role=Shell.class)
 public class ShellImpl
-    implements Shell
+    implements Shell, Initializable
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -54,20 +57,15 @@ public class ShellImpl
     private LayoutManager layoutManager;
 
     @Requirement
+    private ExpressionEvaluator evaluator;
+
     private CommandLineBuilder commandLineBuilder;
 
-    private final Variables variables = new VariablesImpl();
+    private Variables variables = new VariablesImpl();
 
-    public ShellImpl() {
-        // empty
-    }
-
-    //
-    // HACK: This is for testing, need to weed out and refactor all this shiz
-    //
-
-    public ShellImpl(final IO io) {
-        this.io = io;
+    public void initialize() throws InitializationException {
+        assert evaluator != null;
+        commandLineBuilder = new CommandLineBuilder(this, evaluator);
     }
 
     public Variables getVariables() {
@@ -81,9 +79,7 @@ public class ShellImpl
     public Object execute(final String commandLine) throws Exception {
         assert commandLine != null;
 
-        if (log.isInfoEnabled()) {
-            log.info("Executing (String): " + commandLine);
-        }
+        log.info("Executing (String): {}", commandLine);
 
         CommandLine cl = commandLineBuilder.create(commandLine);
         return cl.execute();

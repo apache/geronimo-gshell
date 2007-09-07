@@ -44,17 +44,22 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ExecutingVisitor.class)
 public class ExecutingVisitor
     implements CommandLineParserVisitor
 {
-    private static final Logger log = LoggerFactory.getLogger(ExecutingVisitor.class);
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
     private Shell shell;
 
-    @Requirement
     private ExpressionEvaluator evaluator;
+
+    public ExecutingVisitor(final Shell shell, final ExpressionEvaluator evaluator) {
+        assert shell != null;
+        assert evaluator != null;
+
+        this.shell = shell;
+        this.evaluator = evaluator;
+    }
 
     public Object visit(final SimpleNode node, final Object data) {
         assert node != null;
@@ -105,7 +110,7 @@ public class ExecutingVisitor
         assert data != null;
         assert data instanceof List;
 
-        List<Object> args = (List<Object>)data;
+        List args = (List)data;
         args.add(value);
 
         return value;
