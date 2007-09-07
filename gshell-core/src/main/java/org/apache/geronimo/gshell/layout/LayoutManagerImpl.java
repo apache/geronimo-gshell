@@ -125,15 +125,16 @@ public class LayoutManagerImpl
         log.debug("Searching for command descriptor for path: {}", path);
 
         //
+        // TODO: Need the current environment, so we can get the current group (pwd) and search path, and then
+        //       use that to search the layout tree.
+        //
+
+        //
         // HACK: For now, assume the path is just the id... should eventually change this
         //
 
-        for (CommandDescriptor desc : pluginCollector.getCommandDescriptors()) {
-            if (path.equals(desc.getId())) {
-                return desc;
-            }
-        }
+        CommandDescriptor desc = pluginCollector.getCommandDescriptor(path);
 
-        return null;
+        return desc;
     }
 }

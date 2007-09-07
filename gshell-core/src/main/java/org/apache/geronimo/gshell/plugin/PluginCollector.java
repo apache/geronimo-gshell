@@ -76,4 +76,10 @@ public class PluginCollector
     public Collection<CommandDescriptor> getCommandDescriptors() {
         return commandDescriptors.values();
     }
+
+    public CommandDescriptor getCommandDescriptor(final String id) {
+        assert id != null;
+
+        return commandDescriptors.get(id);
+    }
 }
