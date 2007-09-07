@@ -61,6 +61,10 @@ public abstract class CommandSupport
 
         Object result = null;
 
+        //
+        // TODO: Move this error handling/logging muck up to the shell....
+        //
+        
         try {
             CommandLineProcessor clp = new CommandLineProcessor(this);
             clp.process(Arguments.toStringArray(args));

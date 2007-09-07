@@ -132,7 +132,7 @@ public class ShellImpl
         try {
             result = command.execute(args);
 
-            log.debug("Command completed in: {}", watch);
+            log.debug("Command completed with result: {}, after: {}", result, watch);
         }
         finally {
             // Make sure that the commands output has been flushed
