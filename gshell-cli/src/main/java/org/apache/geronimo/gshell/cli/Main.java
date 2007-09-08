@@ -21,10 +21,12 @@ package org.apache.geronimo.gshell.cli;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
 import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
@@ -229,6 +231,15 @@ public class Main
 
             JLineConsole runner = new JLineConsole(executor, io);
 
+            runner.setPrompter(new Console.Prompter() {
+                Renderer renderer = new Renderer();
+
+                public String prompt() {
+                    return renderer.render("@|bold gsh| > ");
+                }
+            });
+
+
             runner.setErrorHandler(new Console.ErrorHandler() {
                 public Result handleError(Throwable error) {
                     // Must use string concat here to get the error passed in as a Throwable for rendering
@@ -274,3 +285,4 @@ public class Main
         main(args, new ClassWorld("gshell.legacy", Thread.currentThread().getContextClassLoader()));
     }
 }
+

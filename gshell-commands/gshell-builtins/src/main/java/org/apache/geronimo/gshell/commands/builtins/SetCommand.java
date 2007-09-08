@@ -35,7 +35,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="set")
+@CommandComponent(id="set", description="Set a variable")
 public class SetCommand
     extends CommandSupport
 {

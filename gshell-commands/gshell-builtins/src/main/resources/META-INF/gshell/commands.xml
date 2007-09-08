@@ -6,11 +6,13 @@
         <command>
             <id>exit</id>
             <implementation>org.apache.geronimo.gshell.commands.builtins.ExitCommand</implementation>
+            <description>Exit the shell</description>
         </command>
         
         <command>
             <id>help</id>
             <implementation>org.apache.geronimo.gshell.commands.builtins.HelpCommand</implementation>
+            <description>Display help</description>
             <requirements>
                 <requirement>
                     <role>org.apache.geronimo.gshell.plugin.PluginCollector</role>
@@ -26,11 +28,13 @@
         <command>
             <id>set</id>
             <implementation>org.apache.geronimo.gshell.commands.builtins.SetCommand</implementation>
+            <description>Set a variable</description>
         </command>
         
         <command>
             <id>source</id>
             <implementation>org.apache.geronimo.gshell.commands.builtins.SourceCommand</implementation>
+            <description>Load a file or url into the shell</description>
             <requirements>
                 <requirement>
                     <role>org.apache.geronimo.gshell.Shell</role>
@@ -42,6 +46,7 @@
         <command>
             <id>unset</id>
             <implementation>org.apache.geronimo.gshell.commands.builtins.UnsetCommand</implementation>
+            <description>Unset a variable</description>
         </command>
     </commands>
 </command-set>

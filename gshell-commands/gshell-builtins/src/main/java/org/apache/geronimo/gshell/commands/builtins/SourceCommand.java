@@ -38,7 +38,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="source")
+@CommandComponent(id="source", description="Load a file/url into the current shell")
 public class SourceCommand
     extends CommandSupport
 {

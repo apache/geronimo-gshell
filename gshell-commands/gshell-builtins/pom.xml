@@ -40,6 +40,12 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-ansi</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-core</artifactId>
             <version>${pom.version}</version>
         </dependency>

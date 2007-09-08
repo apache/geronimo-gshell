@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="unset")
+@CommandComponent(id="unset", description="Unset a variable")
 public class UnsetCommand
     extends CommandSupport
 {

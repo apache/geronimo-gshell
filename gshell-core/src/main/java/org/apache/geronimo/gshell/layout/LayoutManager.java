@@ -29,7 +29,13 @@ import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
  */
 public interface LayoutManager
 {
+    /**
+     * Returns the currently loaded layout; never null.
+     */
     Layout getLayout();
 
+    /**
+     * Find the command descriptor for the given path, or null if not found.
+     */
     CommandDescriptor find(String path);
 }

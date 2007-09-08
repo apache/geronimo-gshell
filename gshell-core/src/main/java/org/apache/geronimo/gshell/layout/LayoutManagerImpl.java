@@ -59,7 +59,8 @@ public class LayoutManagerImpl
         assert info != null;
 
         //
-        // TODO: Move to a layout loader to abstract how this is loaded and allow for better configuration
+        // TODO: Move to a layout loader to abstract how this is loaded and allow for better configuration...
+        //       may be able to use a LayoutFactory component here...
         //
         
         URL url;
