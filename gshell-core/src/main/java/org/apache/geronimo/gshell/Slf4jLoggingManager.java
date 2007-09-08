@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=LoggerManager.class, hint="slf4j")
 public class Slf4jLoggingManager
     extends BaseLoggerManager
 {

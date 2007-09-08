@@ -62,20 +62,19 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.xbean</groupId>
-            <artifactId>xbean-finder</artifactId>
-            <version>3.1</version>
-        </dependency>
-        
-        <dependency>
             <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-cdc</artifactId>
-            <version>1.0-alpha-11-SNAPSHOT</version>
+            <artifactId>plexus-component-api</artifactId>
         </dependency>
         
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-component-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.xbean</groupId>
+            <artifactId>xbean-finder</artifactId>
+            <version>3.1</version>
         </dependency>
         
         <dependency>

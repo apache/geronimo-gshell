@@ -50,8 +50,7 @@
             <version>${pom.version}</version>
         </dependency>
     </dependencies>
-    
-    <!--
+
     <build>
         <plugins>
             <plugin>
@@ -61,13 +60,12 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>plugin-descriptor</goal>
+                            <goal>commands-descriptor</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
-    -->
 
 </project>
