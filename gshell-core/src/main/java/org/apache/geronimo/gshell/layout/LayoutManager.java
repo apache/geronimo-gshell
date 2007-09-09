@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import org.apache.geronimo.gshell.layout.model.Layout;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.layout.model.Layout;
 
 /**
  * Provies the shell with a simple mechanism to organize commands.

@@ -19,9 +19,6 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.Annotations;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import junit.framework.TestCase;
 
 /**

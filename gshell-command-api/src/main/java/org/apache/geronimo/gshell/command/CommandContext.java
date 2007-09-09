@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.command;
 
-import java.io.File;
-
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 
 /**

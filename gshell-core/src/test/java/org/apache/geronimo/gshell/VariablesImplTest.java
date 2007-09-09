@@ -19,9 +19,7 @@
 
 package org.apache.geronimo.gshell;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.command.Variables;

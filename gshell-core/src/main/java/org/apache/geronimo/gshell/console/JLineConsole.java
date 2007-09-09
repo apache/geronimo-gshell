@@ -25,7 +25,6 @@ import java.io.PrintWriter;
 
 import jline.ConsoleReader;
 import jline.History;
-
 import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.command.IO;
 
