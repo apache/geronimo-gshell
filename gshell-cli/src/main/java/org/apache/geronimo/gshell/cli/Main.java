@@ -29,6 +29,7 @@ import jline.Terminal;
 import org.apache.geronimo.gshell.ErrorNotification;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.ShellSecurityManager;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.Argument;
@@ -470,25 +471,34 @@ public class Main
             System.exit(0);
         }
 
+        final SecurityManager sm = System.getSecurityManager();
+        System.setSecurityManager(new ShellSecurityManager());
+
         final AtomicReference<Integer> codeRef = new AtomicReference<Integer>();
+        int code;
 
-        Runtime.getRuntime().addShutdownHook(new Thread("GShell Shutdown Hook") {
-            public void run() {
-                if (codeRef.get() == null) {
-                    // Give the user a warning when the JVM shutdown abnormally, normal shutdown
-                    // will set an exit code through the proper channels
+        try {
+            Runtime.getRuntime().addShutdownHook(new Thread("GShell Shutdown Hook") {
+                public void run() {
+                    if (codeRef.get() == null) {
+                        // Give the user a warning when the JVM shutdown abnormally, normal shutdown
+                        // will set an exit code through the proper channels
 
-                    io.err.println();
-                    io.err.println("@|red WARNING:| Abnormal JVM shutdown detected");
+                        io.err.println();
+                        io.err.println("@|red WARNING:| Abnormal JVM shutdown detected");
+                    }
+
+                    io.flush();
                 }
+            });
 
-                io.flush();
-            }
-        });
-
-        int code = execute(this.args.toArray(new String[this.args.size()]));
-        codeRef.set(code);
-
+            code = execute(this.args.toArray(new String[this.args.size()]));
+            codeRef.set(code);
+        }
+        finally {
+            System.setSecurityManager(sm);
+        }
+        
         System.exit(code);
     }
     
