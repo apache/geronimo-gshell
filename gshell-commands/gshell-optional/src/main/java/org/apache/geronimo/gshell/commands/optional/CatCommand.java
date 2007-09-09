@@ -40,7 +40,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="cat")
+@CommandComponent(id="cat", description="Concatenate and print files and/or URLs.")
 public class CatCommand
     extends CommandSupport
 {

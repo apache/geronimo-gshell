@@ -17,32 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.optional;
-
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-
-//
-// HACK: This is a temporary to handle shells which need to keep around after running
-//       commands that return.  Need to have better jobs support to get rid of this.
-//
-
 /**
- * Wait... just blocks command execution.
+ * Provides things that can load {@link Layout} instances.
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="wait", description="Wait, blocking execution... not nice")
-public class WaitCommand
-    extends CommandSupport
-{
-    protected Object doExecute() throws Exception {
-        log.info("Waiting...");
-
-        synchronized (this) {
-            wait();
-        }
-        
-        return SUCCESS;
-    }
-}
+package org.apache.geronimo.gshell.layout.loader;

@@ -96,6 +96,10 @@ public class HelpCommand
             }
         }
 
+        //
+        // TODO: Need to figure out a simple way to access i18n text for the command's help
+        //
+        
         /*
         io.out.println();
         io.out.println("For help on a specific command type:");

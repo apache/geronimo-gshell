@@ -19,15 +19,11 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import org.apache.geronimo.gshell.ShellInfo;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.layout.model.Layout;
+import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
 import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -46,57 +42,24 @@ public class DefaultLayoutManager
     implements LayoutManager, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    @Requirement
-    private ShellInfo info;
 
     @Requirement
     private PluginCollector pluginCollector;
 
+    @Requirement
+    private LayoutLoader loader;
+    
     private Layout layout;
     
     public void initialize() throws InitializationException {
-        assert info != null;
-
-        //
-        // TODO: Move to a layout loader to abstract how this is loaded and allow for better configuration...
-        //       may be able to use a LayoutFactory component here...
-        //
-        
-        URL url;
-        try {
-            url = new File(info.getHomeDir(), "etc/layout.xml").toURI().toURL();
-        }
-        catch (MalformedURLException e) {
-            throw new InitializationException("Invalid URL for layout configuration", e);
-        }
+        assert loader != null;
 
         try {
-            this.layout = load(url);
+            layout = loader.load();
         }
         catch (IOException e) {
-            throw new InitializationException("Failed to load layout from URL: " + url, e);
+            throw new InitializationException(e.getMessage(), e);
         }
-    }
-
-    private Layout load(final URL url) throws IOException {
-        assert url != null;
-
-        log.debug("Loading layout from XML: {}", url);
-
-        InputStream input = url.openStream();
-
-        Layout layout;
-        try {
-            layout = Layout.fromXML(input);
-        }
-        finally {
-           input.close();
-        }
-
-        log.debug("Loaded layout: {}", layout);
-
-        return layout;
     }
 
     public Layout getLayout() {

@@ -36,7 +36,7 @@ public class Arguments
         assert args != null;
         assert args.length >= pos;
 
-        String[] _args = new String[args.length - pos];
+        Object[] _args = new Object[args.length - pos];
         System.arraycopy(args, pos, _args, 0, _args.length);
         return _args;
     }

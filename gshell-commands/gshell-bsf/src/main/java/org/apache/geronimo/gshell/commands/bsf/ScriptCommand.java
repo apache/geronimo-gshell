@@ -21,18 +21,18 @@ package org.apache.geronimo.gshell.commands.bsf;
 
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
-import org.apache.geronimo.gshell.JLineConsole;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.JLineConsole;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="script")
+@CommandComponent(id="script", description="Provides generic scripting language execution support")
 public class ScriptCommand
     extends CommandSupport
 {

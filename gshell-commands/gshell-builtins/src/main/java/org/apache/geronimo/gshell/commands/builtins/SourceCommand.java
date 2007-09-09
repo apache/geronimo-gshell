@@ -46,10 +46,19 @@ public class SourceCommand
     private Shell shell;
 
     @Argument(required=true, description="Source file")
-    private File file;
+    private String source;
 
     protected Object doExecute() throws Exception {
-        BufferedReader reader = openReader(file);
+        URL url;
+        
+        try {
+            url = new URL(source);
+        }
+        catch (MalformedURLException e) {
+            url = new File(source).toURI().toURL();
+        }
+        
+        BufferedReader reader = openReader(url);
 
         String line;
         while ((line = reader.readLine()) != null) {

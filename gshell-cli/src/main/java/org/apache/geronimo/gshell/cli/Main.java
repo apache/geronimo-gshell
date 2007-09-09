@@ -191,7 +191,13 @@ public class Main
         if (file.exists()) {
             log.debug("Loading user-script: {}", file);
 
-            shell.execute("source", file.toURI().toURL());
+
+            // shell.execute("source", file.toURI().toURL());
+            shell.execute("source " + file.toURI().toURL());
+
+            //
+            // TODO: Should probably lookup the command by id, since user's might not bind this in the layout
+            //
         }
     }
 
@@ -286,12 +292,16 @@ public class Main
         if (term instanceof jline.WindowsTerminal) {
             log.debug("  Direct: {}", ((jline.WindowsTerminal)term).getDirectConsole());
         }
-        
-        log.debug("Started in {}", watch);
+
+       log.debug("Started in {}", watch);
 
         int code = 0;
 
         try {
+            //
+            // TODO: Load gsh.properties if it exists?
+            //
+
             //
             // TODO: Get the name from the branding theme
             //

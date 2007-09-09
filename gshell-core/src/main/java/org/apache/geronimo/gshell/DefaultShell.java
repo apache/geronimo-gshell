@@ -154,6 +154,10 @@ public class DefaultShell
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
+        //
+        // FIXME: This is broken... :-(
+        //
+        
         return execute(String.valueOf(args[0]), Arguments.shift(args));
     }
 }
