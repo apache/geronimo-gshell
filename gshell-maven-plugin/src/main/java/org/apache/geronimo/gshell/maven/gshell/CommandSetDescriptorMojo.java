@@ -234,6 +234,7 @@ public class CommandSetDescriptorMojo
             getLog().info("Discovered " + commands.size() + " command type(s)");
 
             CommandSetDescriptor setDesc = new CommandSetDescriptor();
+            setDesc.setId(project.getArtifactId());
 
             for (Class type : commands) {
                 CommandDescriptor commandDesc = createCommandDescriptor(type);

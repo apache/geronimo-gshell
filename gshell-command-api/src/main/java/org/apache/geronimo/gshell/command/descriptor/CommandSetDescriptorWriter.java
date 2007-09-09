@@ -42,6 +42,9 @@ public class CommandSetDescriptorWriter
             XMLWriter w = new PrettyPrintXMLWriter(writer);
 
             w.startElement("command-set");
+
+            element(w, "id", desc.getId());
+            element(w, "description", desc.getDescription());
             
             writeCommands(w, desc.getCommandDescriptors());
 

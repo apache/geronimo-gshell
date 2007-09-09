@@ -66,7 +66,7 @@ public class PluginCollector
                     log.error("Ignoring duplicate command id: {}", id);
                 }
                 else {
-                    log.debug("Command discovered; id: {}", id);
+                    log.debug("Found command: {}", id);
                     commandDescriptors.put(id, desc);
                 }
             }
