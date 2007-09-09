@@ -415,7 +415,7 @@ public class Main
             io.err.println("FATAL: " + t);
             t.printStackTrace(io.err);
             
-            code = 1;
+            code = ExitNotification.FATAL_CODE;
         }
 
         log.debug("Exiting with code: {}, after running for: {}", code, watch);
@@ -460,7 +460,7 @@ public class Main
             io.out.println();
             io.out.flush();
 
-            System.exit(0);
+            System.exit(ExitNotification.DEFAULT_CODE);
         }
 
         if (version) {
@@ -468,34 +468,36 @@ public class Main
             io.out.println();
             io.out.flush();
 
-            System.exit(0);
+            System.exit(ExitNotification.DEFAULT_CODE);
         }
-
-        final SecurityManager sm = System.getSecurityManager();
-        System.setSecurityManager(new ShellSecurityManager());
 
         final AtomicReference<Integer> codeRef = new AtomicReference<Integer>();
         int code;
 
-        try {
-            Runtime.getRuntime().addShutdownHook(new Thread("GShell Shutdown Hook") {
-                public void run() {
-                    if (codeRef.get() == null) {
-                        // Give the user a warning when the JVM shutdown abnormally, normal shutdown
-                        // will set an exit code through the proper channels
+        Runtime.getRuntime().addShutdownHook(new Thread("GShell Shutdown Hook") {
+            public void run() {
+                if (codeRef.get() == null) {
+                    // Give the user a warning when the JVM shutdown abnormally, normal shutdown
+                    // will set an exit code through the proper channels
 
-                        io.err.println();
-                        io.err.println("@|red WARNING:| Abnormal JVM shutdown detected");
-                    }
-
-                    io.flush();
+                    io.err.println();
+                    io.err.println("@|red WARNING:| Abnormal JVM shutdown detected");
                 }
-            });
 
+                io.flush();
+            }
+        });
+
+        // Install the security, keep a hold on the old one
+        final SecurityManager sm = System.getSecurityManager();
+        System.setSecurityManager(new ShellSecurityManager());
+
+        try {
             code = execute(this.args.toArray(new String[this.args.size()]));
             codeRef.set(code);
         }
         finally {
+            // Reset the security so the below System.exit() won't puke
             System.setSecurityManager(sm);
         }
         

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell;
 import java.security.Permission;
 
 /**
- * ???
+ * Custom security manager to prevent commands from doing bad things.
  *
  * @version $Rev$ $Date$
  */

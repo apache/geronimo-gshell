@@ -33,6 +33,10 @@ public class ExitNotification
 
     public static final int DEFAULT_CODE = 0;
 
+    public static final int ERROR_CODE = 1;
+
+    public static final int FATAL_CODE = 2;
+
     public final int code;
 
     public ExitNotification(final int code) {
