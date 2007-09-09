@@ -30,6 +30,10 @@ public interface Flavor
 {
     String HOME = "home";
 
+    File getUserDirectory();
+
+    File getSharedDirectory();
+    
     String getName();
 
     String getDisplayName();
@@ -39,8 +43,6 @@ public interface Flavor
     String getVersion();
     
     String getWelcomeBanner();
-
-    File getUserStateDirectory();
 
     String getProfileScriptName();
 

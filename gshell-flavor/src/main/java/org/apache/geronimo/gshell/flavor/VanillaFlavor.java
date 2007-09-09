@@ -46,6 +46,24 @@ public class VanillaFlavor
         return "GShell";
     }
 
+    public File getUserDirectory() {
+        File userHome = new File(System.getProperty("user.home"));
+
+        File dir = new File(userHome, "." + getName());
+
+        return dir.getAbsoluteFile();
+    }
+
+    public File getSharedDirectory() {
+        //
+        // FIXME: This is not very portable :-(
+        //
+        
+        File dir = new File("/etc", getName());
+
+        return dir.getAbsoluteFile();
+    }
+
     public String getAbout() {
         StringWriter writer = new StringWriter();
         PrintWriter out = new PrintWriter(writer);
@@ -79,14 +97,6 @@ public class VanillaFlavor
         out.flush();
 
         return writer.toString();
-    }
-
-    public File getUserStateDirectory() {
-        File userHome = new File(System.getProperty("user.home"));
-
-        File dir = new File(userHome, "." + getName());
-        
-        return dir.getAbsoluteFile();
     }
 
     public String getProfileScriptName() {

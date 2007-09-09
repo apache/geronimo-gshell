@@ -75,6 +75,9 @@ public class Main
     private Logger log;
 
     // HACK:
+    private Shell shell;
+    
+    // HACK:
     private Flavor flavor;
     
     public Main(final ClassWorld classWorld) {
@@ -173,25 +176,53 @@ public class Main
         System.setProperty("jline.terminal", type);
     }
 
-    private void loadUserScript(final Shell shell, final String fileName) throws Exception {
+    //
+    // TODO: Add flags to control how the rc/init/profile muck is loaded, and optionally skip it
+    //
+    
+    private void loadScript(final File file) throws Exception {
+        assert file != null;
+        
+        //
+        // FIXME: For some reason the non-command-line version pukes up and an ArrayStoreException in Arguments.shift()
+        //
+
+        // shell.execute("source", file.toURI().toURL());
+
+        shell.execute("source " + file.toURI().toURL());
+
+        //
+        // TODO: Should probably lookup the command by id, since user's might not bind this in the layout
+        //
+    }
+
+    private void loadUserScript(final String fileName) throws Exception {
         assert fileName != null;
 
-        File file = new File(flavor.getUserStateDirectory(), fileName);
+        File file = new File(flavor.getUserDirectory(), fileName);
 
         if (file.exists()) {
             log.debug("Loading user-script: {}", file);
 
-            //
-            // FIXME: For some reason the non-command-line version pukes up and an ArrayStoreException in Arguments.shift()
-            //
+            loadScript(file);
+        }
+        else {
+            log.debug("User script is not present: {}", file);
+        }
+    }
 
-            // shell.execute("source", file.toURI().toURL());
+    private void loadSharedScript(final String fileName) throws Exception {
+        assert fileName != null;
 
-            shell.execute("source " + file.toURI().toURL());
+        File file = new File(flavor.getSharedDirectory(), fileName);
 
-            //
-            // TODO: Should probably lookup the command by id, since user's might not bind this in the layout
-            //
+        if (file.exists()) {
+            log.debug("Loading shared-script: {}", file);
+
+            loadScript(file);
+        }
+        else {
+            log.debug("Shared script is not present: {}", file);
         }
     }
 
@@ -264,7 +295,7 @@ public class Main
         //
         
         // Load the GShell instance
-        final Shell shell = (Shell) container.lookup(Shell.class);
+        shell = (Shell) container.lookup(Shell.class);
 
         // Log some information about our terminal
         Terminal term = Terminal.getTerminal();
@@ -288,7 +319,9 @@ public class Main
             // TODO: Load gsh.properties if it exists?
             //
 
-            loadUserScript(shell, flavor.getProfileScriptName());
+            loadSharedScript(flavor.getProfileScriptName());
+
+            loadUserScript(flavor.getProfileScriptName());
 
             //
             // TODO: Pass interactive flags (maybe as property) so gshell knows what modfooe it is
@@ -302,7 +335,7 @@ public class Main
             else if (interactive) {
                 log.debug("Starting interactive console");
 
-                loadUserScript(shell, flavor.getInteractiveScriptName());
+                loadUserScript(flavor.getInteractiveScriptName());
 
                 IO io = shell.getIO();
 
@@ -341,14 +374,8 @@ public class Main
                 });
 
                 runner.setHistory(new History());
-                runner.setHistoryFile(new File(flavor.getUserStateDirectory(), flavor.getHistoryFileName()));
+                runner.setHistoryFile(new File(flavor.getUserDirectory(), flavor.getHistoryFileName()));
                 
-
-                // Check if there are args, and run them and then enter interactive
-                if (args.length != 0) {
-                    shell.execute(args);
-                }
-
                 if (!io.isQuiet()) {
                     io.out.print(flavor.getWelcomeBanner());
                     
@@ -362,6 +389,11 @@ public class Main
                     io.out.println(StringUtils.repeat("-", width - 1));
                 }
 
+                // Check if there are args, and run them and then enter interactive
+                if (args.length != 0) {
+                    shell.execute(args);
+                }
+                
                 runner.run();
             }
             else {
