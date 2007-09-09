@@ -26,6 +26,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 
+import org.apache.geronimo.gshell.ansi.RenderWriter;
+
 /**
  * Container for input/output handles.
  *
@@ -92,8 +94,17 @@ public class IO
         this.errorStream = err;
 
         this.in = new InputStreamReader(in);
-        this.out = new PrintWriter(out, true);
-        this.err = new PrintWriter(err, true);
+
+        //
+        // TODO: Once all user output is in i18n, then it would be more efficent to have the MessageSource
+        //       be ANSI-aware instead of this...
+        //
+
+        this.out = new RenderWriter(outputStream, true);
+        this.err = new RenderWriter(errorStream, true);
+        
+        // this.out = new PrintWriter(out, true);
+        // this.err = new PrintWriter(err, true);
     }
 
     /**
@@ -122,6 +133,13 @@ public class IO
         assert verbosity != null;
         
         this.verbosity = verbosity;
+    }
+
+    /**
+     * Returns the verbosity level.
+     */
+    public Verbosity getVerbosity() {
+        return verbosity;
     }
 
     /**

@@ -31,15 +31,15 @@ public class ErrorNotification
 {
     ///CLOVER:OFF
 
-    public ErrorNotification(String msg) {
+    public ErrorNotification(final String msg) {
         super(msg);
     }
 
-    public ErrorNotification(String msg, Throwable cause) {
+    public ErrorNotification(final String msg, final Throwable cause) {
         super(msg, cause);
     }
 
-    public ErrorNotification(Throwable cause) {
+    public ErrorNotification(final Throwable cause) {
         super(cause);
     }
 

@@ -33,7 +33,7 @@ public class ExitNotification
 
     public static final int DEFAULT_CODE = 0;
 
-    private final int code;
+    public final int code;
 
     public ExitNotification(final int code) {
         this.code = code;
@@ -41,10 +41,6 @@ public class ExitNotification
 
     public ExitNotification() {
         this(DEFAULT_CODE);
-    }
-
-    public int getCode() {
-        return code;
     }
 
     public static void exit(final int code) {

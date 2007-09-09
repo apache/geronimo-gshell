@@ -84,11 +84,6 @@ public class CommandLineBuilder
         
         return new CommandLine() {
             public Object execute() throws Exception {
-
-                //
-                // TODO: Handle ErrorNotification
-                //
-
                 return root.jjtAccept(visitor, null);
             }
         };

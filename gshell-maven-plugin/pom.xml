@@ -33,7 +33,7 @@
     <packaging>maven-plugin</packaging>
 
     <description>
-        Provides build integration wtih GShell.
+        Provides build integration with GShell.
     </description>
 
     <dependencies>

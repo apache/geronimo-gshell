@@ -19,12 +19,17 @@
 
 package org.apache.geronimo.gshell.cli;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import jline.Terminal;
+import org.apache.geronimo.gshell.ErrorNotification;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.Shell;
+import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
@@ -63,6 +68,9 @@ public class Main
 
     private final StopWatch watch = new StopWatch(true);
 
+    // Late initialized
+    private Logger log;
+
     public Main(final ClassWorld classWorld) {
         assert classWorld != null;
 
@@ -86,6 +94,7 @@ public class Main
     private void setDebug(boolean flag) {
         if (flag) {
             setConsoleLogLevel("DEBUG");
+            io.setVerbosity(IO.Verbosity.DEBUG);
         }
     }
 
@@ -93,6 +102,7 @@ public class Main
     private void setVerbose(boolean flag) {
         if (flag) {
             setConsoleLogLevel("INFO");
+            io.setVerbosity(IO.Verbosity.VERBOSE);
         }
     }
 
@@ -100,6 +110,7 @@ public class Main
     private void setQuiet(boolean flag) {
         if (flag) {
             setConsoleLogLevel("ERROR");
+            io.setVerbosity(IO.Verbosity.QUIET);
         }
     }
 
@@ -129,52 +140,105 @@ public class Main
         System.setProperty(name, value);
     }
 
-    public void run(final String[] args) throws Exception {
-        assert args != null;
-
-        // Default is to be quiet
-        setConsoleLogLevel("WARN");
-        
-        CommandLineProcessor clp = new CommandLineProcessor(this);
-        clp.setStopAtNonOption(true);
-        clp.process(args);
-
-        if (help) {
-            io.out.println(System.getProperty("program.name", "gshell") + " [options] <command> [args]");
-            io.out.println();
-
-            Printer printer = new Printer(clp);
-            printer.printUsage(io.out);
-
-            io.out.println();
-            io.out.flush();
-
-            System.exit(0);
-        }
-
-        if (version) {
-            io.out.println(Version.getInstance());
-            io.out.println();
-            io.out.flush();
-
-            System.exit(0);
-        }
-
-        int code;
-        
-        try {
-            code = execute(this.args.toArray(new String[this.args.size()]));
-        }
-        finally {
-            io.flush();
-        }
-        
-        System.exit(code);
+    @Option(name="-C", aliases={"--color"}, argumentRequired=false, description="Enable or disable use of ANSI colors")
+    private void enableAnsiColors(final boolean flag) {
+        ANSI.setEnabled(flag);
     }
 
+    @Option(name="-T", aliases={"--terminal"}, metaVar="TYPE", argumentRequired=true, description="Specify the terminal TYPE to use")
+    private void setTerminalType(String type) {
+        type = type.toLowerCase();
+
+        if ("unix".equals(type)) {
+            type = jline.UnixTerminal.class.getName();
+        }
+        else if ("win".equals(type) || "windows".equals("type")) {
+            type = jline.WindowsTerminal.class.getName();
+        }
+        else if ("false".equals(type) || "off".equals(type) || "none".equals(type)) {
+            type = jline.UnsupportedTerminal.class.getName();
+
+            //
+            // HACK: Disable ANSI, for some reason UnsupportedTerminal reports ANSI as enabled, when it shouldn't
+            //
+            ANSI.setEnabled(false);
+        }
+
+        System.setProperty("jline.terminal", type);
+    }
+
+    private File getUserStateDirectory() {
+        File userHome = new File(System.getProperty("user.home"));
+        File dir = new File(userHome, ".gshell");
+
+        try {
+            return dir.getCanonicalFile();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void loadUserScript(final String fileName) {
+        assert fileName != null;
+
+        File file = new File(getUserStateDirectory(), fileName);
+
+        if (file.exists()) {
+            //
+            // TODO: Run the 'source' comamnd for the filename
+            //
+
+            log.debug("Loading user-script: {}", file);
+        }
+    }
+
+    private void displayError(final Throwable error) {
+        assert error != null;
+
+        // Decode any error notifications
+        Throwable cause = error;
+        if (error instanceof ErrorNotification) {
+            cause = error.getCause();
+        }
+
+        // Spit out the terse reason why we've failed
+        io.err.print("@|bold,red ERROR| ");
+        io.err.print(cause.getClass().getSimpleName());
+        io.err.println(": @|bold,red " + cause.getMessage() + "|");
+        
+        if (io.isDebug()) {
+            // If we have debug enabled then skip the fancy bits below, and log the full error, don't decode shit
+            log.debug(error.toString(), error);
+        }
+        else if (io.isVerbose()) {
+            // Render a fancy ansi colored stack trace
+            StackTraceElement[] trace = cause.getStackTrace();
+            StringBuffer buff = new StringBuffer();
+
+            for (StackTraceElement e : trace) {
+                buff.append("        @|bold at| ").
+                        append(e.getClassName()).
+                        append(".").
+                        append(e.getMethodName()).
+                        append(" (@|bold ");
+
+                buff.append(e.isNativeMethod() ? "Native Method" :
+                            (e.getFileName() != null && e.getLineNumber() != -1 ? e.getFileName() + ":" + e.getLineNumber() :
+                                (e.getFileName() != null ? e.getFileName() : "Unknown Source")));
+
+                buff.append("|)");
+
+                io.err.println(buff);
+
+                buff.setLength(0);
+            }
+        }
+    }
+    
     private int execute(final String[] args) throws Exception {
         // Its okay to use logging now
-        final Logger log = LoggerFactory.getLogger(Main.class);
+        log = LoggerFactory.getLogger(getClass());
 
         // Boot up the container
         ContainerConfiguration config = new DefaultContainerConfiguration();
@@ -199,71 +263,102 @@ public class Main
         log.debug("  Echo: {}", term.getEcho());
         log.debug("  ANSI: {} ", term.isANSISupported());
 
+        if (term instanceof jline.WindowsTerminal) {
+            log.debug("  Direct: {}", ((jline.WindowsTerminal)term).getDirectConsole());
+        }
+        
         log.debug("Started in {}", watch);
 
-        Object result = null;
+        int code = 0;
 
-        //
-        // TODO: Pass interactive flags (maybe as property) so gshell knows what modfooe it is
-        //
+        try {
+            //
+            // TODO: Load user profile here
+            //
 
-        if (commands != null) {
-            shell.execute(commands);
-        }
-        else if (interactive) {
-            log.debug("Starting interactive console");
+            //
+            // TODO: Pass interactive flags (maybe as property) so gshell knows what modfooe it is
+            //
 
-            IO io = shell.getIO();
+            Object result = null;
             
-            Console.Executor executor = new Console.Executor() {
-                public Result execute(String line) throws Exception {
-                    try {
-                        /* Object result =*/ shell.execute(line);
+            if (commands != null) {
+                shell.execute(commands);
+            }
+            else if (interactive) {
+                log.debug("Starting interactive console");
+
+
+                //
+                // TODO: Load user rc here
+                //
+
+                IO io = shell.getIO();
+
+                Console.Executor executor = new Console.Executor() {
+                    public Result execute(String line) throws Exception {
+                        try {
+                            /* Object result =*/ shell.execute(line);
+                        }
+                        catch (ExitNotification n) {
+                            return Result.STOP;
+                        }
+
+                        return Result.CONTINUE;
                     }
-                    catch (ExitNotification n) {
-                        return Result.STOP;
+                };
+
+                JLineConsole runner = new JLineConsole(executor, io);
+
+                runner.setPrompter(new Console.Prompter() {
+                    Renderer renderer = new Renderer();
+
+                    public String prompt() {
+                        return renderer.render("@|bold gsh| > ");
                     }
+                });
 
-                    return Result.CONTINUE;
+                runner.setErrorHandler(new Console.ErrorHandler() {
+                    public Result handleError(final Throwable error) {
+                        displayError(error);
+                        return Result.CONTINUE;
+                    }
+                });
+
+                //
+                // TODO: Setup history here
+                //
+
+                // Check if there are args, and run them and then enter interactive
+                if (args.length != 0) {
+                    shell.execute(args);
                 }
-            };
 
-            JLineConsole runner = new JLineConsole(executor, io);
+                //
+                // TODO: Display the banner here
+                //
 
-            runner.setPrompter(new Console.Prompter() {
-                Renderer renderer = new Renderer();
-
-                public String prompt() {
-                    return renderer.render("@|bold gsh| > ");
-                }
-            });
-
-
-            runner.setErrorHandler(new Console.ErrorHandler() {
-                public Result handleError(Throwable error) {
-                    // Must use string concat here to get the error passed in as a Throwable for rendering
-                    log.error("Execution failed: " + error, error);
-                    
-                    return Result.CONTINUE;
-                }
-            });
-
-            // Check if there are args, and run them and then enter interactive
-            if (args.length != 0) {
-                shell.execute(args);
+                runner.run();
+            }
+            else {
+                result = shell.execute(args);
             }
 
-            runner.run();
+            // If the result is a number, then pass that back to the calling shell
+            if (result instanceof Number) {
+                code = ((Number)result).intValue();
+            }
         }
-        else {
-            result = shell.execute(args);
-        }
+        catch (ExitNotification n) {
+            log.debug("Exiting w/code: {}", n.code);
 
-        // If the result is a number, then pass that back to the calling shell
-        int code = 0;
-        
-        if (result instanceof Number) {
-            code = ((Number)result).intValue();
+            code = n.code;
+        }
+        catch (Throwable t) {
+            io.err.println("FATAL: " + t);
+            t.printStackTrace(io.err);
+            
+            code = 1;
         }
 
         log.debug("Exiting with code: {}, after running for: {}", code, watch);
@@ -275,6 +370,63 @@ public class Main
     // Bootstrap
     //
 
+    public void run(final String[] args) throws Exception {
+        assert args != null;
+
+        // Default is to be quiet
+        setConsoleLogLevel("WARN");
+
+        CommandLineProcessor clp = new CommandLineProcessor(this);
+        clp.setStopAtNonOption(true);
+        clp.process(args);
+
+        //
+        // TODO: Use methods to handle these...
+        //
+        
+        if (help) {
+            io.out.println(System.getProperty("program.name", "gshell") + " [options] <command> [args]");
+            io.out.println();
+
+            Printer printer = new Printer(clp);
+            printer.printUsage(io.out);
+
+            io.out.println();
+            io.out.flush();
+
+            System.exit(0);
+        }
+
+        if (version) {
+            io.out.println(Version.getInstance());
+            io.out.println();
+            io.out.flush();
+
+            System.exit(0);
+        }
+
+        final AtomicReference<Integer> codeRef = new AtomicReference<Integer>();
+
+        Runtime.getRuntime().addShutdownHook(new Thread("GShell Shutdown Hook") {
+            public void run() {
+                if (codeRef.get() == null) {
+                    // Give the user a warning when the JVM shutdown abnormally, normal shutdown
+                    // will set an exit code through the proper channels
+
+                    io.err.println();
+                    io.err.println("WARNING: Abnormal JVM shutdown detected");
+                }
+
+                io.flush();
+            }
+        });
+
+        int code = execute(this.args.toArray(new String[this.args.size()]));
+        codeRef.set(code);
+
+        System.exit(code);
+    }
+    
     public static void main(final String[] args, final ClassWorld world) throws Exception {
         Main main = new Main(world);
         main.run(args);
