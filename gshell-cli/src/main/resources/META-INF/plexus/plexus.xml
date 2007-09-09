@@ -52,7 +52,21 @@
             <role-hint>default</role-hint>
             <implementation>org.apache.geronimo.gshell.plugin.PluginCollector</implementation>
         </component>
-        
+
+        <!--
+        Hook up the flavor to use.
+        -->
+        <component>
+            <role>org.apache.geronimo.gshell.flavor.Flavor</role>
+            <role-hint>default</role-hint>
+            <implementation>org.apache.geronimo.gshell.flavor.VanillaFlavor</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.flavor.VersionLoader</role>
+                </requirement>
+            </requirements>
+        </component>
+
         <!--
         HACK: This is a massive hackinstine just to get things moving along... and will be tossed as soon as a palatable solution crosses my path.
         -->

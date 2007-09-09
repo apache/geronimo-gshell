@@ -22,8 +22,9 @@ package org.apache.geronimo.gshell;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.geronimo.gshell.ShellInfo;
+import org.apache.geronimo.gshell.flavor.Flavor;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
@@ -40,6 +41,9 @@ public class DefaultShellInfo
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Requirement
+    private Flavor flavor;
+    
     private File homeDir;
 
     public File getHomeDir() {
@@ -56,13 +60,10 @@ public class DefaultShellInfo
     }
     
     private File detectHomeDir() throws InitializationException {
-        // For right now we require that a "gshell.home" property be set, which should have been set by the Bootstrapper.
-        // Will eventually allow this to be changed for shell branding mucko
-
-        String homePath = System.getProperty("gshell.home");
-
+        String homePath = flavor.getProperty(Flavor.HOME);
+        
         if (homePath == null) {
-            throw new InitializationException("The 'gshell.home' property must be set for the shell to function correctly");
+            throw new InitializationException("The '" + flavor.getPropertyName(Flavor.HOME) + "' property must be set for the shell to function correctly");
         }
 
         // And now lets resolve this sucker

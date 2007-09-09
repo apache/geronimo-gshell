@@ -30,35 +30,51 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-cli</artifactId>
-    <name>GShell CLI</name>
-    
+    <artifactId>gshell-flavor</artifactId>
+    <name>GShell Flavor</name>
+
     <description>
-        The main command-line interface for GShell.
+        Provides muck for branding a GShell application.
     </description>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-ansi</artifactId>
+            <artifactId>gshell-command-api</artifactId>
             <version>${pom.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-core</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-flavor</artifactId>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-common</artifactId>
             <version>${pom.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-classworlds</artifactId>
+            <artifactId>plexus-component-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-component-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -75,10 +91,25 @@
                 <directory>${pom.basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>org/apache/geronimo/gshell/cli/version.properties</include>
+                    <include>org/apache/geronimo/gshell/flavor/version.properties</include>
                 </includes>
             </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-java5-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

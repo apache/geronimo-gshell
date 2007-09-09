@@ -20,9 +20,6 @@
 package org.apache.geronimo.gshell.cli;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,10 +39,12 @@ import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.flavor.Flavor;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
@@ -75,6 +74,9 @@ public class Main
     // Late initialized
     private Logger log;
 
+    // HACK:
+    private Flavor flavor;
+    
     public Main(final ClassWorld classWorld) {
         assert classWorld != null;
 
@@ -84,7 +86,7 @@ public class Main
     @Option(name="-h", aliases={"--help"}, description="Display this help message")
     private boolean help;
 
-    @Option(name="-V", aliases={"--version"}, description="Display GShell version")
+    @Option(name="-V", aliases={"--version"}, description="Display program version")
     private boolean version;
 
     @Option(name="-i", aliases={"--interactive"}, description="Run in interactive mode")
@@ -171,22 +173,10 @@ public class Main
         System.setProperty("jline.terminal", type);
     }
 
-    private File getUserStateDirectory() {
-        File userHome = new File(System.getProperty("user.home"));
-        File dir = new File(userHome, ".gshell");
-
-        try {
-            return dir.getCanonicalFile();
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void loadUserScript(final Shell shell, final String fileName) throws Exception {
         assert fileName != null;
 
-        File file = new File(getUserStateDirectory(), fileName);
+        File file = new File(flavor.getUserStateDirectory(), fileName);
 
         if (file.exists()) {
             log.debug("Loading user-script: {}", file);
@@ -248,34 +238,26 @@ public class Main
         }
     }
 
-    private String getBanner() {
-        StringWriter writer = new StringWriter();
-        PrintWriter out = new PrintWriter(writer);
+    private PlexusContainer createContainer() throws PlexusContainerException {
+        // Boot up the container
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+        config.setName("gshell.core");
+        config.setClassWorld(classWorld);
 
-        out.println("   ____ ____  _          _ _ ");
-        out.println("  / ___/ ___|| |__   ___| | |");
-        out.println(" | |  _\\___ \\| '_ \\ / _ \\ | |");
-        out.println(" | |_| |___) | | | |  __/ | |");
-        out.println("  \\____|____/|_| |_|\\___|_|_|");
-        out.println();
-        out.println(" @|bold GShell| (" + Version.getInstance() + ")");
-        out.println();
-        out.println("Type '@|bold help|' for help.");
-        out.flush();
-
-        return writer.toString();
+        return new DefaultPlexusContainer(config);
     }
 
     private int execute(final String[] args) throws Exception {
         // Its okay to use logging now
         log = LoggerFactory.getLogger(getClass());
 
-        // Boot up the container
-        ContainerConfiguration config = new DefaultContainerConfiguration();
-        config.setName("gshell.core");
-        config.setClassWorld(classWorld);
+        PlexusContainer container = createContainer();
 
-        PlexusContainer container = new DefaultPlexusContainer(config);
+        //
+        // HACK: Load the flavor here for now
+        //
+        
+        flavor = (Flavor) container.lookup(Flavor.class);
 
         //
         // TODO: We need to pass in our I/O context to the container directly
@@ -306,11 +288,7 @@ public class Main
             // TODO: Load gsh.properties if it exists?
             //
 
-            //
-            // TODO: Get the name from the branding theme
-            //
-
-            loadUserScript(shell, "gshell.profile");
+            loadUserScript(shell, flavor.getProfileScriptName());
 
             //
             // TODO: Pass interactive flags (maybe as property) so gshell knows what modfooe it is
@@ -324,11 +302,7 @@ public class Main
             else if (interactive) {
                 log.debug("Starting interactive console");
 
-                //
-                // TODO: Get the name from the branding theme
-                //
-
-                loadUserScript(shell, "gshell.rc");
+                loadUserScript(shell, flavor.getInteractiveScriptName());
 
                 IO io = shell.getIO();
 
@@ -366,13 +340,9 @@ public class Main
                     }
                 });
 
-                //
-                // TODO: Get the name from the branding theme
-                //
-                
                 runner.setHistory(new History());
-                runner.setHistoryFile(new File(getUserStateDirectory(), "gshell.history"));
-
+                runner.setHistoryFile(new File(flavor.getUserStateDirectory(), flavor.getHistoryFileName()));
+                
 
                 // Check if there are args, and run them and then enter interactive
                 if (args.length != 0) {
@@ -380,12 +350,8 @@ public class Main
                 }
 
                 if (!io.isQuiet()) {
-                    //
-                    // TODO: Use a plugable branding theme object here to get the welcome banner text...
-                    //
+                    io.out.print(flavor.getWelcomeBanner());
                     
-                    io.out.println(getBanner());
-
                     int width = term.getTerminalWidth();
 
                     // If we can't tell, or have something bogus then use a reasonable default
@@ -439,11 +405,20 @@ public class Main
         clp.process(args);
 
         //
+        // HACK: We need the dang flavor...
+        //
+
+        if (help || version) {
+            PlexusContainer container = createContainer();
+            flavor = (Flavor) container.lookup(Flavor.class);
+        }
+
+        //
         // TODO: Use methods to handle these...
         //
         
         if (help) {
-            io.out.println(System.getProperty("program.name", "gshell") + " [options] <command> [args]");
+            io.out.println(System.getProperty("program.name", flavor.getName()) + " [options] <command> [args]");
             io.out.println();
 
             Printer printer = new Printer(clp);
@@ -456,7 +431,7 @@ public class Main
         }
 
         if (version) {
-            io.out.println(Version.getInstance());
+            io.out.println(flavor.getVersion());
             io.out.println();
             io.out.flush();
 

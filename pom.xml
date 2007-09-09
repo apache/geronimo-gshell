@@ -335,6 +335,7 @@
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
         <module>gshell-command-api</module>
+        <module>gshell-flavor</module>
         <module>javacc-maven-plugin</module>
         <module>gshell-parser</module>
         <module>gshell-core</module>

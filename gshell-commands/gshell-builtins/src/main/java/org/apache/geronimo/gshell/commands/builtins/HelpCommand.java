@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.flavor.Flavor;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -46,19 +47,17 @@ public class HelpCommand
     @Requirement
     private LayoutManager layoutManager;
 
+    @Requirement
+    private Flavor flavor;
+
     private Renderer renderer = new Renderer();
 
     protected Object doExecute() throws Exception {
         assert pluginCollector != null;
         assert layoutManager != null;
 
-        //
-        // TODO: Get this from branding theme thingy
-        //
-
         io.out.println();
-        io.out.println("For information about Apache Geronimo, visit:");
-        io.out.println("    http://geronimo.apache.org ");
+        io.out.println(flavor.getAbout());
         io.out.println();
 
         io.out.println("Available commands:");

@@ -17,48 +17,43 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.cli;
+package org.apache.geronimo.gshell.flavor;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.codehaus.plexus.component.annotations.Component;
+
 /**
- * Provides externalization of the GShell version details.
- *
- * <p>This facilitates syncing up version details with the build system.
+ * Loads a version number from a properties file.
  *
  * @version $Rev$ $Date$
  */
-@Deprecated()// NOTE: Need to setup a SPI system to allow branding of this stuff easily
-public class Version
+@Component(role=VersionLoader.class, hint="default") // HACK: hint="properties")
+public class PropertiesVersionLoader
+    implements VersionLoader
 {
-    private static Version instance;
+    private Properties props;
 
-    public static Version getInstance() {
-        if (instance == null) {
-            instance = new Version();
+    // @Configuraton(key="resourceName", value="version.properties")
+    private String resourceName = "version.properties";
+
+    public String getVersion() {
+        if (props == null) {
+            InputStream input = getClass().getResourceAsStream(resourceName);
+            assert input != null;
+
+            try {
+                props = new Properties();
+                props.load(input);
+                input.close();
+            }
+            catch (IOException e) {
+                throw new RuntimeException("Failed to load " + resourceName, e);
+            }
         }
-
-        return instance;
-    }
-
-    private Properties props = new Properties();
-
-    public Version() {
-        InputStream input = getClass().getResourceAsStream("version.properties");
-        assert input != null;
-
-        try {
-            props.load(input);
-            input.close();
-        }
-        catch (IOException e) {
-            throw new RuntimeException("Failed to load version.properties", e);
-        }
-    }
-
-    public String toString() {
+        
         return props.getProperty("version");
     }
 }

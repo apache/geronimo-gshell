@@ -45,6 +45,10 @@ public class Launcher
         programName = getProgramName();
         setProperty("program.name", programName);
 
+        //
+        // TODO: Use the Flavor to figure out what the property name to set is here... ?????
+        //
+        
         homeDir = getHomeDir();
         setProperty("gshell.home", homeDir.getCanonicalPath());
 
