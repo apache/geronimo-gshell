@@ -26,7 +26,7 @@ import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 /**
  * Provides commands with the context of its execution.
  *
- * @version $Rev: 572562 $ $Date: 2007-09-04 00:43:23 -0700 (Tue, 04 Sep 2007) $
+ * @version $Rev$ $Date$
  */
 public interface CommandContext
 {
@@ -35,11 +35,4 @@ public interface CommandContext
     Variables getVariables();
 
     CommandDescriptor getCommandDescriptor();
-
-
-    //
-    // TODO: Split up the Shell's bits from the commands bits maybe?  Or expose a ShellInfo object for these bits maybe?
-    //
-
-    // File getHomeDir();
 }

@@ -21,10 +21,13 @@ package org.apache.geronimo.gshell.cli;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import jline.History;
 import jline.Terminal;
 import org.apache.geronimo.gshell.ErrorNotification;
 import org.apache.geronimo.gshell.ExitNotification;
@@ -44,6 +47,7 @@ import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -179,17 +183,15 @@ public class Main
         }
     }
 
-    private void loadUserScript(final String fileName) {
+    private void loadUserScript(final Shell shell, final String fileName) throws Exception {
         assert fileName != null;
 
         File file = new File(getUserStateDirectory(), fileName);
 
         if (file.exists()) {
-            //
-            // TODO: Run the 'source' comamnd for the filename
-            //
-
             log.debug("Loading user-script: {}", file);
+
+            shell.execute("source", file.toURI().toURL());
         }
     }
 
@@ -235,7 +237,25 @@ public class Main
             }
         }
     }
-    
+
+    private String getBanner() {
+        StringWriter writer = new StringWriter();
+        PrintWriter out = new PrintWriter(writer);
+
+        out.println("   ____ ____  _          _ _ ");
+        out.println("  / ___/ ___|| |__   ___| | |");
+        out.println(" | |  _\\___ \\| '_ \\ / _ \\ | |");
+        out.println(" | |_| |___) | | | |  __/ | |");
+        out.println("  \\____|____/|_| |_|\\___|_|_|");
+        out.println();
+        out.println(" @|bold GShell| (" + Version.getInstance() + ")");
+        out.println();
+        out.println("Type '@|bold help|' for help.");
+        out.flush();
+
+        return writer.toString();
+    }
+
     private int execute(final String[] args) throws Exception {
         // Its okay to use logging now
         log = LoggerFactory.getLogger(getClass());
@@ -273,8 +293,10 @@ public class Main
 
         try {
             //
-            // TODO: Load user profile here
+            // TODO: Get the name from the branding theme
             //
+
+            loadUserScript(shell, "gshell.profile");
 
             //
             // TODO: Pass interactive flags (maybe as property) so gshell knows what modfooe it is
@@ -288,10 +310,11 @@ public class Main
             else if (interactive) {
                 log.debug("Starting interactive console");
 
+                //
+                // TODO: Get the name from the branding theme
+                //
 
-                //
-                // TODO: Load user rc here
-                //
+                loadUserScript(shell, "gshell.rc");
 
                 IO io = shell.getIO();
 
@@ -301,6 +324,10 @@ public class Main
                             /* Object result =*/ shell.execute(line);
                         }
                         catch (ExitNotification n) {
+                            //
+                            // FIXME: This eats up the exit code we are to use...
+                            //
+
                             return Result.STOP;
                         }
 
@@ -326,17 +353,34 @@ public class Main
                 });
 
                 //
-                // TODO: Setup history here
+                // TODO: Get the name from the branding theme
                 //
+                
+                runner.setHistory(new History());
+                runner.setHistoryFile(new File(getUserStateDirectory(), "gshell.history"));
+
 
                 // Check if there are args, and run them and then enter interactive
                 if (args.length != 0) {
                     shell.execute(args);
                 }
 
-                //
-                // TODO: Display the banner here
-                //
+                if (!io.isQuiet()) {
+                    //
+                    // TODO: Use a plugable branding theme object here to get the welcome banner text...
+                    //
+                    
+                    io.out.println(getBanner());
+
+                    int width = term.getTerminalWidth();
+
+                    // If we can't tell, or have something bogus then use a reasonable default
+                    if (width < 1) {
+                        width = 80;
+                    }
+
+                    io.out.println(StringUtils.repeat("-", width - 1));
+                }
 
                 runner.run();
             }
@@ -414,7 +458,7 @@ public class Main
                     // will set an exit code through the proper channels
 
                     io.err.println();
-                    io.err.println("WARNING: Abnormal JVM shutdown detected");
+                    io.err.println("@|red WARNING:| Abnormal JVM shutdown detected");
                 }
 
                 io.flush();

@@ -29,14 +29,6 @@ import org.apache.geronimo.gshell.command.Variables;
  */
 public interface Shell
 {
-    //
-    // FIXME: Move to gshell-api
-    //
-
-    //
-    // TODO: Just expose the Enviroment
-    //
-
     IO getIO();
 
     Variables getVariables();

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.geronimo.gshell.command.ShellInfo;
+import org.apache.geronimo.gshell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ShellInfo.class)
-public class ShellInfoImpl
+@Component(role=ShellInfo.class, hint="default")
+public class DefaultShellInfo
     implements ShellInfo, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

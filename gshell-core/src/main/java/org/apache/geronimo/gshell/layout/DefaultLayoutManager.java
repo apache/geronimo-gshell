@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.geronimo.gshell.command.ShellInfo;
+import org.apache.geronimo.gshell.ShellInfo;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.layout.model.Layout;
 import org.apache.geronimo.gshell.plugin.PluginCollector;
@@ -41,8 +41,8 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=LayoutManager.class)
-public class LayoutManagerImpl
+@Component(role=LayoutManager.class, hint="default")
+public class DefaultLayoutManager
     implements LayoutManager, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

@@ -42,8 +42,8 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=Shell.class)
-public class ShellImpl
+@Component(role=Shell.class, hint="default")
+public class DefaultShell
     implements Shell, Initializable
 {
     private Logger log = LoggerFactory.getLogger(getClass());
