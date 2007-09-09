@@ -191,8 +191,12 @@ public class Main
         if (file.exists()) {
             log.debug("Loading user-script: {}", file);
 
+            //
+            // FIXME: For some reason the non-command-line version pukes up and an ArrayStoreException in Arguments.shift()
+            //
 
             // shell.execute("source", file.toURI().toURL());
+
             shell.execute("source " + file.toURI().toURL());
 
             //
