@@ -98,6 +98,7 @@ public class DefaultBranding
     }
 
     /*
+    // Figlet font name: ???
     private static final String[] BANNER = {
         "   ____ ____  _          _ _ ",
         "  / ___/ ___|| |__   ___| | |",
@@ -107,6 +108,7 @@ public class DefaultBranding
     };
     */
 
+    // Figlet font name: Georgia11
     private static final String[] BANNER = {
         "                          ,,                 ,,    ,,",
         "   .g8\"\"\"bgd   .M\"\"\"bgd `7MM               `7MM  `7MM",
@@ -118,6 +120,21 @@ public class DefaultBranding
         "   `\"bmmmdPY  P\"Ybmmd\"  .JMML  JMML.`Mbmmd'.JMML..JMML."
     };
 
+    /*
+    // Figlet font name: Georgia11
+    private static final String[] BANNER = {
+        "                          ,,                 ,,    ,,             ..",
+        "   .g8\"\"\"bgd   .M\"\"\"bgd `7MM               `7MM  `7MM              `bq",
+        " .dP'     `M  ,MI    \"Y   MM                 MM    MM                YA",
+        " dM'       `  `MMb.       MMpMMMb.  .gP\"Ya   MM    MM                `Mb",
+        " MM             `YMMNq.   MM    MM ,M'   Yb  MM    MM      mmmmmmmmm  8M",
+        " MM.    `7MMF'.     `MM   MM    MM 8M\"\"\"\"\"\"  MM    MM                 8M",
+        " `Mb.     MM  Mb     dM   MM    MM YM.    ,  MM    MM      mmmmmmmmm ,M9",
+        "   `\"bmmmdPY  P\"Ybmmd\"  .JMML  JMML.`Mbmmd'.JMML..JMML.              dM",
+        "                                                                   .pY"
+    };
+    */
+    
     public String getWelcomeBanner() {
         StringWriter writer = new StringWriter();
         PrintWriter out = new RenderWriter(writer);
