@@ -30,7 +30,7 @@
         </listeners>
 
         <component-discoverers>
-            <component-discoverer implementation="org.apache.geronimo.gshell.plugin.PluginDiscoverer"/>
+            <component-discoverer implementation="org.apache.geronimo.gshell.plugin.CommandDiscoverer"/>
         </component-discoverers>
     </component-discoverer-manager>
 

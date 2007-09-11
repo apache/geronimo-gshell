@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 @Component(role=ComponentDiscoverer.class)
-public class PluginDiscoverer
+public class CommandDiscoverer
     extends AbstractComponentDiscoverer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
