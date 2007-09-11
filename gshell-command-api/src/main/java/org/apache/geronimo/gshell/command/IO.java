@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 
 import org.apache.geronimo.gshell.ansi.RenderWriter;
+import org.slf4j.helpers.MessageFormatter;
 
 /**
  * Container for input/output handles.
@@ -206,6 +207,50 @@ public class IO
     }
 
     //
-    // TODO: Add vararg-based helpers to make dealing with verbosity levels easier on developers
+    // Output Helpers
     //
+
+    public void debug(final String msg) {
+        if (isDebug()) {
+            out.println(msg);
+        }
+    }
+
+    public void debug(final String format, final Object... args) {
+        if (isDebug()) {
+            out.println(MessageFormatter.arrayFormat(format, args));
+        }
+    }
+
+    public void info(final String msg) {
+        if (!isQuiet()) {
+            out.println(msg);
+        }
+    }
+
+    public void info(final String format, final Object... args) {
+        if (!isQuiet()) {
+            out.println(MessageFormatter.arrayFormat(format, args));
+        }
+    }
+
+    public void warn(final String msg) {
+        if (!isQuiet()) {
+            err.println(msg);
+        }
+    }
+
+    public void warn(final String format, final Object... args) {
+        if (!isQuiet()) {
+            err.println(MessageFormatter.arrayFormat(format, args));
+        }
+    }
+
+    public void error(final String msg) {
+        err.println(msg);
+    }
+
+    public void error(final String format, final Object... args) {
+        err.println(MessageFormatter.arrayFormat(format, args));
+    }
 }
