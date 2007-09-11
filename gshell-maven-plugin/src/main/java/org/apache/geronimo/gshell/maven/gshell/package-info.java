@@ -18,8 +18,8 @@
  */
 
 /**
- * Console handling muck.
+ * GShell Maven support.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.console;
+package org.apache.geronimo.gshell.maven.gshell;
