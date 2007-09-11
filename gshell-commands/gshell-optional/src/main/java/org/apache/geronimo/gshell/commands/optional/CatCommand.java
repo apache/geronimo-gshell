@@ -34,6 +34,7 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Concatenate and print files and/or URLs.
@@ -76,9 +77,12 @@ public class CatCommand
                     reader = new BufferedReader(new FileReader(file));
                 }
 
-                cat(reader, io);
-
-                reader.close();
+                try {
+                    cat(reader, io);
+                }
+                finally {
+                    IOUtil.close(reader);
+                }
             }
         }
 

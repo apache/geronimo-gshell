@@ -43,6 +43,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Generates a GShell XML commands descriptor.
@@ -248,17 +249,20 @@ public class CommandSetDescriptorMojo
 
             // Write the file
 
+            BufferedWriter output = null;
             try {
-                BufferedWriter output = new BufferedWriter(new FileWriter(outputFile));
+                output = new BufferedWriter(new FileWriter(outputFile));
                 CommandSetDescriptorWriter writer = new CommandSetDescriptorWriter();
 
                 writer.write(output, setDesc);
-                output.close();
 
                 getLog().debug("Wrote " + outputFile);
             }
             catch (Exception e) {
                 throw new MojoExecutionException("Failed to write commands descriptor", e);
+            }
+            finally {
+                IOUtil.close(output);
             }
         }
     }

@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.codehaus.plexus.util.IOUtil;
+
 //
 // Based on Apache Ant 1.6.5
 //
@@ -98,12 +100,7 @@ public class PumpStreamHandler
             inputPump = createInputPump(in, out, true);
         }
         else {
-            try {
-                out.close();
-            }
-            catch (IOException e) {
-                // ignore
-            }
+            IOUtil.close(out);
         }
     }
 

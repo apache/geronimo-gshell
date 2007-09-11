@@ -51,8 +51,6 @@ public class CommandSetDescriptorWriter
             w.endElement();
 
             writer.write(LS);
-
-            writer.close();
         }
         catch (PlexusConfigurationException e) {
             throw new Exception("Internal error while writing out the configuration", e);
