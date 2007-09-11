@@ -35,23 +35,19 @@ import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * The default command executor.
  *
  * @version $Rev$ $Date$
  */
 @Component(role=CommandExecutor.class, hint="default")
 public class DefaultCommandExecutor
-    implements CommandExecutor, Initializable
+    implements CommandExecutor
 {
     private Logger log = LoggerFactory.getLogger(getClass());
-
-    public DefaultCommandExecutor() {}
 
     @Requirement
     private PlexusContainer container;
@@ -62,15 +58,8 @@ public class DefaultCommandExecutor
     @Requirement
     private CommandLineBuilder commandLineBuilder;
 
-    public void initialize() throws InitializationException {
-        /*
-        assert evaluator != null;
-
-        System.err.println("ENV: " + env);
-        
-        commandLineBuilder = new CommandLineBuilder(this, env, evaluator);
-        */
-    }
+    @Requirement
+    private Environment env;
 
     public Object execute(final String line) throws Exception {
         assert line != null;
@@ -128,15 +117,9 @@ public class DefaultCommandExecutor
         final PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
         final Command command = (Command)childContainer.lookup(desc.getRole(), desc.getRoleHint());
 
-        //
-        // NOTE: For now, until we can figure out a better way to have the container deal with this stuff, pass in
-        //       the execution context manually
-        //
-        
-        final Environment env = (Environment) container.lookup(Environment.class);
-
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {
+            // Command instances get their own namespace with defaults from the current
             final Variables vars = new VariablesImpl(env.getVariables());
 
             public IO getIO() {

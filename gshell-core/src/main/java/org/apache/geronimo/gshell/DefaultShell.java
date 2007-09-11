@@ -27,13 +27,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import jline.History;
 import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.TerminalInfo;
-import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -44,7 +44,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,20 +72,14 @@ public class DefaultShell
 
     @Requirement
     private Terminal terminal;
-    
-    @Requirement(role=ComponentFactory.class, hint="EnvironmentLookup")
-    private EnvironmentLookup envLookup;
-    
+
+    @Requirement
     private Environment env;
 
     @Requirement
     private IO io;
 
     public Environment getEnvironment() {
-        if (env == null) {
-            throw new IllegalStateException();
-        }
-
         return env;
     }
 
@@ -95,26 +88,6 @@ public class DefaultShell
     }
 
     public void initialize() throws InitializationException {
-        //
-        // FIXME: This is kinda icky IMO...
-        //
-        
-        // Setup our environment instance
-        env = new Environment() {
-            final Variables variables = new VariablesImpl();
-
-            public IO getIO() {
-                return io;
-            }
-
-            public Variables getVariables() {
-                return variables;
-            }
-        };
-
-        // And propagate it to others
-        envLookup.set(env);
-        
         //
         // FIXME: This won't work as desired, as this shell instance is not yet registered, so if a profile
         //        tries to run something that needs the shell instance... well, loopsvile.
@@ -302,8 +275,7 @@ public class DefaultShell
         assert file != null;
 
         //
-        // FIXME: Don't use 'source 'for right now, the shell spins out of control
-        //        from plexus component loading :-(
+        // FIXME: Don't use 'source 'for right now, the shell spins out of control from plexus component loading :-(
         //
         // execute("source", file.toURI().toURL());
 

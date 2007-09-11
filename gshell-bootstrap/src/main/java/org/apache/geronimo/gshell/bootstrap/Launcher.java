@@ -39,15 +39,12 @@ public class Launcher
         assert args != null;
 
         //
-        // FIXME: Maybe want to add some kinda of support to allow these "gshell.*" bits to be named for custom branding?
+        // NOTE: Branding information is not available here, so we must use the basic GShell properties to configure
+        //       the bootstrap loader.
         //
         
         programName = getProgramName();
         setProperty("program.name", programName);
-
-        //
-        // TODO: Use the Flavor to figure out what the property name to set is here... ?????
-        //
         
         homeDir = getHomeDir();
         setProperty("gshell.home", homeDir.getCanonicalPath());

@@ -22,7 +22,9 @@ package org.apache.geronimo.gshell;
 import java.util.Map;
 
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.StopWatch;
+import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -84,15 +86,30 @@ public class GShell
             container = new DefaultPlexusContainer(config);
 
             // We first need to stuff in the IO context for the new shell instance
-            IOLookup lookup = (IOLookup) container.lookup(ComponentFactory.class, IOLookup.class.getSimpleName());
-            lookup.set(io);
+            IOLookup ioLookup = (IOLookup) container.lookup(ComponentFactory.class, IOLookup.class.getSimpleName());
+            ioLookup.set(io);
+
+            // And then lets stuff in the environment too
+            Environment env = new Environment() {
+                final Variables vars = new VariablesImpl();
+
+                public IO getIO() {
+                    return io;
+                }
+
+                public Variables getVariables() {
+                    return vars;
+                }
+            };
+
+            EnvironmentLookup envLookup = (EnvironmentLookup) container.lookup(ComponentFactory.class, EnvironmentLookup.class.getSimpleName());
+            envLookup.set(env);
+
+            // And then do some setup some default variables
+            env.getVariables().set("env", System.getenv());
 
             // Then look up the shell we are gonna delegate to
             shell = (InteractiveShell) container.lookup(InteractiveShell.class);
-
-            // And then do some setup ski
-            Map<String,String> env = System.getenv();
-            shell.getEnvironment().getVariables().set("env", env);
         }
         finally {
             System.setSecurityManager(psm);

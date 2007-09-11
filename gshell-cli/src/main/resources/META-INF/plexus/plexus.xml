@@ -68,26 +68,11 @@
             <role-hint>default</role-hint>
             <implementation>org.apache.geronimo.gshell.plugin.PluginCollector</implementation>
         </component>
-
+        
         <!--
-        Hook up the branding to use.
-        -->
-        <component>
-            <role>org.apache.geronimo.gshell.branding.Branding</role>
-            <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.branding.DefaultBranding</implementation>
-            <requirements>
-                <requirement>
-                    <role>org.apache.geronimo.gshell.branding.VersionLoader</role>
-                </requirement>
-                <requirement>
-                    <role>jline.Terminal</role>
-                </requirement>
-            </requirements>
-        </component>
+        Add our instance lookup components
 
-        <!--
-        Add our instance lookup components.
+        TODO: Once the @Component anno supports component-factory we can drop these.
         -->
 
         <component>

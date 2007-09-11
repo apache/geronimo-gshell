@@ -47,6 +47,9 @@ public class ShellSecurityManager
         }
     }
 
+    /**
+     * Always throws {@link SecurityException}.
+     */
     public void checkExit(final int code) {
         throw new SecurityException("Use of System.exit() if forbidden!");
     }

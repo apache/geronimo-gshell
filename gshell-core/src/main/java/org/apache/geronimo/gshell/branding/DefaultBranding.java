@@ -82,18 +82,16 @@ public class DefaultBranding
 
     public String getAbout() {
         StringWriter writer = new StringWriter();
-        PrintWriter out = new PrintWriter(writer);
+        PrintWriter out = new RenderWriter(writer);
 
-        out.println("For information about GShell, visit:");
-        out.println("    http://geronimo.apache.org/gshell.html ");
+        out.println("For information about @|cyan GShell|, visit:");
+        out.println("    @|bold http://geronimo.apache.org/gshell.html| ");
         out.flush();
 
         return writer.toString();
     }
 
     public String getVersion() {
-        assert versionLoader != null;
-
         return versionLoader.getVersion();
     }
 
