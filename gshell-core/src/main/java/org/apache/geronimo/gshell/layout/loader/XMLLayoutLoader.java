@@ -31,6 +31,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,7 +88,7 @@ public class XMLLayoutLoader
             layout = Layout.fromXML(input);
         }
         finally {
-           input.close();
+           IOUtil.close(input);
         }
 
         log.debug("Loaded layout: {}", layout);

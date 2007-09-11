@@ -27,10 +27,10 @@ import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.expression.ExpressionEvaluator;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +53,13 @@ public class CommandLineBuilder
         assert input != null;
 
         Reader reader = new StringReader(input);
-        ASTCommandLine cl = parser.parse(reader);
+        ASTCommandLine cl;
+        try {
+            cl = parser.parse(reader);
+        }
+        finally {
+            IOUtil.close(reader);
+        }
 
         // If debug is enabled, the log the parse tree
         if (log.isDebugEnabled()) {

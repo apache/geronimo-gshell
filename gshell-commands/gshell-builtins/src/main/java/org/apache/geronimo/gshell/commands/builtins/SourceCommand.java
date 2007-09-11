@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Read and execute commands from a file/url in the current shell environment.
@@ -59,12 +60,16 @@ public class SourceCommand
         }
         
         BufferedReader reader = openReader(url);
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            executor.execute(line);
+        try {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                executor.execute(line);
+            }
         }
-
+        finally {
+            IOUtil.close(reader);
+        }
+        
         return SUCCESS;
     }
 

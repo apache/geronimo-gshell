@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Loads a version number from a properties file.
@@ -47,10 +48,12 @@ public class PropertiesVersionLoader
             try {
                 props = new Properties();
                 props.load(input);
-                input.close();
             }
             catch (IOException e) {
                 throw new RuntimeException("Failed to load " + resourceName, e);
+            }
+            finally {
+                IOUtil.close(input);
             }
         }
         
