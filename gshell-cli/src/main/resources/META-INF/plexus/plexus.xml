@@ -24,7 +24,7 @@
     <component-discoverer-manager implementation="org.codehaus.plexus.component.discovery.DefaultComponentDiscovererManager">
         <listeners>
             <listener implementation="org.codehaus.plexus.component.discovery.DiscoveryListenerDescriptor">
-                <role>org.apache.geronimo.gshell.plugin.PluginCollector</role>
+                <role>org.apache.geronimo.gshell.plugin.CommandRegistry</role>
                 <role-hint>default</role-hint>
             </listener>
         </listeners>
@@ -64,9 +64,9 @@
         Configure the collector, needs to be done here since we are using it above as a discovery listener.
         -->
         <component>
-            <role>org.apache.geronimo.gshell.plugin.PluginCollector</role>
+            <role>org.apache.geronimo.gshell.plugin.CommandRegistry</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.plugin.PluginCollector</implementation>
+            <implementation>org.apache.geronimo.gshell.plugin.CommandRegistry</implementation>
         </component>
         
         <!--

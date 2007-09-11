@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.layout.LayoutManager;
-import org.apache.geronimo.gshell.plugin.PluginCollector;
+import org.apache.geronimo.gshell.plugin.CommandRegistry;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -42,7 +42,7 @@ public class HelpCommand
     extends CommandSupport
 {
     @Requirement
-    private PluginCollector pluginCollector;
+    private CommandRegistry commandRegistry;
 
     @Requirement
     private LayoutManager layoutManager;
@@ -53,7 +53,7 @@ public class HelpCommand
     private Renderer renderer = new Renderer();
 
     protected Object doExecute() throws Exception {
-        assert pluginCollector != null;
+        assert commandRegistry != null;
         assert layoutManager != null;
 
         io.out.println();
@@ -62,7 +62,7 @@ public class HelpCommand
 
         io.out.println("Available commands:");
 
-        Collection<CommandDescriptor> commands = pluginCollector.getCommandDescriptors();
+        Collection<CommandDescriptor> commands = commandRegistry.getCommandDescriptors();
 
         // Figure out the maximum length of a command name
         int maxNameLen = 0;

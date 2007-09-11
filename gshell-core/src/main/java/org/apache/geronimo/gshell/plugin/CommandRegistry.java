@@ -33,15 +33,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Hook to get some details about the Plexus components which are loaded.
+ * Registers command components as they are discovered by the container.
  * 
  * @version $Rev$ $Date$
  */
-@Component(role=PluginCollector.class)
-public class PluginCollector
+@Component(role= CommandRegistry.class)
+public class CommandRegistry
     implements ComponentDiscoveryListener
 {
-    public static final String ID = "gshell-plugin-collector";
+    public static final String ID = "gshell-command-regsitry";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 

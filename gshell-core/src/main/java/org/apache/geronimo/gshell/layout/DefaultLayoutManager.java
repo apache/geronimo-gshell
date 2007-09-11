@@ -24,7 +24,7 @@ import java.io.IOException;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
 import org.apache.geronimo.gshell.layout.model.Layout;
-import org.apache.geronimo.gshell.plugin.PluginCollector;
+import org.apache.geronimo.gshell.plugin.CommandRegistry;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -45,7 +45,7 @@ public class DefaultLayoutManager
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
-    private PluginCollector pluginCollector;
+    private CommandRegistry commandRegistry;
 
     @Requirement
     private LayoutLoader loader;
@@ -83,6 +83,6 @@ public class DefaultLayoutManager
         // HACK: For now, assume the path is just the id... should eventually change this
         //
 
-        return pluginCollector.getCommandDescriptor(path);
+        return commandRegistry.getCommandDescriptor(path);
     }
 }
