@@ -28,6 +28,7 @@ import java.io.Reader;
 
 import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.slf4j.helpers.MessageFormatter;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * Container for input/output handles.
@@ -186,9 +187,9 @@ public class IO
      * Close all streams.
      */
     public void close() throws IOException {
-        in.close();
-        out.close();
-        err.close();
+        IOUtil.close(in);
+        IOUtil.close(out);
+        IOUtil.close(err);
     }
 
     //
