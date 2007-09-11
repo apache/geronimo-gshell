@@ -192,7 +192,7 @@ public class Main
         //
 
         if (help) {
-            io.out.println(System.getProperty("program.name", branding.getName()) + " [options] <command> [args]");
+            io.out.println(branding.getProgramName() + " [options] <command> [args]");
             io.out.println();
 
             Printer printer = new Printer(clp);

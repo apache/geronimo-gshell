@@ -38,6 +38,8 @@ public interface Branding
 
     String getDisplayName();
 
+    String getProgramName();
+
     String getAbout();
 
     String getVersion();

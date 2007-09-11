@@ -219,15 +219,7 @@ public class DefaultShell
 
         // Unless the user wants us to shut up, then display a nice welcome banner
         if (!io.isQuiet()) {
-            io.out.print(branding.getWelcomeBanner());
-
-            // HACK: If we can't tell, or have something bogus then use a reasonable default
-            int width = terminal.getTerminalWidth();
-            if (width < 1) {
-                width = 80;
-            }
-
-            io.out.println(StringUtils.repeat("-", width - 1));
+            io.out.println(branding.getWelcomeBanner());
         }
 
         // Check if there are args, and run them and then enter interactive

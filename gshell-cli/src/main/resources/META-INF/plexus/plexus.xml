@@ -80,6 +80,9 @@
                 <requirement>
                     <role>org.apache.geronimo.gshell.branding.VersionLoader</role>
                 </requirement>
+                <requirement>
+                    <role>jline.Terminal</role>
+                </requirement>
             </requirements>
         </component>
 

@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell.lookup;
 
-import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.factory.ComponentFactory;
 
 /**
- * Lookup factory for {@link Shell.Environment} instances.
+ * Lookup factory for {@link Environment} instances.
  *
  * @version $Rev$ $Date$
  */

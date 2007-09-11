@@ -85,6 +85,10 @@ public class DefaultShellInfo
     
     private File detectHomeDir() throws InitializationException {
         String homePath = branding.getProperty(Branding.HOME);
+
+        //
+        // FIXME: This is not very friendly to folks embedding the shell
+        //
         
         if (homePath == null) {
             throw new InitializationException("The '" + branding.getPropertyName(Branding.HOME) + "' property must be set for the shell to function correctly");

@@ -27,6 +27,8 @@ import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Factory for producing {@link Terminal} instances.
@@ -37,7 +39,13 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
 public class TerminalFactory
     extends AbstractComponentFactory
 {
+    protected Logger log = LoggerFactory.getLogger(getClass());
+
     public Object newInstance(ComponentDescriptor d, ClassRealm cr, PlexusContainer c) throws ComponentInstantiationException {
-        return Terminal.getTerminal();
+        Terminal term =  Terminal.getTerminal();
+
+        log.debug("Handing out: {}", term);
+
+        return term;
     }
 }
