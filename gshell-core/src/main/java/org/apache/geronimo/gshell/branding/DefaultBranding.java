@@ -85,7 +85,7 @@ public class DefaultBranding
         PrintWriter out = new PrintWriter(writer);
 
         out.println("For information about GShell, visit:");
-        out.println("    http://geronimo.apache.org/gshell ");
+        out.println("    http://geronimo.apache.org/gshell.html ");
         out.flush();
 
         return writer.toString();
