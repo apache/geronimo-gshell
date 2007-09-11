@@ -33,6 +33,12 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//
+// TODO: Consider using BeanShell for this instead, its about the same size dependency
+//       can probably do about the same thing we want here?  And the 'script' command
+//       can also use it
+//
+
 /**
  * A very simple expression evalutator using Jexl to do the hard work.
  *
