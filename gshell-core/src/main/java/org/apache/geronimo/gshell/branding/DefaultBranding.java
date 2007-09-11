@@ -23,6 +23,9 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.geronimo.gshell.ansi.Buffer;
+import org.apache.geronimo.gshell.ansi.Code;
+import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
@@ -83,13 +86,35 @@ public class DefaultBranding
 
     public String getWelcomeBanner() {
         StringWriter writer = new StringWriter();
-        PrintWriter out = new PrintWriter(writer);
+        PrintWriter out = new RenderWriter(writer);
+        Buffer buff = new Buffer();
 
-        out.println("   ____ ____  _          _ _ ");
-        out.println("  / ___/ ___|| |__   ___| | |");
-        out.println(" | |  _\\___ \\| '_ \\ / _ \\ | |");
-        out.println(" | |_| |___) | | | |  __/ | |");
-        out.println("  \\____|____/|_| |_|\\___|_|_|");
+        /*
+        String[] banner = {
+            "   ____ ____  _          _ _ ",
+            "  / ___/ ___|| |__   ___| | |",
+            " | |  _\\___ \\| '_ \\ / _ \\ | |",
+            " | |_| |___) | | | |  __/ | |",
+            "  \\____|____/|_| |_|\\___|_|_|",
+        };
+        */
+
+        String[] banner = {
+            "                          ,,                 ,,    ,,",
+            "   .g8\"\"\"bgd   .M\"\"\"bgd `7MM               `7MM  `7MM",
+            " .dP'     `M  ,MI    \"Y   MM                 MM    MM",
+            " dM'       `  `MMb.       MMpMMMb.  .gP\"Ya   MM    MM",
+            " MM             `YMMNq.   MM    MM ,M'   Yb  MM    MM",
+            " MM.    `7MMF'.     `MM   MM    MM 8M\"\"\"\"\"\"  MM    MM",
+            " `Mb.     MM  Mb     dM   MM    MM YM.    ,  MM    MM",
+            "   `\"bmmmdPY  P\"Ybmmd\"  .JMML  JMML.`Mbmmd'.JMML..JMML."
+        };
+
+        for (String line : banner) {
+            buff.attrib(line, Code.CYAN);
+            out.println(buff);
+        }
+        
         out.println();
         out.println(" @|bold GShell| (" + getVersion() + ")");
         out.println();

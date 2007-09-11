@@ -131,7 +131,7 @@ public class Main
         System.setProperty(name, value);
     }
 
-    @Option(name="-C", aliases={"--color"}, argumentRequired=false, description="Enable or disable use of ANSI colors")
+    @Option(name="-C", aliases={"--color"}, argumentRequired=true, description="Enable or disable use of ANSI colors")
     private void enableAnsiColors(final boolean flag) {
         ANSI.setEnabled(flag);
     }
