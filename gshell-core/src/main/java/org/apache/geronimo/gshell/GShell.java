@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell;
 import java.util.Map;
 
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -66,6 +67,9 @@ public class GShell
         this.classWorld = classWorld;
         this.io = io;
 
+        // Lets time how long init takes
+        StopWatch watch = new StopWatch(true);
+
         log.debug("Initializing");
 
         sm = new ShellSecurityManager();
@@ -94,7 +98,7 @@ public class GShell
             System.setSecurityManager(psm);
         }
 
-        log.debug("Initialized");
+        log.debug("Initialized in {}", watch);
     }
 
     public ShellInfo getShellInfo() {

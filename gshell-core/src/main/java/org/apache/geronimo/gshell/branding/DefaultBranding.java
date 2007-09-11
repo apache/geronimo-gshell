@@ -84,8 +84,8 @@ public class DefaultBranding
         StringWriter writer = new StringWriter();
         PrintWriter out = new PrintWriter(writer);
 
-        out.println("For information about Apache Geronimo, visit:");
-        out.println("    http://geronimo.apache.org ");
+        out.println("For information about GShell, visit:");
+        out.println("    http://geronimo.apache.org/gshell ");
         out.flush();
 
         return writer.toString();
