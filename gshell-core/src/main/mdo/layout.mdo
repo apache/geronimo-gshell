@@ -126,13 +126,11 @@
             <name>Command</name>
             <superClass>Node</superClass>
             <version>1.0.0+</version>
-            <description>TODO</description>
             <fields>
                 <field>
                     <name>j</name>
                     <alias>className</alias>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                     <required>true</required>
                 </field>
@@ -143,12 +141,10 @@
             <name>Alias</name>
             <superClass>Node</superClass>
             <version>1.0.0+</version>
-            <description>TODO</description>
             <fields>
                 <field>
                     <name>command</name>
                     <version>1.0.0+</version>
-                    <description>TODO</description>
                     <type>String</type>
                     <required>true</required>
                 </field>

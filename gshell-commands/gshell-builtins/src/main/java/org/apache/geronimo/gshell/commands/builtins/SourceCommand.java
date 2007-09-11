@@ -27,8 +27,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.geronimo.gshell.Shell;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -43,7 +43,7 @@ public class SourceCommand
     extends CommandSupport
 {
     @Requirement
-    private Shell shell;
+    private CommandExecutor executor;
 
     @Argument(required=true, description="Source file")
     private String source;
@@ -62,7 +62,7 @@ public class SourceCommand
 
         String line;
         while ((line = reader.readLine()) != null) {
-            shell.execute(line);
+            executor.execute(line);
         }
 
         return SUCCESS;

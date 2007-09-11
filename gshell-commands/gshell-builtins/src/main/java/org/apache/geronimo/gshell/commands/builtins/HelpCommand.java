@@ -26,7 +26,7 @@ import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.flavor.Flavor;
+import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -48,7 +48,7 @@ public class HelpCommand
     private LayoutManager layoutManager;
 
     @Requirement
-    private Flavor flavor;
+    private Branding branding;
 
     private Renderer renderer = new Renderer();
 
@@ -57,7 +57,7 @@ public class HelpCommand
         assert layoutManager != null;
 
         io.out.println();
-        io.out.println(flavor.getAbout());
+        io.out.print(branding.getAbout());
         io.out.println();
 
         io.out.println("Available commands:");

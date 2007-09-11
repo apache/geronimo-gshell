@@ -39,21 +39,15 @@
     
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-ansi</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-core</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-flavor</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 
@@ -75,7 +69,7 @@
             <plugin>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-maven-plugin</artifactId>
-                <version>${pom.version}</version>
+                <version>${version}</version>
                 <executions>
                     <execution>
                         <goals>

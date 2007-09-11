@@ -75,6 +75,12 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl104-over-slf4j</artifactId>
+                <version>1.4.3</version>
+            </dependency>
             
             <dependency>
                 <groupId>log4j</groupId>
@@ -113,11 +119,17 @@
             </dependency>
             
             <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-expression-evaluator</artifactId>
-                <version>1.0-alpha-1</version>
+                <groupId>commons-jexl</groupId>
+                <artifactId>commons-jexl</artifactId>
+                <version>1.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
-            
+
             <dependency>
                 <groupId>jline</groupId>
                 <artifactId>jline</artifactId>
@@ -335,7 +347,6 @@
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
         <module>gshell-command-api</module>
-        <module>gshell-flavor</module>
         <module>javacc-maven-plugin</module>
         <module>gshell-parser</module>
         <module>gshell-core</module>
@@ -385,31 +396,6 @@
                     <links>
                         <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
                     </links>
-                    <!--
-                    FIXME: This appears to be broken... blah
-                    
-                    <groups>
-                        <group>
-                            <title>GShell API</title>
-                            <packages>
-                                org.apache.geronimo.gshell.command,
-                                org.apache.geronimo.gshell.clp,
-                                org.apache.geronimo.gshell.prefs,
-                                org.apache.geronimo.gshell.i18n,
-                                org.apache.geronimo.gshell.common,
-                                org.apache.geronimo.gshell.console
-                            </packages>
-                        </group>
-                        
-                        <group>
-                            <title>GShell Core</title>
-                            <packages>
-                                org.apache.geronimo.gshell.commandline,
-                                org.apache.geronimo.gshell.commandline.parser
-                            </packages>
-                        </group>
-                    </groups>
-                    -->
                 </configuration>
             </plugin>
             

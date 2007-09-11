@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.common;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -32,13 +33,16 @@ public class Arguments
         return shift(args, 1);
     }
 
-    public static Object[] shift(final Object[] args, int pos) {
-        assert args != null;
-        assert args.length >= pos;
+    public static Object[] shift(final Object[] source, int pos) {
+        assert source != null;
+        assert source.length >= pos;
 
-        Object[] _args = new Object[args.length - pos];
-        System.arraycopy(args, pos, _args, 0, _args.length);
-        return _args;
+        Object[] target = (Object[])
+            Array.newInstance(source.getClass().getComponentType(), source.length - pos);
+        
+        System.arraycopy(source, pos, target, 0, target.length);
+
+        return target;
     }
 
     public static String asString(final Object[] args) {

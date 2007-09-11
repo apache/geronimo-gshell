@@ -45,10 +45,6 @@ public class ExecuteCommand
 
         log.info("Executing: {}", builder.command());
 
-        //
-        // TODO: May need to expose the Process's destroy() if Command abort() is issued?
-        //
-
         Process p = builder.start();
 
         PumpStreamHandler handler = new PumpStreamHandler(io.inputStream, io.outputStream, io.errorStream);

@@ -21,8 +21,11 @@ package org.apache.geronimo.gshell;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-import org.apache.geronimo.gshell.flavor.Flavor;
+import org.apache.geronimo.gshell.branding.Branding;
+import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -42,8 +45,10 @@ public class DefaultShellInfo
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
-    private Flavor flavor;
-    
+    private Branding branding;
+
+    private InetAddress localHost;
+
     private File homeDir;
 
     public File getHomeDir() {
@@ -54,16 +59,35 @@ public class DefaultShellInfo
         return homeDir;
     }
 
+    public InetAddress getLocalHost() {
+        if (localHost == null) {
+            throw new IllegalStateException();
+        }
+
+        return localHost;
+    }
+
+    public String getUserName() {
+        return System.getProperty("user.name");
+    }
+
     public void initialize() throws InitializationException {
         homeDir = detectHomeDir();
         log.debug("Using home directory: {}", homeDir);
+
+        try {
+            localHost = InetAddress.getLocalHost();
+        }
+        catch (UnknownHostException e) {
+            throw new InitializationException("Unable to determine locahost", e);
+        }
     }
     
     private File detectHomeDir() throws InitializationException {
-        String homePath = flavor.getProperty(Flavor.HOME);
+        String homePath = branding.getProperty(Branding.HOME);
         
         if (homePath == null) {
-            throw new InitializationException("The '" + flavor.getPropertyName(Flavor.HOME) + "' property must be set for the shell to function correctly");
+            throw new InitializationException("The '" + branding.getPropertyName(Branding.HOME) + "' property must be set for the shell to function correctly");
         }
 
         // And now lets resolve this sucker

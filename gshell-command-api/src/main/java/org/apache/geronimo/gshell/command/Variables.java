@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.command;
 import java.util.Iterator;
 
 /**
- * ???
+ * Provides command instances with nested namespace for storing context.
  *
  * @version $Rev$ $Date$
  */

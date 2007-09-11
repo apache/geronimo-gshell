@@ -41,19 +41,13 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-command-api</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-flavor</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
         
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-parser</artifactId>
-            <version>${pom.version}</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
@@ -61,11 +55,6 @@
             <artifactId>plexus-container-default</artifactId>
         </dependency>
         
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-expression-evaluator</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
@@ -75,15 +64,43 @@
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>commons-jexl</groupId>
+            <artifactId>commons-jexl</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl104-over-slf4j</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${pom.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+
+            <resource>
+                <directory>${pom.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>org/apache/geronimo/gshell/branding/version.properties</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>

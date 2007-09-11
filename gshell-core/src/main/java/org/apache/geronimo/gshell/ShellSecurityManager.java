@@ -48,8 +48,6 @@ public class ShellSecurityManager
     }
 
     public void checkExit(final int code) {
-        super.checkExit(code);
-
         throw new SecurityException("Use of System.exit() if forbidden!");
     }
 

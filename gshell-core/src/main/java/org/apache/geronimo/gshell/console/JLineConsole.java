@@ -25,8 +25,9 @@ import java.io.PrintWriter;
 
 import jline.ConsoleReader;
 import jline.History;
-import org.apache.geronimo.gshell.Shell;
+import jline.Terminal;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.shell.Shell;
 
 /**
  * Support for running a {@link Shell} using the <a href="http://jline.sf.net">JLine</a> library.
@@ -40,17 +41,14 @@ public class JLineConsole
 
     // final CommandsMultiCompletor completor
 
-    //
-    // TODO: Pass in the terminal instance to be used
-    //
-    
-    public JLineConsole(final Executor executor, final IO io) throws IOException {
+    public JLineConsole(final Executor executor, final IO io, final Terminal terminal) throws IOException {
         super(executor);
 
         assert io != null;
 
-        this.reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true));
-
+        reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, terminal);
+        reader.setUsePagination(true);
+        
         // this.completor = new CommandsMultiCompletor()
 
         // reader.addCompletor(completor)

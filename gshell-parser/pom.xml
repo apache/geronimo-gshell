@@ -100,7 +100,7 @@
             <plugin>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>javacc-maven-plugin</artifactId>
-                <version>${pom.version}</version>
+                <version>${version}</version>
                 <executions>
                     <execution>
                         <id>jjtree</id>

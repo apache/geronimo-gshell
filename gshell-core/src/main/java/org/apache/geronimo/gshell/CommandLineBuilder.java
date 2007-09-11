@@ -22,10 +22,15 @@ package org.apache.geronimo.gshell;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
-import org.codehaus.plexus.evaluator.ExpressionEvaluator;
+import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.expression.ExpressionEvaluator;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,25 +39,16 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+@Component(role=CommandLineBuilder.class)
 public class CommandLineBuilder
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private CommandLineParser parser;
+    @Requirement
+    private PlexusContainer container;
 
-    private Shell shell;
-
-    private ExpressionEvaluator evaluator;
-
-    public CommandLineBuilder(final Shell shell, final ExpressionEvaluator evaluator) {
-        assert shell != null;
-        assert evaluator != null;
-
-        this.shell = shell;
-        this.evaluator = evaluator;
-        this.parser = new CommandLineParser();
-    }
-
+    private CommandLineParser parser = new CommandLineParser();
+    
     private ASTCommandLine parse(final String input) throws ParseException {
         assert input != null;
 
@@ -75,13 +71,21 @@ public class CommandLineBuilder
             throw new IllegalArgumentException("Command line is empty");
         }
 
-        final ExecutingVisitor visitor = new ExecutingVisitor(shell, evaluator);
-        final ASTCommandLine root = parse(commandLine);
-        
-        return new CommandLine() {
-            public Object execute() throws Exception {
-                return root.jjtAccept(visitor, null);
-            }
-        };
+        try {
+            CommandExecutor executor = (CommandExecutor) container.lookup(CommandExecutor.class);
+            Environment env = (Environment) container.lookup(Environment.class);
+
+            final ExecutingVisitor visitor = new ExecutingVisitor(executor, env);
+            final ASTCommandLine root = parse(commandLine);
+
+            return new CommandLine() {
+                public Object execute() throws Exception {
+                    return root.jjtAccept(visitor, null);
+                }
+            };
+        }
+        catch (Exception e) {
+            throw new ErrorNotification(e);
+        }
     }
 }

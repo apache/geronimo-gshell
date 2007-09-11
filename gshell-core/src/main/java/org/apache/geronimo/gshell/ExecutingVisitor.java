@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.ASTExpression;
@@ -31,9 +31,9 @@ import org.apache.geronimo.gshell.parser.ASTPlainString;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
-import org.codehaus.plexus.evaluator.EvaluatorException;
-import org.codehaus.plexus.evaluator.ExpressionEvaluator;
-import org.codehaus.plexus.evaluator.ExpressionSource;
+import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.expression.JexlExpressionEvaluator;
+import org.apache.geronimo.gshell.expression.ExpressionEvaluator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,16 +47,16 @@ public class ExecutingVisitor
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private Shell shell;
+    private Environment env;
+    
+    private CommandExecutor executor;
 
-    private ExpressionEvaluator evaluator;
+    public ExecutingVisitor(final CommandExecutor executor, final Environment env) {
+        assert executor != null;
+        assert env != null;
 
-    public ExecutingVisitor(final Shell shell, final ExpressionEvaluator evaluator) {
-        assert shell != null;
-        assert evaluator != null;
-
-        this.shell = shell;
-        this.evaluator = evaluator;
+        this.executor = executor;
+        this.env = env;
     }
 
     public Object visit(final SimpleNode node, final Object data) {
@@ -86,22 +86,18 @@ public class ExecutingVisitor
         List<Object> list = new ArrayList<Object>(node.jjtGetNumChildren());
         node.childrenAccept(this, list);
 
-        Object[] args = (Object[])list.toArray(new Object[list.size()]);
+        Object[] args = list.toArray(new Object[list.size()]);
         assert list.size() >= 1;
 
-        String commandName = String.valueOf(args[0]);
+        String path = String.valueOf(args[0]);
         args = Arguments.shift(args);
 
-        Object result;
-
         try {
-            result = shell.execute(commandName, args);
+            return executor.execute(path, args);
         }
         catch (Exception e) {
-            throw new ErrorNotification(e);
+            throw new ErrorNotification("Shell execution failed; path=" + path + "; args=" + Arguments.asString(args), e);
         }
-
-        return result;
     }
 
     private Object appendString(final String value, final Object data) {
@@ -114,41 +110,17 @@ public class ExecutingVisitor
         return value;
     }
 
-    //
-    // TODO: Include parsed ${...} strings?
-    //
-
     private String evaluate(final String expr) {
-        final Variables vars = shell.getVariables();
+        assert expr != null;
+        
+        ExpressionEvaluator evaluator = new JexlExpressionEvaluator(env.getVariables());
 
-        ExpressionSource source = new ExpressionSource() {
-            public String getExpressionValue(String expr) {
-                Object value = vars.get(expr);
-                if (value != null) {
-                    return String.valueOf(value);
-                }
-
-                return null;
-            }
-        };
-
-        evaluator.addExpressionSource(source);
-
-        String value = null;
         try {
-            value = evaluator.expand(expr);
+            return evaluator.parse(expr);
         }
-        catch (EvaluatorException e) {
-            //
-            // HACK: Just make it work...
-            //
-            throw new RuntimeException(e);
+        catch (Exception e) {
+            throw new ErrorNotification("Failed to evaluate expression: " + expr, e);
         }
-        finally {
-            evaluator.removeExpressionSource(source);
-        }
-
-        return value;
     }
 
     public Object visit(final ASTQuotedString node, final Object data) {

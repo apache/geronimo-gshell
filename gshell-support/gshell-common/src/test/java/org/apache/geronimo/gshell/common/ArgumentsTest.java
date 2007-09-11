@@ -40,4 +40,20 @@ public class ArgumentsTest
         assertEquals(3, shifted[1]);
         assertEquals(4, shifted[2]);
     }
+
+    public void testShift2() {
+        Object[] args = { "a", "b", 1, 2 };
+
+        Object[] shifted = Arguments.shift(args);
+
+        assertEquals(args.length - 1, shifted.length);
+    }
+
+    public void testShift3() {
+        String[] args = { "a" };
+
+        Object[] shifted = Arguments.shift(args);
+
+        assertEquals(args.length - 1, shifted.length);
+    }
 }

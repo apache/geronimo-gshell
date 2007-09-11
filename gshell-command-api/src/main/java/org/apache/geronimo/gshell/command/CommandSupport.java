@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.common.Arguments;
-import org.apache.geronimo.gshell.common.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +51,10 @@ public abstract class CommandSupport
         this.context = context;
         this.io = context.getIO();
         this.variables = context.getVariables();
+
+        // Re-setup logging using our id
+        String id = context.getCommandDescriptor().getId();
+        log = LoggerFactory.getLogger(getClass().getName() + "." + id);
     }
 
     public Object execute(final Object... args) throws Exception {
@@ -59,54 +62,27 @@ public abstract class CommandSupport
 
         log.info("Executing w/args: [{}]", Arguments.asString(args));
 
-        Object result = null;
+        CommandLineProcessor clp = new CommandLineProcessor(this);
+        clp.process(Arguments.toStringArray(args));
 
-        //
-        // TODO: Move this error handling/logging muck up to the shell....
-        //
-        
-        try {
-            CommandLineProcessor clp = new CommandLineProcessor(this);
-            clp.process(Arguments.toStringArray(args));
-
+        // Handle --help/-h automatically for the command
+        if (displayHelp) {
             //
-            // TODO: Need to mark this option as superceeding other required arguments/options
+            // TODO: Make a special PrinterHandler to abstrat this muck from having to process it by hand
             //
             
-            // Handle --help/-h automatically for the command
-            if (displayHelp) {
-                displayHelp(clp);
-            }
-            else {
-                // Invoke the command's action
-                result = doExecute();
-            }
+            displayHelp(clp);
+            
+            return SUCCESS;
         }
-        catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug("Exception details", e);
 
-            result = Command.FAILURE;
-        }
-        catch (Notification n) {
-            // Always re-throw notifications
-            throw n;
-        }
-        catch (Error e) {
-            log.error(e.getMessage());
-            log.debug("Error details", e);
+        assert context != null;
+        assert io != null;
+        assert variables != null;
 
-            result = Command.FAILURE;
-        }
-        
-        log.info("Command exiting with result: {}", result);
-
-        return result;
+        return doExecute();
     }
 
-    /**
-     * Sub-class should override to perform custom execution.
-     */
     protected abstract Object doExecute() throws Exception;
 
     protected void displayHelp(final CommandLineProcessor clp) {
@@ -115,7 +91,7 @@ public abstract class CommandSupport
         //
         // TODO: Need to ask the LayoutManager what the real name is for our command's ID
         //
-        
+
         io.out.println(context.getCommandDescriptor().getId());
         io.out.println(" -- ");
         io.out.println();
