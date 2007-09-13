@@ -19,21 +19,16 @@
 
 package org.apache.geronimo.gshell.branding;
 
-import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.Buffer;
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.StringUtils;
-import jline.Terminal;
-
-//
-// FIXME: Move this to a seperate module so that folks can omit this and use their own easily
-//
 
 /**
  * Provides the default branding for GShell.
@@ -42,7 +37,7 @@ import jline.Terminal;
  */
 @Component(role=Branding.class, hint="default")
 public class DefaultBranding
-    implements Branding
+    extends BrandingSupport
 {
     @Requirement
     private VersionLoader versionLoader;
@@ -60,24 +55,6 @@ public class DefaultBranding
 
     public String getProgramName() {
         return System.getProperty("program.name", "gsh");
-    }
-
-    public File getUserDirectory() {
-        File userHome = new File(System.getProperty("user.home"));
-
-        File dir = new File(userHome, "." + getName());
-
-        return dir.getAbsoluteFile();
-    }
-
-    public File getSharedDirectory() {
-        //
-        // FIXME: This is not very portable :-(
-        //
-        
-        File dir = new File("/etc", getName());
-
-        return dir.getAbsoluteFile();
     }
 
     public String getAbout() {
@@ -159,37 +136,5 @@ public class DefaultBranding
         out.flush();
 
         return writer.toString();
-    }
-
-    public String getProfileScriptName() {
-        return getName() + ".profile";
-    }
-
-    public String getInteractiveScriptName() {
-        return getName() + ".rc";
-    }
-
-    public String getHistoryFileName() {
-        return getName() + ".history";
-    }
-
-    public String getPropertyName(final String name) {
-        assert name != null;
-        
-        return getName() + "." + name;
-    }
-
-    public String getProperty(final String name) {
-        return System.getProperty(getPropertyName(name));
-    }
-
-    public String getProperty(final String name, final String defaultValue) {
-        String value = getProperty(name);
-        
-        if (value == null) {
-            return defaultValue;
-        }
-
-        return value;
     }
 }
