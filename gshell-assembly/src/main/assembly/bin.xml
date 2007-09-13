@@ -65,30 +65,28 @@
     <dependencySets>
         <dependencySet>
             <outputDirectory>lib</outputDirectory>
-            <excludes>
-                <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
-                <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
-                
-                <!--
-                FIXME: Why is this making it in here?
-                -->
-                <exclude>junit:junit</exclude>
-            </excludes>
+            <useStrictFiltering>true</useStrictFiltering>
+            <includes>
+                <include>org.apache.geronimo.gshell:gshell-embeddable</include>
+                <include>org.apache.geronimo.gshell:gshell-cli</include>
+                <include>org.slf4j:jcl104-over-slf4j</include>
+                <include>org.slf4j:slf4j-log4j12</include>
+                <include>org.apache.geronimo.gshell:gshell-diet-log4j</include>
+            </includes>
         </dependencySet>
 
         <dependencySet>
             <outputDirectory>lib/boot</outputDirectory>
+            <useStrictFiltering>true</useStrictFiltering>
             <includes>
                 <include>org.codehaus.plexus:plexus-classworlds</include>
             </includes>
         </dependencySet>
         
-        <!--
-        NOTE: Strip off the version number to keep platform scripts simpler.
-        -->
         <dependencySet>
             <outputDirectory>lib/boot</outputDirectory>
             <outputFileNameMapping>gshell-bootstrap.jar</outputFileNameMapping>
+            <useStrictFiltering>true</useStrictFiltering>
             <includes>
                 <include>org.apache.geronimo.gshell:gshell-bootstrap</include>
             </includes>
