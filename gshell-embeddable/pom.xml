@@ -81,6 +81,10 @@
                             -->
                             <transformers>
                                 <transformer implementation="org.codehaus.mojo.shade.resource.ComponentsXmlResourceTransformer"/>
+                                <!--
+                                <transformer implementation="org.codehaus.mojo.shade.resource.ApacheLicenseResourceTransformer"/>
+                                <transformer implementation="org.codehaus.mojo.shade.resource.ApacheNoticeResourceTransformer"/>
+                                -->
                             </transformers>
                         </configuration>
                     </execution>
