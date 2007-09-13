@@ -31,7 +31,7 @@
     </parent>
     
     <artifactId>gshell-builtins</artifactId>
-    <name>GShell Commands :: Built-in</name>
+    <name>GShell Commands :: Builtins</name>
     
     <description>
         Provides the default "built-in" commands.
