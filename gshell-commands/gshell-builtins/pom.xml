@@ -53,6 +53,10 @@
 
     <build>
         <plugins>
+            <!--
+            FIXME: This plugin is kinda dumb and will generate a components.xml even when there
+                   are no components to put in it.  And that is causing the shade plugin to puke :-(
+            
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-java5-maven-plugin</artifactId>
@@ -65,6 +69,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             
             <plugin>
                 <groupId>org.apache.geronimo.gshell</groupId>
