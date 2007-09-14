@@ -17,6 +17,10 @@
  * under the License.
  */
 
+//
+// NOTE: Snatched from Apache Mina'a Examples
+//
+
 package org.apache.geronimo.gshell.remote.ssl;
 
 import java.io.IOException;
