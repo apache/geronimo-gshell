@@ -20,7 +20,10 @@
 package org.apache.geronimo.gshell.remote.client;
 
 import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
+import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.IoHandler;
+import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -29,10 +32,33 @@ import org.codehaus.plexus.component.annotations.Component;
  * @version $Rev$ $Date$
  */
 @Component(role=IoHandler.class, hint="rsh-client")
-public class RshClientProtocolHandlerSupport
+public class RshClientProtocolHandler
     extends RshProtocolHandlerSupport
 {
-    //
-    // TODO:
-    //
+    private MessageVisitor visitor;
+
+    public MessageVisitor getVisitor() {
+        return visitor;
+    }
+
+    public void setVisitor(final MessageVisitor visitor) {
+        this.visitor = visitor;
+    }
+
+    public void messageReceived(final IoSession session, final Object message) throws Exception {
+        assert session != null;
+        assert message != null;
+
+        super.messageReceived(session, message);
+
+        Message msg = (Message)message;
+
+        msg.setAttachment(session);
+
+        msg.setAttachment(session);
+
+        if (visitor != null) {
+            msg.process(visitor);
+        }
+    }
 }

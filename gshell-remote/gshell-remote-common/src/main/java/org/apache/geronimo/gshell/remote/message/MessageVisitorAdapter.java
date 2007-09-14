@@ -24,7 +24,10 @@ package org.apache.geronimo.gshell.remote.message;
  *
  * @version $Rev$ $Date$
  */
-public interface MessageVisitor
+public class MessageVisitorAdapter
+    implements MessageVisitor
 {
-    void visitEchoCommand(EchoMessage msg);
+    public void visitEchoCommand(EchoMessage msg) {
+        // Empty
+    }
 }

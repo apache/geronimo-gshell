@@ -64,4 +64,10 @@ public class EchoMessage
 
         writeString(buff, text);
     }
+
+    public void process(final MessageVisitor visitor) throws Exception {
+        assert visitor != null;
+
+        visitor.visitEchoCommand(this);
+    }
 }

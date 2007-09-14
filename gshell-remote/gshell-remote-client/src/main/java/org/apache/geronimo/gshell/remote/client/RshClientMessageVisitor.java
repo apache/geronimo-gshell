@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.client;
 
-import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
-import org.apache.mina.common.IoHandler;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
+import org.apache.geronimo.gshell.remote.message.EchoMessage;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=IoHandler.class, hint="rsh-server")
-public class RshServerProtocolHandlerSupport
-    extends RshProtocolHandlerSupport
+public class RshClientMessageVisitor
+    extends MessageVisitorAdapter
 {
-    //
-    // TODO:
-    //
+    public void visitEchoCommand(final EchoMessage msg) {
+        assert msg != null;
+
+        System.out.println("ECHO: " + msg.getText());
+    }
 }

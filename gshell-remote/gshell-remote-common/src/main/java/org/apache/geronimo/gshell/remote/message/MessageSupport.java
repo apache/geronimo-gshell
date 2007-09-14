@@ -46,15 +46,11 @@ public abstract class MessageSupport
         assert type != null;
         
         this.type = type;
+
+        this.id = ID_COUNTER.incrementAndGet();
     }
     
     public long getId() {
-        synchronized (ID_COUNTER) {
-            if (id == -1) {
-                id = ID_COUNTER.incrementAndGet();
-            }
-        }
-        
         return id;
     }
 

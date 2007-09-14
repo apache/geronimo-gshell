@@ -37,13 +37,13 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= RshServer.class)
+@Component(role=RshServer.class)
 public class RshServer
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement(role=IoHandler.class, hint="rsh-server")
-    private RshServerProtocolHandlerSupport handler;
+    private RshServerProtocolHandler handler;
 
     private SocketAcceptor acceptor;
 
@@ -53,6 +53,8 @@ public class RshServer
         if (bound) {
             throw new IllegalStateException("Already bound");
         }
+
+        handler.setVisitor(new RshServerMessageVisitor());
 
         acceptor = new SocketAcceptor();
         acceptor.setLocalAddress(new InetSocketAddress(port));

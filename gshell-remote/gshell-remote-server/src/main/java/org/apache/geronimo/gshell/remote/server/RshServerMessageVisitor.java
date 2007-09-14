@@ -17,14 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.remote.server;
+
+import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
+import org.apache.geronimo.gshell.remote.message.EchoMessage;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public interface MessageVisitor
+public class RshServerMessageVisitor
+    extends MessageVisitorAdapter
 {
-    void visitEchoCommand(EchoMessage msg);
+    public void visitEchoCommand(final EchoMessage msg) {
+        assert msg != null;
+
+        System.out.println("ECHO: " + msg.getText());
+    }
 }

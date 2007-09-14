@@ -46,7 +46,7 @@ public class RshClient
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement(role=IoHandler.class, hint="rsh-client")
-    private RshClientProtocolHandlerSupport handler;
+    private RshClientProtocolHandler handler;
 
     private InetSocketAddress address;
 
@@ -63,6 +63,8 @@ public class RshClient
 
         address = new InetSocketAddress(hostname, port);
 
+        handler.setVisitor(new RshClientMessageVisitor());
+        
         connector = new SocketConnector();
         connector.setConnectTimeout(30);
         connector.setHandler(handler);
