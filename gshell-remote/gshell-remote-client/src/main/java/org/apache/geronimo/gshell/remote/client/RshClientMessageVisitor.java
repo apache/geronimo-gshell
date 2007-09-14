@@ -21,6 +21,8 @@ package org.apache.geronimo.gshell.remote.client;
 
 import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ???
@@ -30,9 +32,11 @@ import org.apache.geronimo.gshell.remote.message.EchoMessage;
 public class RshClientMessageVisitor
     extends MessageVisitorAdapter
 {
-    public void visitEchoCommand(final EchoMessage msg) {
+    private Logger log = LoggerFactory.getLogger(getClass());
+    
+    public void visitEcho(final EchoMessage msg) {
         assert msg != null;
 
-        System.out.println("ECHO: " + msg.getText());
+        log.info("ECHO: {}", msg.getText());
     }
 }

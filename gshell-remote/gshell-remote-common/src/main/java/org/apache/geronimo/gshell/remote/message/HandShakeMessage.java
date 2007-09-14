@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import java.security.PublicKey;
+
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -26,35 +28,39 @@ import org.apache.mina.common.ByteBuffer;
  *
  * @version $Rev$ $Date$
  */
-public class EchoMessage
+public class HandShakeMessage
     extends MessageSupport
 {
-    private String text;
-    
-    public EchoMessage(final String text) {
-        super(MessageType.ECHO);
-        
-        this.text = text;
-    }
+    private PublicKey publicKey;
 
-    public EchoMessage() {
+    public HandShakeMessage(final PublicKey publicKey) {
+        super(MessageType.HANDSHAKE);
+
+        setPublicKey(publicKey);
+    }
+    
+    public HandShakeMessage() {
         this(null);
     }
 
-    public String getText() {
-        return text;
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(final PublicKey publicKey) {
+        this.publicKey = publicKey;
     }
 
     public String toString() {
-        return super.toString() + "{ id=" + getId() + ", text=" + text + " }";
+        return super.toString() + "{ id=" + getId() + ", publicKey=" + publicKey + " }";
     }
-    
+
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
         super.readExternal(buff);
 
-        text = readString(buff);
+        publicKey = (PublicKey) buff.getObject();
     }
 
     public void writeExternal(final ByteBuffer buff) throws Exception {
@@ -62,12 +68,12 @@ public class EchoMessage
 
         super.writeExternal(buff);
 
-        writeString(buff, text);
+        buff.putObject(publicKey);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {
         assert visitor != null;
 
-        visitor.visitEcho(this);
+        visitor.visitHandShake(this);
     }
 }

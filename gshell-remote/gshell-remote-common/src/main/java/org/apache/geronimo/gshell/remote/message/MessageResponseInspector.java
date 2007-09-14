@@ -19,42 +19,26 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.mina.filter.reqres.ResponseInspector;
+import org.apache.mina.filter.reqres.ResponseType;
+
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public enum MessageType
+public class MessageResponseInspector
+    implements ResponseInspector
 {
-    ECHO        (EchoMessage.class),
-    HANDSHAKE   (HandShakeMessage.class),
-    ;
+    public Object getRequestId(final Object message) {
+        if (message instanceof Message) {
+            return ((Message)message).getId();
+        }
 
-    private final Class<? extends Message> type;
-
-    MessageType(final Class<? extends Message> type) {
-        assert type != null;
-
-        this.type = type;
+        return null;
     }
 
-    public Class<? extends Message> getType() {
-        return type;
-    }
-    
-    public static Message create(final MessageType type) {
-        assert type != null;
-
-        Class impl = type.getType();
-
-        try {
-            return (Message) impl.newInstance();
-        }
-        catch (InstantiationException e) {
-            throw new Error(e);
-        }
-        catch (IllegalAccessException e) {
-            throw new Error(e);
-        }
+    public ResponseType getResponseType(final Object message) {
+        return ResponseType.WHOLE;
     }
 }

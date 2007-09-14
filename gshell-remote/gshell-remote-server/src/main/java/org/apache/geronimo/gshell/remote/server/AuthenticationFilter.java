@@ -17,44 +17,23 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.remote.server;
+
+import org.apache.mina.common.IoFilterAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public enum MessageType
+public class AuthenticationFilter
+    extends IoFilterAdapter
 {
-    ECHO        (EchoMessage.class),
-    HANDSHAKE   (HandShakeMessage.class),
-    ;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Class<? extends Message> type;
-
-    MessageType(final Class<? extends Message> type) {
-        assert type != null;
-
-        this.type = type;
-    }
-
-    public Class<? extends Message> getType() {
-        return type;
-    }
-    
-    public static Message create(final MessageType type) {
-        assert type != null;
-
-        Class impl = type.getType();
-
-        try {
-            return (Message) impl.newInstance();
-        }
-        catch (InstantiationException e) {
-            throw new Error(e);
-        }
-        catch (IllegalAccessException e) {
-            throw new Error(e);
-        }
-    }
+    //
+    // TODO:
+    //
 }

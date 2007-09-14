@@ -17,44 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
-
 /**
- * ???
+ * Support for SSL.
  *
  * @version $Rev$ $Date$
  */
-public enum MessageType
-{
-    ECHO        (EchoMessage.class),
-    HANDSHAKE   (HandShakeMessage.class),
-    ;
-
-    private final Class<? extends Message> type;
-
-    MessageType(final Class<? extends Message> type) {
-        assert type != null;
-
-        this.type = type;
-    }
-
-    public Class<? extends Message> getType() {
-        return type;
-    }
-    
-    public static Message create(final MessageType type) {
-        assert type != null;
-
-        Class impl = type.getType();
-
-        try {
-            return (Message) impl.newInstance();
-        }
-        catch (InstantiationException e) {
-            throw new Error(e);
-        }
-        catch (IllegalAccessException e) {
-            throw new Error(e);
-        }
-    }
-}
+package org.apache.geronimo.gshell.remote.ssl;

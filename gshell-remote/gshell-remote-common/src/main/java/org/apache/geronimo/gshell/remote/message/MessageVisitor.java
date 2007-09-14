@@ -26,5 +26,7 @@ package org.apache.geronimo.gshell.remote.message;
  */
 public interface MessageVisitor
 {
-    void visitEchoCommand(EchoMessage msg);
+    void visitEcho(EchoMessage msg);
+
+    void visitHandShake(HandShakeMessage msg);
 }

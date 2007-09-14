@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
+import org.apache.mina.filter.reqres.Response;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -51,14 +52,29 @@ public class RshClientProtocolHandler
 
         super.messageReceived(session, message);
 
-        Message msg = (Message)message;
+        if (message instanceof Message) {
+            Message msg = (Message)message;
 
-        msg.setAttachment(session);
+            log.info("MSG: {}", msg);
 
-        msg.setAttachment(session);
+            msg.setAttachment(session);
 
-        if (visitor != null) {
-            msg.process(visitor);
+            msg.setAttachment(session);
+
+            if (visitor != null) {
+                msg.process(visitor);
+            }
+        }
+        else if (message instanceof Response) {
+            Response resp = (Response)message;
+
+            Message reqMsg = (Message)resp.getRequest().getMessage();
+            Message respMsg = (Message)resp.getMessage();
+
+            log.info("RX respose; req={}, resp={}", reqMsg, respMsg);
+        }
+        else {
+            log.error("Unhandled message: {}", message);
         }
     }
 }

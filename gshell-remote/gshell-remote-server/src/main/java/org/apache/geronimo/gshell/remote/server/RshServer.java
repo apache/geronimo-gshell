@@ -20,12 +20,16 @@
 package org.apache.geronimo.gshell.remote.server;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.geronimo.gshell.remote.message.codec.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.logging.LoggingFilter;
+import org.apache.mina.filter.ssl.SSLFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -47,6 +51,8 @@ public class RshServer
 
     private SocketAcceptor acceptor;
 
+    private boolean ssl = false;
+
     private boolean bound = false;
 
     public void bind(final int port) throws Exception {
@@ -56,13 +62,21 @@ public class RshServer
 
         handler.setVisitor(new RshServerMessageVisitor());
 
-        acceptor = new SocketAcceptor();
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+
+        acceptor = new SocketAcceptor(Runtime.getRuntime().availableProcessors(), executor);
         acceptor.setLocalAddress(new InetSocketAddress(port));
         acceptor.setHandler(handler);
 
         DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
         filterChain.addLast("logger", new LoggingFilter());
         filterChain.addLast("protocol", new ProtocolCodecFilter(new MessageCodecFactory()));
+        filterChain.addLast("auth", new AuthenticationFilter());
+
+        if (ssl) {
+            SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(true));
+            filterChain.addFirst("sslFilter", sslFilter);
+        }
 
         acceptor.bind();
 

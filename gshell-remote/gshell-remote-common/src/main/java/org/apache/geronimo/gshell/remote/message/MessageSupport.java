@@ -36,10 +36,10 @@ public abstract class MessageSupport
 {
     private static final AtomicLong ID_COUNTER = new AtomicLong(0);
 
-    private long id = -1;
-
     private MessageType type;
 
+    private long id;
+    
     private transient Object attachment;
 
     protected MessageSupport(final MessageType type) {
@@ -54,6 +54,12 @@ public abstract class MessageSupport
         return id;
     }
 
+    public void setId(final long id) {
+        assert id > -1;
+        
+        this.id = id;
+    }
+    
     public MessageType getType() throws IOException {
         return type;
     }

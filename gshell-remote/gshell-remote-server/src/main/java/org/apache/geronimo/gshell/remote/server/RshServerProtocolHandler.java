@@ -51,14 +51,19 @@ public class RshServerProtocolHandler
 
         super.messageReceived(session, message);
 
-        Message msg = (Message)message;
+        if (message instanceof Message) {
+            Message msg = (Message)message;
 
-        msg.setAttachment(session);
+            msg.setAttachment(session);
 
-        msg.setAttachment(session);
+            msg.setAttachment(session);
 
-        if (visitor != null) {
-            msg.process(visitor);
+            if (visitor != null) {
+                msg.process(visitor);
+            }
+        }
+        else {
+            log.error("Unhandled message: {}", message);
         }
     }
 }

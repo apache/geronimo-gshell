@@ -44,6 +44,8 @@ public class RshCommand
 
         client.echo("TESTING");
 
+        client.handshake();
+        
         return SUCCESS;
     }
 }
