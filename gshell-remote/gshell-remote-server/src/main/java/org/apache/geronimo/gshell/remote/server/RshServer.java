@@ -51,7 +51,7 @@ public class RshServer
 
     private SocketAcceptor acceptor;
 
-    private boolean ssl = false;
+    private boolean ssl = true;
 
     private boolean bound = false;
 
@@ -75,11 +75,11 @@ public class RshServer
 
         if (ssl) {
             SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(true));
-            filterChain.addFirst("sslFilter", sslFilter);
+            filterChain.addFirst("ssl", sslFilter);
         }
 
         acceptor.bind();
-
+        
         log.info("Listening on port: {}", port);
 
         bound = true;

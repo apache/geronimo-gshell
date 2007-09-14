@@ -63,7 +63,7 @@ public class RshClient
     @Requirement(role=IoHandler.class, hint="rsh-client")
     private RshClientProtocolHandler handler;
 
-    private boolean ssl = false;
+    private boolean ssl = true;
     
     private InetSocketAddress address;
 
@@ -96,10 +96,10 @@ public class RshClient
         filterChain.addLast("reqres", new RequestResponseFilter(new MessageResponseInspector(), scheduler));
 
         if (ssl) {
-            SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(true));
+            SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(false));
             sslFilter.setUseClientMode(true);
             
-            filterChain.addFirst("sslFilter", sslFilter);
+            filterChain.addFirst("ssl", sslFilter);
         }
 
         log.info("Connecting to: {}", address);
