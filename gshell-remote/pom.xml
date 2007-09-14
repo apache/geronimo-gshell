@@ -42,6 +42,32 @@
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-component-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-component-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>2.0.0-M1-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
         </dependency>
@@ -54,8 +80,9 @@
     </dependencies>
     
     <modules>
-        <module>gshell-remote-commands</module>
+        <module>gshell-remote-common</module>
         <module>gshell-remote-server</module>
+        <module>gshell-remote-client</module>
     </modules>
-    
+
 </project>

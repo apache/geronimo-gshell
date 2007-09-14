@@ -30,8 +30,8 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gshell-remote-commands</artifactId>
-    <name>GShell Remote :: Commands</name>
+    <artifactId>gshell-remote-client</artifactId>
+    <name>GShell Remote :: Client</name>
     
     <description>
         Client-side GShell commands for remote access.
@@ -39,10 +39,46 @@
     
     <dependencies>
         <dependency>
+            <groupId>org.apache.geronimo.gshell.remote</groupId>
+            <artifactId>gshell-remote-common</artifactId>
+            <version>${version}</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-core</artifactId>
             <version>${version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-java5-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-maven-plugin</artifactId>
+                <version>${version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>commands-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

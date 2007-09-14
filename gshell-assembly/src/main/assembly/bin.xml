@@ -72,6 +72,13 @@
                 <include>org.slf4j:jcl104-over-slf4j</include>
                 <include>org.slf4j:slf4j-log4j12</include>
                 <include>org.apache.geronimo.gshell:gshell-diet-log4j</include>
+                <include>org.apache.geronimo.gshell.commands:gshell-optional</include>
+
+                <!-- Remoting POC -->
+                <include>org.apache.geronimo.gshell.remote:gshell-remote-common</include>
+                <include>org.apache.geronimo.gshell.remote:gshell-remote-server</include>
+                <include>org.apache.geronimo.gshell.remote:gshell-remote-client</include>
+                <include>org.apache.mina:mina-core</include>
             </includes>
         </dependencySet>
 

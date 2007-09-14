@@ -30,26 +30,12 @@
         <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gshell-remote-server</artifactId>
-    <name>GShell Remote :: Server</name>
+    <artifactId>gshell-remote-common</artifactId>
+    <name>GShell Remote :: Common</name>
     
     <description>
-        Server-side support for allowing GShell clients to connect and execute commands.
+        Common support for the GShell remote shell client and server.
     </description>
-    
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.remote</groupId>
-            <artifactId>gshell-remote-common</artifactId>
-            <version>${version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-core</artifactId>
-            <version>${version}</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
@@ -61,19 +47,6 @@
                         <phase>process-classes</phase>
                         <goals>
                             <goal>descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>gshell-maven-plugin</artifactId>
-                <version>${version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>commands-descriptor</goal>
                         </goals>
                     </execution>
                 </executions>

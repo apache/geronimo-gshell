@@ -358,8 +358,8 @@
         <module>gshell-core</module>
         <module>gshell-maven-plugin</module>
         <module>gshell-cli</module>
-        <module>gshell-remote</module>
         <module>gshell-commands</module>
+        <module>gshell-remote</module>
         <module>gshell-embeddable</module>
         <module>gshell-assembly</module>
     </modules>
