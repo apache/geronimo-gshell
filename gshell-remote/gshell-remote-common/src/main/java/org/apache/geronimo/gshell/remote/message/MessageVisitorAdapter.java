@@ -34,4 +34,8 @@ public class MessageVisitorAdapter
     public void visitHandShake(HandShakeMessage msg) {
         // Empty
     }
+
+    public void visitWriteStream(WriteStreamMessage msg) {
+        // Empty
+    }
 }

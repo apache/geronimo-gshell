@@ -26,8 +26,9 @@ package org.apache.geronimo.gshell.remote.message;
  */
 public enum MessageType
 {
-    ECHO        (EchoMessage.class),
-    HANDSHAKE   (HandShakeMessage.class),
+    ECHO            (EchoMessage.class),
+    HANDSHAKE       (HandShakeMessage.class),
+    WRITE_STREAM    (WriteStreamMessage.class),
     ;
 
     private final Class<? extends Message> type;

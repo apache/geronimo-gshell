@@ -19,8 +19,15 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import org.apache.mina.filter.reqres.Request;
 import org.apache.mina.filter.reqres.ResponseInspector;
 import org.apache.mina.filter.reqres.ResponseType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ???
@@ -30,9 +37,46 @@ import org.apache.mina.filter.reqres.ResponseType;
 public class MessageResponseInspector
     implements ResponseInspector
 {
-    public Object getRequestId(final Object message) {
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+    private Set<UUID> registeredIds = new HashSet<UUID>();
+
+    public synchronized void register(final Request req) {
+        assert req != null;
+
+        UUID id = (UUID) req.getId();
+
+        if (registeredIds.contains(id)) {
+            log.warn("Ignoring attempt to re-register request ID: {}", id);
+        }
+        else {
+            registeredIds.add(id);
+
+            log.debug("Registered request for ID: {}", id);
+        }
+    }
+
+    public synchronized void deregister(final Request req) {
+        assert req != null;
+
+        UUID id = (UUID) req.getId();
+
+        if (registeredIds.remove(id)) {
+            log.debug("Dereegistered request for ID: {}", id);
+        }
+    }
+    
+    //
+    // ResponseInspector
+    //
+    
+    public synchronized Object getRequestId(final Object message) {
         if (message instanceof Message) {
-            return ((Message)message).getId();
+            UUID id = ((Message)message).getId();
+
+            if (registeredIds.contains(id)) {
+                return id;
+            }
         }
 
         return null;

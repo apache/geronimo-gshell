@@ -17,18 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message.codec;
-
-import org.apache.mina.common.ByteBuffer;
-
 /**
- * ???
+ * Support for remote input and output streaming.
  *
  * @version $Rev$ $Date$
  */
-public interface MarshalAware
-{
-    void readExternal(ByteBuffer buff) throws Exception;
-
-    void writeExternal(ByteBuffer buff) throws Exception;
-}
+package org.apache.geronimo.gshell.remote.stream;

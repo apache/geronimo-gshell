@@ -19,6 +19,13 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.Date;
+
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -32,6 +39,10 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshCommand
     extends CommandSupport
 {
+    //
+    // TODO: Use a URI
+    //
+    
     private String hostname = "localhost";
 
     private int port = 9999;
@@ -45,6 +56,61 @@ public class RshCommand
         client.echo("TESTING");
 
         client.handshake();
+
+        client.echo("READ_STREAMS");
+
+        OutputStream out = client.getOutputStream();
+        final PrintWriter writer = new PrintWriter(out);
+
+        InputStream in = client.getInputStream();
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+        Thread t = new Thread("Stream Consumer") {
+            public void run() {
+                try {
+                    log.debug("Consumer running...");
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.err.println(line);
+                    }
+
+                    log.debug("Consumer stopped");
+                }
+                catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+        };
+
+        t.start();
+
+        Thread t2 = new Thread("Noise Maker") {
+            public void run() {
+                try {
+                    log.debug("Noise Maker...");
+
+                    while (true) {
+                        writer.println("FROM CLIENT: " + new Date());
+                        writer.flush();
+
+                        Thread.sleep(1000 * 5);
+                    }
+
+                    // log.debug("Noise Maker stopped");
+                }
+                catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+        };
+
+        t2.start();
+
+        t.join();
+        t2.join();
+        
+        client.close();
         
         return SUCCESS;
     }

@@ -29,4 +29,6 @@ public interface MessageVisitor
     void visitEcho(EchoMessage msg);
 
     void visitHandShake(HandShakeMessage msg);
+    
+    void visitWriteStream(WriteStreamMessage msg);
 }

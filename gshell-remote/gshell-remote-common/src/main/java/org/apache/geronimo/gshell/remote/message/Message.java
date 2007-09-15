@@ -20,8 +20,9 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import java.io.IOException;
+import java.util.UUID;
 
-import org.apache.geronimo.gshell.remote.message.codec.MarshalAware;
+import org.apache.geronimo.gshell.remote.message.MarshalAware;
 
 /**
  * ???
@@ -31,7 +32,7 @@ import org.apache.geronimo.gshell.remote.message.codec.MarshalAware;
 public interface Message
     extends MarshalAware
 {
-    long getId();
+    UUID getId();
 
     MessageType getType() throws IOException;
 

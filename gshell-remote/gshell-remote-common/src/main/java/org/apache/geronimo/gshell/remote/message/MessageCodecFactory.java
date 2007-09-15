@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message.codec;
+package org.apache.geronimo.gshell.remote.message;
 
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageType;
@@ -80,6 +80,8 @@ public class MessageCodecFactory
             
             Message msg = (Message)message;
 
+            log.debug("Serializing: {}", msg);
+
             ByteBuffer buff = ByteBuffer.allocate(256, false);
             buff.setAutoExpand(true);
 
@@ -120,6 +122,7 @@ public class MessageCodecFactory
             MagicNumber.read(in);
 
             byte version = in.get();
+
             if (version != VERSION) {
                 throw new ProtocolDecoderException("Invalid version: " + version);
             }
@@ -129,6 +132,8 @@ public class MessageCodecFactory
             Message msg = MessageType.create(type);
 
             msg.readExternal(in);
+
+            log.debug("Deserialized: {}", msg);
 
             out.write(msg);
 

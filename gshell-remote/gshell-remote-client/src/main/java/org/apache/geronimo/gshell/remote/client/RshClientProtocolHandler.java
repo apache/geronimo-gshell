@@ -20,61 +20,17 @@
 package org.apache.geronimo.gshell.remote.client;
 
 import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
-import org.apache.geronimo.gshell.remote.message.Message;
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.IoHandler;
-import org.apache.mina.common.IoSession;
-import org.apache.mina.filter.reqres.Response;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=IoHandler.class, hint="rsh-client")
+@Component(role=IoHandler.class, hint="rsh-client", instantiationStrategy= InstantiationStrategy.PER_LOOKUP)
 public class RshClientProtocolHandler
     extends RshProtocolHandlerSupport
 {
-    private MessageVisitor visitor;
-
-    public MessageVisitor getVisitor() {
-        return visitor;
-    }
-
-    public void setVisitor(final MessageVisitor visitor) {
-        this.visitor = visitor;
-    }
-
-    public void messageReceived(final IoSession session, final Object message) throws Exception {
-        assert session != null;
-        assert message != null;
-
-        super.messageReceived(session, message);
-
-        if (message instanceof Message) {
-            Message msg = (Message)message;
-
-            log.info("MSG: {}", msg);
-
-            msg.setAttachment(session);
-
-            msg.setAttachment(session);
-
-            if (visitor != null) {
-                msg.process(visitor);
-            }
-        }
-        else if (message instanceof Response) {
-            Response resp = (Response)message;
-
-            Message reqMsg = (Message)resp.getRequest().getMessage();
-            Message respMsg = (Message)resp.getMessage();
-
-            log.info("RX respose; req={}, resp={}", reqMsg, respMsg);
-        }
-        else {
-            log.error("Unhandled message: {}", message);
-        }
-    }
 }

@@ -26,7 +26,6 @@ package org.apache.geronimo.gshell.remote.ssl;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 
 import javax.net.SocketFactory;

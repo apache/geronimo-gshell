@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message.codec;
+package org.apache.geronimo.gshell.remote.message;
 
 import java.util.Arrays;
 

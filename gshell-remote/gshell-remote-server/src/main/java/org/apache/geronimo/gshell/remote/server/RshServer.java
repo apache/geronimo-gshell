@@ -23,15 +23,17 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.geronimo.gshell.remote.message.codec.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.mina.common.IoEventType;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.filter.ssl.SSLFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +43,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshServer.class)
+@Component(role=RshServer.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class RshServer
 {
     private Logger log = LoggerFactory.getLogger(getClass());
@@ -69,8 +71,20 @@ public class RshServer
         acceptor.setHandler(handler);
 
         DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
-        filterChain.addLast("logger", new LoggingFilter());
+
+        LoggingFilter loggingFilter = new LoggingFilter();
+        loggingFilter.setLogLevel(IoEventType.EXCEPTION_CAUGHT, LoggingFilter.WARN);
+        loggingFilter.setLogLevel(IoEventType.WRITE, LoggingFilter.TRACE);
+        loggingFilter.setLogLevel(IoEventType.MESSAGE_RECEIVED, LoggingFilter.TRACE);
+        loggingFilter.setLogLevel(IoEventType.MESSAGE_SENT, LoggingFilter.TRACE);
+        loggingFilter.setLogLevel(IoEventType.SESSION_CLOSED, LoggingFilter.DEBUG);
+        loggingFilter.setLogLevel(IoEventType.SESSION_CREATED, LoggingFilter.DEBUG);
+        loggingFilter.setLogLevel(IoEventType.SESSION_IDLE, LoggingFilter.DEBUG);
+        loggingFilter.setLogLevel(IoEventType.SESSION_OPENED, LoggingFilter.DEBUG);
+        filterChain.addLast("logger", loggingFilter);
+
         filterChain.addLast("protocol", new ProtocolCodecFilter(new MessageCodecFactory()));
+
         filterChain.addLast("auth", new AuthenticationFilter());
 
         if (ssl) {

@@ -19,8 +19,12 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
+import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
+import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
+import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
+import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,5 +42,28 @@ public class RshClientMessageVisitor
         assert msg != null;
 
         log.info("ECHO: {}", msg.getText());
+    }
+
+    public void visitWriteStream(final WriteStreamMessage msg) {
+        assert msg != null;
+
+        IoSession session = (IoSession) msg.getAttachment();
+        assert session != null;
+
+        // Look up the bound stream in the session context
+        String key = RshProtocolHandlerSupport.STREAM_BASENAME + msg.getName();
+        Object stream = session.getAttribute(key);
+
+        // For now lets not toss any exceptions or send back any fault messages
+        if (stream == null) {
+            log.error("Stream is not registered: {}", key);
+        }
+        else if (!(stream instanceof IoSessionInputStream)) {
+            log.error("Stream is not for input: {}", key);
+        }
+        else {
+            IoSessionInputStream in = (IoSessionInputStream)stream;
+            in.write(msg.getBuffer());
+        }
     }
 }

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message;
 import java.io.IOException;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.UUID;
 
 import org.apache.mina.common.ByteBuffer;
 
@@ -34,11 +34,9 @@ import org.apache.mina.common.ByteBuffer;
 public abstract class MessageSupport
     implements Message
 {
-    private static final AtomicLong ID_COUNTER = new AtomicLong(0);
-
     private MessageType type;
 
-    private long id;
+    private UUID id;
     
     private transient Object attachment;
 
@@ -47,16 +45,14 @@ public abstract class MessageSupport
         
         this.type = type;
 
-        this.id = ID_COUNTER.incrementAndGet();
+        this.id = UUID.randomUUID();
     }
     
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(final long id) {
-        assert id > -1;
-        
+    public void setId(final UUID id) {
         this.id = id;
     }
     
@@ -83,15 +79,15 @@ public abstract class MessageSupport
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
-        id = buff.getLong();
-        
+        id = (UUID) buff.getObject();
+
         type = buff.getEnum(MessageType.class);
     }
 
     public void writeExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
-        buff.putLong(id);
+        buff.putObject(id);
         
         buff.putEnum(type);
     }
@@ -102,16 +98,21 @@ public abstract class MessageSupport
 
     private static final Charset UTF_8_CHARSET = Charset.forName("UTF-8");
 
-    protected String readString(final ByteBuffer buff) throws CharacterCodingException {
-        assert buff != null;
+    protected String readString(final ByteBuffer in) throws CharacterCodingException {
+        assert in != null;
 
-        return buff.getString(UTF_8_CHARSET.newDecoder());
+        int len = in.getInt();
+
+        return in.getString(len, UTF_8_CHARSET.newDecoder());
     }
 
-    protected void writeString(final ByteBuffer buff, final String str) throws CharacterCodingException {
-        assert buff != null;
+    protected void writeString(final ByteBuffer out, final String str) throws CharacterCodingException {
+        assert out != null;
         assert str != null;
 
-        buff.putString(str, UTF_8_CHARSET.newEncoder());
+        int len = str.length();
+        out.putInt(len);
+        
+        out.putString(str, len, UTF_8_CHARSET.newEncoder());
     }
 }

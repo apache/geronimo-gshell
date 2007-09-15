@@ -17,9 +17,18 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.remote.message;
+
+import org.apache.mina.common.ByteBuffer;
+
 /**
- * Support for marshalling, encoding and decoing messages.
- * 
+ * ???
+ *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.remote.message.codec;
+public interface MarshalAware
+{
+    void readExternal(ByteBuffer in) throws Exception;
+
+    void writeExternal(ByteBuffer out) throws Exception;
+}

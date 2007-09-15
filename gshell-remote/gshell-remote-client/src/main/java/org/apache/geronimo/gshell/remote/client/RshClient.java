@@ -19,20 +19,23 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
 import org.apache.geronimo.gshell.remote.message.Message;
-import org.apache.geronimo.gshell.remote.message.MessageResponseInspector;
-import org.apache.geronimo.gshell.remote.message.codec.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.mina.common.IoEventType;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
@@ -44,6 +47,7 @@ import org.apache.mina.filter.reqres.Response;
 import org.apache.mina.filter.ssl.SSLFilter;
 import org.apache.mina.transport.socket.nio.SocketConnector;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +57,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshClient.class)
+@Component(role=RshClient.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class RshClient
 {
     public static final int CONNECT_TIMEOUT = 3000;
@@ -89,11 +93,23 @@ public class RshClient
         connector.setHandler(handler);
 
         DefaultIoFilterChainBuilder filterChain = connector.getFilterChain();
-        filterChain.addLast("logger", new LoggingFilter());
+
+        LoggingFilter loggingFilter = new LoggingFilter();
+        loggingFilter.setLogLevel(IoEventType.EXCEPTION_CAUGHT, LoggingFilter.WARN);
+        loggingFilter.setLogLevel(IoEventType.WRITE, LoggingFilter.TRACE);
+        loggingFilter.setLogLevel(IoEventType.MESSAGE_RECEIVED, LoggingFilter.TRACE);
+        loggingFilter.setLogLevel(IoEventType.MESSAGE_SENT, LoggingFilter.TRACE);
+        loggingFilter.setLogLevel(IoEventType.SESSION_CLOSED, LoggingFilter.DEBUG);
+        loggingFilter.setLogLevel(IoEventType.SESSION_CREATED, LoggingFilter.DEBUG);
+        loggingFilter.setLogLevel(IoEventType.SESSION_IDLE, LoggingFilter.DEBUG);
+        loggingFilter.setLogLevel(IoEventType.SESSION_OPENED, LoggingFilter.DEBUG);
+        filterChain.addLast("logger", loggingFilter);
+
         filterChain.addLast("protocol", new ProtocolCodecFilter(new MessageCodecFactory()));
 
         ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
-        filterChain.addLast("reqres", new RequestResponseFilter(new MessageResponseInspector(), scheduler));
+
+        filterChain.addLast("reqres", new RequestResponseFilter(handler.getResponseInspector(), scheduler));
 
         if (ssl) {
             SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(false));
@@ -172,5 +188,25 @@ public class RshClient
         Response resp = request(msg, 5, TimeUnit.SECONDS);
 
         log.info("Response: {}", resp.getMessage());
+    }
+
+    public InputStream getInputStream() {
+        return (InputStream) session.getAttribute(RshProtocolHandlerSupport.INPUT_STREAM);
+    }
+
+    public OutputStream getOutputStream() {
+        return (OutputStream) session.getAttribute(RshProtocolHandlerSupport.OUTPUT_STREAM);
+    }
+
+    public void close() {
+        if (isConnected()) {
+            session.close().awaitUninterruptibly();
+            
+            session = null;
+            connector = null;
+            address = null;
+            
+            connected = false;
+        }
     }
 }
