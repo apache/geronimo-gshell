@@ -18,7 +18,7 @@
  */
 
 /**
- * ???
+ * Support for connections over TCP+SSL.
  *
  * @version $Rev$ $Date$
  */

@@ -18,7 +18,7 @@
  */
 
 /**
- * ???
+ * Support for connections over TCP.
  *
  * @version $Rev$ $Date$
  */

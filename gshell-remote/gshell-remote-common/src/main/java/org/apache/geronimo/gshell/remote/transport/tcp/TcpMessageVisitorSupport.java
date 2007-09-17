@@ -34,13 +34,31 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TcpClientMessageVisitor.class)
-public class TcpClientMessageVisitor
-    extends TcpMessageVisitorSupport
+public abstract class TcpMessageVisitorSupport
+    extends MessageVisitorAdapter
 {
-    public void visitEcho(final EchoMessage msg) {
+    protected Logger log = LoggerFactory.getLogger(getClass());
+
+    public void visitWriteStream(final WriteStreamMessage msg) {
         assert msg != null;
 
-        log.info("ECHO: {}", msg.getText());
+        IoSession session = (IoSession) msg.getAttachment();
+        assert session != null;
+
+        // Look up the bound stream in the session context
+        String key = Transport.STREAM_BASENAME + msg.getName();
+        Object stream = session.getAttribute(key);
+
+        // For now lets not toss any exceptions or send back any fault messages
+        if (stream == null) {
+            log.error("Stream is not registered: {}", key);
+        }
+        else if (!(stream instanceof IoSessionInputStream)) {
+            log.error("Stream is not for input: {}", key);
+        }
+        else {
+            IoSessionInputStream in = (IoSessionInputStream)stream;
+            in.write(msg.getBuffer());
+        }
     }
 }

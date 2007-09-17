@@ -45,10 +45,8 @@ import org.slf4j.LoggerFactory;
  */
 @Component(role=TcpServerMessageVisitor.class)
 public class TcpServerMessageVisitor
-    extends MessageVisitorAdapter
+    extends TcpMessageVisitorSupport
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
-
     public void visitEcho(final EchoMessage msg) {
         assert msg != null;
 
@@ -128,29 +126,5 @@ public class TcpServerMessageVisitor
         resp.setId(msg.getId());
 
         session.write(resp);
-    }
-
-    public void visitWriteStream(final WriteStreamMessage msg) {
-        assert msg != null;
-
-        IoSession session = (IoSession) msg.getAttachment();
-        assert session != null;
-
-        // Look up the bound stream in the session context
-        String key = Transport.STREAM_BASENAME + msg.getName();
-        Object stream = session.getAttribute(key);
-
-        // For now lets not toss any exceptions or send back any fault messages
-        if (stream == null) {
-            log.error("Stream is not registered: {}", key);
-        }
-        else if (!(stream instanceof IoSessionInputStream)) {
-            log.error("Stream is not for input: {}", key);
-        }
-        else {
-            IoSessionInputStream in = (IoSessionInputStream)stream;
-            ByteBuffer buff = msg.getBuffer();
-            in.write(buff);
-        }
     }
 }
