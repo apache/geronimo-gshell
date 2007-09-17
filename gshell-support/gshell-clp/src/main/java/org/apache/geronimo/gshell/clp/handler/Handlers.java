@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.clp.handler;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -115,6 +116,7 @@ public class Handlers
         register(Boolean.class, BooleanHandler.class);
         register(boolean.class, BooleanHandler.class);
         register(File.class, FileHandler.class);
+        register(URI.class, UriHandler.class);
         register(Integer.class, IntegerHandler.class);
         register(int.class, IntegerHandler.class);
         register(Double.class, DoubleHandler.class);
