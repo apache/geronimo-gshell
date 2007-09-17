@@ -17,36 +17,18 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.transport;
 
 import java.net.URI;
-
-import org.apache.geronimo.gshell.remote.transport.TransportFactory;
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class RshServer
+public interface TransportFactory
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    Transport connect(final URI location) throws Exception;
 
-    private final TransportServer server;
-
-    public RshServer(final URI location, final TransportFactory factory) throws Exception {
-        assert location != null;
-        assert factory != null;
-
-        server = factory.bind(location);
-    }
-
-    public void close() {
-        server.close();
-
-        log.debug("Closed");
-    }
+    TransportServer bind(final URI location) throws Exception;
 }

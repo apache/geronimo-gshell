@@ -17,21 +17,23 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.filter;
 
-import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
-import org.apache.mina.common.IoHandler;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
+import org.apache.mina.common.IoFilterAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=IoHandler.class, hint="rsh-server", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
-public class RshServerProtocolHandler
-    extends RshProtocolHandlerSupport
+public class AuthenticationFilter
+    extends IoFilterAdapter
 {
-    // ???
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+    //
+    // TODO:
+    //
 }

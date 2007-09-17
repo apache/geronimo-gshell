@@ -17,20 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client;
-
-import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
-import org.apache.mina.common.IoHandler;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
-
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=IoHandler.class, hint="rsh-client", instantiationStrategy= InstantiationStrategy.PER_LOOKUP)
-public class RshClientProtocolHandler
-    extends RshProtocolHandlerSupport
-{
-}
+package org.apache.geronimo.gshell.remote.transport.ssl;

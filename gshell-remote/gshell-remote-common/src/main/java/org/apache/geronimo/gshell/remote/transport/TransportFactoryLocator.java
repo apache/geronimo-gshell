@@ -17,36 +17,35 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.transport;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.transport.TransportFactory;
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class RshServer
+@Component(role=TransportFactoryLocator.class)
+public class TransportFactoryLocator
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    @Requirement
+    private PlexusContainer container;
 
-    private final TransportServer server;
-
-    public RshServer(final URI location, final TransportFactory factory) throws Exception {
+    public TransportFactory locate(final URI location) throws Exception {
         assert location != null;
-        assert factory != null;
 
-        server = factory.bind(location);
-    }
+        String scheme = location.getScheme();
+        if (scheme == null) {
+            throw new Exception("Invalid location; missing scheme: " + location);
+        }
 
-    public void close() {
-        server.close();
+        TransportFactory factory = (TransportFactory) container.lookup(TransportFactory.class, scheme);
 
-        log.debug("Closed");
+        return factory;
     }
 }

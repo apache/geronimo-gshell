@@ -17,36 +17,35 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.transport;
 
-import java.net.URI;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import org.apache.geronimo.gshell.remote.transport.TransportFactory;
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.remote.message.Message;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class RshServer
+public interface Transport
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    String STREAM_BASENAME = "org.apache.geronimo.gshell.remote.stream.";
 
-    private final TransportServer server;
+    String INPUT_STREAM = STREAM_BASENAME + "IN";
 
-    public RshServer(final URI location, final TransportFactory factory) throws Exception {
-        assert location != null;
-        assert factory != null;
+    String OUTPUT_STREAM = STREAM_BASENAME + "OUT";
 
-        server = factory.bind(location);
-    }
+    String ERROR_STREAM = STREAM_BASENAME + "ERR";
 
-    public void close() {
-        server.close();
+    void send(Message msg) throws Exception;
 
-        log.debug("Closed");
-    }
+    Message request(Message msg) throws Exception;
+
+    InputStream getInputStream();
+
+    OutputStream getOutputStream();
+
+    void close();
 }

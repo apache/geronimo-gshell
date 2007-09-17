@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.Date;
 
 import org.apache.geronimo.gshell.command.CommandSupport;
@@ -39,20 +40,20 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshCommand
     extends CommandSupport
 {
-    //
-    // TODO: Use a URI
-    //
-    
-    private String hostname = "localhost";
-
-    private int port = 9999;
-
     @Requirement
+    private RshClientFactory factory;
+
     private RshClient client;
 
     protected Object doExecute() throws Exception {
-        client.connect(hostname, port);
+        URI location = new URI("ssl://localhost:9999");
 
+        io.out.println("Connecting to: " + location);
+
+        client = factory.connect(location);
+
+        io.out.println("Connected");
+        
         client.echo("TESTING");
 
         client.handshake();

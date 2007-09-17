@@ -17,14 +17,15 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client;
+package org.apache.geronimo.gshell.remote.transport.tcp;
 
-import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
 import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
 import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
+import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.IoSession;
+import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,11 +34,12 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public class RshClientMessageVisitor
+@Component(role=TcpClientMessageVisitor.class)
+public class TcpClientMessageVisitor
     extends MessageVisitorAdapter
 {
     private Logger log = LoggerFactory.getLogger(getClass());
-    
+
     public void visitEcho(final EchoMessage msg) {
         assert msg != null;
 
@@ -51,7 +53,7 @@ public class RshClientMessageVisitor
         assert session != null;
 
         // Look up the bound stream in the session context
-        String key = RshProtocolHandlerSupport.STREAM_BASENAME + msg.getName();
+        String key = Transport.STREAM_BASENAME + msg.getName();
         Object stream = session.getAttribute(key);
 
         // For now lets not toss any exceptions or send back any fault messages

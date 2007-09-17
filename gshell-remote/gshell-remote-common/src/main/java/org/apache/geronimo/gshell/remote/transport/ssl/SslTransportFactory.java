@@ -17,23 +17,30 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.transport.ssl;
 
-import org.apache.mina.common.IoFilterAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.net.URI;
+
+import org.apache.geronimo.gshell.remote.transport.TransportFactory;
+import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
+import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportFactory;
+import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class AuthenticationFilter
-    extends IoFilterAdapter
+@Component(role=TransportFactory.class, hint="ssl")
+public class SslTransportFactory
+    extends TcpTransportFactory
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    protected TcpTransport createTcpTransport(final URI location) throws Exception {
+        return new SslTransport(location, null);
+    }
 
-    //
-    // TODO:
-    //
+    protected TcpTransportServer createTransportServer(final URI location) throws Exception {
+        return new SslTransportServer(location);
+    }
 }

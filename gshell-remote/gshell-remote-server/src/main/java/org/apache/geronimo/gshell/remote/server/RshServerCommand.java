@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
+import java.net.URI;
+
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -32,13 +34,17 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshServerCommand
     extends CommandSupport
 {
-    private int port = 9999;
-    
     @Requirement
+    private RshServerFactory factory;
+
     private RshServer server;
 
     protected Object doExecute() throws Exception {
-        server.bind(port);
+        URI location = new URI("ssl://localhost:9999");
+
+        server = factory.connect(location);
+
+        io.out.println("Listening on: " + location);
         
         return SUCCESS;
     }

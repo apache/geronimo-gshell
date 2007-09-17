@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.transport.tcp;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,14 +26,15 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Date;
 
-import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
 import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
 import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
+import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
+import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +43,8 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public class RshServerMessageVisitor
+@Component(role=TcpServerMessageVisitor.class)
+public class TcpServerMessageVisitor
     extends MessageVisitorAdapter
 {
     private Logger log = LoggerFactory.getLogger(getClass());
@@ -52,7 +54,7 @@ public class RshServerMessageVisitor
 
         final IoSession session = (IoSession) msg.getAttachment();
         assert session != null;
-        
+
         String text = msg.getText();
 
         //
@@ -60,10 +62,10 @@ public class RshServerMessageVisitor
         //
 
         if ("READ_STREAMS".equals(text)) {
-            OutputStream out = (OutputStream) session.getAttribute(RshProtocolHandlerSupport.OUTPUT_STREAM);
+            OutputStream out = (OutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
             final PrintWriter writer = new PrintWriter(out);
 
-            InputStream in = (InputStream) session.getAttribute(RshProtocolHandlerSupport.INPUT_STREAM);
+            InputStream in = (InputStream) session.getAttribute(Transport.INPUT_STREAM);
             final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
             Thread t = new Thread("Stream Consumer") {
@@ -75,7 +77,7 @@ public class RshServerMessageVisitor
                         while ((line = reader.readLine()) != null) {
                             System.err.println(line);
                         }
-                        
+
                         log.debug("Consumer stopped");
                     }
                     catch (Exception e) {
@@ -117,7 +119,7 @@ public class RshServerMessageVisitor
         assert msg != null;
 
         log.info("HANDSHAKE");
-        
+
         IoSession session = (IoSession) msg.getAttachment();
         assert session != null;
 
@@ -135,7 +137,7 @@ public class RshServerMessageVisitor
         assert session != null;
 
         // Look up the bound stream in the session context
-        String key = RshProtocolHandlerSupport.STREAM_BASENAME + msg.getName();
+        String key = Transport.STREAM_BASENAME + msg.getName();
         Object stream = session.getAttribute(key);
 
         // For now lets not toss any exceptions or send back any fault messages

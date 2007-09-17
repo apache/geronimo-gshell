@@ -17,36 +17,37 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.transport.ssl;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.transport.TransportFactory;
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
+import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
+import org.apache.mina.filter.ssl.SSLFilter;
+import org.apache.mina.common.DefaultIoFilterChainBuilder;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class RshServer
+public class SslTransportServer
+    extends TcpTransportServer
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private final TransportServer server;
-
-    public RshServer(final URI location, final TransportFactory factory) throws Exception {
-        assert location != null;
-        assert factory != null;
-
-        server = factory.bind(location);
+    public SslTransportServer(final URI location) throws Exception {
+        super(location);
     }
 
-    public void close() {
-        server.close();
+    protected void init() throws Exception {
+        super.init();
+        
+        DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
 
-        log.debug("Closed");
+        //
+        // TODO: Get the SSL context factory injected
+        //
+        
+        SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(true));
+        filterChain.addFirst("ssl", sslFilter);
     }
 }

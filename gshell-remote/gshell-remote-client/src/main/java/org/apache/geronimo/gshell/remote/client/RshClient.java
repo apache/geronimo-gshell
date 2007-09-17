@@ -21,34 +21,13 @@ package org.apache.geronimo.gshell.remote.client;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.RshProtocolHandlerSupport;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
 import org.apache.geronimo.gshell.remote.message.Message;
-import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
-import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
-import org.apache.mina.common.ConnectFuture;
-import org.apache.mina.common.DefaultIoFilterChainBuilder;
-import org.apache.mina.common.IoEventType;
-import org.apache.mina.common.IoHandler;
-import org.apache.mina.common.IoSession;
-import org.apache.mina.common.WriteFuture;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.filter.logging.LoggingFilter;
-import org.apache.mina.filter.reqres.Request;
-import org.apache.mina.filter.reqres.RequestResponseFilter;
-import org.apache.mina.filter.reqres.Response;
-import org.apache.mina.filter.ssl.SSLFilter;
-import org.apache.mina.transport.socket.nio.SocketConnector;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
-import org.codehaus.plexus.component.annotations.Requirement;
+import org.apache.geronimo.gshell.remote.transport.Transport;
+import org.apache.geronimo.gshell.remote.transport.TransportFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,156 +36,44 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshClient.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class RshClient
 {
-    public static final int CONNECT_TIMEOUT = 3000;
-    
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement(role=IoHandler.class, hint="rsh-client")
-    private RshClientProtocolHandler handler;
+    private final Transport transport;
 
-    private boolean ssl = true;
-    
-    private InetSocketAddress address;
+    public RshClient(final URI location, final TransportFactory factory) throws Exception {
+        assert location != null;
+        assert factory != null;
 
-    private SocketConnector connector;
-
-    private IoSession session;
-
-    private boolean connected = false;
-
-    public void connect(final String hostname, final int port) throws Exception {
-        if (connected) {
-            throw new IllegalStateException("Already connected");
-        }
-
-        address = new InetSocketAddress(hostname, port);
-
-        handler.setVisitor(new RshClientMessageVisitor());
-
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
-        connector = new SocketConnector(Runtime.getRuntime().availableProcessors(), executor);
-        
-        connector.setConnectTimeout(30);
-        connector.setHandler(handler);
-
-        DefaultIoFilterChainBuilder filterChain = connector.getFilterChain();
-
-        LoggingFilter loggingFilter = new LoggingFilter();
-        loggingFilter.setLogLevel(IoEventType.EXCEPTION_CAUGHT, LoggingFilter.WARN);
-        loggingFilter.setLogLevel(IoEventType.WRITE, LoggingFilter.TRACE);
-        loggingFilter.setLogLevel(IoEventType.MESSAGE_RECEIVED, LoggingFilter.TRACE);
-        loggingFilter.setLogLevel(IoEventType.MESSAGE_SENT, LoggingFilter.TRACE);
-        loggingFilter.setLogLevel(IoEventType.SESSION_CLOSED, LoggingFilter.DEBUG);
-        loggingFilter.setLogLevel(IoEventType.SESSION_CREATED, LoggingFilter.DEBUG);
-        loggingFilter.setLogLevel(IoEventType.SESSION_IDLE, LoggingFilter.DEBUG);
-        loggingFilter.setLogLevel(IoEventType.SESSION_OPENED, LoggingFilter.DEBUG);
-        filterChain.addLast("logger", loggingFilter);
-
-        filterChain.addLast("protocol", new ProtocolCodecFilter(new MessageCodecFactory()));
-
-        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
-
-        filterChain.addLast("reqres", new RequestResponseFilter(handler.getResponseInspector(), scheduler));
-
-        if (ssl) {
-            SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(false));
-            sslFilter.setUseClientMode(true);
-            
-            filterChain.addFirst("ssl", sslFilter);
-        }
-
-        log.info("Connecting to: {}", address);
-
-        ConnectFuture cf = connector.connect(address);
-        if (cf.awaitUninterruptibly(CONNECT_TIMEOUT)) {
-             session = cf.getSession();
-        }
-        else {
-            throw new RuntimeException("Failed to connect");
-        }
-
-        log.info("Connected");
-        
-        connected = true;
+        transport = factory.connect(location);
     }
 
-    public boolean isConnected() {
-        return connected;
-    }
-    
-    private void ensureConnected() {
-        if (!connected) {
-            throw new IllegalStateException("Not connected");
-        }
-
-        if (!session.isConnected()) {
-            throw new IllegalStateException("Session not connected");
-        }
-
-        if (session.isClosing()) {
-            throw new IllegalStateException("Session is closing");
-        }
-    }
-
-    public void echo(final String text) {
-        ensureConnected();
-
+    public void echo(final String text) throws Exception {
         log.debug("Echoing: {}", text);
 
-        WriteFuture wf = session.write(new EchoMessage(text));
-
-        wf.awaitUninterruptibly();
-
-        if (!wf.isWritten()) {
-            log.error("Failed to send request; session did not fully write the message");
-        }
-    }
-
-    protected Response request(final Message msg, final long timeout, final TimeUnit unit) throws InterruptedException {
-        Request req = new Request(msg.getId(), msg, timeout, unit);
-
-        WriteFuture wf = session.write(req);
-        wf.awaitUninterruptibly();
-
-        if (!wf.isWritten()) {
-            log.error("Failed to send request; session did not fully write the message");
-        }
-
-        return req.awaitResponse();
+        transport.send(new EchoMessage(text));
     }
 
     public void handshake() throws Exception {
-        ensureConnected();
-
         log.info("Starting handshake");
-        
-        HandShakeMessage msg = new HandShakeMessage();
 
-        Response resp = request(msg, 5, TimeUnit.SECONDS);
+        Message resp = transport.request(new HandShakeMessage());
 
-        log.info("Response: {}", resp.getMessage());
+        log.info("Response: {}", resp);
     }
 
     public InputStream getInputStream() {
-        return (InputStream) session.getAttribute(RshProtocolHandlerSupport.INPUT_STREAM);
+        return transport.getInputStream();
     }
 
     public OutputStream getOutputStream() {
-        return (OutputStream) session.getAttribute(RshProtocolHandlerSupport.OUTPUT_STREAM);
+        return transport.getOutputStream();
     }
 
     public void close() {
-        if (isConnected()) {
-            session.close().awaitUninterruptibly();
-            
-            session = null;
-            connector = null;
-            address = null;
-            
-            connected = false;
-        }
+        transport.close();
+
+        log.debug("Closed");
     }
 }
