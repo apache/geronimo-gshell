@@ -29,6 +29,7 @@ import java.util.Date;
 
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.clp.Argument;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
@@ -40,14 +41,15 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshCommand
     extends CommandSupport
 {
+    @Argument(required=true)
+    private URI location;
+
     @Requirement
     private RshClientFactory factory;
 
     private RshClient client;
 
     protected Object doExecute() throws Exception {
-        URI location = new URI("ssl://localhost:9999");
-
         io.out.println("Connecting to: " + location);
 
         client = factory.connect(location);
