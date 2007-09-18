@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
- * ???
+ * Command to start a remote shell server.
  *
  * @version $Rev$ $Date$
  */

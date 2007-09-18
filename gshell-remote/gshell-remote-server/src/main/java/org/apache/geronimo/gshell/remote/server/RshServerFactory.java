@@ -27,7 +27,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
- * ???
+ * Factory to produce {@link RshServer} instances.
  *
  * @version $Rev$ $Date$
  */

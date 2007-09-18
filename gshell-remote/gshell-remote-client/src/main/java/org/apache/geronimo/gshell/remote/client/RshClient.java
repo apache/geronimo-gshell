@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides support for the client-side of the remote shell protocol.
  *
  * @version $Rev$ $Date$
  */

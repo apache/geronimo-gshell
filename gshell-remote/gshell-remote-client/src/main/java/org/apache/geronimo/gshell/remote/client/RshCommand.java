@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
- * ???
+ * Command to connect to a remote shell server.
  *
  * @version $Rev$ $Date$
  */
