@@ -77,7 +77,7 @@ public class SecurityFilter
     
     public void init() throws Exception {
         // Install the schedule purger to purge any cancelled tasks to prevent memory leaks
-        scheduler.scheduleWithFixedDelay(new SchedulePurgerTask(), 10000, 10000, TimeUnit.MILLISECONDS);
+        scheduler.scheduleWithFixedDelay(new SchedulePurgerTask(), 10, 10, TimeUnit.SECONDS);
     }
 
     public void destroy() throws Exception {
@@ -209,7 +209,7 @@ public class SecurityFilter
     }
 
     private ScheduledFuture scheduleTimeout(final IoSession session) {
-        return scheduleTimeout(session, 5000, TimeUnit.MILLISECONDS);
+        return scheduleTimeout(session, 10, TimeUnit.SECONDS);
     }
     
     private boolean cancelTimeout(final IoSession session) {

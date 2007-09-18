@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=UserAuthenticator.class, hint="bogus")
+@Component(role=UserAuthenticator.class, hint="default") // FIXME: hint="bogus")
 public class BogusUserAuthenticator
     implements UserAuthenticator
 {
