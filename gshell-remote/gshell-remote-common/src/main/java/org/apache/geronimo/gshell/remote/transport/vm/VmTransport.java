@@ -17,16 +17,12 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport.tcp;
+package org.apache.geronimo.gshell.remote.transport.vm;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.message.Message;
@@ -39,43 +35,44 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 import org.apache.mina.filter.reqres.Request;
 import org.apache.mina.filter.reqres.Response;
-import org.apache.mina.transport.socket.nio.SocketConnector;
+import org.apache.mina.transport.vmpipe.VmPipeAddress;
+import org.apache.mina.transport.vmpipe.VmPipeConnector;
 
 /**
- * Provides TCP client-side support.
+ * Provides in-VM client-side support.
  *
  * @version $Rev$ $Date$
  */
-public class TcpTransport
+public class VmTransport
     extends TransportSupport
     implements Transport
 {
     private static final int CONNECT_TIMEOUT = 3000;
-
+    
     protected final URI remoteLocation;
 
-    protected final InetSocketAddress remoteAddress;
+    protected final VmPipeAddress remoteAddress;
 
     protected final URI localLocation;
 
-    protected final InetSocketAddress localAddress;
+    protected final VmPipeAddress localAddress;
 
-    protected SocketConnector connector;
+    protected VmPipeConnector connector;
 
     protected IoSession session;
 
     protected boolean connected;
 
-    public TcpTransport(final URI remote, final URI local) throws Exception {
+    public VmTransport(final URI remote, final URI local) throws Exception {
         assert remote != null;
         // local may be null
 
         this.remoteLocation = remote;
-        this.remoteAddress = new InetSocketAddress(InetAddress.getByName(remote.getHost()), remote.getPort());
+        this.remoteAddress = new VmPipeAddress(remote.getPort());
 
         if (local != null) {
             this.localLocation = local;
-            this.localAddress = new InetSocketAddress(InetAddress.getByName(local.getHost()), local.getPort());
+            this.localAddress = new VmPipeAddress(local.getPort());
         }
         else {
             // These are final, so make sure to mark them null if we have no local address
@@ -85,17 +82,14 @@ public class TcpTransport
     }
 
     protected synchronized void init() throws Exception {
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
-
-        connector = new SocketConnector(Runtime.getRuntime().availableProcessors(), executor);
-        connector.setConnectTimeout(30);
+        connector = new VmPipeConnector();
 
         //
         // HACK: Need to manually wire in the visitor impl for now... :-(
         //
 
         setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "client"));
-        
+
         configure(connector);
     }
 
@@ -103,7 +97,7 @@ public class TcpTransport
         if (connected) {
             throw new IllegalStateException("Already connected");
         }
-        
+
         init();
 
         log.info("Connecting to: {}", remoteAddress);
@@ -118,7 +112,7 @@ public class TcpTransport
         }
 
         connected = true;
-        
+
         log.info("Connected");
     }
 
@@ -159,7 +153,7 @@ public class TcpTransport
     public Message request(final Message msg) throws Exception {
         return request(msg, 5, TimeUnit.SECONDS);
     }
-    
+
     public Message request(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
         assert msg != null;
 

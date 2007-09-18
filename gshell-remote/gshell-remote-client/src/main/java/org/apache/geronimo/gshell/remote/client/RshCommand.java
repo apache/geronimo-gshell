@@ -25,6 +25,7 @@ import java.util.List;
 
 import jline.Terminal;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -38,12 +39,11 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshCommand
     extends CommandSupport
 {
-    //
-    // TODO: Add support to bind to a local address, also look at man pages for rsh and ssh for more options which might want to support.
-    //
-    
-    @Argument(metaVar="LOCATION", required=true, index=0)
-    private URI location;
+    @Option(name="-b", aliases={"--bind"}, metaVar="URI")
+    private URI local;
+
+    @Argument(metaVar="URI", required=true, index=0)
+    private URI remote;
 
     @Argument(metaVar="COMMAND", index=1)
     private List<String> command = new ArrayList<String>();
@@ -57,9 +57,9 @@ public class RshCommand
     private RshClient client;
 
     protected Object doExecute() throws Exception {
-        io.info("Connecting to: {}", location);
+        io.info("Connecting to: {}", remote);
 
-        client = factory.connect(location);
+        client = factory.connect(remote, local);
 
         io.info("Connected");
 

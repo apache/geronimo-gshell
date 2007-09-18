@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport.tcp;
+package org.apache.geronimo.gshell.remote.transport;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,12 +40,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provides the basic protocol handling for TCP-oriented clients and servers.
+ * Provides the basic protocol handling for clients and servers.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TcpProtocolHandler.class)
-public class TcpProtocolHandler
+@Component(role=ProtocolHandler.class)
+public class ProtocolHandler
     implements IoHandler
 {
     protected Logger log = LoggerFactory.getLogger(getClass());

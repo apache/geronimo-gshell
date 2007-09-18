@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport.tcp;
+package org.apache.geronimo.gshell.remote.transport;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -25,8 +25,6 @@ import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.remote.logging.LoggingFilter;
 import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoService;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
@@ -36,11 +34,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Support for TCP {@link Transport} and {@link TransportServer} instances.
+ * Support for {@link Transport} and {@link TransportServer} instances.
  *
  * @version $Rev$ $Date$
  */
-public class TcpTransportSupport
+public class TransportSupport
 {
     public static final String PROTOCOL_FILTER_NAME = "protocol";
 
@@ -52,7 +50,7 @@ public class TcpTransportSupport
 
     private MessageVisitor messageVisitor;
 
-    private TcpProtocolHandler protocolHandler;
+    private ProtocolHandler protocolHandler;
 
     private MessageCodecFactory codecFactory;
 
@@ -63,13 +61,13 @@ public class TcpTransportSupport
     protected void configure(final IoService service) throws Exception {
         assert service != null;
 
-        TcpProtocolHandler handler = getProtocolHandler();
+        ProtocolHandler handler = getProtocolHandler();
         MessageVisitor visitor = getMessageVisitor();
         handler.setVisitor(visitor);
         service.setHandler(handler);
 
         DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
-        
+
         if (log.isDebugEnabled()) {
             filterChain.addLast(LoggingFilter.NAME, new LoggingFilter());
         }
@@ -101,7 +99,7 @@ public class TcpTransportSupport
         return messageVisitor;
     }
 
-    public void setProtocolHandler(final TcpProtocolHandler protocolHandler) {
+    public void setProtocolHandler(final ProtocolHandler protocolHandler) {
         assert protocolHandler != null;
 
         log.debug("Using protocol handler: {}", protocolHandler);
@@ -109,7 +107,7 @@ public class TcpTransportSupport
         this.protocolHandler = protocolHandler;
     }
 
-    protected TcpProtocolHandler getProtocolHandler() {
+    protected ProtocolHandler getProtocolHandler() {
         if (protocolHandler == null) {
             throw new IllegalStateException("Protocol handler not bound");
         }
@@ -119,7 +117,7 @@ public class TcpTransportSupport
 
     public void setMessageCodecFactory(final MessageCodecFactory codecFactory) {
         assert codecFactory != null;
-        
+
         log.debug("Using codec factory: {}", codecFactory);
 
         this.codecFactory = codecFactory;

@@ -36,7 +36,7 @@ import org.codehaus.plexus.component.annotations.Component;
 public class SslTransportFactory
     extends TcpTransportFactory
 {
-    protected TcpTransport createTcpTransport(final URI location) throws Exception {
+    protected TcpTransport createTransport(final URI location) throws Exception {
         return new SslTransport(location, null);
     }
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport.tcp;
+package org.apache.geronimo.gshell.remote.transport.vm;
 
 import java.net.URI;
 
@@ -29,12 +29,12 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
- * Produces TCP transport instances.
+ * Produces in-VM transport instances.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TransportFactory.class, hint="tcp")
-public class TcpTransportFactory
+@Component(role=TransportFactory.class, hint="vm")
+public class VmTransportFactory
     implements TransportFactory
 {
     @Requirement
@@ -43,12 +43,12 @@ public class TcpTransportFactory
     //
     // NOTE: We use autowire() here to get a few components injected.  These are injected via setters.
     //
-    
+
     public Transport connect(final URI remote, final URI local) throws Exception {
         assert remote != null;
         // local can be null
 
-        TcpTransport transport = createTransport(remote, local);
+        VmTransport transport = createTransport(remote, local);
 
         container.autowire(transport);
 
@@ -57,11 +57,11 @@ public class TcpTransportFactory
         return transport;
     }
 
-    protected TcpTransport createTransport(final URI remote, final URI local) throws Exception {
+    protected VmTransport createTransport(final URI remote, final URI local) throws Exception {
         assert remote != null;
         // local can be null
-        
-        return new TcpTransport(remote, local);
+
+        return new VmTransport(remote, local);
     }
 
     public Transport connect(final URI remote) throws Exception {
@@ -71,7 +71,7 @@ public class TcpTransportFactory
     public TransportServer bind(final URI location) throws Exception {
         assert location != null;
 
-        TcpTransportServer server = createTransportServer(location);
+        VmTransportServer server = createTransportServer(location);
 
         container.autowire(server);
 
@@ -80,7 +80,7 @@ public class TcpTransportFactory
         return server;
     }
 
-    protected TcpTransportServer createTransportServer(final URI location) throws Exception {
-        return new TcpTransportServer(location);
+    protected VmTransportServer createTransportServer(final URI location) throws Exception {
+        return new VmTransportServer(location);
     }
 }

@@ -41,9 +41,9 @@ public class RshClientFactory
     @Requirement
     private CryptoContext crypto;
     
-    public RshClient connect(final URI location) throws Exception {
-        TransportFactory factory = locator.locate(location);
+    public RshClient connect(final URI remote, final URI local) throws Exception {
+        TransportFactory factory = locator.locate(remote);
 
-        return new RshClient(crypto, location, factory);
+        return new RshClient(crypto, remote, local, factory);
     }
 }

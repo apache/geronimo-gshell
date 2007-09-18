@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.remote.server;
 import java.net.URI;
 
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -35,7 +36,10 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshServerCommand
     extends CommandSupport
 {
-    @Argument(metaVar="LOCATION", required=true, index=0)
+    @Option(name="-b", aliases={ "--background" })
+    private boolean background;
+
+    @Argument(metaVar="URI", required=true, index=0)
     private URI location;
 
     @Requirement
@@ -48,12 +52,13 @@ public class RshServerCommand
 
         io.info("Listening on: {}", location);
 
-        // For now just wait...
-        synchronized (this) {
-            wait();
-        }
+        if (!background) {
+            synchronized (this) {
+                wait();
+            }
 
-        server.close();
+            server.close();
+        }
         
         return SUCCESS;
     }

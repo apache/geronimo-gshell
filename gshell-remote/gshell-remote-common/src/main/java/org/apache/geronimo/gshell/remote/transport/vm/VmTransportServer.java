@@ -17,51 +17,48 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport.tcp;
+package org.apache.geronimo.gshell.remote.transport.vm;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.security.SecurityFilter;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
 import org.apache.geronimo.gshell.remote.transport.TransportSupport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
-import org.apache.mina.transport.socket.nio.SocketAcceptor;
+import org.apache.mina.transport.vmpipe.VmPipeAcceptor;
+import org.apache.mina.transport.vmpipe.VmPipeAddress;
 
 /**
- * Provides TCP server-side support.
+ * Provides in-VM server-side support.
  *
  * @version $Rev$ $Date$
  */
-public class TcpTransportServer
+public class VmTransportServer
     extends TransportSupport
     implements TransportServer
 {
     protected final URI location;
 
-    protected final InetSocketAddress address;
+    protected final VmPipeAddress address;
 
-    protected SocketAcceptor acceptor;
+    protected VmPipeAcceptor acceptor;
 
     protected boolean bound;
 
     private SecurityFilter securityFilter;
-    
-    public TcpTransportServer(final URI location) throws Exception {
+
+    public VmTransportServer(final URI location) throws Exception {
         assert location != null;
 
         this.location = location;
-        this.address = new InetSocketAddress(InetAddress.getByName(location.getHost()), location.getPort());
+        this.address = new VmPipeAddress(location.getPort());
     }
 
     public URI getLocation() {
         return location;
     }
-    
+
     //
     // NOTE: Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
     //
@@ -74,13 +71,12 @@ public class TcpTransportServer
         if (securityFilter == null) {
             throw new IllegalStateException("Security filter not bound");
         }
-        
+
         return securityFilter;
     }
 
     protected synchronized void init() throws Exception {
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
-        acceptor = new SocketAcceptor(Runtime.getRuntime().availableProcessors(), executor);
+        acceptor = new VmPipeAcceptor();
         acceptor.setLocalAddress(address);
 
         //

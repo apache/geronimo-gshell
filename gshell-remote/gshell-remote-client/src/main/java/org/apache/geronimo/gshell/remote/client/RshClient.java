@@ -54,17 +54,18 @@ public class RshClient
 
     private final Transport transport;
 
-    public RshClient(final CryptoContext crypto, final URI location, final TransportFactory factory) throws Exception {
+    public RshClient(final CryptoContext crypto, final URI remote, final URI local, final TransportFactory factory) throws Exception {
         assert crypto != null;
-        assert location != null;
+        assert remote != null;
+        // local may be null
         assert factory != null;
 
         this.crypto = crypto;
 
         // And then lets connect to the remote server
-        transport = factory.connect(location);
+        transport = factory.connect(remote, local);
 
-        log.debug("Connected to: {}", location);
+        log.debug("Connected to: {}", remote);
     }
 
     public void login(final String username, final String password) throws Exception {
