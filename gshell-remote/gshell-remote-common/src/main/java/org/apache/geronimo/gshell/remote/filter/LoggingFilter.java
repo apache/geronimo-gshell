@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.filter;
 import org.apache.mina.common.IoEventType;
 
 /**
- * ???
+ * Custom logging filter to setup some better levels.
  *
  * @version $Rev$ $Date$
  */
@@ -30,13 +30,13 @@ public class LoggingFilter
     extends org.apache.mina.filter.logging.LoggingFilter
 {
     public LoggingFilter() {
-        setLogLevel(IoEventType.EXCEPTION_CAUGHT, org.apache.mina.filter.logging.LoggingFilter.WARN);
-        setLogLevel(IoEventType.WRITE, org.apache.mina.filter.logging.LoggingFilter.TRACE);
-        setLogLevel(IoEventType.MESSAGE_RECEIVED, org.apache.mina.filter.logging.LoggingFilter.TRACE);
-        setLogLevel(IoEventType.MESSAGE_SENT, org.apache.mina.filter.logging.LoggingFilter.TRACE);
-        setLogLevel(IoEventType.SESSION_CLOSED, org.apache.mina.filter.logging.LoggingFilter.DEBUG);
-        setLogLevel(IoEventType.SESSION_CREATED, org.apache.mina.filter.logging.LoggingFilter.DEBUG);
-        setLogLevel(IoEventType.SESSION_IDLE, org.apache.mina.filter.logging.LoggingFilter.DEBUG);
-        setLogLevel(IoEventType.SESSION_OPENED, org.apache.mina.filter.logging.LoggingFilter.DEBUG);
+        setLogLevel(IoEventType.EXCEPTION_CAUGHT, WARN);
+        setLogLevel(IoEventType.WRITE, TRACE);
+        setLogLevel(IoEventType.MESSAGE_RECEIVED, TRACE);
+        setLogLevel(IoEventType.MESSAGE_SENT, TRACE);
+        setLogLevel(IoEventType.SESSION_CLOSED, DEBUG);
+        setLogLevel(IoEventType.SESSION_CREATED, DEBUG);
+        setLogLevel(IoEventType.SESSION_IDLE, DEBUG);
+        setLogLevel(IoEventType.SESSION_OPENED, DEBUG);
     }
 }
