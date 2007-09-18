@@ -20,14 +20,7 @@
 package org.apache.geronimo.gshell.remote.transport.tcp;
 
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
-import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
-import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
-import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * ???

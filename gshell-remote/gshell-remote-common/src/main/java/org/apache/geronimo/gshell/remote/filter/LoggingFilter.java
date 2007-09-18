@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.remote.filter;
 
-import java.net.URI;
-import java.io.IOException;
-
-import org.codehaus.plexus.component.annotations.Component;
 import org.apache.mina.common.IoEventType;
 
 /**

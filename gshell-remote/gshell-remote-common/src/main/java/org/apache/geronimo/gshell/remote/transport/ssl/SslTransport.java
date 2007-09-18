@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.remote.transport.ssl;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
 import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
+import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.ssl.SSLFilter;
 

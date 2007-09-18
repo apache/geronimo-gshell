@@ -21,10 +21,10 @@ package org.apache.geronimo.gshell.remote.transport.ssl;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
 import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
-import org.apache.mina.filter.ssl.SSLFilter;
+import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.mina.filter.ssl.SSLFilter;
 
 /**
  * ???
