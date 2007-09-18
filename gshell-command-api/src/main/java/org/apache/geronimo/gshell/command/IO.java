@@ -228,18 +228,6 @@ public class IO
         }
     }
 
-    public void info(final String msg) {
-        if (!isQuiet()) {
-            out.println(msg);
-        }
-    }
-
-    public void info(final String format, final Object... args) {
-        if (!isQuiet()) {
-            out.println(MessageFormatter.arrayFormat(format, args));
-        }
-    }
-
     public void verbose(final String msg) {
         if (isVerbose()) {
             out.println(msg);
@@ -248,6 +236,18 @@ public class IO
 
     public void verbose(final String format, final Object... args) {
         if (isVerbose()) {
+            out.println(MessageFormatter.arrayFormat(format, args));
+        }
+    }
+    
+    public void info(final String msg) {
+        if (!isQuiet()) {
+            out.println(msg);
+        }
+    }
+
+    public void info(final String format, final Object... args) {
+        if (!isQuiet()) {
             out.println(MessageFormatter.arrayFormat(format, args));
         }
     }
