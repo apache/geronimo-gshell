@@ -94,7 +94,7 @@ public class IoSessionInputStream
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(final byte[] b, final int off, final int len) throws IOException {
         synchronized (mutex) {
             if (!waitForData()) {
                 return -1;
@@ -175,7 +175,7 @@ public class IoSessionInputStream
         }
     }
 
-    public void throwException(IOException e) {
+    public void throwException(final IOException e) {
         synchronized (mutex) {
             if (exception == null) {
                 exception = e;

@@ -55,6 +55,10 @@ public class IoSessionOutputStream
             flush();
         }
         finally {
+            //
+            // FIXME: This probably should not close the session...
+            //
+            
             session.close().awaitUninterruptibly();
         }
     }
@@ -74,12 +78,12 @@ public class IoSessionOutputStream
     }
 
     @Override
-    public void write(byte[] b, int off, int len) throws IOException {
+    public void write(final byte[] b, final int off, final int len) throws IOException {
         write(ByteBuffer.wrap(b.clone(), off, len));
     }
 
     @Override
-    public void write(int b) throws IOException {
+    public void write(final int b) throws IOException {
         ByteBuffer buf = ByteBuffer.allocate(1);
         buf.put((byte) b);
         buf.flip();

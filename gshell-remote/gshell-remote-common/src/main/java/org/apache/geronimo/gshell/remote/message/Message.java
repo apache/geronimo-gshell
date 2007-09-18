@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.apache.geronimo.gshell.remote.message.MarshalAware;
+import org.apache.mina.common.IoSession;
 
 /**
  * ???
@@ -34,11 +34,21 @@ public interface Message
 {
     UUID getId();
 
+    UUID getCorrelationId();
+
+    void setCorrelationId(UUID id);
+
     MessageType getType() throws IOException;
 
-    void setAttachment(Object obj);
+    long getTimestamp();
 
-    Object getAttachment();
+    void setSession(IoSession session);
+
+    IoSession getSession();
 
     void process(MessageVisitor visitor) throws Exception;
+
+    void freeze();
+
+    boolean isFrozen();
 }

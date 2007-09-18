@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.remote.transport.tcp;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.InetAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.remote.filter.LoggingFilter;
 import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
-import org.apache.mina.common.CloseFuture;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.slf4j.Logger;

@@ -24,7 +24,10 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
+import org.apache.mina.common.WriteFuture;
 
 /**
  * ???
@@ -37,8 +40,14 @@ public abstract class MessageSupport
     private MessageType type;
 
     private UUID id;
+
+    private UUID correlationId;
+
+    private long timestamp;
     
-    private transient Object attachment;
+    private transient IoSession session;
+
+    private transient boolean frozen;
 
     protected MessageSupport(final MessageType type) {
         assert type != null;
@@ -46,26 +55,62 @@ public abstract class MessageSupport
         this.type = type;
 
         this.id = UUID.randomUUID();
-    }
-    
-    public UUID getId() {
-        return id;
+
+        this.timestamp = System.currentTimeMillis();
     }
 
-    public void setId(final UUID id) {
-        this.id = id;
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+
+    public UUID getId() {
+        return id;
     }
     
     public MessageType getType() throws IOException {
         return type;
     }
 
-    public void setAttachment(final Object obj) {
-        this.attachment = obj;
+    public UUID getCorrelationId() {
+        return correlationId;
     }
 
-    public Object getAttachment() {
-        return attachment;
+    public void setCorrelationId(final UUID id) {
+        ensureWritable();
+        
+        this.correlationId = id;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setSession(final IoSession session) {
+        ensureWritable();
+        
+        this.session = session;
+    }
+
+    public IoSession getSession() {
+        if (session == null) {
+            throw new IllegalStateException("Session has not been attached");
+        }
+        
+        return session;
+    }
+
+    protected void ensureWritable() {
+        if (frozen) {
+            throw new IllegalStateException("Message is frozen");
+        }
+    }
+
+    public void freeze() {
+        frozen = true;
+    }
+
+    public boolean isFrozen() {
+        return frozen;
     }
 
     public void process(final MessageVisitor visitor) throws Exception {
@@ -79,17 +124,25 @@ public abstract class MessageSupport
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
+        type = buff.getEnum(MessageType.class);
+        
         id = (UUID) buff.getObject();
 
-        type = buff.getEnum(MessageType.class);
+        correlationId = (UUID) buff.getObject();
+
+        timestamp = buff.getLong();
     }
 
     public void writeExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
-        buff.putObject(id);
-        
         buff.putEnum(type);
+
+        buff.putObject(id);
+
+        buff.putObject(correlationId);
+
+        buff.putLong(timestamp);
     }
 
     //
@@ -114,5 +167,19 @@ public abstract class MessageSupport
         out.putInt(len);
         
         out.putString(str, len, UTF_8_CHARSET.newEncoder());
+    }
+
+    //
+    // Reply Helpers
+    //
+    
+    public WriteFuture reply(final MessageSupport msg) {
+        assert msg != null;
+
+        IoSession session = getSession();
+
+        msg.setCorrelationId(getId());
+
+        return session.write(msg);
     }
 }

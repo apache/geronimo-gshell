@@ -19,12 +19,19 @@
 
 package org.apache.geronimo.gshell.remote.transport.tcp;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
 import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
+import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.IoSession;
+import org.apache.mina.common.WriteFuture;
+import org.apache.mina.filter.reqres.Request;
+import org.apache.mina.filter.reqres.Response;
 import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +46,10 @@ public abstract class TcpMessageVisitorSupport
 {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
-    public void visitWriteStream(final WriteStreamMessage msg) {
+    public void visitWriteStream(final WriteStreamMessage msg) throws Exception {
         assert msg != null;
 
-        IoSession session = (IoSession) msg.getAttachment();
-        assert session != null;
+        IoSession session = msg.getSession();
 
         // Look up the bound stream in the session context
         String key = Transport.STREAM_BASENAME + msg.getName();

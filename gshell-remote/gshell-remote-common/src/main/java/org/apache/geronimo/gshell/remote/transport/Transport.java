@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.remote.transport;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.message.Message;
 
@@ -40,6 +41,8 @@ public interface Transport
     String ERROR_STREAM = STREAM_BASENAME + "ERR";
 
     void send(Message msg) throws Exception;
+
+    Message request(Message msg, long timeout, TimeUnit unit) throws Exception;
 
     Message request(Message msg) throws Exception;
 

@@ -28,15 +28,9 @@ import java.util.Date;
 
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
-import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
-import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
-import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * ???
@@ -47,11 +41,8 @@ import org.slf4j.LoggerFactory;
 public class TcpServerMessageVisitor
     extends TcpMessageVisitorSupport
 {
-    public void visitEcho(final EchoMessage msg) {
+    public void visitEcho(final EchoMessage msg) throws Exception {
         assert msg != null;
-
-        final IoSession session = (IoSession) msg.getAttachment();
-        assert session != null;
 
         String text = msg.getText();
 
@@ -60,6 +51,8 @@ public class TcpServerMessageVisitor
         //
 
         if ("READ_STREAMS".equals(text)) {
+            final IoSession session = msg.getSession();
+
             OutputStream out = (OutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
             final PrintWriter writer = new PrintWriter(out);
 
@@ -109,22 +102,17 @@ public class TcpServerMessageVisitor
             t2.start();
         }
         else {
-            log.info("ECHO: {}", text);
+            log.info("ECHOING: {}", text);
+
+            msg.reply(new EchoMessage(text));
         }
     }
 
-    public void visitHandShake(final HandShakeMessage msg) {
+    public void visitHandShake(final HandShakeMessage msg) throws Exception {
         assert msg != null;
 
         log.info("HANDSHAKE");
 
-        IoSession session = (IoSession) msg.getAttachment();
-        assert session != null;
-
-        // For now just echo something back, with the same ID
-        EchoMessage resp = new EchoMessage("SUCCESS");
-        resp.setId(msg.getId());
-
-        session.write(resp);
+        msg.reply(new EchoMessage("SUCCESS"));
     }
 }

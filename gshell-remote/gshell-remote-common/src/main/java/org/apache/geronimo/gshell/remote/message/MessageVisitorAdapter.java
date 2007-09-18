@@ -27,15 +27,15 @@ package org.apache.geronimo.gshell.remote.message;
 public class MessageVisitorAdapter
     implements MessageVisitor
 {
-    public void visitEcho(EchoMessage msg) {
+    public void visitEcho(EchoMessage msg) throws Exception {
         // Empty
     }
 
-    public void visitHandShake(HandShakeMessage msg) {
+    public void visitHandShake(HandShakeMessage msg) throws Exception {
         // Empty
     }
 
-    public void visitWriteStream(WriteStreamMessage msg) {
+    public void visitWriteStream(WriteStreamMessage msg) throws Exception {
         // Empty
     }
 }

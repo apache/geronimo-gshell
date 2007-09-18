@@ -51,10 +51,6 @@ public class HandShakeMessage
         this.publicKey = publicKey;
     }
 
-    public String toString() {
-        return super.toString() + "{ id=" + getId() + ", publicKey=" + publicKey + " }";
-    }
-
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 

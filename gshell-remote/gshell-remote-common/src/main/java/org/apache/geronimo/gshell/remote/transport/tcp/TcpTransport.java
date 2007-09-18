@@ -187,9 +187,13 @@ public class TcpTransport
     }
 
     public Message request(final Message msg) throws Exception {
+        return request(msg, 5, TimeUnit.SECONDS);
+    }
+    
+    public Message request(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
         assert msg != null;
 
-        Request req = new Request(msg.getId(), msg, 1, TimeUnit.SECONDS);
+        Request req = new Request(msg.getId(), msg, timeout, unit);
 
         doSend(req);
 

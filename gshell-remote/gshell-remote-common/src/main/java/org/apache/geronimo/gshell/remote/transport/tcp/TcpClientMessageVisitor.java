@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class TcpClientMessageVisitor
     extends TcpMessageVisitorSupport
 {
-    public void visitEcho(final EchoMessage msg) {
+    public void visitEcho(final EchoMessage msg) throws Exception {
         assert msg != null;
 
         log.info("ECHO: {}", msg.getText());

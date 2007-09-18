@@ -60,6 +60,7 @@ public class RshCommand
 
         client.handshake();
 
+        /*
         client.echo("READ_STREAMS");
 
         OutputStream out = client.getOutputStream();
@@ -112,9 +113,17 @@ public class RshCommand
 
         t.join();
         t2.join();
+        */
+
+        boolean running = true;
         
+        while (running) {
+            client.echo(new Date().toString());
+            Thread.sleep(1000 * 5);
+        }
+
         client.close();
-        
+
         return SUCCESS;
     }
 }

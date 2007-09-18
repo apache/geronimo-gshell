@@ -72,7 +72,7 @@ public class MessageResponseInspector
     
     public synchronized Object getRequestId(final Object message) {
         if (message instanceof Message) {
-            UUID id = ((Message)message).getId();
+            UUID id = ((Message)message).getCorrelationId();
 
             if (registeredIds.contains(id)) {
                 return id;
@@ -82,6 +82,10 @@ public class MessageResponseInspector
         return null;
     }
 
+    //
+    // TODO: Figure out wtf this is for...
+    //
+    
     public ResponseType getResponseType(final Object message) {
         return ResponseType.WHOLE;
     }

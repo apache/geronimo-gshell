@@ -62,27 +62,30 @@ public class TcpProtocolHandler
         return responseInspector;
     }
 
-    public void messageReceived(final IoSession session, final Object message) throws Exception {
+    public void messageReceived(final IoSession session, final Object obj) throws Exception {
         assert session != null;
-        assert message != null;
+        assert obj != null;
 
-        if (message instanceof Message) {
-            Message msg = (Message)message;
+        log.info("Message received: {}", obj);
+
+        if (obj instanceof Message) {
+            Message msg = (Message)obj;
 
             if (visitor != null) {
-                msg.setAttachment(session);
+                msg.setSession(session);
+                msg.freeze();
                 msg.process(visitor);
             }
         }
-        else if (message instanceof Response) {
-            Response resp = (Response)message;
+        else if (obj instanceof Response) {
+            Response resp = (Response)obj;
 
             Request req = resp.getRequest();
 
             responseInspector.deregister(req);
         }
         else {
-            log.error("Unhandled message: {}", message);
+            log.error("Unhandled message: {}", obj);
         }
     }
 
@@ -141,11 +144,11 @@ public class TcpProtocolHandler
         session.close();
     }
 
-    public void messageSent(final IoSession session, final Object message) throws Exception {
-        log.info("Message sent: {}", message);
+    public void messageSent(final IoSession session, final Object obj) throws Exception {
+        log.info("Message sent: {}", obj);
 
-        if (message instanceof Request) {
-            Request req = (Request) message;
+        if (obj instanceof Request) {
+            Request req = (Request) obj;
 
             responseInspector.register(req);
         }

@@ -45,10 +45,6 @@ public class EchoMessage
         return text;
     }
 
-    public String toString() {
-        return super.toString() + "{ id=" + getId() + ", text=" + text + " }";
-    }
-    
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
