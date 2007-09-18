@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.command.Variables;
  *
  * @version $Rev$ $Date$
  */
-public class VariablesImplTest
+public class DefaultVariablesTest
     extends TestCase
 {
     public void testSet() throws Exception {
