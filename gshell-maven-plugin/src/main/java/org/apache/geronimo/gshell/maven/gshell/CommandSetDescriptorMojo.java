@@ -158,7 +158,7 @@ public class CommandSetDescriptorMojo
     }
 
     private CommandDescriptor createCommandDescriptor(final Class<?> type) {
-        getLog().debug("Processing command: " + type);
+        getLog().info("Found command: " + type);
 
         CommandDescriptor desc = new CommandDescriptor();
 

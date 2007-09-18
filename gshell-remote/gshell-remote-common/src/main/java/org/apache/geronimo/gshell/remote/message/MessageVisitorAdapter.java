@@ -38,4 +38,8 @@ public class MessageVisitorAdapter
     public void visitWriteStream(WriteStreamMessage msg) throws Exception {
         // Empty
     }
+
+    public void visitExecute(ExecuteMessage msg) throws Exception {
+        // Empty
+    }
 }

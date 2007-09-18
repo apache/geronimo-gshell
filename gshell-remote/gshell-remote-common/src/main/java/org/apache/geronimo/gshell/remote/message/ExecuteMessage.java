@@ -19,44 +19,51 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.mina.common.ByteBuffer;
+
 /**
- * Enumeration of supported message types and factory for message instances.
+ * Execute a command-line.
  *
  * @version $Rev$ $Date$
  */
-public enum MessageType
+public class ExecuteMessage
+    extends MessageSupport
 {
-    ECHO            (EchoMessage.class),
-    HANDSHAKE       (HandShakeMessage.class),
-    WRITE_STREAM    (WriteStreamMessage.class),
-    EXECUTE         (ExecuteMessage.class),
-    ;
+    private String line;
 
-    private final Class<? extends Message> type;
+    public ExecuteMessage(final String line) {
+        super(MessageType.EXECUTE);
 
-    MessageType(final Class<? extends Message> type) {
-        assert type != null;
-
-        this.type = type;
+        this.line = line;
     }
 
-    public Class<? extends Message> getType() {
-        return type;
+    public ExecuteMessage() {
+        this(null);
     }
-    
-    public static Message create(final MessageType type) {
-        assert type != null;
 
-        Class impl = type.getType();
+    public String getLine() {
+        return line;
+    }
 
-        try {
-            return (Message) impl.newInstance();
-        }
-        catch (InstantiationException e) {
-            throw new Error(e);
-        }
-        catch (IllegalAccessException e) {
-            throw new Error(e);
-        }
+    public void readExternal(final ByteBuffer buff) throws Exception {
+        assert buff != null;
+
+        super.readExternal(buff);
+
+        line = readString(buff);
+    }
+
+    public void writeExternal(final ByteBuffer buff) throws Exception {
+        assert buff != null;
+
+        super.writeExternal(buff);
+
+        writeString(buff, line);
+    }
+
+    public void process(final MessageVisitor visitor) throws Exception {
+        assert visitor != null;
+
+        visitor.visitExecute(this);
     }
 }

@@ -70,7 +70,7 @@ public class RshCommand
             public Result execute(final String line) throws Exception {
                 assert line != null;
 
-                client.echo(line);
+                client.execute(line);
 
                 return Result.CONTINUE;
             }

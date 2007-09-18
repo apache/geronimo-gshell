@@ -28,6 +28,7 @@ import java.util.Date;
 
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
+import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
@@ -114,5 +115,15 @@ public class TcpServerMessageVisitor
         log.info("HANDSHAKE");
 
         msg.reply(new EchoMessage("SUCCESS"));
+    }
+
+    public void visitExecute(final ExecuteMessage msg) throws Exception {
+        assert msg != null;
+
+        log.info("EXECUTE: {}", msg.getLine());
+
+        //
+        // TODO:
+        //
     }
 }

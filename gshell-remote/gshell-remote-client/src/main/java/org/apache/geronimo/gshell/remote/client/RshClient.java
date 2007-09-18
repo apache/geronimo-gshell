@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.net.URI;
 
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.transport.Transport;
@@ -63,6 +64,16 @@ public class RshClient
         Message resp = transport.request(new HandShakeMessage());
 
         log.info("Response: {}", resp);
+    }
+
+    public void execute(final String line) throws Exception {
+        log.info("Executing: {}", line);
+
+        transport.send(new ExecuteMessage(line));
+
+        //
+        // TODO: Need to handle the command result
+        //
     }
 
     public InputStream getInputStream() {

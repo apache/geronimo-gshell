@@ -31,4 +31,6 @@ public interface MessageVisitor
     void visitHandShake(HandShakeMessage msg) throws Exception;
     
     void visitWriteStream(WriteStreamMessage msg) throws Exception;
+
+    void visitExecute(ExecuteMessage msg) throws Exception;
 }
