@@ -19,14 +19,12 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.apache.geronimo.gshell.DefaultEnvironment;
-import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.common.Notification;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
@@ -44,7 +42,6 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.component.factory.ComponentFactory;
 
 /**
  * Defines the logic for server-side message processing.
@@ -230,12 +227,8 @@ public class RshServerMessageVisitor
 
                     msg.reply(new ExecuteMessage.Result(result));
                 }
-                catch (ExitNotification n) {
-                    //
-                    // TODO: Send client message with this detail...
-                    //
-
-                    log.info("Remote shell requested exit: {}", n);
+                catch (Notification n) {
+                    msg.reply(new ExecuteMessage.Notification(n));
 
                     session.close();
                 }

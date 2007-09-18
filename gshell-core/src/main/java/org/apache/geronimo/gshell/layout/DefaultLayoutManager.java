@@ -58,12 +58,18 @@ public class DefaultLayoutManager
     public void initialize() throws InitializationException {
         assert loader != null;
 
+        //
+        // FIXME: Turn this off for now...
+        //
+
+        /*
         try {
             layout = loader.load();
         }
         catch (IOException e) {
             throw new InitializationException(e.getMessage(), e);
         }
+        */
     }
 
     public Layout getLayout() {

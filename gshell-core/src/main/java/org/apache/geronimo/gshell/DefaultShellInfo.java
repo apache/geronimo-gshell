@@ -73,6 +73,7 @@ public class DefaultShellInfo
 
     public void initialize() throws InitializationException {
         homeDir = detectHomeDir();
+        
         log.debug("Using home directory: {}", homeDir);
 
         try {
@@ -86,16 +87,18 @@ public class DefaultShellInfo
     private File detectHomeDir() throws InitializationException {
         String homePath = branding.getProperty(Branding.HOME);
 
-        //
-        // FIXME: This is not very friendly to folks embedding the shell
-        //
-        
         if (homePath == null) {
-            throw new InitializationException("The '" + branding.getPropertyName(Branding.HOME) + "' property must be set for the shell to function correctly");
+            //
+            // FIXME: For now just use the user's home ?  We may actually want to try and figure this our harder (like
+            //        how Launcher does...
+            //
+
+            homePath = System.getProperty("user.home");
         }
 
         // And now lets resolve this sucker
         File dir;
+        
         try {
             dir = new File(homePath).getCanonicalFile();
         }

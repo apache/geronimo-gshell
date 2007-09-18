@@ -123,6 +123,13 @@ public class RshClient
             throw new Exception("Remote command execution fault", fault.getCause());
         }
 
+        // Handle result notifications
+        if (result instanceof ExecuteMessage.Notification) {
+            ExecuteMessage.Notification n = (ExecuteMessage.Notification)result;
+
+            throw n.getNotification();
+        }
+
         Object rv = result.getResult();
 
         log.info("Command result: {}", rv);

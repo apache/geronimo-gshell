@@ -179,7 +179,7 @@ public class ExecuteMessage
         extends Result
     {
         public Fault(final Throwable cause) {
-            super(MessageType.EXECUTE_RESULT, cause);
+            super(MessageType.EXECUTE_FAULT, cause);
         }
 
         public Fault() {
@@ -188,6 +188,25 @@ public class ExecuteMessage
 
         public Throwable getCause() {
             return (Throwable) getResult();
+        }
+    }
+
+    /**
+     * Container for any notifications thrown durring execution.
+     */
+    public static class Notification
+        extends Result
+    {
+        public Notification(final org.apache.geronimo.gshell.common.Notification n) {
+            super(MessageType.EXECUTE_NOTIFICATION, n);
+        }
+
+        public Notification() {
+            this(null);
+        }
+
+        public org.apache.geronimo.gshell.common.Notification getNotification() {
+            return (org.apache.geronimo.gshell.common.Notification) getResult();
         }
     }
 }

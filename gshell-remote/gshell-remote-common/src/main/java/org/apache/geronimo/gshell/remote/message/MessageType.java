@@ -26,17 +26,18 @@ package org.apache.geronimo.gshell.remote.message;
  */
 public enum MessageType
 {
-    ECHO                (EchoMessage.class),
-    HANDSHAKE           (HandShakeMessage.class),
-    HANDSHAKE_RESULT    (HandShakeMessage.Result.class),
-    LOGIN               (LoginMessage.class),
-    LOGIN_RESULT        (LoginMessage.Result.class),
-    OPEN_SHELL          (OpenShellMessage.class),
-    CLOSE_SHELL         (CloseShellMessage.class),
-    EXECUTE             (ExecuteMessage.class),
-    EXECUTE_RESULT      (ExecuteMessage.Result.class),
-    EXECUTE_FAULT       (ExecuteMessage.Fault.class),
-    WRITE_STREAM        (WriteStreamMessage.class),
+    ECHO                    (EchoMessage.class),
+    HANDSHAKE               (HandShakeMessage.class),
+    HANDSHAKE_RESULT        (HandShakeMessage.Result.class),
+    LOGIN                   (LoginMessage.class),
+    LOGIN_RESULT            (LoginMessage.Result.class),
+    OPEN_SHELL              (OpenShellMessage.class),
+    CLOSE_SHELL             (CloseShellMessage.class),
+    EXECUTE                 (ExecuteMessage.class),
+    EXECUTE_RESULT          (ExecuteMessage.Result.class),
+    EXECUTE_NOTIFICATION    (ExecuteMessage.Notification.class),
+    EXECUTE_FAULT           (ExecuteMessage.Fault.class),
+    WRITE_STREAM            (WriteStreamMessage.class),
     ;
 
     private final Class<? extends Message> type;
