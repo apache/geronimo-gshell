@@ -46,10 +46,10 @@ public class LookupFactorySupport
 
         Object prev = get();
         if (prev == null) {
-            log.debug("Registered instance: {}", obj);
+            log.trace("Registered instance: {}", obj);
         }
         else {
-            log.debug("Replacing previous instance with: {}", obj);
+            log.trace("Replacing previous instance with: {}", obj);
         }
         
         holder.set(obj);
@@ -66,7 +66,7 @@ public class LookupFactorySupport
             throw new IllegalStateException("Instance not registered");
         }
         
-        log.debug("Handing out: {}", obj);
+        log.trace("Handing out: {}", obj);
 
         return obj;
     }

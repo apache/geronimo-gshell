@@ -20,9 +20,11 @@
 package org.apache.geronimo.gshell.lookup;
 
 import org.apache.geronimo.gshell.shell.Environment;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.factory.ComponentFactory;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Lookup factory for {@link Environment} instances.
@@ -33,5 +35,10 @@ import org.codehaus.plexus.component.factory.ComponentFactory;
 public class EnvironmentLookup
     extends LookupFactorySupport
 {
-    // empty
+    public static void set(final PlexusContainer container, final Environment env) throws ComponentLookupException {
+        assert container != null;
+        
+        EnvironmentLookup lookup = (EnvironmentLookup) container.lookup(ComponentFactory.class, EnvironmentLookup.class.getSimpleName());
+        lookup.set(env);
+    }
 }

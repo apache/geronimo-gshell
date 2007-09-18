@@ -20,9 +20,12 @@
 package org.apache.geronimo.gshell.lookup;
 
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.factory.ComponentFactory;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.PlexusContainer;
 
 /**
  * Lookup factory for {@link IO} instances.
@@ -33,5 +36,10 @@ import org.codehaus.plexus.component.factory.ComponentFactory;
 public class IOLookup
     extends LookupFactorySupport
 {
-    // empty
+    public static void set(final PlexusContainer container, final IO io) throws ComponentLookupException {
+        assert container != null;
+
+        IOLookup lookup = (IOLookup) container.lookup(ComponentFactory.class, IOLookup.class.getSimpleName());
+        lookup.set(io);
+    }
 }
