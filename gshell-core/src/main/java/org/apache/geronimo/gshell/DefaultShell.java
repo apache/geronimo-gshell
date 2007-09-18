@@ -124,7 +124,7 @@ public class DefaultShell
     public void run(final Object... args) throws Exception {
         assert args != null;
 
-        log.debug("Starting interactive console");
+        log.debug("Starting interactive console; args: {}", args);
 
         loadUserScript(branding.getInteractiveScriptName());
 

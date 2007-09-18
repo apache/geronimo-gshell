@@ -26,13 +26,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 
 /**
- * Variables backed up by a map.
+ * Default {@link Variables} implementation.
  *
  * @version $Rev$ $Date$
  */
-public class VariablesImpl
+public class DefaultVariables
     implements Variables
 {
     private final Map<String,Object> map;
@@ -41,7 +42,7 @@ public class VariablesImpl
 
     private final Set<String> immutables = new HashSet<String>();
 
-    public VariablesImpl(final Map<String,Object> map, final Variables parent) {
+    public DefaultVariables(final Map<String,Object> map, final Variables parent) {
         assert map != null;
         assert parent != null;
 
@@ -49,24 +50,28 @@ public class VariablesImpl
         this.parent = parent;
     }
 
-    public VariablesImpl(final Variables parent) {
+    public DefaultVariables(final Variables parent) {
         assert parent != null;
 
         this.map = new HashMap<String,Object>();
         this.parent = parent;
     }
 
-    public VariablesImpl(final Map<String,Object> map) {
+    public DefaultVariables(final Map<String,Object> map) {
         assert map != null;
 
         this.map = map;
         this.parent = null;
     }
 
-    public VariablesImpl() {
+    public DefaultVariables() {
         this(new HashMap<String,Object>());
     }
 
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+    
     public void set(final String name, final Object value) {
         set(name, value, true);
     }

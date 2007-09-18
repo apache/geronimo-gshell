@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 import org.apache.geronimo.gshell.command.Variables;
 
 /**
- * Unit tests for the {@link VariablesImpl} class.
+ * Unit tests for the {@link DefaultVariables} class.
  *
  * @version $Rev$ $Date$
  */
@@ -33,7 +33,7 @@ public class VariablesImplTest
     extends TestCase
 {
     public void testSet() throws Exception {
-        VariablesImpl vars = new VariablesImpl();
+        DefaultVariables vars = new DefaultVariables();
         String name = "a";
         Object value = new Object();
 
@@ -49,7 +49,7 @@ public class VariablesImplTest
     }
 
     public void testSetAsImmutable() throws Exception {
-        VariablesImpl vars = new VariablesImpl();
+        DefaultVariables vars = new DefaultVariables();
         String name = "a";
         Object value = new Object();
 
@@ -67,8 +67,8 @@ public class VariablesImplTest
     }
 
     public void testSetAsImmutableInParent() throws Exception {
-        Variables parent = new VariablesImpl();
-        VariablesImpl vars = new VariablesImpl(parent);
+        Variables parent = new DefaultVariables();
+        DefaultVariables vars = new DefaultVariables(parent);
         String name = "a";
         Object value = new Object();
 
@@ -86,8 +86,8 @@ public class VariablesImplTest
     }
 
     public void testSetParentFromChild() throws Exception {
-        Variables parent = new VariablesImpl();
-        VariablesImpl vars = new VariablesImpl(parent);
+        Variables parent = new DefaultVariables();
+        DefaultVariables vars = new DefaultVariables(parent);
         String name = "a";
         Object value = new Object();
 
@@ -100,7 +100,7 @@ public class VariablesImplTest
     }
 
     public void testGet() throws Exception {
-        VariablesImpl vars = new VariablesImpl();
+        DefaultVariables vars = new DefaultVariables();
         String name = "a";
         Object value = new Object();
 
@@ -113,7 +113,7 @@ public class VariablesImplTest
     }
 
     public void testGetUsingDefault() throws Exception {
-        VariablesImpl vars = new VariablesImpl();
+        DefaultVariables vars = new DefaultVariables();
         String name = "a";
         Object value = new Object();
 
@@ -125,8 +125,8 @@ public class VariablesImplTest
     }
 
     public void testGetCloaked() throws Exception {
-        Variables parent = new VariablesImpl();
-        VariablesImpl vars = new VariablesImpl(parent);
+        Variables parent = new DefaultVariables();
+        DefaultVariables vars = new DefaultVariables(parent);
         String name = "a";
         Object value = new Object();
 
@@ -143,7 +143,7 @@ public class VariablesImplTest
     }
 
     public void testUnsetAsImmutable() throws Exception {
-        VariablesImpl vars = new VariablesImpl();
+        DefaultVariables vars = new DefaultVariables();
         String name = "a";
         Object value = new Object();
 
@@ -161,8 +161,8 @@ public class VariablesImplTest
     }
 
     public void testUnsetAsImmutableInParent() throws Exception {
-        Variables parent = new VariablesImpl();
-        VariablesImpl vars = new VariablesImpl(parent);
+        Variables parent = new DefaultVariables();
+        DefaultVariables vars = new DefaultVariables(parent);
         String name = "a";
         Object value = new Object();
 
@@ -180,8 +180,8 @@ public class VariablesImplTest
     }
 
     public void testCloaking() throws Exception {
-        Variables parent = new VariablesImpl();
-        VariablesImpl vars = new VariablesImpl(parent);
+        Variables parent = new DefaultVariables();
+        DefaultVariables vars = new DefaultVariables(parent);
         String name = "a";
         Object value = new Object();
 
@@ -194,24 +194,24 @@ public class VariablesImplTest
     }
 
     public void testParent() throws Exception {
-        Variables parent = new VariablesImpl();
+        Variables parent = new DefaultVariables();
         assertNull(parent.parent());
 
-        VariablesImpl vars = new VariablesImpl(parent);
+        DefaultVariables vars = new DefaultVariables(parent);
         assertNotNull(vars.parent());
 
         assertEquals(parent, vars.parent());
     }
 
     public void testNames() throws Exception {
-        VariablesImpl vars = new VariablesImpl();
+        DefaultVariables vars = new DefaultVariables();
         Iterator<String> iter = vars.names();
         assertNotNull(iter);
         assertFalse(iter.hasNext());
     }
 
     public void testNamesImmutable() throws Exception {
-        VariablesImpl vars = new VariablesImpl();
+        DefaultVariables vars = new DefaultVariables();
         vars.set("a", "b");
 
         Iterator<String> iter = vars.names();

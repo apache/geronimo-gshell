@@ -19,10 +19,7 @@
 
 package org.apache.geronimo.gshell;
 
-import java.util.Map;
-
 import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
@@ -90,23 +87,9 @@ public class GShell
             ioLookup.set(io);
 
             // And then lets stuff in the environment too
-            Environment env = new Environment() {
-                final Variables vars = new VariablesImpl();
-
-                public IO getIO() {
-                    return io;
-                }
-
-                public Variables getVariables() {
-                    return vars;
-                }
-            };
-
+            Environment env = new DefaultEnvironment(io);
             EnvironmentLookup envLookup = (EnvironmentLookup) container.lookup(ComponentFactory.class, EnvironmentLookup.class.getSimpleName());
             envLookup.set(env);
-
-            // And then do some setup some default variables
-            env.getVariables().set("env", System.getenv());
 
             // Then look up the shell we are gonna delegate to
             shell = (InteractiveShell) container.lookup(InteractiveShell.class);

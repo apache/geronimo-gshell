@@ -27,6 +27,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 
 /**
  * The root container for a layout tree.
@@ -54,6 +55,10 @@ public class Layout
         return name;
     }
 
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+    
     //
     // XML Conversion
     //

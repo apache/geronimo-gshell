@@ -17,27 +17,46 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout.model;
+package org.apache.geronimo.gshell;
 
+import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 
 /**
- * The rudimentary elemnet of a layout.
+ * Default {@link Environment} implementation.
  *
  * @version $Rev$ $Date$
  */
-public abstract class Node
+public class DefaultEnvironment
+    implements Environment
 {
-    protected String name;
+    private final IO io;
 
-    protected Node(final String name) {
-        assert name != null;
-        
-        this.name = name;
+    private final Variables vars;
+
+    public DefaultEnvironment(final IO io, final Variables vars) {
+        assert io != null;
+        assert vars != null;
+
+        this.io = io;
+        this.vars = vars;
+
+        // And then do some setup some default variables
+        vars.set("env", System.getenv());
     }
 
-    public String getName() {
-        return name;
+    public DefaultEnvironment(final IO io) {
+        this(io, new DefaultVariables());
+    }
+
+    public IO getIO() {
+        return io;
+    }
+
+    public Variables getVariables() {
+        return vars;
     }
 
     public String toString() {

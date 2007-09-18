@@ -120,7 +120,7 @@ public class DefaultCommandExecutor
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {
             // Command instances get their own namespace with defaults from the current
-            final Variables vars = new VariablesImpl(env.getVariables());
+            final Variables vars = new DefaultVariables(env.getVariables());
 
             public IO getIO() {
                 return env.getIO();
