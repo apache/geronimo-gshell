@@ -18,7 +18,7 @@
  */
 
 //
-// NOTE: Snatched from Apache Mina'a Examples
+// NOTE: Snatched and massaged from Apache Mina'a Examples
 //
 
 package org.apache.geronimo.gshell.remote.ssl;
@@ -26,23 +26,39 @@ package org.apache.geronimo.gshell.remote.ssl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.Security;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactorySpi;
+import javax.net.ssl.X509TrustManager;
 
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.IOUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Factory to create a bougus SSLContext.
  *
- * @author The Apache MINA Project (dev@mina.apache.org)
- * @version $Rev$, $Date$
+ * @version $Rev$ $Date$
  */
+@Component(role=SSLContextFactory.class, hint="bogus")
 public class BogusSSLContextFactory
+    implements SSLContextFactory, Initializable
 {
     private static final String PROTOCOL = "TLS";
+
+    private static final String DEFAULT_KEY_MANAGER_FACTORY_ALGORITHM = "SunX509";
 
     private static final String KEY_MANAGER_FACTORY_ALGORITHM;
 
@@ -50,92 +66,132 @@ public class BogusSSLContextFactory
         String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");
         
         if (algorithm == null) {
-            algorithm = "SunX509";
+            algorithm = DEFAULT_KEY_MANAGER_FACTORY_ALGORITHM;
         }
 
         KEY_MANAGER_FACTORY_ALGORITHM = algorithm;
     }
 
-    /**
-     * Bougus Server certificate keystore file name.
-     */
-    private static final String BOGUS_KEYSTORE = "bogus.cert";
-
+    //
     // NOTE: The keystore was generated using keytool:
     //   keytool -genkey -alias bogus -keysize 512 -validity 3650
     //           -keyalg RSA -dname "CN=bogus.com, OU=XXX CA,
     //               O=Bogus Inc, L=Stockholm, S=Stockholm, C=SE"
     //           -keypass boguspw -storepass boguspw -keystore bogus.cert
 
-    /**
-     * Bougus keystore password.
-     */
-    private static final char[] BOGUS_PW = {'b', 'o', 'g', 'u', 's', 'p', 'w'};
+    private Logger log = LoggerFactory.getLogger(getClass());
 
-    private static SSLContext serverInstance = null;
+    // @Configuration
+    private boolean preload = true;
 
-    private static SSLContext clientInstance = null;
+    // @Configuration
+    private String keystoreResource = "bogus.cert";
 
-    public static SSLContext getInstance(boolean server) throws GeneralSecurityException {
-        SSLContext retInstance = null;
-        if (server) {
-            if (serverInstance == null) {
-                synchronized (BogusSSLContextFactory.class) {
-                    if (serverInstance == null) {
-                        try {
-                            serverInstance = createBougusServerSSLContext();
-                        }
-                        catch (Exception e) {
-                            throw new GeneralSecurityException("Can't create Server SSLContext", e);
-                        }
-                    }
-                }
+    // @Configuration
+    private char[] keystorePassword = { 'b', 'o', 'g', 'u', 's', 'p', 'w' };
+
+    private SSLContext serverInstance;
+
+    private SSLContext clientInstance;
+
+    public synchronized void initialize() throws InitializationException {
+        if (preload) {
+            log.debug("Preloading SSLContext instances");
+            
+            try {
+                createServerContext();
+                createClientContext();
             }
-
-            retInstance = serverInstance;
-        }
-        else {
-            if (clientInstance == null) {
-                synchronized (BogusSSLContextFactory.class) {
-                    if (clientInstance == null) {
-                        clientInstance = createBougusClientSSLContext();
-                    }
-                }
+            catch (GeneralSecurityException e) {
+                throw new InitializationException("Failed to setup SSLContext instances", e);
             }
-
-            retInstance = clientInstance;
         }
-        
-        return retInstance;
     }
 
-    private static SSLContext createBougusServerSSLContext() throws GeneralSecurityException, IOException {
-        // Create keystore
-        KeyStore ks = KeyStore.getInstance("JKS");
-        InputStream in = null;
+    //
+    // SSLContextFactory
+    //
 
-        try {
-            in = BogusSSLContextFactory.class.getResourceAsStream(BOGUS_KEYSTORE);
-            ks.load(in, BOGUS_PW);
+    public synchronized SSLContext createServerContext() throws GeneralSecurityException {
+        if (serverInstance == null) {
+            KeyStore keyStore;
+
+            try {
+                keyStore = KeyStore.getInstance("JKS");
+
+                InputStream in = getClass().getResourceAsStream(keystoreResource);
+                if (in == null) {
+                    throw new GeneralSecurityException("Failed to load bogus keystore from resource: " + keystoreResource);
+                }
+
+                try {
+                    keyStore.load(in, keystorePassword);
+                }
+                finally {
+                    IOUtil.close(in);
+                }
+            }
+            catch (IOException e) {
+                throw new GeneralSecurityException("Failed to load bogus keystore", e);
+            }
+
+            // Set up key manager factory to use our key store
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KEY_MANAGER_FACTORY_ALGORITHM);
+            keyManagerFactory.init(keyStore, keystorePassword);
+
+            // Initialize the SSLContext to work with our key managers.
+            SSLContext context = SSLContext.getInstance(PROTOCOL);
+            context.init(keyManagerFactory.getKeyManagers(), BogusTrustManagerFactory.X509_MANAGERS, null);
+
+            serverInstance = context;
+
+            log.debug("Created server SSLContext: {}", serverInstance);
         }
-        finally {
-            IOUtil.close(in);
-        }
 
-        // Set up key manager factory to use our key store
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KEY_MANAGER_FACTORY_ALGORITHM);
-        kmf.init(ks, BOGUS_PW);
-
-        // Initialize the SSLContext to work with our key managers.
-        SSLContext sslContext = SSLContext.getInstance(PROTOCOL);
-        sslContext.init(kmf.getKeyManagers(), BogusTrustManagerFactory.X509_MANAGERS, null);
-
-        return sslContext;
+        return serverInstance;
     }
 
-    private static SSLContext createBougusClientSSLContext() throws GeneralSecurityException {
-        SSLContext context = SSLContext.getInstance(PROTOCOL);
-        context.init(null, BogusTrustManagerFactory.X509_MANAGERS, null);
-        return context;
+    public synchronized SSLContext createClientContext() throws GeneralSecurityException {
+        if (clientInstance == null) {
+            SSLContext context = SSLContext.getInstance(PROTOCOL);
+            context.init(null, BogusTrustManagerFactory.X509_MANAGERS, null);
+
+            clientInstance = context;
+
+            log.debug("Created client SSLContext: {}", clientInstance);
+        }
+
+        return clientInstance;
+    }
+
+    //
+    // BogusTrustManagerFactory
+    //
+
+    private static class BogusTrustManagerFactory
+        extends TrustManagerFactorySpi
+    {
+        private static final X509TrustManager X509 = new X509TrustManager() {
+            public void checkClientTrusted(X509Certificate[] c, String s) throws CertificateException {}
+
+            public void checkServerTrusted(X509Certificate[] c, String s) throws CertificateException {}
+
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+        };
+
+        private static final TrustManager[] X509_MANAGERS = { X509 };
+
+        @Override
+        protected TrustManager[] engineGetTrustManagers() {
+            return X509_MANAGERS;
+        }
+
+        @Override
+        protected void engineInit(KeyStore keystore) throws KeyStoreException {}
+
+        @Override
+        protected void engineInit(ManagerFactoryParameters managerFactoryParameters) throws InvalidAlgorithmParameterException {}
     }
 }
