@@ -63,7 +63,7 @@ public class MessageResponseInspector
         UUID id = (UUID) req.getId();
 
         if (registeredIds.remove(id)) {
-            log.debug("Dereegistered request for ID: {}", id);
+            log.debug("Deregistered request for ID: {}", id);
         }
         else {
             log.warn("Ignoring attempt to deregister unregistered request ID: {}", id);
