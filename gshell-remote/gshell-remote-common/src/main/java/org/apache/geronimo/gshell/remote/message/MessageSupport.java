@@ -19,7 +19,11 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.util.UUID;
@@ -173,6 +177,150 @@ public abstract class MessageSupport
         out.putLong(sequence);
     }
 
+    //
+    // Boolean Serialization
+    //
+
+    private static final byte TRUE = 1;
+
+    private static final byte FALSE = 0;
+
+    protected boolean readBoolean(final ByteBuffer in) {
+        assert in != null;
+
+        byte b = in.get();
+
+        if (b == TRUE) {
+            return true;
+        }
+        else if (b == FALSE) {
+            return false;
+        }
+        else {
+            throw new Error();
+        }
+    }
+
+    protected void writeBoolean(final ByteBuffer out, final boolean bool) {
+        assert out != null;
+
+        if (bool) {
+            out.put(TRUE);
+        }
+        else {
+            out.put(FALSE);
+        }
+    }
+
+    //
+    // Byte[] Serialization
+    //
+
+    protected byte[] readBytes(final ByteBuffer in) {
+        assert in != null;
+
+        boolean isNull = readBoolean(in);
+
+        if (isNull) {
+            return null;
+        }
+
+        int len = in.getInt();
+
+        byte[] bytes = new byte[len];
+
+        in.get(bytes);
+
+        return bytes;
+    }
+
+    protected void writeBytes(final ByteBuffer out, final byte[] bytes) {
+        assert out != null;
+
+        if (bytes == null) {
+            writeBoolean(out, true);
+        }
+        else {
+            writeBoolean(out, false);
+
+            out.putInt(bytes.length);
+
+            out.put(bytes);
+        }
+    }
+
+    //
+    // ByteBuffer Serialization
+    //
+
+    protected ByteBuffer readBuffer(final ByteBuffer in) {
+        assert in != null;
+
+        byte[] bytes = readBytes(in);
+
+        if (bytes == null) {
+            return null;
+        }
+
+        return ByteBuffer.wrap(bytes);
+    }
+
+    protected void writeBuffer(final ByteBuffer out, final ByteBuffer buffer) {
+        assert out != null;
+
+        if (buffer == null) {
+            writeBytes(out, null);
+        }
+        else {
+            writeBoolean(out, false);
+            
+            out.putInt(buffer.remaining());
+
+            out.put(buffer);
+        }
+    }
+
+    //
+    // Object Serialization
+    //
+
+    protected Object readObject(final ByteBuffer in) throws IOException, ClassNotFoundException {
+        assert in != null;
+
+        byte[] bytes = readBytes(in);
+
+        if (bytes == null) {
+            return null;
+        }
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+
+        return ois.readObject();
+    }
+
+    protected void writeObject(final ByteBuffer out, final Object obj) throws IOException {
+        assert out != null;
+
+        byte[] bytes = null;
+
+        if (obj != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+            oos.writeObject(obj);
+            oos.flush();
+
+            bytes = baos.toByteArray();
+        }
+
+        writeBytes(out, bytes);
+    }
+
+    //
+    // String Serialization
+    //
+
     private static final Charset UTF_8_CHARSET = Charset.forName("UTF-8");
 
     protected String readString(final ByteBuffer in) throws CharacterCodingException {
@@ -183,9 +331,8 @@ public abstract class MessageSupport
         if (len == -1) {
             return null;
         }
-        else {
-            return in.getString(len, UTF_8_CHARSET.newDecoder());
-        }
+
+        return in.getString(len, UTF_8_CHARSET.newDecoder());
     }
 
     protected void writeString(final ByteBuffer out, final String str) throws CharacterCodingException {
@@ -202,32 +349,38 @@ public abstract class MessageSupport
         }
     }
 
-    private void writeUuid(final ByteBuffer out, final UUID uuid) throws Exception {
+    //
+    // UUID Serialization
+    //
+
+    protected UUID readUuid(final ByteBuffer in) throws Exception {
+        assert in != null;
+
+        boolean isNull = readBoolean(in);
+
+        if (isNull) {
+            return null;
+        }
+
+        long msb = in.getLong();
+        
+        long lsb = in.getLong();
+
+        return new UUID(msb, lsb);
+    }
+
+    protected void writeUuid(final ByteBuffer out, final UUID uuid) throws Exception {
         assert out != null;
 
         if (uuid == null) {
-            out.put((byte)0);
+            writeBoolean(out, true);
         }
         else {
-            out.put((byte)1);
+            writeBoolean(out, false);
 
             out.putLong(uuid.getMostSignificantBits());
+            
             out.putLong(uuid.getLeastSignificantBits());
-        }
-    }
-
-    private UUID readUuid(final ByteBuffer in) throws Exception {
-        assert in != null;
-
-        byte isnull = in.get();
-
-        if (isnull == 1) { // not null
-            long msb = in.getLong();
-            long lsb = in.getLong();
-            return new UUID(msb, lsb);
-        }
-        else {
-            return null;
         }
     }
 }

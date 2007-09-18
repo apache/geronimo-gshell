@@ -63,9 +63,6 @@ public class RemoteShell
     @Requirement
     private Environment env;
 
-    @Requirement
-    private IO io;
-
     private boolean opened = true;
     
     private void ensureOpened() {
@@ -86,7 +83,7 @@ public class RemoteShell
 
     public Environment getEnvironment() {
         ensureOpened();
-
+        
         return env;
     }
 

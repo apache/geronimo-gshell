@@ -20,8 +20,6 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import org.apache.mina.common.ByteBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Write a buffer to a stream.
@@ -31,8 +29,6 @@ import org.slf4j.LoggerFactory;
 public class WriteStreamMessage
     extends MessageSupport
 {
-    public final Logger log = LoggerFactory.getLogger(getClass());
-
     private String name;
 
     private ByteBuffer buffer;
@@ -44,8 +40,10 @@ public class WriteStreamMessage
 
         if (buffer != null) {
             ByteBuffer tmp = ByteBuffer.allocate(buffer.remaining());
+
             tmp.put(buffer);
             tmp.flip();
+
             this.buffer = tmp;
         }
     }
@@ -77,12 +75,7 @@ public class WriteStreamMessage
 
         name = readString(in);
 
-        int len = in.getInt();
-
-        byte[] bytes = new byte[len];
-        in.get(bytes);
-
-        buffer = ByteBuffer.wrap(bytes);
+        buffer = readBuffer(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -92,9 +85,7 @@ public class WriteStreamMessage
 
         writeString(out, name);
 
-        out.putInt(buffer.remaining());
-
-        out.put(buffer);
+        writeBuffer(out, buffer);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {

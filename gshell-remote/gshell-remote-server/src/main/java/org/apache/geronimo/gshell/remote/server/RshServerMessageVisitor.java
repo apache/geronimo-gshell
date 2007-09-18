@@ -19,6 +19,11 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.apache.geronimo.gshell.DefaultEnvironment;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.command.IO;
@@ -32,7 +37,11 @@ import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.mina.common.IoSession;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.factory.ComponentFactory;
@@ -56,6 +65,45 @@ public class RshServerMessageVisitor
     //
     // Remote Shell Access
     //
+
+    private ClassWorld getClassWorld() {
+        return container.getContainerRealm().getWorld();
+    }
+
+    private RemoteShell createRemoteShell(final IoSession session) throws Exception {
+        assert session != null;
+
+        log.info("Creating remote shell");
+        
+        // We need to create a new container (not a child container) to allow the remote shell a full unpollute namespace for components
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+        config.setName("gshell.rsh");
+        config.setClassWorld(getClassWorld());
+        PlexusContainer container = new DefaultPlexusContainer(config);
+        session.setAttribute(PlexusContainer.class.getName(), container);
+
+        // Setup the I/O context (w/o auto-flushing)
+        IO io = new IO(getInputStream(session), getOutputStream(session), false);
+
+        //
+        // FIXME: We need to set the verbosity of this I/O context as specified by the client
+        //
+
+        IOLookup.set(container, io);
+        session.setAttribute(IO.class.getName(), io);
+
+        // Setup shell environemnt
+        Environment env = new DefaultEnvironment(io);
+        EnvironmentLookup.set(container, env);
+        session.setAttribute(Environment.class.getName(), env);
+
+        // Create a new shell instance
+        RemoteShell shell = (RemoteShell) container.lookup(RemoteShell.class);
+
+        log.info("Created remote shell: {}", shell);
+        
+        return shell;
+    }
 
     private RemoteShell getRemoteShell(final IoSession session) {
         assert session != null;
@@ -118,20 +166,8 @@ public class RshServerMessageVisitor
 
         IoSession session = msg.getSession();
 
-        // Setup the I/O context
-        IO io = new IO(getInputStream(session), getOutputStream(session));
-        IOLookup ioLookup = (IOLookup) container.lookup(ComponentFactory.class, IOLookup.class.getSimpleName());
-        ioLookup.set(io);
-
-        // Setup the shell environemnt
-        Environment env = new DefaultEnvironment(io);
-        EnvironmentLookup envLookup = (EnvironmentLookup) container.lookup(ComponentFactory.class, EnvironmentLookup.class.getSimpleName());
-        envLookup.set(env);
-
-        // Create a new shell instance
-        RemoteShell shell = (RemoteShell) container.lookup(RemoteShell.class);
-
-        // Bind it to the session
+        // Create a new shell instance and bind it to the session
+        RemoteShell shell = createRemoteShell(session);
         setRemoteShell(session, shell);
 
         //
@@ -161,30 +197,56 @@ public class RshServerMessageVisitor
         msg.reply(new EchoMessage("CLOSE SHELL SUCCESS"));
     }
 
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+
     public void visitExecute(final ExecuteMessage msg) throws Exception {
         assert msg != null;
 
-        log.info("EXECUTE: {}", msg);
+        log.info("EXECUTE (QUEUE): {}", msg);
 
-        IoSession session = msg.getSession();
+        final IoSession session = msg.getSession();
 
-        try {
-            RemoteShell shell = getRemoteShell(session);
+        final RemoteShell shell = getRemoteShell(session);
 
-            Object result = msg.execute(shell);
+        Runnable executeCommandTask = new Runnable() {
+            public void run() {
+                log.info("EXECUTE: {}", msg);
+                
+                try {
+                    //
+                    // TODO: Need to find a better place to stash this me thinks...
+                    //
+                    
+                    // Need to make sure we bind the correct bits into the lookups, since they are thread specific
+                    PlexusContainer container = (PlexusContainer) session.getAttribute(PlexusContainer.class.getName());
 
-            //
-            // TODO: Send response
-            //
-        }
-        catch (ExitNotification n) {
-            //
-            // TODO: Send client message with this detail...
-            //
+                    IO io = (IO) session.getAttribute(IO.class.getName());
+                    IOLookup.set(container, io);
 
-            log.info("Remote shell requested exit: {}", n);
-            
-            session.close();
-        }
+                    Environment env = (Environment) session.getAttribute(Environment.class.getName());
+                    EnvironmentLookup.set(container, env);
+
+                    Object result = msg.execute(shell);
+
+                    msg.reply(new ExecuteMessage.Result(result));
+                }
+                catch (ExitNotification n) {
+                    //
+                    // TODO: Send client message with this detail...
+                    //
+
+                    log.info("Remote shell requested exit: {}", n);
+
+                    session.close();
+                }
+                catch (Throwable t) {
+                    log.error("Unhandled failure; sending to client: " + t, t);
+
+                    msg.reply(new ExecuteMessage.Fault(t));
+                }
+            }
+        };
+
+        executorService.submit(executeCommandTask);
     }
 }

@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.remote.stream.StreamFeeder;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
@@ -49,6 +50,8 @@ public class RemoteShellProxy
 
     private Terminal terminal;
 
+    private StreamFeeder outputFeeder;
+
     private boolean opened;
 
     public RemoteShellProxy(final RshClient client, final IO io, final Terminal terminal) throws Exception {
@@ -61,13 +64,17 @@ public class RemoteShellProxy
         this.terminal = terminal;
 
         //
-        // TODO: send over some client-side details, like the terminal features, etc)
+        // TODO: send over some client-side details, like the terminal features, etc, as well, verbosity too)
         //       If any problem or denial occurs, throw an exception, once created the proxy is considered valid.
         //
         
         client.openShell();
 
-        this.opened = true;
+        // Copy the client's input stream to our outputstream so users see command output
+        outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);
+        outputFeeder.createThread().start();
+
+        this.opened = true;             
     }
 
     public Environment getEnvironment() {
@@ -94,6 +101,8 @@ public class RemoteShellProxy
 
     public void close() {
         try {
+            outputFeeder.close();
+
             client.closeShell();
         }
         catch (Exception e) {
@@ -138,6 +147,10 @@ public class RemoteShellProxy
 
         log.debug("Starting interactive console; args: {}", args);
 
+        //
+        // FIXME: We need a hook into the session state here so that we can abort the console muck when the session closes
+        //
+        
         //
         // TODO: Request server to load...
         //
@@ -190,6 +203,9 @@ public class RemoteShellProxy
                 //
                 // FIXME:
                 //
+                
+                log.error("FIXME: " + error, error);
+
 
                 return Result.CONTINUE;
             }

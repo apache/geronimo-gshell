@@ -29,6 +29,8 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides an abstraction of the crypto bits which are required for some remote shell communications.
@@ -38,6 +40,8 @@ import org.codehaus.plexus.component.annotations.Component;
 @Component(role= CryptoContext.class)
 public class CryptoContext
 {
+    private Logger log = LoggerFactory.getLogger(getClass());
+    
     //
     // TODO: See if we should use DSA or RSA for this...
     //

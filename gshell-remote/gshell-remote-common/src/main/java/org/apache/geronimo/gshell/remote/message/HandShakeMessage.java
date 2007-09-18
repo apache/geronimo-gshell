@@ -69,18 +69,13 @@ public class HandShakeMessage
 
         super.readExternal(in);
 
-        int len = in.getInt();
-
-        if (len == -1) {
-            publicKey = null;
+        byte[] bytes = readBytes(in);
+        
+        if (bytes == null) {
+            throw new IllegalStateException();
         }
-        else {
-            byte[] bytes = new byte[len];
 
-            in.get(bytes);
-
-            publicKey = getCryptoContext().deserializePublicKey(bytes);
-        }
+        publicKey = getCryptoContext().deserializePublicKey(bytes);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -88,16 +83,7 @@ public class HandShakeMessage
 
         super.writeExternal(out);
 
-        if (publicKey == null) {
-            out.putInt(-1);
-        }
-        else {
-            byte[] bytes = publicKey.getEncoded();
-
-            out.putInt(bytes.length);
-
-            out.put(bytes);
-        }
+        writeBytes(out, getPublicKey().getEncoded());
     }
 
     /**

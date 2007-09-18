@@ -33,18 +33,6 @@ public class OpenShellMessage
         super(MessageType.OPEN_SHELL);
     }
 
-    public void readExternal(final ByteBuffer in) throws Exception {
-        assert in != null;
-
-        super.readExternal(in);
-    }
-
-    public void writeExternal(final ByteBuffer out) throws Exception {
-        assert out != null;
-
-        super.writeExternal(out);
-    }
-
     public void process(final MessageVisitor visitor) throws Exception {
         assert visitor != null;
 

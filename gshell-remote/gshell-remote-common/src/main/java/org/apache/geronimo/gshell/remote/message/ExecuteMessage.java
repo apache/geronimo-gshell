@@ -66,10 +66,6 @@ public class ExecuteMessage
         return flavor.execute(this, executor);
     }
 
-    //
-    // TODO: Optimize this
-    //
-    
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
@@ -79,7 +75,7 @@ public class ExecuteMessage
 
         this.path = readString(in);
 
-        this.args = (Object[]) in.getObject();
+        this.args = (Object[]) readObject(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -90,8 +86,8 @@ public class ExecuteMessage
         out.putEnum(flavor);
 
         writeString(out, path);
-        
-        out.putObject(args);
+
+        writeObject(out, args);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {
@@ -104,7 +100,7 @@ public class ExecuteMessage
     // Flavor
     //
     
-    private enum Flavor
+    private static enum Flavor
     {
         STRING,         // execute(String)
         OBJECTS,        // execute(Object[])
@@ -128,6 +124,70 @@ public class ExecuteMessage
 
             // This should never happen
             throw new Error();
+        }
+    }
+
+    /**
+     * Container for the normal result of an execute command.
+     */
+    public static class Result
+        extends MessageSupport
+    {
+        private Object result;
+
+        protected Result(final MessageType type, final Object result) {
+            super(type);
+
+            this.result = result;
+        }
+
+        public Result(final Object result) {
+            this(MessageType.EXECUTE_RESULT, result);
+
+            this.result = result;
+        }
+
+        public Result() {
+            this(null, null);
+        }
+
+        public Object getResult() {
+            return result;
+        }
+        
+        public void readExternal(final ByteBuffer in) throws Exception {
+            assert in != null;
+
+            super.readExternal(in);
+
+            result = readObject(in);
+        }
+
+        public void writeExternal(final ByteBuffer out) throws Exception {
+            assert out != null;
+
+            super.writeExternal(out);
+
+            writeObject(out, result);
+        }
+    }
+
+    /**
+     * Container for any exceptions thrown durring execution.
+     */
+    public static class Fault
+        extends Result
+    {
+        public Fault(final Throwable cause) {
+            super(MessageType.EXECUTE_RESULT, cause);
+        }
+
+        public Fault() {
+            this(null);
+        }
+
+        public Throwable getCause() {
+            return (Throwable) getResult();
         }
     }
 }

@@ -25,8 +25,8 @@ import java.io.OutputStream;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageResponseInspector;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
-import org.apache.geronimo.gshell.remote.stream.IoSessionOutputStream;
+import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
+import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandler;
@@ -147,26 +147,27 @@ public class TcpProtocolHandler
     //
 
     public void sessionCreated(final IoSession session) throws Exception {
-        log.info("Session created: {}", session);
+        log.debug("Session created: {}", session);
     }
 
     public void sessionOpened(final IoSession session) throws Exception {
         assert session != null;
 
-        log.info("Session opened: {}", session);
+        log.debug("Session opened: {}", session);
 
         //
         // Once the session has been opened, bind streams to the session context.
         //
 
-        setInputStream(session, new IoSessionInputStream());
-        setOutputStream(session, new IoSessionOutputStream(session));
+        setInputStream(session, new SessionInputStream());
+        
+        setOutputStream(session, new SessionOutputStream(session));
     }
 
     public void sessionClosed(final IoSession session) throws Exception {
         assert session != null;
 
-        log.info("Session closed: {}", session);
+        log.debug("Session closed: {}", session);
 
         IOUtil.close(removeInputStream(session));
         
@@ -176,7 +177,7 @@ public class TcpProtocolHandler
     public void sessionIdle(final IoSession session, final IdleStatus status) throws Exception {
         assert session != null;
 
-        log.info("Session idle: {}, status: {}", session, status);
+        log.debug("Session idle: {}, status: {}", session, status);
 
         if (status == IdleStatus.READER_IDLE) {
             log.warn("Read timeout");
@@ -187,7 +188,7 @@ public class TcpProtocolHandler
         assert session != null;
         assert obj != null;
 
-        log.info("Message received: {}", obj);
+        log.debug("Message received: {}", obj);
 
         //
         // TODO: Need to handle Exception muck, and send faul messages back to clients
@@ -229,7 +230,7 @@ public class TcpProtocolHandler
     public void messageSent(final IoSession session, final Object obj) throws Exception {
         assert session != null;
 
-        log.info("Message sent: {}", obj);
+        log.debug("Message sent: {}", obj);
 
         if (obj instanceof Request) {
             //

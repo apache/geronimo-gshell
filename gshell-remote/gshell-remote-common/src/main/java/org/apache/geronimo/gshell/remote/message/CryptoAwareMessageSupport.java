@@ -57,36 +57,28 @@ public abstract class CryptoAwareMessageSupport
     protected String decryptString(final ByteBuffer in) throws Exception {
         assert in != null;
 
-        int len = in.getInt();
-
-        if (len == -1) {
+        byte[] bytes = readBytes(in);
+        
+        if (bytes == null) {
             return null;
         }
-        else {
-            byte[] bytes = new byte[len];
 
-            in.get(bytes);
+        bytes = getCryptoContext().decrypt(bytes);
 
-            bytes = getCryptoContext().decrypt(bytes);
-
-            return new String(bytes);
-        }
+        return new String(bytes);
     }
 
     protected void encryptString(final ByteBuffer out, final Key key, final String str) throws Exception {
         assert out != null;
         assert key != null;
 
-        if (str == null) {
-            out.putInt(-1);
-        }
-        else {
-            byte[] bytes = getCryptoContext().encrypt(key, str.getBytes());
+        byte[] bytes = null;
 
-            out.putInt(bytes.length);
-
-            out.put(bytes);
+        if (str != null) {
+            bytes = getCryptoContext().encrypt(key, str.getBytes());
         }
+
+        writeBytes(out, bytes);
     }
 
     protected void encryptString(final ByteBuffer out, final String str) throws Exception {

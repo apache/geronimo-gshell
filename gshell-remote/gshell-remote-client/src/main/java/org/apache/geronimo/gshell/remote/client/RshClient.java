@@ -74,6 +74,7 @@ public class RshClient
         log.info("Starting handshake", username);
 
         HandShakeMessage.Result handShakeResult = (HandShakeMessage.Result) transport.request(new HandShakeMessage(crypto.getPublicKey()));
+        
         PublicKey serverKey = handShakeResult.getPublicKey();
 
         log.info("Logging in: {}", username);
@@ -104,48 +105,53 @@ public class RshClient
 
         log.info("Response: {}", resp);
     }
-    
+
+    private Object doExecute(final ExecuteMessage msg) throws Exception {
+        assert msg != null;
+
+        ExecuteMessage.Result result = (ExecuteMessage.Result) transport.request(msg);
+
+        // Handle result faults
+        if (result instanceof ExecuteMessage.Fault) {
+            ExecuteMessage.Fault fault = (ExecuteMessage.Fault)result;
+
+            //
+            // FIXME: Use better exception type here
+            //
+            
+            throw new Exception("Remote command execution fault", fault.getCause());
+        }
+
+        Object rv = result.getResult();
+
+        log.info("Command result: {}", rv);
+
+        return rv;
+    }
+
     public Object execute(final String line) throws Exception {
         assert line != null;
 
-        log.info("Executing: {}", line);
+        log.info("Executing (String): {}", line);
 
-        transport.send(new ExecuteMessage(line));
-
-        //
-        // TODO: Need to handle the command result
-        //
-
-        return null;
+        return doExecute(new ExecuteMessage(line));
     }
 
     public Object execute(final Object... args) throws Exception {
         assert args != null;
 
-        log.info("Executing: {}", args);
+        log.info("Executing (Object[]): {}", args);
 
-        transport.send(new ExecuteMessage(args));
-
-        //
-        // TODO: Need to handle the command result
-        //
-
-        return null;
+        return doExecute(new ExecuteMessage(args));
     }
 
     public Object execute(final String path, final Object[] args) throws Exception {
         assert path != null;
         assert args != null;
 
-        log.info("Executing: {}, {}", path, args);
+        log.info("Executing (String,Object[]): {}, {}", path, args);
 
-        transport.send(new ExecuteMessage(path, args));
-
-        //
-        // TODO: Need to handle the command result
-        //
-
-        return null;
+        return doExecute(new ExecuteMessage(path, args));
     }
 
     public InputStream getInputStream() {

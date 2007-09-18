@@ -34,6 +34,8 @@ public enum MessageType
     OPEN_SHELL          (OpenShellMessage.class),
     CLOSE_SHELL         (CloseShellMessage.class),
     EXECUTE             (ExecuteMessage.class),
+    EXECUTE_RESULT      (ExecuteMessage.Result.class),
+    EXECUTE_FAULT       (ExecuteMessage.Fault.class),
     WRITE_STREAM        (WriteStreamMessage.class),
     ;
 

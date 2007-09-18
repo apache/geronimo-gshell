@@ -41,10 +41,10 @@ public class LoginMessage
     private String username;
 
     //
-    // FIXME: Need to update the toString() for this message to omit the passwd
+    // NOTE: Marked as transiet to prevent the ToStringBuilder from displaying its value.
     //
     
-    private String password;
+    private transient String password;
 
     public LoginMessage(final PublicKey serverKey, final String username, final String password) {
         super(MessageType.LOGIN);

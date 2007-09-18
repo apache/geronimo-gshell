@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
+import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
@@ -74,6 +74,8 @@ public abstract class MessageVisitorSupport
     public void visitWriteStream(final WriteStreamMessage msg) throws Exception {
         assert msg != null;
 
+        log.debug("Writing stream: {}", msg);
+
         IoSession session = msg.getSession();
 
         // Look up the bound stream in the session context
@@ -84,11 +86,11 @@ public abstract class MessageVisitorSupport
         if (stream == null) {
             log.error("Stream is not registered: {}", key);
         }
-        else if (!(stream instanceof IoSessionInputStream)) {
+        else if (!(stream instanceof SessionInputStream)) {
             log.error("Stream is not for input: {}", key);
         }
         else {
-            IoSessionInputStream in = (IoSessionInputStream)stream;
+            SessionInputStream in = (SessionInputStream)stream;
             in.write(msg.getBuffer());
         }
     }
