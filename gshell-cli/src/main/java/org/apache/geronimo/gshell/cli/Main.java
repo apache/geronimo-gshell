@@ -63,6 +63,10 @@ public class Main
 
         this.classWorld = classWorld;
     }
+    
+    //
+    // TODO: Add flag to capture output to log file
+    //
 
     @Option(name="-h", aliases={"--help"}, description="Display this help message")
     private boolean help;
