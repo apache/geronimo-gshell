@@ -121,14 +121,43 @@ public abstract class MessageSupport
     // MarshalAware
     //
 
+    private void writeUuid(final ByteBuffer buff, final UUID uuid) throws Exception {
+        assert buff != null;
+
+        if (uuid == null) {
+            buff.put((byte)0);
+        }
+        else {
+            buff.put((byte)1);
+
+            buff.putLong(uuid.getMostSignificantBits());
+            buff.putLong(uuid.getLeastSignificantBits());
+        }
+    }
+
+    private UUID readUuid(final ByteBuffer buff) throws Exception {
+        assert buff != null;
+
+        byte isnull = buff.get();
+
+        if (isnull == 1) { // not null
+            long msb = buff.getLong();
+            long lsb = buff.getLong();
+            return new UUID(msb, lsb);
+        }
+        else {
+            return null;
+        }
+    }
+
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
         type = buff.getEnum(MessageType.class);
-        
-        id = (UUID) buff.getObject();
 
-        correlationId = (UUID) buff.getObject();
+        id = readUuid(buff);
+
+        correlationId = readUuid(buff);
 
         timestamp = buff.getLong();
     }
@@ -138,9 +167,9 @@ public abstract class MessageSupport
 
         buff.putEnum(type);
 
-        buff.putObject(id);
+        writeUuid(buff, id);
 
-        buff.putObject(correlationId);
+        writeUuid(buff, correlationId);
 
         buff.putLong(timestamp);
     }
