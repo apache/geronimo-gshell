@@ -43,8 +43,7 @@ public class DefaultEnvironment
         this.io = io;
         this.vars = vars;
 
-        // And then do some setup some default variables
-        vars.set("env", System.getenv());
+        vars.set("env", System.getenv(), false);
     }
 
     public DefaultEnvironment(final IO io) {
