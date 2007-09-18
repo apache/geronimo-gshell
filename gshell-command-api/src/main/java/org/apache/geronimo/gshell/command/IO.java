@@ -83,11 +83,12 @@ public class IO
     /**
      * Construct a new IO container.
      *
-     * @param in    The input steam; must not be null
-     * @param out   The output stream; must not be null
-     * @param err   The error output stream; must not be null
+     * @param in            The input steam; must not be null
+     * @param out           The output stream; must not be null
+     * @param err           The error output stream; must not be null
+     * @param autoFlush     True to enable auto-flushing off writers.
      */
-    public IO(final InputStream in, final OutputStream out, final OutputStream err) {
+    public IO(final InputStream in, final OutputStream out, final OutputStream err, final boolean autoFlush) {
         assert in != null;
         assert out != null;
         assert err != null;
@@ -103,11 +104,33 @@ public class IO
         //       be ANSI-aware instead of this...
         //
 
-        this.out = new RenderWriter(outputStream, true);
-        this.err = new RenderWriter(errorStream, true);
+        this.out = new RenderWriter(outputStream, autoFlush);
+        this.err = new RenderWriter(errorStream, autoFlush);
         
-        // this.out = new PrintWriter(out, true);
-        // this.err = new PrintWriter(err, true);
+        // this.out = new PrintWriter(out, autoFlush);
+        // this.err = new PrintWriter(err, autoFlush);
+    }
+
+    /**
+     * Construct a new IO container.
+     *
+     * @param in    The input steam; must not be null
+     * @param out   The output stream; must not be null
+     * @param err   The error output stream; must not be null
+     */
+    public IO(final InputStream in, final OutputStream out, final OutputStream err) {
+        this(in, out, err, true);
+    }
+
+    /**
+     * Construct a new IO container.
+     *
+     * @param in            The input steam; must not be null
+     * @param out           The output stream and error stream; must not be null
+     * @param autoFlush     True to enable auto-flushing off writers.
+     */
+    public IO(final InputStream in, final OutputStream out, final boolean autoFlush) {
+        this(in, out, out, autoFlush);
     }
 
     /**
@@ -119,6 +142,7 @@ public class IO
     public IO(final InputStream in, final OutputStream out) {
         this(in, out, out);
     }
+
 
     /**
      * Helper which uses current values from {@link System}.
