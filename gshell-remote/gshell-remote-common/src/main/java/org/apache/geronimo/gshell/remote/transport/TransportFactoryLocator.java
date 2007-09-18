@@ -24,6 +24,7 @@ import java.net.URI;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Helper to locate a {@link TransportFactory} instance.
@@ -36,14 +37,22 @@ public class TransportFactoryLocator
     @Requirement
     private PlexusContainer container;
 
-    public TransportFactory locate(final URI location) throws Exception {
+    public TransportFactory locate(final URI location) throws MissingSchemeException, ComponentLookupException {
         assert location != null;
 
         String scheme = location.getScheme();
         if (scheme == null) {
-            throw new Exception("Invalid location; missing scheme: " + location);
+            throw new MissingSchemeException(location);
         }
 
         return (TransportFactory) container.lookup(TransportFactory.class, scheme);
+    }
+
+    public static class MissingSchemeException
+        extends Exception
+    {
+        public MissingSchemeException(final URI location) {
+            super("Invalid location; missing scheme: " + location);
+        }
     }
 }
