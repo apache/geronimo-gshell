@@ -26,20 +26,21 @@ package org.apache.geronimo.gshell.remote.stream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
 import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoHandler;
-import org.apache.mina.common.IoSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * An {@link InputStream} that buffers data read from
- * {@link IoHandler#messageReceived(IoSession,Object)} events.
+ * An {@link InputStream} that buffers data read from {@link WriteStreamMessage} messages.
  *
- * @author The Apache MINA Project (dev@mina.apache.org)
- * @version $Rev$, $Date$
+ * @version $Rev$ $Date$
  */
-public class IoSessionInputStream
+public class SessionInputStream
     extends InputStream
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     private final Object mutex = new Object();
 
     private final ByteBuffer buff;
@@ -50,10 +51,10 @@ public class IoSessionInputStream
 
     private IOException exception;
 
-    public IoSessionInputStream() {
-        buff = ByteBuffer.allocate(16);
+    public SessionInputStream() {
+        buff = ByteBuffer.allocate(256);
         buff.setAutoExpand(true);
-        buff.limit(0);
+        // buff.limit(0);
     }
 
     @Override
@@ -161,17 +162,21 @@ public class IoSessionInputStream
                 return;
             }
 
+            log.debug("Filling {} byte(s) into stream from: {}", src.remaining(), src);
+            
             if (buff.hasRemaining()) {
-                this.buff.compact();
-                this.buff.put(src);
-                this.buff.flip();
+                log.debug("Buffer has remaining: {} byte(s)", buff.remaining());
+                
+                buff.compact();
             }
             else {
-                this.buff.clear();
-                this.buff.put(src);
-                this.buff.flip();
-                mutex.notifyAll();
+                buff.clear();
             }
+
+            buff.put(src);
+            buff.flip();
+
+            mutex.notifyAll();
         }
     }
 

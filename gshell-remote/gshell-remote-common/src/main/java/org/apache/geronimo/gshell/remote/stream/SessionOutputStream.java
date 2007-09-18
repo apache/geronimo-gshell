@@ -30,22 +30,26 @@ import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * An {@link OutputStream} that forwards all write operations to
- * the associated {@link IoSession}.
+ * An {@link OutputStream} that forwards all write operations as {@link WriteStreamMessage} messages.
  *
- * @author The Apache MINA Project (dev@mina.apache.org)
- * @version $Rev$, $Date$
+ * @version $Rev$ $Date$
  */
-public class IoSessionOutputStream
+public class SessionOutputStream
     extends OutputStream
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     private final IoSession session;
 
     private WriteFuture lastWriteFuture;
 
-    public IoSessionOutputStream(final IoSession session) {
+    public SessionOutputStream(final IoSession session) {
+        assert session != null;
+        
         this.session = session;
     }
 
@@ -55,11 +59,7 @@ public class IoSessionOutputStream
             flush();
         }
         finally {
-            //
-            // FIXME: This probably should not close the session...
-            //
-            
-            session.close().awaitUninterruptibly();
+            super.close();
         }
     }
 
@@ -71,6 +71,8 @@ public class IoSessionOutputStream
 
     private synchronized void write(final ByteBuffer buff) throws IOException {
         ensureOpened();
+
+        log.trace("Writing stream from: {}", buff);
 
         WriteStreamMessage msg = new WriteStreamMessage("IN", buff);
         
@@ -84,10 +86,13 @@ public class IoSessionOutputStream
 
     @Override
     public void write(final int b) throws IOException {
-        ByteBuffer buf = ByteBuffer.allocate(1);
-        buf.put((byte) b);
-        buf.flip();
-        write(buf);
+        ByteBuffer buff = ByteBuffer.allocate(1);
+
+        buff.put((byte) b);
+
+        buff.flip();
+
+        write(buff);
     }
 
     @Override
@@ -96,14 +101,14 @@ public class IoSessionOutputStream
             return;
         }
 
-        //
-        // TODO: Really need to provide an abstraction here to use the Transport interfaces
-        //
+        log.trace("Flushing stream...");
         
         lastWriteFuture.awaitUninterruptibly();
         
         if (!lastWriteFuture.isWritten()) {
             throw new IOException("The bytes could not be written to the session");
         }
+
+        log.trace("Flushed");
     }
 }
