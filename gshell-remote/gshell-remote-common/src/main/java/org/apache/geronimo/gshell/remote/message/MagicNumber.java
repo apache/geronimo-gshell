@@ -25,7 +25,7 @@ import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.filter.codec.ProtocolCodecException;
 
 /**
- * ???
+ * Helper to deal with the protocol magic number.
  *
  * @version $Rev$ $Date$
  */

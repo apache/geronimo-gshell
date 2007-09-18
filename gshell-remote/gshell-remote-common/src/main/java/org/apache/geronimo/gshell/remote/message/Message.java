@@ -23,14 +23,14 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.mina.common.IoSession;
+import org.apache.mina.common.ByteBuffer;
 
 /**
- * ???
+ * Defines the basic attributes of all messages.
  *
  * @version $Rev$ $Date$
  */
 public interface Message
-    extends MarshalAware
 {
     UUID getId();
 
@@ -53,4 +53,8 @@ public interface Message
     void freeze();
 
     boolean isFrozen();
+
+    void readExternal(ByteBuffer in) throws Exception;
+
+    void writeExternal(ByteBuffer out) throws Exception;
 }

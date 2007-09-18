@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides encoding and decoding support for {@link Message} instances.
  *
  * @version $Rev$ $Date$
  */

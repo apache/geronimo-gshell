@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.message;
 
 /**
- * ???
+ * Support for {@link MessageVisitor} implementations.
  *
  * @version $Rev$ $Date$
  */

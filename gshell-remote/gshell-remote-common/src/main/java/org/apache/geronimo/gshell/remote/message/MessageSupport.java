@@ -31,7 +31,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 
 /**
- * ???
+ * Support for {@link Message} implementations.
  *
  * @version $Rev$ $Date$
  */

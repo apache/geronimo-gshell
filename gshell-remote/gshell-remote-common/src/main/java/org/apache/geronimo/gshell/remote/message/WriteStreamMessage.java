@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Write a buffer to a stream.
  *
  * @version $Rev$ $Date$
  */

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message;
 import org.apache.mina.common.ByteBuffer;
 
 /**
- * ???
+ * Echo text.
  *
  * @version $Rev$ $Date$
  */

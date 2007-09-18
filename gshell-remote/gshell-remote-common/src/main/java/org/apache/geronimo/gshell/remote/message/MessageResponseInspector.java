@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Support for request/response {@link Message} passing.
  *
  * @version $Rev$ $Date$
  */

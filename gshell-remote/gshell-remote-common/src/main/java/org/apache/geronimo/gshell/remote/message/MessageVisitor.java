@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.message;
 
 /**
- * ???
+ * Provides an abstraction layer for message processing.
  *
  * @version $Rev$ $Date$
  */

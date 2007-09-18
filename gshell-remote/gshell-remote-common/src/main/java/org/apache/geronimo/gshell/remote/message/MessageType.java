@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.message;
 
 /**
- * ???
+ * Enumeration of supported message types and factory for message instances.
  *
  * @version $Rev$ $Date$
  */
