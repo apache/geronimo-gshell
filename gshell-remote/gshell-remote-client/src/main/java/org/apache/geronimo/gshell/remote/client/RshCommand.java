@@ -30,7 +30,12 @@ import java.util.Date;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.codehaus.plexus.component.annotations.Requirement;
+import jline.Terminal;
 
 /**
  * Command to connect to a remote shell server.
@@ -45,6 +50,9 @@ public class RshCommand
     private URI location;
 
     @Requirement
+    private Terminal terminal;
+
+    @Requirement
     private RshClientFactory factory;
 
     private RshClient client;
@@ -55,73 +63,45 @@ public class RshCommand
         client = factory.connect(location);
 
         io.out.println("Connected");
-        
-        client.echo("TESTING");
 
         client.handshake();
 
-        /*
-        client.echo("READ_STREAMS");
+        Console.Executor executor = new Console.Executor() {
+            public Result execute(final String line) throws Exception {
+                assert line != null;
 
-        OutputStream out = client.getOutputStream();
-        final PrintWriter writer = new PrintWriter(out);
+                client.echo(line);
 
-        InputStream in = client.getInputStream();
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-        Thread t = new Thread("Stream Consumer") {
-            public void run() {
-                try {
-                    log.debug("Consumer running...");
-
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        System.err.println(line);
-                    }
-
-                    log.debug("Consumer stopped");
-                }
-                catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
+                return Result.CONTINUE;
             }
         };
 
-        t.start();
+        JLineConsole console = new JLineConsole(executor, io, terminal);
 
-        Thread t2 = new Thread("Noise Maker") {
-            public void run() {
-                try {
-                    log.debug("Noise Maker...");
+        console.setPrompter(new Console.Prompter() {
+            Renderer renderer = new Renderer();
 
-                    while (true) {
-                        writer.println("FROM CLIENT: " + new Date());
-                        writer.flush();
+            public String prompt() {
+                String userName = "user";
+                String hostName = "remote";
+                String path = "/";
 
-                        Thread.sleep(1000 * 5);
-                    }
-
-                    // log.debug("Noise Maker stopped");
-                }
-                catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
+                return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
             }
-        };
+        });
 
-        t2.start();
+        console.setErrorHandler(new Console.ErrorHandler() {
+            public Result handleError(final Throwable error) {
+                assert error != null;
 
-        t.join();
-        t2.join();
-        */
+                log.error("Communication error: " + error, error);
 
-        boolean running = true;
+                return Result.CONTINUE;
+            }
+        });
+
+        console.run();
         
-        while (running) {
-            client.echo(new Date().toString());
-            Thread.sleep(1000 * 5);
-        }
-
         client.close();
 
         return SUCCESS;
