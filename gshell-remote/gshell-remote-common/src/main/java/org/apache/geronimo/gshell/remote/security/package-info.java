@@ -17,23 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.filter;
-
-import org.apache.mina.common.IoFilterAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * ???
+ * Support for security and authentication.
  *
  * @version $Rev$ $Date$
  */
-public class AuthenticationFilter
-    extends IoFilterAdapter
-{
-    private Logger log = LoggerFactory.getLogger(getClass());
-
-    //
-    // TODO:
-    //
-}
+package org.apache.geronimo.gshell.remote.security;
