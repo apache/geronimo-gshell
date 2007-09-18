@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.geronimo.gshell.VariablesImpl;
+import org.apache.geronimo.gshell.DefaultVariables;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
@@ -140,7 +140,7 @@ public class SetCommand
     }
 
     private void ensureIsIdentifier(final String name) {
-        if (!VariablesImpl.isIdentifier(name)) {
+        if (!DefaultVariables.isIdentifier(name)) {
             throw new RuntimeException("Invalid identifer name: " + name);
         }
     }
