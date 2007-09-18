@@ -45,20 +45,20 @@ public class EchoMessage
         return text;
     }
 
-    public void readExternal(final ByteBuffer buff) throws Exception {
-        assert buff != null;
+    public void readExternal(final ByteBuffer in) throws Exception {
+        assert in != null;
 
-        super.readExternal(buff);
+        super.readExternal(in);
 
-        text = readString(buff);
+        text = readString(in);
     }
 
-    public void writeExternal(final ByteBuffer buff) throws Exception {
-        assert buff != null;
+    public void writeExternal(final ByteBuffer out) throws Exception {
+        assert out != null;
 
-        super.writeExternal(buff);
+        super.writeExternal(out);
 
-        writeString(buff, text);
+        writeString(out, text);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {

@@ -35,7 +35,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshServerCommand
     extends CommandSupport
 {
-    @Argument(required=true)
+    @Argument(metaVar="LOCATION", required=true, index=0)
     private URI location;
 
     @Requirement
@@ -46,7 +46,14 @@ public class RshServerCommand
     protected Object doExecute() throws Exception {
         server = factory.connect(location);
 
-        io.out.println("Listening on: " + location);
+        io.info("Listening on: {}", location);
+
+        // For now just wait...
+        synchronized (this) {
+            wait();
+        }
+
+        server.close();
         
         return SUCCESS;
     }

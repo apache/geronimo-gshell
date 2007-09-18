@@ -70,10 +70,6 @@ public class WriteStreamMessage
         this.buffer = buffer;
     }
 
-    public String toString() {
-        return super.toString() + "{ id=" + getId() + ", name=" + name + ", buffer=" + buffer + " }";
-    }
-
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
@@ -81,9 +77,9 @@ public class WriteStreamMessage
 
         name = readString(in);
 
-        int l = in.getInt();
+        int len = in.getInt();
 
-        byte[] bytes = new byte[l];
+        byte[] bytes = new byte[len];
         in.get(bytes);
 
         buffer = ByteBuffer.wrap(bytes);

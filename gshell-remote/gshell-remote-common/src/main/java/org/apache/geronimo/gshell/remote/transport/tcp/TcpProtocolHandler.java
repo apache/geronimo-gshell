@@ -19,6 +19,9 @@
 
 package org.apache.geronimo.gshell.remote.transport.tcp;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageResponseInspector;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
@@ -31,6 +34,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.reqres.Request;
 import org.apache.mina.filter.reqres.Response;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +50,14 @@ public class TcpProtocolHandler
 {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
-    protected MessageVisitor visitor;
+    @Requirement
+    protected MessageResponseInspector responseInspector;
 
-    protected MessageResponseInspector responseInspector = new MessageResponseInspector();
+    //
+    // TODO: Might be able to get this puppy injected...
+    //
+    
+    protected MessageVisitor visitor;
 
     public MessageVisitor getVisitor() {
         return visitor;
@@ -62,31 +71,75 @@ public class TcpProtocolHandler
         return responseInspector;
     }
 
-    public void messageReceived(final IoSession session, final Object obj) throws Exception {
+    //
+    // Stream Access
+    //
+
+    private void setInputStream(final IoSession session, final InputStream in) {
         assert session != null;
-        assert obj != null;
+        assert in != null;
 
-        log.info("Message received: {}", obj);
+        Object obj = session.getAttribute(Transport.INPUT_STREAM);
 
-        if (obj instanceof Message) {
-            Message msg = (Message)obj;
-
-            if (visitor != null) {
-                msg.setSession(session);
-                msg.freeze();
-                msg.process(visitor);
-            }
+        if (obj != null) {
+            throw new IllegalStateException("Input stream already bound");
         }
-        else if (obj instanceof Response) {
-            Response resp = (Response)obj;
 
-            Request req = resp.getRequest();
+        session.setAttribute(Transport.INPUT_STREAM, in);
 
-            responseInspector.deregister(req);
+        log.debug("Bound input stream: {}", in);
+    }
+
+    private InputStream getInputStream(final IoSession session) {
+        assert session != null;
+
+        InputStream in = (InputStream) session.getAttribute(Transport.INPUT_STREAM);
+
+        if (in == null) {
+            throw new IllegalStateException("Input stream not bound");
         }
-        else {
-            log.error("Unhandled message: {}", obj);
+
+        return in;
+    }
+
+    private InputStream removeInputStream(final IoSession session) {
+        assert session != null;
+
+        return (InputStream) session.removeAttribute(Transport.INPUT_STREAM);
+    }
+
+    private void setOutputStream(final IoSession session, final OutputStream out) {
+        assert session != null;
+        assert out != null;
+
+        Object obj = session.getAttribute(Transport.OUTPUT_STREAM);
+
+        if (obj != null) {
+            throw new IllegalStateException("Output stream already bound");
         }
+
+        session.setAttribute(Transport.OUTPUT_STREAM, out);
+
+        log.debug("Bound output stream: {}", out);
+    }
+
+    private OutputStream getOutputStream(final IoSession session) {
+        assert session != null;
+
+        OutputStream out = (OutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
+
+        if (out == null) {
+            throw new IllegalStateException("Output stream not bound");
+        }
+
+
+        return out;
+    }
+
+    private OutputStream removeOutputStream(final IoSession session) {
+        assert session != null;
+
+        return (OutputStream) session.removeAttribute(Transport.OUTPUT_STREAM);
     }
 
     //
@@ -98,41 +151,92 @@ public class TcpProtocolHandler
     }
 
     public void sessionOpened(final IoSession session) throws Exception {
+        assert session != null;
+
         log.info("Session opened: {}", session);
 
-        IoSessionInputStream in = new IoSessionInputStream();
-        session.setAttribute(Transport.INPUT_STREAM, in);
-
-        IoSessionOutputStream out = new IoSessionOutputStream(session);
-        session.setAttribute(Transport.OUTPUT_STREAM, out);
-
         //
-        // TODO: Add err
+        // Once the session has been opened, bind streams to the session context.
         //
+
+        setInputStream(session, new IoSessionInputStream());
+        setOutputStream(session, new IoSessionOutputStream(session));
     }
 
     public void sessionClosed(final IoSession session) throws Exception {
+        assert session != null;
+
         log.info("Session closed: {}", session);
 
-        IoSessionInputStream in = (IoSessionInputStream) session.getAttribute(Transport.INPUT_STREAM);
-        IOUtil.close(in);
-
-        IoSessionOutputStream out = (IoSessionOutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
-        IOUtil.close(out);
-
-        //
-        // TODO: Add err
-        //
+        IOUtil.close(removeInputStream(session));
+        
+        IOUtil.close(removeOutputStream(session));
     }
 
     public void sessionIdle(final IoSession session, final IdleStatus status) throws Exception {
+        assert session != null;
+
         log.info("Session idle: {}, status: {}", session, status);
 
-        /*
         if (status == IdleStatus.READER_IDLE) {
-            throw new SocketTimeoutException("Read timeout");
+            log.warn("Read timeout");
         }
-        */
+    }
+
+    public void messageReceived(final IoSession session, final Object obj) throws Exception {
+        assert session != null;
+        assert obj != null;
+
+        log.info("Message received: {}", obj);
+
+        if (obj instanceof Message) {
+            //
+            // This is the main protocol action, set the session, freeze the message and
+            // then process the message with our visitor
+            //
+
+            Message msg = (Message)obj;
+
+            if (visitor != null) {
+                msg.setSession(session);
+                msg.freeze();
+                msg.process(visitor);
+            }
+            else {
+                log.warn("Unable to process message because vistor has not been bound; ignoring");
+            }
+        }
+        else if (obj instanceof Response) {
+            //
+            // Secondardy is to handle deregistration of request/resposne messages
+            //
+
+            Response resp = (Response)obj;
+
+            Request req = resp.getRequest();
+
+            responseInspector.deregister(req);
+        }
+        else {
+            log.error("Unhandled message: {}", obj);
+        }
+    }
+
+    public void messageSent(final IoSession session, final Object obj) throws Exception {
+        assert session != null;
+
+        log.info("Message sent: {}", obj);
+
+        if (obj instanceof Request) {
+            //
+            // When request messages are sent, we need to register them with the response inspector
+            // so that when a resposne comes back we know how to correlate it with its request.
+            //
+
+            Request req = (Request) obj;
+
+            responseInspector.register(req);
+        }
     }
 
     public void exceptionCaught(final IoSession session, final Throwable cause) throws Exception {
@@ -142,15 +246,5 @@ public class TcpProtocolHandler
         log.error("Unhandled error: " + cause, cause);
 
         session.close();
-    }
-
-    public void messageSent(final IoSession session, final Object obj) throws Exception {
-        log.info("Message sent: {}", obj);
-
-        if (obj instanceof Request) {
-            Request req = (Request) obj;
-
-            responseInspector.register(req);
-        }
     }
 }

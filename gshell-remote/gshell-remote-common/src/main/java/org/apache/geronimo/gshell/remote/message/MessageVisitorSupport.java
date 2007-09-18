@@ -17,7 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport.tcp;
+package org.apache.geronimo.gshell.remote.message;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
@@ -29,15 +32,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provides support for TCP-oriented {@link MessageVisitor} implementations.
+ * Provides support for {@link MessageVisitor} implementations.
  *
  * @version $Rev$ $Date$
  */
-public abstract class TcpMessageVisitorSupport
+public abstract class MessageVisitorSupport
     extends MessageVisitorAdapter
 {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
+    //
+    // Stream Access
+    //
+
+    protected InputStream getInputStream(final IoSession session) {
+        assert session != null;
+
+        InputStream in = (InputStream) session.getAttribute(Transport.INPUT_STREAM);
+
+        if (in == null) {
+            throw new IllegalStateException("Input stream not bound");
+        }
+
+        return in;
+    }
+
+    protected OutputStream getOutputStream(final IoSession session) {
+        assert session != null;
+
+        OutputStream out = (OutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
+
+        if (out == null) {
+            throw new IllegalStateException("Output stream not bound");
+        }
+
+
+        return out;
+    }
+
+    //
+    // MessageVisitor
+    //
+    
     public void visitWriteStream(final WriteStreamMessage msg) throws Exception {
         assert msg != null;
 

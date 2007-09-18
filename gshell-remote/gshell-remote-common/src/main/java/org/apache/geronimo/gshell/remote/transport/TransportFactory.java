@@ -28,7 +28,9 @@ import java.net.URI;
  */
 public interface TransportFactory
 {
-    Transport connect(final URI location) throws Exception;
+    Transport connect(final URI remote, final URI local) throws Exception;
+
+    Transport connect(final URI remote) throws Exception;
 
     TransportServer bind(final URI location) throws Exception;
 }

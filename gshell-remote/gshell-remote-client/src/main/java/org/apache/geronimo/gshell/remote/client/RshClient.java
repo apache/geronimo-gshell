@@ -66,7 +66,9 @@ public class RshClient
         log.info("Response: {}", resp);
     }
 
-    public void execute(final String line) throws Exception {
+    public Object execute(final String line) throws Exception {
+        assert line != null;
+
         log.info("Executing: {}", line);
 
         transport.send(new ExecuteMessage(line));
@@ -74,6 +76,37 @@ public class RshClient
         //
         // TODO: Need to handle the command result
         //
+
+        return null;
+    }
+
+    public Object execute(final Object... args) throws Exception {
+        assert args != null;
+
+        log.info("Executing: {}", args);
+
+        transport.send(new ExecuteMessage(args));
+
+        //
+        // TODO: Need to handle the command result
+        //
+
+        return null;
+    }
+
+    public Object execute(final String path, final Object[] args) throws Exception {
+        assert path != null;
+        assert args != null;
+
+        log.info("Executing: {}, {}", path, args);
+
+        transport.send(new ExecuteMessage(path, args));
+
+        //
+        // TODO: Need to handle the command result
+        //
+
+        return null;
     }
 
     public InputStream getInputStream() {

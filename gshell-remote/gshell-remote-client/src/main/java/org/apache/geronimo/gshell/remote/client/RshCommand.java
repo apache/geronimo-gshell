@@ -19,21 +19,14 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.URI;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.console.Console;
-import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.remote.client.RemoteShellProxy;
 import org.codehaus.plexus.component.annotations.Requirement;
 import jline.Terminal;
 
@@ -46,8 +39,15 @@ import jline.Terminal;
 public class RshCommand
     extends CommandSupport
 {
-    @Argument(required=true)
+    //
+    // TODO: Add support to bind to a local address, also look at man pages for rsh and ssh for more options which might want to support.
+    //
+    
+    @Argument(metaVar="LOCATION", required=true, index=0)
     private URI location;
+
+    @Argument(metaVar="COMMAND", index=1)
+    private List<String> command = new ArrayList<String>();
 
     @Requirement
     private Terminal terminal;
@@ -58,52 +58,30 @@ public class RshCommand
     private RshClient client;
 
     protected Object doExecute() throws Exception {
-        io.out.println("Connecting to: " + location);
+        io.info("Connecting to: {}", location);
 
         client = factory.connect(location);
 
-        io.out.println("Connected");
+        io.info("Connected");
 
+        client.echo("TESTING");
+        
         client.handshake();
 
-        Console.Executor executor = new Console.Executor() {
-            public Result execute(final String line) throws Exception {
-                assert line != null;
+        /*
+        RemoteShellProxy shell = new RemoteShellProxy(client, io, terminal);
 
-                client.execute(line);
+        shell.run(command.toArray());
 
-                return Result.CONTINUE;
-            }
-        };
+        shell.close();
+        */
 
-        JLineConsole console = new JLineConsole(executor, io, terminal);
+        io.verbose("Disconnecting");
 
-        console.setPrompter(new Console.Prompter() {
-            Renderer renderer = new Renderer();
-
-            public String prompt() {
-                String userName = "user";
-                String hostName = "remote";
-                String path = "/";
-
-                return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
-            }
-        });
-
-        console.setErrorHandler(new Console.ErrorHandler() {
-            public Result handleError(final Throwable error) {
-                assert error != null;
-
-                log.error("Communication error: " + error, error);
-
-                return Result.CONTINUE;
-            }
-        });
-
-        console.run();
-        
         client.close();
 
+        io.verbose("Disconnected");
+        
         return SUCCESS;
     }
 }

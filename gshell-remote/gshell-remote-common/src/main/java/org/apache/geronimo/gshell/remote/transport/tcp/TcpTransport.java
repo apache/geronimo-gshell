@@ -27,25 +27,18 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.geronimo.gshell.remote.filter.LoggingFilter;
 import org.apache.geronimo.gshell.remote.message.Message;
-import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
-import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.reqres.Request;
-import org.apache.mina.filter.reqres.RequestResponseFilter;
 import org.apache.mina.filter.reqres.Response;
 import org.apache.mina.transport.socket.nio.SocketConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides TCP client-side support.
@@ -53,23 +46,18 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public class TcpTransport
+    extends TcpTransportSupport
     implements Transport
 {
     private static final int CONNECT_TIMEOUT = 3000;
 
-    protected Logger log = LoggerFactory.getLogger(getClass());
+    protected final URI remoteLocation;
 
-    protected TcpClientMessageVisitor messageVisitor;
+    protected final InetSocketAddress remoteAddress;
 
-    protected TcpProtocolHandler protocolHandler;
+    protected final URI localLocation;
 
-    protected URI remoteLocation;
-
-    protected InetSocketAddress remoteAddress;
-
-    protected URI localLocation;
-
-    protected InetSocketAddress localAddress;
+    protected final InetSocketAddress localAddress;
 
     protected SocketConnector connector;
 
@@ -88,52 +76,29 @@ public class TcpTransport
             this.localLocation = local;
             this.localAddress = new InetSocketAddress(InetAddress.getByName(local.getHost()), local.getPort());
         }
+        else {
+            // These are final, so make sure to mark them null if we have no local address
+            this.localLocation = null;
+            this.localAddress = null;
+        }
     }
 
-    protected void init() throws Exception {
-        if (protocolHandler == null) {
-            throw new IllegalStateException("Protocol handler not injected");
-        }
-        if (messageVisitor == null) {
-            throw new IllegalStateException("Message visitor not injected");
-        }
-        
-        protocolHandler.setVisitor(messageVisitor);
-
+    protected synchronized void init() throws Exception {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
         connector = new SocketConnector(Runtime.getRuntime().availableProcessors(), executor);
         connector.setConnectTimeout(30);
-        connector.setHandler(protocolHandler);
 
-        DefaultIoFilterChainBuilder filterChain = connector.getFilterChain();
+        //
+        // HACK: Need to manually wire in the visitor impl for now... :-(
+        //
 
-        filterChain.addLast("logger", new LoggingFilter());
-
-        filterChain.addLast("protocol", new ProtocolCodecFilter(new MessageCodecFactory()));
-
-        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
-
-        filterChain.addLast("reqres", new RequestResponseFilter(protocolHandler.getResponseInspector(), scheduler));
+        setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "client"));
+        
+        configure(connector);
     }
 
-    //
-    // NOTE: Setters exposed to support Plexus autowire()
-    //
-
-    public void setMessageVisitor(final TcpClientMessageVisitor messageVisitor) {
-        log.debug("Using message visitor: {}", messageVisitor);
-
-        this.messageVisitor = messageVisitor;
-    }
-
-    public void setProtocolHandler(final TcpProtocolHandler protocolHandler) {
-        log.debug("Using protocol handler: {}", protocolHandler);
-
-        this.protocolHandler = protocolHandler;
-    }
-
-    public void connect() throws Exception {
+    public synchronized void connect() throws Exception {
         if (connected) {
             throw new IllegalStateException("Already connected");
         }
@@ -156,6 +121,14 @@ public class TcpTransport
         log.info("Connected");
     }
 
+    public synchronized void close() {
+        CloseFuture cf = session.close();
+
+        cf.awaitUninterruptibly();
+
+        log.info("Closed");
+    }
+
     public URI getRemoteLocation() {
         return remoteLocation;
     }
@@ -163,10 +136,6 @@ public class TcpTransport
     public URI getLocalLocation() {
         return localLocation;
     }
-
-    //
-    // Transport
-    //
 
     private void doSend(final Object msg) throws Exception {
         assert msg != null;
@@ -208,11 +177,5 @@ public class TcpTransport
 
     public OutputStream getOutputStream() {
         return (OutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
-    }
-
-    public void close() {
-        CloseFuture cf = session.close();
-
-        cf.awaitUninterruptibly();
     }
 }

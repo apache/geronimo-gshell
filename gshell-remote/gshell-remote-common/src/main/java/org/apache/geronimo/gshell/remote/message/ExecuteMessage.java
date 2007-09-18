@@ -19,51 +19,115 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.mina.common.ByteBuffer;
 
 /**
- * Execute a command-line.
+ * Execute a command.  This supports all flavors of the {@link CommandExecutor} execution methods.
  *
  * @version $Rev$ $Date$
  */
 public class ExecuteMessage
     extends MessageSupport
 {
-    private String line;
+    private Flavor flavor;
+    
+    private String path;
 
-    public ExecuteMessage(final String line) {
+    private Object[] args;
+
+    private ExecuteMessage(final Flavor flavor, final String path, final Object[] args) {
         super(MessageType.EXECUTE);
 
-        this.line = line;
+        this.flavor = flavor;
+        this.path = path;
+        this.args = args;
+    }
+
+    public ExecuteMessage(final String commandLine) {
+        this(Flavor.STRING, null, new Object[] { commandLine });
+    }
+
+    public ExecuteMessage(final Object[] args) {
+        this(Flavor.OBJECTS, null, args);
+    }
+
+    public ExecuteMessage(final String path, final Object[] args) {
+        this(Flavor.STRING_OBJECTS, path, args);
     }
 
     public ExecuteMessage() {
-        this(null);
+        this(null, null, null);
     }
 
-    public String getLine() {
-        return line;
+    public Object execute(final CommandExecutor executor) throws Exception {
+        assert executor != null;
+
+        return flavor.execute(this, executor);
     }
 
-    public void readExternal(final ByteBuffer buff) throws Exception {
-        assert buff != null;
+    //
+    // TODO: Optimize this
+    //
+    
+    public void readExternal(final ByteBuffer in) throws Exception {
+        assert in != null;
 
-        super.readExternal(buff);
+        super.readExternal(in);
 
-        line = readString(buff);
+        this.flavor = in.getEnum(Flavor.class);
+
+        this.path = readString(in);
+
+        this.args = (Object[]) in.getObject();
     }
 
-    public void writeExternal(final ByteBuffer buff) throws Exception {
-        assert buff != null;
+    public void writeExternal(final ByteBuffer out) throws Exception {
+        assert out != null;
 
-        super.writeExternal(buff);
+        super.writeExternal(out);
 
-        writeString(buff, line);
+        out.putEnum(flavor);
+
+        writeString(out, path);
+        
+        out.putObject(args);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {
         assert visitor != null;
 
         visitor.visitExecute(this);
+    }
+
+    //
+    // Flavor
+    //
+    
+    private enum Flavor
+    {
+        STRING,         // execute(String)
+        OBJECTS,        // execute(Object[])
+        STRING_OBJECTS  // execute(String, Object[])
+        ;
+
+        public Object execute(final ExecuteMessage msg, final CommandExecutor executor) throws Exception {
+            assert msg != null;
+            assert executor != null;
+
+            switch (this) {
+                case STRING:
+                    return executor.execute((String)msg.args[0]);
+                
+                case OBJECTS:
+                    return executor.execute(msg.args);
+
+                case STRING_OBJECTS:
+                    return executor.execute(msg.path, msg.args);
+            }
+
+            // This should never happen
+            throw new Error();
+        }
     }
 }

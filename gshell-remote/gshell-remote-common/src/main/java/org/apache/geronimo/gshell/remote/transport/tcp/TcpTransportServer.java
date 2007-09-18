@@ -25,14 +25,9 @@ import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.geronimo.gshell.remote.filter.LoggingFilter;
-import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.apache.mina.common.DefaultIoFilterChainBuilder;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides TCP server-side support.
@@ -40,17 +35,12 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public class TcpTransportServer
+    extends TcpTransportSupport
     implements TransportServer
 {
-    protected Logger log = LoggerFactory.getLogger(getClass());
+    protected final URI location;
 
-    protected TcpServerMessageVisitor messageVisitor;
-    
-    protected TcpProtocolHandler protocolHandler;
-
-    protected URI location;
-
-    protected InetSocketAddress address;
+    protected final InetSocketAddress address;
 
     protected SocketAcceptor acceptor;
 
@@ -63,48 +53,28 @@ public class TcpTransportServer
         this.address = new InetSocketAddress(InetAddress.getByName(location.getHost()), location.getPort());
     }
 
-    protected void init() throws Exception {
-        if (protocolHandler == null) {
-            throw new IllegalStateException("Protocol handler not injected");
-        }
-        if (messageVisitor == null) {
-            throw new IllegalStateException("Message visitor not injected");
-        }
-
-        protocolHandler.setVisitor(messageVisitor);
-        
+    protected synchronized void init() throws Exception {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
-        
         acceptor = new SocketAcceptor(Runtime.getRuntime().availableProcessors(), executor);
         acceptor.setLocalAddress(address);
-        acceptor.setHandler(protocolHandler);
 
-        DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
+        //
+        // HACK: Need to manually wire in the visitor impl for now... :-(
+        //
 
-        filterChain.addLast("logger", new LoggingFilter());
+        setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "server"));
 
-        filterChain.addLast("protocol", new ProtocolCodecFilter(new MessageCodecFactory()));
+        configure(acceptor);
 
+        //
+        // TODO: Setup the authentication validation handler filter
+        //
+        
+        // DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
         // filterChain.addLast("auth", new AuthenticationFilter());
     }
 
-    //
-    // NOTE: Setters exposed to support Plexus autowire()
-    //
-
-    public void setMessageVisitor(final TcpServerMessageVisitor messageVisitor) {
-        log.debug("Using message visitor: {}", messageVisitor);
-
-        this.messageVisitor = messageVisitor;
-    }
-
-    public void setProtocolHandler(final TcpProtocolHandler protocolHandler) {
-        log.debug("Using protocol handler: {}", protocolHandler);
-
-        this.protocolHandler = protocolHandler;
-    }
-
-    public void bind() throws Exception {
+    public synchronized void bind() throws Exception {
         if (bound) {
             throw new IllegalStateException("Already bound");
         }
@@ -118,15 +88,13 @@ public class TcpTransportServer
         log.info("Listening on: {}", address);
     }
 
-    public URI getLocation() {
-        return location;
+    public synchronized void close() {
+        acceptor.unbind();
+
+        log.info("Closed");
     }
 
-    //
-    // TransportServer
-    //
-
-    public void close() {
-        acceptor.unbind();
+    public URI getLocation() {
+        return location;
     }
 }

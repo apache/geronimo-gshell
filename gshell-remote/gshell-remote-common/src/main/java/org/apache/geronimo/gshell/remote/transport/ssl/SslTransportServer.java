@@ -21,10 +21,10 @@ package org.apache.geronimo.gshell.remote.transport.ssl;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.ssl.BogusSSLContextFactory;
+import org.apache.geronimo.gshell.remote.ssl.SSLContextFactory;
 import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
-import org.apache.mina.filter.ssl.SSLFilter;
+import org.apache.mina.filter.ssl.SslFilter;
 
 /**
  * Provides TCP+SSL server-side support.
@@ -34,6 +34,8 @@ import org.apache.mina.filter.ssl.SSLFilter;
 public class SslTransportServer
     extends TcpTransportServer
 {
+    private SSLContextFactory sslContextFactory;
+
     public SslTransportServer(final URI location) throws Exception {
         super(location);
     }
@@ -43,11 +45,17 @@ public class SslTransportServer
         
         DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
 
-        //
-        // TODO: Get the SSL context factory injected
-        //
-        
-        SSLFilter sslFilter = new SSLFilter(BogusSSLContextFactory.getInstance(true));
+        SslFilter sslFilter = new SslFilter(sslContextFactory.createServerContext());
         filterChain.addFirst("ssl", sslFilter);
+    }
+    
+    //
+    // NOTE: Setters exposed to support Plexus autowire()
+    //
+
+    public void setSslContextFactory(final SSLContextFactory factory) {
+        log.debug("Using SSL Context Factory: {}", factory);
+
+        this.sslContextFactory = factory;
     }
 }

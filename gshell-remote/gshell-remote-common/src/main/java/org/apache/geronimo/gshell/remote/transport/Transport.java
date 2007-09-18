@@ -38,8 +38,6 @@ public interface Transport
 
     String OUTPUT_STREAM = STREAM_BASENAME + "OUT";
 
-    String ERROR_STREAM = STREAM_BASENAME + "ERR";
-
     void send(Message msg) throws Exception;
 
     Message request(Message msg, long timeout, TimeUnit unit) throws Exception;

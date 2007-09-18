@@ -19,23 +19,35 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.mina.common.ByteBuffer;
+
 /**
- * Support for {@link MessageVisitor} implementations.
+ * Open a remote shell instance.
  *
  * @version $Rev$ $Date$
  */
-public class MessageVisitorAdapter
-    implements MessageVisitor
+public class OpenShellMessage
+    extends MessageSupport
 {
-    public void visitEcho(EchoMessage msg) throws Exception {}
+    public OpenShellMessage() {
+        super(MessageType.OPEN_SHELL);
+    }
 
-    public void visitHandShake(HandShakeMessage msg) throws Exception {}
+    public void readExternal(final ByteBuffer in) throws Exception {
+        assert in != null;
 
-    public void visitOpenShell(OpenShellMessage msg) throws Exception {}
+        super.readExternal(in);
+    }
 
-    public void visitCloseShell(CloseShellMessage msg) throws Exception {}
+    public void writeExternal(final ByteBuffer out) throws Exception {
+        assert out != null;
 
-    public void visitExecute(ExecuteMessage msg) throws Exception {}
-    
-    public void visitWriteStream(WriteStreamMessage msg) throws Exception {}
+        super.writeExternal(out);
+    }
+
+    public void process(final MessageVisitor visitor) throws Exception {
+        assert visitor != null;
+
+        visitor.visitOpenShell(this);
+    }
 }

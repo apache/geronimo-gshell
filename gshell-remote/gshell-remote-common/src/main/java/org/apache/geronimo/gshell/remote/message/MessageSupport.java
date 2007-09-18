@@ -133,33 +133,48 @@ public abstract class MessageSupport
     }
 
     //
-    // MarshalAware
+    // Reply Helpers
     //
 
-    public void readExternal(final ByteBuffer buff) throws Exception {
-        assert buff != null;
+    public WriteFuture reply(final MessageSupport msg) {
+        assert msg != null;
 
-        id = readUuid(buff);
+        IoSession session = getSession();
 
-        correlationId = readUuid(buff);
+        msg.setCorrelationId(getId());
+        msg.freeze();
 
-        timestamp = buff.getLong();
+        return session.write(msg);
+    }
+    
+    //
+    // Serialization
+    //
 
-        sequence = buff.getLong();
+    public void readExternal(final ByteBuffer in) throws Exception {
+        assert in != null;
+
+        id = readUuid(in);
+
+        correlationId = readUuid(in);
+
+        timestamp = in.getLong();
+
+        sequence = in.getLong();
     }
 
-    public void writeExternal(final ByteBuffer buff) throws Exception {
-        assert buff != null;
+    public void writeExternal(final ByteBuffer out) throws Exception {
+        assert out != null;
 
-        writeUuid(buff, id);
+        writeUuid(out, id);
 
-        writeUuid(buff, correlationId);
+        writeUuid(out, correlationId);
 
-        buff.putLong(timestamp);
+        out.putLong(timestamp);
 
         sequence = SEQUENCE_COUNTER.getAndIncrement();
         
-        buff.putLong(sequence);
+        out.putLong(sequence);
     }
 
     //
@@ -173,17 +188,26 @@ public abstract class MessageSupport
 
         int len = in.getInt();
 
-        return in.getString(len, UTF_8_CHARSET.newDecoder());
+        if (len == -1) {
+            return null;
+        }
+        else {
+            return in.getString(len, UTF_8_CHARSET.newDecoder());
+        }
     }
 
     protected void writeString(final ByteBuffer out, final String str) throws CharacterCodingException {
         assert out != null;
-        assert str != null;
 
-        int len = str.length();
-        out.putInt(len);
-        
-        out.putString(str, len, UTF_8_CHARSET.newEncoder());
+        if (str == null) {
+            out.putInt(-1);
+        }
+        else {
+            int len = str.length();
+            out.putInt(len);
+
+            out.putString(str, len, UTF_8_CHARSET.newEncoder());
+        }
     }
 
     private void writeUuid(final ByteBuffer out, final UUID uuid) throws Exception {
@@ -213,20 +237,5 @@ public abstract class MessageSupport
         else {
             return null;
         }
-    }
-
-    //
-    // Reply Helpers
-    //
-    
-    public WriteFuture reply(final MessageSupport msg) {
-        assert msg != null;
-
-        IoSession session = getSession();
-
-        msg.setCorrelationId(getId());
-        msg.freeze();
-        
-        return session.write(msg);
     }
 }

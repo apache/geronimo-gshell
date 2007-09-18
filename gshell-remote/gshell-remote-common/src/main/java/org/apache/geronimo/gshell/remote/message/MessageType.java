@@ -28,8 +28,10 @@ public enum MessageType
 {
     ECHO            (EchoMessage.class),
     HANDSHAKE       (HandShakeMessage.class),
-    WRITE_STREAM    (WriteStreamMessage.class),
+    OPEN_SHELL      (OpenShellMessage.class),
+    CLOSE_SHELL     (CloseShellMessage.class),
     EXECUTE         (ExecuteMessage.class),
+    WRITE_STREAM    (WriteStreamMessage.class),
     ;
 
     private final Class<? extends Message> type;

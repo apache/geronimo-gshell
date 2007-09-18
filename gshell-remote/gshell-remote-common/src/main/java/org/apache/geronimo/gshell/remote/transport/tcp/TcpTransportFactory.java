@@ -40,10 +40,15 @@ public class TcpTransportFactory
     @Requirement
     private PlexusContainer container;
 
-    public Transport connect(final URI location) throws Exception {
-        assert location != null;
+    //
+    // NOTE: We use autowire() here to get a few components injected.  These are injected via setters.
+    //
+    
+    public Transport connect(final URI remote, final URI local) throws Exception {
+        assert remote != null;
+        // local can be null
 
-        TcpTransport transport = createTcpTransport(location);
+        TcpTransport transport = createTcpTransport(remote, local);
 
         container.autowire(transport);
 
@@ -52,8 +57,15 @@ public class TcpTransportFactory
         return transport;
     }
 
-    protected TcpTransport createTcpTransport(final URI location) throws Exception {
-        return new TcpTransport(location, null);
+    protected TcpTransport createTcpTransport(final URI remote, final URI local) throws Exception {
+        assert remote != null;
+        // local can be null
+        
+        return new TcpTransport(remote, local);
+    }
+
+    public Transport connect(final URI remote) throws Exception {
+        return connect(remote, null);
     }
 
     public TransportServer bind(final URI location) throws Exception {
