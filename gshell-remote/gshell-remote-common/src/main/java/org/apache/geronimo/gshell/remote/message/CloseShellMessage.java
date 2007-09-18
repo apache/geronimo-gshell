@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
-import org.apache.mina.common.ByteBuffer;
-
 /**
  * Close the remote shell instance.
  *

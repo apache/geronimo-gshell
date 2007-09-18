@@ -23,11 +23,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.remote.stream.StreamFeeder;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.remote.stream.StreamFeeder;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;

@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.remote.message.MessageResponseInspector;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
-import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;

@@ -25,7 +25,6 @@ import java.io.FileReader;
 
 import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
@@ -39,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides the server-side encapsulation of the basic shell bits to allow remote clients to invoke commands.
  *
  * @version $Rev$ $Date$
  */
@@ -49,7 +48,7 @@ public class RemoteShell
 {
     public static final String SESSION_KEY = RemoteShell.class.getName();
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
     private ShellInfo shellInfo;
@@ -67,7 +66,7 @@ public class RemoteShell
     
     private void ensureOpened() {
         if (!opened) {
-            throw new IllegalStateException("Remote shell has been closed");
+            throw new IllegalStateException();
         }
     }
 
