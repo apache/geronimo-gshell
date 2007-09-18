@@ -189,6 +189,10 @@ public class TcpProtocolHandler
 
         log.info("Message received: {}", obj);
 
+        //
+        // TODO: Need to handle Exception muck, and send faul messages back to clients
+        //
+        
         if (obj instanceof Message) {
             //
             // This is the main protocol action, set the session, freeze the message and

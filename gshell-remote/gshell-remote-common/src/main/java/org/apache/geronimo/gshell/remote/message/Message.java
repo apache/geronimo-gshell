@@ -22,8 +22,9 @@ package org.apache.geronimo.gshell.remote.message;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.apache.mina.common.IoSession;
 import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
+import org.apache.mina.common.WriteFuture;
 
 /**
  * Defines the basic attributes of all messages.
@@ -53,6 +54,8 @@ public interface Message
     void freeze();
 
     boolean isFrozen();
+
+    WriteFuture reply(Message msg);
 
     void readExternal(ByteBuffer in) throws Exception;
 

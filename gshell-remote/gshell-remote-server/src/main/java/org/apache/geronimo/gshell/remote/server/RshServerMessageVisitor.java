@@ -20,13 +20,13 @@
 package org.apache.geronimo.gshell.remote.server;
 
 import org.apache.geronimo.gshell.DefaultEnvironment;
+import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
@@ -46,6 +46,10 @@ import org.codehaus.plexus.component.factory.ComponentFactory;
 public class RshServerMessageVisitor
     extends MessageVisitorSupport
 {
+    //
+    // TODO: If/when we want to add a state-machine to keep things in order, add server-side here.
+    //
+
     @Requirement
     private PlexusContainer container;
 
@@ -107,18 +111,6 @@ public class RshServerMessageVisitor
         msg.reply(new EchoMessage(text));
     }
 
-    public void visitHandShake(final HandShakeMessage msg) throws Exception {
-        assert msg != null;
-
-        log.info("HANDSHAKE: {}", msg);
-
-        //
-        // TODO:
-        //
-        
-        msg.reply(new EchoMessage("SUCCESS"));
-    }
-
     public void visitOpenShell(final OpenShellMessage msg) throws Exception {
         assert msg != null;
 
@@ -143,8 +135,10 @@ public class RshServerMessageVisitor
         setRemoteShell(session, shell);
 
         //
-        // TODO: Send response
+        // TODO: Send a meaningful response
         //
+
+        msg.reply(new EchoMessage("OPEN SHELL SUCCESS"));
     }
 
     public void visitCloseShell(final CloseShellMessage msg) throws Exception {
@@ -161,8 +155,10 @@ public class RshServerMessageVisitor
         unsetRemoteShell(session);
 
         //
-        // TODO: Send response
+        // TODO: Send a meaningful response
         //
+
+        msg.reply(new EchoMessage("CLOSE SHELL SUCCESS"));
     }
 
     public void visitExecute(final ExecuteMessage msg) throws Exception {
@@ -172,12 +168,23 @@ public class RshServerMessageVisitor
 
         IoSession session = msg.getSession();
 
-        RemoteShell shell = getRemoteShell(session);
+        try {
+            RemoteShell shell = getRemoteShell(session);
 
-        Object result = msg.execute(shell);
+            Object result = msg.execute(shell);
 
-        //
-        // TODO: Send response
-        //
+            //
+            // TODO: Send response
+            //
+        }
+        catch (ExitNotification n) {
+            //
+            // TODO: Send client message with this detail...
+            //
+
+            log.info("Remote shell requested exit: {}", n);
+            
+            session.close();
+        }
     }
 }

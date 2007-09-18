@@ -29,8 +29,6 @@ public class MessageVisitorAdapter
 {
     public void visitEcho(EchoMessage msg) throws Exception {}
 
-    public void visitHandShake(HandShakeMessage msg) throws Exception {}
-
     public void visitOpenShell(OpenShellMessage msg) throws Exception {}
 
     public void visitCloseShell(CloseShellMessage msg) throws Exception {}

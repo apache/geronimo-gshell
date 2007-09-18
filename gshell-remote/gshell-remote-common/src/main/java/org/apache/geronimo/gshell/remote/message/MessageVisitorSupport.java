@@ -22,9 +22,6 @@ package org.apache.geronimo.gshell.remote.message;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.geronimo.gshell.remote.message.MessageVisitorAdapter;
-import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
 import org.apache.geronimo.gshell.remote.stream.IoSessionInputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.mina.common.IoSession;

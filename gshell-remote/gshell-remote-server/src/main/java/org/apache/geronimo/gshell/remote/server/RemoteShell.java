@@ -66,7 +66,7 @@ public class RemoteShell
     @Requirement
     private IO io;
 
-    private boolean opened;
+    private boolean opened = true;
     
     private void ensureOpened() {
         if (!opened) {
@@ -97,12 +97,9 @@ public class RemoteShell
     }
 
     public void initialize() throws InitializationException {
-        //
-        // FIXME: This won't work as desired, as this shell instance is not yet registered, so if a profile
-        //        tries to run something that needs the shell instance... well, loopsvile.
-        //
-        //        This could be a warning sign that some of this class needs to be split up into smaller bits...
-        //
+        /*
+
+        FIXME: Client needs to request this to be done... ?
 
         try {
             loadProfileScripts();
@@ -110,6 +107,7 @@ public class RemoteShell
         catch (Exception e) {
             throw new InitializationException(e.getMessage(), e);
         }
+        */
     }
 
     //

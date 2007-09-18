@@ -23,12 +23,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import jline.Terminal;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.remote.client.RemoteShellProxy;
 import org.codehaus.plexus.component.annotations.Requirement;
-import jline.Terminal;
 
 /**
  * Command to connect to a remote shell server.
@@ -64,18 +63,14 @@ public class RshCommand
 
         io.info("Connected");
 
-        client.echo("TESTING");
-        
-        client.handshake();
+        client.login("jason", "password");
 
-        /*
         RemoteShellProxy shell = new RemoteShellProxy(client, io, terminal);
 
         shell.run(command.toArray());
 
         shell.close();
-        */
-
+        
         io.verbose("Disconnecting");
 
         client.close();

@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.remote.client;
 
 import java.net.URI;
 
+import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.transport.TransportFactory;
 import org.apache.geronimo.gshell.remote.transport.TransportFactoryLocator;
 import org.codehaus.plexus.component.annotations.Component;
@@ -37,9 +38,12 @@ public class RshClientFactory
     @Requirement
     private TransportFactoryLocator locator;
 
+    @Requirement
+    private CryptoContext crypto;
+    
     public RshClient connect(final URI location) throws Exception {
         TransportFactory factory = locator.locate(location);
 
-        return new RshClient(location, factory);
+        return new RshClient(crypto, location, factory);
     }
 }

@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
+import org.apache.geronimo.gshell.remote.crypto.CryptoContextAware;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
@@ -28,6 +30,8 @@ import org.apache.mina.filter.codec.ProtocolDecoderException;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+@Component(role=MessageCodecFactory.class)
 public class MessageCodecFactory
     implements ProtocolCodecFactory
 {
@@ -45,6 +50,11 @@ public class MessageCodecFactory
     
     public static final byte VERSION = 1;
 
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+    @Requirement
+    private CryptoContext crypto;
+    
     private final Encoder encoder;
 
     private final Decoder decoder;
@@ -62,6 +72,15 @@ public class MessageCodecFactory
         return decoder;
     }
 
+    private void setCryptoContext(final Message msg) {
+        // We need to do a little bit of extra fluff to hook up support for encrypted messages
+        if (msg instanceof CryptoContextAware) {
+            log.trace("Attaching crypto context to: {}", msg);
+
+            ((CryptoContextAware)msg).setCryptoContext(crypto);
+        }
+    }
+    
     //
     // Encoder
     //
@@ -69,8 +88,6 @@ public class MessageCodecFactory
     public class Encoder
         implements ProtocolEncoder
     {
-        private Logger log = LoggerFactory.getLogger(getClass());
-
         public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out) throws Exception {
             assert session != null;
             assert message != null;
@@ -78,7 +95,9 @@ public class MessageCodecFactory
             
             Message msg = (Message)message;
 
-            log.debug("Serializing: {}", msg);
+            setCryptoContext(msg);
+
+            log.trace("Serializing: {}", msg);
 
             ByteBuffer buff = ByteBuffer.allocate(256, false);
             buff.setAutoExpand(true);
@@ -96,11 +115,7 @@ public class MessageCodecFactory
             out.write(buff);
         }
 
-        public void dispose(final IoSession session) throws Exception {
-            assert session != null;
-            
-            // Nothing
-        }
+        public void dispose(final IoSession session) throws Exception {}
     }
 
     //
@@ -110,8 +125,6 @@ public class MessageCodecFactory
     public class Decoder
         extends CumulativeProtocolDecoder
     {
-        private Logger log = LoggerFactory.getLogger(getClass());
-
         protected boolean doDecode(final IoSession session, final ByteBuffer in, final ProtocolDecoderOutput out) throws Exception {
             assert session != null;
             assert in != null;
@@ -129,9 +142,11 @@ public class MessageCodecFactory
 
             Message msg = MessageType.create(type);
 
+            setCryptoContext(msg);
+
             msg.readExternal(in);
 
-            log.debug("Deserialized: {}", msg);
+            log.trace("Deserialized: {}", msg);
 
             out.write(msg);
 

@@ -22,11 +22,16 @@ package org.apache.geronimo.gshell.remote.client;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.security.PublicKey;
 
+import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
+import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
+import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.geronimo.gshell.remote.transport.TransportFactory;
 import org.slf4j.Logger;
@@ -39,33 +44,67 @@ import org.slf4j.LoggerFactory;
  */
 public class RshClient
 {
+    //
+    // TODO: If/when we want to add a state-machine to keep things in order, add client-side here.
+    //
+    
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private final CryptoContext crypto;
 
     private final Transport transport;
 
-    public RshClient(final URI location, final TransportFactory factory) throws Exception {
+    public RshClient(final CryptoContext crypto, final URI location, final TransportFactory factory) throws Exception {
+        assert crypto != null;
         assert location != null;
         assert factory != null;
 
+        this.crypto = crypto;
+
+        // And then lets connect to the remote server
         transport = factory.connect(location);
 
         log.debug("Connected to: {}", location);
     }
 
+    public void login(final String username, final String password) throws Exception {
+        assert username != null;
+        assert password != null;
+
+        log.info("Starting handshake", username);
+
+        HandShakeMessage.Result handShakeResult = (HandShakeMessage.Result) transport.request(new HandShakeMessage(crypto.getPublicKey()));
+        PublicKey serverKey = handShakeResult.getPublicKey();
+
+        log.info("Logging in: {}", username);
+
+        LoginMessage.Result loginResult = (LoginMessage.Result) transport.request(new LoginMessage(serverKey, username, password));
+
+        log.info("Login Result: {}", loginResult);
+    }
+    
     public void echo(final String text) throws Exception {
         log.debug("Echoing: {}", text);
 
         transport.send(new EchoMessage(text));
     }
 
-    public void handshake() throws Exception {
-        log.info("Starting handshake");
+    public void openShell() throws Exception {
+        log.info("Opening remote shell");
 
-        Message resp = transport.request(new HandShakeMessage());
+        Message resp = transport.request(new OpenShellMessage());
 
         log.info("Response: {}", resp);
     }
 
+    public void closeShell() throws Exception {
+        log.info("Closing remote shell");
+
+        Message resp = transport.request(new CloseShellMessage());
+
+        log.info("Response: {}", resp);
+    }
+    
     public Object execute(final String line) throws Exception {
         assert line != null;
 

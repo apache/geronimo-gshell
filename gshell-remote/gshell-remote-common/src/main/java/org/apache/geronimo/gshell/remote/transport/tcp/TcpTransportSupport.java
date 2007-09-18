@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.transport.tcp;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.remote.filter.LoggingFilter;
+import org.apache.geronimo.gshell.remote.logging.LoggingFilter;
 import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.transport.Transport;
@@ -42,6 +42,10 @@ import org.slf4j.LoggerFactory;
  */
 public class TcpTransportSupport
 {
+    public static final String PROTOCOL_FILTER_NAME = "protocol";
+
+    public static final String REQRESP_FILTER_NAME = "reqresp";
+
     protected Logger log = LoggerFactory.getLogger(getClass());
 
     private PlexusContainer container;
@@ -49,6 +53,8 @@ public class TcpTransportSupport
     private MessageVisitor messageVisitor;
 
     private TcpProtocolHandler protocolHandler;
+
+    private MessageCodecFactory codecFactory;
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
@@ -65,14 +71,14 @@ public class TcpTransportSupport
         DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
         
         if (log.isDebugEnabled()) {
-            filterChain.addLast("logging", new LoggingFilter());
+            filterChain.addLast(LoggingFilter.NAME, new LoggingFilter());
         }
 
-        filterChain.addLast("protocol", new ProtocolCodecFilter(new MessageCodecFactory()));
+        filterChain.addLast(PROTOCOL_FILTER_NAME, new ProtocolCodecFilter(getMessageCodecFactory()));
 
         ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
 
-        filterChain.addLast("reqresp", new RequestResponseFilter(protocolHandler.getResponseInspector(), scheduler));
+        filterChain.addLast(REQRESP_FILTER_NAME, new RequestResponseFilter(handler.getResponseInspector(), scheduler));
     }
 
     //
@@ -80,6 +86,8 @@ public class TcpTransportSupport
     //
 
     public void setMessageVisitor(final MessageVisitor messageVisitor) {
+        assert messageVisitor != null;
+
         log.debug("Using message visitor: {}", messageVisitor);
 
         this.messageVisitor = messageVisitor;
@@ -94,6 +102,8 @@ public class TcpTransportSupport
     }
 
     public void setProtocolHandler(final TcpProtocolHandler protocolHandler) {
+        assert protocolHandler != null;
+
         log.debug("Using protocol handler: {}", protocolHandler);
 
         this.protocolHandler = protocolHandler;
@@ -105,6 +115,22 @@ public class TcpTransportSupport
         }
 
         return protocolHandler;
+    }
+
+    public void setMessageCodecFactory(final MessageCodecFactory codecFactory) {
+        assert codecFactory != null;
+        
+        log.debug("Using codec factory: {}", codecFactory);
+
+        this.codecFactory = codecFactory;
+    }
+
+    protected MessageCodecFactory getMessageCodecFactory() {
+        if (codecFactory == null) {
+            throw new IllegalStateException("Message codec factory not bound");
+        }
+
+        return codecFactory;
     }
 
     //

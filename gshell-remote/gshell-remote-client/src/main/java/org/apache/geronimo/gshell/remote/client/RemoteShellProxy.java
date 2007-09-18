@@ -51,7 +51,7 @@ public class RemoteShellProxy
 
     private boolean opened;
 
-    public RemoteShellProxy(final RshClient client, final IO io, final Terminal terminal) {
+    public RemoteShellProxy(final RshClient client, final IO io, final Terminal terminal) throws Exception {
         assert client != null;
         assert io != null;
         assert terminal != null;
@@ -61,9 +61,11 @@ public class RemoteShellProxy
         this.terminal = terminal;
 
         //
-        // TODO: Send OPEN_SHELL (send over some client-side details, like the terminal features, etc)
+        // TODO: send over some client-side details, like the terminal features, etc)
         //       If any problem or denial occurs, throw an exception, once created the proxy is considered valid.
         //
+        
+        client.openShell();
 
         this.opened = true;
     }
@@ -91,9 +93,12 @@ public class RemoteShellProxy
     }
 
     public void close() {
-        //
-        // TODO: Send CLOSE_SHELL
-        //
+        try {
+            client.closeShell();
+        }
+        catch (Exception e) {
+            log.error("Failure occured while closing remote shell; ignoring", e);
+        }
 
         opened = false;
         

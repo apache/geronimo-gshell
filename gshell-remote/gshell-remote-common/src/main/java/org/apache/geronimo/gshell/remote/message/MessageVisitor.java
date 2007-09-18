@@ -28,8 +28,6 @@ public interface MessageVisitor
 {
     void visitEcho(EchoMessage msg) throws Exception;
 
-    void visitHandShake(HandShakeMessage msg) throws Exception;
-
     void visitOpenShell(OpenShellMessage msg) throws Exception;
 
     void visitCloseShell(CloseShellMessage msg) throws Exception;

@@ -132,11 +132,7 @@ public abstract class MessageSupport
         // Non-operation
     }
 
-    //
-    // Reply Helpers
-    //
-
-    public WriteFuture reply(final MessageSupport msg) {
+    public WriteFuture reply(final Message msg) {
         assert msg != null;
 
         IoSession session = getSession();
@@ -176,10 +172,6 @@ public abstract class MessageSupport
         
         out.putLong(sequence);
     }
-
-    //
-    // Marshal Helpers
-    //
 
     private static final Charset UTF_8_CHARSET = Charset.forName("UTF-8");
 

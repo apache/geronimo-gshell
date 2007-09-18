@@ -25,8 +25,10 @@ import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
+import org.apache.geronimo.gshell.remote.security.SecurityFilter;
+import org.apache.geronimo.gshell.remote.transport.TransportServer;
+import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 
 /**
@@ -46,11 +48,33 @@ public class TcpTransportServer
 
     protected boolean bound;
 
+    private SecurityFilter securityFilter;
+    
     public TcpTransportServer(final URI location) throws Exception {
         assert location != null;
 
         this.location = location;
         this.address = new InetSocketAddress(InetAddress.getByName(location.getHost()), location.getPort());
+    }
+
+    public URI getLocation() {
+        return location;
+    }
+    
+    //
+    // NOTE: Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
+    //
+
+    public void setSecurityFilter(final SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
+
+    protected SecurityFilter getSecurityFilter() {
+        if (securityFilter == null) {
+            throw new IllegalStateException("Security filter not bound");
+        }
+        
+        return securityFilter;
     }
 
     protected synchronized void init() throws Exception {
@@ -66,12 +90,10 @@ public class TcpTransportServer
 
         configure(acceptor);
 
-        //
-        // TODO: Setup the authentication validation handler filter
-        //
-        
-        // DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
-        // filterChain.addLast("auth", new AuthenticationFilter());
+        DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
+
+        // Install the authentication filter right after the protocol filter
+        filterChain.addAfter(PROTOCOL_FILTER_NAME, SecurityFilter.NAME, getSecurityFilter());
     }
 
     public synchronized void bind() throws Exception {
@@ -92,9 +114,5 @@ public class TcpTransportServer
         acceptor.unbind();
 
         log.info("Closed");
-    }
-
-    public URI getLocation() {
-        return location;
     }
 }
