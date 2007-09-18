@@ -46,7 +46,7 @@ public abstract class MessageSupport
 
     private UUID correlationId;
 
-    private long sequence;
+    private Long sequence;
 
     private long timestamp;
     
@@ -62,12 +62,6 @@ public abstract class MessageSupport
         this.id = UUID.randomUUID();
 
         this.timestamp = System.currentTimeMillis();
-
-        //
-        // FIXME: This might end up skipping numbers, which while is okay, isn't really very nice
-        //
-        
-        this.sequence = SEQUENCE_COUNTER.getAndIncrement();
     }
 
     public String toString() {
@@ -99,6 +93,10 @@ public abstract class MessageSupport
     }
 
     public long getSequence() {
+        if (sequence == null) {
+            throw new IllegalStateException("Sequence number is set upon write and is not yet available");
+        }
+
         return sequence;
     }
 
@@ -159,6 +157,8 @@ public abstract class MessageSupport
 
         buff.putLong(timestamp);
 
+        sequence = SEQUENCE_COUNTER.getAndIncrement();
+        
         buff.putLong(sequence);
     }
 
@@ -225,7 +225,8 @@ public abstract class MessageSupport
         IoSession session = getSession();
 
         msg.setCorrelationId(getId());
-
+        msg.freeze();
+        
         return session.write(msg);
     }
 }
