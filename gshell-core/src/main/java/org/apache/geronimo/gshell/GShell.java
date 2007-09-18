@@ -83,13 +83,11 @@ public class GShell
             container = new DefaultPlexusContainer(config);
 
             // We first need to stuff in the IO context for the new shell instance
-            IOLookup ioLookup = (IOLookup) container.lookup(ComponentFactory.class, IOLookup.class.getSimpleName());
-            ioLookup.set(io);
+            IOLookup.set(container, io);
 
             // And then lets stuff in the environment too
             Environment env = new DefaultEnvironment(io);
-            EnvironmentLookup envLookup = (EnvironmentLookup) container.lookup(ComponentFactory.class, EnvironmentLookup.class.getSimpleName());
-            envLookup.set(env);
+            EnvironmentLookup.set(container, env);
 
             // Then look up the shell we are gonna delegate to
             shell = (InteractiveShell) container.lookup(InteractiveShell.class);
