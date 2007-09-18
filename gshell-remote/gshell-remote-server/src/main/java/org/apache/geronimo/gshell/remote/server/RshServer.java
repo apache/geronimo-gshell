@@ -42,6 +42,8 @@ public class RshServer
         assert factory != null;
 
         server = factory.bind(location);
+
+        log.debug("Bound to: {}", location);
     }
 
     public void close() {

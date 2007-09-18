@@ -47,6 +47,8 @@ public class RshClient
         assert factory != null;
 
         transport = factory.connect(location);
+
+        log.debug("Connected to: {}", location);
     }
 
     public void echo(final String text) throws Exception {
