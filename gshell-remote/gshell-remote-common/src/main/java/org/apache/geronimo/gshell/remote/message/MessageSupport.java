@@ -63,14 +63,14 @@ public abstract class MessageSupport
         return ReflectionToStringBuilder.toString(this);
     }
 
-    public UUID getId() {
-        return id;
-    }
-    
     public MessageType getType() throws IOException {
         return type;
     }
 
+    public UUID getId() {
+        return id;
+    }
+    
     public UUID getCorrelationId() {
         return correlationId;
     }
@@ -121,35 +121,6 @@ public abstract class MessageSupport
     // MarshalAware
     //
 
-    private void writeUuid(final ByteBuffer buff, final UUID uuid) throws Exception {
-        assert buff != null;
-
-        if (uuid == null) {
-            buff.put((byte)0);
-        }
-        else {
-            buff.put((byte)1);
-
-            buff.putLong(uuid.getMostSignificantBits());
-            buff.putLong(uuid.getLeastSignificantBits());
-        }
-    }
-
-    private UUID readUuid(final ByteBuffer buff) throws Exception {
-        assert buff != null;
-
-        byte isnull = buff.get();
-
-        if (isnull == 1) { // not null
-            long msb = buff.getLong();
-            long lsb = buff.getLong();
-            return new UUID(msb, lsb);
-        }
-        else {
-            return null;
-        }
-    }
-
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
@@ -196,6 +167,35 @@ public abstract class MessageSupport
         out.putInt(len);
         
         out.putString(str, len, UTF_8_CHARSET.newEncoder());
+    }
+
+    private void writeUuid(final ByteBuffer out, final UUID uuid) throws Exception {
+        assert out != null;
+
+        if (uuid == null) {
+            out.put((byte)0);
+        }
+        else {
+            out.put((byte)1);
+
+            out.putLong(uuid.getMostSignificantBits());
+            out.putLong(uuid.getLeastSignificantBits());
+        }
+    }
+
+    private UUID readUuid(final ByteBuffer in) throws Exception {
+        assert in != null;
+
+        byte isnull = in.get();
+
+        if (isnull == 1) { // not null
+            long msb = in.getLong();
+            long lsb = in.getLong();
+            return new UUID(msb, lsb);
+        }
+        else {
+            return null;
+        }
     }
 
     //
