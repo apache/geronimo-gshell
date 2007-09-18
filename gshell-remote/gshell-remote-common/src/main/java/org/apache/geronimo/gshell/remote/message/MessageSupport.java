@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.mina.common.ByteBuffer;
@@ -37,11 +38,15 @@ import org.apache.mina.common.WriteFuture;
 public abstract class MessageSupport
     implements Message
 {
-    private MessageType type;
+    private static final AtomicLong SEQUENCE_COUNTER = new AtomicLong(0);
+
+    private transient MessageType type;
 
     private UUID id;
 
     private UUID correlationId;
+
+    private long sequence;
 
     private long timestamp;
     
@@ -57,6 +62,12 @@ public abstract class MessageSupport
         this.id = UUID.randomUUID();
 
         this.timestamp = System.currentTimeMillis();
+
+        //
+        // FIXME: This might end up skipping numbers, which while is okay, isn't really very nice
+        //
+        
+        this.sequence = SEQUENCE_COUNTER.getAndIncrement();
     }
 
     public String toString() {
@@ -76,6 +87,8 @@ public abstract class MessageSupport
     }
 
     public void setCorrelationId(final UUID id) {
+        assert id != null;
+        
         ensureWritable();
         
         this.correlationId = id;
@@ -83,6 +96,10 @@ public abstract class MessageSupport
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public long getSequence() {
+        return sequence;
     }
 
     public void setSession(final IoSession session) {
@@ -124,25 +141,25 @@ public abstract class MessageSupport
     public void readExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
 
-        type = buff.getEnum(MessageType.class);
-
         id = readUuid(buff);
 
         correlationId = readUuid(buff);
 
         timestamp = buff.getLong();
+
+        sequence = buff.getLong();
     }
 
     public void writeExternal(final ByteBuffer buff) throws Exception {
         assert buff != null;
-
-        buff.putEnum(type);
 
         writeUuid(buff, id);
 
         writeUuid(buff, correlationId);
 
         buff.putLong(timestamp);
+
+        buff.putLong(sequence);
     }
 
     //

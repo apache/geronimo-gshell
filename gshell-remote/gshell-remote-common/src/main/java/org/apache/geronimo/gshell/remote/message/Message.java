@@ -42,6 +42,8 @@ public interface Message
 
     long getTimestamp();
 
+    long getSequence();
+
     void setSession(IoSession session);
 
     IoSession getSession();
