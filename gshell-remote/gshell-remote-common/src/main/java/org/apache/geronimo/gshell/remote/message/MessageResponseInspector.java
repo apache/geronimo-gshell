@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -39,9 +40,9 @@ public class MessageResponseInspector
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private Set<UUID> registeredIds = new HashSet<UUID>();
+    private Set<UUID> registeredIds = Collections.synchronizedSet(new HashSet<UUID>());
 
-    public synchronized void register(final Request req) {
+    public void register(final Request req) {
         assert req != null;
 
         UUID id = (UUID) req.getId();
@@ -56,7 +57,7 @@ public class MessageResponseInspector
         }
     }
 
-    public synchronized void deregister(final Request req) {
+    public void deregister(final Request req) {
         assert req != null;
 
         UUID id = (UUID) req.getId();
@@ -73,7 +74,7 @@ public class MessageResponseInspector
     // ResponseInspector
     //
     
-    public synchronized Object getRequestId(final Object message) {
+    public Object getRequestId(final Object message) {
         if (message instanceof Message) {
             UUID id = ((Message)message).getCorrelationId();
 
