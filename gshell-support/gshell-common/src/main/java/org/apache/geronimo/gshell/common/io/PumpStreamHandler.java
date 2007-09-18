@@ -116,13 +116,17 @@ public class PumpStreamHandler
         setChildOutputStream(p.getInputStream());
         setChildErrorStream(p.getErrorStream());
     }
-
     /**
      * Start pumping the streams.
      */
     public void start() {
-        outputThread.start();
-        errorThread.start();
+        if (outputThread != null) {
+            outputThread.start();
+        }
+
+        if (errorThread != null) {
+            errorThread.start();
+        }
 
         if (inputPump != null) {
             Thread inputThread = new Thread(inputPump);
@@ -135,18 +139,22 @@ public class PumpStreamHandler
      * Stop pumping the streams.
      */
     public void stop() {
-        try {
-            outputThread.join();
-        }
-        catch (InterruptedException e) {
-            // ignore
+        if (outputThread != null) {
+            try {
+                outputThread.join();
+            }
+            catch (InterruptedException e) {
+                // ignore
+            }
         }
 
-        try {
-            errorThread.join();
-        }
-        catch (InterruptedException e) {
-            // ignore
+        if (errorThread != null) {
+            try {
+                errorThread.join();
+            }
+            catch (InterruptedException e) {
+                // ignore
+            }
         }
 
         if (inputPump != null) {
