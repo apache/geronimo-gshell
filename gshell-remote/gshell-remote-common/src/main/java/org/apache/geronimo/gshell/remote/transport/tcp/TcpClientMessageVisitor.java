@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * ???
+ * Defines the logic for client-side message processing.
  *
  * @version $Rev$ $Date$
  */

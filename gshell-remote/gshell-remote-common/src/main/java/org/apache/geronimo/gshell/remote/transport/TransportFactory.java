@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.transport;
 import java.net.URI;
 
 /**
- * ???
+ * Factory for producing client and server transport implementations.
  *
  * @version $Rev$ $Date$
  */

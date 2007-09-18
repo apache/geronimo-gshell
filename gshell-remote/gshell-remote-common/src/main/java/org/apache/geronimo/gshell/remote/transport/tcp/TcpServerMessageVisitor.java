@@ -33,7 +33,7 @@ import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * ???
+ * Defines the logic for server-side message processing.
  *
  * @version $Rev$ $Date$
  */

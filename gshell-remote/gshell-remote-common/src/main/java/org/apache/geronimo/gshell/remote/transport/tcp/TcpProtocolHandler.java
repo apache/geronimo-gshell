@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides the basic protocol handling for TCP-oriented clients and servers.
  *
  * @version $Rev$ $Date$
  */

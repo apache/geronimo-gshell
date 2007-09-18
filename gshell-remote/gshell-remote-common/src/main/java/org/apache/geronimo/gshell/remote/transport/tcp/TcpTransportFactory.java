@@ -29,7 +29,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
- * ???
+ * Produces TCP transport instances.
  *
  * @version $Rev$ $Date$
  */

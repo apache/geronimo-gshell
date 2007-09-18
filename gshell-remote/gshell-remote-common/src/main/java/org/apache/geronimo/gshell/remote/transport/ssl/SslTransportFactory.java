@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * ???
+ * Produces TCP+SSL transport instances.
  *
  * @version $Rev$ $Date$
  */

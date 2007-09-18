@@ -26,7 +26,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
- * ???
+ * Helper to locate a {@link TransportFactory} instance.
  *
  * @version $Rev$ $Date$
  */
@@ -44,8 +44,6 @@ public class TransportFactoryLocator
             throw new Exception("Invalid location; missing scheme: " + location);
         }
 
-        TransportFactory factory = (TransportFactory) container.lookup(TransportFactory.class, scheme);
-
-        return factory;
+        return (TransportFactory) container.lookup(TransportFactory.class, scheme);
     }
 }

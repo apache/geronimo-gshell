@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.transport;
 
 /**
- * ???
+ * Provides the server-side protocol interface.
  *
  * @version $Rev$ $Date$
  */

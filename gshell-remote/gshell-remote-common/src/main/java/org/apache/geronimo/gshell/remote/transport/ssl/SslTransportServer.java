@@ -27,7 +27,7 @@ import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.ssl.SSLFilter;
 
 /**
- * ???
+ * Provides TCP+SSL server-side support.
  *
  * @version $Rev$ $Date$
  */
