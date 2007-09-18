@@ -64,6 +64,9 @@ public class MessageResponseInspector
         if (registeredIds.remove(id)) {
             log.debug("Dereegistered request for ID: {}", id);
         }
+        else {
+            log.warn("Ignoring attempt to deregister unregistered request ID: {}", id);
+        }
     }
     
     //
