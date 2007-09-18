@@ -96,6 +96,10 @@ public class IoSessionOutputStream
             return;
         }
 
+        //
+        // TODO: Really need to provide an abstraction here to use the Transport interfaces
+        //
+        
         lastWriteFuture.awaitUninterruptibly();
         
         if (!lastWriteFuture.isWritten()) {
