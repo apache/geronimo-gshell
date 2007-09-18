@@ -17,26 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.filter;
-
-import org.apache.mina.common.IoEventType;
-
 /**
- * Custom logging filter to setup some better levels.
+ * Support for customized logging.
  *
  * @version $Rev$ $Date$
  */
-public class LoggingFilter
-    extends org.apache.mina.filter.logging.LoggingFilter
-{
-    public LoggingFilter() {
-        setLogLevel(IoEventType.EXCEPTION_CAUGHT, WARN);
-        setLogLevel(IoEventType.WRITE, TRACE);
-        setLogLevel(IoEventType.MESSAGE_RECEIVED, TRACE);
-        setLogLevel(IoEventType.MESSAGE_SENT, TRACE);
-        setLogLevel(IoEventType.SESSION_CLOSED, DEBUG);
-        setLogLevel(IoEventType.SESSION_CREATED, DEBUG);
-        setLogLevel(IoEventType.SESSION_IDLE, DEBUG);
-        setLogLevel(IoEventType.SESSION_OPENED, DEBUG);
-    }
-}
+package org.apache.geronimo.gshell.remote.logging;
