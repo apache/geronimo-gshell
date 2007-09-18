@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.common.Notification;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
+import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
@@ -105,7 +106,7 @@ public class RshServerMessageVisitor
     private RemoteShell getRemoteShell(final IoSession session) {
         assert session != null;
 
-        RemoteShell shell = (RemoteShell) session.getAttribute(RemoteShell.SESSION_KEY);
+        RemoteShell shell = (RemoteShell) session.getAttribute(RemoteShell.class.getName());
 
         if (shell == null) {
             throw new IllegalStateException("Remote shell not bound");
@@ -119,7 +120,7 @@ public class RshServerMessageVisitor
         assert shell != null;
 
         // Make sure that no session already exists
-        Object obj = session.getAttribute(RemoteShell.SESSION_KEY);
+        Object obj = session.getAttribute(RemoteShell.class.getName());
 
         if (obj != null) {
             throw new IllegalStateException("Remote shell already bound");
@@ -131,14 +132,14 @@ public class RshServerMessageVisitor
     private void unsetRemoteShell(final IoSession session) {
         assert session != null;
 
-        Object obj = session.getAttribute(RemoteShell.SESSION_KEY);
+        Object obj = session.getAttribute(RemoteShell.class.getName());
 
         // Complain if no remote shell has been bound
         if (obj != null) {
             log.warn("Ignoring request to unset remote shell; no shell is bound");
         }
         else {
-            session.removeAttribute(RemoteShell.SESSION_KEY);
+            session.removeAttribute(RemoteShell.class.getName());
         }
     }
 

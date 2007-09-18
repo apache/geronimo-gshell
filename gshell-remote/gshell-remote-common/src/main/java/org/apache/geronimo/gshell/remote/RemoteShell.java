@@ -17,23 +17,19 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.remote;
+
+import org.apache.geronimo.gshell.shell.Shell;
 
 /**
- * Support for {@link MessageVisitor} implementations.
+ * Common interface for remote shell support.
  *
  * @version $Rev$ $Date$
  */
-public class MessageVisitorAdapter
-    implements MessageVisitor
+public interface RemoteShell
+    extends Shell
 {
-    public void visitEcho(EchoMessage msg) throws Exception {}
+    boolean isOpened();
 
-    public void visitOpenShell(OpenShellMessage msg) throws Exception {}
-
-    public void visitCloseShell(CloseShellMessage msg) throws Exception {}
-
-    public void visitExecute(ExecuteMessage msg) throws Exception {}
-    
-    public void visitWriteStream(WriteStreamMessage msg) throws Exception {}
+    void close();
 }

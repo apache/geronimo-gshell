@@ -111,7 +111,7 @@ public class MessageCodecFactory
             msg.writeExternal(buff);
 
             buff.flip();
-            
+
             out.write(buff);
         }
 

@@ -34,9 +34,21 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public abstract class MessageVisitorSupport
-    extends MessageVisitorAdapter
+    implements MessageVisitor
 {
-    protected Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    //
+    // MessageVisitor
+    //
+
+    public void visitEcho(EchoMessage msg) throws Exception {}
+
+    public void visitOpenShell(OpenShellMessage msg) throws Exception {}
+
+    public void visitCloseShell(CloseShellMessage msg) throws Exception {}
+
+    public void visitExecute(ExecuteMessage msg) throws Exception {}
 
     //
     // Stream Access
@@ -65,33 +77,5 @@ public abstract class MessageVisitorSupport
 
 
         return out;
-    }
-
-    //
-    // MessageVisitor
-    //
-    
-    public void visitWriteStream(final WriteStreamMessage msg) throws Exception {
-        assert msg != null;
-
-        log.debug("Writing stream: {}", msg);
-
-        IoSession session = msg.getSession();
-
-        // Look up the bound stream in the session context
-        String key = Transport.STREAM_BASENAME + msg.getName();
-        Object stream = session.getAttribute(key);
-
-        // For now lets not toss any exceptions or send back any fault messages
-        if (stream == null) {
-            log.error("Stream is not registered: {}", key);
-        }
-        else if (!(stream instanceof SessionInputStream)) {
-            log.error("Stream is not for input: {}", key);
-        }
-        else {
-            SessionInputStream in = (SessionInputStream)stream;
-            in.write(msg.getBuffer());
-        }
     }
 }

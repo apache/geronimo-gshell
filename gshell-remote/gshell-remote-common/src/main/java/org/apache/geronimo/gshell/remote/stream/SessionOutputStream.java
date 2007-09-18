@@ -72,10 +72,10 @@ public class SessionOutputStream
     private synchronized void write(final ByteBuffer buff) throws IOException {
         ensureOpened();
 
-        log.trace("Writing stream from: {}", buff);
+        log.debug("Writing stream from: {}", buff);
 
-        WriteStreamMessage msg = new WriteStreamMessage("IN", buff);
-        
+        WriteStreamMessage msg = new WriteStreamMessage(buff);
+
         lastWriteFuture = session.write(msg);
     }
 
@@ -101,7 +101,7 @@ public class SessionOutputStream
             return;
         }
 
-        log.trace("Flushing stream...");
+        log.debug("Flushing stream...");
         
         lastWriteFuture.awaitUninterruptibly();
         
@@ -109,6 +109,6 @@ public class SessionOutputStream
             throw new IOException("The bytes could not be written to the session");
         }
 
-        log.trace("Flushed");
+        log.debug("Flushed");
     }
 }

@@ -29,14 +29,10 @@ import org.apache.mina.common.ByteBuffer;
 public class WriteStreamMessage
     extends MessageSupport
 {
-    private String name;
-
     private ByteBuffer buffer;
 
-    public WriteStreamMessage(final String name, final ByteBuffer buffer) {
+    public WriteStreamMessage(final ByteBuffer buffer) {
         super(MessageType.WRITE_STREAM);
-
-        this.name = name;
 
         if (buffer != null) {
             ByteBuffer tmp = ByteBuffer.allocate(buffer.remaining());
@@ -49,15 +45,7 @@ public class WriteStreamMessage
     }
 
     public WriteStreamMessage() {
-        this(null, null);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
+        this(null);
     }
 
     public ByteBuffer getBuffer() {
@@ -73,8 +61,6 @@ public class WriteStreamMessage
 
         super.readExternal(in);
 
-        name = readString(in);
-
         buffer = readBuffer(in);
     }
 
@@ -83,14 +69,6 @@ public class WriteStreamMessage
 
         super.writeExternal(out);
 
-        writeString(out, name);
-
         writeBuffer(out, buffer);
-    }
-
-    public void process(final MessageVisitor visitor) throws Exception {
-        assert visitor != null;
-
-        visitor.visitWriteStream(this);
     }
 }

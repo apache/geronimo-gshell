@@ -25,8 +25,8 @@ import java.io.FileReader;
 
 import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.InstantiationStrategy;
@@ -43,11 +43,9 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 @Component(role=RemoteShell.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
-public class RemoteShell
-    implements Shell, Initializable
+public class DefaultRemoteShell
+    implements RemoteShell, Initializable
 {
-    public static final String SESSION_KEY = RemoteShell.class.getName();
-
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement

@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.stream.StreamFeeder;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -40,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public class RemoteShellProxy
-    implements InteractiveShell
+    implements RemoteShell, InteractiveShell
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -79,7 +80,7 @@ public class RemoteShellProxy
 
     public Environment getEnvironment() {
         ensureOpened();
-
+        
         throw new Error("TODO");
     }
 

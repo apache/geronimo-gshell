@@ -156,11 +156,15 @@ public class SessionInputStream
         released = true;
     }
 
-    public void write(final ByteBuffer src) {
+    public void write(final WriteStreamMessage msg) {
+        assert msg != null;
+        
         synchronized (mutex) {
             if (closed) {
                 return;
             }
+
+            ByteBuffer src = msg.getBuffer();
 
             log.debug("Filling {} byte(s) into stream from: {}", src.remaining(), src);
             

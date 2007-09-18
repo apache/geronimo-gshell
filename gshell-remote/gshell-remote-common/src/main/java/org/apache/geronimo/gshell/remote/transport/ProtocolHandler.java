@@ -19,12 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.transport;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageResponseInspector;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
+import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.mina.common.IdleStatus;
@@ -74,7 +72,7 @@ public class ProtocolHandler
     // Stream Access
     //
 
-    private void setInputStream(final IoSession session, final InputStream in) {
+    private void setInputStream(final IoSession session, final SessionInputStream in) {
         assert session != null;
         assert in != null;
 
@@ -89,10 +87,10 @@ public class ProtocolHandler
         log.debug("Bound input stream: {}", in);
     }
 
-    private InputStream getInputStream(final IoSession session) {
+    private SessionInputStream getInputStream(final IoSession session) {
         assert session != null;
 
-        InputStream in = (InputStream) session.getAttribute(Transport.INPUT_STREAM);
+        SessionInputStream in = (SessionInputStream) session.getAttribute(Transport.INPUT_STREAM);
 
         if (in == null) {
             throw new IllegalStateException("Input stream not bound");
@@ -101,13 +99,13 @@ public class ProtocolHandler
         return in;
     }
 
-    private InputStream removeInputStream(final IoSession session) {
+    private SessionInputStream removeInputStream(final IoSession session) {
         assert session != null;
 
-        return (InputStream) session.removeAttribute(Transport.INPUT_STREAM);
+        return (SessionInputStream) session.removeAttribute(Transport.INPUT_STREAM);
     }
 
-    private void setOutputStream(final IoSession session, final OutputStream out) {
+    private void setOutputStream(final IoSession session, final SessionOutputStream out) {
         assert session != null;
         assert out != null;
 
@@ -122,10 +120,10 @@ public class ProtocolHandler
         log.debug("Bound output stream: {}", out);
     }
 
-    private OutputStream getOutputStream(final IoSession session) {
+    private SessionOutputStream getOutputStream(final IoSession session) {
         assert session != null;
 
-        OutputStream out = (OutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
+        SessionOutputStream out = (SessionOutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
 
         if (out == null) {
             throw new IllegalStateException("Output stream not bound");
@@ -135,10 +133,10 @@ public class ProtocolHandler
         return out;
     }
 
-    private OutputStream removeOutputStream(final IoSession session) {
+    private SessionOutputStream removeOutputStream(final IoSession session) {
         assert session != null;
 
-        return (OutputStream) session.removeAttribute(Transport.OUTPUT_STREAM);
+        return (SessionOutputStream) session.removeAttribute(Transport.OUTPUT_STREAM);
     }
 
     //
@@ -192,7 +190,7 @@ public class ProtocolHandler
         //
         // TODO: Need to handle Exception muck, and send faul messages back to clients
         //
-        
+
         if (obj instanceof Message) {
             //
             // This is the main protocol action, set the session, freeze the message and
@@ -201,9 +199,19 @@ public class ProtocolHandler
 
             Message msg = (Message)obj;
 
-            if (visitor != null) {
-                msg.setSession(session);
-                msg.freeze();
+            msg.setSession(session);
+            msg.freeze();
+
+            if (msg instanceof WriteStreamMessage) {
+                //
+                // HACK: See if this fucking works...
+                //
+
+                SessionInputStream in = getInputStream(session);
+
+                in.write((WriteStreamMessage)msg);
+            }
+            else if (visitor != null) {
                 msg.process(visitor);
             }
             else {
