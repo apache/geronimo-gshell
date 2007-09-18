@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.command.descriptor;
 
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 
 /**
  * Descriptor for a command.
@@ -39,5 +40,9 @@ public class CommandDescriptor
         assert id != null;
 
         this.id = id;
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.command.descriptor;
 import java.util.List;
 
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 
 /**
  * Descriptor for a set of commands.
@@ -61,5 +62,9 @@ public class CommandSetDescriptor
 
     public List<CommandDescriptor> getCommandDescriptors() {
         return getComponents();
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

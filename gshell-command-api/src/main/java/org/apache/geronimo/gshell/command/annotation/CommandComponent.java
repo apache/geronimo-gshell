@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to mark classes as GShell commands implementations.
+ * Annotation to mark classes as GShell command component implementations.
  *
  * @version $Rev$ $Date$
  */
