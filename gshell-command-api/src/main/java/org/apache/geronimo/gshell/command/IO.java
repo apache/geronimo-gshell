@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 
 import org.apache.geronimo.gshell.ansi.RenderWriter;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.slf4j.helpers.MessageFormatter;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -126,6 +127,10 @@ public class IO
         this(System.in, System.out, System.err);
     }
 
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+    
     /**
      * Set the verbosity level.
      *
@@ -231,6 +236,18 @@ public class IO
 
     public void info(final String format, final Object... args) {
         if (!isQuiet()) {
+            out.println(MessageFormatter.arrayFormat(format, args));
+        }
+    }
+
+    public void verbose(final String msg) {
+        if (isVerbose()) {
+            out.println(msg);
+        }
+    }
+
+    public void verbose(final String format, final Object... args) {
+        if (isVerbose()) {
             out.println(MessageFormatter.arrayFormat(format, args));
         }
     }
