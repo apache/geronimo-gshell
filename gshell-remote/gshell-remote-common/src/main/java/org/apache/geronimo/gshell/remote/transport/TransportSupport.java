@@ -23,7 +23,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.remote.logging.LoggingFilter;
-import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.codec.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoService;

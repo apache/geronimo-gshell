@@ -19,6 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Collections;
+
 /**
  * Enumeration of supported message types and factory for message instances.
  *
@@ -66,5 +70,15 @@ public enum MessageType
         catch (IllegalAccessException e) {
             throw new Error(e);
         }
+    }
+
+    public static Set<Class> types() {
+        Set<Class> set = new HashSet<Class>();
+
+        for (MessageType type : values()) {
+            set.add(type.type);
+        }
+
+        return Collections.unmodifiableSet(set);
     }
 }
