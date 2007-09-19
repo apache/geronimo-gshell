@@ -104,9 +104,17 @@ public class IO
         //       be ANSI-aware instead of this...
         //
 
+
         this.out = new RenderWriter(outputStream, autoFlush);
-        this.err = new RenderWriter(errorStream, autoFlush);
-        
+
+        /// Don't rewrite the error stream if we have the same stream for out and error
+        if (isSharedOutputStreams()) {
+            this.err = this.out;
+        }
+        else {
+            this.err = new RenderWriter(errorStream, autoFlush);
+        }
+
         // this.out = new PrintWriter(out, autoFlush);
         // this.err = new PrintWriter(err, autoFlush);
     }
@@ -154,7 +162,15 @@ public class IO
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
+
+    //
+    // FIXME: Find a better name for this method.
+    //
     
+    public boolean isSharedOutputStreams() {
+        return outputStream == errorStream;
+    }
+
     /**
      * Set the verbosity level.
      *
@@ -209,7 +225,11 @@ public class IO
      */
     public void flush() {
         out.flush();
-        err.flush();
+
+        // Only attempt to flush the err stream if we aren't sharing it with out
+        if (!isSharedOutputStreams()) {
+            err.flush();
+        }
     }
 
     /**
@@ -218,7 +238,11 @@ public class IO
     public void close() throws IOException {
         IOUtil.close(in);
         IOUtil.close(out);
-        IOUtil.close(err);
+
+        // Only attempt to close the err stream if we aren't sharing it with out
+        if (!isSharedOutputStreams()) {
+            IOUtil.close(err);
+        }
     }
 
     //
