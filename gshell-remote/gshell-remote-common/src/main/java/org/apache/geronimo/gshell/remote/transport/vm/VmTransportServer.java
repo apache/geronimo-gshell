@@ -21,11 +21,8 @@ package org.apache.geronimo.gshell.remote.transport.vm;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.geronimo.gshell.remote.security.SecurityFilter;
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.apache.geronimo.gshell.remote.transport.TransportSupport;
-import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
+import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.transport.vmpipe.VmPipeAcceptor;
 import org.apache.mina.transport.vmpipe.VmPipeAddress;
 
@@ -35,81 +32,13 @@ import org.apache.mina.transport.vmpipe.VmPipeAddress;
  * @version $Rev$ $Date$
  */
 public class VmTransportServer
-    extends TransportSupport
-    implements TransportServer
+    extends TcpTransportServer
 {
-    protected final URI location;
-
-    protected final VmPipeAddress address;
-
-    protected VmPipeAcceptor acceptor;
-
-    protected boolean bound;
-
-    private SecurityFilter securityFilter;
-
     public VmTransportServer(final URI location) throws Exception {
-        assert location != null;
-
-        this.location = location;
-        this.address = new VmPipeAddress(location.getPort());
+        super(location, new VmPipeAddress(location.getPort()));
     }
 
-    public URI getLocation() {
-        return location;
-    }
-
-    //
-    // NOTE: Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
-    //
-
-    public void setSecurityFilter(final SecurityFilter securityFilter) {
-        this.securityFilter = securityFilter;
-    }
-
-    protected SecurityFilter getSecurityFilter() {
-        if (securityFilter == null) {
-            throw new IllegalStateException("Security filter not bound");
-        }
-
-        return securityFilter;
-    }
-
-    protected synchronized void init() throws Exception {
-        acceptor = new VmPipeAcceptor();
-        acceptor.setLocalAddress(address);
-
-        //
-        // HACK: Need to manually wire in the visitor impl for now... :-(
-        //
-
-        setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "server"));
-
-        configure(acceptor);
-
-        DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
-
-        // Install the authentication filter right after the protocol filter
-        filterChain.addAfter(PROTOCOL_FILTER_NAME, SecurityFilter.NAME, getSecurityFilter());
-    }
-
-    public synchronized void bind() throws Exception {
-        if (bound) {
-            throw new IllegalStateException("Already bound");
-        }
-
-        init();
-
-        acceptor.bind();
-
-        bound = true;
-
-        log.info("Listening on: {}", address);
-    }
-
-    public synchronized void close() {
-        acceptor.unbind();
-
-        log.info("Closed");
+    protected IoAcceptor createAcceptor() throws Exception {
+        return new VmPipeAcceptor();
     }
 }

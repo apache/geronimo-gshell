@@ -24,6 +24,7 @@ import java.net.URI;
 import org.apache.geronimo.gshell.remote.ssl.SSLContextFactory;
 import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.filter.ssl.SslFilter;
 
 /**
@@ -48,7 +49,7 @@ public class SslTransport
         SslFilter sslFilter = new SslFilter(sslContextFactory.createClientContext());
         sslFilter.setUseClientMode(true);
 
-        filterChain.addFirst("ssl", sslFilter);
+        filterChain.addAfter(ExecutorFilter.class.getSimpleName(), SslFilter.class.getSimpleName(), sslFilter);
     }
 
     //

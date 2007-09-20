@@ -63,8 +63,8 @@ public class RshClient
         this.crypto = crypto;
 
         // And then lets connect to the remote server
-        transport = factory.connect(remote, local);
-
+        this.transport = factory.connect(remote, local);
+        
         log.debug("Connected to: {}", remote);
     }
 
@@ -72,17 +72,17 @@ public class RshClient
         assert username != null;
         assert password != null;
 
-        log.info("Starting handshake", username);
+        log.debug("Starting handshake", username);
 
         HandShakeMessage.Result handShakeResult = (HandShakeMessage.Result) transport.request(new HandShakeMessage(crypto.getPublicKey()));
         
         PublicKey serverKey = handShakeResult.getPublicKey();
 
-        log.info("Logging in: {}", username);
+        log.debug("Logging in: {}", username);
 
         LoginMessage.Result loginResult = (LoginMessage.Result) transport.request(new LoginMessage(serverKey, username, password));
 
-        log.info("Login Result: {}", loginResult);
+        log.debug("Login Result: {}", loginResult);
     }
     
     public void echo(final String text) throws Exception {
@@ -92,36 +92,33 @@ public class RshClient
     }
 
     public void openShell() throws Exception {
-        log.info("Opening remote shell");
+        log.debug("Opening remote shell");
 
         Message resp = transport.request(new OpenShellMessage());
 
-        log.info("Response: {}", resp);
+        //
+        // TODO: Need some context from the response
+        //
+
+        // log.debug("Response: {}", resp);
     }
 
     public void closeShell() throws Exception {
-        log.info("Closing remote shell");
+        log.debug("Closing remote shell");
 
         Message resp = transport.request(new CloseShellMessage());
 
-        log.info("Response: {}", resp);
+        //
+        // TODO: Need some context from the response
+        //
+        
+        // log.debug("Response: {}", resp);
     }
 
     private Object doExecute(final ExecuteMessage msg) throws Exception {
         assert msg != null;
 
         ExecuteMessage.Result result = (ExecuteMessage.Result) transport.request(msg);
-
-        // Handle result faults
-        if (result instanceof ExecuteMessage.Fault) {
-            ExecuteMessage.Fault fault = (ExecuteMessage.Fault)result;
-
-            //
-            // FIXME: Use better exception type here
-            //
-            
-            throw new Exception("Remote command execution fault", fault.getCause());
-        }
 
         // Handle result notifications
         if (result instanceof ExecuteMessage.Notification) {
@@ -130,9 +127,16 @@ public class RshClient
             throw n.getNotification();
         }
 
+        // Handle result faults
+        if (result instanceof ExecuteMessage.Fault) {
+            ExecuteMessage.Fault fault = (ExecuteMessage.Fault)result;
+
+            throw new RemoteExecuteException(fault.getCause());
+        }
+
         Object rv = result.getResult();
 
-        log.info("Command result: {}", rv);
+        log.debug("Command result: {}", rv);
 
         return rv;
     }
@@ -140,15 +144,11 @@ public class RshClient
     public Object execute(final String line) throws Exception {
         assert line != null;
 
-        log.info("Executing (String): {}", line);
-
         return doExecute(new ExecuteMessage(line));
     }
 
     public Object execute(final Object... args) throws Exception {
         assert args != null;
-
-        log.info("Executing (Object[]): {}", args);
 
         return doExecute(new ExecuteMessage(args));
     }
@@ -156,8 +156,6 @@ public class RshClient
     public Object execute(final String path, final Object[] args) throws Exception {
         assert path != null;
         assert args != null;
-
-        log.info("Executing (String,Object[]): {}, {}", path, args);
 
         return doExecute(new ExecuteMessage(path, args));
     }

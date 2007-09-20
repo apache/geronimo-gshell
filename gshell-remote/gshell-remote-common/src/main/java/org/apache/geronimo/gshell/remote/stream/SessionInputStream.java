@@ -17,17 +17,19 @@
  * under the License.
  */
 
-//
-// NOTE: Snatched from Apache Mina
-//
-
 package org.apache.geronimo.gshell.remote.stream;
+
+//
+// NOTE: Snatched and massaged from Apache Mina
+//
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.geronimo.gshell.remote.message.WriteStreamMessage;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,7 @@ import org.slf4j.LoggerFactory;
 public class SessionInputStream
     extends InputStream
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LoggerFactory.getLogger(SessionInputStream.class);
     
     private final Object mutex = new Object();
 
@@ -52,12 +54,15 @@ public class SessionInputStream
     private IOException exception;
 
     public SessionInputStream() {
-        buff = ByteBuffer.allocate(256);
+        buff = ByteBuffer.allocate(16);
         buff.setAutoExpand(true);
-        // buff.limit(0);
+        buff.limit(0);
     }
 
-    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
     public int available() {
         if (released) {
             return 0;
@@ -69,7 +74,6 @@ public class SessionInputStream
         }
     }
 
-    @Override
     public void close() {
         if (closed) {
             return;
@@ -77,13 +81,13 @@ public class SessionInputStream
 
         synchronized (mutex) {
             closed = true;
+
             releaseBuffer();
 
             mutex.notifyAll();
         }
     }
 
-    @Override
     public int read() throws IOException {
         synchronized (mutex) {
             if (!waitForData()) {
@@ -94,7 +98,6 @@ public class SessionInputStream
         }
     }
 
-    @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
         synchronized (mutex) {
             if (!waitForData()) {
@@ -136,6 +139,7 @@ public class SessionInputStream
 
         if (exception != null) {
             releaseBuffer();
+
             throw exception;
         }
 
@@ -158,7 +162,9 @@ public class SessionInputStream
 
     public void write(final WriteStreamMessage msg) {
         assert msg != null;
-        
+
+        log.debug("Writing...");
+
         synchronized (mutex) {
             if (closed) {
                 return;
@@ -167,21 +173,24 @@ public class SessionInputStream
             ByteBuffer src = msg.getBuffer();
 
             log.debug("Filling {} byte(s) into stream from: {}", src.remaining(), src);
-            
+
             if (buff.hasRemaining()) {
                 log.debug("Buffer has remaining: {} byte(s)", buff.remaining());
-                
+
                 buff.compact();
+                buff.put(src);
+                buff.flip();
             }
             else {
                 buff.clear();
+                buff.put(src);
+                buff.flip();
+
+                mutex.notifyAll();
             }
-
-            buff.put(src);
-            buff.flip();
-
-            mutex.notifyAll();
         }
+
+        log.debug("Done");
     }
 
     public void throwException(final IOException e) {
@@ -192,5 +201,42 @@ public class SessionInputStream
                 mutex.notifyAll();
             }
         }
+    }
+
+    //
+    // Session Access
+    //
+
+    public static SessionInputStream lookup(final IoSession session) {
+        assert session != null;
+
+        SessionInputStream in = (SessionInputStream) session.getAttribute(SessionInputStream.class.getName());
+
+        if (in == null) {
+            throw new IllegalStateException("Input stream not bound");
+        }
+
+        return in;
+    }
+
+    public static void bind(final IoSession session, final SessionInputStream in) {
+        assert session != null;
+        assert in != null;
+
+        Object obj = session.getAttribute(SessionInputStream.class.getName());
+
+        if (obj != null) {
+            throw new IllegalStateException("Input stream already bound");
+        }
+
+        session.setAttribute(SessionInputStream.class.getName(), in);
+
+        log.trace("Bound input stream: {}", in);
+    }
+
+    public static SessionInputStream unbind(final IoSession session) {
+        assert session != null;
+
+        return (SessionInputStream) session.removeAttribute(SessionInputStream.class.getName());
     }
 }

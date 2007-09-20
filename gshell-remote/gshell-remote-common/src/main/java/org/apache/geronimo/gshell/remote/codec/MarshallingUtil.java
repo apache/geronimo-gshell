@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell.remote.codec;
 
-import java.io.IOException;
 import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
 import java.util.UUID;
 
 import org.apache.mina.common.ByteBuffer;

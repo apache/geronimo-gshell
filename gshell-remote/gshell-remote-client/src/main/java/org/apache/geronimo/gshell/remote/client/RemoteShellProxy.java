@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 public class RemoteShellProxy
     implements RemoteShell, InteractiveShell
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private RshClient client;
 
@@ -71,11 +71,15 @@ public class RemoteShellProxy
         
         client.openShell();
 
+        //
+        // HACK: Turn this off for the moment to test more...
+        //
+        
         // Copy the client's input stream to our outputstream so users see command output
-        outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);
-        outputFeeder.createThread().start();
+        // outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);
+        // outputFeeder.createThread().start();
 
-        this.opened = true;             
+        opened = true;
     }
 
     public Environment getEnvironment() {
@@ -101,9 +105,9 @@ public class RemoteShellProxy
     }
 
     public void close() {
-        try {
-            outputFeeder.close();
+        // outputFeeder.close();
 
+        try {
             client.closeShell();
         }
         catch (Exception e) {
@@ -186,7 +190,7 @@ public class RemoteShellProxy
 
             public String prompt() {
                 //
-                // FIXME:
+                // TODO: Get the real details and ue them...
                 //
 
                 String userName = "user"; // shellInfo.getUserName();
@@ -202,11 +206,8 @@ public class RemoteShellProxy
                 assert error != null;
 
                 //
-                // FIXME:
+                // TODO: Do something here...
                 //
-                
-                log.error("FIXME: " + error, error);
-
 
                 return Result.CONTINUE;
             }

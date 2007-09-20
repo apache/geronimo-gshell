@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
+import java.io.PrintWriter;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,6 +36,8 @@ import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
+import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
+import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.ContainerConfiguration;
@@ -60,10 +64,6 @@ public class RshServerMessageVisitor
     @Requirement
     private PlexusContainer container;
 
-    //
-    // Remote Shell Access
-    //
-
     private ClassWorld getClassWorld() {
         return container.getContainerRealm().getWorld();
     }
@@ -81,7 +81,7 @@ public class RshServerMessageVisitor
         session.setAttribute(PlexusContainer.class.getName(), container);
 
         // Setup the I/O context (w/o auto-flushing)
-        IO io = new IO(getInputStream(session), getOutputStream(session), false);
+        IO io = new IO(SessionInputStream.lookup(session), SessionOutputStream.lookup(session), false);
 
         //
         // FIXME: We need to set the verbosity of this I/O context as specified by the client
@@ -154,7 +154,34 @@ public class RshServerMessageVisitor
 
         String text = msg.getText();
 
-        msg.reply(new EchoMessage(text));
+        //
+        // HACK:
+        //
+        
+        if ("NOISE MAKER".equals(text)) {
+            log.info("Making noise...");
+            
+            final IoSession session = msg.getSession();
+            final PrintWriter out = new PrintWriter(SessionOutputStream.lookup(session), false);
+
+            new Thread("NOISE MAKER") {
+                public void run() {
+                    while (true) {
+                        out.println("FROM SERVER: " + new Date());
+                        out.flush();
+                        
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
+        }
+        else {
+            msg.reply(new EchoMessage(text));
+        }
     }
 
     public void visitOpenShell(final OpenShellMessage msg) throws Exception {
@@ -195,7 +222,7 @@ public class RshServerMessageVisitor
         msg.reply(new EchoMessage("CLOSE SHELL SUCCESS"));
     }
 
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private ExecutorService executor = Executors.newCachedThreadPool();
 
     public void visitExecute(final ExecuteMessage msg) throws Exception {
         assert msg != null;
@@ -206,7 +233,7 @@ public class RshServerMessageVisitor
 
         final RemoteShell shell = getRemoteShell(session);
 
-        Runnable executeCommandTask = new Runnable() {
+        Runnable task = new Runnable() {
             public void run() {
                 log.info("EXECUTE: {}", msg);
                 
@@ -241,6 +268,12 @@ public class RshServerMessageVisitor
             }
         };
 
-        executorService.submit(executeCommandTask);
+        task.run();
+
+        //
+        // HACK: More blind testing...
+        //
+
+        // executor.execute(task);
     }
 }

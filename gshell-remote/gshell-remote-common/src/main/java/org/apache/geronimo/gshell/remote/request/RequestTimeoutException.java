@@ -17,30 +17,23 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.remote.request;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//
+// NOTE: Snatched and massaged from Apache Mina
+//
 
 /**
- * Provides support for {@link MessageVisitor} implementations.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public abstract class MessageVisitorSupport
-    implements MessageVisitor
+public class RequestTimeoutException
+    extends RequestException
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private static final long serialVersionUID = 1;
 
-    //
-    // MessageVisitor
-    //
-
-    public void visitEcho(EchoMessage msg) throws Exception {}
-
-    public void visitOpenShell(OpenShellMessage msg) throws Exception {}
-
-    public void visitCloseShell(CloseShellMessage msg) throws Exception {}
-
-    public void visitExecute(ExecuteMessage msg) throws Exception {}
+    public RequestTimeoutException(final Request request) {
+        super("Request timed out: " + request, request);
+    }
 }

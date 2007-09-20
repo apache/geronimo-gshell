@@ -20,9 +20,8 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import java.io.IOException;
-import java.util.UUID;
 
-import org.apache.mina.common.ByteBuffer;
+import org.apache.geronimo.gshell.remote.codec.Externalizable;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 
@@ -32,12 +31,13 @@ import org.apache.mina.common.WriteFuture;
  * @version $Rev$ $Date$
  */
 public interface Message
+    extends Externalizable
 {
-    UUID getId();
+    Object getId();
 
-    UUID getCorrelationId();
+    Object getCorrelationId();
 
-    void setCorrelationId(UUID id);
+    void setCorrelationId(Object id);
 
     MessageType getType() throws IOException;
 
@@ -56,8 +56,4 @@ public interface Message
     boolean isFrozen();
 
     WriteFuture reply(Message msg);
-
-    void readExternal(ByteBuffer in) throws Exception;
-
-    void writeExternal(ByteBuffer out) throws Exception;
 }

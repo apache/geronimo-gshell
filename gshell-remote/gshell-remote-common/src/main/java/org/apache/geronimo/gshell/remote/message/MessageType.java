@@ -19,9 +19,11 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Collections;
+
+import org.apache.geronimo.gshell.remote.stream.WriteStreamMessage;
 
 /**
  * Enumeration of supported message types and factory for message instances.

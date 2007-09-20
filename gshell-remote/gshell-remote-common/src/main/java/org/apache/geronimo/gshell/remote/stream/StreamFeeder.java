@@ -40,7 +40,7 @@ public class StreamFeeder
 
     private final OutputStream output;
 
-    private boolean running;
+    private volatile boolean running;
 
     public StreamFeeder(final InputStream input, final OutputStream output) {
         assert input != null;

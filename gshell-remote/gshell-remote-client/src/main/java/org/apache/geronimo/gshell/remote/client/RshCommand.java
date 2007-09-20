@@ -45,7 +45,7 @@ public class RshCommand
     @Argument(metaVar="URI", required=true, index=0)
     private URI remote;
 
-    @Argument(metaVar="COMMAND", index=1)
+    @Argument(metaVar="COMMAND", index=1, multiValued=true)
     private List<String> command = new ArrayList<String>();
 
     @Requirement
@@ -65,6 +65,8 @@ public class RshCommand
 
         client.login("jason", "password");
 
+        // client.echo("NOISE MAKER");
+        
         RemoteShellProxy shell = new RemoteShellProxy(client, io, terminal);
 
         shell.run(command.toArray());

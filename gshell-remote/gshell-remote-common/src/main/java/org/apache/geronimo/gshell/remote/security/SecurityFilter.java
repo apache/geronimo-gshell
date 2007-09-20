@@ -45,8 +45,6 @@ import org.slf4j.LoggerFactory;
 public class SecurityFilter
     extends IoFilterAdapter
 {
-    public static final String NAME = "security";
-    
     private static final String AUTHENTICATED_KEY = SecurityFilter.class.getName() + ".authenticated";
 
     private static final String REMOTE_PUBLIC_KEY_KEY = SecurityFilter.class.getName() + ".remotePublicKey";
@@ -66,6 +64,10 @@ public class SecurityFilter
     private final UUID securityToken;
 
     public SecurityFilter() throws Exception {
+        //
+        // TODO: Would be nice to use the schedular from the transport and not create another one... ?? or not...
+        //
+        
         scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
 
         //
@@ -157,7 +159,11 @@ public class SecurityFilter
             
             // And then send back our public key to the remote client
             msg.reply(new HandShakeMessage.Result(crypto.getPublicKey()));
-            
+
+            //
+            // NOTE: Don't wait on the write future
+            //
+
             // Schedule a task to timeout the login process
             scheduleTimeout(session);
         }
@@ -191,6 +197,10 @@ public class SecurityFilter
                 log.info("Successfull authentication for user: {}, at location: {}", username, session.getRemoteAddress());
 
                 msg.reply(new LoginMessage.Result());
+
+                //
+                // NOTE: Don't wait on the write future
+                //
             }
         }
     }
@@ -209,7 +219,7 @@ public class SecurityFilter
     }
 
     private ScheduledFuture scheduleTimeout(final IoSession session) {
-        return scheduleTimeout(session, 10, TimeUnit.SECONDS);
+        return scheduleTimeout(session, 30, TimeUnit.SECONDS);
     }
     
     private boolean cancelTimeout(final IoSession session) {

@@ -29,16 +29,15 @@ import org.apache.mina.common.IoEventType;
 public class LoggingFilter
     extends org.apache.mina.filter.logging.LoggingFilter
 {
-    public static final String NAME = "logging";
-    
     public LoggingFilter() {
-        setLogLevel(IoEventType.EXCEPTION_CAUGHT, WARN);
-        setLogLevel(IoEventType.WRITE, TRACE);
-        setLogLevel(IoEventType.MESSAGE_RECEIVED, TRACE);
-        setLogLevel(IoEventType.MESSAGE_SENT, TRACE);
-        setLogLevel(IoEventType.SESSION_CLOSED, DEBUG);
-        setLogLevel(IoEventType.SESSION_CREATED, DEBUG);
-        setLogLevel(IoEventType.SESSION_IDLE, DEBUG);
-        setLogLevel(IoEventType.SESSION_OPENED, DEBUG);
+        setLogLevel(IoEventType.EXCEPTION_CAUGHT,   WARN);
+        setLogLevel(IoEventType.MESSAGE_RECEIVED,   DEBUG);
+        setLogLevel(IoEventType.MESSAGE_SENT,       DEBUG);
+        setLogLevel(IoEventType.SESSION_CLOSED,     DEBUG);
+        setLogLevel(IoEventType.SESSION_CREATED,    DEBUG);
+        setLogLevel(IoEventType.SESSION_IDLE,       DEBUG);
+        setLogLevel(IoEventType.SESSION_OPENED,     DEBUG);
+        setLogLevel(IoEventType.WRITE,              DEBUG);
+        setLogLevel(IoEventType.CLOSE,              DEBUG);
     }
 }

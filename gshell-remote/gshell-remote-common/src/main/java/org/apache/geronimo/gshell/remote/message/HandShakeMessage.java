@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.remote.message;
 
 import java.security.PublicKey;
 
+import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
 import org.apache.mina.common.ByteBuffer;
 
 //
@@ -69,7 +70,7 @@ public class HandShakeMessage
 
         super.readExternal(in);
 
-        byte[] bytes = readBytes(in);
+        byte[] bytes = MarshallingUtil.readBytes(in);
         
         if (bytes == null) {
             throw new IllegalStateException();
@@ -83,7 +84,7 @@ public class HandShakeMessage
 
         super.writeExternal(out);
 
-        writeBytes(out, getPublicKey().getEncoded());
+        MarshallingUtil.writeBytes(out, getPublicKey().getEncoded());
     }
 
     /**

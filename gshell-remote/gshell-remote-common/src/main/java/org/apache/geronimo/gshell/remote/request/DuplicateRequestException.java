@@ -17,30 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.geronimo.gshell.remote.request;
 
 /**
- * Provides support for {@link MessageVisitor} implementations.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public abstract class MessageVisitorSupport
-    implements MessageVisitor
+public class DuplicateRequestException
+    extends RequestException
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-
-    //
-    // MessageVisitor
-    //
-
-    public void visitEcho(EchoMessage msg) throws Exception {}
-
-    public void visitOpenShell(OpenShellMessage msg) throws Exception {}
-
-    public void visitCloseShell(CloseShellMessage msg) throws Exception {}
-
-    public void visitExecute(ExecuteMessage msg) throws Exception {}
+    public DuplicateRequestException(final Request req) {
+        super("Duplicate request for ID: " + req.getId(), req);
+    }
 }

@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -73,9 +74,9 @@ public class ExecuteMessage
 
         this.flavor = in.getEnum(Flavor.class);
 
-        this.path = readString(in);
+        this.path = MarshallingUtil.readString(in);
 
-        this.args = (Object[]) readObject(in);
+        this.args = (Object[]) MarshallingUtil.readObject(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -85,9 +86,9 @@ public class ExecuteMessage
 
         out.putEnum(flavor);
 
-        writeString(out, path);
+        MarshallingUtil.writeString(out, path);
 
-        writeObject(out, args);
+        MarshallingUtil.writeObject(out, args);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {
@@ -160,7 +161,7 @@ public class ExecuteMessage
 
             super.readExternal(in);
 
-            result = readObject(in);
+            result = MarshallingUtil.readObject(in);
         }
 
         public void writeExternal(final ByteBuffer out) throws Exception {
@@ -168,7 +169,7 @@ public class ExecuteMessage
 
             super.writeExternal(out);
 
-            writeObject(out, result);
+            MarshallingUtil.writeObject(out, result);
         }
     }
 

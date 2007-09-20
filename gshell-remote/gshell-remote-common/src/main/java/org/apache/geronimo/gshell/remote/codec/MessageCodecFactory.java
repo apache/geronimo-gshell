@@ -22,26 +22,29 @@ package org.apache.geronimo.gshell.remote.codec;
 import java.io.ByteArrayOutputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import java.util.Set;
 import java.util.Arrays;
+import java.util.Set;
 
-import org.apache.geronimo.gshell.remote.message.Message;
-import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContextAware;
+import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
+import org.apache.mina.filter.codec.ProtocolCodecException;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
-import org.apache.mina.filter.codec.ProtocolCodecException;
 import org.apache.mina.filter.codec.demux.DemuxingProtocolCodecFactory;
+import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderAdapter;
+import org.apache.mina.filter.codec.demux.MessageDecoderFactory;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 import org.apache.mina.filter.codec.demux.MessageEncoder;
+import org.apache.mina.filter.codec.demux.MessageEncoderFactory;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Provides encoding and decoding support for {@link Message} instances.
@@ -68,16 +71,15 @@ public class MessageCodecFactory
     private CryptoContext crypto;
 
     public MessageCodecFactory() {
-        register(new Decoder());
+        register(new DecoderFactory());
 
-        //noinspection unchecked
-        register(new Encoder());
+        register(new EncoderFactory());
     }
 
     private void attachCryptoContext(final Message msg) {
         // We need to do a little bit of extra fluff to hook up support for encrypted messages
         if (msg instanceof CryptoContextAware) {
-            log.debug("Attaching crypto context to: {}", msg);
+            log.trace("Attaching crypto context to: {}", msg);
 
             ((CryptoContextAware)msg).setCryptoContext(crypto);
         }
@@ -124,7 +126,7 @@ public class MessageCodecFactory
     private byte[] marshal(final Message msg) throws Exception {
         assert msg != null;
 
-        log.debug("Marshalling: {}", msg);
+        log.trace("Marshalling: {}", msg);
         
         ByteBuffer out = ByteBuffer.allocate(256, false);
         out.setAutoExpand(true);
@@ -160,7 +162,7 @@ public class MessageCodecFactory
 
         byte[] bytes = baos.toByteArray();
 
-        log.debug("Marshalled size: {} bytes", bytes.length);
+        log.trace("Marshalled size: {} bytes", bytes.length);
 
         return bytes;
     }
@@ -168,6 +170,14 @@ public class MessageCodecFactory
     //
     // Encoder
     //
+
+    public class EncoderFactory
+        implements MessageEncoderFactory
+    {
+        public MessageEncoder getEncoder() throws Exception {
+            return new Encoder();
+        }
+    }
 
     public class Encoder
         implements MessageEncoder
@@ -183,13 +193,13 @@ public class MessageCodecFactory
 
             Message msg = (Message)message;
 
-            log.debug("Encoding: {}", msg);
+            log.trace("Encoding: {}", msg);
 
             attachCryptoContext(msg);
 
             byte[] bytes = marshal(msg);
 
-            log.debug("Encoded {} bytes", bytes.length);
+            log.trace("Encoded {} bytes", bytes.length);
 
             out.write(ByteBuffer.wrap(bytes));
         }
@@ -198,6 +208,14 @@ public class MessageCodecFactory
     //
     // Decoder
     //
+
+    public class DecoderFactory
+        implements MessageDecoderFactory
+    {
+        public MessageDecoder getDecoder() throws Exception {
+            return new Decoder();
+        }
+    }
 
     public class Decoder
         extends MessageDecoderAdapter
@@ -252,11 +270,11 @@ public class MessageCodecFactory
 
             int len = in.getInt();
 
-            log.debug("Decoding {} bytes", len);
+            log.trace("Decoding {} bytes", len);
 
             msg.readExternal(in);
 
-            log.debug("Decoded: {}", msg);
+            log.trace("Decoded: {}", msg);
 
             out.write(msg);
 

@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.remote.message;
 
 import java.security.Key;
 
+import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContextAware;
 import org.apache.mina.common.ByteBuffer;
@@ -57,7 +58,7 @@ public abstract class CryptoAwareMessageSupport
     protected String decryptString(final ByteBuffer in) throws Exception {
         assert in != null;
 
-        byte[] bytes = readBytes(in);
+        byte[] bytes = MarshallingUtil.readBytes(in);
         
         if (bytes == null) {
             return null;
@@ -78,7 +79,7 @@ public abstract class CryptoAwareMessageSupport
             bytes = getCryptoContext().encrypt(key, str.getBytes());
         }
 
-        writeBytes(out, bytes);
+        MarshallingUtil.writeBytes(out, bytes);
     }
 
     protected void encryptString(final ByteBuffer out, final String str) throws Exception {

@@ -52,6 +52,7 @@ public class LoginMessage
         this.serverKey = serverKey;
 
         this.username = username;
+        
         this.password = password;
     }
 

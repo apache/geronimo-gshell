@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RemoteShell.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
+@Component(role=RemoteShell.class) // instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class DefaultRemoteShell
     implements RemoteShell, Initializable
 {

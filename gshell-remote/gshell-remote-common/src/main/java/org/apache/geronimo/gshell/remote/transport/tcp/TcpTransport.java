@@ -19,26 +19,36 @@
 
 package org.apache.geronimo.gshell.remote.transport.tcp;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.URI;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
+import org.apache.geronimo.gshell.remote.request.Requestor;
+import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
+import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
+import org.apache.geronimo.gshell.remote.transport.ConnectionException;
 import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.geronimo.gshell.remote.transport.TransportSupport;
+import org.apache.geronimo.gshell.remote.transport.TransportCommon;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
+import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.mina.common.IoConnector;
+import org.apache.mina.common.IoFilterChain;
+import org.apache.mina.common.IoService;
+import org.apache.mina.common.IoServiceListener;
 import org.apache.mina.common.IoSession;
+import org.apache.mina.common.IoSessionConfig;
 import org.apache.mina.common.WriteFuture;
-import org.apache.mina.filter.reqres.Request;
-import org.apache.mina.filter.reqres.Response;
+import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.SocketConnector;
 
 /**
@@ -47,24 +57,35 @@ import org.apache.mina.transport.socket.nio.SocketConnector;
  * @version $Rev$ $Date$
  */
 public class TcpTransport
-    extends TransportSupport
+    extends TransportCommon
     implements Transport
 {
-    private static final int CONNECT_TIMEOUT = 3000;
+    private static final int CONNECT_TIMEOUT = 5;
 
     protected final URI remoteLocation;
 
-    protected final InetSocketAddress remoteAddress;
+    protected final SocketAddress remoteAddress;
 
     protected final URI localLocation;
 
-    protected final InetSocketAddress localAddress;
+    protected final SocketAddress localAddress;
 
-    protected SocketConnector connector;
+    protected IoConnector connector;
 
     protected IoSession session;
 
     protected boolean connected;
+
+    protected TcpTransport(final URI remoteLocation, final SocketAddress remoteAddress, final URI localLocation, final SocketAddress localAddress) throws Exception {
+        assert remoteLocation != null;
+        assert remoteAddress != null;
+
+        this.remoteLocation = remoteLocation;
+        this.remoteAddress = remoteAddress;
+
+        this.localLocation = localLocation;
+        this.localAddress = localAddress;
+    }
 
     public TcpTransport(final URI remote, final URI local) throws Exception {
         assert remote != null;
@@ -84,11 +105,40 @@ public class TcpTransport
         }
     }
 
-    protected synchronized void init() throws Exception {
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+    protected IoConnector createConnector() throws Exception {
+        SocketConnector connector = new SocketConnector(/*Runtime.getRuntime().availableProcessors() + 1*/ 4, /* executor */ Executors.newCachedThreadPool());
 
-        connector = new SocketConnector(Runtime.getRuntime().availableProcessors(), executor);
-        connector.setConnectTimeout(30);
+        SocketSessionConfig config = connector.getSessionConfig();
+
+        // config.setTcpNoDelay(true);
+        // config.setKeepAlive(true);
+
+        return connector;
+    }
+
+    protected synchronized void init() throws Exception {
+        connector = createConnector();
+
+        connector.addListener(new IoServiceListener() {
+            public void serviceActivated(IoService service) {
+                log.info("Service activated: {}", service);
+            }
+
+            public void serviceDeactivated(IoService service) {
+                log.info("Service deactivated: {}", service);
+            }
+
+            public void sessionCreated(IoSession session) {
+                log.info("Session created: {}", session);
+            }
+
+            public void sessionDestroyed(IoSession session) {
+                log.info("Session destroyed: {}", session);
+            }
+        });
+
+
+        // connector.setConnectTimeout(30);
 
         //
         // HACK: Need to manually wire in the visitor impl for now... :-(
@@ -97,6 +147,18 @@ public class TcpTransport
         setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "client"));
         
         configure(connector);
+
+        DefaultIoFilterChainBuilder filterChain = connector.getFilterChain();
+
+        log.debug("Service filters:");
+
+        for (IoFilterChain.Entry entry : filterChain.getAll()) {
+            log.debug("    {}", entry);
+        }
+
+        IoSessionConfig config = connector.getSessionConfig();
+
+        log.debug("Session config: {}", ReflectionToStringBuilder.toString(config, ToStringStyle.MULTI_LINE_STYLE));
     }
 
     public synchronized void connect() throws Exception {
@@ -110,11 +172,11 @@ public class TcpTransport
 
         ConnectFuture cf = connector.connect(remoteAddress, localAddress);
 
-        if (cf.awaitUninterruptibly(CONNECT_TIMEOUT)) {
+        if (cf.awaitUninterruptibly(CONNECT_TIMEOUT, TimeUnit.SECONDS)) {
              session = cf.getSession();
         }
         else {
-            throw new Exception("Failed to connect");
+            throw new ConnectionException("Failed to connect in allocated time");
         }
 
         connected = true;
@@ -123,9 +185,16 @@ public class TcpTransport
     }
 
     public synchronized void close() {
-        CloseFuture cf = session.close();
+        log.info("Closing");
 
-        cf.awaitUninterruptibly();
+        try {
+            CloseFuture cf = session.close();
+
+            cf.awaitUninterruptibly();
+        }
+        finally {
+            super.close();
+        }
 
         log.info("Closed");
     }
@@ -138,45 +207,33 @@ public class TcpTransport
         return localLocation;
     }
 
-    private void doSend(final Object msg) throws Exception {
+    public WriteFuture send(final Object msg) throws Exception {
         assert msg != null;
 
-        WriteFuture wf = session.write(msg);
-
-        wf.awaitUninterruptibly();
-
-        if (!wf.isWritten()) {
-            throw new IOException("Session did not fully write the message");
-        }
-    }
-
-    public void send(final Message msg) throws Exception {
-        assert msg != null;
-
-        doSend(msg);
+        return session.write(msg);
     }
 
     public Message request(final Message msg) throws Exception {
-        return request(msg, 5, TimeUnit.SECONDS);
+        assert msg != null;
+
+        Requestor requestor = new Requestor(this);
+
+        return requestor.request(msg);
     }
     
     public Message request(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
         assert msg != null;
 
-        Request req = new Request(msg.getId(), msg, timeout, unit);
+        Requestor requestor = new Requestor(this);
 
-        doSend(req);
-
-        Response resp = req.awaitResponse();
-
-        return (Message) resp.getMessage();
+        return requestor.request(msg, timeout, unit);
     }
-
+    
     public InputStream getInputStream() {
-        return (InputStream) session.getAttribute(Transport.INPUT_STREAM);
+        return SessionInputStream.lookup(session);
     }
 
     public OutputStream getOutputStream() {
-        return (OutputStream) session.getAttribute(Transport.OUTPUT_STREAM);
+        return SessionOutputStream.lookup(session);
     }
 }

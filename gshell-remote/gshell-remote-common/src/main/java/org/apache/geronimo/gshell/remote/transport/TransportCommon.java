@@ -19,40 +19,59 @@
 
 package org.apache.geronimo.gshell.remote.transport;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.remote.logging.LoggingFilter;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.codec.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.logging.LoggingFilter;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
+import org.apache.geronimo.gshell.remote.request.RequestResponseFilter;
+import org.apache.geronimo.gshell.remote.stream.SessionStreamFilter;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoService;
+import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.filter.reqres.RequestResponseFilter;
+import org.apache.mina.management.IoSessionStat;
+import org.apache.mina.management.StatCollector;
 import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Support for {@link Transport} and {@link TransportServer} instances.
+ * Common bits for {@link Transport} and {@link TransportServer} implementations.
  *
  * @version $Rev$ $Date$
  */
-public class TransportSupport
+public abstract class TransportCommon
 {
-    public static final String PROTOCOL_FILTER_NAME = "protocol";
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    public static final String REQRESP_FILTER_NAME = "reqresp";
+    // protected final ExecutorService executor;
 
-    protected Logger log = LoggerFactory.getLogger(getClass());
+    // protected final ScheduledExecutorService scheduler;
 
     private PlexusContainer container;
+
+    private IoService service;
+
+    private StatCollector statCollector;
 
     private MessageVisitor messageVisitor;
 
     private ProtocolHandler protocolHandler;
-
+    
     private MessageCodecFactory codecFactory;
+
+    protected TransportCommon() {
+        //
+        // TODO: Add custom thread factory ?
+        //
+
+        // executor = new ThreadPoolExecutor(1, 16, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+
+        // executor = Executors.newCachedThreadPool();
+
+        // scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+    }
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
@@ -61,22 +80,59 @@ public class TransportSupport
     protected void configure(final IoService service) throws Exception {
         assert service != null;
 
+        this.service = service;
+
         ProtocolHandler handler = getProtocolHandler();
+
         MessageVisitor visitor = getMessageVisitor();
+
         handler.setVisitor(visitor);
+        
         service.setHandler(handler);
 
         DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
+        
+        // filterChain.addLast(ExecutorFilter.class.getSimpleName(), new ExecutorFilter(executor));
 
-        if (log.isDebugEnabled()) {
-            filterChain.addLast(LoggingFilter.NAME, new LoggingFilter());
+        // filterChain.addLast(ProfilerTimerFilter.class.getSimpleName(), new ProfilerTimerFilter());
+
+        //
+        // NOTE: I read that executor might be best *after* protocl...
+        //
+
+        filterChain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(getMessageCodecFactory()));
+
+        filterChain.addLast(LoggingFilter.class.getSimpleName(), new LoggingFilter());
+
+        filterChain.addLast(SessionStreamFilter.class.getSimpleName(), new SessionStreamFilter());
+
+        filterChain.addLast(RequestResponseFilter.class.getSimpleName(), new RequestResponseFilter());
+
+        // Setup stat collection
+        // statCollector = new StatCollector(service);
+        // statCollector.start();
+
+        //
+        // TODO: Start up a scheduled task to periodically log stats
+        //
+    }
+
+    private void logStats(final IoSession session) throws Exception {
+        assert session != null;
+
+        IoSessionStat stat = (IoSessionStat) session.getAttribute(StatCollector.KEY);
+
+        if (stat != null) {
+            log.debug("Stats: {}", ReflectionToStringBuilder.toString(stat, ToStringStyle.SHORT_PREFIX_STYLE));
         }
+    }
+    
+    public void close() {
+        // statCollector.stop();
 
-        filterChain.addLast(PROTOCOL_FILTER_NAME, new ProtocolCodecFilter(getMessageCodecFactory()));
+        // executor.shutdownNow();
 
-        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
-
-        filterChain.addLast(REQRESP_FILTER_NAME, new RequestResponseFilter(handler.getResponseInspector(), scheduler));
+        // scheduler.shutdownNow();
     }
 
     //
@@ -86,7 +142,7 @@ public class TransportSupport
     public void setMessageVisitor(final MessageVisitor messageVisitor) {
         assert messageVisitor != null;
 
-        log.debug("Using message visitor: {}", messageVisitor);
+        log.trace("Using message visitor: {}", messageVisitor);
 
         this.messageVisitor = messageVisitor;
     }
@@ -102,7 +158,7 @@ public class TransportSupport
     public void setProtocolHandler(final ProtocolHandler protocolHandler) {
         assert protocolHandler != null;
 
-        log.debug("Using protocol handler: {}", protocolHandler);
+        log.trace("Using protocol handler: {}", protocolHandler);
 
         this.protocolHandler = protocolHandler;
     }
@@ -118,7 +174,7 @@ public class TransportSupport
     public void setMessageCodecFactory(final MessageCodecFactory codecFactory) {
         assert codecFactory != null;
 
-        log.debug("Using codec factory: {}", codecFactory);
+        log.trace("Using codec factory: {}", codecFactory);
 
         this.codecFactory = codecFactory;
     }
@@ -136,7 +192,7 @@ public class TransportSupport
     //
 
     public void setContainer(final PlexusContainer container) {
-        log.debug("Using plexus container: {}", container);
+        log.trace("Using plexus container: {}", container);
 
         this.container = container;
     }

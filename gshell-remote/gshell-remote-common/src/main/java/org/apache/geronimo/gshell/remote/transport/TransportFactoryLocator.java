@@ -49,7 +49,7 @@ public class TransportFactoryLocator
     }
 
     public static class MissingSchemeException
-        extends Exception
+        extends TransportException
     {
         public MissingSchemeException(final URI location) {
             super("Invalid location; missing scheme: " + location);

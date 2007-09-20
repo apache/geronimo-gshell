@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.mina.common.WriteFuture;
 
 /**
  * Provides the client-side protocol interface.
@@ -32,13 +33,7 @@ import org.apache.geronimo.gshell.remote.message.Message;
  */
 public interface Transport
 {
-    String STREAM_BASENAME = "org.apache.geronimo.gshell.remote.stream.";
-
-    String INPUT_STREAM = STREAM_BASENAME + "IN";
-
-    String OUTPUT_STREAM = STREAM_BASENAME + "OUT";
-
-    void send(Message msg) throws Exception;
+    WriteFuture send(Object msg) throws Exception;
 
     Message request(Message msg, long timeout, TimeUnit unit) throws Exception;
 

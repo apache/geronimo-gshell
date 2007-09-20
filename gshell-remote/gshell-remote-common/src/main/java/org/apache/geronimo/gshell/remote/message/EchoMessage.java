@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -50,7 +51,7 @@ public class EchoMessage
 
         super.readExternal(in);
 
-        text = readString(in);
+        text = MarshallingUtil.readString(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -58,7 +59,7 @@ public class EchoMessage
 
         super.writeExternal(out);
 
-        writeString(out, text);
+        MarshallingUtil.writeString(out, text);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {
