@@ -23,12 +23,15 @@ import java.io.ByteArrayOutputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContextAware;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageType;
+import org.apache.geronimo.gshell.remote.request.Request;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecException;
@@ -36,7 +39,6 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.apache.mina.filter.codec.demux.DemuxingProtocolCodecFactory;
 import org.apache.mina.filter.codec.demux.MessageDecoder;
-import org.apache.mina.filter.codec.demux.MessageDecoderAdapter;
 import org.apache.mina.filter.codec.demux.MessageDecoderFactory;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 import org.apache.mina.filter.codec.demux.MessageEncoder;
@@ -71,9 +73,11 @@ public class MessageCodecFactory
     private CryptoContext crypto;
 
     public MessageCodecFactory() {
+        register(new EncoderFactory());
+        
         register(new DecoderFactory());
 
-        register(new EncoderFactory());
+        register(new RequestEncoderFactory());
     }
 
     private void attachCryptoContext(final Message msg) {
@@ -135,7 +139,7 @@ public class MessageCodecFactory
 
         writeVersion(out);
 
-        out.putEnum(msg.getType());
+        MarshallingUtil.writeEnum(out, msg.getType());
 
         // Determine the length of the message body
         out.mark();
@@ -182,7 +186,7 @@ public class MessageCodecFactory
     public class Encoder
         implements MessageEncoder
     {
-        public Set getMessageTypes() {
+        public Set<Class<?>> getMessageTypes() {
             return MessageType.types();
         }
 
@@ -218,7 +222,7 @@ public class MessageCodecFactory
     }
 
     public class Decoder
-        extends MessageDecoderAdapter
+        implements MessageDecoder
     {
         public MessageDecoderResult decodable(final IoSession session, final ByteBuffer in) {
             assert session != null;
@@ -233,7 +237,7 @@ public class MessageCodecFactory
 
                 readVersion(in);
 
-                MessageType type = in.getEnum(MessageType.class);
+                MessageType type = MarshallingUtil.readEnum(in, MessageType.class);
 
                 if (type == null) {
                     return MessageDecoderResult.NOT_OK;
@@ -262,7 +266,7 @@ public class MessageCodecFactory
 
             readVersion(in);
 
-            MessageType type = in.getEnum(MessageType.class);
+            MessageType type = MarshallingUtil.readEnum(in, MessageType.class);
 
             Message msg = MessageType.create(type);
 
@@ -279,6 +283,40 @@ public class MessageCodecFactory
             out.write(msg);
 
             return MessageDecoderResult.OK;
+        }
+
+        public void finishDecode(IoSession session, ProtocolDecoderOutput out) throws Exception {}
+    }
+
+    //
+    // RequestEncoder
+    //
+
+    public class RequestEncoderFactory
+        implements MessageEncoderFactory
+    {
+        public MessageEncoder getEncoder() throws Exception {
+            return new RequestEncoder();
+        }
+    }
+
+    public class RequestEncoder
+        extends Encoder
+    {
+        public Set<Class<?>> getMessageTypes() {
+            Set<Class<?>> types = new HashSet<Class<?>>();
+
+            types.add(Request.class);
+
+            return Collections.unmodifiableSet(types);
+        }
+
+        public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out) throws Exception {
+            Request request = (Request) message;
+
+            Message msg = request.getMessage();
+
+            super.encode(session, msg, out);
         }
     }
 }

@@ -190,50 +190,24 @@ public class Requestor
             return delegate.getSession();
         }
 
-        public WriteFuture await() throws InterruptedException {
-            return delegate.await();
-        }
-
-        public boolean await(long timeout, TimeUnit unit) throws InterruptedException {
-            return delegate.await(timeout, unit);
-        }
-
-        public boolean await(long timeoutMillis) throws InterruptedException {
-            return delegate.await(timeoutMillis);
-        }
-
-        public WriteFuture awaitUninterruptibly() {
-            return delegate.awaitUninterruptibly();
-        }
-
-        public boolean awaitUninterruptibly(long timeout, TimeUnit unit) {
-            return delegate.awaitUninterruptibly(timeout, unit);
-        }
-
-        public boolean awaitUninterruptibly(long timeoutMillis) {
-            return delegate.awaitUninterruptibly(timeoutMillis);
-        }
-
-        @Deprecated
         public void join() {
             delegate.join();
         }
 
-        @Deprecated
-        public boolean join(long timeoutMillis) {
-            return delegate.join(timeoutMillis);
+        public boolean join(long timeoutInMillis) {
+            return delegate.join(timeoutInMillis);
         }
 
         public boolean isReady() {
             return delegate.isReady();
         }
 
-        public WriteFuture addListener(IoFutureListener listener) {
-            return delegate.addListener(listener);
+        public void addListener(IoFutureListener listener) {
+            delegate.addListener(listener);
         }
 
-        public WriteFuture removeListener(IoFutureListener listener) {
-            return delegate.removeListener(listener);
+        public void removeListener(IoFutureListener listener) {
+            delegate.removeListener(listener);
         }
     }
 }

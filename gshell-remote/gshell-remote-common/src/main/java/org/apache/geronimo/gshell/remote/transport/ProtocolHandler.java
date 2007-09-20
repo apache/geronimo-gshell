@@ -52,7 +52,7 @@ public class ProtocolHandler
     //
     // TODO: Do we need to stuff the visitor into the session context?
     //
-    
+
     public void sessionCreated(IoSession session) throws Exception {
         log.debug("Session created: {}", session);
     }
@@ -64,7 +64,7 @@ public class ProtocolHandler
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         log.debug("Session idle: {}, status: {}", session, status);
     }
-    
+
     public void sessionClosed(final IoSession session) throws Exception {
         log.debug("Session closed: {}", session);
     }

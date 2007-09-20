@@ -74,8 +74,8 @@ public enum MessageType
         }
     }
 
-    public static Set<Class> types() {
-        Set<Class> set = new HashSet<Class>();
+    public static Set<Class<?>> types() {
+        Set<Class<?>> set = new HashSet<Class<?>>();
 
         for (MessageType type : values()) {
             set.add(type.type);

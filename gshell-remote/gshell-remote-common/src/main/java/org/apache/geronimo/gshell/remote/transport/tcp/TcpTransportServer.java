@@ -38,7 +38,8 @@ import org.apache.mina.common.IoService;
 import org.apache.mina.common.IoServiceListener;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.IoSessionConfig;
-import org.apache.mina.transport.socket.SocketSessionConfig;
+import org.apache.mina.common.IoHandler;
+import org.apache.mina.common.IoServiceConfig;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 
 /**
@@ -95,11 +96,13 @@ public class TcpTransportServer
     protected IoAcceptor createAcceptor() throws Exception {
         SocketAcceptor acceptor = new SocketAcceptor(/*Runtime.getRuntime().availableProcessors() + 1*/ 4, /* executor */ Executors.newCachedThreadPool());
 
+        /*
         SocketSessionConfig config = acceptor.getSessionConfig();
 
         // ????
         config.setTcpNoDelay(true);
         config.setKeepAlive(true);
+        */
 
         return acceptor;
     }
@@ -107,15 +110,17 @@ public class TcpTransportServer
     protected synchronized void init() throws Exception {
         acceptor = createAcceptor();
 
-        acceptor.setLocalAddress(address);
-
         acceptor.addListener(new IoServiceListener() {
-            public void serviceActivated(IoService service) {
+            public void serviceActivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
                 log.info("Service activated: {}", service);
+
+                // log.info("Service activated: {}, {}, {}, {}", service, serviceAddress, handler, config);
             }
 
-            public void serviceDeactivated(IoService service) {
+            public void serviceDeactivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
                 log.info("Service deactivated: {}", service);
+
+                // log.info("Service deactivated: {}, {}, {}, {}", service, serviceAddress, handler, config);
             }
 
             public void sessionCreated(IoSession session) {
@@ -145,9 +150,11 @@ public class TcpTransportServer
             log.debug("    {}", entry);
         }
 
+        /*
         IoSessionConfig config = acceptor.getSessionConfig();
 
         log.debug("Session config: {}", ReflectionToStringBuilder.toString(config, ToStringStyle.MULTI_LINE_STYLE));
+        */
 
     }
 
@@ -158,7 +165,7 @@ public class TcpTransportServer
 
         init();
 
-        acceptor.bind();
+        acceptor.bind(address, getProtocolHandler());
 
         bound = true;
 
@@ -168,7 +175,7 @@ public class TcpTransportServer
     public synchronized void close() {
         super.close();
 
-        acceptor.unbind();
+        acceptor.unbind(address);
 
         log.info("Closed");
     }

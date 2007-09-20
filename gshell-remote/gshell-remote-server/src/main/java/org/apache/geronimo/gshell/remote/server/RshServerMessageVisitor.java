@@ -257,12 +257,8 @@ public class RshServerMessageVisitor
                 }
                 catch (Notification n) {
                     msg.reply(new ExecuteMessage.Notification(n));
-
-                    session.close();
                 }
                 catch (Throwable t) {
-                    log.error("Unhandled failure; sending to client: " + t, t);
-
                     msg.reply(new ExecuteMessage.Fault(t));
                 }
             }

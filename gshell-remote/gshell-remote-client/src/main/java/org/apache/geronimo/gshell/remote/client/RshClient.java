@@ -170,7 +170,5 @@ public class RshClient
 
     public void close() {
         transport.close();
-
-        log.debug("Closed");
     }
 }

@@ -72,7 +72,7 @@ public class ExecuteMessage
 
         super.readExternal(in);
 
-        this.flavor = in.getEnum(Flavor.class);
+        this.flavor = MarshallingUtil.readEnum(in, Flavor.class);
 
         this.path = MarshallingUtil.readString(in);
 
@@ -84,7 +84,7 @@ public class ExecuteMessage
 
         super.writeExternal(out);
 
-        out.putEnum(flavor);
+        MarshallingUtil.writeEnum(out, flavor);
 
         MarshallingUtil.writeString(out, path);
 

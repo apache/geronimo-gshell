@@ -26,9 +26,11 @@ import org.apache.geronimo.gshell.remote.logging.LoggingFilter;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.request.RequestResponseFilter;
 import org.apache.geronimo.gshell.remote.stream.SessionStreamFilter;
+import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoService;
 import org.apache.mina.common.IoSession;
+import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.management.IoSessionStat;
 import org.apache.mina.management.StatCollector;
@@ -62,6 +64,9 @@ public abstract class TransportCommon
     private MessageCodecFactory codecFactory;
 
     protected TransportCommon() {
+        ByteBuffer.setUseDirectBuffers(false);
+        ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
+        
         //
         // TODO: Add custom thread factory ?
         //
@@ -88,7 +93,7 @@ public abstract class TransportCommon
 
         handler.setVisitor(visitor);
         
-        service.setHandler(handler);
+        // service.setHandler(handler);
 
         DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
         

@@ -48,7 +48,8 @@ import org.apache.mina.common.IoServiceListener;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.IoSessionConfig;
 import org.apache.mina.common.WriteFuture;
-import org.apache.mina.transport.socket.SocketSessionConfig;
+import org.apache.mina.common.IoHandler;
+import org.apache.mina.common.IoServiceConfig;
 import org.apache.mina.transport.socket.nio.SocketConnector;
 
 /**
@@ -108,7 +109,7 @@ public class TcpTransport
     protected IoConnector createConnector() throws Exception {
         SocketConnector connector = new SocketConnector(/*Runtime.getRuntime().availableProcessors() + 1*/ 4, /* executor */ Executors.newCachedThreadPool());
 
-        SocketSessionConfig config = connector.getSessionConfig();
+        // SocketSessionConfig config = connector.getSessionConfig();
 
         // config.setTcpNoDelay(true);
         // config.setKeepAlive(true);
@@ -120,12 +121,16 @@ public class TcpTransport
         connector = createConnector();
 
         connector.addListener(new IoServiceListener() {
-            public void serviceActivated(IoService service) {
+            public void serviceActivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
                 log.info("Service activated: {}", service);
+
+                // log.info("Service activated: {}, {}, {}, {}", service, serviceAddress, handler, config);
             }
 
-            public void serviceDeactivated(IoService service) {
+            public void serviceDeactivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
                 log.info("Service deactivated: {}", service);
+
+                // log.info("Service deactivated: {}, {}, {}, {}", service, serviceAddress, handler, config);
             }
 
             public void sessionCreated(IoSession session) {
@@ -148,7 +153,17 @@ public class TcpTransport
         
         configure(connector);
 
-        DefaultIoFilterChainBuilder filterChain = connector.getFilterChain();
+        DefaultIoFilterChainBuilder filterChain;
+
+        filterChain = connector.getDefaultConfig().getFilterChain();
+
+        log.debug("Default filters:");
+
+        for (IoFilterChain.Entry entry : filterChain.getAll()) {
+            log.debug("    {}", entry);
+        }
+
+        filterChain = connector.getFilterChain();
 
         log.debug("Service filters:");
 
@@ -156,9 +171,11 @@ public class TcpTransport
             log.debug("    {}", entry);
         }
 
+        /*
         IoSessionConfig config = connector.getSessionConfig();
 
         log.debug("Session config: {}", ReflectionToStringBuilder.toString(config, ToStringStyle.MULTI_LINE_STYLE));
+        */
     }
 
     public synchronized void connect() throws Exception {
@@ -170,13 +187,18 @@ public class TcpTransport
 
         log.info("Connecting to: {}", remoteAddress);
 
-        ConnectFuture cf = connector.connect(remoteAddress, localAddress);
+        ConnectFuture cf = connector.connect(remoteAddress, localAddress, getProtocolHandler());
 
-        if (cf.awaitUninterruptibly(CONNECT_TIMEOUT, TimeUnit.SECONDS)) {
-             session = cf.getSession();
-        }
-        else {
-            throw new ConnectionException("Failed to connect in allocated time");
+        cf.join();
+
+        session = cf.getSession();
+
+        IoFilterChain filterChain = session.getFilterChain();
+
+        log.debug("Session filters:");
+
+        for (IoFilterChain.Entry entry : filterChain.getAll()) {
+            log.debug("    {}", entry);
         }
 
         connected = true;
@@ -190,7 +212,7 @@ public class TcpTransport
         try {
             CloseFuture cf = session.close();
 
-            cf.awaitUninterruptibly();
+            cf.join();
         }
         finally {
             super.close();

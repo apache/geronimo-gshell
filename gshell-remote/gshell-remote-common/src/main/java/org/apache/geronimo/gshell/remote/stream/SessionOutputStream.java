@@ -123,7 +123,7 @@ public class SessionOutputStream
                 public void run() {
                     log.debug("Waiting for full write");
 
-                    wf.awaitUninterruptibly();
+                    wf.join();
 
                     log.debug("Completed; written: {}", wf.isWritten());
                 }
@@ -145,7 +145,7 @@ public class SessionOutputStream
             WriteFuture wf = lastWriteFuture;
             lastWriteFuture = null;
 
-            wf.awaitUninterruptibly();
+            wf.join();
 
             if (!wf.isWritten()) {
                 throw new IOException("Failed to fully write bytes to the session");

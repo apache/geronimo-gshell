@@ -25,9 +25,6 @@ import java.util.concurrent.Executors;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
-import org.apache.mina.common.IoSessionConfig;
-import org.apache.mina.common.IoFilter;
-import org.apache.mina.common.WriteRequest;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +55,7 @@ public class SessionStreamFilter
     // TODO: See if we need to put the executor into the session context
     //
 
+    @Override
     public void sessionCreated(NextFilter nextFilter, IoSession session) throws Exception {
         log.debug("Binding session streams");
 
@@ -68,17 +66,7 @@ public class SessionStreamFilter
         nextFilter.sessionCreated(session);
     }
 
-    /*
-    public void sessionOpened(NextFilter nextFilter, IoSession session) throws Exception {
-        IoSessionConfig config = session.getConfig();
-
-        config.setWriteTimeout(60);
-        config.setIdleTime(IdleStatus.READER_IDLE, 60);
-
-        nextFilter.sessionOpened(session);
-    }
-    */
-    
+    @Override
     public void sessionClosed(NextFilter nextFilter, IoSession session) throws Exception {
         log.debug("Unbinding session streams");
 
@@ -89,18 +77,21 @@ public class SessionStreamFilter
         nextFilter.sessionClosed(session);
     }
 
+    @Override
     public void sessionIdle(NextFilter nextFilter, IoSession session, IdleStatus status) throws Exception {
         log.debug("Session idle: {}, status: {}", session, status);
 
         nextFilter.sessionIdle(session, status);
     }
 
+    @Override
     public void exceptionCaught(NextFilter nextFilter, IoSession session, Throwable cause) throws Exception {
         log.debug("Exception caught: " + session + ", cause: " + cause, cause);
 
         nextFilter.exceptionCaught(session, cause);
     }
 
+    @Override
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
         if (message instanceof WriteStreamMessage) {
             final WriteStreamMessage msg = (WriteStreamMessage) message;
@@ -117,7 +108,9 @@ public class SessionStreamFilter
                 }
             };
 
-            executor.execute(task);
+            task.run();
+
+            // executor.execute(task);
 
             // There is no need to pass on this message to any other filters, they have no use for it...
         }
@@ -126,9 +119,8 @@ public class SessionStreamFilter
         }
     }
 
-    public void messageSent(NextFilter nextFilter, IoSession session, WriteRequest writeRequest) throws Exception {
-        Object message = writeRequest.getMessage();
-
+    @Override
+    public void messageSent(NextFilter nextFilter, IoSession session, Object message) throws Exception {
         if (message instanceof WriteStreamMessage) {
             log.debug("Message sent: {}, msg: {}", session, message);
 
@@ -137,6 +129,6 @@ public class SessionStreamFilter
             //
         }
 
-        nextFilter.messageSent(session, writeRequest);
+        nextFilter.messageSent(session, message);
     }
 }

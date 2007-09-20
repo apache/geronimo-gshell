@@ -76,16 +76,19 @@ public class SecurityFilter
 
         securityToken = UUID.randomUUID();
     }
-    
+
+    @Override
     public void init() throws Exception {
         // Install the schedule purger to purge any cancelled tasks to prevent memory leaks
         scheduler.scheduleWithFixedDelay(new SchedulePurgerTask(), 10, 10, TimeUnit.SECONDS);
     }
 
+    @Override
     public void destroy() throws Exception {
         scheduler.shutdownNow();
     }
 
+    @Override
     public void sessionOpened(final NextFilter nextFilter, final IoSession session) throws Exception {
         assert nextFilter != null;
         assert session != null;
@@ -96,6 +99,7 @@ public class SecurityFilter
         nextFilter.sessionOpened(session);
     }
 
+    @Override
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object obj) throws Exception {
         assert nextFilter != null;
         assert session != null;

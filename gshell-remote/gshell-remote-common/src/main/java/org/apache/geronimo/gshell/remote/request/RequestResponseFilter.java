@@ -25,8 +25,6 @@ import java.util.concurrent.Executors;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
-import org.apache.mina.common.WriteRequest;
-import org.apache.mina.common.WriteRequestWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,6 +68,20 @@ public class RequestResponseFilter
         nextFilter.sessionClosed(session);
     }
 
+    public void filterWrite(final NextFilter nextFilter, final IoSession session, final WriteRequest writeRequest) throws Exception {
+        Object message = writeRequest.getMessage();
+
+        if (message instanceof Request) {
+            // Register the request with the manager
+            Request request = (Request) message;
+
+            RequestManager manager = RequestManager.lookup(session);
+            manager.add(request);
+        }
+
+        nextFilter.filterWrite(session, writeRequest);
+    }
+
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
         Message msg = null;
 
@@ -109,23 +121,7 @@ public class RequestResponseFilter
         }
     }
 
-    public void filterWrite(final NextFilter nextFilter, final IoSession session, final WriteRequest writeRequest) throws Exception {
-        Object message = writeRequest.getMessage();
-
-        if (message instanceof Request) {
-            // Register the request with the manager
-            Request request = (Request) message;
-
-            RequestManager manager = RequestManager.lookup(session);
-            manager.add(request);
-
-            nextFilter.filterWrite(session, new RequestWriteRequest(writeRequest));
-        }
-        else {
-            nextFilter.filterWrite(session, writeRequest);
-        }
-    }
-
+    /*
     public void messageSent(final NextFilter nextFilter, final IoSession session, final WriteRequest writeRequest) throws Exception {
         if (writeRequest instanceof RequestWriteRequest) {
             // Setup a timeout for the request now that its been sent
@@ -142,20 +138,17 @@ public class RequestResponseFilter
             nextFilter.messageSent(session, writeRequest);
         }
     }
+    */
 
-    private static class RequestWriteRequest
-        extends WriteRequestWrapper
-    {
-        public RequestWriteRequest(final WriteRequest wr) {
-            super(wr);
+    public void messageSent(NextFilter nextFilter, IoSession session, Object message) throws Exception {
+        if (message instanceof Request) {
+            Request request = (Request) message;
+
+            RequestManager manager = RequestManager.lookup(session);
+
+            manager.schedule(request);
         }
 
-        public Object getMessage() {
-            return ((Request) super.getMessage()).getMessage();
-        }
-
-        public Request getRequest() {
-            return (Request) super.getWriteRequest().getMessage();
-        }
+        nextFilter.messageSent(session, message);
     }
 }

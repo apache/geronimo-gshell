@@ -19,16 +19,15 @@
 
 package org.apache.geronimo.gshell.remote.logging;
 
-import org.apache.mina.common.IoEventType;
-
 /**
- * Custom logging filter to setup some better levels.
+ * ???
  *
  * @version $Rev$ $Date$
  */
 public class LoggingFilter
-    extends org.apache.mina.filter.logging.LoggingFilter
+    extends org.apache.mina.filter.LoggingFilter
 {
+    /*
     public LoggingFilter() {
         setLogLevel(IoEventType.EXCEPTION_CAUGHT,   WARN);
         setLogLevel(IoEventType.MESSAGE_RECEIVED,   DEBUG);
@@ -40,4 +39,5 @@ public class LoggingFilter
         setLogLevel(IoEventType.WRITE,              DEBUG);
         setLogLevel(IoEventType.CLOSE,              DEBUG);
     }
+    */
 }

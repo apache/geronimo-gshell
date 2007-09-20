@@ -71,13 +71,9 @@ public class RemoteShellProxy
         
         client.openShell();
 
-        //
-        // HACK: Turn this off for the moment to test more...
-        //
-        
         // Copy the client's input stream to our outputstream so users see command output
-        // outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);
-        // outputFeeder.createThread().start();
+        outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);
+        outputFeeder.createThread().start();
 
         opened = true;
     }
@@ -105,18 +101,17 @@ public class RemoteShellProxy
     }
 
     public void close() {
-        // outputFeeder.close();
+        try {
+            outputFeeder.close();
+        }
+        catch (Exception ignore) {}
 
         try {
             client.closeShell();
         }
-        catch (Exception e) {
-            log.error("Failure occured while closing remote shell; ignoring", e);
-        }
+        catch (Exception ignore) {}
 
         opened = false;
-        
-        log.info("Closed");
     }
 
     //

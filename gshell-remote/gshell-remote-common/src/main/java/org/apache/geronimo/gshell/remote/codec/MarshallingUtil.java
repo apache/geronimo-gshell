@@ -243,4 +243,32 @@ public class MarshallingUtil
             out.putLong(uuid.getLeastSignificantBits());
         }
     }
+
+    //
+    // Enum Serialization (adapted from Mina 2.x)
+    //
+
+    public static ByteBuffer writeEnum(final ByteBuffer out, Enum<?> e) {
+        if (e.ordinal() > Byte.MAX_VALUE) {
+            throw new IllegalArgumentException(enumConversionErrorMessage(e, "byte"));
+        }
+
+        return out.put((byte) e.ordinal());
+    }
+
+    public static <E extends Enum<E>> E readEnum(final ByteBuffer in, final Class<E> enumClass) {
+        return toEnum(enumClass, in.get());
+    }
+    
+    private static <E> E toEnum(Class<E> enumClass, int i) {
+        E[] enumConstants = enumClass.getEnumConstants();
+        if (i > enumConstants.length) {
+            throw new IndexOutOfBoundsException(String.format("%d is too large of an ordinal to convert to the enum %s", i, enumClass.getName()));
+        }
+        return enumConstants[i];
+    }
+
+    private static String enumConversionErrorMessage(Enum<?> e, String type) {
+        return String.format("%s.%s has an ordinal value too large for a %s", e.getClass().getName(), e.name(), type);
+    }
 }

@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.remote.ssl.SSLContextFactory;
 import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.executor.ExecutorFilter;
-import org.apache.mina.filter.ssl.SslFilter;
+import org.apache.mina.filter.SSLFilter;
 
 /**
  * Provides TCP+SSL server-side support.
@@ -46,9 +46,9 @@ public class SslTransportServer
         
         DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
 
-        SslFilter sslFilter = new SslFilter(sslContextFactory.createServerContext());
+        SSLFilter sslFilter = new SSLFilter(sslContextFactory.createServerContext());
 
-        filterChain.addAfter(ExecutorFilter.class.getSimpleName(), SslFilter.class.getSimpleName(), sslFilter);
+        filterChain.addAfter(ExecutorFilter.class.getSimpleName(), SSLFilter.class.getSimpleName(), sslFilter);
     }
     
     //
