@@ -24,7 +24,7 @@ import java.net.URI;
 import org.apache.geronimo.gshell.remote.ssl.SSLContextFactory;
 import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
-import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.common.IoService;
 import org.apache.mina.filter.SSLFilter;
 
 /**
@@ -35,22 +35,26 @@ import org.apache.mina.filter.SSLFilter;
 public class SslTransportServer
     extends TcpTransportServer
 {
-    private SSLContextFactory sslContextFactory;
-
     public SslTransportServer(final URI location) throws Exception {
         super(location);
     }
 
-    protected void init() throws Exception {
-        super.init();
-        
-        DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
+    protected void configure(final IoService service) throws Exception {
+        super.configure(service);
 
-        SSLFilter sslFilter = new SSLFilter(sslContextFactory.createServerContext());
+        DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
 
-        filterChain.addAfter(ExecutorFilter.class.getSimpleName(), SSLFilter.class.getSimpleName(), sslFilter);
+        SSLFilter sslFilter = new SSLFilter(getSslContextFactory().createServerContext());
+
+        filterChain.addFirst(SSLFilter.class.getSimpleName(), sslFilter);
     }
-    
+
+    //
+    // AutoWire Support
+    //
+
+    private SSLContextFactory sslContextFactory;
+
     //
     // NOTE: Setters exposed to support Plexus autowire()
     //
@@ -59,5 +63,13 @@ public class SslTransportServer
         log.debug("Using SSL Context Factory: {}", factory);
 
         this.sslContextFactory = factory;
+    }
+
+    protected SSLContextFactory getSslContextFactory() {
+        if (sslContextFactory == null) {
+            throw new IllegalStateException("SSL context factory not bound");
+        }
+
+        return sslContextFactory;
     }
 }

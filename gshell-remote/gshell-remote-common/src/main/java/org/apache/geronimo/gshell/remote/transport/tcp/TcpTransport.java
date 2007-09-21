@@ -28,29 +28,20 @@ import java.net.URI;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.request.Requestor;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
-import org.apache.geronimo.gshell.remote.transport.ConnectionException;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.geronimo.gshell.remote.transport.TransportCommon;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
-import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoConnector;
-import org.apache.mina.common.IoFilterChain;
-import org.apache.mina.common.IoService;
-import org.apache.mina.common.IoServiceListener;
 import org.apache.mina.common.IoSession;
-import org.apache.mina.common.IoSessionConfig;
 import org.apache.mina.common.WriteFuture;
-import org.apache.mina.common.IoHandler;
-import org.apache.mina.common.IoServiceConfig;
 import org.apache.mina.transport.socket.nio.SocketConnector;
+import org.apache.mina.transport.socket.nio.SocketConnectorConfig;
 
 /**
  * Provides TCP client-side support.
@@ -107,43 +98,17 @@ public class TcpTransport
     }
 
     protected IoConnector createConnector() throws Exception {
-        SocketConnector connector = new SocketConnector(/*Runtime.getRuntime().availableProcessors() + 1*/ 4, /* executor */ Executors.newCachedThreadPool());
+        SocketConnector connector = new SocketConnector(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
 
-        // SocketSessionConfig config = connector.getSessionConfig();
+        SocketConnectorConfig config = connector.getDefaultConfig();
 
-        // config.setTcpNoDelay(true);
-        // config.setKeepAlive(true);
+        config.getSessionConfig().setKeepAlive(true);
 
         return connector;
     }
 
     protected synchronized void init() throws Exception {
         connector = createConnector();
-
-        connector.addListener(new IoServiceListener() {
-            public void serviceActivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
-                log.info("Service activated: {}", service);
-
-                // log.info("Service activated: {}, {}, {}, {}", service, serviceAddress, handler, config);
-            }
-
-            public void serviceDeactivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
-                log.info("Service deactivated: {}", service);
-
-                // log.info("Service deactivated: {}, {}, {}, {}", service, serviceAddress, handler, config);
-            }
-
-            public void sessionCreated(IoSession session) {
-                log.info("Session created: {}", session);
-            }
-
-            public void sessionDestroyed(IoSession session) {
-                log.info("Session destroyed: {}", session);
-            }
-        });
-
-
-        // connector.setConnectTimeout(30);
 
         //
         // HACK: Need to manually wire in the visitor impl for now... :-(
@@ -152,30 +117,6 @@ public class TcpTransport
         setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "client"));
         
         configure(connector);
-
-        DefaultIoFilterChainBuilder filterChain;
-
-        filterChain = connector.getDefaultConfig().getFilterChain();
-
-        log.debug("Default filters:");
-
-        for (IoFilterChain.Entry entry : filterChain.getAll()) {
-            log.debug("    {}", entry);
-        }
-
-        filterChain = connector.getFilterChain();
-
-        log.debug("Service filters:");
-
-        for (IoFilterChain.Entry entry : filterChain.getAll()) {
-            log.debug("    {}", entry);
-        }
-
-        /*
-        IoSessionConfig config = connector.getSessionConfig();
-
-        log.debug("Session config: {}", ReflectionToStringBuilder.toString(config, ToStringStyle.MULTI_LINE_STYLE));
-        */
     }
 
     public synchronized void connect() throws Exception {
@@ -193,22 +134,12 @@ public class TcpTransport
 
         session = cf.getSession();
 
-        IoFilterChain filterChain = session.getFilterChain();
-
-        log.debug("Session filters:");
-
-        for (IoFilterChain.Entry entry : filterChain.getAll()) {
-            log.debug("    {}", entry);
-        }
-
         connected = true;
         
         log.info("Connected");
     }
 
     public synchronized void close() {
-        log.info("Closing");
-
         try {
             CloseFuture cf = session.close();
 
@@ -217,8 +148,6 @@ public class TcpTransport
         finally {
             super.close();
         }
-
-        log.info("Closed");
     }
 
     public URI getRemoteLocation() {

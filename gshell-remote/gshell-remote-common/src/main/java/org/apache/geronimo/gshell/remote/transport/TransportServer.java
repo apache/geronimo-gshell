@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.transport;
 
+import java.net.URI;
+
 /**
  * Provides the server-side protocol interface.
  *
@@ -26,5 +28,7 @@ package org.apache.geronimo.gshell.remote.transport;
  */
 public interface TransportServer
 {
+    URI getLocation();
+
     void close();
 }

@@ -79,6 +79,7 @@
                 <include>org.apache.geronimo.gshell.remote:gshell-remote-server</include>
                 <include>org.apache.geronimo.gshell.remote:gshell-remote-client</include>
                 <include>org.apache.mina:mina-core</include>
+                <include>org.apache.mina:mina-filter-ssl</include>
             </includes>
         </dependencySet>
 

@@ -36,10 +36,12 @@ import org.codehaus.plexus.component.annotations.Component;
 public class SslTransportFactory
     extends TcpTransportFactory
 {
-    protected TcpTransport createTransport(final URI location) throws Exception {
-        return new SslTransport(location, null);
+    @Override
+    protected TcpTransport createTransport(final URI remote, final URI local) throws Exception {
+        return new SslTransport(remote, local);
     }
 
+    @Override
     protected TcpTransportServer createTransportServer(final URI location) throws Exception {
         return new SslTransportServer(location);
     }

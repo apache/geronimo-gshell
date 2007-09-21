@@ -24,8 +24,8 @@ import java.net.URI;
 import org.apache.geronimo.gshell.remote.ssl.SSLContextFactory;
 import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.mina.common.IoService;
 import org.apache.mina.filter.SSLFilter;
-import org.apache.mina.filter.executor.ExecutorFilter;
 
 /**
  * Provides TCP+SSL client-side support.
@@ -35,22 +35,26 @@ import org.apache.mina.filter.executor.ExecutorFilter;
 public class SslTransport
     extends TcpTransport
 {
-    private SSLContextFactory sslContextFactory;
-
     public SslTransport(final URI remote, final URI local) throws Exception {
         super(remote, local);
     }
 
-    protected void init() throws Exception {
-        super.init();
+    protected void configure(final IoService service) throws Exception {
+        super.configure(service);
 
-        DefaultIoFilterChainBuilder filterChain = connector.getFilterChain();
+        DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
 
-        SSLFilter sslFilter = new SSLFilter(sslContextFactory.createClientContext());
+        SSLFilter sslFilter = new SSLFilter(getSslContextFactory().createClientContext());
         sslFilter.setUseClientMode(true);
 
-        filterChain.addAfter(ExecutorFilter.class.getSimpleName(), SSLFilter.class.getSimpleName(), sslFilter);
+        filterChain.addFirst(SSLFilter.class.getSimpleName(), sslFilter);
     }
+
+    //
+    // AutoWire Support
+    //
+
+    private SSLContextFactory sslContextFactory;
 
     //
     // NOTE: Setters exposed to support Plexus autowire()
@@ -60,5 +64,13 @@ public class SslTransport
         log.debug("Using SSL Context Factory: {}", factory);
 
         this.sslContextFactory = factory;
+    }
+
+    protected SSLContextFactory getSslContextFactory() {
+        if (sslContextFactory == null) {
+            throw new IllegalStateException("SSL context factory not bound");
+        }
+
+        return sslContextFactory;
     }
 }

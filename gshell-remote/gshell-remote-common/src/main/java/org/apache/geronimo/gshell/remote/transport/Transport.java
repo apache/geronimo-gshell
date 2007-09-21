@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.remote.transport;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
+import java.net.URI;
 
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.mina.common.WriteFuture;
@@ -33,6 +34,10 @@ import org.apache.mina.common.WriteFuture;
  */
 public interface Transport
 {
+    URI getRemoteLocation();
+
+    URI getLocalLocation();
+
     WriteFuture send(Object msg) throws Exception;
 
     Message request(Message msg, long timeout, TimeUnit unit) throws Exception;
