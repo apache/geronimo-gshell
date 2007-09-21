@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.remote.message.Message;
 //
 
 /**
- * Represents a response message.
+ * Represents a response to a request message.
  *
  * @version $Rev$ $Date$
  */

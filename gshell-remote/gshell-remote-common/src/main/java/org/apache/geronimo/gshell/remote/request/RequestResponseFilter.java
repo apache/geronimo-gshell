@@ -38,6 +38,9 @@ public class RequestResponseFilter
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Executor used to queue request signal operations.
+     */
     private final ExecutorService executor;
 
     public RequestResponseFilter(final ExecutorService executor) {
