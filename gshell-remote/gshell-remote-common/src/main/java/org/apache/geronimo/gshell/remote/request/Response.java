@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.remote.message.Message;
 //
 
 /**
- * ???
+ * Represents a response message.
  *
  * @version $Rev$ $Date$
  */
@@ -41,25 +41,9 @@ public class Response
     private final Message message;
 
     public Response(final Request request, final Message message, final Type type) {
-        assert request != null;
-        assert message != null;
-        assert type != null;
-
         this.request = request;
         this.type = type;
         this.message = message;
-    }
-
-    public Request getRequest() {
-        return request;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public Message getMessage() {
-        return message;
     }
 
     public int hashCode() {
@@ -80,11 +64,22 @@ public class Response
         Response resp = (Response) obj;
 
         return getRequest().equals(resp.getRequest()) && getType().equals(resp.getType());
-
     }
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Message getMessage() {
+        return message;
     }
 
     //

@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.request;
 
 /**
- * ???
+ * Thrown to indicate a request operation failed.
  *
  * @version $Rev$ $Date$
  */
@@ -28,18 +28,20 @@ public class RequestException
     extends RuntimeException
 {
     private static final long serialVersionUID = 1;
-    
-    private final Request req;
 
-    public RequestException(final String msg, final Request req) {
-        super(msg);
-
-        assert req != null;
-        
-        this.req = req;
+    public RequestException(final String msg, final Throwable cause) {
+        super(msg, cause);
     }
 
-    public Request Request() {
-        return req;
+    public RequestException(final String msg) {
+        super(msg);
+    }
+
+    public RequestException(final Throwable cause) {
+        super(cause);
+    }
+
+    public RequestException() {
+        super();
     }
 }

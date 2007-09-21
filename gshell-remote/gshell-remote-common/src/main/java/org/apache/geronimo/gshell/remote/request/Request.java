@@ -23,7 +23,6 @@ package org.apache.geronimo.gshell.remote.request;
 // NOTE: Snatched and massaged from Apache Mina
 //
 
-import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Represents a request message.
  *
  * @version $Rev$ $Date$
  */
@@ -55,12 +54,9 @@ public class Request
 
     private volatile boolean endOfResponses;
 
-    private boolean signaled;
+    private volatile boolean signaled;
 
     public Request(final Message message, long timeout, final TimeUnit timeoutUnit) {
-        assert message != null;
-        assert timeoutUnit != null;
-
         this.message = message;
         this.timeout = timeout;
         this.timeoutUnit = timeoutUnit;
@@ -113,11 +109,11 @@ public class Request
     public Response awaitResponse() throws RequestTimeoutException, InterruptedException {
         chechEndOfResponses();
 
-        log.debug("Waiting for the response...");
+        log.debug("Waiting for response");
 
         Response resp = decodeResponse(responses.take());
 
-        log.debug("Got response: {}", resp);
+        log.trace("Got response: {}", resp);
 
         return resp;
     }
@@ -125,15 +121,17 @@ public class Request
     public Response awaitResponse(final long timeout, final TimeUnit unit) throws RequestTimeoutException, InterruptedException {
         chechEndOfResponses();
 
-        log.debug("Polling for the response...");
+        log.debug("Polling for response");
 
         Response resp = decodeResponse(responses.poll(timeout, unit));
 
-        if (resp != null) {
-            log.debug("Got response: {}", resp);
-        }
-        else {
-            log.debug("Operation timed out before the response was signaled");
+        if (log.isTraceEnabled()) {
+            if (resp != null) {
+                log.trace("Got response: {}", resp);
+            }
+            else {
+                log.trace("Operation timed out before the response was signaled");
+            }
         }
 
         return resp;
@@ -165,7 +163,7 @@ public class Request
 
     private void chechEndOfResponses() {
         if (endOfResponses && responses.isEmpty()) {
-            throw new NoSuchElementException("All responses has been retrieved already.");
+            throw new IllegalStateException("All responses has been retrieved already");
         }
     }
 
@@ -197,7 +195,7 @@ public class Request
         assert e != null;
 
         synchronized (mutex) {
-            log.debug("Signal timeout: " + e, e);
+            log.debug("Signal timeout: {}", e);
 
             setResponse(e);
 

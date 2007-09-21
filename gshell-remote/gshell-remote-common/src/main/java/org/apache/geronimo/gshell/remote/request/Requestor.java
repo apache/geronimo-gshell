@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides support to send a request and receive it's response.
  *
  * @version $Rev$ $Date$
  */
@@ -49,8 +49,6 @@ public class Requestor
     private final TimeUnit unit;
 
     private Requestor(final MessageWriter writer, final long timeout, final TimeUnit unit) {
-        assert writer != null;
-
         this.writer = writer;
         this.timeout = timeout;
         this.unit = unit;
@@ -93,20 +91,8 @@ public class Requestor
 
         Request req = wf.getRequest();
 
-        //
-        // HACK:
-        //
-        
-        Response resp = req.awaitResponse(30, TimeUnit.SECONDS);
+        Response resp = req.awaitResponse();
 
-        //
-        // HACK:
-        //
-        
-        if (resp == null) {
-            throw new IllegalStateException("Failed to read response");
-        }
-        
         return resp.getMessage();
     }
 
@@ -118,6 +104,9 @@ public class Requestor
     // MessageWriter
     //
 
+    /**
+     * An abstraction to allow an {@link IoSession} or {@link Transport} instance to be used to send messages.
+     */
     private static interface MessageWriter
     {
         WriteFuture write(Object message) throws Exception;
@@ -128,11 +117,11 @@ public class Requestor
     {
         private final IoSession session;
 
-        public SessionMessageWriter(IoSession session) {
+        public SessionMessageWriter(final IoSession session) {
             this.session = session;
         }
 
-        public WriteFuture write(Object message) throws Exception {
+        public WriteFuture write(final Object message) throws Exception {
             return session.write(message);
         }
     }
@@ -142,11 +131,11 @@ public class Requestor
     {
         private final Transport transport;
 
-        public TransportMessageWriter(Transport transport) {
+        public TransportMessageWriter(final Transport transport) {
             this.transport = transport;
         }
 
-        public WriteFuture write(Object message) throws Exception {
+        public WriteFuture write(final Object message) throws Exception {
             return transport.send(message);
         }
     }
@@ -163,9 +152,6 @@ public class Requestor
         private final Request request;
 
         public RequestWriteFuture(final WriteFuture wf, final Request req) {
-            assert wf != null;
-            assert req != null;
-
             this.delegate = wf;
             this.request = req;
         }
@@ -174,15 +160,11 @@ public class Requestor
             return request;
         }
 
-        //
-        // WriteFuture
-        //
-
         public boolean isWritten() {
             return delegate.isWritten();
         }
 
-        public void setWritten(boolean written) {
+        public void setWritten(final boolean written) {
             delegate.setWritten(written);
         }
 
@@ -194,19 +176,19 @@ public class Requestor
             delegate.join();
         }
 
-        public boolean join(long timeoutInMillis) {
-            return delegate.join(timeoutInMillis);
+        public boolean join(final long timeout) {
+            return delegate.join(timeout);
         }
 
         public boolean isReady() {
             return delegate.isReady();
         }
 
-        public void addListener(IoFutureListener listener) {
+        public void addListener(final IoFutureListener listener) {
             delegate.addListener(listener);
         }
 
-        public void removeListener(IoFutureListener listener) {
+        public void removeListener(final IoFutureListener listener) {
             delegate.removeListener(listener);
         }
     }

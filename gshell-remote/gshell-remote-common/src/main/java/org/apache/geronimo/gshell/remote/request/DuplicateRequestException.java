@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.request;
 
 /**
- * ???
+ * Thrown to indicate an operation was attempted for a duplicate request.
  *
  * @version $Rev$ $Date$
  */
@@ -28,6 +28,6 @@ public class DuplicateRequestException
     extends RequestException
 {
     public DuplicateRequestException(final Request req) {
-        super("Duplicate request for ID: " + req.getId(), req);
+        super("Duplicate request: " + req.getId());
     }
 }

@@ -17,9 +17,17 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.remote.request;
+
 /**
- * Provides support for synchronous request/response messaging.
+ * Thrown to indicate that a timeout operation was attempted for a request with no timeout scheduled.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.remote.request;
+public class MissingRequestTimeoutException
+    extends RequestException
+{
+    public MissingRequestTimeoutException(final Object id) {
+        super("Missing request timeout: " + id);
+    }
+}

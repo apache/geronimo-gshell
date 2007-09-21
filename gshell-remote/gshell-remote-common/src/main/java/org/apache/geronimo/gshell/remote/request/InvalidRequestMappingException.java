@@ -17,9 +17,17 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.remote.request;
+
 /**
- * Provides support for synchronous request/response messaging.
+ * Thrown to indicate that an operation was attempted for an invalid request mapping.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.remote.request;
+public class InvalidRequestMappingException
+    extends RequestException
+{
+    public InvalidRequestMappingException(final Object id) {
+        super("Invalid request mapping: " + id);
+    }
+}

@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Manages per-session state and timeouts for requests.
  *
  * @version $Rev$ $Date$
  */
@@ -49,42 +49,52 @@ public class RequestManager
     // TODO: Lock on Request.getMutex()
     //
 
+    /**
+     * Helper to make sure that when calling methods that take an Object for the request ID that the requst object is not given by accident.
+     */
+    private void ensureValidRequestId(final Object obj) {
+        if (obj instanceof Request) {
+            throw new IllegalArgumentException("Expecting a request ID, not a request");
+        }
+    }
+
     public boolean contains(final Object id) {
         assert id != null;
 
-        if (id instanceof Request) {
-            throw new IllegalArgumentException("Expecting a request ID, not a request");
-        }
+        ensureValidRequestId(id);
 
         return requests.containsKey(id);
     }
 
-    public boolean contains(final Request req) {
-        assert req != null;
+    public boolean contains(final Request request) {
+        assert request != null;
 
-        return contains(req.getId());
+        return contains(request.getId());
     }
 
-    public void add(final Request req) {
-        assert req != null;
+    public void add(final Request request) {
+        assert request != null;
 
-        if (contains(req)) {
-            throw new DuplicateRequestException(req);
+        if (contains(request)) {
+            throw new DuplicateRequestException(request);
         }
 
-        Object id = req.getId();
+        Object id = request.getId();
 
-        log.debug("Adding request for ID: {}", id);
+        if (log.isTraceEnabled()) {
+            log.trace("Adding: {}", request);
+        }
+        else {
+            log.debug("Adding: {}", id);
+        }
 
-        requests.put(id, req);
+        requests.put(id, request);
     }
 
     public Request get(final Object id) {
         assert id != null;
 
-        if (id instanceof Request) {
-            throw new IllegalArgumentException("Expecting a request ID, not a request");
-        }
+        ensureValidRequestId(id);
 
         return requests.get(id);
     }
@@ -92,11 +102,9 @@ public class RequestManager
     public Request remove(final Object id) {
         assert id != null;
 
-        if (id instanceof Request) {
-            throw new IllegalArgumentException("Expecting a request ID, not a request");
-        }
+        ensureValidRequestId(id);
 
-        log.debug("Removing request for ID: {}", id);
+        log.debug("Removing: {}", id);
 
         return requests.remove(id);
     }
@@ -107,7 +115,7 @@ public class RequestManager
         l = requests.size();
 
         if (l > 0) {
-            log.warn("Clearing requests; purging " + l + " request(s)");
+            log.warn("Purging " + l + " request(s)");
         }
 
         requests.clear();
@@ -115,7 +123,7 @@ public class RequestManager
         l = timeouts.size();
 
         if (l > 0) {
-            log.warn("Clearing timeouts; purging " + l + " timeouts(s)");
+            log.warn("Purging " + l + " timeouts(s)");
         }
 
         timeouts.clear();
@@ -135,10 +143,15 @@ public class RequestManager
         Object id = request.getId();
 
         if (request != get(id)) {
-            throw new IllegalStateException("Found invalid request mapping for ID: " + id);
+            throw new InvalidRequestMappingException(id);
         }
 
-        log.debug("Scheduling timeout for request ID: {}", id);
+        if (log.isTraceEnabled()) {
+            log.trace("Scheduling: {}", request);
+        }
+        else {
+            log.debug("Scheduling: {}", id);
+        }
 
         TimeoutTask task = new TimeoutTask(request);
 
@@ -157,14 +170,19 @@ public class RequestManager
         TimeoutTask task = timeouts.remove(request);
 
         if (task == null) {
-            throw new IllegalStateException("Request ID has no timeout bound: " + id);
+            throw new MissingRequestTimeoutException(id);
         }
 
         if (remove(id) != request) {
-            throw new IllegalStateException("Found invalid request mapping for ID: " + id);
+            throw new InvalidRequestMappingException(id);
         }
 
-        log.debug("Canceling timeout for request ID: {}", id);
+        if (log.isTraceEnabled()) {
+            log.trace("Canceling: {}", request);
+        }
+        else {
+            log.debug("Canceling: {}", id);
+        }
 
         ScheduledFuture<?> sf = task.getTimeoutFuture();
 
@@ -178,19 +196,22 @@ public class RequestManager
 
         Object id = request.getId();
 
-        log.debug("Triggering timeout for request ID: {}", id);
+        if (log.isTraceEnabled()) {
+            log.trace("Triggering: {}", request);
+        }
+        else {
+            log.debug("Triggering: {}", id);
+        }
 
         TimeoutTask task = timeouts.remove(request);
 
         if (task == null) {
-            throw new IllegalStateException("Request ID has no timeout bound: " + id);
+            throw new MissingRequestTimeoutException(id);
         }
 
         if (remove(id) != request) {
-            throw new IllegalStateException("Found invalid request mapping for ID: " + id);
+            throw new InvalidRequestMappingException(id);
         }
-
-        log.debug("Canceling timeout for request ID: {}", id);
 
         // If the request has not been signaled, then its a timeout :-(
         if (!request.isSignaled()) {
@@ -199,9 +220,9 @@ public class RequestManager
         }
     }
 
-    public void timeoutAll() {
-        log.debug("Timing out all pending tasks");
-
+    private void timeoutAll() {
+        log.debug("Timing out all pending requests");
+        
         Request[] requests = timeouts.keySet().toArray(new Request[timeouts.size()]);
 
         for (Request request : requests) {
@@ -210,8 +231,6 @@ public class RequestManager
     }
 
     public void close() {
-        log.debug("Closing");
-
         timeoutAll();
         clear();
     }

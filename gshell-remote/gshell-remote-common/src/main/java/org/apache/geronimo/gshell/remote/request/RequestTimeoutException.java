@@ -19,12 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.request;
 
-//
-// NOTE: Snatched and massaged from Apache Mina
-//
-
 /**
- * ???
+ * Thrown to indicate that a request has been timed out.
  *
  * @version $Rev$ $Date$
  */
@@ -33,7 +29,7 @@ public class RequestTimeoutException
 {
     private static final long serialVersionUID = 1;
 
-    public RequestTimeoutException(final Request request) {
-        super("Request timed out: " + request, request);
+    public RequestTimeoutException(final Request req) {
+        super("Request timed out for ID: " + req.getId());
     }
 }

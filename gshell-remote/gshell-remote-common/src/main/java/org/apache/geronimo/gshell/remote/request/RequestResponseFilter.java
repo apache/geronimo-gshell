@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides synchronous request/response messaging.
  *
  * @version $Rev$ $Date$
  */
@@ -50,24 +50,32 @@ public class RequestResponseFilter
         this(Executors.newCachedThreadPool());
     }
 
-    public void sessionCreated(NextFilter nextFilter, IoSession session) throws Exception {
-        log.debug("Creating request manager");
-
+    /**
+     * Set up the request manager instance for the session.
+     */
+    @Override
+    public void sessionCreated(final NextFilter nextFilter, final IoSession session) throws Exception {
         RequestManager.bind(session, new RequestManager());
 
         nextFilter.sessionCreated(session);
     }
 
+    /**
+     * Close the request manager instance for the session.
+     */
+    @Override
     public void sessionClosed(final NextFilter nextFilter, final IoSession session) throws Exception {
-        log.debug("Closing request manager");
-
-        final RequestManager manager = RequestManager.unbind(session);
+        RequestManager manager = RequestManager.unbind(session);
 
         manager.close();
         
         nextFilter.sessionClosed(session);
     }
 
+    /**
+     * When a request is sent, register it with the request manager.
+     */
+    @Override
     public void filterWrite(final NextFilter nextFilter, final IoSession session, final WriteRequest writeRequest) throws Exception {
         Object message = writeRequest.getMessage();
 
@@ -82,6 +90,10 @@ public class RequestResponseFilter
         nextFilter.filterWrite(session, writeRequest);
     }
 
+    /**
+     * When a response message has been received, cancel its timeout and signal the request.
+     */
+    @Override
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
         Message msg = null;
 
@@ -121,26 +133,11 @@ public class RequestResponseFilter
         }
     }
 
-    /*
-    public void messageSent(final NextFilter nextFilter, final IoSession session, final WriteRequest writeRequest) throws Exception {
-        if (writeRequest instanceof RequestWriteRequest) {
-            // Setup a timeout for the request now that its been sent
-            RequestWriteRequest wr = (RequestWriteRequest) writeRequest;
-            Request request = wr.getRequest();
-
-            RequestManager manager = RequestManager.lookup(session);
-            manager.schedule(request);
-
-            // And forward the original write request
-            nextFilter.messageSent(session, wr.getWriteRequest());
-        }
-        else {
-            nextFilter.messageSent(session, writeRequest);
-        }
-    }
-    */
-
-    public void messageSent(NextFilter nextFilter, IoSession session, Object message) throws Exception {
+    /**
+     * Once the reqeust message has been sent, schedule a timeout.
+     */
+    @Override
+    public void messageSent(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
         if (message instanceof Request) {
             Request request = (Request) message;
 
