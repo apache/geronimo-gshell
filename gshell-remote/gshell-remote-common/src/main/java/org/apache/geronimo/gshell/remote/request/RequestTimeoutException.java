@@ -29,7 +29,15 @@ public class RequestTimeoutException
 {
     private static final long serialVersionUID = 1;
 
-    public RequestTimeoutException(final Request req) {
-        super("Request timed out for ID: " + req.getId());
+    private final Object id;
+
+    public RequestTimeoutException(final Request request) {
+        super("Request timed out for ID: " + request.getId());
+
+        this.id = request.getId();
+    }
+
+    public Object getId() {
+        return id;
     }
 }

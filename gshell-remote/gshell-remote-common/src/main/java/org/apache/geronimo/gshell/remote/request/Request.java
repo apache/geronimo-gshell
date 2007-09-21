@@ -113,7 +113,7 @@ public class Request
 
         Response resp = decodeResponse(responses.take());
 
-        log.trace("Got response: {}", resp);
+        log.trace("Received response: {}", resp);
 
         return resp;
     }
@@ -127,7 +127,7 @@ public class Request
 
         if (log.isTraceEnabled()) {
             if (resp != null) {
-                log.trace("Got response: {}", resp);
+                log.trace("Received response: {}", resp);
             }
             else {
                 log.trace("Operation timed out before the response was signaled");
@@ -181,7 +181,12 @@ public class Request
         assert response != null;
 
         synchronized (mutex) {
-            log.debug("Signal response: {}", response);
+            if (log.isTraceEnabled()) {
+                log.debug("Signal response: {}", response);
+            }
+            else {
+                log.debug("Signal response: {}", response.getRequest().getId());
+            }
 
             setResponse(response);
 
@@ -195,7 +200,12 @@ public class Request
         assert e != null;
 
         synchronized (mutex) {
-            log.debug("Signal timeout: {}", e);
+            if (log.isTraceEnabled()) {
+                log.debug("Signal timeout: " + e, e);
+            }
+            else {
+                log.debug("Signal timeout: {}", e.getId());
+            }
 
             setResponse(e);
 
