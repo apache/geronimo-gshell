@@ -19,18 +19,15 @@
 
 package org.apache.geronimo.gshell.remote.session;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
 import org.apache.mina.common.IoFilterChain;
 import org.apache.mina.common.ThreadModel;
 import org.apache.mina.filter.executor.ExecutorFilter;
-import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

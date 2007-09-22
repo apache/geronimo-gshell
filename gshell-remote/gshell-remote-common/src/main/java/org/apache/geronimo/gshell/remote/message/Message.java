@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.geronimo.gshell.remote.marshall.MarshalAware;

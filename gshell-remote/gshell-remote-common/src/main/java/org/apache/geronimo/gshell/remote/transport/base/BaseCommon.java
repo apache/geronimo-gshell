@@ -24,7 +24,6 @@ import java.net.SocketAddress;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
 import org.apache.geronimo.gshell.remote.message.MessageHandler;
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.request.RequestResponseFilter;
 import org.apache.geronimo.gshell.remote.stream.SessionStreamFilter;
 import org.apache.geronimo.gshell.remote.transport.Transport;
@@ -122,7 +121,7 @@ public abstract class BaseCommon
         });
 
         // Setup the io handler
-        handler = new MessageHandler(getMessageVisitor());
+        handler = getMessageHandler();
 
         // Install the default set of filters
         configure(service.getFilterChain());
@@ -196,26 +195,26 @@ public abstract class BaseCommon
 
     private PlexusContainer container;
 
-    private MessageVisitor messageVisitor;
+    private MessageHandler messageHandler;
 
     private MessageCodecFactory codecFactory;
 
-    public void setMessageVisitor(final MessageVisitor messageVisitor) {
-        assert messageVisitor != null;
+    public void setMessageHandler(final MessageHandler messageHandler) {
+        assert messageHandler != null;
 
-        log.trace("Using message visitor: {}", messageVisitor);
+        log.trace("Using message handler: {}", messageHandler);
 
-        this.messageVisitor = messageVisitor;
+        this.messageHandler = messageHandler;
     }
 
-    protected MessageVisitor getMessageVisitor() {
-        if (messageVisitor == null) {
-            throw new IllegalStateException("Message visitor not bound");
+    protected MessageHandler getMessageHandler() {
+        if (messageHandler == null) {
+            throw new IllegalStateException("Message handler not bound");
         }
 
-        return messageVisitor;
+        return messageHandler;
     }
-
+    
     public void setMessageCodecFactory(final MessageCodecFactory codecFactory) {
         assert codecFactory != null;
 

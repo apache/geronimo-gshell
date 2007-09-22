@@ -23,7 +23,7 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
+import org.apache.geronimo.gshell.remote.message.MessageHandler;
 import org.apache.geronimo.gshell.remote.security.SecurityFilter;
 import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
@@ -66,18 +66,17 @@ public abstract class BaseTransportServer
     protected abstract IoAcceptor createAcceptor() throws Exception;
 
     protected synchronized void init() throws Exception {
+        // For now we must manually bind the message handler, plexus is unable to provide injection for us
+        setMessageHandler((MessageHandler) getContainer().lookup(MessageHandler.class, "server"));
+
+        // Setup the acceptor service
         acceptor = createAcceptor();
 
         // Install the thread model
         threadModel = new ThreadPoolModel(getClass().getSimpleName() + "-" + COUNTER.getAndIncrement());
         acceptor.getDefaultConfig().setThreadModel(threadModel);
 
-        //
-        // HACK: Need to manually wire in the visitor impl for now... :-(
-        //
-
-        setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "server"));
-
+        // Configure the acceptor
         configure(acceptor);
     }
 

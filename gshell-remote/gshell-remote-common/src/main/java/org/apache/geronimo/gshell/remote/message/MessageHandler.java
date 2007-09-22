@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.remote.message;
 
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
-import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,35 +29,32 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=MessageHandler.class)
 public class MessageHandler
     extends IoHandlerAdapter
 {
-    //
-    // TODO: Shall we make this a filter?
-    //
-    
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    public MessageHandler(final MessageVisitor visitor) {
-        assert visitor != null;
-
-        this.visitor = visitor;
-    }
-    
     private MessageVisitor visitor;
 
-    public void setVisitor(final MessageVisitor visitor) {
-        assert visitor != null;
-        
+    protected MessageHandler() {}
+
+    public MessageHandler(final MessageVisitor visitor) {
         this.visitor = visitor;
+    }
+
+    protected MessageVisitor getVisitor() {
+        if (visitor == null) {
+            throw new IllegalStateException("Message visitor not bound");
+        }
+
+        return visitor;
     }
 
     @Override
     public void sessionCreated(final IoSession session) throws Exception {
         // log.debug("Session created: {}", session);
 
-        MessageVisitor.BINDER.bind(session, visitor);
+        MessageVisitor.BINDER.bind(session, getVisitor());
     }
 
     @Override
@@ -85,8 +81,8 @@ public class MessageHandler
             msg.freeze();
 
             // Hand over to visitor for processing
-            MessageVisitor v = MessageVisitor.BINDER.lookup(session);
-            msg.process(v);
+            MessageVisitor visitor = MessageVisitor.BINDER.lookup(session);
+            msg.process(visitor);
         }
         else {
             throw new InvalidMessageException(obj);
@@ -96,7 +92,7 @@ public class MessageHandler
     @Override
     public void exceptionCaught(final IoSession session, final Throwable cause) throws Exception {
         //
-        // TODO: Need to handle Exception muck, and send faul messages back to clients ?
+        // TODO: Need to handle Exception muck, and send fault messages back to clients ?
         //
 
         log.error("Unhandled exception: " + cause, cause);

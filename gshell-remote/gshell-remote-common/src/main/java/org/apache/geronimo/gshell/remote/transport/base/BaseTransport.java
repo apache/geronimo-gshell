@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.message.MessageHandler;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.request.Requestor;
 import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
@@ -38,6 +39,7 @@ import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Support for {@link Transport} implementations.
@@ -66,6 +68,9 @@ public abstract class BaseTransport
 
     protected boolean connected;
 
+    @Requirement(role=MessageVisitor.class, hint="client")
+    private MessageVisitor v;
+
     protected BaseTransport(final URI remoteLocation, final SocketAddress remoteAddress, final URI localLocation, final SocketAddress localAddress) throws Exception {
         assert remoteLocation != null;
         assert remoteAddress != null;
@@ -80,18 +85,17 @@ public abstract class BaseTransport
     protected abstract IoConnector createConnector() throws Exception;
 
     protected synchronized void init() throws Exception {
+        // For now we must manually bind the message handler, plexus is unable to provide injection for us
+        setMessageHandler((MessageHandler) getContainer().lookup(MessageHandler.class, "client"));
+
+        // Setup the connector service
         connector = createConnector();
 
         // Install the thread model
         threadModel = new ThreadPoolModel(getClass().getSimpleName() + "-" + COUNTER.getAndIncrement());
         connector.getDefaultConfig().setThreadModel(threadModel);
 
-        //
-        // HACK: Need to manually wire in the visitor impl for now... :-(
-        //
-
-        setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "client"));
-        
+        // Configure the connector
         configure(connector);
     }
 

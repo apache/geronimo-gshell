@@ -19,22 +19,25 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
-import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.MessageHandler;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
- * Defines the logic for client-side message processing.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshClientMessageVisitor.class)
-public class RshClientMessageVisitor
-    extends MessageVisitorSupport
+@Component(role=MessageHandler.class, hint="client")
+public class RshClientMessageHandler
+    extends MessageHandler
 {
-    public void visitEcho(final EchoMessage msg) throws Exception {
-        assert msg != null;
+    @Requirement
+    private RshClientMessageVisitor clientVisitor;
 
-        log.info("ECHO: {}", msg.getText());
+    @Override
+    protected MessageVisitor getVisitor() {
+        return clientVisitor;
     }
 }

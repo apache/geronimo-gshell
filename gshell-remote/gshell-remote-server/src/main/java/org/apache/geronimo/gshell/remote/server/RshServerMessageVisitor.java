@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.common.Notification;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.RemoteShell;
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
 import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
@@ -47,15 +46,13 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * Defines the logic for server-side message processing.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=MessageVisitor.class, hint="server")
+@Component(role=RshServerMessageVisitor.class)
 public class RshServerMessageVisitor
     extends MessageVisitorSupport
 {
