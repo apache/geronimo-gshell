@@ -27,7 +27,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
 import org.apache.geronimo.gshell.remote.message.Message;
-import org.apache.geronimo.gshell.remote.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,11 +67,11 @@ public class RequestManager
     public void add(final Request request) {
         assert request != null;
 
-        if (contains(request)) {
-            throw new DuplicateRequestException(request);
-        }
-
         Message.ID id = request.getId();
+
+        if (contains(request)) {
+            throw new DuplicateRequestException(id);
+        }
 
         if (log.isTraceEnabled()) {
             log.trace("Adding: {}", request);
@@ -124,11 +124,11 @@ public class RequestManager
     public void schedule(final Request request) {
         assert request != null;
 
-        if (timeouts.containsKey(request)) {
-            throw new DuplicateRequestException(request);
-        }
-
         Message.ID id = request.getId();
+
+        if (timeouts.containsKey(request)) {
+            throw new DuplicateRequestException(id);
+        }
 
         if (request != get(id)) {
             throw new InvalidRequestMappingException(id);

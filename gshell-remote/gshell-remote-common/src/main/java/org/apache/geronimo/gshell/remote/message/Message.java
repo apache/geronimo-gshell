@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.apache.geronimo.gshell.remote.codec.Externalizable;
+import org.apache.geronimo.gshell.remote.marshall.MarshalAware;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 
@@ -32,7 +32,7 @@ import org.apache.mina.common.WriteFuture;
  * @version $Rev$ $Date$
  */
 public interface Message
-    extends Externalizable
+    extends MarshalAware
 {
     ID getId();
 
@@ -62,8 +62,12 @@ public interface Message
     // ID
     //
 
+    //
+    // HACK: Make these serializable for now... need to figure out how to do the generic encode/decode of MarshalAware instances
+    //
+    
     interface ID
-        extends Serializable
+        extends MarshalAware, Serializable
     {
         // Marker
     }

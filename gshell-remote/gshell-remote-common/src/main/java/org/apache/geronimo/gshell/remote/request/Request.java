@@ -154,7 +154,7 @@ public class Request
             return null;
         }
         else if (obj == RequestTimeoutException.class) {
-            throw new RequestTimeoutException(this);
+            throw new RequestTimeoutException(getId());
         }
 
         // This should never happen

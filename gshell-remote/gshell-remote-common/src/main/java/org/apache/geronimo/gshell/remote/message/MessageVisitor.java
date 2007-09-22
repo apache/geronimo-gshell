@@ -19,6 +19,12 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
+import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
+
 /**
  * Provides an abstraction layer for message processing.
  *
@@ -26,6 +32,12 @@ package org.apache.geronimo.gshell.remote.message;
  */
 public interface MessageVisitor
 {
+    //
+    // FIXME: Abstract me...
+    //
+    
+    SessionAttributeBinder<MessageVisitor> BINDER = new SessionAttributeBinder<MessageVisitor>(MessageVisitor.class);
+
     void visitEcho(EchoMessage msg) throws Exception;
 
     void visitOpenShell(OpenShellMessage msg) throws Exception;

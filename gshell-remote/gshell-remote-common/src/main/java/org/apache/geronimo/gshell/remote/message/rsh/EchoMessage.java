@@ -17,9 +17,12 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.remote.message.rsh;
 
-import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
+import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.message.MessageSupport;
+import org.apache.geronimo.gshell.remote.message.MessageType;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -51,7 +54,7 @@ public class EchoMessage
 
         super.readExternal(in);
 
-        text = MarshallingUtil.readString(in);
+        text = Marshaller.readString(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -59,7 +62,7 @@ public class EchoMessage
 
         super.writeExternal(out);
 
-        MarshallingUtil.writeString(out, text);
+        Marshaller.writeString(out, text);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {

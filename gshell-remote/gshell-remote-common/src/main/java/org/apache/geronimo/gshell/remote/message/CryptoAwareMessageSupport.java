@@ -21,9 +21,9 @@ package org.apache.geronimo.gshell.remote.message;
 
 import java.security.Key;
 
-import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContextAware;
+import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -31,13 +31,13 @@ import org.apache.mina.common.ByteBuffer;
  *
  * @version $Rev$ $Date$
  */
-public abstract class CryptoAwareMessageSupport
+public class CryptoAwareMessageSupport
     extends MessageSupport
     implements CryptoContextAware
 {
     private transient CryptoContext ctx;
 
-    public CryptoAwareMessageSupport(final MessageType type) {
+    protected CryptoAwareMessageSupport(final MessageType type) {
         super(type);
     }
 
@@ -58,7 +58,7 @@ public abstract class CryptoAwareMessageSupport
     protected String decryptString(final ByteBuffer in) throws Exception {
         assert in != null;
 
-        byte[] bytes = MarshallingUtil.readBytes(in);
+        byte[] bytes = Marshaller.readBytes(in);
         
         if (bytes == null) {
             return null;
@@ -79,7 +79,7 @@ public abstract class CryptoAwareMessageSupport
             bytes = getCryptoContext().encrypt(key, str.getBytes());
         }
 
-        MarshallingUtil.writeBytes(out, bytes);
+        Marshaller.writeBytes(out, bytes);
     }
 
     protected void encryptString(final ByteBuffer out, final String str) throws Exception {

@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.transport;
 
 /**
- * ???
+ * Thrown to indicate a transport failure has occured.
  *
  * @version $Rev$ $Date$
  */

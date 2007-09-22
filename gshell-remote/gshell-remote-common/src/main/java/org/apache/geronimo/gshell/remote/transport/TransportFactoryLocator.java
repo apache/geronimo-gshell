@@ -41,6 +41,7 @@ public class TransportFactoryLocator
         assert location != null;
 
         String scheme = location.getScheme();
+
         if (scheme == null) {
             throw new MissingSchemeException(location);
         }

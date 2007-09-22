@@ -17,18 +17,19 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.codec;
-
-import org.apache.mina.common.ByteBuffer;
+package org.apache.geronimo.gshell.remote.message;
 
 /**
- * ???
+ * Thrown to indicate an invalid message was received.
  *
  * @version $Rev$ $Date$
  */
-public interface Externalizable
+public class InvalidMessageException
+    extends MessageException
 {
-    void writeExternal(final ByteBuffer out) throws Exception;
+    private static final long serialVersionUID = 1;
 
-    void readExternal(final ByteBuffer in) throws Exception;
+    public InvalidMessageException(final Object msg) {
+        super("Invalid message: " + msg + " (" + (msg != null ? msg.getClass() : "<null>") + ")");
+    }
 }

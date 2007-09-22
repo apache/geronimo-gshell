@@ -17,31 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport;
-
 /**
- * ???
+ * Marshalling support.
  *
  * @version $Rev$ $Date$
  */
-public class ConnectionException
-    extends TransportException
-{
-    private static final long serialVersionUID = 1;
-
-    public ConnectionException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-    public ConnectionException(final String msg) {
-        super(msg);
-    }
-
-    public ConnectionException(final Throwable cause) {
-        super(cause);
-    }
-
-    public ConnectionException() {
-        super();
-    }
-}
+package org.apache.geronimo.gshell.remote.marshall;

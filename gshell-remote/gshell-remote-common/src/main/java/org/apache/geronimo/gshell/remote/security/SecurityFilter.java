@@ -23,12 +23,14 @@ import java.security.PublicKey;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
-import org.apache.geronimo.gshell.remote.message.HandShakeMessage;
-import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.message.rsh.HandShakeMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
+import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
@@ -64,11 +66,9 @@ public class SecurityFilter
     private final UUID securityToken;
 
     public SecurityFilter() throws Exception {
-        //
-        // TODO: Would be nice to use the schedular from the transport and not create another one... ?? or not...
-        //
+        ThreadFactory tf = new NamedThreadFactory(SecurityFilter.class);
         
-        scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
+        scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), tf);
 
         //
         // TODO: Create a token based on our public key er something, so we can better use it to determine session validitaty.

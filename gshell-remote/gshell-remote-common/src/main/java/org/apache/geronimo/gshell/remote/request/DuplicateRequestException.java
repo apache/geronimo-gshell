@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.request;
 
+import org.apache.geronimo.gshell.remote.message.Message;
+
 /**
  * Thrown to indicate an operation was attempted for a duplicate request.
  *
@@ -27,7 +29,7 @@ package org.apache.geronimo.gshell.remote.request;
 public class DuplicateRequestException
     extends RequestException
 {
-    public DuplicateRequestException(final Request req) {
-        super("Duplicate request: " + req.getId());
+    public DuplicateRequestException(final Message.ID id) {
+        super("Duplicate request: " + id);
     }
 }

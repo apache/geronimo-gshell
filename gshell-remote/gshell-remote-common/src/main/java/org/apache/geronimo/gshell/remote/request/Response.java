@@ -82,6 +82,10 @@ public class Response
         return message;
     }
 
+    public Message.ID getId() {
+        return getMessage().getId();
+    }
+
     //
     // Response Type
     //

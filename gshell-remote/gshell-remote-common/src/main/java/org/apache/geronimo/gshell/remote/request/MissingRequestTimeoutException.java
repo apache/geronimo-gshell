@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.request;
 
+import org.apache.geronimo.gshell.remote.message.Message;
+
 /**
  * Thrown to indicate that a timeout operation was attempted for a request with no timeout scheduled.
  *
@@ -27,7 +29,7 @@ package org.apache.geronimo.gshell.remote.request;
 public class MissingRequestTimeoutException
     extends RequestException
 {
-    public MissingRequestTimeoutException(final Object id) {
+    public MissingRequestTimeoutException(final Message.ID id) {
         super("Missing request timeout: " + id);
     }
 }

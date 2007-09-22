@@ -17,23 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
-
 /**
- * Open a remote shell instance.
+ * Messages for the remote shell (rsh) protocol.
  *
  * @version $Rev$ $Date$
  */
-public class OpenShellMessage
-    extends MessageSupport
-{
-    public OpenShellMessage() {
-        super(MessageType.OPEN_SHELL);
-    }
-
-    public void process(final MessageVisitor visitor) throws Exception {
-        assert visitor != null;
-
-        visitor.visitOpenShell(this);
-    }
-}
+package org.apache.geronimo.gshell.remote.message.rsh;

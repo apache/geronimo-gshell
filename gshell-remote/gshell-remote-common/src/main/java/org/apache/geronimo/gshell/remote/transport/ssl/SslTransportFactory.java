@@ -21,10 +21,10 @@ package org.apache.geronimo.gshell.remote.transport.ssl;
 
 import java.net.URI;
 
+import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.geronimo.gshell.remote.transport.TransportFactory;
-import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
+import org.apache.geronimo.gshell.remote.transport.TransportServer;
 import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportFactory;
-import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -37,12 +37,12 @@ public class SslTransportFactory
     extends TcpTransportFactory
 {
     @Override
-    protected TcpTransport createTransport(final URI remote, final URI local) throws Exception {
+    protected Transport createTransport(final URI remote, final URI local) throws Exception {
         return new SslTransport(remote, local);
     }
 
     @Override
-    protected TcpTransportServer createTransportServer(final URI location) throws Exception {
+    protected TransportServer createTransportServer(final URI location) throws Exception {
         return new SslTransportServer(location);
     }
 }

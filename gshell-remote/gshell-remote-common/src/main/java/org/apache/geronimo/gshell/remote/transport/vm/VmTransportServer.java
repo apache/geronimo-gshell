@@ -21,10 +21,9 @@ package org.apache.geronimo.gshell.remote.transport.vm;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransportServer;
+import org.apache.geronimo.gshell.remote.transport.base.BaseTransportServer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.transport.vmpipe.VmPipeAcceptor;
-import org.apache.mina.transport.vmpipe.VmPipeAddress;
 
 /**
  * Provides in-VM server-side support.
@@ -32,12 +31,13 @@ import org.apache.mina.transport.vmpipe.VmPipeAddress;
  * @version $Rev$ $Date$
  */
 public class VmTransportServer
-    extends TcpTransportServer
+    extends BaseTransportServer
 {
     public VmTransportServer(final URI location) throws Exception {
-        super(location, new VmPipeAddress(location.getPort()));
+        super(location, VmTransportFactory.address(location));
     }
 
+    @Override
     protected IoAcceptor createAcceptor() throws Exception {
         return new VmPipeAcceptor();
     }

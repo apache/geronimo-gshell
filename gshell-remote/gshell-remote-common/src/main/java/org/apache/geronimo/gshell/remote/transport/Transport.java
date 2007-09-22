@@ -38,6 +38,10 @@ public interface Transport
 
     URI getLocalLocation();
 
+    void connect() throws Exception;
+
+    void close();
+    
     WriteFuture send(Object msg) throws Exception;
 
     Message request(Message msg, long timeout, TimeUnit unit) throws Exception;
@@ -47,6 +51,4 @@ public interface Transport
     InputStream getInputStream();
 
     OutputStream getOutputStream();
-
-    void close();
 }

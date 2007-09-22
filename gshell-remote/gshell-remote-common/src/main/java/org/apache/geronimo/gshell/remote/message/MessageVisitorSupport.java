@@ -19,6 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
+import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,15 +31,17 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public abstract class MessageVisitorSupport
+public class MessageVisitorSupport
     implements MessageVisitor
 {
+    //
+    // FIXME: Abstract me...
+    //
+    
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    //
-    // MessageVisitor
-    //
-
+    protected MessageVisitorSupport() {}
+    
     public void visitEcho(EchoMessage msg) throws Exception {}
 
     public void visitOpenShell(OpenShellMessage msg) throws Exception {}

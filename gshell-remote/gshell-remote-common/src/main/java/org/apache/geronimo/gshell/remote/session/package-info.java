@@ -17,23 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
-
 /**
- * Close the remote shell instance.
+ * Session support.
  *
  * @version $Rev$ $Date$
  */
-public class CloseShellMessage
-    extends MessageSupport
-{
-    public CloseShellMessage() {
-        super(MessageType.CLOSE_SHELL);
-    }
-
-    public void process(final MessageVisitor visitor) throws Exception {
-        assert visitor != null;
-
-        visitor.visitCloseShell(this);
-    }
-}
+package org.apache.geronimo.gshell.remote.session;

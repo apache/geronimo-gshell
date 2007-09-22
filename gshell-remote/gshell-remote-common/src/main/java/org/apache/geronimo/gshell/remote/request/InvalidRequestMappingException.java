@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.request;
 
+import org.apache.geronimo.gshell.remote.message.Message;
+
 /**
  * Thrown to indicate that an operation was attempted for an invalid request mapping.
  *
@@ -27,7 +29,7 @@ package org.apache.geronimo.gshell.remote.request;
 public class InvalidRequestMappingException
     extends RequestException
 {
-    public InvalidRequestMappingException(final Object id) {
+    public InvalidRequestMappingException(final Message.ID id) {
         super("Invalid request mapping: " + id);
     }
 }

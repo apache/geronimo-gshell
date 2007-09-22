@@ -24,9 +24,9 @@ import java.net.URI;
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.geronimo.gshell.remote.transport.TransportFactory;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.codehaus.plexus.PlexusContainer;
+import org.apache.geronimo.gshell.remote.transport.base.BaseTransportFactory;
+import org.apache.mina.transport.vmpipe.VmPipeAddress;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Produces in-VM transport instances.
@@ -35,52 +35,25 @@ import org.codehaus.plexus.component.annotations.Requirement;
  */
 @Component(role=TransportFactory.class, hint="vm")
 public class VmTransportFactory
-    implements TransportFactory
+    extends BaseTransportFactory
 {
-    @Requirement
-    private PlexusContainer container;
-
-    //
-    // NOTE: We use autowire() here to get a few components injected.  These are injected via setters.
-    //
-
-    public Transport connect(final URI remote, final URI local) throws Exception {
-        assert remote != null;
-        // local can be null
-
-        VmTransport transport = createTransport(remote, local);
-
-        container.autowire(transport);
-
-        transport.connect();
-
-        return transport;
-    }
-
-    protected VmTransport createTransport(final URI remote, final URI local) throws Exception {
-        assert remote != null;
-        // local can be null
-
+    @Override
+    protected Transport createTransport(final URI remote, final URI local) throws Exception {
         return new VmTransport(remote, local);
     }
 
-    public Transport connect(final URI remote) throws Exception {
-        return connect(remote, null);
-    }
-
-    public TransportServer bind(final URI location) throws Exception {
-        assert location != null;
-
-        VmTransportServer server = createTransportServer(location);
-
-        container.autowire(server);
-
-        server.bind();
-
-        return server;
-    }
-
-    protected VmTransportServer createTransportServer(final URI location) throws Exception {
+    @Override
+    protected TransportServer createTransportServer(final URI location) throws Exception {
         return new VmTransportServer(location);
+    }
+
+    static VmPipeAddress address(final URI location) {
+        VmPipeAddress addr = null;
+
+        if (location != null) {
+            addr = new VmPipeAddress(location.getPort());
+        }
+
+        return addr;
     }
 }

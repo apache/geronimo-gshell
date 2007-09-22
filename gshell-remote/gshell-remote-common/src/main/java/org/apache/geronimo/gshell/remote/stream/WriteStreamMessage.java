@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.stream;
 
-import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
+import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.mina.common.ByteBuffer;
@@ -64,7 +64,7 @@ public class WriteStreamMessage
 
         super.readExternal(in);
 
-        buffer = MarshallingUtil.readBuffer(in);
+        buffer = Marshaller.readBuffer(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -72,6 +72,6 @@ public class WriteStreamMessage
 
         super.writeExternal(out);
 
-        MarshallingUtil.writeBuffer(out, buffer);
+        Marshaller.writeBuffer(out, buffer);
     }
 }

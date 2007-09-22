@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.request;
 
+import org.apache.geronimo.gshell.remote.message.Message;
+
 /**
  * Thrown to indicate that a request has been timed out.
  *
@@ -29,15 +31,15 @@ public class RequestTimeoutException
 {
     private static final long serialVersionUID = 1;
 
-    private final Object id;
+    private final Message.ID id;
 
-    public RequestTimeoutException(final Request request) {
-        super("Request timed out: " + request.getId());
+    public RequestTimeoutException(final Message.ID id) {
+        super("Request timed out: " + id);
 
-        this.id = request.getId();
+        this.id = id;
     }
 
-    public Object getId() {
+    public Message.ID getId() {
         return id;
     }
 }

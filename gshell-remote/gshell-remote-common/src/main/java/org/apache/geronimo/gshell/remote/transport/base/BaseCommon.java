@@ -17,18 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport;
+package org.apache.geronimo.gshell.remote.transport.base;
 
 import java.net.SocketAddress;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.remote.codec.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.message.MessageCodecFactory;
+import org.apache.geronimo.gshell.remote.message.MessageHandler;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.request.RequestResponseFilter;
 import org.apache.geronimo.gshell.remote.stream.SessionStreamFilter;
+import org.apache.geronimo.gshell.remote.transport.Transport;
+import org.apache.geronimo.gshell.remote.transport.TransportExceptionMonitor;
+import org.apache.geronimo.gshell.remote.transport.TransportServer;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.mina.common.ExceptionMonitor;
 import org.apache.mina.common.IoFilterChain;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoService;
@@ -38,8 +42,6 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.filter.LoggingFilter;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.management.IoSessionStat;
-import org.apache.mina.management.StatCollector;
 import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,30 +51,52 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public abstract class TransportCommon
+public abstract class BaseCommon
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-
-    // private StatCollector statCollector;
-
-    private IoService service;
-
-    protected TransportCommon() {
+    static {
+        // Setup our exception monitor
+        ExceptionMonitor.setInstance(new TransportExceptionMonitor());
+        
+        // Make sure that we use non-pooled fast buffers
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
     }
+
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    private IoHandler handler;
+
+    private IoService service;
+
+    // private StatCollector statCollector;
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
 
+    protected IoHandler getHandler() {
+        if (handler == null) {
+            throw new IllegalStateException("Handler not bound");
+        }
+        
+        return handler;
+    }
+
+    public IoService getService() {
+        return service;
+    }
+
+    //
+    // Configuration
+    //
+    
     protected void configure(final IoService service) throws Exception {
         assert service != null;
 
         this.service = service;
 
         service.addListener(new IoServiceListener() {
-            public void serviceActivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
+            public void serviceActivated(final IoService service, final SocketAddress serviceAddress, final IoHandler handler, final IoServiceConfig config) {
                 log.info("Service activated: {}", service);
 
                 // log.info("Service activated: {}, {}, {}, {}", service, serviceAddress, handler, config);
@@ -80,48 +104,28 @@ public abstract class TransportCommon
                 logFilters(service);
             }
 
-            public void serviceDeactivated(IoService service, SocketAddress serviceAddress, IoHandler handler, IoServiceConfig config) {
+            public void serviceDeactivated(final IoService service, final SocketAddress serviceAddress, final IoHandler handler, final IoServiceConfig config) {
                 log.info("Service deactivated: {}", service);
 
                 // log.info("Service deactivated: {}, {}, {}, {}", service, serviceAddress, handler, config);
             }
 
-            public void sessionCreated(IoSession session) {
+            public void sessionCreated(final IoSession session) {
                 log.info("Session created: {}", session);
 
                 logFilters(session);
             }
 
-            public void sessionDestroyed(IoSession session) {
+            public void sessionDestroyed(final IoSession session) {
                 log.info("Session destroyed: {}", session);
             }
         });
 
-        ProtocolHandler handler = getProtocolHandler();
-
-        MessageVisitor visitor = getMessageVisitor();
-
-        handler.setVisitor(visitor);
+        // Setup the io handler
+        handler = new MessageHandler(getMessageVisitor());
 
         // Install the default set of filters
-
-        DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
-
-        //
-        // NOTE: We don't need an executor filter here, since the ThreadModel does that for us
-        //
-        
-        // filterChain.addLast(ExecutorFilter.class.getSimpleName(), new ExecutorFilter(executor));
-
-        // filterChain.addLast(ProfilerTimerFilter.class.getSimpleName(), new ProfilerTimerFilter());
-
-        filterChain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(getMessageCodecFactory()));
-
-        filterChain.addLast(LoggingFilter.class.getSimpleName(), new LoggingFilter());
-
-        filterChain.addLast(SessionStreamFilter.class.getSimpleName(), new SessionStreamFilter());
-
-        filterChain.addLast(RequestResponseFilter.class.getSimpleName(), new RequestResponseFilter());
+        configure(service.getFilterChain());
 
         //
         // TODO: Start up a scheduled task to periodically log stats
@@ -132,8 +136,21 @@ public abstract class TransportCommon
         // statCollector.start();
     }
 
-    public IoService getService() {
-        return service;
+    protected void configure(final DefaultIoFilterChainBuilder chain) throws Exception {
+        assert chain != null;
+
+        // We don't need an executor filter here (in Mina 1.1.x), since the ThreadModel does that for us
+        // chain.addLast(ExecutorFilter.class.getSimpleName(), new ExecutorFilter(executor));
+
+        // chain.addLast(ProfilerTimerFilter.class.getSimpleName(), new ProfilerTimerFilter());
+
+        chain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(getMessageCodecFactory()));
+
+        chain.addLast(LoggingFilter.class.getSimpleName(), new LoggingFilter());
+
+        chain.addLast(SessionStreamFilter.class.getSimpleName(), new SessionStreamFilter());
+
+        chain.addLast(RequestResponseFilter.class.getSimpleName(), new RequestResponseFilter());
     }
 
     public void close() {
@@ -144,27 +161,28 @@ public abstract class TransportCommon
     // Logging Helpers
     //
     
-    protected void logFilters(IoService service) {
-        DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
+    protected void logFilters(final IoService service) {
+        assert service != null;
 
         log.debug("Service filters:");
 
-        for (IoFilterChain.Entry entry : filterChain.getAll()) {
+        for (IoFilterChain.Entry entry : service.getFilterChain().getAll()) {
             log.debug("    {}", entry);
         }
     }
 
-    protected void logFilters(IoSession session) {
-        IoFilterChain filterChain = session.getFilterChain();
-
+    protected void logFilters(final IoSession session) {
+        assert session != null;
+        
         log.debug("Session filters:");
 
-        for (IoFilterChain.Entry entry : filterChain.getAll()) {
+        for (IoFilterChain.Entry entry : session.getFilterChain().getAll()) {
             log.debug("    {}", entry);
         }
     }
 
-    protected void logStats(final IoSession session) throws Exception {
+    /*
+    protected void logStats(final IoSession session) {
         assert session != null;
 
         IoSessionStat stat = (IoSessionStat) session.getAttribute(StatCollector.KEY);
@@ -173,22 +191,17 @@ public abstract class TransportCommon
             log.debug("Stats: {}", ReflectionToStringBuilder.toString(stat, ToStringStyle.SHORT_PREFIX_STYLE));
         }
     }
-
+    */
+    
     //
-    // AutoWire Support
+    // AutoWire Support, Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
     //
 
     private PlexusContainer container;
 
     private MessageVisitor messageVisitor;
 
-    private ProtocolHandler protocolHandler;
-
     private MessageCodecFactory codecFactory;
-
-    //
-    // NOTE: Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
-    //
 
     public void setMessageVisitor(final MessageVisitor messageVisitor) {
         assert messageVisitor != null;
@@ -204,22 +217,6 @@ public abstract class TransportCommon
         }
 
         return messageVisitor;
-    }
-
-    public void setProtocolHandler(final ProtocolHandler protocolHandler) {
-        assert protocolHandler != null;
-
-        log.trace("Using protocol handler: {}", protocolHandler);
-
-        this.protocolHandler = protocolHandler;
-    }
-
-    protected ProtocolHandler getProtocolHandler() {
-        if (protocolHandler == null) {
-            throw new IllegalStateException("Protocol handler not bound");
-        }
-
-        return protocolHandler;
     }
 
     public void setMessageCodecFactory(final MessageCodecFactory codecFactory) {

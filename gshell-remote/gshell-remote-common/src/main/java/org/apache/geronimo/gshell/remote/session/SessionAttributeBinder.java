@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.util;
+package org.apache.geronimo.gshell.remote.session;
 
 import org.apache.mina.common.IoSession;
 
@@ -60,7 +60,7 @@ public class SessionAttributeBinder<T>
     public void bind(final IoSession session, final T obj) {
         assert session != null;
         assert obj != null;
-
+        
         Object prev = session.getAttribute(key);
 
         if (prev != null) {

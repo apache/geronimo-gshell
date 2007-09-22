@@ -17,9 +17,25 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.remote.transport;
+
+import org.apache.mina.common.ExceptionMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * Encoding and decoding fluff.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.remote.codec;
+public class TransportExceptionMonitor
+    extends ExceptionMonitor
+{
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    public void exceptionCaught(final Throwable cause) {
+        assert cause != null;
+
+        log.error("Unhandled exception: " + cause, cause);
+    }
+}

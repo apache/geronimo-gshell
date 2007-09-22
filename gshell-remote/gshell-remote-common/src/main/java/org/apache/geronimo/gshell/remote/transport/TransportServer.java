@@ -30,5 +30,7 @@ public interface TransportServer
 {
     URI getLocation();
 
+    void bind() throws Exception;
+
     void close();
 }

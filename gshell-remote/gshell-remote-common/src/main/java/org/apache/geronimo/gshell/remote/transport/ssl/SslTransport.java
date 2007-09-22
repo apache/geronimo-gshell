@@ -24,7 +24,6 @@ import java.net.URI;
 import org.apache.geronimo.gshell.remote.ssl.SSLContextFactory;
 import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
-import org.apache.mina.common.IoService;
 import org.apache.mina.filter.SSLFilter;
 
 /**
@@ -39,27 +38,24 @@ public class SslTransport
         super(remote, local);
     }
 
-    protected void configure(final IoService service) throws Exception {
-        super.configure(service);
+    @Override
+    protected void configure(final DefaultIoFilterChainBuilder chain) throws Exception {
+        assert chain != null;
 
-        DefaultIoFilterChainBuilder filterChain = service.getFilterChain();
+        super.configure(chain);
 
         SSLFilter sslFilter = new SSLFilter(getSslContextFactory().createClientContext());
         sslFilter.setUseClientMode(true);
 
-        filterChain.addFirst(SSLFilter.class.getSimpleName(), sslFilter);
+        chain.addFirst(SSLFilter.class.getSimpleName(), sslFilter);
     }
 
     //
-    // AutoWire Support
+    // AutoWire Support, Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
     //
 
     private SSLContextFactory sslContextFactory;
-
-    //
-    // NOTE: Setters exposed to support Plexus autowire()
-    //
-
+    
     public void setSslContextFactory(final SSLContextFactory factory) {
         log.debug("Using SSL Context Factory: {}", factory);
 

@@ -73,8 +73,6 @@ public class DefaultRemoteShell
 
     public void close() {
         opened = false;
-
-        log.info("Closed");
     }
 
     public Environment getEnvironment() {

@@ -19,14 +19,16 @@
 
 package org.apache.geronimo.gshell.remote.transport.tcp;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.UnknownHostException;
 
 import org.apache.geronimo.gshell.remote.transport.Transport;
 import org.apache.geronimo.gshell.remote.transport.TransportFactory;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.codehaus.plexus.PlexusContainer;
+import org.apache.geronimo.gshell.remote.transport.base.BaseTransportFactory;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Produces TCP transport instances.
@@ -35,52 +37,25 @@ import org.codehaus.plexus.component.annotations.Requirement;
  */
 @Component(role=TransportFactory.class, hint="tcp")
 public class TcpTransportFactory
-    implements TransportFactory
+    extends BaseTransportFactory
 {
-    @Requirement
-    private PlexusContainer container;
-
-    //
-    // NOTE: We use autowire() here to get a few components injected.  These are injected via setters.
-    //
-    
-    public Transport connect(final URI remote, final URI local) throws Exception {
-        assert remote != null;
-        // local can be null
-
-        TcpTransport transport = createTransport(remote, local);
-
-        container.autowire(transport);
-
-        transport.connect();
-
-        return transport;
-    }
-
-    protected TcpTransport createTransport(final URI remote, final URI local) throws Exception {
-        assert remote != null;
-        // local can be null
-        
+    @Override
+    protected Transport createTransport(final URI remote, final URI local) throws Exception {
         return new TcpTransport(remote, local);
     }
 
-    public Transport connect(final URI remote) throws Exception {
-        return connect(remote, null);
-    }
-
-    public TransportServer bind(final URI location) throws Exception {
-        assert location != null;
-
-        TcpTransportServer server = createTransportServer(location);
-
-        container.autowire(server);
-
-        server.bind();
-
-        return server;
-    }
-
-    protected TcpTransportServer createTransportServer(final URI location) throws Exception {
+    @Override
+    protected TransportServer createTransportServer(final URI location) throws Exception {
         return new TcpTransportServer(location);
+    }
+
+    static InetSocketAddress address(final URI location) throws UnknownHostException {
+        InetSocketAddress addr = null;
+
+        if (location != null) {
+            addr = new InetSocketAddress(InetAddress.getByName(location.getHost()), location.getPort());
+        }
+
+        return addr;
     }
 }

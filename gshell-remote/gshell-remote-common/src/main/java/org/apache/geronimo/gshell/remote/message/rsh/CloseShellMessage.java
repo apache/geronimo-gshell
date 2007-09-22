@@ -17,25 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client;
+package org.apache.geronimo.gshell.remote.message.rsh;
 
+import org.apache.geronimo.gshell.remote.message.MessageSupport;
+import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
-import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * Defines the logic for client-side message processing.
+ * Close the remote shell instance.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=MessageVisitor.class, hint="client")
-public class RshClientMessageVisitor
-    extends MessageVisitorSupport
+public class CloseShellMessage
+    extends MessageSupport
 {
-    public void visitEcho(final EchoMessage msg) throws Exception {
-        assert msg != null;
+    public CloseShellMessage() {
+        super(MessageType.CLOSE_SHELL);
+    }
 
-        log.info("ECHO: {}", msg.getText());
+    public void process(final MessageVisitor visitor) throws Exception {
+        assert visitor != null;
+
+        visitor.visitCloseShell(this);
     }
 }

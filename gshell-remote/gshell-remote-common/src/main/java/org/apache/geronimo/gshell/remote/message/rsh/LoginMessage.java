@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.remote.message.rsh;
 
 import java.security.PublicKey;
 
-import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
+import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
+import org.apache.geronimo.gshell.remote.message.MessageSupport;
+import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.mina.common.ByteBuffer;
 
 //
@@ -30,39 +32,43 @@ import org.apache.mina.common.ByteBuffer;
 //
 
 /**
- * Initial client handshake which contains the clients public key.
+ * Clients request to login to the server.
  *
  * @version $Rev$ $Date$
  */
-public class HandShakeMessage
+public class LoginMessage
     extends CryptoAwareMessageSupport
 {
-    private PublicKey publicKey;
+    private transient PublicKey serverKey;
 
-    protected HandShakeMessage(final MessageType type, final PublicKey publicKey) {
-        super(type);
+    private String username;
 
-        this.publicKey = publicKey;
+    //
+    // NOTE: Marked as transiet to prevent the ToStringBuilder from displaying its value.
+    //
+    
+    private transient String password;
+
+    public LoginMessage(final PublicKey serverKey, final String username, final String password) {
+        super(MessageType.LOGIN);
+
+        this.serverKey = serverKey;
+
+        this.username = username;
+        
+        this.password = password;
     }
 
-    public HandShakeMessage(final PublicKey publicKey) {
-        this(MessageType.HANDSHAKE, publicKey);
+    public LoginMessage() {
+        this(null, null, null);
     }
 
-    public HandShakeMessage() {
-        this(null);
+    public String getUsername() {
+        return username;
     }
 
-    public PublicKey getPublicKey() {
-        if (publicKey == null) {
-            throw new IllegalStateException("Missing public key");
-        }
-
-        return publicKey;
-    }
-
-    public void setPublicKey(final PublicKey publicKey) {
-        this.publicKey = publicKey;
+    public String getPassword() {
+        return password;
     }
 
     public void readExternal(final ByteBuffer in) throws Exception {
@@ -70,13 +76,9 @@ public class HandShakeMessage
 
         super.readExternal(in);
 
-        byte[] bytes = MarshallingUtil.readBytes(in);
-        
-        if (bytes == null) {
-            throw new IllegalStateException();
-        }
+        username = decryptString(in);
 
-        publicKey = getCryptoContext().deserializePublicKey(bytes);
+        password = decryptString(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -84,21 +86,19 @@ public class HandShakeMessage
 
         super.writeExternal(out);
 
-        MarshallingUtil.writeBytes(out, getPublicKey().getEncoded());
+        encryptString(out, serverKey, username);
+
+        encryptString(out, serverKey, password);
     }
 
     /**
-     * Reply from server to client which contains the server's public key.
+     * Server to client message to indicate successfull login.
      */
     public static class Result
-        extends HandShakeMessage
+        extends MessageSupport
     {
-        public Result(final PublicKey publicKey) {
-            super(MessageType.HANDSHAKE_RESULT, publicKey);
-        }
-
         public Result() {
-            this(null);
+            super(MessageType.LOGIN_RESULT);
         }
     }
 }

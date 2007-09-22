@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.codec;
+package org.apache.geronimo.gshell.remote.marshall;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,12 +31,52 @@ import java.util.UUID;
 import org.apache.mina.common.ByteBuffer;
 
 /**
- * ???
+ * Provides support for marshalling and unmarshalling objects.
  *
  * @version $Rev$ $Date$
  */
-public class MarshallingUtil
+public class Marshaller
 {
+    //
+    // TODO: Should we maybe look at using XStream to handle cases when things don't marshall normally?
+    //
+    
+    private final ByteBuffer buff;
+
+    public Marshaller(final ByteBuffer buff) {
+        assert buff != null;
+
+        this.buff = buff;
+    }
+
+    public static MarshalAware unmarshal(final ByteBuffer in) throws Exception {
+        assert in != null;
+
+        Class type = (Class) readObject(in);
+
+        MarshalAware obj = (MarshalAware) type.newInstance();
+
+        obj.readExternal(in);
+
+        return obj;
+    }
+
+    public MarshalAware unmarshal() throws Exception {
+        return unmarshal(buff);
+    }
+
+    public static void marshal(final ByteBuffer out, final MarshalAware obj) throws Exception {
+        assert out != null;
+
+        writeObject(out, obj.getClass());
+
+        obj.writeExternal(out);
+    }
+
+    public void marshal(final MarshalAware obj) throws Exception {
+        marshal(buff, obj);
+    }
+
     //
     // Boolean Serialization
     //
@@ -61,6 +101,10 @@ public class MarshallingUtil
         }
     }
 
+    public boolean getBoolean() {
+        return readBoolean(buff);
+    }
+
     public static void writeBoolean(final ByteBuffer out, final boolean bool) {
         assert out != null;
 
@@ -70,6 +114,10 @@ public class MarshallingUtil
         else {
             out.put(FALSE);
         }
+    }
+
+    public void put(final boolean bool) {
+        writeBoolean(buff, bool);
     }
 
     //
@@ -94,6 +142,10 @@ public class MarshallingUtil
         return bytes;
     }
 
+    public byte[] getBytes() {
+        return readBytes(buff);
+    }
+
     public static void writeBytes(final ByteBuffer out, final byte[] bytes) {
         assert out != null;
 
@@ -107,6 +159,10 @@ public class MarshallingUtil
 
             out.put(bytes);
         }
+    }
+
+    public void put(final byte[] bytes) {
+        writeBytes(buff, bytes);
     }
 
     //
@@ -125,6 +181,10 @@ public class MarshallingUtil
         return ByteBuffer.wrap(bytes);
     }
 
+    public ByteBuffer getBuffer() {
+        return readBuffer(buff);
+    }
+
     public static void writeBuffer(final ByteBuffer out, final ByteBuffer buffer) {
         assert out != null;
 
@@ -138,6 +198,10 @@ public class MarshallingUtil
 
             out.put(buffer);
         }
+    }
+
+    public void put(final ByteBuffer b) {
+        writeBuffer(buff, b);
     }
 
     //
@@ -159,6 +223,10 @@ public class MarshallingUtil
         return ois.readObject();
     }
 
+    public Object getObject() throws IOException, ClassNotFoundException {
+        return readObject(buff);
+    }
+
     public static void writeObject(final ByteBuffer out, final Object obj) throws IOException {
         assert out != null;
 
@@ -175,6 +243,10 @@ public class MarshallingUtil
         }
 
         writeBytes(out, bytes);
+    }
+
+    public void put(final Object obj) throws IOException {
+        writeObject(buff, obj);
     }
 
     //
@@ -195,6 +267,10 @@ public class MarshallingUtil
         return in.getString(len, UTF_8_CHARSET.newDecoder());
     }
 
+    public String getString() throws CharacterCodingException {
+        return readString(buff);
+    }
+
     public static void writeString(final ByteBuffer out, final String str) throws CharacterCodingException {
         assert out != null;
 
@@ -209,11 +285,15 @@ public class MarshallingUtil
         }
     }
 
+    public void put(final String str) throws CharacterCodingException {
+        writeString(buff, str);
+    }
+
     //
     // UUID Serialization
     //
 
-    public static UUID readUuid(final ByteBuffer in) throws Exception {
+    public static UUID readUuid(final ByteBuffer in) {
         assert in != null;
 
         boolean isNull = readBoolean(in);
@@ -229,7 +309,11 @@ public class MarshallingUtil
         return new UUID(msb, lsb);
     }
 
-    public static void writeUuid(final ByteBuffer out, final UUID uuid) throws Exception {
+    public UUID getUuid() {
+        return readUuid(buff);
+    }
+
+    public static void writeUuid(final ByteBuffer out, final UUID uuid) {
         assert out != null;
 
         if (uuid == null) {
@@ -244,6 +328,10 @@ public class MarshallingUtil
         }
     }
 
+    public void put(final UUID uuid) {
+        writeUuid(buff, uuid);
+    }
+
     //
     // Enum Serialization (adapted from Mina 2.x)
     //
@@ -256,10 +344,18 @@ public class MarshallingUtil
         return out.put((byte) e.ordinal());
     }
 
+    public void put(Enum<?> e) {
+        writeEnum(buff, e);
+    }
+
     public static <E extends Enum<E>> E readEnum(final ByteBuffer in, final Class<E> enumClass) {
         return toEnum(enumClass, in.get());
     }
-    
+
+    public <E extends Enum<E>> E getEnum(final Class<E> enumClass) {
+        return readEnum(buff, enumClass);
+    }
+
     private static <E> E toEnum(Class<E> enumClass, int i) {
         E[] enumConstants = enumClass.getEnumConstants();
         if (i > enumConstants.length) {

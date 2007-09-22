@@ -17,10 +17,13 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.remote.message.rsh;
 
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
+import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.message.MessageSupport;
+import org.apache.geronimo.gshell.remote.message.MessageType;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -72,11 +75,11 @@ public class ExecuteMessage
 
         super.readExternal(in);
 
-        this.flavor = MarshallingUtil.readEnum(in, Flavor.class);
+        this.flavor = Marshaller.readEnum(in, Flavor.class);
 
-        this.path = MarshallingUtil.readString(in);
+        this.path = Marshaller.readString(in);
 
-        this.args = (Object[]) MarshallingUtil.readObject(in);
+        this.args = (Object[]) Marshaller.readObject(in);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -84,11 +87,11 @@ public class ExecuteMessage
 
         super.writeExternal(out);
 
-        MarshallingUtil.writeEnum(out, flavor);
+        Marshaller.writeEnum(out, flavor);
 
-        MarshallingUtil.writeString(out, path);
+        Marshaller.writeString(out, path);
 
-        MarshallingUtil.writeObject(out, args);
+        Marshaller.writeObject(out, args);
     }
 
     public void process(final MessageVisitor visitor) throws Exception {
@@ -161,7 +164,7 @@ public class ExecuteMessage
 
             super.readExternal(in);
 
-            result = MarshallingUtil.readObject(in);
+            result = Marshaller.readObject(in);
         }
 
         public void writeExternal(final ByteBuffer out) throws Exception {
@@ -169,7 +172,7 @@ public class ExecuteMessage
 
             super.writeExternal(out);
 
-            MarshallingUtil.writeObject(out, result);
+            Marshaller.writeObject(out, result);
         }
     }
 

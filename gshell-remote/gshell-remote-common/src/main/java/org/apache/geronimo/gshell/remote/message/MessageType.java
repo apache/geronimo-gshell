@@ -23,6 +23,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.HandShakeMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.stream.WriteStreamMessage;
 
 /**
@@ -32,6 +38,10 @@ import org.apache.geronimo.gshell.remote.stream.WriteStreamMessage;
  */
 public enum MessageType
 {
+    //
+    // FIXME: Abstract me...
+    //
+    
     ECHO                    (EchoMessage.class),
     HANDSHAKE               (HandShakeMessage.class),
     HANDSHAKE_RESULT        (HandShakeMessage.Result.class),

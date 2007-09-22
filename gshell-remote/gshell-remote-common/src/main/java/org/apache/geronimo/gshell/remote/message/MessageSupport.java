@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.remote.codec.MarshallingUtil;
+import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
@@ -35,7 +35,7 @@ import org.apache.mina.common.WriteFuture;
  *
  * @version $Rev$ $Date$
  */
-public abstract class MessageSupport
+public class MessageSupport
     implements Message
 {
     private static final IDGenerator ID_GENERATOR = new LongIDGenerator();
@@ -144,17 +144,13 @@ public abstract class MessageSupport
 
         return session.write(msg);
     }
-    
-    //
-    // Externalization
-    //
 
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
-        id = (ID) MarshallingUtil.readObject(in);
+        id = (ID) Marshaller.readObject(in);
 
-        correlationId = (ID) MarshallingUtil.readObject(in);
+        correlationId = (ID) Marshaller.readObject(in);
 
         timestamp = in.getLong();
 
@@ -164,9 +160,9 @@ public abstract class MessageSupport
     public void writeExternal(final ByteBuffer out) throws Exception {
         assert out != null;
 
-        MarshallingUtil.writeObject(out, id);
+        Marshaller.writeObject(out, id);
 
-        MarshallingUtil.writeObject(out, correlationId);
+        Marshaller.writeObject(out, correlationId);
 
         out.putLong(timestamp);
 
@@ -196,7 +192,7 @@ public abstract class MessageSupport
     private static class LongID
         implements ID
     {
-        private final Long value;
+        private Long value;
 
         public LongID(final long value) {
             this.value = value;
@@ -223,6 +219,15 @@ public abstract class MessageSupport
         public String toString() {
             return String.valueOf(value);
         }
+
+        public void writeExternal(final ByteBuffer out) throws Exception {
+            out.putLong(value);
+
+        }
+
+        public void readExternal(final ByteBuffer in) throws Exception {
+            value = in.getLong();
+        }
     }
 
     //
@@ -233,7 +238,7 @@ public abstract class MessageSupport
         implements IDGenerator
     {
         public ID generate() {
-            return new UUIDAdapter(UUID.randomUUID());
+            return new UUIDAdapter();
         }
     }
 
@@ -244,10 +249,14 @@ public abstract class MessageSupport
     private static class UUIDAdapter
         implements ID
     {
-        private final UUID value;
+        private UUID value;
 
         public UUIDAdapter(final UUID value) {
             this.value = value;
+        }
+
+        public UUIDAdapter() {
+            this(UUID.randomUUID());
         }
 
         public int hashCode() {
@@ -270,6 +279,15 @@ public abstract class MessageSupport
 
         public String toString() {
             return String.valueOf(value);
+        }
+
+        public void writeExternal(final ByteBuffer out) throws Exception {
+            Marshaller.writeUuid(out, value);
+
+        }
+
+        public void readExternal(final ByteBuffer in) throws Exception {
+            value = Marshaller.readUuid(in);
         }
     }
 }

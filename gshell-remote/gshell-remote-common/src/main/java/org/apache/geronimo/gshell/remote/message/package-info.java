@@ -18,7 +18,7 @@
  */
 
 /**
- * Message protocol support for client to server communictation.
+ * Support for message protocols.
  *
  * @version $Rev$ $Date$
  */

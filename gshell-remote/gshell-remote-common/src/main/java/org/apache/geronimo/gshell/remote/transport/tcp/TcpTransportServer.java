@@ -19,17 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.transport.tcp;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.net.URI;
 import java.util.concurrent.Executors;
 
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.geronimo.gshell.remote.security.SecurityFilter;
-import org.apache.geronimo.gshell.remote.transport.TransportCommon;
-import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.apache.mina.common.DefaultIoFilterChainBuilder;
+import org.apache.geronimo.gshell.remote.transport.base.BaseTransportServer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
@@ -40,33 +33,13 @@ import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
  * @version $Rev$ $Date$
  */
 public class TcpTransportServer
-    extends TransportCommon
-    implements TransportServer
+    extends BaseTransportServer
 {
-    protected final URI location;
-
-    protected final SocketAddress address;
-
-    protected IoAcceptor acceptor;
-
-    protected boolean bound;
-
-    protected TcpTransportServer(final URI location, final SocketAddress address) {
-        assert location != null;
-        assert address != null;
-
-        this.location = location;
-        this.address = address;
-    }
-
     public TcpTransportServer(final URI location) throws Exception {
-        this(location, new InetSocketAddress(InetAddress.getByName(location.getHost()), location.getPort()));
+        super(location, TcpTransportFactory.address(location));
     }
 
-    public URI getLocation() {
-        return location;
-    }
-    
+    @Override
     protected IoAcceptor createAcceptor() throws Exception {
         SocketAcceptor acceptor = new SocketAcceptor(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
 
@@ -76,66 +49,4 @@ public class TcpTransportServer
 
         return acceptor;
     }
-
-    protected synchronized void init() throws Exception {
-        acceptor = createAcceptor();
-
-        //
-        // HACK: Need to manually wire in the visitor impl for now... :-(
-        //
-
-        setMessageVisitor((MessageVisitor) getContainer().lookup(MessageVisitor.class, "server"));
-
-        configure(acceptor);
-
-        DefaultIoFilterChainBuilder filterChain = acceptor.getFilterChain();
-        
-        filterChain.addLast(SecurityFilter.class.getSimpleName(), getSecurityFilter());
-    }
-
-    public synchronized void bind() throws Exception {
-        if (bound) {
-            throw new IllegalStateException("Already bound");
-        }
-
-        init();
-
-        acceptor.bind(address, getProtocolHandler());
-
-        bound = true;
-
-        log.info("Listening on: {}", address);
-    }
-
-    public synchronized void close() {
-        try {
-            acceptor.unbind(address);
-        }
-        finally {
-            super.close();
-        }
-    }
-
-    //
-    // AutoWire Support
-    //
-
-    private SecurityFilter securityFilter;
-    
-    //
-    // NOTE: Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
-    //
-
-    public void setSecurityFilter(final SecurityFilter securityFilter) {
-        this.securityFilter = securityFilter;
-    }
-
-    protected SecurityFilter getSecurityFilter() {
-        if (securityFilter == null) {
-            throw new IllegalStateException("Security filter not bound");
-        }
-
-        return securityFilter;
-    }
-
 }

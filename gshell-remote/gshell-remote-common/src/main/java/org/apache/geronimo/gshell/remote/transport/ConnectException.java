@@ -17,25 +17,31 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client;
-
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
-import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
-import org.codehaus.plexus.component.annotations.Component;
+package org.apache.geronimo.gshell.remote.transport;
 
 /**
- * Defines the logic for client-side message processing.
+ * Thrown to indicate a connection related failure has occured.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=MessageVisitor.class, hint="client")
-public class RshClientMessageVisitor
-    extends MessageVisitorSupport
+public class ConnectException
+    extends TransportException
 {
-    public void visitEcho(final EchoMessage msg) throws Exception {
-        assert msg != null;
+    private static final long serialVersionUID = 1;
 
-        log.info("ECHO: {}", msg.getText());
+    public ConnectException(final String msg, final Throwable cause) {
+        super(msg, cause);
+    }
+
+    public ConnectException(final String msg) {
+        super(msg);
+    }
+
+    public ConnectException(final Throwable cause) {
+        super(cause);
+    }
+
+    public ConnectException() {
+        super();
     }
 }

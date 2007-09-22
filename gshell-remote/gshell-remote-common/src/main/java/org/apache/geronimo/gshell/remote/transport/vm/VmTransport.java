@@ -21,9 +21,8 @@ package org.apache.geronimo.gshell.remote.transport.vm;
 
 import java.net.URI;
 
-import org.apache.geronimo.gshell.remote.transport.tcp.TcpTransport;
+import org.apache.geronimo.gshell.remote.transport.base.BaseTransport;
 import org.apache.mina.common.IoConnector;
-import org.apache.mina.transport.vmpipe.VmPipeAddress;
 import org.apache.mina.transport.vmpipe.VmPipeConnector;
 
 /**
@@ -32,12 +31,13 @@ import org.apache.mina.transport.vmpipe.VmPipeConnector;
  * @version $Rev$ $Date$
  */
 public class VmTransport
-    extends TcpTransport
+    extends BaseTransport
 {
     public VmTransport(final URI remote, final URI local) throws Exception {
-        super(remote, new VmPipeAddress(remote.getPort()), local, local != null ? new VmPipeAddress(local.getPort()) : null);
+        super(remote, VmTransportFactory.address(remote), local, VmTransportFactory.address(local));
     }
 
+    @Override
     protected IoConnector createConnector() throws Exception {
         return new VmPipeConnector();
     }
