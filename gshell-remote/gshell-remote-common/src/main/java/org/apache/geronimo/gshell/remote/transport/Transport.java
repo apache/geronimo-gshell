@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.mina.common.WriteFuture;
+import org.apache.mina.common.IoService;
+import org.apache.mina.common.IoSession;
 
 /**
  * Provides the client-side protocol interface.
@@ -38,7 +40,13 @@ public interface Transport
 
     URI getLocalLocation();
 
+    IoService getService();
+
+    IoSession getSession();
+
     void connect() throws Exception;
+
+    boolean isConnected();
 
     void close();
     

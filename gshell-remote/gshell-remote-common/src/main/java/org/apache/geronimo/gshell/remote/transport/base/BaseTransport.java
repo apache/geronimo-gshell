@@ -115,6 +115,10 @@ public abstract class BaseTransport
         log.info("Connected");
     }
 
+    public boolean isConnected() {
+        return connected;
+    }
+
     public synchronized void close() {
         try {
             CloseFuture cf = session.close();
@@ -134,6 +138,10 @@ public abstract class BaseTransport
 
     public URI getLocalLocation() {
         return localLocation;
+    }
+
+    public IoSession getSession() {
+        return session;
     }
 
     public WriteFuture send(final Object msg) throws Exception {

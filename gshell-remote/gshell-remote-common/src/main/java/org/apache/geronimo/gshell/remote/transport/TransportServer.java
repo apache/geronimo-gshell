@@ -21,6 +21,8 @@ package org.apache.geronimo.gshell.remote.transport;
 
 import java.net.URI;
 
+import org.apache.mina.common.IoService;
+
 /**
  * Provides the server-side protocol interface.
  *
@@ -30,7 +32,11 @@ public interface TransportServer
 {
     URI getLocation();
 
+    IoService getService();
+
     void bind() throws Exception;
+
+    boolean isBound();
 
     void close();
 }

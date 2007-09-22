@@ -104,6 +104,10 @@ public abstract class BaseTransportServer
         log.info("Listening on: {}", address);
     }
 
+    public boolean isBound() {
+        return bound;
+    }
+
     public synchronized void close() {
         try {
             acceptor.unbind(address);
