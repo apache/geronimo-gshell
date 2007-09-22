@@ -63,8 +63,6 @@ public class MessageSupport
         this.type = type;
 
         this.timestamp = System.currentTimeMillis();
-
-        // late init id and sequence
     }
 
     public int hashCode() {
@@ -75,18 +73,61 @@ public class MessageSupport
     // TODO: Add equals()
     //
     
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    protected static final class MessageToStringStyle
+        extends ToStringStyle
+    {
+        private static final long serialVersionUID = 1L;
+
+        public static final String[] EXCLUDED_FIELDS = {
+            "type",
+            "session",
+            "frozen"
+        };
+
+        MessageToStringStyle() {
+            this.setUseShortClassName(true);
+            this.setUseIdentityHashCode(false);
+        }
+
+        protected void appendClassName(StringBuffer buffer, Object object) {
+            if (object instanceof Message) {
+                Message msg = (Message) object;
+
+                buffer.append(msg.getType());
+            }
+            else {
+                super.appendClassName(buffer, object);
+            }
+        }
+
+        private Object readResolve() {
+            return MESSAGE_STYLE;
+        }
     }
 
+    private static final ToStringStyle MESSAGE_STYLE = new MessageToStringStyle();
+
     protected ToStringBuilder createToStringBuilder() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder(this, MESSAGE_STYLE)
                 .append("id", getId())
                 .append("sequence", getSequence())
                 .append("timestamp", getTimestamp());
     }
 
-    public MessageType getType() throws IOException {
+    public String toString() {
+        //
+        // HACK: Make sure these init before we reflect
+        //
+        
+        getId();
+        getSequence();
+
+        return new ReflectionToStringBuilder(this, MESSAGE_STYLE)
+                .setExcludeFieldNames(MessageToStringStyle.EXCLUDED_FIELDS)
+                .toString();
+    }
+
+    public MessageType getType() {
         return type;
     }
 

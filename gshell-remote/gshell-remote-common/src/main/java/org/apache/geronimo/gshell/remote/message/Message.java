@@ -40,7 +40,7 @@ public interface Message
 
     void setCorrelationId(ID id);
 
-    MessageType getType() throws IOException;
+    MessageType getType();
 
     long getTimestamp();
 
