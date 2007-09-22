@@ -221,7 +221,7 @@ public abstract class MessageSupport
         }
 
         public String toString() {
-            return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+            return String.valueOf(value);
         }
     }
 
@@ -269,7 +269,7 @@ public abstract class MessageSupport
         }
 
         public String toString() {
-            return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+            return String.valueOf(value);
         }
     }
 }

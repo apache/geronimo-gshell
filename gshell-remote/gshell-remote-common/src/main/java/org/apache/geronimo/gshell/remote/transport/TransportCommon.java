@@ -53,10 +53,6 @@ public abstract class TransportCommon
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    // protected final ExecutorService executor;
-
-    // protected final ScheduledExecutorService scheduler;
-
     // private StatCollector statCollector;
 
     private IoService service;
@@ -64,16 +60,6 @@ public abstract class TransportCommon
     protected TransportCommon() {
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
-        
-        //
-        // TODO: Add custom thread factory ?
-        //
-
-        // executor = new ThreadPoolExecutor(1, 16, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-
-        // executor = Executors.newCachedThreadPool();
-
-        // scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1);
     }
 
     public String toString() {
@@ -152,10 +138,6 @@ public abstract class TransportCommon
 
     public void close() {
         // statCollector.stop();
-
-        // executor.shutdownNow();
-
-        // scheduler.shutdownNow();
     }
 
     //

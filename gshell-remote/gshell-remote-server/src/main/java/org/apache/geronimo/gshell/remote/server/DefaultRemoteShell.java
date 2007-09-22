@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;

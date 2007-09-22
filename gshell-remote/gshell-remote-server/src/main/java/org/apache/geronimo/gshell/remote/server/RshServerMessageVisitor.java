@@ -21,8 +21,6 @@ package org.apache.geronimo.gshell.remote.server;
 
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.geronimo.gshell.DefaultEnvironment;
 import org.apache.geronimo.gshell.command.IO;
@@ -223,54 +221,38 @@ public class RshServerMessageVisitor
         msg.reply(new EchoMessage("CLOSE SHELL SUCCESS"));
     }
 
-    private ExecutorService executor = Executors.newCachedThreadPool();
-
     public void visitExecute(final ExecuteMessage msg) throws Exception {
         assert msg != null;
 
-        log.info("EXECUTE (QUEUE): {}", msg);
+        log.info("EXECUTE: {}", msg);
 
-        final IoSession session = msg.getSession();
+        IoSession session = msg.getSession();
 
-        final RemoteShell shell = getRemoteShell(session);
+        RemoteShell shell = getRemoteShell(session);
 
-        Runnable task = new Runnable() {
-            public void run() {
-                log.info("EXECUTE: {}", msg);
-                
-                try {
-                    //
-                    // TODO: Need to find a better place to stash this me thinks...
-                    //
-                    
-                    // Need to make sure we bind the correct bits into the lookups, since they are thread specific
-                    PlexusContainer container = (PlexusContainer) session.getAttribute(PlexusContainer.class.getName());
+        try {
+            //
+            // TODO: Need to find a better place to stash this me thinks...
+            //
 
-                    IO io = (IO) session.getAttribute(IO.class.getName());
-                    IOLookup.set(container, io);
+            // Need to make sure we bind the correct bits into the lookups, since they are thread specific
+            PlexusContainer container = (PlexusContainer) session.getAttribute(PlexusContainer.class.getName());
 
-                    Environment env = (Environment) session.getAttribute(Environment.class.getName());
-                    EnvironmentLookup.set(container, env);
+            IO io = (IO) session.getAttribute(IO.class.getName());
+            IOLookup.set(container, io);
 
-                    Object result = msg.execute(shell);
+            Environment env = (Environment) session.getAttribute(Environment.class.getName());
+            EnvironmentLookup.set(container, env);
 
-                    msg.reply(new ExecuteMessage.Result(result));
-                }
-                catch (Notification n) {
-                    msg.reply(new ExecuteMessage.Notification(n));
-                }
-                catch (Throwable t) {
-                    msg.reply(new ExecuteMessage.Fault(t));
-                }
-            }
-        };
+            Object result = msg.execute(shell);
 
-        task.run();
-
-        //
-        // HACK: More blind testing...
-        //
-
-        // executor.execute(task);
+            msg.reply(new ExecuteMessage.Result(result));
+        }
+        catch (Notification n) {
+            msg.reply(new ExecuteMessage.Notification(n));
+        }
+        catch (Throwable t) {
+            msg.reply(new ExecuteMessage.Fault(t));
+        }
     }
 }

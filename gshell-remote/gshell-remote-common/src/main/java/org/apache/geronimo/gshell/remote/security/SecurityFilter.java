@@ -164,9 +164,7 @@ public class SecurityFilter
             // And then send back our public key to the remote client
             msg.reply(new HandShakeMessage.Result(crypto.getPublicKey()));
 
-            //
-            // NOTE: Don't wait on the write future
-            //
+            // Don't wait on the write future
 
             // Schedule a task to timeout the login process
             scheduleTimeout(session);
@@ -202,9 +200,7 @@ public class SecurityFilter
 
                 msg.reply(new LoginMessage.Result());
 
-                //
-                // NOTE: Don't wait on the write future
-                //
+                // Don't wait on the write future
             }
         }
     }

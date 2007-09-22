@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Feeds data from and input stream to an output stream.
+ * Feeds data from an input stream to an output stream.
  *
  * @version $Rev$ $Date$
  */

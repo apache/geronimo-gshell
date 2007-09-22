@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.remote.transport;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.concurrent.TimeUnit;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.mina.common.WriteFuture;
