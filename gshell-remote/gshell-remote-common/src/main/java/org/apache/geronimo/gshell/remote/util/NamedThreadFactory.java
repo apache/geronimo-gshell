@@ -26,7 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * A {@link ThreadFactory} which automatically generates thread names based off of a
+ * pre-configured basename passed in during construction and a unique index.
  *
  * @version $Rev$ $Date$
  */
