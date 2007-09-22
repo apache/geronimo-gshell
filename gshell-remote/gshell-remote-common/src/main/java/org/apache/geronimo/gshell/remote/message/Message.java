@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.apache.geronimo.gshell.remote.codec.Externalizable;
 import org.apache.mina.common.IoSession;
@@ -33,11 +34,11 @@ import org.apache.mina.common.WriteFuture;
 public interface Message
     extends Externalizable
 {
-    Object getId();
+    ID getId();
 
-    Object getCorrelationId();
+    ID getCorrelationId();
 
-    void setCorrelationId(Object id);
+    void setCorrelationId(ID id);
 
     MessageType getType() throws IOException;
 
@@ -56,4 +57,23 @@ public interface Message
     boolean isFrozen();
 
     WriteFuture reply(Message msg);
+
+    //
+    // ID
+    //
+
+    interface ID
+        extends Serializable
+    {
+        // Marker
+    }
+
+    //
+    // ID Generator
+    //
+
+    interface IDGenerator
+    {
+        ID generate();
+    }
 }

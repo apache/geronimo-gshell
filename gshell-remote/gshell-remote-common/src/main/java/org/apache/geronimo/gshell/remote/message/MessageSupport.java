@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
@@ -37,15 +38,15 @@ import org.apache.mina.common.WriteFuture;
 public abstract class MessageSupport
     implements Message
 {
-    private static final AtomicLong ID_COUNTER = new AtomicLong(0);
+    private static final IDGenerator ID_GENERATOR = new LongIDGenerator();
 
     private static final AtomicLong SEQUENCE_COUNTER = new AtomicLong(0);
 
     private MessageType type;
 
-    private Object id;
+    private ID id;
 
-    private Object correlationId;
+    private ID correlationId;
 
     private Long sequence;
 
@@ -60,8 +61,8 @@ public abstract class MessageSupport
         
         this.type = type;
 
-        this.id = ID_COUNTER.getAndIncrement();
-
+        this.id = ID_GENERATOR.generate();
+        
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -73,15 +74,15 @@ public abstract class MessageSupport
         return type;
     }
 
-    public Object getId() {
+    public ID getId() {
         return id;
     }
     
-    public Object getCorrelationId() {
+    public ID getCorrelationId() {
         return correlationId;
     }
 
-    public void setCorrelationId(final Object id) {
+    public void setCorrelationId(final ID id) {
         ensureWritable();
 
         assert id != null;
@@ -151,9 +152,9 @@ public abstract class MessageSupport
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
-        id = MarshallingUtil.readObject(in);
+        id = (ID) MarshallingUtil.readObject(in);
 
-        correlationId = MarshallingUtil.readObject(in);
+        correlationId = (ID) MarshallingUtil.readObject(in);
 
         timestamp = in.getLong();
 
@@ -172,5 +173,103 @@ public abstract class MessageSupport
         sequence = SEQUENCE_COUNTER.getAndIncrement();
         
         out.putLong(sequence);
+    }
+
+    //
+    // LongID Generator
+    //
+
+    private static class LongIDGenerator
+        implements IDGenerator
+    {
+        private static final AtomicLong ID_COUNTER = new AtomicLong(0);
+
+        public ID generate() {
+            return new LongID(ID_COUNTER.getAndIncrement());
+        }
+    }
+
+    //
+    // Long ID
+    //
+
+    private static class LongID
+        implements ID
+    {
+        private final Long value;
+
+        public LongID(final long value) {
+            this.value = value;
+        }
+
+        public int hashCode() {
+            return value.hashCode();
+        }
+
+        public boolean equals(final Object obj) {
+            if (obj == this) {
+                return true;
+            }
+            else if (obj == null) {
+                return false;
+            }
+            else if (!(obj instanceof LongID)) {
+                return false;
+            }
+
+            return value.equals(((LongID)obj).value);
+        }
+
+        public String toString() {
+            return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        }
+    }
+
+    //
+    // UUID Generator
+    //
+
+    private static class UUIDGenerator
+        implements IDGenerator
+    {
+        public ID generate() {
+            return new UUIDAdapter(UUID.randomUUID());
+        }
+    }
+
+    //
+    // UUID Adapter
+    //
+
+    private static class UUIDAdapter
+        implements ID
+    {
+        private final UUID value;
+
+        public UUIDAdapter(final UUID value) {
+            this.value = value;
+        }
+
+        public int hashCode() {
+            return value.hashCode();
+        }
+
+        public boolean equals(final Object obj) {
+            if (obj == this) {
+                return true;
+            }
+            else if (obj == null) {
+                return false;
+            }
+            else if (!(obj instanceof UUIDAdapter)) {
+                return false;
+            }
+
+            return value.equals(((UUIDAdapter)obj).value);
+        }
+
+        public String toString() {
+            return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        }
     }
 }

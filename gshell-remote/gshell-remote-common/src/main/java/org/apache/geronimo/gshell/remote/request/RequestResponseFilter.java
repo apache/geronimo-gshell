@@ -82,7 +82,7 @@ public class RequestResponseFilter
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
         Message msg = null;
 
-        Object id = null;
+        Message.ID id = null;
 
         if (message instanceof Message) {
             msg = (Message)message;

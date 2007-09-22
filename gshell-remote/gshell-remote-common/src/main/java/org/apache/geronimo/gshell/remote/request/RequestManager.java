@@ -26,6 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
+import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.util.SessionAttributeBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class RequestManager
 
     private transient final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
-    private final Map<Object,Request> requests = Collections.synchronizedMap(new HashMap<Object, Request>());
+    private final Map<Message.ID,Request> requests = Collections.synchronizedMap(new HashMap<Message.ID, Request>());
 
     private final Map<Request,TimeoutTask> timeouts = Collections.synchronizedMap(new HashMap<Request,TimeoutTask>());
     
@@ -51,19 +52,8 @@ public class RequestManager
     // TODO: Lock on Request.getMutex(), and/or change the mutex to a read/write lock?
     //
 
-    /**
-     * Helper to make sure that when calling methods that take an Object for the request ID that the requst object is not given by accident.
-     */
-    private void ensureValidRequestId(final Object obj) {
-        if (obj instanceof Request) {
-            throw new IllegalArgumentException("Expecting a request ID, not a request");
-        }
-    }
-
-    public boolean contains(final Object id) {
+    public boolean contains(final Message.ID id) {
         assert id != null;
-
-        ensureValidRequestId(id);
 
         return requests.containsKey(id);
     }
@@ -81,7 +71,7 @@ public class RequestManager
             throw new DuplicateRequestException(request);
         }
 
-        Object id = request.getId();
+        Message.ID id = request.getId();
 
         if (log.isTraceEnabled()) {
             log.trace("Adding: {}", request);
@@ -93,18 +83,14 @@ public class RequestManager
         requests.put(id, request);
     }
 
-    public Request get(final Object id) {
+    public Request get(final Message.ID id) {
         assert id != null;
-
-        ensureValidRequestId(id);
 
         return requests.get(id);
     }
 
-    public Request remove(final Object id) {
+    public Request remove(final Message.ID id) {
         assert id != null;
-
-        ensureValidRequestId(id);
 
         log.debug("Removing: {}", id);
 
@@ -142,7 +128,7 @@ public class RequestManager
             throw new DuplicateRequestException(request);
         }
 
-        Object id = request.getId();
+        Message.ID id = request.getId();
 
         if (request != get(id)) {
             throw new InvalidRequestMappingException(id);
@@ -167,7 +153,7 @@ public class RequestManager
     public void cancel(final Request request) {
         assert request != null;
 
-        Object id = request.getId();
+        Message.ID id = request.getId();
 
         TimeoutTask task = timeouts.remove(request);
 
@@ -196,7 +182,7 @@ public class RequestManager
     private void timeout(final Request request) {
         assert request != null;
 
-        Object id = request.getId();
+        Message.ID id = request.getId();
 
         if (log.isTraceEnabled()) {
             log.trace("Triggering: {}", request);

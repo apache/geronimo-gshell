@@ -90,7 +90,7 @@ public class Request
         return message;
     }
 
-    public Object getId() {
+    public Message.ID getId() {
         return getMessage().getId();
     }
 
