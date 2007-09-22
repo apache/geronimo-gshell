@@ -80,6 +80,10 @@ public class MessageHandler
         if (obj instanceof Message) {
             Message msg = (Message)obj;
 
+            //
+            // TODO: Change the visit* methods to take a session and a visitor to avoid needing to attach to the message
+            //
+            
             // Attach the session to the context
             msg.setSession(session);
             msg.freeze();

@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import java.io.IOException;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
@@ -38,7 +37,7 @@ import org.apache.mina.common.WriteFuture;
 public class MessageSupport
     implements Message
 {
-    private static final IDGenerator ID_GENERATOR = new LongIDGenerator();
+    private static final IDGenerator ID_GENERATOR = new UuidMessageID.Generator(); // new LongMessageID.Generator();
 
     private static final AtomicLong SEQUENCE_COUNTER = new AtomicLong(0);
 
@@ -46,7 +45,7 @@ public class MessageSupport
 
     private ID id;
 
-    private ID correlationId;
+    private ID cid;
 
     private Long sequence;
 
@@ -79,7 +78,7 @@ public class MessageSupport
     }
     
     public ID getCorrelationId() {
-        return correlationId;
+        return cid;
     }
 
     public void setCorrelationId(final ID id) {
@@ -87,7 +86,7 @@ public class MessageSupport
 
         assert id != null;
 
-        this.correlationId = id;
+        this.cid = id;
     }
 
     public long getTimestamp() {
@@ -148,9 +147,9 @@ public class MessageSupport
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
-        id = (ID) Marshaller.readObject(in);
+        id = (ID) Marshaller.unmarshal(in);
 
-        correlationId = (ID) Marshaller.readObject(in);
+        cid = (ID) Marshaller.unmarshal(in);
 
         timestamp = in.getLong();
 
@@ -160,134 +159,14 @@ public class MessageSupport
     public void writeExternal(final ByteBuffer out) throws Exception {
         assert out != null;
 
-        Marshaller.writeObject(out, id);
+        Marshaller.marshal(out, id);
 
-        Marshaller.writeObject(out, correlationId);
+        Marshaller.marshal(out, cid);
 
         out.putLong(timestamp);
 
         sequence = SEQUENCE_COUNTER.getAndIncrement();
         
         out.putLong(sequence);
-    }
-
-    //
-    // LongID Generator
-    //
-
-    private static class LongIDGenerator
-        implements IDGenerator
-    {
-        private static final AtomicLong ID_COUNTER = new AtomicLong(0);
-
-        public ID generate() {
-            return new LongID(ID_COUNTER.getAndIncrement());
-        }
-    }
-
-    //
-    // Long ID
-    //
-
-    private static class LongID
-        implements ID
-    {
-        private Long value;
-
-        public LongID(final long value) {
-            this.value = value;
-        }
-
-        public int hashCode() {
-            return value.hashCode();
-        }
-
-        public boolean equals(final Object obj) {
-            if (obj == this) {
-                return true;
-            }
-            else if (obj == null) {
-                return false;
-            }
-            else if (!(obj instanceof LongID)) {
-                return false;
-            }
-
-            return value.equals(((LongID)obj).value);
-        }
-
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public void writeExternal(final ByteBuffer out) throws Exception {
-            out.putLong(value);
-
-        }
-
-        public void readExternal(final ByteBuffer in) throws Exception {
-            value = in.getLong();
-        }
-    }
-
-    //
-    // UUID Generator
-    //
-
-    private static class UUIDGenerator
-        implements IDGenerator
-    {
-        public ID generate() {
-            return new UUIDAdapter();
-        }
-    }
-
-    //
-    // UUID Adapter
-    //
-
-    private static class UUIDAdapter
-        implements ID
-    {
-        private UUID value;
-
-        public UUIDAdapter(final UUID value) {
-            this.value = value;
-        }
-
-        public UUIDAdapter() {
-            this(UUID.randomUUID());
-        }
-
-        public int hashCode() {
-            return value.hashCode();
-        }
-
-        public boolean equals(final Object obj) {
-            if (obj == this) {
-                return true;
-            }
-            else if (obj == null) {
-                return false;
-            }
-            else if (!(obj instanceof UUIDAdapter)) {
-                return false;
-            }
-
-            return value.equals(((UUIDAdapter)obj).value);
-        }
-
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public void writeExternal(final ByteBuffer out) throws Exception {
-            Marshaller.writeUuid(out, value);
-
-        }
-
-        public void readExternal(final ByteBuffer in) throws Exception {
-            value = Marshaller.readUuid(in);
-        }
     }
 }

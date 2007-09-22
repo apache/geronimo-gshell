@@ -58,23 +58,11 @@ public interface Message
 
     WriteFuture reply(Message msg);
 
-    //
-    // ID
-    //
-
-    //
-    // HACK: Make these serializable for now... need to figure out how to do the generic encode/decode of MarshalAware instances
-    //
-    
     interface ID
         extends MarshalAware, Serializable
     {
         // Marker
     }
-
-    //
-    // ID Generator
-    //
 
     interface IDGenerator
     {
