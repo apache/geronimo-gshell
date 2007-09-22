@@ -34,6 +34,7 @@ import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
+import org.apache.geronimo.gshell.remote.util.Duration;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;
@@ -148,6 +149,14 @@ public abstract class BaseTransport
         return session;
     }
 
+    public InputStream getInputStream() {
+        return SessionInputStream.BINDER.lookup(session);
+    }
+
+    public OutputStream getOutputStream() {
+        return SessionOutputStream.BINDER.lookup(session);
+    }
+
     public WriteFuture send(final Object msg) throws Exception {
         assert msg != null;
 
@@ -162,19 +171,19 @@ public abstract class BaseTransport
         return requestor.request(msg);
     }
 
+    public Message request(final Message msg, final Duration timeout) throws Exception {
+        assert msg != null;
+
+        Requestor requestor = new Requestor(this);
+
+        return requestor.request(msg, timeout);
+    }
+
     public Message request(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
         assert msg != null;
 
         Requestor requestor = new Requestor(this);
 
         return requestor.request(msg, timeout, unit);
-    }
-
-    public InputStream getInputStream() {
-        return SessionInputStream.BINDER.lookup(session);
-    }
-
-    public OutputStream getOutputStream() {
-        return SessionOutputStream.BINDER.lookup(session);
     }
 }

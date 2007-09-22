@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.transport.Transport;
+import org.apache.geronimo.gshell.remote.util.Duration;
 import org.apache.mina.common.IoFutureListener;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
@@ -36,34 +37,29 @@ import org.slf4j.LoggerFactory;
  */
 public class Requestor
 {
-    public static final long DEFAULT_TIMEOUT = 10;
-
-    public static final TimeUnit DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
+    public static final Duration DEFAULT_TIMEOUT = new Duration(10, TimeUnit.SECONDS);
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     private final IoSession session;
 
-    private final long timeout;
+    private final Duration timeout;
 
-    private final TimeUnit unit;
-
-    private Requestor(final IoSession session, final long timeout, final TimeUnit unit) {
+    public Requestor(final IoSession session, final Duration timeout) {
         this.session = session;
         this.timeout = timeout;
-        this.unit = unit;
     }
 
     public Requestor(final IoSession session) {
-        this(session, DEFAULT_TIMEOUT, DEFAULT_TIMEOUT_UNIT);
+        this(session, DEFAULT_TIMEOUT);
     }
 
     public Requestor(final Transport transport, final long timeout, final TimeUnit unit) {
-        this(transport.getSession(), timeout, unit);
+        this(transport.getSession(), new Duration(timeout, unit));
     }
 
     public Requestor(final Transport transport) {
-        this(transport, DEFAULT_TIMEOUT, DEFAULT_TIMEOUT_UNIT);
+        this(transport.getSession(), DEFAULT_TIMEOUT);
     }
 
     public RequestWriteFuture submit(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
@@ -76,8 +72,12 @@ public class Requestor
         return new RequestWriteFuture(wf, req);
     }
 
+    public RequestWriteFuture submit(final Message msg, final Duration timeout) throws Exception {
+        return submit(msg, timeout.getValue(), timeout.getUnit());
+    }
+
     public RequestWriteFuture submit(final Message msg) throws Exception {
-        return submit(msg, timeout, unit);
+        return submit(msg, timeout.getValue(), timeout.getUnit());
     }
 
     public Message request(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
@@ -92,8 +92,12 @@ public class Requestor
         return resp.getMessage();
     }
 
+    public Message request(final Message msg, final Duration timeout) throws Exception {
+        return request(msg, timeout.getValue(), timeout.getUnit());
+    }
+
     public Message request(final Message msg) throws Exception {
-        return request(msg, timeout, unit);
+        return request(msg, timeout.getValue(), timeout.getUnit());
     }
     
     //

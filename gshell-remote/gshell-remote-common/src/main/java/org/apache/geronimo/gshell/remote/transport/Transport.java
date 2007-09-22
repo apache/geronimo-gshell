@@ -25,6 +25,7 @@ import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.util.Duration;
 import org.apache.mina.common.IoService;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
@@ -51,6 +52,8 @@ public interface Transport
     void close();
     
     WriteFuture send(Object msg) throws Exception;
+
+    Message request(Message msg, Duration timeout) throws Exception;
 
     Message request(Message msg, long timeout, TimeUnit unit) throws Exception;
 

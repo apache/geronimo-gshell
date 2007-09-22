@@ -32,6 +32,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,18 +51,22 @@ public class Request
 
     private final Message message;
 
-    private final long timeout;
-
-    private final TimeUnit timeoutUnit;
+    private final Duration timeout;
 
     private volatile boolean endOfResponses;
 
     private volatile boolean signaled;
 
-    public Request(final Message message, long timeout, final TimeUnit timeoutUnit) {
+    public Request(final Message message, final Duration timeout) {
+        assert message != null;
+        assert timeout != null;
+
         this.message = message;
         this.timeout = timeout;
-        this.timeoutUnit = timeoutUnit;
+    }
+
+    public Request(final Message message, long timeout, final TimeUnit timeoutUnit) {
+        this(message, new Duration(timeout, timeoutUnit));
     }
 
     public int hashCode() {
@@ -100,12 +105,8 @@ public class Request
         return getMessage().getId();
     }
 
-    public long getTimeout() {
+    public Duration getTimeout() {
         return timeout;
-    }
-
-    public TimeUnit getTimeoutUnit() {
-        return timeoutUnit;
     }
 
     public boolean hasResponse() {

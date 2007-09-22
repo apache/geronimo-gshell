@@ -33,13 +33,14 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
+import org.apache.geronimo.gshell.remote.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * ???
  *
- * @version $Rev$ $Date$
+ * @version $Rev: 578446 $ $Date: 2007-09-22 07:24:23 -0700 (Sat, 22 Sep 2007) $
  */
 public class RequestManager
 {
@@ -264,7 +265,9 @@ public class RequestManager
                     }
                 };
 
-                timeoutFuture = scheduler.schedule(task, request.getTimeout(), request.getTimeoutUnit());
+                Duration timeout = request.getTimeout();
+
+                timeoutFuture = scheduler.schedule(task, timeout.getValue(), timeout.getUnit());
 
                 state = RegistrationState.ACTIVE;
             }
