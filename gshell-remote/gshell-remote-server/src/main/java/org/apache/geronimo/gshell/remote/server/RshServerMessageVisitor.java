@@ -41,7 +41,6 @@ import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
-import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.component.annotations.Component;
@@ -56,8 +55,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class RshServerMessageVisitor
     extends MessageVisitorSupport
 {
-    private static final SessionAttributeBinder<PlexusContainer> CONTAINER_BINDER = new SessionAttributeBinder<PlexusContainer>(PlexusContainer.class);
-
     private static final SessionAttributeBinder<IO> IO_BINDER = new SessionAttributeBinder<IO>(IO.class);
 
     private static final SessionAttributeBinder<Environment> ENV_BINDER = new SessionAttributeBinder<Environment>(Environment.class);
@@ -116,7 +113,7 @@ public class RshServerMessageVisitor
         }
     }
 
-    private DefaultPlexusContainer createContainer() throws PlexusContainerException {
+    private RemoteShellContainer createContainer() throws PlexusContainerException {
         // Create a new container which will be the parent for our remote shells
         ContainerConfiguration config = new DefaultContainerConfiguration();
 
@@ -126,7 +123,7 @@ public class RshServerMessageVisitor
 
         config.setClassWorld(parentContainer.getContainerRealm().getWorld());
 
-        return new DefaultPlexusContainer(config);
+        return new RemoteShellContainer(config);
     }
 
     public void visitOpenShell(final OpenShellMessage msg) throws Exception {
@@ -136,8 +133,8 @@ public class RshServerMessageVisitor
 
         IoSession session = msg.getSession();
 
-        PlexusContainer childContainer = createContainer();
-        CONTAINER_BINDER.bind(session, childContainer);
+        RemoteShellContainer shellContainer = createContainer();
+        RemoteShellContainer.BINDER.bind(session, shellContainer);
 
         // Setup the I/O context (w/o auto-flushing)
         IO io = new IO(SessionInputStream.BINDER.lookup(session), SessionOutputStream.BINDER.lookup(session), false);
@@ -146,16 +143,16 @@ public class RshServerMessageVisitor
         // FIXME: We need to set the verbosity of this I/O context as specified by the client
         //
 
-        IOLookup.set(childContainer, io);
+        IOLookup.set(shellContainer, io);
         IO_BINDER.bind(session, io);
 
         // Setup shell environemnt
         Environment env = new DefaultEnvironment(io);
-        EnvironmentLookup.set(childContainer, env);
+        EnvironmentLookup.set(shellContainer, env);
         ENV_BINDER.bind(session, env);
 
         // Create a new shell instance
-        RemoteShell shell = (RemoteShell) childContainer.lookup(RemoteShell.class);
+        RemoteShell shell = (RemoteShell) shellContainer.lookup(RemoteShell.class);
         SHELL_BINDER.bind(session, shell);
 
         //
@@ -186,12 +183,8 @@ public class RshServerMessageVisitor
 
         log.info("Destroying container");
 
-        PlexusContainer childContainer = CONTAINER_BINDER.unbind(session);
-
-        //
-        // FIXME: This won't work... it kills our class realm... :-(
-        //
-        // childContainer.dispose();
+        RemoteShellContainer shellContainer = RemoteShellContainer.BINDER.unbind(session);
+        shellContainer.disposeAllComponents();
         
         //
         // TODO: Send a meaningful response
@@ -214,13 +207,13 @@ public class RshServerMessageVisitor
             // TODO: Need to find a better place to stash this me thinks...
             //
 
-            PlexusContainer container = CONTAINER_BINDER.lookup(session);
+            RemoteShellContainer shellContainer = RemoteShellContainer.BINDER.lookup(session);
 
             IO io = IO_BINDER.lookup(session);
-            IOLookup.set(container, io);
+            IOLookup.set(shellContainer, io);
 
             Environment env = ENV_BINDER.lookup(session);
-            EnvironmentLookup.set(container, env);
+            EnvironmentLookup.set(shellContainer, env);
 
             Object result = msg.execute(shell);
 
