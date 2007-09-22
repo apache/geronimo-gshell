@@ -64,8 +64,8 @@ public class Duration
     
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("value", value)
-                .append("unit", unit)
+                .append(value)
+                .append(unit)
                 .toString();
     }
 

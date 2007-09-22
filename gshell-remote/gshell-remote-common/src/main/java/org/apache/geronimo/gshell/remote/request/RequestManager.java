@@ -267,6 +267,8 @@ public class RequestManager
 
                 Duration timeout = request.getTimeout();
 
+                log.debug("Scheduling timeout to trigger in: {}", timeout);
+
                 timeoutFuture = scheduler.schedule(task, timeout.getValue(), timeout.getUnit());
 
                 state = RegistrationState.ACTIVE;
