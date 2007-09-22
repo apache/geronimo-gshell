@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
@@ -40,7 +41,9 @@ public class RequestManager
 {
     public static final SessionAttributeBinder<RequestManager> BINDER = new SessionAttributeBinder<RequestManager>(RequestManager.class);
 
-    private transient final Logger log = LoggerFactory.getLogger(getClass());
+    private static final AtomicLong INSTANCE_COUNTER = new AtomicLong(0);
+
+    private transient final Logger log = LoggerFactory.getLogger(getClass() + "-" + INSTANCE_COUNTER.getAndIncrement());
 
     private transient final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
@@ -48,10 +51,6 @@ public class RequestManager
 
     private final Map<Request,TimeoutTask> timeouts = Collections.synchronizedMap(new HashMap<Request,TimeoutTask>());
     
-    //
-    // TODO: Lock on Request.getMutex(), and/or change the mutex to a read/write lock?
-    //
-
     public boolean contains(final Message.ID id) {
         assert id != null;
 
@@ -61,26 +60,40 @@ public class RequestManager
     public boolean contains(final Request request) {
         assert request != null;
 
-        return contains(request.getId());
+        request.lock.lock();
+
+        try {
+            return contains(request.getId());
+        }
+        finally {
+            request.lock.unlock();
+        }
     }
 
     public void add(final Request request) {
         assert request != null;
 
-        Message.ID id = request.getId();
+        request.lock.lock();
 
-        if (contains(request)) {
-            throw new DuplicateRequestException(id);
-        }
+        try {
+            Message.ID id = request.getId();
 
-        if (log.isTraceEnabled()) {
-            log.trace("Adding: {}", request);
-        }
-        else {
-            log.debug("Adding: {}", id);
-        }
+            if (contains(request)) {
+                throw new DuplicateRequestException(id);
+            }
 
-        requests.put(id, request);
+            requests.put(id, request);
+
+            if (log.isTraceEnabled()) {
+                log.trace("Added: {}", request);
+            }
+            else {
+                log.debug("Added: {}", id);
+            }
+        }
+        finally {
+            request.lock.unlock();
+        }
     }
 
     public Request get(final Message.ID id) {
@@ -92,9 +105,152 @@ public class RequestManager
     public Request remove(final Message.ID id) {
         assert id != null;
 
-        log.debug("Removing: {}", id);
+        Request request = get(id);
 
-        return requests.remove(id);
+        if (request == null) {
+            throw new InvalidRequestMappingException(id);
+        }
+
+        Request prev;
+        
+        request.lock.lock();
+
+        try {
+            prev = requests.remove(id);
+
+            if (log.isTraceEnabled()) {
+                log.trace("Removed: {}", prev);
+            }
+            else {
+                log.debug("Removed: {}", id);
+            }
+        }
+        finally {
+            request.lock.unlock();
+        }
+
+        return prev;
+    }
+
+    //
+    // Timeouts
+    //
+
+    public void schedule(final Request request) {
+        assert request != null;
+
+        request.lock.lock();
+
+        try {
+            Message.ID id = request.getId();
+
+            if (timeouts.containsKey(request)) {
+                throw new DuplicateRequestException(id);
+            }
+
+            if (request != get(id)) {
+                throw new InvalidRequestMappingException(id);
+            }
+
+            TimeoutTask task = new TimeoutTask(request);
+
+            ScheduledFuture<?> tf = scheduler.schedule(task, request.getTimeout(), request.getTimeoutUnit());
+
+            task.setTimeoutFuture(tf);
+
+            timeouts.put(request, task);
+
+            if (log.isTraceEnabled()) {
+                log.trace("Scheduled: {}", request);
+            }
+            else {
+                log.debug("Scheduled: {}", id);
+            }
+        }
+        finally {
+            request.lock.unlock();
+        }
+    }
+
+    public void cancel(final Request request) {
+        assert request != null;
+
+        request.lock.lock();
+
+        try {
+            Message.ID id = request.getId();
+
+            TimeoutTask task = timeouts.remove(request);
+
+            if (task == null) {
+                throw new MissingRequestTimeoutException(id);
+            }
+
+            if (remove(id) != request) {
+                throw new InvalidRequestMappingException(id);
+            }
+
+            if (log.isTraceEnabled()) {
+                log.trace("Canceling: {}", request);
+            }
+            else {
+                log.debug("Canceling: {}", id);
+            }
+
+            ScheduledFuture<?> sf = task.getTimeoutFuture();
+
+            if (sf != null) {
+                sf.cancel(false);
+            }
+        }
+        finally {
+            request.lock.unlock();
+        }
+    }
+
+    private void timeout(final Request request) {
+        assert request != null;
+
+        request.lock.lock();
+
+        try {
+            Message.ID id = request.getId();
+
+            if (log.isTraceEnabled()) {
+                log.trace("Triggering: {}", request);
+            }
+            else {
+                log.debug("Triggering: {}", id);
+            }
+
+            TimeoutTask task = timeouts.remove(request);
+
+            if (task == null) {
+                throw new MissingRequestTimeoutException(id);
+            }
+
+            if (remove(id) != request) {
+                throw new InvalidRequestMappingException(id);
+            }
+
+            // If the request has not been signaled, then its a timeout :-(
+            if (!request.isSignaled()) {
+                request.timeout();
+            }
+        }
+        finally {
+            request.lock.unlock();
+        }
+    }
+
+    private void timeoutAll() {
+        log.debug("Timing out all pending requests");
+        
+        Request[] requests = timeouts.keySet().toArray(new Request[timeouts.size()]);
+
+        for (Request request : requests) {
+            timeout(request);
+        }
     }
 
     public void clear() {
@@ -115,106 +271,6 @@ public class RequestManager
         }
 
         timeouts.clear();
-    }
-
-    //
-    // Timeouts
-    //
-
-    public void schedule(final Request request) {
-        assert request != null;
-
-        Message.ID id = request.getId();
-
-        if (timeouts.containsKey(request)) {
-            throw new DuplicateRequestException(id);
-        }
-
-        if (request != get(id)) {
-            throw new InvalidRequestMappingException(id);
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace("Scheduling: {}", request);
-        }
-        else {
-            log.debug("Scheduling: {}", id);
-        }
-
-        TimeoutTask task = new TimeoutTask(request);
-
-        ScheduledFuture<?> tf = scheduler.schedule(task, request.getTimeout(), request.getTimeoutUnit());
-
-        task.setTimeoutFuture(tf);
-
-        timeouts.put(request, task);
-    }
-
-    public void cancel(final Request request) {
-        assert request != null;
-
-        Message.ID id = request.getId();
-
-        TimeoutTask task = timeouts.remove(request);
-
-        if (task == null) {
-            throw new MissingRequestTimeoutException(id);
-        }
-
-        if (remove(id) != request) {
-            throw new InvalidRequestMappingException(id);
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace("Canceling: {}", request);
-        }
-        else {
-            log.debug("Canceling: {}", id);
-        }
-
-        ScheduledFuture<?> sf = task.getTimeoutFuture();
-
-        if (sf != null) {
-            sf.cancel(false);
-        }
-    }
-
-    private void timeout(final Request request) {
-        assert request != null;
-
-        Message.ID id = request.getId();
-
-        if (log.isTraceEnabled()) {
-            log.trace("Triggering: {}", request);
-        }
-        else {
-            log.debug("Triggering: {}", id);
-        }
-
-        TimeoutTask task = timeouts.remove(request);
-
-        if (task == null) {
-            throw new MissingRequestTimeoutException(id);
-        }
-
-        if (remove(id) != request) {
-            throw new InvalidRequestMappingException(id);
-        }
-
-        // If the request has not been signaled, then its a timeout :-(
-        if (!request.isSignaled()) {
-            request.timeout();
-        }
-    }
-
-    private void timeoutAll() {
-        log.debug("Timing out all pending requests");
-        
-        Request[] requests = timeouts.keySet().toArray(new Request[timeouts.size()]);
-
-        for (Request request : requests) {
-            timeout(request);
-        }
     }
 
     public void close() {

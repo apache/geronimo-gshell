@@ -26,6 +26,8 @@ package org.apache.geronimo.gshell.remote.request;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
@@ -42,7 +44,7 @@ public class Request
 {
     private transient final Logger log = LoggerFactory.getLogger(getClass());
 
-    private transient final Object mutex = new Object();
+    final Lock lock = new ReentrantLock();
 
     private final BlockingQueue<Object> responses = new LinkedBlockingQueue<Object>();
 
@@ -167,10 +169,6 @@ public class Request
         }
     }
 
-    Object getMutex() {
-        return mutex;
-    }
-
     private void queueResponse(final Object answer) {
         signaled = true;
 
@@ -180,7 +178,9 @@ public class Request
     void signal(final Response response) {
         assert response != null;
 
-        synchronized (mutex) {
+        lock.lock();
+
+        try {
             if (log.isTraceEnabled()) {
                 log.debug("Signal response: {}", response);
             }
@@ -194,21 +194,34 @@ public class Request
                 endOfResponses = true;
             }
         }
+        finally {
+            lock.unlock();
+        }
     }
 
     void timeout() {
-        synchronized (mutex) {
+        lock.lock();
+
+        try {
             log.debug("Timeout");
 
             queueResponse(RequestTimeoutException.class);
 
             endOfResponses = true;
         }
+        finally {
+            lock.unlock();
+        }
     }
 
     boolean isSignaled() {
-        synchronized (mutex) {
+        lock.lock();
+
+        try {
             return signaled;
+        }
+        finally {
+            lock.unlock();
         }
     }
 }
