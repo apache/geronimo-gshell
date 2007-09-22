@@ -102,15 +102,15 @@ public class RemoteShellProxy
 
     public void close() {
         try {
-            outputFeeder.close();
-        }
-        catch (Exception ignore) {}
-
-        try {
             client.closeShell();
         }
         catch (Exception ignore) {}
 
+        try {
+            outputFeeder.close();
+        }
+        catch (Exception ignore) {}
+        
         opened = false;
     }
 
