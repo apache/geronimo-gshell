@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.remote.server;
 
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.geronimo.gshell.DefaultEnvironment;
 import org.apache.geronimo.gshell.command.IO;
@@ -34,6 +35,7 @@ import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
+import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.shell.Environment;
@@ -42,9 +44,11 @@ import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * Defines the logic for server-side message processing.
@@ -54,90 +58,38 @@ import org.codehaus.plexus.component.annotations.Requirement;
 @Component(role=MessageVisitor.class, hint="server")
 public class RshServerMessageVisitor
     extends MessageVisitorSupport
+    implements Initializable
 {
+    private static final SessionAttributeBinder<PlexusContainer> CONTAINER_BINDER = new SessionAttributeBinder<PlexusContainer>(PlexusContainer.class);
+
+    private static final SessionAttributeBinder<String> REALMID_BINDER = new SessionAttributeBinder<String>(PlexusContainer.class.getName() + ".realmId");
+
+    private static final SessionAttributeBinder<IO> IO_BINDER = new SessionAttributeBinder<IO>(IO.class);
+
+    private static final SessionAttributeBinder<Environment> ENV_BINDER = new SessionAttributeBinder<Environment>(Environment.class);
+
+    private static final SessionAttributeBinder<RemoteShell> SHELL_BINDER = new SessionAttributeBinder<RemoteShell>(RemoteShell.class);
+    
     //
     // TODO: If/when we want to add a state-machine to keep things in order, add server-side here.
     //
 
     @Requirement
-    private PlexusContainer container;
+    private PlexusContainer parentContainer;
 
-    private ClassWorld getClassWorld() {
-        return container.getContainerRealm().getWorld();
-    }
+    private DefaultPlexusContainer container;
 
-    private RemoteShell createRemoteShell(final IoSession session) throws Exception {
-        assert session != null;
-
-        log.info("Creating remote shell");
-        
-        // We need to create a new container (not a child container) to allow the remote shell a full unpollute namespace for components
+    public void initialize() throws InitializationException {
+        // Create a new container which will be the parent for our remote shells
         ContainerConfiguration config = new DefaultContainerConfiguration();
-        config.setName("gshell.rsh");
-        config.setClassWorld(getClassWorld());
-        PlexusContainer container = new DefaultPlexusContainer(config);
-        session.setAttribute(PlexusContainer.class.getName(), container);
-
-        // Setup the I/O context (w/o auto-flushing)
-        IO io = new IO(SessionInputStream.BINDER.lookup(session), SessionOutputStream.BINDER.lookup(session), false);
-
-        //
-        // FIXME: We need to set the verbosity of this I/O context as specified by the client
-        //
-
-        IOLookup.set(container, io);
-        session.setAttribute(IO.class.getName(), io);
-
-        // Setup shell environemnt
-        Environment env = new DefaultEnvironment(io);
-        EnvironmentLookup.set(container, env);
-        session.setAttribute(Environment.class.getName(), env);
-
-        // Create a new shell instance
-        RemoteShell shell = (RemoteShell) container.lookup(RemoteShell.class);
-
-        log.info("Created remote shell: {}", shell);
+        config.setName("gshell.rsh-server");
+        config.setClassWorld(parentContainer.getContainerRealm().getWorld());
         
-        return shell;
-    }
-
-    private RemoteShell getRemoteShell(final IoSession session) {
-        assert session != null;
-
-        RemoteShell shell = (RemoteShell) session.getAttribute(RemoteShell.class.getName());
-
-        if (shell == null) {
-            throw new IllegalStateException("Remote shell not bound");
+        try {
+            container = new DefaultPlexusContainer(config);
         }
-
-        return shell;
-    }
-
-    private void setRemoteShell(final IoSession session, final RemoteShell shell) {
-        assert session != null;
-        assert shell != null;
-
-        // Make sure that no session already exists
-        Object obj = session.getAttribute(RemoteShell.class.getName());
-
-        if (obj != null) {
-            throw new IllegalStateException("Remote shell already bound");
-        }
-
-        session.setAttribute(RemoteShell.class.getName(), shell);
-    }
-
-    private void unsetRemoteShell(final IoSession session) {
-        assert session != null;
-
-        Object obj = session.getAttribute(RemoteShell.class.getName());
-
-        // Complain if no remote shell has been bound
-        if (obj != null) {
-            log.warn("Ignoring request to unset remote shell; no shell is bound");
-        }
-        else {
-            session.removeAttribute(RemoteShell.class.getName());
+        catch (PlexusContainerException e) {
+            throw new InitializationException("Failed to construct container", e);
         }
     }
 
@@ -190,9 +142,32 @@ public class RshServerMessageVisitor
 
         IoSession session = msg.getSession();
 
-        // Create a new shell instance and bind it to the session
-        RemoteShell shell = createRemoteShell(session);
-        setRemoteShell(session, shell);
+        String realmId = "gshell.remote-shell:" + UUID.randomUUID();
+        REALMID_BINDER.bind(session, realmId);
+
+        log.debug("Remote shell container realm: {}", realmId);
+
+        PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
+        CONTAINER_BINDER.bind(session, childContainer);
+
+        // Setup the I/O context (w/o auto-flushing)
+        IO io = new IO(SessionInputStream.BINDER.lookup(session), SessionOutputStream.BINDER.lookup(session), false);
+
+        //
+        // FIXME: We need to set the verbosity of this I/O context as specified by the client
+        //
+
+        IOLookup.set(container, io);
+        IO_BINDER.bind(session, io);
+
+        // Setup shell environemnt
+        Environment env = new DefaultEnvironment(io);
+        EnvironmentLookup.set(container, env);
+        ENV_BINDER.bind(session, env);
+
+        // Create a new shell instance
+        RemoteShell shell = (RemoteShell) container.lookup(RemoteShell.class);
+        SHELL_BINDER.bind(session, shell);
 
         //
         // TODO: Send a meaningful response
@@ -208,12 +183,24 @@ public class RshServerMessageVisitor
 
         IoSession session = msg.getSession();
 
-        RemoteShell shell = getRemoteShell(session);
+        log.info("Closing shell");
+
+        RemoteShell shell = SHELL_BINDER.unbind(session);
 
         shell.close();
 
-        unsetRemoteShell(session);
+        log.info("Unbinding resources");
 
+        IO_BINDER.unbind(session);
+
+        ENV_BINDER.unbind(session);
+
+        log.info("Destroying container");
+
+        String realmId = REALMID_BINDER.unbind(session);
+        container.removeChildContainer(realmId);
+        CONTAINER_BINDER.unbind(session);
+        
         //
         // TODO: Send a meaningful response
         //
@@ -228,20 +215,19 @@ public class RshServerMessageVisitor
 
         IoSession session = msg.getSession();
 
-        RemoteShell shell = getRemoteShell(session);
+        RemoteShell shell = SHELL_BINDER.lookup(session);
 
         try {
             //
             // TODO: Need to find a better place to stash this me thinks...
             //
 
-            // Need to make sure we bind the correct bits into the lookups, since they are thread specific
-            PlexusContainer container = (PlexusContainer) session.getAttribute(PlexusContainer.class.getName());
+            PlexusContainer container = CONTAINER_BINDER.lookup(session);
 
-            IO io = (IO) session.getAttribute(IO.class.getName());
+            IO io = IO_BINDER.lookup(session);
             IOLookup.set(container, io);
 
-            Environment env = (Environment) session.getAttribute(Environment.class.getName());
+            Environment env = ENV_BINDER.lookup(session);
             EnvironmentLookup.set(container, env);
 
             Object result = msg.execute(shell);
