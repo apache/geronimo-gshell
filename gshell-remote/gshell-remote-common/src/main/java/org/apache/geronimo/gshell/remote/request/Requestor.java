@@ -42,20 +42,16 @@ public class Requestor
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    private final MessageWriter writer;
+    private final IoSession session;
 
     private final long timeout;
 
     private final TimeUnit unit;
 
-    private Requestor(final MessageWriter writer, final long timeout, final TimeUnit unit) {
-        this.writer = writer;
+    private Requestor(final IoSession session, final long timeout, final TimeUnit unit) {
+        this.session = session;
         this.timeout = timeout;
         this.unit = unit;
-    }
-
-    public Requestor(final IoSession session, final long timeout, final TimeUnit unit) {
-        this(new SessionMessageWriter(session), timeout, unit);
     }
 
     public Requestor(final IoSession session) {
@@ -63,7 +59,7 @@ public class Requestor
     }
 
     public Requestor(final Transport transport, final long timeout, final TimeUnit unit) {
-        this(new TransportMessageWriter(transport), timeout, unit);
+        this(transport.getSession(), timeout, unit);
     }
 
     public Requestor(final Transport transport) {
@@ -75,7 +71,7 @@ public class Requestor
 
         Request req = new Request(msg, timeout, unit);
 
-        WriteFuture wf = writer.write(req);
+        WriteFuture wf = session.write(req);
 
         return new RequestWriteFuture(wf, req);
     }
@@ -99,47 +95,7 @@ public class Requestor
     public Message request(final Message msg) throws Exception {
         return request(msg, timeout, unit);
     }
-
-    //
-    // MessageWriter
-    //
-
-    /**
-     * An abstraction to allow an {@link IoSession} or {@link Transport} instance to be used to send messages.
-     */
-    private static interface MessageWriter
-    {
-        WriteFuture write(Object message) throws Exception;
-    }
-
-    private static class SessionMessageWriter
-        implements MessageWriter
-    {
-        private final IoSession session;
-
-        public SessionMessageWriter(final IoSession session) {
-            this.session = session;
-        }
-
-        public WriteFuture write(final Object message) throws Exception {
-            return session.write(message);
-        }
-    }
-
-    private static class TransportMessageWriter
-        implements MessageWriter
-    {
-        private final Transport transport;
-
-        public TransportMessageWriter(final Transport transport) {
-            this.transport = transport;
-        }
-
-        public WriteFuture write(final Object message) throws Exception {
-            return transport.send(message);
-        }
-    }
-
+    
     //
     // RequestWriteFuture
     //
