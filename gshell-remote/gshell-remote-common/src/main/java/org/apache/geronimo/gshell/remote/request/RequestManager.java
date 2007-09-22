@@ -203,8 +203,7 @@ public class RequestManager
 
         // If the request has not been signaled, then its a timeout :-(
         if (!request.isSignaled()) {
-            // noinspection ThrowableInstanceNeverThrown
-            request.signal(new RequestTimeoutException(request));
+            request.timeout();
         }
     }
 

@@ -153,9 +153,8 @@ public class Request
         else if (obj == null) {
             return null;
         }
-        else if (obj instanceof RequestTimeoutException) {
-            // Throw a timeout exception preserving the client call stack
-            throw new RequestTimeoutException((RequestTimeoutException) obj);
+        else if (obj == RequestTimeoutException.class) {
+            throw new RequestTimeoutException(this);
         }
 
         // This should never happen
@@ -172,7 +171,7 @@ public class Request
         return mutex;
     }
 
-    private void setResponse(final Object answer) {
+    private void queueResponse(final Object answer) {
         signaled = true;
 
         responses.add(answer);
@@ -189,7 +188,7 @@ public class Request
                 log.debug("Signal response: {}", response.getRequest().getId());
             }
 
-            setResponse(response);
+            queueResponse(response);
 
             if (response.getType() != Response.Type.PARTIAL) {
                 endOfResponses = true;
@@ -197,18 +196,11 @@ public class Request
         }
     }
 
-    void signal(final RequestTimeoutException e) {
-        assert e != null;
-
+    void timeout() {
         synchronized (mutex) {
-            if (log.isTraceEnabled()) {
-                log.debug("Signal timeout: " + e, e);
-            }
-            else {
-                log.debug("Signal timeout: {}", e.getId());
-            }
+            log.debug("Timeout");
 
-            setResponse(e);
+            queueResponse(RequestTimeoutException.class);
 
             endOfResponses = true;
         }

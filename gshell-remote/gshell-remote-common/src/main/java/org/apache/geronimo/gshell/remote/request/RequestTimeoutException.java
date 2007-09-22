@@ -37,12 +37,6 @@ public class RequestTimeoutException
         this.id = request.getId();
     }
 
-    public RequestTimeoutException(final RequestTimeoutException cause) {
-        super("Request timed out: " + cause.getId());
-
-        this.id = cause.getId();
-    }
-
     public Object getId() {
         return id;
     }
