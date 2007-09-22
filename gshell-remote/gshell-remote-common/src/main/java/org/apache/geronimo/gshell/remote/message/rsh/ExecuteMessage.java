@@ -132,7 +132,7 @@ public class ExecuteMessage
     }
 
     /**
-     * Container for the normal result of an execute command.
+     * Response for execute messages which contain the result of the command execution.
      */
     public static class Result
         extends MessageSupport
@@ -177,7 +177,7 @@ public class ExecuteMessage
     }
 
     /**
-     * Container for any exceptions thrown durring execution.
+     * Response for execute messages which resulted in a server-side exception.
      */
     public static class Fault
         extends Result
@@ -196,7 +196,7 @@ public class ExecuteMessage
     }
 
     /**
-     * Container for any notifications thrown durring execution.
+     * Response for execute messages which resulted in a server-side notification.
      */
     public static class Notification
         extends Result

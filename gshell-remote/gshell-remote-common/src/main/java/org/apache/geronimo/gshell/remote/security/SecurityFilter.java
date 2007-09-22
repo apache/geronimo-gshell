@@ -178,8 +178,10 @@ public class SecurityFilter
 
             if (!userAuthenticator.authenticate(username, password)) {
                 log.error("Authentication failed for user: {}, at location: {}", username, session.getRemoteAddress());
-                
-                session.close();
+
+                String reason = "Failed to authenticate";
+
+                msg.reply(new LoginMessage.Failure(reason));
             }
             else {
                 // Mark the session as authenticated
@@ -187,7 +189,7 @@ public class SecurityFilter
 
                 log.info("Successfull authentication for user: {}, at location: {}", username, session.getRemoteAddress());
 
-                msg.reply(new LoginMessage.Result());
+                msg.reply(new LoginMessage.Success());
 
                 // Don't wait on the write future
             }

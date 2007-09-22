@@ -21,10 +21,14 @@ package org.apache.geronimo.gshell.remote.message.rsh;
 
 import java.security.PublicKey;
 
+import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
+import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.mina.common.ByteBuffer;
+import org.codehaus.plexus.util.StringUtils;
 
 //
 // NOTE: This message does not support MessageListener, actually should never make it to a message listener anyways
@@ -39,15 +43,11 @@ import org.apache.mina.common.ByteBuffer;
 public class LoginMessage
     extends CryptoAwareMessageSupport
 {
-    private transient PublicKey serverKey;
+    private PublicKey serverKey;
 
     private String username;
 
-    //
-    // NOTE: Marked as transiet to prevent the ToStringBuilder from displaying its value.
-    //
-    
-    private transient String password;
+    private String password;
 
     public LoginMessage(final PublicKey serverKey, final String username, final String password) {
         super(MessageType.LOGIN);
@@ -61,6 +61,13 @@ public class LoginMessage
 
     public LoginMessage() {
         this(null, null, null);
+    }
+
+    public String toString() {
+        return createToStringBuilder()
+                .append("username", username)
+                .append("password", StringUtils.repeat("*", password.length()))
+                .toString();
     }
 
     public String getUsername() {
@@ -92,13 +99,52 @@ public class LoginMessage
     }
 
     /**
-     * Server to client message to indicate successfull login.
+     * Response for login messages which were sucessful.
      */
-    public static class Result
+    public static class Success
         extends MessageSupport
     {
-        public Result() {
-            super(MessageType.LOGIN_RESULT);
+        public Success() {
+            super(MessageType.LOGIN_SUCCESS);
+        }
+    }
+
+    /**
+     * Response for login messages which have failed.
+     */
+    public static class Failure
+        extends MessageSupport
+    {
+        private String reason;
+
+        public Failure(final String reason) {
+            super(MessageType.LOGIN_FAILURE);
+
+            this.reason = reason;
+        }
+
+        public Failure() {
+            this(null);
+        }
+        
+        public String getReason() {
+            return reason;
+        }
+
+        public void readExternal(final ByteBuffer in) throws Exception {
+            assert in != null;
+
+            super.readExternal(in);
+
+            reason = Marshaller.readString(in);
+        }
+
+        public void writeExternal(final ByteBuffer out) throws Exception {
+            assert out != null;
+
+            super.writeExternal(out);
+
+            Marshaller.writeString(out, reason);
         }
     }
 }

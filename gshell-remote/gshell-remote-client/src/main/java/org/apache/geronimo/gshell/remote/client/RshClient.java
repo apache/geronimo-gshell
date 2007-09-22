@@ -90,18 +90,32 @@ public class RshClient
 
         log.debug("Starting handshake", username);
 
-        HandShakeMessage.Result handShakeResult = (HandShakeMessage.Result) transport.request(new HandShakeMessage(crypto.getPublicKey()));
-        
-        PublicKey serverKey = handShakeResult.getPublicKey();
+        Message response;
+
+        response = transport.request(new HandShakeMessage(crypto.getPublicKey()));
+
+        PublicKey serverKey = ((HandShakeMessage.Result)response).getPublicKey();
 
         log.debug("Logging in: {}", username);
 
-        LoginMessage.Result loginResult = (LoginMessage.Result) transport.request(new LoginMessage(serverKey, username, password));
+        response = transport.request(new LoginMessage(serverKey, username, password));
 
-        log.debug("Login Result: {}", loginResult);
+        if (response instanceof LoginMessage.Success) {
+            log.debug("Login successful");
+        }
+        else if (response instanceof LoginMessage.Failure) {
+            LoginMessage.Failure failure = (LoginMessage.Failure)response;
+
+            throw new Exception("Login failed: " + failure.getReason());
+        }
+        else {
+            throw new InternalError();
+        }
     }
     
     public void echo(final String text) throws Exception {
+        assert text != null;
+        
         log.debug("Echoing: {}", text);
 
         transport.send(new EchoMessage(text));

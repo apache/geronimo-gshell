@@ -24,10 +24,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Support for {@link Message} implementations.
@@ -75,6 +77,13 @@ public class MessageSupport
     
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
+    protected ToStringBuilder createToStringBuilder() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("id", getId())
+                .append("sequence", getSequence())
+                .append("timestamp", getTimestamp());
     }
 
     public MessageType getType() throws IOException {

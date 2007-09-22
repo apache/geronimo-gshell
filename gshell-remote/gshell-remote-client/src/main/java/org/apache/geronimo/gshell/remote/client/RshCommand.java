@@ -45,6 +45,12 @@ public class RshCommand
     @Option(name="-b", aliases={"--bind"}, metaVar="URI")
     private URI local;
 
+    @Option(name="-u", aliases={"--username"}, metaVar="USERNAME", required=true)
+    private String username;
+
+    @Option(name="-p", aliases={"--password"}, metaVar="PASSWORD", required=true)
+    private String password;
+
     @Argument(metaVar="URI", required=true, index=0)
     private URI remote;
 
@@ -66,8 +72,12 @@ public class RshCommand
 
         io.info("Connected");
 
-        client.login("jason", "password");
-
+        //
+        // TODO: Allow username and/or password to be read from input, need access to the console instance to get password reading working
+        //
+        
+        client.login(username, password);
+        
         // client.echo("NOISE MAKER");
 
         // client.getTransport().request(new EchoMessage("NO REPLY"));
