@@ -52,13 +52,21 @@ public class Marshaller
     public static MarshalAware unmarshal(final ByteBuffer in) throws Exception {
         assert in != null;
 
+        //
+        // HACK: This is broke... so just use the default for now...
+        //
+
+        /*
         Class type = (Class) readObject(in);
 
         MarshalAware obj = (MarshalAware) type.newInstance();
 
         obj.readExternal(in);
-
+        
         return obj;
+        */
+
+        return (MarshalAware) readObject(in);
     }
 
     public MarshalAware unmarshal() throws Exception {
@@ -68,9 +76,17 @@ public class Marshaller
     public static void marshal(final ByteBuffer out, final MarshalAware obj) throws Exception {
         assert out != null;
 
+        //
+        // HACK: This is broke... so just use the default for now...
+        //
+
+        /*
         writeObject(out, obj.getClass());
 
         obj.writeExternal(out);
+        */
+
+        writeObject(out, obj);
     }
 
     public void marshal(final MarshalAware obj) throws Exception {
