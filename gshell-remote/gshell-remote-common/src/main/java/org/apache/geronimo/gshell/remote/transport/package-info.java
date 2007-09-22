@@ -18,7 +18,7 @@
  */
 
 /**
- * ???
+ * Provides a framework for pluggable client/server message transports.
  *
  * @version $Rev$ $Date$
  */
