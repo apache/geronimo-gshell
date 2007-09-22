@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.rsh.HandShakeMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
+import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
@@ -47,11 +48,11 @@ import org.slf4j.LoggerFactory;
 public class SecurityFilter
     extends IoFilterAdapter
 {
-    private static final String AUTHENTICATED_KEY = SecurityFilter.class.getName() + ".authenticated";
+    private static final SessionAttributeBinder<PublicKey> CLIENT_KEY_BINDER = new SessionAttributeBinder<PublicKey>(SecurityFilter.class, "clientPublicKey");
 
-    private static final String REMOTE_PUBLIC_KEY_KEY = SecurityFilter.class.getName() + ".remotePublicKey";
+    private static final SessionAttributeBinder<UUID> AUTH_BINDER = new SessionAttributeBinder<UUID>(SecurityFilter.class, "authenticated");
 
-    private static final String TIMEOUT_TASK_KEY = TimeoutTask.class.getName();
+    private static final SessionAttributeBinder<ScheduledFuture> TIMEOUT_BINDER = new SessionAttributeBinder<ScheduledFuture>(TimeoutTask.class);
     
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -94,7 +95,7 @@ public class SecurityFilter
         assert session != null;
         assert obj != null;
 
-        UUID token = (UUID) session.getAttribute(AUTHENTICATED_KEY);
+        UUID token = AUTH_BINDER.lookup(session, null);
 
         // If the session is already authenticated, then pass on the message
         if (securityToken.equals(token)) {
@@ -141,10 +142,10 @@ public class SecurityFilter
             log.warn("Aborting handshake processing; timeout has triggered");
         }
         else {
-            PublicKey key = msg.getPublicKey();
+            PublicKey key = msg.getClientKey();
             
             // Stuff the remote public key into the session
-            session.setAttribute(REMOTE_PUBLIC_KEY_KEY, key);
+            CLIENT_KEY_BINDER.bind(session, key);
 
             //
             // TODO: Do we want to pass the client back some token which it needs to put onto messages that are sent for more security?
@@ -185,7 +186,7 @@ public class SecurityFilter
             }
             else {
                 // Mark the session as authenticated
-                session.setAttribute(AUTHENTICATED_KEY, securityToken);
+                AUTH_BINDER.bind(session, securityToken);
 
                 log.info("Successfull authentication for user: {}, at location: {}", username, session.getRemoteAddress());
 
@@ -204,7 +205,7 @@ public class SecurityFilter
         assert session != null;
 
         ScheduledFuture task = scheduler.schedule(new TimeoutTask(session), l, unit);
-        session.setAttribute(TIMEOUT_TASK_KEY, task);
+        TIMEOUT_BINDER.rebind(session, task);
 
         return task;
     }
@@ -216,7 +217,7 @@ public class SecurityFilter
     private boolean cancelTimeout(final IoSession session) {
         assert session != null;
 
-        ScheduledFuture timeoutTask = (ScheduledFuture) session.getAttribute(TIMEOUT_TASK_KEY);
+        ScheduledFuture timeoutTask = TIMEOUT_BINDER.lookup(session);
 
         return timeoutTask.cancel(false);
     }

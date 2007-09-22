@@ -43,7 +43,7 @@ public class SessionAttributeBinder<T>
     public SessionAttributeBinder(final Class type, final String suffix) {
         this(type.getName() + "." + suffix);
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public T lookup(final IoSession session) {
         assert session != null;
@@ -52,6 +52,19 @@ public class SessionAttributeBinder<T>
 
         if (obj == null) {
             throw new IllegalStateException(key + " not bound");
+        }
+
+        return obj;
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public T lookup(final IoSession session, final T defaultValue) {
+        assert session != null;
+
+        T obj = (T) session.getAttribute(key);
+
+        if (obj == null) {
+            return defaultValue;
         }
 
         return obj;
@@ -68,6 +81,18 @@ public class SessionAttributeBinder<T>
         }
 
         session.setAttribute(key, obj);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public T rebind(final IoSession session, final T obj) {
+        assert session != null;
+        assert obj != null;
+
+        T prev = (T) session.getAttribute(key);
+
+        session.setAttribute(key, obj);
+
+        return prev;
     }
 
     @SuppressWarnings({"unchecked"})

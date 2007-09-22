@@ -24,8 +24,6 @@ import java.security.PublicKey;
 import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
-import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.mina.common.ByteBuffer;
 
 //
@@ -41,32 +39,32 @@ import org.apache.mina.common.ByteBuffer;
 public class HandShakeMessage
     extends CryptoAwareMessageSupport
 {
-    private PublicKey publicKey;
+    private PublicKey clientKey;
 
-    protected HandShakeMessage(final MessageType type, final PublicKey publicKey) {
+    protected HandShakeMessage(final MessageType type, final PublicKey clientKey) {
         super(type);
 
-        this.publicKey = publicKey;
+        this.clientKey = clientKey;
     }
 
-    public HandShakeMessage(final PublicKey publicKey) {
-        this(MessageType.HANDSHAKE, publicKey);
+    public HandShakeMessage(final PublicKey clientKey) {
+        this(MessageType.HANDSHAKE, clientKey);
     }
 
     public HandShakeMessage() {
         this(null);
     }
 
-    public PublicKey getPublicKey() {
-        if (publicKey == null) {
-            throw new IllegalStateException("Missing public key");
+    public PublicKey getClientKey() {
+        if (clientKey == null) {
+            throw new IllegalStateException("Missing client key");
         }
 
-        return publicKey;
+        return clientKey;
     }
 
-    public void setPublicKey(final PublicKey publicKey) {
-        this.publicKey = publicKey;
+    public void setClientKey(final PublicKey clientKey) {
+        this.clientKey = clientKey;
     }
 
     public void readExternal(final ByteBuffer in) throws Exception {
@@ -80,7 +78,7 @@ public class HandShakeMessage
             throw new IllegalStateException();
         }
 
-        publicKey = getCryptoContext().deserializePublicKey(bytes);
+        clientKey = getCryptoContext().deserializePublicKey(bytes);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -88,7 +86,7 @@ public class HandShakeMessage
 
         super.writeExternal(out);
 
-        Marshaller.writeBytes(out, getPublicKey().getEncoded());
+        Marshaller.writeBytes(out, getClientKey().getEncoded());
     }
 
     /**

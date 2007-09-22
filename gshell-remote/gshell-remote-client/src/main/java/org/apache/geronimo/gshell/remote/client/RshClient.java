@@ -94,7 +94,7 @@ public class RshClient
 
         response = transport.request(new HandShakeMessage(crypto.getPublicKey()));
 
-        PublicKey serverKey = ((HandShakeMessage.Result)response).getPublicKey();
+        PublicKey serverKey = ((HandShakeMessage.Result)response).getClientKey();
 
         log.debug("Logging in: {}", username);
 
