@@ -42,6 +42,12 @@ public class MessageHandler
         this.visitor = visitor;
     }
 
+    protected void setVisitor(final MessageVisitor visitor) {
+        assert visitor != null;
+        
+        this.visitor = visitor;
+    }
+
     protected MessageVisitor getVisitor() {
         if (visitor == null) {
             throw new IllegalStateException("Message visitor not bound");

@@ -17,27 +17,42 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.remote.client;
 
 import org.apache.geronimo.gshell.remote.message.MessageHandler;
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
+import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
+import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=MessageHandler.class, hint="server")
-public class RshServerMessageHandler
+@Component(role=MessageHandler.class, hint="client")
+public class RshClientHandler
     extends MessageHandler
+    implements Initializable
 {
-    @Requirement
-    private RshServerMessageVisitor serverVisitor;
+    public RshClientHandler() {}
 
-    @Override
-    protected MessageVisitor getVisitor() {
-        return serverVisitor;
+    public void initialize() throws InitializationException {
+        setVisitor(new Visitor());
+    }
+
+    //
+    // MessageVisitor
+    //
+
+    private class Visitor
+        extends MessageVisitorSupport
+    {
+        public void visitEcho(final EchoMessage msg) throws Exception {
+            assert msg != null;
+
+            log.info("ECHO: {}", msg.getText());
+        }
     }
 }
