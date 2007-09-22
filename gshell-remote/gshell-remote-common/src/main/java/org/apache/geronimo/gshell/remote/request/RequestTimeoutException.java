@@ -32,9 +32,15 @@ public class RequestTimeoutException
     private final Object id;
 
     public RequestTimeoutException(final Request request) {
-        super("Request timed out for ID: " + request.getId());
+        super("Request timed out: " + request.getId());
 
         this.id = request.getId();
+    }
+
+    public RequestTimeoutException(final RequestTimeoutException cause) {
+        super("Request timed out: " + cause.getId());
+
+        this.id = cause.getId();
     }
 
     public Object getId() {

@@ -154,7 +154,8 @@ public class Request
             return null;
         }
         else if (obj instanceof RequestTimeoutException) {
-            throw (RequestTimeoutException) obj;
+            // Throw a timeout exception preserving the client call stack
+            throw new RequestTimeoutException((RequestTimeoutException) obj);
         }
 
         // This should never happen
