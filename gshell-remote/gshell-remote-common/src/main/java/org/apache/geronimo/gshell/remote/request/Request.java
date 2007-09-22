@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Request
 {
-    private transient final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     final Lock lock = new ReentrantLock();
 
@@ -85,7 +85,11 @@ public class Request
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("id", getId())
+                .append("signaled", signaled)
+                .append("message", message)
+                .toString();
     }
 
     public Message getMessage() {

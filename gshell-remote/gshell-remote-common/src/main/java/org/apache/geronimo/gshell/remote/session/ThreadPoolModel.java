@@ -40,25 +40,19 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 @SuppressWarnings({"FieldCanBeLocal"})
-public class ExecutorThreadModel
+public class ThreadPoolModel
     implements ThreadModel
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final String name;
-
-    private final ThreadGroup group;
-
-    private final ExecutorService executor;
+    private final ThreadPoolExecutor threadPool;
 
     private final ExecutorFilter filter;
 
-    public ExecutorThreadModel(final String name) {
+    public ThreadPoolModel(final String name) {
         assert name != null;
 
-        this.name = name;
-
-        this.group = new ThreadGroup(name);
+        ThreadGroup group = new ThreadGroup(name);
 
         ThreadFactory tf = new NamedThreadFactory(name, group);
 
@@ -66,7 +60,7 @@ public class ExecutorThreadModel
         // TODO: See which is better SynchronousQueue<Runnable> or LinkedBlockingQueue<Runnable>
         //
 
-        this.executor = new ThreadPoolExecutor(
+        threadPool = new ThreadPoolExecutor(
                 1,
                 Integer.MAX_VALUE,
                 60L,
@@ -75,7 +69,7 @@ public class ExecutorThreadModel
                 tf,
                 new ThreadPoolExecutor.AbortPolicy());
 
-        this.filter = new ExecutorFilter(executor);
+        filter = new ExecutorFilter(threadPool);
     }
 
     public void close() {
@@ -86,7 +80,7 @@ public class ExecutorThreadModel
         //
 
         /*
-        List<Runnable> pending = executor.shutdownNow();
+        List<Runnable> pending = threadPool.shutdownNow();
 
         if (!pending.isEmpty()) {
             log.warn("There were {} pending tasks which have not been run", pending.size());
@@ -100,7 +94,7 @@ public class ExecutorThreadModel
 
     public void buildFilterChain(final IoFilterChain chain) throws Exception {
         assert chain != null;
-
+        
         chain.addFirst(getClass().getSimpleName(), filter);
     }
 }

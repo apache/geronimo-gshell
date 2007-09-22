@@ -19,10 +19,12 @@
 
 package org.apache.geronimo.gshell.remote.request;
 
+import org.apache.geronimo.gshell.remote.message.Message;
+
 /**
  * Thrown to indicate a request operation failed.
  *
- * @version $Rev$ $Date$
+ * @version $Rev: 577545 $ $Date: 2007-09-19 21:55:19 -0700 (Wed, 19 Sep 2007) $
  */
 public class RequestException
     extends RuntimeException
@@ -39,6 +41,10 @@ public class RequestException
 
     public RequestException(final Throwable cause) {
         super(cause);
+    }
+
+    public RequestException(final Message.ID id) {
+        super(String.valueOf(id));
     }
 
     public RequestException() {

@@ -19,21 +19,25 @@
 
 package org.apache.geronimo.gshell.remote.request;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
+import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Manages per-session state and timeouts for requests.
+ * ???
  *
  * @version $Rev$ $Date$
  */
@@ -41,272 +45,290 @@ public class RequestManager
 {
     public static final SessionAttributeBinder<RequestManager> BINDER = new SessionAttributeBinder<RequestManager>(RequestManager.class);
 
-    private static final AtomicLong INSTANCE_COUNTER = new AtomicLong(0);
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private transient final Logger log = LoggerFactory.getLogger(getClass() + "-" + INSTANCE_COUNTER.getAndIncrement());
+    private final Map<Message.ID,Registration> registrations = new HashMap<Message.ID, Registration>();
 
-    private transient final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+    private final ScheduledExecutorService scheduler;
 
-    private final Map<Message.ID,Request> requests = Collections.synchronizedMap(new HashMap<Message.ID, Request>());
-
-    private final Map<Request,TimeoutTask> timeouts = Collections.synchronizedMap(new HashMap<Request,TimeoutTask>());
+    //
+    // TODO: Use a better locking scheme...
+    //
     
-    public boolean contains(final Message.ID id) {
-        assert id != null;
+    private final Lock lock = new ReentrantLock();
 
-        return requests.containsKey(id);
-    }
-
-    public boolean contains(final Request request) {
-        assert request != null;
-
-        request.lock.lock();
-
-        try {
-            return contains(request.getId());
-        }
-        finally {
-            request.lock.unlock();
-        }
-    }
-
-    public void add(final Request request) {
-        assert request != null;
-
-        request.lock.lock();
-
-        try {
-            Message.ID id = request.getId();
-
-            if (contains(request)) {
-                throw new DuplicateRequestException(id);
-            }
-
-            requests.put(id, request);
-
-            if (log.isTraceEnabled()) {
-                log.trace("Added: {}", request);
-            }
-            else {
-                log.debug("Added: {}", id);
-            }
-        }
-        finally {
-            request.lock.unlock();
-        }
-    }
-
-    public Request get(final Message.ID id) {
-        assert id != null;
-
-        return requests.get(id);
-    }
-
-    public Request remove(final Message.ID id) {
-        assert id != null;
-
-        Request request = get(id);
-
-        if (request == null) {
-            throw new InvalidRequestMappingException(id);
-        }
-
-        Request prev;
+    public RequestManager() {
+        ThreadFactory tf = new NamedThreadFactory(getClass());
         
-        request.lock.lock();
-
-        try {
-            prev = requests.remove(id);
-
-            if (log.isTraceEnabled()) {
-                log.trace("Removed: {}", prev);
-            }
-            else {
-                log.debug("Removed: {}", id);
-            }
-        }
-        finally {
-            request.lock.unlock();
-        }
-
-        return prev;
+        scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1, tf);
     }
 
-    //
-    // Timeouts
-    //
+    private Registration get(final Message.ID id) {
+        assert id != null;
 
-    public void schedule(final Request request) {
+        Registration reg = registrations.get(id);
+
+        if (reg == null) {
+            throw new NotRegisteredException(id);
+        }
+
+        return reg;
+    }
+
+    private Registration remove(final Message.ID id) {
+        assert id != null;
+
+        Registration reg = registrations.remove(id);
+
+        if (reg == null) {
+            throw new NotRegisteredException(id);
+        }
+
+        return reg;
+    }
+
+    public void register(final Request request) {
         assert request != null;
 
-        request.lock.lock();
+        lock.lock();
 
         try {
             Message.ID id = request.getId();
 
-            if (timeouts.containsKey(request)) {
-                throw new DuplicateRequestException(id);
+            if (registrations.containsKey(id)) {
+                throw new DuplicateRegistrationException(id);
             }
 
-            if (request != get(id)) {
-                throw new InvalidRequestMappingException(id);
-            }
+            Registration reg = new Registration(request);
 
-            TimeoutTask task = new TimeoutTask(request);
+            registrations.put(id, reg);
 
-            ScheduledFuture<?> tf = scheduler.schedule(task, request.getTimeout(), request.getTimeoutUnit());
-
-            task.setTimeoutFuture(tf);
-
-            timeouts.put(request, task);
-
-            if (log.isTraceEnabled()) {
-                log.trace("Scheduled: {}", request);
-            }
-            else {
-                log.debug("Scheduled: {}", id);
-            }
+            log.debug("Registered: {}", reg);
         }
         finally {
-            request.lock.unlock();
+            lock.unlock();
         }
     }
 
-    public void cancel(final Request request) {
-        assert request != null;
+    public Request lookup(final Message.ID id) {
+        assert id != null;
 
-        request.lock.lock();
+        lock.lock();
 
         try {
-            Message.ID id = request.getId();
+            Registration reg = get(id);
 
-            TimeoutTask task = timeouts.remove(request);
-
-            if (task == null) {
-                throw new MissingRequestTimeoutException(id);
-            }
-
-            if (remove(id) != request) {
-                throw new InvalidRequestMappingException(id);
-            }
-
-            if (log.isTraceEnabled()) {
-                log.trace("Canceling: {}", request);
-            }
-            else {
-                log.debug("Canceling: {}", id);
-            }
-
-            ScheduledFuture<?> sf = task.getTimeoutFuture();
-
-            if (sf != null) {
-                sf.cancel(false);
-            }
+            return reg.request;
         }
         finally {
-            request.lock.unlock();
+            lock.unlock();
         }
     }
 
-    private void timeout(final Request request) {
-        assert request != null;
+    public Request deregister(final Message.ID id) {
+        assert id != null;
 
-        request.lock.lock();
+        lock.lock();
 
         try {
-            Message.ID id = request.getId();
+            Registration reg = remove(id);
 
-            if (log.isTraceEnabled()) {
-                log.trace("Triggering: {}", request);
-            }
-            else {
-                log.debug("Triggering: {}", id);
-            }
+            reg.deactivate();
 
-            TimeoutTask task = timeouts.remove(request);
+            log.debug("Deregistered: {}", reg);
 
-            if (task == null) {
-                throw new MissingRequestTimeoutException(id);
-            }
-
-            if (remove(id) != request) {
-                throw new InvalidRequestMappingException(id);
-            }
-
-            // If the request has not been signaled, then its a timeout :-(
-            if (!request.isSignaled()) {
-                request.timeout();
-            }
+            return reg.request;
         }
         finally {
-            request.lock.unlock();
+            lock.unlock();
         }
     }
 
-    private void timeoutAll() {
-        log.debug("Timing out all pending requests");
-        
-        Request[] requests = timeouts.keySet().toArray(new Request[timeouts.size()]);
+    public void activate(final Message.ID id) {
+        assert id != null;
 
-        for (Request request : requests) {
-            timeout(request);
+        lock.lock();
+
+        try {
+            Registration reg = get(id);
+            
+            reg.activate();
+
+            log.debug("Activated: {}", reg);
+        }
+        catch (NotRegisteredException e) {
+            log.debug("Ignoring activation; request not registered: {}", id);
+        }
+        finally {
+            lock.unlock();
         }
     }
 
-    public void clear() {
-        int l;
+    public void deactivate(final Message.ID id) {
+        assert id != null;
 
-        l = requests.size();
+        lock.lock();
 
-        if (l > 0) {
-            log.warn("Purging " + l + " request(s)");
+        try {
+            Registration reg = get(id);
+
+            reg.deactivate();
+
+            log.debug("Deactivated: {}", reg);
         }
-
-        requests.clear();
-
-        l = timeouts.size();
-
-        if (l > 0) {
-            log.warn("Purging " + l + " timeouts(s)");
+        catch (NotRegisteredException e) {
+            log.debug("Ignoring deactivation; request not registered: {}", id);
         }
+        finally {
+            lock.unlock();
+        }
+    }
 
-        timeouts.clear();
+    private void timeout(final Message.ID id) {
+        assert id != null;
+
+        lock.lock();
+
+        try {
+            Registration reg = remove(id);
+
+            reg.timeout();
+
+            log.debug("Timed out: {}", reg);
+        }
+        catch (NotRegisteredException e) {
+            log.debug("Ignoring timeout; request not registered: {}", id);
+        }
+        catch (TimeoutAbortedException e) {
+            log.debug("Timeout aborted: " + e.getMessage());
+        }
+        finally {
+            lock.unlock();
+        }
     }
 
     public void close() {
-        timeoutAll();
-        clear();
+        lock.lock();
+
+        try {
+            if (!registrations.isEmpty()) {
+                log.warn("Timing out remaining {} registrations", registrations.size());
+
+                for (Registration reg : registrations.values()) {
+                    timeout(reg.request.getId());
+                }
+            }
+
+            //
+            // FIXME: This causes some problems when a rsh client closes, like:
+            //
+            //        java.security.AccessControlException: access denied (java.lang.RuntimePermission modifyThread)
+            //
+            // scheduler.shutdown();
+        }
+        finally {
+            lock.unlock();
+        }
     }
 
-    //
-    // TimeoutTask
-    //
-
-    private class TimeoutTask
-        implements Runnable
+    private enum RegistrationState
     {
-        private final Request request;
+        PENDING,
+        ACTIVE,
+        DEACTIVE,
+        TIMEDOUT
+    }
+
+    private class Registration
+    {
+        public final Request request;
+
+        public RegistrationState state = RegistrationState.PENDING;
 
         private ScheduledFuture<?> timeoutFuture;
 
-        private TimeoutTask(final Request request) {
+        public Registration(final Request request) {
             assert request != null;
 
             this.request = request;
         }
 
-        public void run() {
-            timeout(request);
+        public void activate() {
+            if (state != RegistrationState.PENDING) {
+                log.debug("Can not activate, state is not PENDING, found: {}", state);
+            }
+            else {
+                Runnable task = new Runnable() {
+                    public void run() {
+                        RequestManager.this.timeout(request.getId());
+                    }
+                };
+
+                timeoutFuture = scheduler.schedule(task, request.getTimeout(), request.getTimeoutUnit());
+
+                state = RegistrationState.ACTIVE;
+            }
         }
 
-        public void setTimeoutFuture(final ScheduledFuture<?> timeoutFuture) {
-            assert timeoutFuture != null;
+        public void deactivate() {
+            if (state != RegistrationState.ACTIVE) {
+                log.debug("Can not deactivate; state is not ACTIVE, found: {}", state);
+            }
+            else if (timeoutFuture.cancel(false)) {
+                timeoutFuture = null;
 
-            this.timeoutFuture = timeoutFuture;
+                state = RegistrationState.DEACTIVE;
+            }
+            else {
+                log.warn("Unable to cancel registration timeout: {}", this);
+            }
         }
 
-        public ScheduledFuture<?> getTimeoutFuture() {
-            return timeoutFuture;
+        public void timeout() {
+            Message.ID id = request.getId();
+
+            if (timeoutFuture.isCancelled()) {
+                throw new TimeoutAbortedException("Timeout has been canceled: " + id);
+            }
+            else if (request.isSignaled()) {
+                throw new TimeoutAbortedException("Request has been singled: " + id);
+            }
+            else {
+                request.timeout();
+
+                state = RegistrationState.TIMEDOUT;
+            }
+        }
+
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                    .append("id", request.getId())
+                    .append("state", state)
+                    .toString();
+        }
+    }
+
+    public class NotRegisteredException
+        extends RequestException
+    {
+        public NotRegisteredException(final Message.ID id) {
+            super(id);
+        }
+    }
+
+    public class DuplicateRegistrationException
+        extends RequestException
+    {
+        public DuplicateRegistrationException(final Message.ID id) {
+            super(id);
+        }
+    }
+
+    public class TimeoutAbortedException
+        extends RequestException
+    {
+        public TimeoutAbortedException(final String msg) {
+            super(msg);
         }
     }
 }

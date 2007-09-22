@@ -58,11 +58,8 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 @Component(role=MessageVisitor.class, hint="server")
 public class RshServerMessageVisitor
     extends MessageVisitorSupport
-    implements Initializable
 {
     private static final SessionAttributeBinder<PlexusContainer> CONTAINER_BINDER = new SessionAttributeBinder<PlexusContainer>(PlexusContainer.class);
-
-    private static final SessionAttributeBinder<String> REALMID_BINDER = new SessionAttributeBinder<String>(PlexusContainer.class.getName() + ".realmId");
 
     private static final SessionAttributeBinder<IO> IO_BINDER = new SessionAttributeBinder<IO>(IO.class);
 
@@ -76,22 +73,6 @@ public class RshServerMessageVisitor
 
     @Requirement
     private PlexusContainer parentContainer;
-
-    private DefaultPlexusContainer container;
-
-    public void initialize() throws InitializationException {
-        // Create a new container which will be the parent for our remote shells
-        ContainerConfiguration config = new DefaultContainerConfiguration();
-        config.setName("gshell.rsh-server");
-        config.setClassWorld(parentContainer.getContainerRealm().getWorld());
-        
-        try {
-            container = new DefaultPlexusContainer(config);
-        }
-        catch (PlexusContainerException e) {
-            throw new InitializationException("Failed to construct container", e);
-        }
-    }
 
     //
     // MessageVisitor
@@ -130,9 +111,25 @@ public class RshServerMessageVisitor
                 }
             }.start();
         }
+        else if ("NO REPLY".equals(text)) {
+            // ignore
+        }
         else {
             msg.reply(new EchoMessage(text));
         }
+    }
+
+    private DefaultPlexusContainer createContainer() throws PlexusContainerException {
+        // Create a new container which will be the parent for our remote shells
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+
+        String name = "gshell.remote-shell:" + UUID.randomUUID();
+
+        config.setName(name);
+
+        config.setClassWorld(parentContainer.getContainerRealm().getWorld());
+
+        return new DefaultPlexusContainer(config);
     }
 
     public void visitOpenShell(final OpenShellMessage msg) throws Exception {
@@ -142,12 +139,7 @@ public class RshServerMessageVisitor
 
         IoSession session = msg.getSession();
 
-        String realmId = "gshell.remote-shell:" + UUID.randomUUID();
-        REALMID_BINDER.bind(session, realmId);
-
-        log.debug("Remote shell container realm: {}", realmId);
-
-        PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
+        PlexusContainer childContainer = createContainer();
         CONTAINER_BINDER.bind(session, childContainer);
 
         // Setup the I/O context (w/o auto-flushing)
@@ -157,16 +149,16 @@ public class RshServerMessageVisitor
         // FIXME: We need to set the verbosity of this I/O context as specified by the client
         //
 
-        IOLookup.set(container, io);
+        IOLookup.set(childContainer, io);
         IO_BINDER.bind(session, io);
 
         // Setup shell environemnt
         Environment env = new DefaultEnvironment(io);
-        EnvironmentLookup.set(container, env);
+        EnvironmentLookup.set(childContainer, env);
         ENV_BINDER.bind(session, env);
 
         // Create a new shell instance
-        RemoteShell shell = (RemoteShell) container.lookup(RemoteShell.class);
+        RemoteShell shell = (RemoteShell) childContainer.lookup(RemoteShell.class);
         SHELL_BINDER.bind(session, shell);
 
         //
@@ -197,9 +189,12 @@ public class RshServerMessageVisitor
 
         log.info("Destroying container");
 
-        String realmId = REALMID_BINDER.unbind(session);
-        container.removeChildContainer(realmId);
-        CONTAINER_BINDER.unbind(session);
+        PlexusContainer childContainer = CONTAINER_BINDER.unbind(session);
+
+        //
+        // FIXME: This won't work... it kills our class realm... :-(
+        //
+        // childContainer.dispose();
         
         //
         // TODO: Send a meaningful response
@@ -232,12 +227,18 @@ public class RshServerMessageVisitor
 
             Object result = msg.execute(shell);
 
+            log.debug("Result: {}", result);
+
             msg.reply(new ExecuteMessage.Result(result));
         }
         catch (Notification n) {
+            log.debug("Notification: " + n);
+
             msg.reply(new ExecuteMessage.Notification(n));
         }
         catch (Throwable t) {
+            log.debug("Fault: " + t);
+
             msg.reply(new ExecuteMessage.Fault(t));
         }
     }

@@ -66,7 +66,7 @@ public class SecurityFilter
     private final UUID securityToken;
 
     public SecurityFilter() throws Exception {
-        ThreadFactory tf = new NamedThreadFactory(SecurityFilter.class);
+        ThreadFactory tf = new NamedThreadFactory(getClass());
         
         scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), tf);
 
@@ -75,17 +75,6 @@ public class SecurityFilter
         //
 
         securityToken = UUID.randomUUID();
-    }
-
-    @Override
-    public void init() throws Exception {
-        // Install the schedule purger to purge any cancelled tasks to prevent memory leaks
-        scheduler.scheduleWithFixedDelay(new SchedulePurgerTask(), 10, 10, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        scheduler.shutdownNow();
     }
 
     @Override
@@ -248,21 +237,6 @@ public class SecurityFilter
             log.error("Timeout waiting for handshake or authentication from: " + session.getRemoteAddress());
 
             session.close();
-        }
-    }
-
-    //
-    // SchedulePurgerTask
-    //
-
-    /**
-     * Task to remove cancelled tasks from the scheduler
-     */
-    private class SchedulePurgerTask
-        implements Runnable
-    {
-        public void run() {
-            scheduler.purge();
         }
     }
 }

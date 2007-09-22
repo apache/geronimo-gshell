@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -41,7 +42,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RemoteShell.class) // instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
+@Component(role=RemoteShell.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class DefaultRemoteShell
     implements RemoteShell, Initializable
 {
@@ -63,7 +64,7 @@ public class DefaultRemoteShell
     
     private void ensureOpened() {
         if (!opened) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Not opened");
         }
     }
 
@@ -72,6 +73,8 @@ public class DefaultRemoteShell
     }
 
     public void close() {
+        log.debug("Closing");
+        
         opened = false;
     }
 

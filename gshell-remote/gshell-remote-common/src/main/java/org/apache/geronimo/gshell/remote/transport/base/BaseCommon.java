@@ -139,9 +139,6 @@ public abstract class BaseCommon
     protected void configure(final DefaultIoFilterChainBuilder chain) throws Exception {
         assert chain != null;
 
-        // We don't need an executor filter here (in Mina 1.1.x), since the ThreadModel does that for us
-        // chain.addLast(ExecutorFilter.class.getSimpleName(), new ExecutorFilter(executor));
-
         // chain.addLast(ProfilerTimerFilter.class.getSimpleName(), new ProfilerTimerFilter());
 
         chain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(getMessageCodecFactory()));

@@ -24,6 +24,8 @@ import java.security.PublicKey;
 import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
+import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.mina.common.ByteBuffer;
 
 //

@@ -29,6 +29,8 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.remote.message.Message;
+import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
@@ -67,7 +69,9 @@ public class RshCommand
         client.login("jason", "password");
 
         // client.echo("NOISE MAKER");
-        
+
+        // client.getTransport().request(new EchoMessage("NO REPLY"));
+
         RemoteShellProxy shell = new RemoteShellProxy(client, io, terminal);
 
         Object rv = SUCCESS;

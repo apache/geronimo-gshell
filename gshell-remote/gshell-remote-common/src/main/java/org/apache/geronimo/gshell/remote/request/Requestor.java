@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Requestor
 {
-    public static final long DEFAULT_TIMEOUT = 60;
+    public static final long DEFAULT_TIMEOUT = 10;
 
     public static final TimeUnit DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
 

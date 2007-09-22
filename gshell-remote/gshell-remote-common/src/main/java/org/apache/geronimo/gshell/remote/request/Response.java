@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.remote.request;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.remote.message.Message;
 
 //
@@ -67,7 +68,11 @@ public class Response
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("id", getId())
+                .append("responseTo", getRequest().getId())
+                .append("message", message)
+                .toString();
     }
 
     public Request getRequest() {

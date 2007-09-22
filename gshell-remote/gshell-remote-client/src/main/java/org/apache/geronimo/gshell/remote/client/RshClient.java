@@ -68,6 +68,22 @@ public class RshClient
         log.debug("Connected to: {}", remote);
     }
 
+    public InputStream getInputStream() {
+        return transport.getInputStream();
+    }
+
+    public OutputStream getOutputStream() {
+        return transport.getOutputStream();
+    }
+
+    public Transport getTransport() {
+        return transport;
+    }
+
+    public void close() {
+        transport.close();
+    }
+
     public void login(final String username, final String password) throws Exception {
         assert username != null;
         assert password != null;
@@ -158,17 +174,5 @@ public class RshClient
         assert args != null;
 
         return doExecute(new ExecuteMessage(path, args));
-    }
-
-    public InputStream getInputStream() {
-        return transport.getInputStream();
-    }
-
-    public OutputStream getOutputStream() {
-        return transport.getOutputStream();
-    }
-
-    public void close() {
-        transport.close();
     }
 }

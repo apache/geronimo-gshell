@@ -37,7 +37,7 @@ import org.apache.mina.common.WriteFuture;
 public class MessageSupport
     implements Message
 {
-    private static final IDGenerator ID_GENERATOR = new UuidMessageID.Generator(); // new LongMessageID.Generator();
+    private static final IDGenerator ID_GENERATOR = /*new UuidMessageID.Generator();*/ new LongMessageID.Generator();
 
     private static final AtomicLong SEQUENCE_COUNTER = new AtomicLong(0);
 
@@ -60,11 +60,19 @@ public class MessageSupport
         
         this.type = type;
 
-        this.id = ID_GENERATOR.generate();
-        
         this.timestamp = System.currentTimeMillis();
+
+        // late init id and sequence
     }
 
+    public int hashCode() {
+        return getId().hashCode();
+    }
+    
+    //
+    // TODO: Add equals()
+    //
+    
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
@@ -74,6 +82,10 @@ public class MessageSupport
     }
 
     public ID getId() {
+        if (id == null) {
+            id = ID_GENERATOR.generate();
+        }
+
         return id;
     }
     
@@ -95,7 +107,7 @@ public class MessageSupport
 
     public long getSequence() {
         if (sequence == null) {
-            throw new IllegalStateException("Sequence number is set upon write and is not yet available");
+            sequence = SEQUENCE_COUNTER.getAndIncrement();
         }
 
         return sequence;
@@ -159,14 +171,12 @@ public class MessageSupport
     public void writeExternal(final ByteBuffer out) throws Exception {
         assert out != null;
 
-        Marshaller.marshal(out, id);
+        Marshaller.marshal(out, getId());
 
-        Marshaller.marshal(out, cid);
+        Marshaller.marshal(out, getCorrelationId());
 
-        out.putLong(timestamp);
+        out.putLong(getTimestamp());
 
-        sequence = SEQUENCE_COUNTER.getAndIncrement();
-        
-        out.putLong(sequence);
+        out.putLong(getSequence());
     }
 }

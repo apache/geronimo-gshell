@@ -51,9 +51,9 @@ public class RequestResponseFilter
     @Override
     public void sessionClosed(final NextFilter nextFilter, final IoSession session) throws Exception {
         RequestManager manager = RequestManager.BINDER.unbind(session);
-
-        manager.close();
         
+        manager.close();
+
         nextFilter.sessionClosed(session);
     }
 
@@ -65,18 +65,18 @@ public class RequestResponseFilter
         Object message = writeRequest.getMessage();
 
         if (message instanceof Request) {
-            // Register the request with the manager
             Request request = (Request) message;
 
             RequestManager manager = RequestManager.BINDER.lookup(session);
-            manager.add(request);
+
+            manager.register(request);
         }
 
         nextFilter.filterWrite(session, writeRequest);
     }
 
     /**
-     * When a response message has been received, cancel its timeout and signal the request.
+     * When a response message has been received, deregister it and signal the response.
      */
     @Override
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
@@ -86,20 +86,19 @@ public class RequestResponseFilter
 
         if (message instanceof Message) {
             msg = (Message)message;
-            
+
             id = msg.getCorrelationId();
         }
 
         // If we have a correlation id, then we can process the response
         if (id != null) {
             RequestManager manager = RequestManager.BINDER.lookup(session);
-            Request request = manager.get(id);
 
-            // Cancel the timeout
-            manager.cancel(request);
+            Request request = manager.deregister(id);
 
             // Setup the response and signal the request
             Response response = new Response(request, msg, Response.Type.WHOLE);
+
             request.signal(response);
 
             // Do not pass on the response
@@ -110,7 +109,8 @@ public class RequestResponseFilter
     }
 
     /**
-     * Once the reqeust message has been sent, schedule a timeout.
+     * Once the reqeust message has been sent then activate it.  Some times a message gets consumed before we get a chance
+     * to activate it, which is okay, the {@link RequestManager} will simply ignore the request.
      */
     @Override
     public void messageSent(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
@@ -119,7 +119,7 @@ public class RequestResponseFilter
 
             RequestManager manager = RequestManager.BINDER.lookup(session);
 
-            manager.schedule(request);
+            manager.activate(request.getId());
         }
 
         nextFilter.messageSent(session, message);

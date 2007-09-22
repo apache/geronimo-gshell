@@ -58,6 +58,10 @@ public class NamedThreadFactory
         this(type.getSimpleName());
     }
 
+    public NamedThreadFactory(final Class type, final String suffix) {
+        this(type.getSimpleName() + "-" + suffix);
+    }
+    
     public Thread newThread(final Runnable task) {
         assert task != null;
 

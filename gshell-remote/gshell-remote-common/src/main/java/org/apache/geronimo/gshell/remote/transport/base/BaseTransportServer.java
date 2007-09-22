@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.security.SecurityFilter;
-import org.apache.geronimo.gshell.remote.session.ExecutorThreadModel;
+import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoAcceptor;
@@ -47,7 +47,7 @@ public abstract class BaseTransportServer
 
     protected IoAcceptor acceptor;
 
-    protected ExecutorThreadModel threadModel;
+    protected ThreadPoolModel threadModel;
 
     protected boolean bound;
 
@@ -69,7 +69,7 @@ public abstract class BaseTransportServer
         acceptor = createAcceptor();
 
         // Install the thread model
-        threadModel = new ExecutorThreadModel(getClass().getSimpleName() + "-" + COUNTER.getAndIncrement());
+        threadModel = new ThreadPoolModel(getClass().getSimpleName() + "-" + COUNTER.getAndIncrement());
         acceptor.getDefaultConfig().setThreadModel(threadModel);
 
         //

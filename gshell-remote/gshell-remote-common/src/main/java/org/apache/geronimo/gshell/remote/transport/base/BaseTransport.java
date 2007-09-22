@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.geronimo.gshell.remote.request.Requestor;
-import org.apache.geronimo.gshell.remote.session.ExecutorThreadModel;
+import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
@@ -60,7 +60,7 @@ public abstract class BaseTransport
 
     protected IoConnector connector;
 
-    protected ExecutorThreadModel threadModel;
+    protected ThreadPoolModel threadModel;
 
     protected IoSession session;
 
@@ -83,7 +83,7 @@ public abstract class BaseTransport
         connector = createConnector();
 
         // Install the thread model
-        threadModel = new ExecutorThreadModel(getClass().getSimpleName() + "-" + COUNTER.getAndIncrement());
+        threadModel = new ThreadPoolModel(getClass().getSimpleName() + "-" + COUNTER.getAndIncrement());
         connector.getDefaultConfig().setThreadModel(threadModel);
 
         //
