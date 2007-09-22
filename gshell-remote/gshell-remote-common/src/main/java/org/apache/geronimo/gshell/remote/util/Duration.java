@@ -24,23 +24,20 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.remote.marshall.MarshalAware;
-import org.apache.geronimo.gshell.remote.marshall.Marshaller;
-import org.apache.mina.common.ByteBuffer;
 
 /**
- * A representaion of a duration of time.
+ * A representaion of an immutable duration of time.
  * 
  * @version $Rev$ $Date$
  */
 public class Duration
-    implements MarshalAware, Serializable
+    implements Serializable
 {
     public static final TimeUnit DEFAULT_UNIT = TimeUnit.MILLISECONDS;
 
-    private long value;
+    public final long value;
 
-    private TimeUnit unit;
+    public final TimeUnit unit;
 
     public Duration(final long value, final TimeUnit unit) {
         this.value = value;
@@ -88,23 +85,5 @@ public class Duration
         result = 31 * result + (unit != null ? unit.hashCode() : 0);
 
         return result;
-    }
-
-    public void writeExternal(final ByteBuffer out) throws Exception {
-        assert out != null;
-        
-        out.putLong(value);
-
-        Marshaller.writeEnum(out, unit);
-    }
-
-    public void readExternal(final ByteBuffer in) throws Exception {
-        assert in != null;
-
-        value = in.getLong();
-
-        unit = Marshaller.readEnum(in, TimeUnit.class);
-
-        assert unit != null;
     }
 }
