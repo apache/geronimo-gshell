@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jline.Terminal;
+import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
@@ -69,7 +70,15 @@ public class RshCommand
         
         RemoteShellProxy shell = new RemoteShellProxy(client, io, terminal);
 
-        shell.run(command.toArray());
+        Object rv = SUCCESS;
+
+        try {
+            shell.run(command.toArray());
+        }
+        catch (ExitNotification n) {
+            // Make sure that we catch this notification, so that our parent shell doesn't exit when the remote shell does
+            rv = n.code;
+        }
 
         shell.close();
         
@@ -79,6 +88,6 @@ public class RshCommand
 
         io.verbose("Disconnected");
         
-        return SUCCESS;
+        return rv;
     }
 }
