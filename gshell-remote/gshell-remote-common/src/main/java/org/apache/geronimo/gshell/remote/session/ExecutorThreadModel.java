@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+@SuppressWarnings({"FieldCanBeLocal"})
 public class ExecutorThreadModel
     implements ThreadModel
 {
@@ -47,8 +48,6 @@ public class ExecutorThreadModel
     private final String name;
 
     private final ThreadGroup group;
-
-    private final AtomicLong counter = new AtomicLong(0);
 
     private final ExecutorService executor;
 
@@ -80,11 +79,19 @@ public class ExecutorThreadModel
     }
 
     public void close() {
+        //
+        // FIXME: This causes some problems when a rsh client closes, like:
+        //
+        //        java.security.AccessControlException: access denied (java.lang.RuntimePermission modifyThread)
+        //
+
+        /*
         List<Runnable> pending = executor.shutdownNow();
 
         if (!pending.isEmpty()) {
             log.warn("There were {} pending tasks which have not been run", pending.size());
         }
+        */
     }
     
     //
