@@ -52,8 +52,6 @@ public class TcpTransport
     extends TransportCommon
     implements Transport
 {
-    private static final int CONNECT_TIMEOUT = 5;
-
     protected final URI remoteLocation;
 
     protected final SocketAddress remoteAddress;
@@ -181,10 +179,10 @@ public class TcpTransport
     }
     
     public InputStream getInputStream() {
-        return SessionInputStream.lookup(session);
+        return SessionInputStream.BINDER.lookup(session);
     }
 
     public OutputStream getOutputStream() {
-        return SessionOutputStream.lookup(session);
+        return SessionOutputStream.BINDER.lookup(session);
     }
 }

@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.remote.util.SessionAttributeBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +37,9 @@ import org.slf4j.LoggerFactory;
  */
 public class RequestManager
 {
-    private static final Logger log = LoggerFactory.getLogger(RequestManager.class);
+    public static final SessionAttributeBinder<RequestManager> BINDER = new SessionAttributeBinder<RequestManager>(RequestManager.class);
+
+    private transient final Logger log = LoggerFactory.getLogger(getClass());
 
     private transient final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
@@ -46,7 +48,7 @@ public class RequestManager
     private final Map<Request,TimeoutTask> timeouts = Collections.synchronizedMap(new HashMap<Request,TimeoutTask>());
     
     //
-    // TODO: Lock on Request.getMutex()
+    // TODO: Lock on Request.getMutex(), and/or change the mutex to a read/write lock?
     //
 
     /**
@@ -265,46 +267,5 @@ public class RequestManager
         public ScheduledFuture<?> getTimeoutFuture() {
             return timeoutFuture;
         }
-    }
-
-    //
-    // Session Access
-    //
-    
-    public static RequestManager lookup(final IoSession session) {
-        assert session != null;
-
-        RequestManager manager = (RequestManager) session.getAttribute(RequestManager.class.getName());
-
-        if (manager == null) {
-            throw new IllegalStateException("Request manager not bound");
-        }
-
-        log.trace("Looked up: {}", manager);
-        
-        return manager;
-    }
-
-    public static void bind(final IoSession session, final RequestManager manager) {
-        assert session != null;
-        assert manager != null;
-
-        if (session.containsAttribute(RequestManager.class.getName())) {
-            throw new IllegalStateException("Request manager already bound");
-        }
-        
-        session.setAttribute(RequestManager.class.getName(), manager);
-
-        log.trace("Bound: {}", manager);
-    }
-
-    public static RequestManager unbind(final IoSession session) {
-        assert session != null;
-
-        RequestManager manager = (RequestManager) session.removeAttribute(RequestManager.class.getName());
-
-        log.trace("Unbound: {}", manager);
-
-        return manager;
     }
 }

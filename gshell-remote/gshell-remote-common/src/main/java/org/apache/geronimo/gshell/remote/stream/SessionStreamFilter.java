@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.remote.stream;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.util.IOUtil;
@@ -30,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides stream I/O handling.
  *
  * @version $Rev$ $Date$
  */
@@ -39,96 +35,44 @@ public class SessionStreamFilter
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final ExecutorService executor;
-
-    public SessionStreamFilter(final ExecutorService executor) {
-        assert executor != null;
-
-        this.executor = executor;
-    }
-
-    public SessionStreamFilter() {
-        this(Executors.newCachedThreadPool());
-    }
-
-    //
-    // TODO: See if we need to put the executor into the session context
-    //
-
+    /**
+     * Setup the input and output streams for the session.
+     */
     @Override
-    public void sessionCreated(NextFilter nextFilter, IoSession session) throws Exception {
-        log.debug("Binding session streams");
-
-        SessionInputStream.bind(session, new SessionInputStream());
-
-        SessionOutputStream.bind(session, new SessionOutputStream(session));
+    public void sessionCreated(final NextFilter nextFilter, final IoSession session) throws Exception {
+        SessionInputStream.BINDER.bind(session, new SessionInputStream());
+        SessionOutputStream.BINDER.bind(session, new SessionOutputStream(session));
 
         nextFilter.sessionCreated(session);
     }
 
+    /**
+     * Close the input and output streams for the session.
+     */
     @Override
-    public void sessionClosed(NextFilter nextFilter, IoSession session) throws Exception {
-        log.debug("Unbinding session streams");
-
-        IOUtil.close(SessionInputStream.unbind(session));
-        
-        IOUtil.close(SessionOutputStream.unbind(session));
+    public void sessionClosed(final NextFilter nextFilter, final IoSession session) throws Exception {
+        IOUtil.close(SessionInputStream.BINDER.unbind(session));
+        IOUtil.close(SessionOutputStream.BINDER.unbind(session));
 
         nextFilter.sessionClosed(session);
     }
 
-    @Override
-    public void sessionIdle(NextFilter nextFilter, IoSession session, IdleStatus status) throws Exception {
-        log.debug("Session idle: {}, status: {}", session, status);
-
-        nextFilter.sessionIdle(session, status);
-    }
-
-    @Override
-    public void exceptionCaught(NextFilter nextFilter, IoSession session, Throwable cause) throws Exception {
-        log.debug("Exception caught: " + session + ", cause: " + cause, cause);
-
-        nextFilter.exceptionCaught(session, cause);
-    }
-
+    /**
+     * Handles write stream messages.
+     */
     @Override
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
         if (message instanceof WriteStreamMessage) {
-            final WriteStreamMessage msg = (WriteStreamMessage) message;
+            WriteStreamMessage msg = (WriteStreamMessage) message;
 
-            final SessionInputStream in = SessionInputStream.lookup(session);
+            SessionInputStream in = SessionInputStream.BINDER.lookup(session);
 
-            Runnable task = new Runnable() {
-                public void run() {
-                    log.debug("Writing stream...");
-
-                    in.write(msg);
-
-                    log.debug("Done");
-                }
-            };
-
-            task.run();
-
-            // executor.execute(task);
+            in.write(msg);
 
             // There is no need to pass on this message to any other filters, they have no use for it...
         }
         else {
             nextFilter.messageReceived(session, message);
         }
-    }
-
-    @Override
-    public void messageSent(NextFilter nextFilter, IoSession session, Object message) throws Exception {
-        if (message instanceof WriteStreamMessage) {
-            log.debug("Message sent: {}, msg: {}", session, message);
-
-            //
-            // TODO: Check the future's status?
-            //
-        }
-
-        nextFilter.messageSent(session, message);
     }
 }

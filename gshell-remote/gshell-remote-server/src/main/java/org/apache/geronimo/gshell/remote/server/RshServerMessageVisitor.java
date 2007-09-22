@@ -81,7 +81,7 @@ public class RshServerMessageVisitor
         session.setAttribute(PlexusContainer.class.getName(), container);
 
         // Setup the I/O context (w/o auto-flushing)
-        IO io = new IO(SessionInputStream.lookup(session), SessionOutputStream.lookup(session), false);
+        IO io = new IO(SessionInputStream.BINDER.lookup(session), SessionOutputStream.BINDER.lookup(session), false);
 
         //
         // FIXME: We need to set the verbosity of this I/O context as specified by the client
@@ -162,7 +162,7 @@ public class RshServerMessageVisitor
             log.info("Making noise...");
             
             final IoSession session = msg.getSession();
-            final PrintWriter out = new PrintWriter(SessionOutputStream.lookup(session), false);
+            final PrintWriter out = new PrintWriter(SessionOutputStream.BINDER.lookup(session), false);
 
             new Thread("NOISE MAKER") {
                 public void run() {
@@ -172,7 +172,8 @@ public class RshServerMessageVisitor
                         
                         try {
                             Thread.sleep(5000);
-                        } catch (InterruptedException e) {
+                        }
+                        catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
