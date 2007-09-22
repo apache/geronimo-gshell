@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.PlexusContainerException;
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
 
 /**
  * ???

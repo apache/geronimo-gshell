@@ -24,10 +24,8 @@ import java.net.URI;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.remote.message.MessageHandler;
-import org.apache.geronimo.gshell.remote.security.SecurityFilter;
 import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.remote.transport.TransportServer;
-import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoAcceptor;
 
 /**
@@ -80,15 +78,6 @@ public abstract class BaseTransportServer
         configure(acceptor);
     }
 
-    @Override
-    protected void configure(final DefaultIoFilterChainBuilder chain) throws Exception {
-        assert chain != null;
-
-        super.configure(chain);
-
-        chain.addLast(SecurityFilter.class.getSimpleName(), getSecurityFilter());
-    }
-
     public synchronized void bind() throws Exception {
         if (bound) {
             throw new IllegalStateException("Already bound");
@@ -116,28 +105,5 @@ public abstract class BaseTransportServer
         finally {
             super.close();
         }
-    }
-
-    //
-    // AutoWire Support, Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
-    //
-
-    //
-    // TODO: See if we should tack this puppy on in the handler when the session opens er something? Since this
-    //       is rather application specific...
-    //
-    
-    private SecurityFilter securityFilter;
-
-    public void setSecurityFilter(final SecurityFilter securityFilter) {
-        this.securityFilter = securityFilter;
-    }
-
-    protected SecurityFilter getSecurityFilter() {
-        if (securityFilter == null) {
-            throw new IllegalStateException("Security filter not bound");
-        }
-
-        return securityFilter;
     }
 }

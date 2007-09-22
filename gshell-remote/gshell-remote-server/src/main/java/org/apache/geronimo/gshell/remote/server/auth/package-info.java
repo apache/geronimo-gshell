@@ -17,14 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.security;
-
 /**
- * Provides a simple interface for user authentication.
+ * Authentication support.
  *
  * @version $Rev$ $Date$
  */
-public interface UserAuthenticator
-{
-    boolean authenticate(String username, String password);
-}
+package org.apache.geronimo.gshell.remote.server.auth;
