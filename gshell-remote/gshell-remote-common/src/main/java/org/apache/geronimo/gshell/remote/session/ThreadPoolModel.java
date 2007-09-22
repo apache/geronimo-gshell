@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
+import org.apache.geronimo.gshell.common.NamedThreadFactory;
 import org.apache.mina.common.IoFilterChain;
 import org.apache.mina.common.ThreadModel;
 import org.apache.mina.filter.executor.ExecutorFilter;

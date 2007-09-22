@@ -48,7 +48,7 @@ import org.apache.geronimo.gshell.remote.server.auth.UserAuthenticator;
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
-import org.apache.geronimo.gshell.remote.util.NamedThreadFactory;
+import org.apache.geronimo.gshell.common.NamedThreadFactory;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.ContainerConfiguration;

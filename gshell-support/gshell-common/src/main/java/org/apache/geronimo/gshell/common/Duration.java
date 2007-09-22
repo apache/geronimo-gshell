@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.util;
+package org.apache.geronimo.gshell.common;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

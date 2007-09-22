@@ -34,7 +34,7 @@ import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.geronimo.gshell.remote.util.Duration;
+import org.apache.geronimo.gshell.common.Duration;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;

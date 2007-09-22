@@ -17,13 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.util;
+package org.apache.geronimo.gshell.common;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A {@link ThreadFactory} which automatically generates thread names based off of a
@@ -34,25 +31,22 @@ import org.slf4j.LoggerFactory;
 public class NamedThreadFactory
     implements ThreadFactory
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private final String name;
+    private final String baseName;
 
     private final ThreadGroup group;
 
     private final AtomicLong counter = new AtomicLong(0);
 
-    public NamedThreadFactory(final String name, final ThreadGroup group) {
-        assert name != null;
+    public NamedThreadFactory(final String baseName, final ThreadGroup group) {
+        assert baseName != null;
         assert group != null;
 
-        this.name = name;
-
+        this.baseName = baseName;
         this.group = group;
     }
 
-    public NamedThreadFactory(final String name) {
-        this(name, Thread.currentThread().getThreadGroup());
+    public NamedThreadFactory(final String baseName) {
+        this(baseName, Thread.currentThread().getThreadGroup());
     }
 
     public NamedThreadFactory(final Class type) {
@@ -62,19 +56,35 @@ public class NamedThreadFactory
     public NamedThreadFactory(final Class type, final String suffix) {
         this(type.getSimpleName() + "-" + suffix);
     }
-    
+
+    public String getBaseName() {
+        return baseName;
+    }
+
+    public ThreadGroup getGroup() {
+        return group;
+    }
+
+    public long current() {
+        return counter.get();
+    }
+
+    //
+    // ThreadFactory
+    //
+
     public Thread newThread(final Runnable task) {
         assert task != null;
 
-        String id = name + "-" + counter.getAndIncrement();
-
-        Thread t = new Thread(group, task, id);
+        Thread t = new Thread(group, task, createName());
         
         configure(t);
 
-        log.debug("Created thread: {}", t);
-
         return t;
+    }
+
+    protected String createName() {
+        return baseName + "-" + counter.getAndIncrement();
     }
 
     protected void configure(final Thread t) {
