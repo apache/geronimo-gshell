@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
+import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,15 +45,15 @@ public class MessageVisitorSupport
 
     protected MessageVisitorSupport() {}
 
-    public void visitConnect(ConnectMessage msg) throws Exception {}
+    public void visitConnect(IoSession session, ConnectMessage msg) throws Exception {}
 
-    public void visitLogin(LoginMessage msg) throws Exception {}
+    public void visitLogin(IoSession session, LoginMessage msg) throws Exception {}
 
-    public void visitEcho(EchoMessage msg) throws Exception {}
+    public void visitEcho(IoSession session, EchoMessage msg) throws Exception {}
 
-    public void visitOpenShell(OpenShellMessage msg) throws Exception {}
+    public void visitOpenShell(IoSession session, OpenShellMessage msg) throws Exception {}
 
-    public void visitCloseShell(CloseShellMessage msg) throws Exception {}
+    public void visitCloseShell(IoSession session, CloseShellMessage msg) throws Exception {}
 
-    public void visitExecute(ExecuteMessage msg) throws Exception {}
+    public void visitExecute(IoSession session, ExecuteMessage msg) throws Exception {}
 }

@@ -72,7 +72,7 @@ public class RshServerHandler
     implements Initializable
 {
     //
-    // TODO: Introduce a context object which we can stuff any kinda of data we want into for the session... and have one binder, etc...
+    // TODO: Introduce a context object which we can stuff any kinda of data we want into for the client connection... and have one binder, etc...
     //
 
     private static final SessionAttributeBinder<PublicKey> CLIENT_KEY_BINDER = new SessionAttributeBinder<PublicKey>(RshServerHandler.class, "clientpk");
@@ -121,11 +121,6 @@ public class RshServerHandler
 
         if (securityToken.equals(token)) {
             super.messageReceived(session, obj);
-        }
-        else if (token != null) {
-            log.error("Invalid security token: {}", token);
-
-            session.close();
         }
         else if (obj instanceof HandshakeMessage) {
             super.messageReceived(session, obj);
@@ -183,6 +178,10 @@ public class RshServerHandler
     // MessageVisitor
     //
 
+    //
+    // TODO: Introduce a context object which we can stuff any kinda of data we want into for the remote shell session... and have one binder, etc...
+    //
+
     private static final SessionAttributeBinder<IO> IO_BINDER = new SessionAttributeBinder<IO>(IO.class);
 
     private static final SessionAttributeBinder<Environment> ENV_BINDER = new SessionAttributeBinder<Environment>(Environment.class);
@@ -197,12 +196,8 @@ public class RshServerHandler
         //
 
         @Override
-        public void visitConnect(final ConnectMessage msg) throws Exception {
-            assert msg != null;
-
+        public void visitConnect(final IoSession session, final ConnectMessage msg) throws Exception {
             log.debug("Processing handshake");
-
-            IoSession session = msg.getSession();
             
             // Try to cancel the timeout task
             if (!cancelTimeout(session)) {
@@ -227,12 +222,8 @@ public class RshServerHandler
         }
 
         @Override
-        public void visitLogin(final LoginMessage msg) throws Exception {
-            assert msg != null;
-
+        public void visitLogin(final IoSession session, final LoginMessage msg) throws Exception {
             log.debug("Processing login");
-
-            IoSession session = msg.getSession();
 
             // Try to cancel the timeout task
             if (!cancelTimeout(session)) {
@@ -278,12 +269,8 @@ public class RshServerHandler
         }
 
         @Override
-        public void visitOpenShell(final OpenShellMessage msg) throws Exception {
-            assert msg != null;
-
+        public void visitOpenShell(final IoSession session, final OpenShellMessage msg) throws Exception {
             log.info("OPEN SHELL: {}", msg);
-
-            IoSession session = msg.getSession();
 
             RemoteShellContainer shellContainer = createContainer();
             RemoteShellContainer.BINDER.bind(session, shellContainer);
@@ -292,7 +279,7 @@ public class RshServerHandler
             IO io = new IO(SessionInputStream.BINDER.lookup(session), SessionOutputStream.BINDER.lookup(session), false);
 
             //
-            // FIXME: We need to set the verbosity of this I/O context as specified by the client
+            // TODO: We need to set the verbosity of this I/O context as specified by the client
             //
 
             IOLookup.set(shellContainer, io);
@@ -315,12 +302,8 @@ public class RshServerHandler
         }
 
         @Override
-        public void visitCloseShell(final CloseShellMessage msg) throws Exception {
-            assert msg != null;
-
+        public void visitCloseShell(final IoSession session, final CloseShellMessage msg) throws Exception {
             log.info("CLOSE SHELL: {}", msg);
-
-            IoSession session = msg.getSession();
 
             log.info("Closing shell");
 
@@ -351,12 +334,8 @@ public class RshServerHandler
         //
 
         @Override
-        public void visitExecute(final ExecuteMessage msg) throws Exception {
-            assert msg != null;
-
+        public void visitExecute(final IoSession session, final ExecuteMessage msg) throws Exception {
             log.info("EXECUTE: {}", msg);
-
-            IoSession session = msg.getSession();
 
             RemoteShell shell = SHELL_BINDER.lookup(session);
 
@@ -396,21 +375,16 @@ public class RshServerHandler
         //
 
         @Override
-        public void visitEcho(final EchoMessage msg) throws Exception {
+        public void visitEcho(final IoSession session, final EchoMessage msg) throws Exception {
             assert msg != null;
 
             log.info("ECHO: {}", msg);
 
             String text = msg.getText();
 
-            //
-            // HACK:
-            //
-
             if ("NOISE MAKER".equals(text)) {
                 log.info("Making noise...");
 
-                final IoSession session = msg.getSession();
                 final PrintWriter out = new PrintWriter(SessionOutputStream.BINDER.lookup(session), false);
 
                 new Thread("NOISE MAKER") {

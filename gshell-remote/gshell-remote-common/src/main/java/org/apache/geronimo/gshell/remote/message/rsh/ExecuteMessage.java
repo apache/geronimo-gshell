@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
 
 /**
  * Execute a command.  This supports all flavors of the {@link CommandExecutor} execution methods.
@@ -94,10 +95,10 @@ public class ExecuteMessage
         Marshaller.writeObject(out, args);
     }
 
-    public void process(final MessageVisitor visitor) throws Exception {
+    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
         assert visitor != null;
 
-        visitor.visitExecute(this);
+        visitor.visitExecute(session, this);
     }
 
     //

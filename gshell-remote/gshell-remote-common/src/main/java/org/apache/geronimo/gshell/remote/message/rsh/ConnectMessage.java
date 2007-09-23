@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
 
 /**
  * Initial client to server message to initiate the connection.
@@ -64,8 +65,8 @@ public class ConnectMessage
         this.clientKey = clientKey;
     }
 
-    public void process(final MessageVisitor visitor) throws Exception {
-        visitor.visitConnect(this);
+    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
+        visitor.visitConnect(session, this);
     }
 
     public void readExternal(final ByteBuffer in) throws Exception {

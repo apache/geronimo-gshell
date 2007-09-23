@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -74,8 +75,8 @@ public class LoginMessage
         return password;
     }
 
-    public void process(final MessageVisitor visitor) throws Exception {
-        visitor.visitLogin(this);
+    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
+        visitor.visitLogin(session, this);
     }
 
     public void readExternal(final ByteBuffer in) throws Exception {

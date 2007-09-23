@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.remote.client;
 import org.apache.geronimo.gshell.remote.message.MessageHandler;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
+import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -49,7 +50,7 @@ public class RshClientHandler
     private class Visitor
         extends MessageVisitorSupport
     {
-        public void visitEcho(final EchoMessage msg) throws Exception {
+        public void visitEcho(IoSession session, final EchoMessage msg) throws Exception {
             assert msg != null;
 
             log.info("ECHO: {}", msg.getText());

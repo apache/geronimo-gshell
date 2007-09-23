@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
 
 /**
  * Echo text.
@@ -65,9 +66,9 @@ public class EchoMessage
         Marshaller.writeString(out, text);
     }
 
-    public void process(final MessageVisitor visitor) throws Exception {
+    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
         assert visitor != null;
 
-        visitor.visitEcho(this);
+        visitor.visitEcho(session, this);
     }
 }

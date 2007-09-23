@@ -49,7 +49,7 @@ public interface Message
 
     IoSession getSession();
 
-    void process(MessageVisitor visitor) throws Exception;
+    void process(IoSession session, MessageVisitor visitor) throws Exception;
 
     void freeze();
 

@@ -82,13 +82,14 @@ public class MessageHandler
         if (obj instanceof Message) {
             Message msg = (Message)obj;
 
-            // Attach the session to the context
+            // Attach the session to the message (which is needed for methods like reply())
             msg.setSession(session);
             msg.freeze();
-
+            
             // Hand over to visitor for processing
             MessageVisitor visitor = MessageVisitor.BINDER.lookup(session);
-            msg.process(visitor);
+
+            msg.process(session, visitor);
         }
         else {
             throw new InvalidMessageException(obj);

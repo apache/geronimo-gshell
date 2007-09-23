@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
+import org.apache.mina.common.IoSession;
 
 /**
  * Provides an abstraction layer for message processing.
@@ -40,15 +41,15 @@ public interface MessageVisitor
     
     SessionAttributeBinder<MessageVisitor> BINDER = new SessionAttributeBinder<MessageVisitor>(MessageVisitor.class);
 
-    void visitConnect(ConnectMessage msg) throws Exception;
+    void visitConnect(IoSession session, ConnectMessage msg) throws Exception;
 
-    void visitLogin(LoginMessage msg) throws Exception;
+    void visitLogin(IoSession session, LoginMessage msg) throws Exception;
 
-    void visitEcho(EchoMessage msg) throws Exception;
+    void visitEcho(IoSession session, EchoMessage msg) throws Exception;
 
-    void visitOpenShell(OpenShellMessage msg) throws Exception;
+    void visitOpenShell(IoSession session, OpenShellMessage msg) throws Exception;
 
-    void visitCloseShell(CloseShellMessage msg) throws Exception;
+    void visitCloseShell(IoSession session, CloseShellMessage msg) throws Exception;
 
-    void visitExecute(ExecuteMessage msg) throws Exception;
+    void visitExecute(IoSession session, ExecuteMessage msg) throws Exception;
 }

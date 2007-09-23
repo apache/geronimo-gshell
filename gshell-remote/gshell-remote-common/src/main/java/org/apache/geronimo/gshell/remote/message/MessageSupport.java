@@ -189,7 +189,7 @@ public class MessageSupport
         return frozen;
     }
 
-    public void process(final MessageVisitor visitor) throws Exception {
+    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
         // Non-operation
     }
 
