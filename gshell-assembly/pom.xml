@@ -64,6 +64,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-whisper</artifactId>
+            <version>${version}</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.apache.geronimo.gshell.remote</groupId>
             <artifactId>gshell-remote-client</artifactId>
             <version>${version}</version>

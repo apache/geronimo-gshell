@@ -74,7 +74,8 @@
                 <include>org.apache.geronimo.gshell:gshell-diet-log4j</include>
                 <include>org.apache.geronimo.gshell.commands:gshell-optional</include>
 
-                <!-- Remoting POC -->
+                <!-- Remote Shell Support (rsh & rsh-server) -->
+                <include>org.apache.geronimo.gshell:gshell-whisper</include>
                 <include>org.apache.geronimo.gshell.remote:gshell-remote-common</include>
                 <include>org.apache.geronimo.gshell.remote:gshell-remote-server</include>
                 <include>org.apache.geronimo.gshell.remote:gshell-remote-client</include>
