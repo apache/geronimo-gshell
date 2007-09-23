@@ -31,7 +31,7 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.apache.mina.filter.codec.demux.MessageEncoderFactory;
 
 /**
- * ???
+ * Encodes {@link Request} objects for protocl serialization handling.
  *
  * @version $Rev$ $Date$
  */

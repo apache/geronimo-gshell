@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Manages request state on a per-session basis, handles timeouts and signalling responses.
  *
  * @version $Rev: 578446 $ $Date: 2007-09-22 07:24:23 -0700 (Sat, 22 Sep 2007) $
  */

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.marshall;
 import org.apache.mina.common.ByteBuffer;
 
 /**
- * ???
+ * Interface for objects to implement if they wish to customize their externalization.
  *
  * @version $Rev$ $Date$
  */
