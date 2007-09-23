@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * A custom {@link ThreadModel} to get some more control over the pool configuration as well as how threads are constructed.
  *
  * @version $Rev$ $Date$
  */
