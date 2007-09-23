@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.client;
 
 /**
- * ???
+ * Thrown on the client-side when an fault was read from the remote shell during execution.
  *
  * @version $Rev$ $Date$
  */
