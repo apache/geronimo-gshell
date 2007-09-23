@@ -27,9 +27,9 @@ import java.security.PublicKey;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.transport.Transport;
@@ -94,7 +94,7 @@ public class RshClient
 
         response = transport.request(new ConnectMessage(crypto.getPublicKey()));
 
-        PublicKey serverKey = ((ConnectMessage.Result)response).getClientKey();
+        PublicKey serverKey = ((ConnectMessage.Result)response).getPublicKey();
 
         log.debug("Logging in: {}", username);
 

@@ -21,9 +21,9 @@ package org.apache.geronimo.gshell.remote.request;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.geronimo.gshell.common.Duration;
 import org.apache.mina.common.IoFutureListener;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;

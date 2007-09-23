@@ -29,9 +29,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

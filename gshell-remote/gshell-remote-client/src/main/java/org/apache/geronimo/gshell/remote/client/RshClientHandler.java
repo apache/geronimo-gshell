@@ -19,9 +19,14 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
+import java.util.UUID;
+
+import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.remote.message.MessageHandler;
 import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
+import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -43,6 +48,54 @@ public class RshClientHandler
         setVisitor(new Visitor());
     }
 
+    @Override
+    public void sessionClosed(final IoSession session) throws Exception {
+        assert session != null;
+
+        SessionState state = SESSION_STATE.unbind(session);
+
+        // If there is still state bound then clean it up
+        if (state != null) {
+            log.warn("Delinquent state detected: {}", state);
+
+            try {
+                state.destroy();
+            }
+            catch (Exception e) {
+                log.warn("Failed to clean up after delinquent state", e);
+            }
+        }
+    }
+
+    //
+    // SessionState
+    //
+
+    /**
+     * Session binding helper for {@link SessionState} instances.
+     */
+    private static final SessionAttributeBinder<SessionState> SESSION_STATE = new SessionAttributeBinder<SessionState>(SessionState.class);
+
+    /**
+     * Container for various bits of client state we are tracking.
+     */
+    private class SessionState
+    {
+        public final UUID id;
+
+        public SessionState(final UUID id) {
+            this.id = id;
+        }
+        
+        public void destroy() {}
+
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                    .append("id", id)
+                    .toString();
+        }
+    }
+    
     //
     // MessageVisitor
     //

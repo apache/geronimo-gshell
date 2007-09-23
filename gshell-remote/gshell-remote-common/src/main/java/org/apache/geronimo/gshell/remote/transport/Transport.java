@@ -24,8 +24,8 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.common.Duration;
+import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.mina.common.IoService;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;

@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.remote.message.rsh;
 
 import java.security.PublicKey;
+import java.util.UUID;
 
 import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
@@ -37,12 +38,12 @@ public class ConnectMessage
     extends CryptoAwareMessageSupport
     implements HandshakeMessage
 {
-    private PublicKey clientKey;
+    private PublicKey publicKey;
 
-    protected ConnectMessage(final MessageType type, final PublicKey clientKey) {
+    protected ConnectMessage(final MessageType type, final PublicKey publicKey) {
         super(type);
 
-        this.clientKey = clientKey;
+        this.publicKey = publicKey;
     }
 
     public ConnectMessage(final PublicKey clientKey) {
@@ -53,16 +54,16 @@ public class ConnectMessage
         this(null);
     }
 
-    public PublicKey getClientKey() {
-        if (clientKey == null) {
-            throw new IllegalStateException("Missing client key");
+    public PublicKey getPublicKey() {
+        if (publicKey == null) {
+            throw new IllegalStateException("Missing public key");
         }
 
-        return clientKey;
+        return publicKey;
     }
 
-    public void setClientKey(final PublicKey clientKey) {
-        this.clientKey = clientKey;
+    public void setPublicKey(final PublicKey publicKey) {
+        this.publicKey = publicKey;
     }
 
     public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
@@ -80,7 +81,7 @@ public class ConnectMessage
             throw new IllegalStateException();
         }
 
-        clientKey = getCryptoContext().deserializePublicKey(bytes);
+        publicKey = getCryptoContext().deserializePublicKey(bytes);
     }
 
     public void writeExternal(final ByteBuffer out) throws Exception {
@@ -88,21 +89,45 @@ public class ConnectMessage
 
         super.writeExternal(out);
 
-        Marshaller.writeBytes(out, getClientKey().getEncoded());
+        Marshaller.writeBytes(out, getPublicKey().getEncoded());
     }
 
     /**
-     * Reply from server to client which contains the server's public key.
+     * Indicates the first part of the connection handshake was successful.
      */
     public static class Result
         extends ConnectMessage
     {
-        public Result(final PublicKey publicKey) {
-            super(MessageType.CONNECT_RESULT, publicKey);
+        private UUID clientId;
+
+        public Result(final UUID clientId, final PublicKey serverKey) {
+            super(MessageType.CONNECT_RESULT, serverKey);
+
+            this.clientId = clientId;
         }
 
         public Result() {
-            this(null);
+            this(null, null);
+        }
+
+        public UUID getClientID() {
+            return clientId;
+        }
+
+        public void readExternal(final ByteBuffer in) throws Exception {
+            assert in != null;
+
+            super.readExternal(in);
+
+            clientId = Marshaller.readUuid(in);
+        }
+
+        public void writeExternal(final ByteBuffer out) throws Exception {
+            assert out != null;
+
+            super.writeExternal(out);
+
+            Marshaller.writeUuid(out, clientId);
         }
     }
 }

@@ -44,6 +44,12 @@ public class SessionAttributeBinder<T>
         this(type.getName() + "." + suffix);
     }
 
+    public boolean isBound(final IoSession session) {
+        assert session != null;
+        
+        return session.containsAttribute(key);
+    }
+
     @SuppressWarnings({"unchecked"})
     public T lookup(final IoSession session) {
         assert session != null;
@@ -51,7 +57,7 @@ public class SessionAttributeBinder<T>
         T obj = (T) session.getAttribute(key);
 
         if (obj == null) {
-            throw new IllegalStateException(key + " not bound");
+            throw new NotBoundException(key);
         }
 
         return obj;
@@ -70,19 +76,21 @@ public class SessionAttributeBinder<T>
         return obj;
     }
 
-    public void bind(final IoSession session, final T obj) {
+    public T bind(final IoSession session, final T obj) {
         assert session != null;
         assert obj != null;
         
         Object prev = session.getAttribute(key);
 
         if (prev != null) {
-            throw new IllegalStateException(key + " already bound");
+            throw new AlreadyBoundException(key);
         }
 
         session.setAttribute(key, obj);
-    }
 
+        return obj;
+    }
+    
     @SuppressWarnings({"unchecked"})
     public T rebind(final IoSession session, final T obj) {
         assert session != null;
@@ -100,5 +108,21 @@ public class SessionAttributeBinder<T>
         assert session != null;
 
         return (T) session.removeAttribute(key);
+    }
+
+    public static class NotBoundException
+        extends RuntimeException
+    {
+        public NotBoundException(final String key) {
+            super(key);
+        }
+    }
+
+    public static class AlreadyBoundException
+        extends RuntimeException
+    {
+        public AlreadyBoundException(final String key) {
+            super(key);
+        }
     }
 }

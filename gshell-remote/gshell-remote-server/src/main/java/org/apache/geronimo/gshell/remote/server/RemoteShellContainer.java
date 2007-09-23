@@ -19,13 +19,17 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
+import java.util.UUID;
+
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.classworlds.ClassWorld;
 
 /**
- * ???
+ * Extended Plexus container to access internals to manage state as needed.
  *
  * @version $Rev$ $Date$
  */
@@ -40,5 +44,24 @@ public class RemoteShellContainer
 
     public void disposeAllComponents() {
         super.disposeAllComponents();
+    }
+
+    //
+    // Factory Access
+    //
+
+    public static RemoteShellContainer create(final ClassWorld classWorld) throws PlexusContainerException {
+        assert classWorld != null;
+
+        //
+        // TODO: Setup some more reasonable configuration, like logging settings and such...
+        //       also may want to provide a plexus.xml for this puppy to read er something?
+        //
+        
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+        config.setName("gshell.remote-shell:" + UUID.randomUUID());
+        config.setClassWorld(classWorld);
+
+        return new RemoteShellContainer(config);
     }
 }

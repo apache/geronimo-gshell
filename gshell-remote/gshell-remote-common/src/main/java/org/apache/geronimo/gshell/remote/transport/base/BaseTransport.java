@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.MessageHandler;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;
@@ -34,7 +35,6 @@ import org.apache.geronimo.gshell.remote.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.remote.stream.SessionInputStream;
 import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.geronimo.gshell.common.Duration;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;
