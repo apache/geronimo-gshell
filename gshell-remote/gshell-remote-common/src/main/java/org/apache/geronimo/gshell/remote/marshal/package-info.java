@@ -22,4 +22,4 @@
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.remote.marshall;
+package org.apache.geronimo.gshell.remote.marshal;

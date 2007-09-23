@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.message;
 
 import java.io.Serializable;
 
-import org.apache.geronimo.gshell.remote.marshall.MarshalAware;
+import org.apache.geronimo.gshell.remote.marshal.MarshalAware;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 

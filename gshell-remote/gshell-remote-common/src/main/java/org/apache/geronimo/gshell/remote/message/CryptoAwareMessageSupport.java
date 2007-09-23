@@ -23,7 +23,7 @@ import java.security.Key;
 
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContextAware;
-import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.marshal.Marshaller;
 import org.apache.mina.common.ByteBuffer;
 
 /**

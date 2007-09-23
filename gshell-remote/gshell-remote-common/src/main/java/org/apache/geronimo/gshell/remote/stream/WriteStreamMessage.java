@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.stream;
 
-import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.marshal.Marshaller;
 import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.mina.common.ByteBuffer;

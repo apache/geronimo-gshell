@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.message.rsh;
 
 import java.security.PublicKey;
 
-import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.marshal.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;

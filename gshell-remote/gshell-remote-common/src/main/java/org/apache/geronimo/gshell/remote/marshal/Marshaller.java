@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.marshall;
+package org.apache.geronimo.gshell.remote.marshal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.message;
 
 import java.util.UUID;
 
-import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.marshal.Marshaller;
 import org.apache.mina.common.ByteBuffer;
 
 /**

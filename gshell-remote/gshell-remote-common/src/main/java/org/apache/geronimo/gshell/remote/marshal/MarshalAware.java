@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.marshall;
+package org.apache.geronimo.gshell.remote.marshal;
 
 import org.apache.mina.common.ByteBuffer;
 

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message.rsh;
 import java.security.PublicKey;
 import java.util.UUID;
 
-import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.marshal.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
 import org.apache.geronimo.gshell.remote.message.MessageVisitor;

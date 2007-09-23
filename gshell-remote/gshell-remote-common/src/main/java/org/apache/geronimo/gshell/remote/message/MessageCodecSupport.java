@@ -25,7 +25,7 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Arrays;
 
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
-import org.apache.geronimo.gshell.remote.marshall.Marshaller;
+import org.apache.geronimo.gshell.remote.marshal.Marshaller;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.filter.codec.ProtocolCodecException;
 import org.slf4j.Logger;
