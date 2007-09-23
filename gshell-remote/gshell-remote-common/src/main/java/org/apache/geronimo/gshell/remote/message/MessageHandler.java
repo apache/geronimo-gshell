@@ -58,27 +58,16 @@ public class MessageHandler
 
     @Override
     public void sessionCreated(final IoSession session) throws Exception {
-        // log.debug("Session created: {}", session);
-
         MessageVisitor.BINDER.bind(session, getVisitor());
     }
 
     @Override
-    public void sessionOpened(final IoSession session) throws Exception {
-        // log.debug("Session opened: {}", session);
-    }
-
-    @Override
     public void sessionClosed(final IoSession session) throws Exception {
-        // log.debug("Session closed: {}", session);
-
         MessageVisitor.BINDER.unbind(session);
     }
 
     @Override
     public void messageReceived(final IoSession session, final Object obj) throws Exception {
-        // log.debug("Message received: {}, message: {}", session, obj);
-        
         if (obj instanceof Message) {
             Message msg = (Message)obj;
 
