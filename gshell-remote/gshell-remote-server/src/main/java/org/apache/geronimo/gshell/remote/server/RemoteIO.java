@@ -32,6 +32,10 @@ import org.apache.mina.common.IoSession;
 public class RemoteIO
     extends IO
 {
+    //
+    // TODO: Figure out how to hook up STDERR to all of this muck
+    //
+    
     public RemoteIO(final IoSession session) {
         super(SessionInputStream.BINDER.lookup(session), SessionOutputStream.BINDER.lookup(session), false);
     }
