@@ -27,7 +27,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
- * ???
+ * rovides the client-side message handling for the GShell rsh protocol.
  *
  * @version $Rev$ $Date$
  */

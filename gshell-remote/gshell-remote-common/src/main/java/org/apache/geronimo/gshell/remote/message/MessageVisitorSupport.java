@@ -23,6 +23,8 @@ import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +43,11 @@ public class MessageVisitorSupport
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     protected MessageVisitorSupport() {}
-    
+
+    public void visitConnect(ConnectMessage msg) throws Exception {}
+
+    public void visitLogin(LoginMessage msg) throws Exception {}
+
     public void visitEcho(EchoMessage msg) throws Exception {}
 
     public void visitOpenShell(OpenShellMessage msg) throws Exception {}

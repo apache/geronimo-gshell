@@ -22,6 +22,8 @@ package org.apache.geronimo.gshell.remote.message;
 import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
 
@@ -37,6 +39,10 @@ public interface MessageVisitor
     //
     
     SessionAttributeBinder<MessageVisitor> BINDER = new SessionAttributeBinder<MessageVisitor>(MessageVisitor.class);
+
+    void visitConnect(ConnectMessage msg) throws Exception;
+
+    void visitLogin(LoginMessage msg) throws Exception;
 
     void visitEcho(EchoMessage msg) throws Exception;
 

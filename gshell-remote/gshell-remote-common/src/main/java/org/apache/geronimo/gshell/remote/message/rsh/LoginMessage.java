@@ -25,21 +25,19 @@ import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
 import org.codehaus.plexus.util.StringUtils;
 
-//
-// NOTE: This message does not support MessageListener, actually should never make it to a message listener anyways
-//       since this is consumed by the security filter.
-//
-
 /**
- * Clients request to login to the server.
+ * Contains the user authentication details which the client will pass to the server after the
+ * authetication of the connection has been established.
  *
  * @version $Rev$ $Date$
  */
 public class LoginMessage
     extends CryptoAwareMessageSupport
+    implements HandshakeMessage
 {
     private PublicKey serverKey;
 
@@ -74,6 +72,10 @@ public class LoginMessage
 
     public String getPassword() {
         return password;
+    }
+
+    public void process(final MessageVisitor visitor) throws Exception {
+        visitor.visitLogin(this);
     }
 
     public void readExternal(final ByteBuffer in) throws Exception {

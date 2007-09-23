@@ -26,7 +26,7 @@ import java.util.Set;
 import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.HandShakeMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.stream.WriteStreamMessage;
@@ -43,8 +43,8 @@ public enum MessageType
     //
     
     ECHO                    (EchoMessage.class),
-    HANDSHAKE               (HandShakeMessage.class),
-    HANDSHAKE_RESULT        (HandShakeMessage.Result.class),
+    CONNECT                 (ConnectMessage.class),
+    CONNECT_RESULT          (ConnectMessage.Result.class),
     LOGIN                   (LoginMessage.class),
     LOGIN_SUCCESS           (LoginMessage.Success.class),
     LOGIN_FAILURE           (LoginMessage.Failure.class),

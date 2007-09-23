@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.remote.message.Message;
 import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.HandShakeMessage;
+import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.transport.Transport;
@@ -92,9 +92,9 @@ public class RshClient
 
         Message response;
 
-        response = transport.request(new HandShakeMessage(crypto.getPublicKey()));
+        response = transport.request(new ConnectMessage(crypto.getPublicKey()));
 
-        PublicKey serverKey = ((HandShakeMessage.Result)response).getClientKey();
+        PublicKey serverKey = ((ConnectMessage.Result)response).getClientKey();
 
         log.debug("Logging in: {}", username);
 

@@ -24,34 +24,31 @@ import java.security.PublicKey;
 import org.apache.geronimo.gshell.remote.marshall.Marshaller;
 import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
 import org.apache.geronimo.gshell.remote.message.MessageType;
+import org.apache.geronimo.gshell.remote.message.MessageVisitor;
 import org.apache.mina.common.ByteBuffer;
 
-//
-// NOTE: This message does not support MessageListener, actually should never make it to a message listener anyways
-//       since this is consumed by the security filter.
-//
-
 /**
- * Initial client handshake which contains the clients public key.
+ * Initial client to server message to initiate the connection.
  *
  * @version $Rev$ $Date$
  */
-public class HandShakeMessage
+public class ConnectMessage
     extends CryptoAwareMessageSupport
+    implements HandshakeMessage
 {
     private PublicKey clientKey;
 
-    protected HandShakeMessage(final MessageType type, final PublicKey clientKey) {
+    protected ConnectMessage(final MessageType type, final PublicKey clientKey) {
         super(type);
 
         this.clientKey = clientKey;
     }
 
-    public HandShakeMessage(final PublicKey clientKey) {
-        this(MessageType.HANDSHAKE, clientKey);
+    public ConnectMessage(final PublicKey clientKey) {
+        this(MessageType.CONNECT, clientKey);
     }
 
-    public HandShakeMessage() {
+    public ConnectMessage() {
         this(null);
     }
 
@@ -65,6 +62,10 @@ public class HandShakeMessage
 
     public void setClientKey(final PublicKey clientKey) {
         this.clientKey = clientKey;
+    }
+
+    public void process(final MessageVisitor visitor) throws Exception {
+        visitor.visitConnect(this);
     }
 
     public void readExternal(final ByteBuffer in) throws Exception {
@@ -93,10 +94,10 @@ public class HandShakeMessage
      * Reply from server to client which contains the server's public key.
      */
     public static class Result
-        extends HandShakeMessage
+        extends ConnectMessage
     {
         public Result(final PublicKey publicKey) {
-            super(MessageType.HANDSHAKE_RESULT, publicKey);
+            super(MessageType.CONNECT_RESULT, publicKey);
         }
 
         public Result() {
