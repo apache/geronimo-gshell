@@ -19,26 +19,37 @@
 
 package org.apache.geronimo.gshell.whisper.transport.vm;
 
-import java.net.URI;
-
+import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransport;
-import org.apache.mina.common.IoConnector;
 import org.apache.mina.transport.vmpipe.VmPipeConnector;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 
 /**
  * Provides in-VM client-side support.
  *
  * @version $Rev$ $Date$
  */
+@Component(role=Transport.class, hint="vm", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class VmTransport
-    extends BaseTransport
+    extends BaseTransport<VmPipeConnector>
 {
-    public VmTransport(final URI remote, final URI local) throws Exception {
-        super(remote, VmTransportFactory.address(remote), local, VmTransportFactory.address(local));
+    public VmTransport() {
+        super(new VmAddressFactory());
     }
 
     @Override
-    protected IoConnector createConnector() throws Exception {
+    protected VmPipeConnector createConnector() throws Exception {
         return new VmPipeConnector();
+    }
+
+    protected Transport.Configuration createConfiguration() {
+        return new Configuration();
+    }
+
+    public static class Configuration
+        extends BaseTransportConfiguration
+    {
+        // TODO:
     }
 }

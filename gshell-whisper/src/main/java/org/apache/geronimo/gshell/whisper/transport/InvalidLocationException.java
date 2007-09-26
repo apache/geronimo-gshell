@@ -21,32 +21,15 @@ package org.apache.geronimo.gshell.whisper.transport;
 
 import java.net.URI;
 
-import org.apache.mina.common.IoHandler;
-
 /**
- * Factory for producing client and server transport implementations.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface TransportFactory<T extends Transport, TC extends T.Configuration, S extends TransportServer, SC extends S.Configuration>
+public class InvalidLocationException
+    extends TransportException
 {
-    String getScheme();
-    
-    T connect(URI remote, URI local, TC config) throws Exception;
-
-    T connect(URI remote, URI local, IoHandler handler) throws Exception;
-
-    /*
-    Transport connect(URI remote, URI local) throws Exception;
-
-    Transport connect(URI remote) throws Exception;
-    */
-    
-    S bind(URI location, SC config) throws Exception;
-
-    S bind(URI location, IoHandler handler) throws Exception;
-
-    /*
-    TransportServer bind(URI location) throws Exception;
-    */
+    public InvalidLocationException(final URI location) {
+        super("Invalid location: " + location);
+    }
 }

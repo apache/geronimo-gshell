@@ -17,37 +17,49 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.request;
+package org.apache.geronimo.gshell.whisper.message;
 
-import org.apache.geronimo.gshell.whisper.message.Message;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class RequestException
-    extends RuntimeException
+public class LongMessageID
+    implements Message.ID
 {
-    private static final long serialVersionUID = 1;
+    private final Long value;
 
-    public RequestException(final Message.ID id) {
-        super(String.valueOf(id));
+    private LongMessageID(final long value) {
+        this.value = value;
     }
 
-    public RequestException(final String msg, final Throwable cause) {
-        super(msg, cause);
+    public int hashCode() {
+        return value.hashCode();
     }
 
-    public RequestException(final String msg) {
-        super(msg);
+    public boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        else if (obj == null) {
+            return false;
+        }
+        else if (!(obj instanceof LongMessageID)) {
+            return false;
+        }
+
+        return value.equals(((LongMessageID)obj).value);
     }
 
-    public RequestException(final Throwable cause) {
-        super(cause);
+    public String toString() {
+        return value.toString();
     }
 
-    public RequestException() {
-        super();
+    private static final AtomicLong ID_COUNTER = new AtomicLong(0);
+
+    public static Message.ID generate() {
+        return new LongMessageID(ID_COUNTER.getAndIncrement());
     }
 }

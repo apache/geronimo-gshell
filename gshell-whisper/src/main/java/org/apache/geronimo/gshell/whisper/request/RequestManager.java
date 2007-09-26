@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.common.NamedThreadFactory;
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.whisper.message.MessageID;
+import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +48,7 @@ public class RequestManager
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Map<MessageID,Registration> registrations = new HashMap<MessageID, Registration>();
+    private final Map<Message.ID,Registration> registrations = new HashMap<Message.ID, Registration>();
 
     private final ScheduledExecutorService scheduler;
 
@@ -64,7 +64,7 @@ public class RequestManager
         scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1, tf);
     }
 
-    private Registration get(final MessageID id) {
+    private Registration get(final Message.ID id) {
         assert id != null;
 
         Registration reg = registrations.get(id);
@@ -76,7 +76,7 @@ public class RequestManager
         return reg;
     }
 
-    private Registration remove(final MessageID id) {
+    private Registration remove(final Message.ID id) {
         assert id != null;
 
         Registration reg = registrations.remove(id);
@@ -94,7 +94,7 @@ public class RequestManager
         lock.lock();
 
         try {
-            MessageID id = request.getId();
+            Message.ID id = request.getId();
 
             if (registrations.containsKey(id)) {
                 throw new DuplicateRegistrationException(id);
@@ -111,7 +111,7 @@ public class RequestManager
         }
     }
 
-    public Request lookup(final MessageID id) {
+    public Request lookup(final Message.ID id) {
         assert id != null;
 
         lock.lock();
@@ -126,7 +126,7 @@ public class RequestManager
         }
     }
 
-    public Request deregister(final MessageID id) {
+    public Request deregister(final Message.ID id) {
         assert id != null;
 
         lock.lock();
@@ -145,7 +145,7 @@ public class RequestManager
         }
     }
 
-    public void activate(final MessageID id) {
+    public void activate(final Message.ID id) {
         assert id != null;
 
         lock.lock();
@@ -165,7 +165,7 @@ public class RequestManager
         }
     }
 
-    public void deactivate(final MessageID id) {
+    public void deactivate(final Message.ID id) {
         assert id != null;
 
         lock.lock();
@@ -185,7 +185,7 @@ public class RequestManager
         }
     }
 
-    private void timeout(final MessageID id) {
+    private void timeout(final Message.ID id) {
         assert id != null;
 
         lock.lock();
@@ -290,7 +290,7 @@ public class RequestManager
         }
 
         public void timeout() {
-            MessageID id = request.getId();
+            Message.ID id = request.getId();
 
             if (timeoutFuture.isCancelled()) {
                 throw new TimeoutAbortedException("Timeout has been canceled: " + id);
@@ -316,7 +316,7 @@ public class RequestManager
     public class NotRegisteredException
         extends RequestException
     {
-        public NotRegisteredException(final MessageID id) {
+        public NotRegisteredException(final Message.ID id) {
             super(id);
         }
     }
@@ -324,7 +324,7 @@ public class RequestManager
     public class DuplicateRegistrationException
         extends RequestException
     {
-        public DuplicateRegistrationException(final MessageID id) {
+        public DuplicateRegistrationException(final Message.ID id) {
             super(id);
         }
     }

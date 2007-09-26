@@ -19,23 +19,29 @@
 
 package org.apache.geronimo.gshell.whisper.transport.ssl;
 
-import java.net.URI;
-
 import org.apache.geronimo.gshell.whisper.ssl.SSLContextFactory;
+import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.SSLFilter;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Provides TCP+SSL client-side support.
  *
  * @version $Rev$ $Date$
  */
+@Component(role=Transport.class, hint="ssl", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class SslTransport
     extends TcpTransport
 {
-    public SslTransport(final URI remote, final URI local) throws Exception {
-        super(remote, local);
+    @Requirement
+    private SSLContextFactory contextFactory;
+
+    public SslTransport() {
+        super(new SslAddressFactory());
     }
 
     @Override
@@ -44,29 +50,19 @@ public class SslTransport
 
         super.configure(chain);
 
-        SSLFilter sslFilter = new SSLFilter(getSslContextFactory().createClientContext());
-        sslFilter.setUseClientMode(true);
+        SSLFilter filter = new SSLFilter(contextFactory.createClientContext());
+        filter.setUseClientMode(true);
 
-        chain.addFirst(SSLFilter.class.getSimpleName(), sslFilter);
+        chain.addFirst(SSLFilter.class.getSimpleName(), filter);
     }
 
-    //
-    // AutoWire Support, Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
-    //
-
-    private SSLContextFactory sslContextFactory;
-    
-    public void setSslContextFactory(final SSLContextFactory factory) {
-        log.debug("Using SSL Context Factory: {}", factory);
-
-        this.sslContextFactory = factory;
+    protected Transport.Configuration createConfiguration() {
+        return new Configuration();
     }
 
-    protected SSLContextFactory getSslContextFactory() {
-        if (sslContextFactory == null) {
-            throw new IllegalStateException("SSL context factory not bound");
-        }
-
-        return sslContextFactory;
+    public static class Configuration
+        extends BaseTransportConfiguration
+    {
+        // TODO:
     }
 }

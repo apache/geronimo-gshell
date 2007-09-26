@@ -19,11 +19,7 @@
 
 package org.apache.geronimo.gshell.whisper.transport.ssl;
 
-import java.net.URI;
-
-import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
-import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -34,15 +30,11 @@ import org.codehaus.plexus.component.annotations.Component;
  */
 @Component(role=TransportFactory.class, hint="ssl")
 public class SslTransportFactory
-    extends TcpTransportFactory
+    extends TcpTransportFactory<SslTransport, SslTransportServer>
 {
-    @Override
-    protected Transport createTransport(final URI remote, final URI local) throws Exception {
-        return new SslTransport(remote, local);
-    }
+    public static final String SCHEME = "ssl";
 
-    @Override
-    protected TransportServer createTransportServer(final URI location) throws Exception {
-        return new SslTransportServer(location);
+    public SslTransportFactory() {
+        super(SCHEME);
     }
 }

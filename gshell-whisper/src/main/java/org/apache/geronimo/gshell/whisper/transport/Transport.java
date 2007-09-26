@@ -19,15 +19,18 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
+import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.concurrent.TimeUnit;
+import java.util.EventListener;
 
 import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.mina.common.IoService;
+import org.apache.mina.common.IoConnector;
+import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
+import org.apache.mina.common.ThreadModel;
 import org.apache.mina.common.WriteFuture;
 
 /**
@@ -35,31 +38,69 @@ import org.apache.mina.common.WriteFuture;
  *
  * @version $Rev$ $Date$
  */
-public interface Transport
+public interface Transport<T extends IoConnector>
+    extends Closeable
 {
-    URI getRemoteLocation();
+    URI getRemote();
 
-    URI getLocalLocation();
+    URI getLocal();
 
-    IoService getService();
+    T getConnector();
 
     IoSession getSession();
 
-    void connect() throws Exception;
-
-    boolean isConnected();
-
     void close();
-    
+
+    // Messages
+
     WriteFuture send(Object msg) throws Exception;
 
     Message request(Message msg, Duration timeout) throws Exception;
 
-    Message request(Message msg, long timeout, TimeUnit unit) throws Exception;
-
     Message request(Message msg) throws Exception;
+
+    //
+    // Streams
+    //
 
     InputStream getInputStream();
 
     OutputStream getOutputStream();
+
+    OutputStream getErrorStream();
+
+    //
+    // Listeners
+    //
+
+    void addListener(Listener listener);
+
+    void removeListener(Listener listener);
+
+    interface Listener
+        extends EventListener
+    {
+        //
+        // TODO:
+        //
+    }
+    
+    //
+    // Configuration
+    //
+
+    void setConfiguration(Configuration config);
+
+    Configuration getConfiguration();
+
+    interface Configuration
+    {
+        IoHandler getHandler();
+
+        void setHandler(IoHandler handler);
+
+        ThreadModel getThreadModel();
+
+        void setThreadModel(ThreadModel threadModel);
+    }
 }

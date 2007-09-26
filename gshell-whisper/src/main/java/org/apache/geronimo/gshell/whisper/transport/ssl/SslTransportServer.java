@@ -19,23 +19,29 @@
 
 package org.apache.geronimo.gshell.whisper.transport.ssl;
 
-import java.net.URI;
-
 import org.apache.geronimo.gshell.whisper.ssl.SSLContextFactory;
+import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.SSLFilter;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Provides TCP+SSL server-side support.
  *
  * @version $Rev$ $Date$
  */
+@Component(role=TransportServer.class, hint="ssl", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class SslTransportServer
     extends TcpTransportServer
 {
-    public SslTransportServer(final URI location) throws Exception {
-        super(location);
+    @Requirement
+    private SSLContextFactory contextFactory;
+
+    public SslTransportServer() {
+        super(new SslAddressFactory());
     }
 
     @Override
@@ -44,28 +50,18 @@ public class SslTransportServer
 
         super.configure(chain);
 
-        SSLFilter sslFilter = new SSLFilter(getSslContextFactory().createServerContext());
+        SSLFilter sslFilter = new SSLFilter(contextFactory.createServerContext());
 
         chain.addFirst(SSLFilter.class.getSimpleName(), sslFilter);
     }
 
-    //
-    // AutoWire Support, Setters exposed to support Plexus autowire()  Getters exposed to handle state checking.
-    //
-
-    private SSLContextFactory sslContextFactory;
-
-    public void setSslContextFactory(final SSLContextFactory factory) {
-        log.debug("Using SSL Context Factory: {}", factory);
-
-        this.sslContextFactory = factory;
+    protected TransportServer.Configuration createConfiguration() {
+        return new Configuration();
     }
 
-    protected SSLContextFactory getSslContextFactory() {
-        if (sslContextFactory == null) {
-            throw new IllegalStateException("SSL context factory not bound");
-        }
-
-        return sslContextFactory;
+    public static class Configuration
+        extends BaseTransportServerConfiguration
+    {
+        // TODO:
     }
 }

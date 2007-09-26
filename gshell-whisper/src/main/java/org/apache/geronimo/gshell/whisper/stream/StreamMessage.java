@@ -19,14 +19,9 @@
 
 package org.apache.geronimo.gshell.whisper.stream;
 
-import java.io.IOException;
-
-import org.apache.geronimo.gshell.whisper.marshal.Marshaller;
+import org.apache.geronimo.gshell.whisper.message.BaseMessage;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageSupport;
-import org.apache.geronimo.gshell.whisper.message.MessageType;
 import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.RuntimeIOException;
 
 /**
  * Write a buffer to a stream.
@@ -34,7 +29,7 @@ import org.apache.mina.common.RuntimeIOException;
  * @version $Rev$ $Date$
  */
 public class StreamMessage
-    extends MessageSupport
+    extends BaseMessage
 {
     private ByteBuffer buffer;
 
@@ -52,7 +47,7 @@ public class StreamMessage
     }
 
     public StreamMessage(final ByteBuffer buffer) {
-        this(Type.IN, buffer);
+        this(StreamMessage.Type.IN, buffer);
     }
     
     public StreamMessage() {
@@ -67,20 +62,8 @@ public class StreamMessage
         this.buffer = buffer;
     }
 
-    public void readExternal(final ByteBuffer in) throws Exception {
-        assert in != null;
-
-        buffer = Marshaller.readBuffer(in);
-    }
-
-    public void writeExternal(final ByteBuffer out) throws Exception {
-        assert out != null;
-
-        Marshaller.writeBuffer(out, buffer);
-    }
-
     public static enum Type
-        implements MessageType
+        implements Message.Type
     {
 
         IN,  // (local SYSOUT to remote SYSIN)
@@ -90,22 +73,6 @@ public class StreamMessage
 
         public Class<? extends Message> getType() {
             return StreamMessage.class;
-        }
-
-        // Dynamically fitgure out how bit we are, assumes each enum is sized the same
-        private volatile Integer size;
-
-        public int size() {
-            if (size == null) {
-                try {
-                    size = Marshaller.marshall(IN).length;
-                }
-                catch (IOException e) {
-                    throw new RuntimeIOException(e);
-                }
-            }
-
-            return size;
         }
     }
 }

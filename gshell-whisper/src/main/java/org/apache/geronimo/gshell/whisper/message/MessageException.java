@@ -45,8 +45,8 @@ public class MessageException
         super();
     }
 
-    public MessageException(final MessageID id) {
-        super(String.valueOf(id));
+    public MessageException(final Message.ID id) {
+        this(String.valueOf(id));
     }
 
     public MessageException(final Message msg) {

@@ -37,13 +37,13 @@ import org.slf4j.LoggerFactory;
  */
 public class Requestor
 {
-    public static final Duration DEFAULT_TIMEOUT = new Duration(10, TimeUnit.SECONDS);
+    private static final Duration DEFAULT_TIMEOUT = new Duration(10, TimeUnit.SECONDS);
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     private final IoSession session;
 
-    private final Duration timeout;
+    private Duration timeout;
 
     public Requestor(final IoSession session, final Duration timeout) {
         this.session = session;
@@ -54,36 +54,37 @@ public class Requestor
         this(session, DEFAULT_TIMEOUT);
     }
 
-    public Requestor(final Transport transport, final long timeout, final TimeUnit unit) {
-        this(transport.getSession(), new Duration(timeout, unit));
-    }
-
     public Requestor(final Transport transport) {
         this(transport.getSession(), DEFAULT_TIMEOUT);
     }
 
-    public RequestWriteFuture submit(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
-        assert msg != null;
+    public Duration getTimeout() {
+        return timeout;
+    }
 
-        Request req = new Request(msg, timeout, unit);
+    public void setTimeout(final Duration timeout) {
+        assert timeout != null;
+        
+        this.timeout = timeout;
+    }
+
+    public RequestWriteFuture submit(final Message msg, final Duration timeout) throws Exception {
+        assert msg != null;
+        assert timeout != null;
+
+        Request req = new Request(msg, timeout.getValue(), timeout.getUnit());
 
         WriteFuture wf = session.write(req);
 
         return new RequestWriteFuture(wf, req);
     }
 
-    public RequestWriteFuture submit(final Message msg, final Duration timeout) throws Exception {
-        return submit(msg, timeout.getValue(), timeout.getUnit());
-    }
-
     public RequestWriteFuture submit(final Message msg) throws Exception {
-        return submit(msg, timeout.getValue(), timeout.getUnit());
+        return submit(msg, timeout);
     }
 
-    public Message request(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
-        assert msg != null;
-
-        RequestWriteFuture wf = submit(msg, timeout, unit);
+    public Message request(final Message msg, final Duration timeout) throws Exception {
+        RequestWriteFuture wf = submit(msg, timeout);
 
         Request req = wf.getRequest();
 
@@ -92,12 +93,8 @@ public class Requestor
         return resp.getMessage();
     }
 
-    public Message request(final Message msg, final Duration timeout) throws Exception {
-        return request(msg, timeout.getValue(), timeout.getUnit());
-    }
-
     public Message request(final Message msg) throws Exception {
-        return request(msg, timeout.getValue(), timeout.getUnit());
+        return request(msg, timeout);
     }
     
     //

@@ -32,28 +32,30 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  * @version $Rev$ $Date$
  */
 @Component(role=TransportFactoryLocator.class)
-public class TransportFactoryLocator
+public class TransportFactoryLocator<T extends TransportFactory>
 {
     @Requirement
     private PlexusContainer container;
 
-    public TransportFactory locate(final URI location) throws MissingSchemeException, ComponentLookupException {
+    public PlexusContainer getContainer() {
+        return container;
+    }
+
+    public void setContainer(final PlexusContainer container) {
+        this.container = container;
+    }
+
+    public T locate(final URI location) throws InvalidLocationException, ComponentLookupException {
         assert location != null;
 
         String scheme = location.getScheme();
 
         if (scheme == null) {
-            throw new MissingSchemeException(location);
+            throw new InvalidLocationException(location);
         }
 
-        return (TransportFactory) container.lookup(TransportFactory.class, scheme);
+        // noinspection unchecked
+        return (T) container.lookup(TransportFactory.class, scheme);
     }
 
-    public static class MissingSchemeException
-        extends TransportException
-    {
-        public MissingSchemeException(final URI location) {
-            super("Invalid location; missing scheme: " + location);
-        }
-    }
 }

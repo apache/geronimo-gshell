@@ -19,14 +19,7 @@
 
 package org.apache.geronimo.gshell.whisper.transport.tcp;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.UnknownHostException;
-
-import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
-import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportFactory;
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -36,26 +29,16 @@ import org.codehaus.plexus.component.annotations.Component;
  * @version $Rev$ $Date$
  */
 @Component(role=TransportFactory.class, hint="tcp")
-public class TcpTransportFactory
+public class TcpTransportFactory<T extends TcpTransport, S extends TcpTransportServer>
     extends BaseTransportFactory
 {
-    @Override
-    protected Transport createTransport(final URI remote, final URI local) throws Exception {
-        return new TcpTransport(remote, local);
+    public static final String SCHEME = "tcp";
+
+    public TcpTransportFactory() {
+        super(SCHEME);
     }
 
-    @Override
-    protected TransportServer createTransportServer(final URI location) throws Exception {
-        return new TcpTransportServer(location);
-    }
-
-    static InetSocketAddress address(final URI location) throws UnknownHostException {
-        InetSocketAddress addr = null;
-
-        if (location != null) {
-            addr = new InetSocketAddress(InetAddress.getByName(location.getHost()), location.getPort());
-        }
-
-        return addr;
+    protected TcpTransportFactory(final String scheme) {
+        super(scheme);
     }
 }

@@ -19,9 +19,7 @@
 
 package org.apache.geronimo.gshell.whisper.message;
 
-import org.apache.geronimo.gshell.whisper.marshal.MarshalAware;
-import org.apache.mina.common.IoSession;
-import org.apache.mina.common.WriteFuture;
+import java.io.Serializable;
 
 /**
  * ???
@@ -29,29 +27,51 @@ import org.apache.mina.common.WriteFuture;
  * @version $Rev$ $Date$
  */
 public interface Message
-    extends MarshalAware
+    extends Serializable
 {
-    MessageID getId();
+    ID getId();
 
-    MessageID getCorrelationId();
+    ID getCorrelationId();
 
-    void setCorrelationId(MessageID id);
+    //
+    // TODO: See if the higher-level bits can do this automatically
+    //
+    // void setCorrelationId(ID id);
 
-    MessageType getType();
+    Type getType();
 
     long getTimestamp();
 
     long getSequence();
 
-    void setSession(IoSession session);
+    interface ID
+        extends Serializable
+    {
+        // Empty
+    }
 
-    IoSession getSession();
+    //
+    // TODO: Make the Type an Enum using Generics
+    //
 
-    void freeze();
+    interface Type
+        extends Serializable
+    {
+        Class<? extends Message> getType();
 
-    boolean isFrozen();
+        //
+        // TODO: Just expose a byte index() and serialize that and leave the mapping up to the protocol implementation
+        //
+    }
 
-    void process(IoSession session, MessageVisitor visitor) throws Exception;
+    interface Factory
+    {
+        Message create(Type type) throws Exception;
 
-    WriteFuture reply(Message msg);
+        // TODO: ??
+        // Message create(byte index) throws Exception;
+        //
+        // Would still really like to use enums... but need to do some magic to marshal and unmarshal them...
+        //
+    }
 }

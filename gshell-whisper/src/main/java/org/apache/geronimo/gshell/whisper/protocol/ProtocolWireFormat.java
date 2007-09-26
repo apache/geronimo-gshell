@@ -17,36 +17,40 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.transport;
+package org.apache.geronimo.gshell.whisper.protocol;
 
-import java.net.URI;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
-import org.apache.mina.common.IoHandler;
+import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.mina.common.ByteBuffer;
 
 /**
- * Factory for producing client and server transport implementations.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface TransportFactory<T extends Transport, TC extends T.Configuration, S extends TransportServer, SC extends S.Configuration>
+public interface ProtocolWireFormat
 {
-    String getScheme();
-    
-    T connect(URI remote, URI local, TC config) throws Exception;
+    void setVersion(int version);
 
-    T connect(URI remote, URI local, IoHandler handler) throws Exception;
+    int getVersion();
 
-    /*
-    Transport connect(URI remote, URI local) throws Exception;
+    void marshal(DataOutput out, Message message) throws IOException;
 
-    Transport connect(URI remote) throws Exception;
-    */
-    
-    S bind(URI location, SC config) throws Exception;
+    Message unmarshal(DataInput in) throws IOException;
 
-    S bind(URI location, IoHandler handler) throws Exception;
+    ByteBuffer marshal(Message message) throws IOException;
 
-    /*
-    TransportServer bind(URI location) throws Exception;
-    */
+    Message unmarshal(ByteBuffer buffer) throws IOException;
+
+    //
+    // Factory
+    //
+
+    interface Factory
+    {
+        ProtocolWireFormat create();
+    }
 }

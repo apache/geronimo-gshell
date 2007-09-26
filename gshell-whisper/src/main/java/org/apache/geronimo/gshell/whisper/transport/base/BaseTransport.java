@@ -23,131 +23,169 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageHandler;
-import org.apache.geronimo.gshell.whisper.message.MessageVisitor;
 import org.apache.geronimo.gshell.whisper.request.Requestor;
-import org.apache.geronimo.gshell.whisper.session.ThreadPoolModel;
+import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
 import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;
+import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Support for {@link Transport} implementations.
  *
  * @version $Rev$ $Date$
  */
-public abstract class BaseTransport
-    extends BaseCommon
+public abstract class BaseTransport<T extends IoConnector>
+    extends BaseService
     implements Transport
 {
-    private static final AtomicLong COUNTER = new AtomicLong(0);
-    
-    protected final URI remoteLocation;
+    private static final AtomicLong INSTANCE_COUNTER = new AtomicLong(0);
 
-    protected final SocketAddress remoteAddress;
+    private static final SessionAttributeBinder<Transport> TRANSPORT = new SessionAttributeBinder<Transport>(Transport.class);
 
-    protected final URI localLocation;
+    protected URI remoteLocation;
 
-    protected final SocketAddress localAddress;
+    protected SocketAddress remoteAddress;
 
-    protected IoConnector connector;
+    protected URI localLocation;
 
-    protected ThreadPoolModel threadModel;
+    protected SocketAddress localAddress;
+
+    protected T connector;
 
     protected IoSession session;
 
-    protected boolean connected;
-
-    @Requirement(role=MessageVisitor.class, hint="client")
-    private MessageVisitor v;
-
-    protected BaseTransport(final URI remoteLocation, final SocketAddress remoteAddress, final URI localLocation, final SocketAddress localAddress) throws Exception {
-        assert remoteLocation != null;
-        assert remoteAddress != null;
-
-        this.remoteLocation = remoteLocation;
-        this.remoteAddress = remoteAddress;
-
-        this.localLocation = localLocation;
-        this.localAddress = localAddress;
+    protected BaseTransport(final AddressFactory addressFactory) {
+        super(addressFactory);
     }
 
-    protected abstract IoConnector createConnector() throws Exception;
+    //
+    // Configuration
+    //
 
-    protected synchronized void init() throws Exception {
-        // For now we must manually bind the message handler, plexus is unable to provide injection for us
-        setMessageHandler((MessageHandler) getContainer().lookup(MessageHandler.class, "client"));
-
-        // Setup the connector service
-        connector = createConnector();
-
-        // Install the thread model
-        threadModel = new ThreadPoolModel(getClass().getSimpleName() + "-" + COUNTER.getAndIncrement());
-        connector.getDefaultConfig().setThreadModel(threadModel);
-
-        // Configure the connector
-        configure(connector);
+    protected static class BaseTransportConfiguration
+        extends BaseConfiguration
+        implements Transport.Configuration
+    {
+        // TODO:
     }
 
-    public synchronized void connect() throws Exception {
-        if (connected) {
-            throw new IllegalStateException("Already connected");
+    private Configuration config;
+
+    protected abstract Configuration createConfiguration();
+
+    public synchronized Configuration getConfiguration() {
+        if (config == null) {
+            config = createConfiguration();
         }
 
-        init();
-
-        log.info("Connecting to: {}", remoteAddress);
-
-        ConnectFuture cf = connector.connect(remoteAddress, localAddress, getHandler());
-
-        cf.join();
-
-        session = cf.getSession();
-
-        connected = true;
-
-        log.info("Connected");
+        return config;
     }
 
-    public boolean isConnected() {
-        return connected;
+    public synchronized void setConfiguration(final Configuration config) {
+        assert config != null;
+
+        this.config = config;
+
+        log.debug("Using configuration: {}", config);
+    }
+
+    @Override
+    protected synchronized BaseConfiguration getBaseConfiguration() {
+        return (BaseConfiguration) getConfiguration();
+    }
+
+    //
+    // Connection
+    //
+
+    protected abstract T createConnector() throws Exception;
+
+    synchronized void connect(final URI remote, final URI local) throws Exception {
+        this.remoteLocation = remote;
+        this.remoteAddress = addressFactory.create(remote);
+
+        this.localLocation = local;
+        this.localAddress = addressFactory.create(local);
+
+        connect();
+    }
+
+    synchronized void connect() throws Exception {
+        log.debug("Connecting");
+
+        connector = createConnector();
+        log.debug("Connector: {}", connector);
+
+        configure(connector);
+
+        IoHandler handler = getHandler();
+        log.debug("Handler: {}", handler);
+
+        log.info("Connecting to: {}", remoteAddress);
+        ConnectFuture cf = connector.connect(remoteAddress, localAddress, handler);
+
+        log.debug("Waiting for connection to establish");
+        cf.join();
+
+        // And fetch session so we can talk
+        session = cf.getSession();
+        log.debug("Session: ", session);
+
+        // Maybe configure something
+        configure(session);
+
+        // Stuff the transport instance into the session's context so we can find ourself later
+        TRANSPORT.bind(session, this);
+
+        log.info("Connected to: {}", session.getRemoteAddress());
     }
 
     public synchronized void close() {
+        if (isClosed()) {
+            // Ignore duplciate close
+            return;
+        }
+
         try {
+            TRANSPORT.unbind(session);
+            
             CloseFuture cf = session.close();
-
             cf.join();
-
-            threadModel.close();
         }
         finally {
             super.close();
         }
     }
 
-    public URI getRemoteLocation() {
+    public URI getRemote() {
         return remoteLocation;
     }
 
-    public URI getLocalLocation() {
+    public URI getLocal() {
         return localLocation;
+    }
+
+    public T getConnector() {
+        return connector;
     }
 
     public IoSession getSession() {
         return session;
     }
+
+    //
+    // Streams
+    //
 
     public InputStream getInputStream() {
         return SessionInputStream.BINDER.lookup(session);
@@ -156,6 +194,14 @@ public abstract class BaseTransport
     public OutputStream getOutputStream() {
         return SessionOutputStream.BINDER.lookup(session);
     }
+
+    public OutputStream getErrorStream() {
+        throw new UnsupportedOperationException("TODO");
+    }
+
+    //
+    // Sending Messages
+    //
 
     public WriteFuture send(final Object msg) throws Exception {
         assert msg != null;
@@ -173,17 +219,26 @@ public abstract class BaseTransport
 
     public Message request(final Message msg, final Duration timeout) throws Exception {
         assert msg != null;
+        assert timeout != null;
 
         Requestor requestor = new Requestor(this);
 
         return requestor.request(msg, timeout);
     }
 
-    public Message request(final Message msg, final long timeout, final TimeUnit unit) throws Exception {
-        assert msg != null;
+    //
+    // Listeners
+    //
 
-        Requestor requestor = new Requestor(this);
+    public void addListener(final Listener listener) {
+        assert listener != null;
 
-        return requestor.request(msg, timeout, unit);
+        throw new UnsupportedOperationException();
+    }
+
+    public void removeListener(final Listener listener) {
+        assert listener != null;
+
+        throw new UnsupportedOperationException();
     }
 }

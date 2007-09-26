@@ -17,62 +17,47 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.transport;
+package org.apache.geronimo.gshell.whisper.transport.base;
 
-import java.io.Closeable;
-import java.net.URI;
-import java.util.EventListener;
-
-import org.apache.mina.common.IoAcceptor;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.ThreadModel;
 
 /**
- * Provides the server-side protocol interface.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface TransportServer<T extends IoAcceptor>
-    extends Closeable
+public class BaseConfiguration
 {
-    URI getLocation();
+    private IoHandler handler;
 
-    T getAcceptor();
+    private ThreadModel threadModel;
 
-    void close();
+    protected BaseConfiguration() {}
 
-    //
-    // Listeners
-    //
+    public void setHandler(final IoHandler handler) {
+        this.handler = handler;
+    }
 
-    void addListener(Listener listener);
+    public IoHandler getHandler() {
+        return handler;
+    }
 
-    void removeListener(Listener listener);
+    public ThreadModel getThreadModel() {
+        return threadModel;
+    }
 
-    interface Listener
-        extends EventListener
-    {
-        //
-        // TODO:
-        //
+    public void setThreadModel(final ThreadModel threadModel) {
+        this.threadModel = threadModel;
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
     //
-    // Configuration
+    // TODO: Add a list of filters to tack on
     //
-
-    void setConfiguration(Configuration config);
-
-    Configuration getConfiguration();
-
-    interface Configuration
-    {
-        IoHandler getHandler();
-
-        void setHandler(IoHandler hanlder);
-
-        ThreadModel getThreadModel();
-
-        void setThreadModel(ThreadModel threadModel);
-    }
 }

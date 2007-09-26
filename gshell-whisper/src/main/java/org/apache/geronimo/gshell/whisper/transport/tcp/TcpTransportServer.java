@@ -19,34 +19,44 @@
 
 package org.apache.geronimo.gshell.whisper.transport.tcp;
 
-import java.net.URI;
 import java.util.concurrent.Executors;
 
+import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportServer;
-import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
-import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 
 /**
  * Provides TCP server-side support.
  *
  * @version $Rev$ $Date$
  */
+@Component(role=TransportServer.class, hint="tcp", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class TcpTransportServer
     extends BaseTransportServer
 {
-    public TcpTransportServer(final URI location) throws Exception {
-        super(location, TcpTransportFactory.address(location));
+    public TcpTransportServer() {
+        super(new TcpAddressFactory());
+    }
+
+    protected TcpTransportServer(final AddressFactory addressFactory) {
+        super(addressFactory);
     }
 
     @Override
-    protected IoAcceptor createAcceptor() throws Exception {
-        SocketAcceptor acceptor = new SocketAcceptor(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
+    protected SocketAcceptor createAcceptor() throws Exception {
+        return new SocketAcceptor(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
+    }
 
-        SocketAcceptorConfig config = acceptor.getDefaultConfig();
+    protected TransportServer.Configuration createConfiguration() {
+        return new Configuration();
+    }
 
-        config.getSessionConfig().setKeepAlive(true);
-
-        return acceptor;
+    public static class Configuration
+        extends BaseTransportServerConfiguration
+    {
+        // TODO:
     }
 }

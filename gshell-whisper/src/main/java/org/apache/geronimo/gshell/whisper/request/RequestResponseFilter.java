@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.whisper.request;
 
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageID;
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
@@ -83,7 +82,7 @@ public class RequestResponseFilter
     public void messageReceived(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
         Message msg = null;
 
-        MessageID id = null;
+        Message.ID id = null;
 
         if (message instanceof Message) {
             msg = (Message)message;

@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.whisper.request;
 
-import org.apache.geronimo.gshell.whisper.message.MessageID;
+import org.apache.geronimo.gshell.whisper.message.Message;
 
 /**
  * Thrown to indicate that a request has been timed out.
@@ -31,15 +31,15 @@ public class RequestTimeoutException
 {
     private static final long serialVersionUID = 1;
 
-    private final MessageID id;
+    private final Message.ID id;
 
-    public RequestTimeoutException(final MessageID id) {
+    public RequestTimeoutException(final Message.ID id) {
         super("Request timed out: " + id);
 
         this.id = id;
     }
 
-    public MessageID getId() {
+    public Message.ID getId() {
         return id;
     }
 }

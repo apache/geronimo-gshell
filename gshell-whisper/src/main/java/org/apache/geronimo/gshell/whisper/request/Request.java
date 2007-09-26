@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,7 +97,7 @@ public class Request
         return message;
     }
 
-    public MessageID getId() {
+    public Message.ID getId() {
         return getMessage().getId();
     }
 

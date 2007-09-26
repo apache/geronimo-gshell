@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.whisper.request;
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageID;
 
 //
 // NOTE: Snatched and massaged from Apache Mina
@@ -87,7 +86,7 @@ public class Response
         return message;
     }
 
-    public MessageID getId() {
+    public Message.ID getId() {
         return getMessage().getId();
     }
 

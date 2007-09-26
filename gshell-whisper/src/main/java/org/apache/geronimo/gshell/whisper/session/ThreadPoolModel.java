@@ -23,6 +23,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.common.NamedThreadFactory;
 import org.apache.mina.common.IoFilterChain;
@@ -69,25 +71,21 @@ public class ThreadPoolModel
         filter = new ExecutorFilter(threadPool);
     }
 
-    public void close() {
-        //
-        // FIXME: This causes some problems when a rsh client closes, like:
-        //
-        //        java.security.AccessControlException: access denied (java.lang.RuntimePermission modifyThread)
-        //
-
-        /*
-        List<Runnable> pending = threadPool.shutdownNow();
-
-        if (!pending.isEmpty()) {
-            log.warn("There were {} pending tasks which have not been run", pending.size());
-        }
-        */
+    public ThreadPoolModel(final Class type, final Object suffix) {
+        this(type.getSimpleName() + "-" + suffix);
     }
-    
-    //
-    // ThreadModel
-    //
+
+    public ThreadPoolModel(final Class type, final AtomicLong counter) {
+        this(type.getSimpleName() + "-" + counter.getAndIncrement());
+    }
+
+    public ThreadPoolModel(final Class type, final AtomicInteger counter) {
+        this(type.getSimpleName() + "-" + counter.getAndIncrement());
+    }
+
+    public void shutdown() {
+        threadPool.shutdown();
+    }
 
     public void buildFilterChain(final IoFilterChain chain) throws Exception {
         assert chain != null;

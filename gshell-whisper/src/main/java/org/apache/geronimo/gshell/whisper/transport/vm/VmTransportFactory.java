@@ -19,13 +19,8 @@
 
 package org.apache.geronimo.gshell.whisper.transport.vm;
 
-import java.net.URI;
-
-import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
-import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportFactory;
-import org.apache.mina.transport.vmpipe.VmPipeAddress;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -37,23 +32,9 @@ import org.codehaus.plexus.component.annotations.Component;
 public class VmTransportFactory
     extends BaseTransportFactory
 {
-    @Override
-    protected Transport createTransport(final URI remote, final URI local) throws Exception {
-        return new VmTransport(remote, local);
-    }
+    public static final String SCHEME = "vm";
 
-    @Override
-    protected TransportServer createTransportServer(final URI location) throws Exception {
-        return new VmTransportServer(location);
-    }
-
-    static VmPipeAddress address(final URI location) {
-        VmPipeAddress addr = null;
-
-        if (location != null) {
-            addr = new VmPipeAddress(location.getPort());
-        }
-
-        return addr;
+    public VmTransportFactory() {
+        super(SCHEME);
     }
 }

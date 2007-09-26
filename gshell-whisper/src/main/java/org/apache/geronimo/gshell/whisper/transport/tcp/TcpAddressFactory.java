@@ -17,36 +17,31 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.transport;
+package org.apache.geronimo.gshell.whisper.transport.tcp;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
 
-import org.apache.mina.common.IoHandler;
+import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * Factory for producing client and server transport implementations.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface TransportFactory<T extends Transport, TC extends T.Configuration, S extends TransportServer, SC extends S.Configuration>
+@Component(role=AddressFactory.class, hint="tcp")
+public class TcpAddressFactory
+    implements AddressFactory<InetSocketAddress>
 {
-    String getScheme();
-    
-    T connect(URI remote, URI local, TC config) throws Exception;
+    public InetSocketAddress create(URI location) throws Exception {
+        InetSocketAddress addr = null;
 
-    T connect(URI remote, URI local, IoHandler handler) throws Exception;
+        if (location != null) {
+            addr = new InetSocketAddress(InetAddress.getByName(location.getHost()), location.getPort());
+        }
 
-    /*
-    Transport connect(URI remote, URI local) throws Exception;
-
-    Transport connect(URI remote) throws Exception;
-    */
-    
-    S bind(URI location, SC config) throws Exception;
-
-    S bind(URI location, IoHandler handler) throws Exception;
-
-    /*
-    TransportServer bind(URI location) throws Exception;
-    */
+        return addr;
+    }
 }

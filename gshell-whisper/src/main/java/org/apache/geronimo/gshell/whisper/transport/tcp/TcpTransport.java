@@ -19,34 +19,44 @@
 
 package org.apache.geronimo.gshell.whisper.transport.tcp;
 
-import java.net.URI;
 import java.util.concurrent.Executors;
 
+import org.apache.geronimo.gshell.whisper.transport.Transport;
+import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransport;
-import org.apache.mina.common.IoConnector;
 import org.apache.mina.transport.socket.nio.SocketConnector;
-import org.apache.mina.transport.socket.nio.SocketConnectorConfig;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 
 /**
  * Provides TCP client-side support.
  *
  * @version $Rev$ $Date$
  */
+@Component(role=Transport.class, hint="tcp", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class TcpTransport
-    extends BaseTransport
+    extends BaseTransport<SocketConnector>
 {
-    public TcpTransport(final URI remote, final URI local) throws Exception {
-        super(remote, TcpTransportFactory.address(remote), local, TcpTransportFactory.address(local));
+    public TcpTransport() {
+        super(new TcpAddressFactory());
+    }
+
+    protected TcpTransport(final AddressFactory addressFactory) {
+        super(addressFactory);
     }
 
     @Override
-    protected IoConnector createConnector() throws Exception {
-        SocketConnector connector = new SocketConnector(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
+    protected SocketConnector createConnector() throws Exception {
+        return new SocketConnector(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
+    }
 
-        SocketConnectorConfig config = connector.getDefaultConfig();
+    protected Transport.Configuration createConfiguration() {
+        return new Configuration();
+    }
 
-        config.getSessionConfig().setKeepAlive(true);
-
-        return connector;
+    public static class Configuration
+        extends BaseTransportConfiguration
+    {
+        // TODO:
     }
 }

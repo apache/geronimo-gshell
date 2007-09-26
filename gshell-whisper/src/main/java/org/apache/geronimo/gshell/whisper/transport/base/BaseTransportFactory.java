@@ -24,6 +24,7 @@ import java.net.URI;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.mina.common.IoHandler;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Requirement;
 
@@ -32,46 +33,103 @@ import org.codehaus.plexus.component.annotations.Requirement;
  *
  * @version $Rev$ $Date$
  */
-public abstract class BaseTransportFactory
+public abstract class BaseTransportFactory<T extends BaseTransport, TC extends Transport.Configuration, S extends BaseTransportServer, SC extends TransportServer.Configuration>
     implements TransportFactory
 {
     @Requirement
     protected PlexusContainer container;
 
+    private final String scheme;
+
+    protected BaseTransportFactory(final String scheme) {
+        assert scheme != null;
+        
+        this.scheme = scheme;
+    }
+
+    public String getScheme() {
+        return scheme;
+    }
+
     //
-    // NOTE: We use autowire() here to get a few components injected.  These are injected via setters.
+    // Transport (Client) Connection
     //
 
-    public Transport connect(final URI remote, final URI local) throws Exception {
+    public T connect(final URI remote, final URI local, final TC config) throws Exception {
         assert remote != null;
+        assert config != null;
         // local can be null
 
-        Transport transport = createTransport(remote, local);
+        // noinspection unchecked
+        T transport = (T) container.lookup(Transport.class, scheme);
 
-        container.autowire(transport);
+        transport.setConfiguration(config);
 
-        transport.connect();
+        transport.connect(remote, local);
 
         return transport;
     }
 
-    protected abstract Transport createTransport(final URI remote, final URI local) throws Exception;
+    public T connect(final URI remote, final URI local, final IoHandler handler) throws Exception {
+        assert remote != null;
+        assert handler != null;
+        // local can be null
+
+        // noinspection unchecked
+        T transport = (T) container.lookup(Transport.class, scheme);
+
+        transport.getConfiguration().setHandler(handler);
+
+        transport.connect(remote, local);
+
+        return transport;
+    }
+
+    /*
+    public Transport connect(final URI remote, final URI local) throws Exception {
+        return connect(remote, local, (Transport.Configuration) null);
+    }
 
     public Transport connect(final URI remote) throws Exception {
         return connect(remote, null);
     }
+    */
 
-    public TransportServer bind(final URI location) throws Exception {
+    //
+    // TransportServer Binding
+    //
+
+    public S bind(final URI location, final SC config) throws Exception {
         assert location != null;
+        assert config != null;
 
-        TransportServer server = createTransportServer(location);
+        // noinspection unchecked
+        S server = (S) container.lookup(TransportServer.class, scheme);
 
-        container.autowire(server);
+        server.setConfiguration(config);
 
-        server.bind();
+        server.bind(location);
 
         return server;
     }
 
-    protected abstract TransportServer createTransportServer(final URI location) throws Exception;
+    public S bind(final URI location, final IoHandler handler) throws Exception {
+        assert location != null;
+        assert handler != null;
+
+        // noinspection unchecked
+        S server = (S) container.lookup(TransportServer.class, scheme);
+
+        server.getConfiguration().setHandler(handler);
+
+        server.bind(location);
+
+        return server;
+    }
+
+    /*
+    public TransportServer bind(final URI location) throws Exception {
+        return bind(location, (TransportServer.Configuration) null);
+    }
+    */
 }
