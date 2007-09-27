@@ -25,15 +25,22 @@ import java.net.URI;
 import java.security.PublicKey;
 
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
-import org.apache.geronimo.gshell.remote.message.Message;
-import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
-import org.apache.geronimo.gshell.remote.transport.Transport;
-import org.apache.geronimo.gshell.remote.transport.TransportFactory;
+import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
+import org.apache.geronimo.gshell.remote.message.ConnectMessage;
+import org.apache.geronimo.gshell.remote.message.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
+import org.apache.geronimo.gshell.remote.message.LoginMessage;
+import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
+import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.geronimo.gshell.whisper.transport.Transport;
+import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
+import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
+import org.apache.mina.common.IoSession;
+import org.apache.mina.handler.demux.DemuxingIoHandler;
+import org.apache.mina.handler.demux.MessageHandler;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.InstantiationStrategy;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,29 +49,24 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+@Component(role=RshClient.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class RshClient
 {
-    //
-    // TODO: If/when we want to add a state-machine to keep things in order, add client-side here.
-    //
-    
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final CryptoContext crypto;
+    @Requirement
+    private CryptoContext crypto;
+    
+    @Requirement
+    private TransportFactoryLocator locator;
 
-    private final Transport transport;
+    private Transport transport;
 
-    public RshClient(final CryptoContext crypto, final URI remote, final URI local, final TransportFactory factory) throws Exception {
-        assert crypto != null;
-        assert remote != null;
-        // local may be null
-        assert factory != null;
+    public void connect(final URI remote, final URI local) throws Exception {
+        TransportFactory factory = locator.locate(remote);
 
-        this.crypto = crypto;
+        transport = factory.connect(remote, local, new ClientHandler());
 
-        // And then lets connect to the remote server
-        this.transport = factory.connect(remote, local);
-        
         log.debug("Connected to: {}", remote);
     }
 
@@ -98,7 +100,7 @@ public class RshClient
 
         log.debug("Logging in: {}", username);
 
-        response = transport.request(new LoginMessage(serverKey, username, password));
+        response = transport.request(new LoginMessage(username, password));
 
         if (response instanceof LoginMessage.Success) {
             log.debug("Login successful");
@@ -118,7 +120,7 @@ public class RshClient
         
         log.debug("Echoing: {}", text);
 
-        transport.send(new EchoMessage(text));
+        transport.send(new EchoMessage(text)).join();
     }
 
     public void openShell() throws Exception {
@@ -188,5 +190,25 @@ public class RshClient
         assert args != null;
 
         return doExecute(new ExecuteMessage(path, args));
+    }
+
+    //
+    // ClientHandler
+    //
+
+    private class ClientHandler
+        extends DemuxingIoHandler
+    {
+        public ClientHandler() {
+            addMessageHandler(EchoMessage.class, new EchoHandler());
+        }
+    }
+
+    private class EchoHandler
+        implements MessageHandler<EchoMessage>
+    {
+        public void messageReceived(final IoSession session, final EchoMessage message) throws Exception {
+            log.debug("ECHO: {}", message.getText());
+        }
     }
 }

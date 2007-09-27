@@ -61,7 +61,7 @@ public class RequestResponseFilter
      * When a request is sent, register it with the request manager.
      */
     @Override
-    public void filterWrite(final NextFilter nextFilter, final IoSession session, final WriteRequest writeRequest) throws Exception {
+    public void filterWrite(final NextFilter nextFilter, final IoSession session, WriteRequest writeRequest) throws Exception {
         Object message = writeRequest.getMessage();
 
         if (message instanceof Request) {
@@ -70,6 +70,9 @@ public class RequestResponseFilter
             RequestManager manager = RequestManager.BINDER.lookup(session);
 
             manager.register(request);
+
+            // Send the actual message, not our request handle
+            writeRequest = new WriteRequest(request.getMessage(), writeRequest.getFuture(), writeRequest.getDestination());
         }
 
         nextFilter.filterWrite(session, writeRequest);

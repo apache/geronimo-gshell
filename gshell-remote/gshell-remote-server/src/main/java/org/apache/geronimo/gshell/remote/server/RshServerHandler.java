@@ -24,51 +24,34 @@ import java.security.PublicKey;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.DefaultEnvironment;
 import org.apache.geronimo.gshell.common.Duration;
-import org.apache.geronimo.gshell.common.NamedThreadFactory;
 import org.apache.geronimo.gshell.common.Notification;
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.RemoteShell;
-import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
-import org.apache.geronimo.gshell.remote.message.MessageHandler;
-import org.apache.geronimo.gshell.remote.message.MessageVisitorSupport;
-import org.apache.geronimo.gshell.remote.message.rsh.CloseShellMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.ConnectMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.EchoMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.HandshakeMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.LoginMessage;
-import org.apache.geronimo.gshell.remote.message.rsh.OpenShellMessage;
-import org.apache.geronimo.gshell.remote.server.auth.UserAuthenticator;
-import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
-import org.apache.geronimo.gshell.remote.stream.SessionOutputStream;
+import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
+import org.apache.geronimo.gshell.remote.message.ConnectMessage;
+import org.apache.geronimo.gshell.remote.message.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
+import org.apache.geronimo.gshell.remote.message.LoginMessage;
+import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
 import org.apache.mina.common.IoSession;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.classworlds.ClassWorld;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * Provides the server-side message handling for the GShell rsh protocol.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=MessageHandler.class, hint="server")
 public class RshServerHandler
-    extends MessageHandler
-    implements Initializable
 {
+/*
     @Requirement
     private PlexusContainer container;
 
@@ -154,6 +137,8 @@ public class RshServerHandler
         }
     }
 
+    */
+
     //
     // SessionState
     //
@@ -214,6 +199,7 @@ public class RshServerHandler
     // MessageVisitor
     //
 
+    /*
     private class Visitor
         extends MessageVisitorSupport
     {
@@ -449,4 +435,5 @@ public class RshServerHandler
 
         return tf.cancel(false);
     }
+    */
 }

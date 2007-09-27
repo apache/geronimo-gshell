@@ -17,24 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message;
+package org.apache.geronimo.gshell.whisper.message;
 
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.mina.common.ByteBuffer;
+import java.util.UUID;
 
 /**
- * Provides {@link Message.ID} instances based on long integers.
+ * Provides {@link Message.ID} instances based on {@link UUID} objects.
  *
  * @version $Rev$ $Date$
  */
-public class LongMessageID
+public class UuidMessageID
     implements Message.ID
 {
-    private Long value;
+    private final UUID value;
 
-    public LongMessageID(final long value) {
-        this.value = value;
+    public UuidMessageID() {
+        value = UUID.randomUUID();
     }
 
     public int hashCode() {
@@ -48,35 +46,18 @@ public class LongMessageID
         else if (obj == null) {
             return false;
         }
-        else if (!(obj instanceof LongMessageID)) {
+        else if (!(obj instanceof UuidMessageID)) {
             return false;
         }
 
-        return value.equals(((LongMessageID)obj).value);
+        return value.equals(((UuidMessageID)obj).value);
     }
 
     public String toString() {
         return String.valueOf(value);
     }
 
-    public void writeExternal(final ByteBuffer out) throws Exception {
-        out.putLong(value);
-    }
-
-    public void readExternal(final ByteBuffer in) throws Exception {
-        value = in.getLong();
-    }
-
-    /**
-     * Factory to create {@link LongMessageID} instances.
-     */
-    public static class Generator
-        implements Message.IDGenerator
-    {
-        private static final AtomicLong ID_COUNTER = new AtomicLong(0);
-
-        public Message.ID generate() {
-            return new LongMessageID(ID_COUNTER.getAndIncrement());
-        }
+    public static Message.ID generate() {
+        return new UuidMessageID();
     }
 }

@@ -17,31 +17,15 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport;
+package org.apache.geronimo.gshell.whisper.message;
 
 /**
- * Thrown to indicate a transport failure has occured.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class TransportException
-    extends RuntimeException
+public interface MessageHandler<T extends Message>
+    extends org.apache.mina.handler.demux.MessageHandler<T>
 {
-    private static final long serialVersionUID = 1;
-
-    public TransportException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-    public TransportException(final String msg) {
-        super(msg);
-    }
-
-    public TransportException(final Throwable cause) {
-        super(cause);
-    }
-
-    public TransportException() {
-        super();
-    }
+    Class<T> getType();
 }

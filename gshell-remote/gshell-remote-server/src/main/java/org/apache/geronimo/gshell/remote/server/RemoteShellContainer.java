@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.server;
 
 import java.util.UUID;
 
-import org.apache.geronimo.gshell.remote.session.SessionAttributeBinder;
+import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;

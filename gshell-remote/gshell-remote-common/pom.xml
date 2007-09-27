@@ -37,6 +37,14 @@
         Common support for the GShell remote shell client and server.
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-whisper</artifactId>
+            <version>${version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

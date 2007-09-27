@@ -17,9 +17,25 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.remote.message;
+
 /**
- * Messages for the remote shell (rsh) protocol.
+ * Echo text.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.remote.message.rsh;
+public class EchoMessage
+    extends RshMessage
+{
+    private final String text;
+    
+    public EchoMessage(final String text) {
+        super(Type.ECHO);
+        
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+}

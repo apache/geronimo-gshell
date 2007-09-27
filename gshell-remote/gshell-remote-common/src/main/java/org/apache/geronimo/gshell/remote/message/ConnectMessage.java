@@ -17,17 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message.rsh;
+package org.apache.geronimo.gshell.remote.message;
 
 import java.security.PublicKey;
 import java.util.UUID;
-
-import org.apache.geronimo.gshell.remote.marshal.Marshaller;
-import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
-import org.apache.geronimo.gshell.remote.message.MessageType;
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoSession;
 
 /**
  * Initial client to server message to initiate the connection.
@@ -35,19 +28,18 @@ import org.apache.mina.common.IoSession;
  * @version $Rev$ $Date$
  */
 public class ConnectMessage
-    extends CryptoAwareMessageSupport
-    implements HandshakeMessage
+    extends RshMessage
 {
     private PublicKey publicKey;
 
-    protected ConnectMessage(final MessageType type, final PublicKey publicKey) {
+    protected ConnectMessage(final Type type, final PublicKey publicKey) {
         super(type);
 
         this.publicKey = publicKey;
     }
 
     public ConnectMessage(final PublicKey clientKey) {
-        this(MessageType.CONNECT, clientKey);
+        this(Type.CONNECT, clientKey);
     }
 
     public ConnectMessage() {
@@ -66,10 +58,7 @@ public class ConnectMessage
         this.publicKey = publicKey;
     }
 
-    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
-        visitor.visitConnect(session, this);
-    }
-
+    /*
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
@@ -91,6 +80,7 @@ public class ConnectMessage
 
         Marshaller.writeBytes(out, getPublicKey().getEncoded());
     }
+    */
 
     /**
      * Indicates the first part of the connection handshake was successful.
@@ -101,7 +91,7 @@ public class ConnectMessage
         private UUID clientId;
 
         public Result(final UUID clientId, final PublicKey serverKey) {
-            super(MessageType.CONNECT_RESULT, serverKey);
+            super(Type.CONNECT_RESULT, serverKey);
 
             this.clientId = clientId;
         }
@@ -114,6 +104,7 @@ public class ConnectMessage
             return clientId;
         }
 
+        /*
         public void readExternal(final ByteBuffer in) throws Exception {
             assert in != null;
 
@@ -129,5 +120,6 @@ public class ConnectMessage
 
             Marshaller.writeUuid(out, clientId);
         }
+        */
     }
 }

@@ -17,33 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client;
-
-import java.net.URI;
-
-import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
-import org.apache.geronimo.gshell.remote.transport.TransportFactory;
-import org.apache.geronimo.gshell.remote.transport.TransportFactoryLocator;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
+package org.apache.geronimo.gshell.remote.message;
 
 /**
- * Factory to produce {@link RshClient} instances.
+ * Open a remote shell instance.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshClientFactory.class)
-public class RshClientFactory
+public class OpenShellMessage
+    extends RshMessage
 {
-    @Requirement
-    private TransportFactoryLocator locator;
-
-    @Requirement
-    private CryptoContext crypto;
-    
-    public RshClient connect(final URI remote, final URI local) throws Exception {
-        TransportFactory factory = locator.locate(remote);
-
-        return new RshClient(crypto, remote, local, factory);
+    public OpenShellMessage() {
+        super(Type.OPEN_SHELL);
     }
 }

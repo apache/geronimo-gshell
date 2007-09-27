@@ -17,15 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message.rsh;
+package org.apache.geronimo.gshell.remote.message;
 
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.remote.marshal.Marshaller;
-import org.apache.geronimo.gshell.remote.message.MessageSupport;
-import org.apache.geronimo.gshell.remote.message.MessageType;
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoSession;
 
 /**
  * Execute a command.  This supports all flavors of the {@link CommandExecutor} execution methods.
@@ -33,7 +27,7 @@ import org.apache.mina.common.IoSession;
  * @version $Rev$ $Date$
  */
 public class ExecuteMessage
-    extends MessageSupport
+    extends RshMessage
 {
     private Flavor flavor;
     
@@ -42,7 +36,7 @@ public class ExecuteMessage
     private Object[] args;
 
     private ExecuteMessage(final Flavor flavor, final String path, final Object[] args) {
-        super(MessageType.EXECUTE);
+        super(Type.EXECUTE);
 
         this.flavor = flavor;
         this.path = path;
@@ -71,6 +65,7 @@ public class ExecuteMessage
         return flavor.execute(this, executor);
     }
 
+    /*
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
@@ -94,12 +89,7 @@ public class ExecuteMessage
 
         Marshaller.writeObject(out, args);
     }
-
-    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
-        assert visitor != null;
-
-        visitor.visitExecute(session, this);
-    }
+    */
 
     //
     // Flavor
@@ -136,18 +126,18 @@ public class ExecuteMessage
      * Response for execute messages which contain the result of the command execution.
      */
     public static class Result
-        extends MessageSupport
+        extends RshMessage
     {
         private Object result;
 
-        protected Result(final MessageType type, final Object result) {
+        protected Result(final Type type, final Object result) {
             super(type);
 
             this.result = result;
         }
 
         public Result(final Object result) {
-            this(MessageType.EXECUTE_RESULT, result);
+            this(Type.EXECUTE_RESULT, result);
 
             this.result = result;
         }
@@ -159,7 +149,8 @@ public class ExecuteMessage
         public Object getResult() {
             return result;
         }
-        
+
+        /*
         public void readExternal(final ByteBuffer in) throws Exception {
             assert in != null;
 
@@ -175,6 +166,7 @@ public class ExecuteMessage
 
             Marshaller.writeObject(out, result);
         }
+        */
     }
 
     /**
@@ -184,7 +176,7 @@ public class ExecuteMessage
         extends Result
     {
         public Fault(final Throwable cause) {
-            super(MessageType.EXECUTE_FAULT, cause);
+            super(Type.EXECUTE_FAULT, cause);
         }
 
         public Fault() {
@@ -203,7 +195,7 @@ public class ExecuteMessage
         extends Result
     {
         public Notification(final org.apache.geronimo.gshell.common.Notification n) {
-            super(MessageType.EXECUTE_NOTIFICATION, n);
+            super(Type.EXECUTE_NOTIFICATION, n);
         }
 
         public Notification() {

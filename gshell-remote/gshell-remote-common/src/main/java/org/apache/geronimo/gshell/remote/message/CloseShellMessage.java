@@ -17,28 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.transport.vm;
-
-import java.net.URI;
-
-import org.apache.geronimo.gshell.remote.transport.base.BaseTransport;
-import org.apache.mina.common.IoConnector;
-import org.apache.mina.transport.vmpipe.VmPipeConnector;
+package org.apache.geronimo.gshell.remote.message;
 
 /**
- * Provides in-VM client-side support.
+ * Close the remote shell instance.
  *
  * @version $Rev$ $Date$
  */
-public class VmTransport
-    extends BaseTransport
+public class CloseShellMessage
+    extends RshMessage
 {
-    public VmTransport(final URI remote, final URI local) throws Exception {
-        super(remote, VmTransportFactory.address(remote), local, VmTransportFactory.address(local));
-    }
-
-    @Override
-    protected IoConnector createConnector() throws Exception {
-        return new VmPipeConnector();
+    public CloseShellMessage() {
+        super(Type.CLOSE_SHELL);
     }
 }

@@ -43,12 +43,10 @@ public class RshServerCommand
     private URI location;
 
     @Requirement
-    private RshServerFactory factory;
-
     private RshServer server;
 
     protected Object doExecute() throws Exception {
-        server = factory.connect(location);
+        server.bind(location);
 
         io.info("Listening on: {}", location);
 

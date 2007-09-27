@@ -48,7 +48,7 @@ public class RshCommand
 
     @Option(name="-p", aliases={"--password"}, metaVar="PASSWORD", required=true)
     private String password;
-
+    
     @Argument(metaVar="URI", required=true, index=0)
     private URI remote;
 
@@ -59,21 +59,23 @@ public class RshCommand
     private Terminal terminal;
 
     @Requirement
-    private RshClientFactory factory;
-
     private RshClient client;
 
     protected Object doExecute() throws Exception {
         io.info("Connecting to: {}", remote);
 
-        client = factory.connect(remote, local);
+        client.connect(remote, local);
 
         io.info("Connected");
+
+        // client.echo("HELLO");
+        // Thread.sleep(10 * 1000);
+
 
         //
         // TODO: Allow username and/or password to be read from input, need access to the console instance to get password reading working
         //
-        
+
         client.login(username, password);
         
         // client.echo("NOISE MAKER");
@@ -99,7 +101,7 @@ public class RshCommand
         client.close();
 
         io.verbose("Disconnected");
-        
-        return rv;
+
+        return false;
     }
 }

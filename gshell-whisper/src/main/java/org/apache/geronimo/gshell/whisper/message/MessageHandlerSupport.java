@@ -17,9 +17,30 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.whisper.message;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * Provides support for synchronous request/response messaging.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.remote.request;
+public abstract class MessageHandlerSupport<T extends Message>
+    implements MessageHandler<T>
+{
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+    
+    private Message.Type type;
+
+    protected MessageHandlerSupport(final Message.Type type) {
+        assert type != null;
+
+        this.type = type;
+    }
+
+    public Class<T> getType() {
+        return (Class<T>) type.getType();
+    }
+}

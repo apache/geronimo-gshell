@@ -17,18 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.message.rsh;
+package org.apache.geronimo.gshell.remote.message;
 
 import java.security.PublicKey;
-
-import org.apache.geronimo.gshell.remote.marshal.Marshaller;
-import org.apache.geronimo.gshell.remote.message.CryptoAwareMessageSupport;
-import org.apache.geronimo.gshell.remote.message.MessageSupport;
-import org.apache.geronimo.gshell.remote.message.MessageType;
-import org.apache.geronimo.gshell.remote.message.MessageVisitor;
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoSession;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Contains the user authentication details which the client will pass to the server after the
@@ -37,35 +28,28 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Rev$ $Date$
  */
 public class LoginMessage
-    extends CryptoAwareMessageSupport
-    implements HandshakeMessage
+    extends RshMessage
 {
-    private PublicKey serverKey;
-
     private String username;
 
     private String password;
 
-    public LoginMessage(final PublicKey serverKey, final String username, final String password) {
-        super(MessageType.LOGIN);
-
-        this.serverKey = serverKey;
+    public LoginMessage(final String username, final String password) {
+        super(Type.LOGIN);
 
         this.username = username;
         
         this.password = password;
     }
 
-    public LoginMessage() {
-        this(null, null, null);
-    }
-
+    /*
     public String toString() {
         return createToStringBuilder()
                 .append("username", username)
                 .append("password", StringUtils.repeat("*", password.length()))
                 .toString();
     }
+    */
 
     public String getUsername() {
         return username;
@@ -75,10 +59,7 @@ public class LoginMessage
         return password;
     }
 
-    public void process(final IoSession session, final MessageVisitor visitor) throws Exception {
-        visitor.visitLogin(session, this);
-    }
-
+    /*
     public void readExternal(final ByteBuffer in) throws Exception {
         assert in != null;
 
@@ -98,15 +79,16 @@ public class LoginMessage
 
         encryptString(out, serverKey, password);
     }
+    */
 
     /**
      * Response for login messages which were sucessful.
      */
     public static class Success
-        extends MessageSupport
+        extends RshMessage
     {
         public Success() {
-            super(MessageType.LOGIN_SUCCESS);
+            super(Type.LOGIN_SUCCESS);
         }
     }
 
@@ -114,12 +96,12 @@ public class LoginMessage
      * Response for login messages which have failed.
      */
     public static class Failure
-        extends MessageSupport
+        extends RshMessage
     {
         private String reason;
 
         public Failure(final String reason) {
-            super(MessageType.LOGIN_FAILURE);
+            super(Type.LOGIN_FAILURE);
 
             this.reason = reason;
         }
@@ -132,6 +114,7 @@ public class LoginMessage
             return reason;
         }
 
+        /*
         public void readExternal(final ByteBuffer in) throws Exception {
             assert in != null;
 
@@ -147,5 +130,6 @@ public class LoginMessage
 
             Marshaller.writeString(out, reason);
         }
+        */
     }
 }

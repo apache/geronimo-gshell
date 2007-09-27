@@ -23,6 +23,8 @@ import java.net.SocketAddress;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.whisper.request.RequestResponseFilter;
+import org.apache.geronimo.gshell.whisper.stream.SessionStreamFilter;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportExceptionMonitor;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
@@ -178,11 +180,17 @@ public abstract class BaseService<T extends IoService>
 
         log.debug("Configure: {}", chain);
 
-        // For right now just add a few hard codded to test with
+        //
+        // HACK: For right now just add a few hard codded to test with
+        //
 
         chain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 
         chain.addLast(LoggingFilter.class.getSimpleName(), new LoggingFilter());
+
+        chain.addLast(SessionStreamFilter.class.getSimpleName(), new SessionStreamFilter());
+
+        chain.addLast(RequestResponseFilter.class.getSimpleName(), new RequestResponseFilter());
     }
 
     protected void configure(final IoSession session) throws Exception {

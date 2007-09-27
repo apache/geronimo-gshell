@@ -28,10 +28,10 @@ import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.remote.RemoteShell;
-import org.apache.geronimo.gshell.remote.stream.StreamFeeder;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.whisper.stream.StreamFeeder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -148,7 +148,7 @@ public class RemoteShellProxy
         log.debug("Starting interactive console; args: {}", args);
 
         //
-        // FIXME: We need a hook into the session state here so that we can abort the console muck when the session closes
+        // TODO: We need a hook into the session state here so that we can abort the console muck when the session closes
         //
         
         //
