@@ -119,13 +119,7 @@ public abstract class BaseService<T extends IoService>
         
         // Watch for service events
         service.addListener(new IoServiceListener() {
-            private void log(Object msg) {
-                System.err.println(">>> [" + Thread.currentThread().getName() + "] " + msg);
-            }
-
             public void serviceActivated(final IoService service, final SocketAddress serviceAddress, final IoHandler handler, final IoServiceConfig config) {
-                log("Service activated: " + service);
-
                 log.debug("Service activated: {}, filters:", service);
 
                 for (IoFilterChain.Entry entry : service.getFilterChain().getAll()) {
@@ -134,14 +128,10 @@ public abstract class BaseService<T extends IoService>
             }
 
             public void serviceDeactivated(final IoService service, final SocketAddress serviceAddress, final IoHandler handler, final IoServiceConfig config) {
-                log("Service deactivated: " + service);
-
                 log.debug("Service deactivated: {}", service);
             }
 
             public void sessionCreated(final IoSession session) {
-                log("Session created: " + service);
-
                 log.debug("Session created: {}; filters:", session);
 
                 for (IoFilterChain.Entry entry : session.getFilterChain().getAll()) {
@@ -150,8 +140,6 @@ public abstract class BaseService<T extends IoService>
             }
 
             public void sessionDestroyed(final IoSession session) {
-                log("Session destroyed: " + service);
-                
                 log.debug("Session destroyed: {}", session);
             }
         });
