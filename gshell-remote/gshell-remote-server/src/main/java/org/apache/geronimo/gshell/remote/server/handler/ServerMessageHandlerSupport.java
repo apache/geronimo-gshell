@@ -37,8 +37,6 @@ public abstract class ServerMessageHandlerSupport<T extends Message>
     }
 
     public void messageReceived(final IoSession session, final T message) throws Exception {
-        log.debug("Processing: {}", message);
-
         ServerSessionContext context = ServerSessionContext.BINDER.lookup(session);
 
         handle(session, context, message);

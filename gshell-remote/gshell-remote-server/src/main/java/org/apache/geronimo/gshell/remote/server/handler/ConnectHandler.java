@@ -57,7 +57,7 @@ public class ConnectHandler
             context.pk = message.getPublicKey();
 
             // Reply to the client with some details about the connection
-            ConnectMessage.Result reply = new ConnectMessage.Result(context.id, crypto.getPublicKey());
+            ConnectMessage.Result reply = new ConnectMessage.Result(crypto.getPublicKey());
             reply.setCorrelationId(message.getId());
             session.write(reply);
 

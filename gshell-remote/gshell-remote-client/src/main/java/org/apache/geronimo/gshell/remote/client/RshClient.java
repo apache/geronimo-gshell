@@ -22,10 +22,8 @@ package org.apache.geronimo.gshell.remote.client;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.security.PublicKey;
 import java.util.List;
 
-import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginContext;
 
@@ -106,32 +104,44 @@ public class RshClient
     }
 
     public void login(final String username, final String password) throws Exception {
-        assert username != null;
-        assert password != null;
+        doHandshake();
+        doLogin(username, password);
+    }
 
-        log.debug("Starting handshake", username);
+    private void doHandshake() throws Exception {
+        log.debug("Handshaking");
 
-        Message response;
+        ClientSessionContext context = ClientSessionContext.BINDER.lookup(transport.getSession());
 
-        response = transport.request(new ConnectMessage(crypto.getPublicKey()));
+        Message response = transport.request(new ConnectMessage(crypto.getPublicKey()));
 
-        PublicKey serverKey = ((ConnectMessage.Result)response).getPublicKey();
+        if (response instanceof ConnectMessage.Result) {
+            ConnectMessage.Result result = (ConnectMessage.Result)response;
+            context.pk = result.getPublicKey();
+        }
+        else {
+            throw new InternalError("Unexpected handshake response: " + response);
+        }
+    }
 
+    private void doLogin(final String username, final String password) throws Exception {
         log.debug("Logging in: {}", username);
-        
+
+        ClientSessionContext context = ClientSessionContext.BINDER.lookup(transport.getSession());
+
         CallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(username, password);
         LoginContext loginContext = new LoginContext("RshClient", callbackHandler);
 
         RemoteLoginModule.setTransport(transport);
         try {
             loginContext.login();
-
-            Subject subject = loginContext.getSubject();
-            log.debug("Subject: {}", subject);
         }
         finally {
             RemoteLoginModule.unsetTransport();
         }
+
+        context.subject = loginContext.getSubject();
+        log.debug("Subject: {}", context.subject);
     }
     
     public void echo(final String text) throws Exception {

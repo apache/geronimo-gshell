@@ -34,9 +34,9 @@ import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 
 /**
  * ???
@@ -61,13 +61,11 @@ public class BogusLoginModule
         this.callbackHandler = callbackHandler;
     }
 
-    private void clear() {
+    private void reset() {
         username = null;
     }
 
     public boolean login() throws LoginException {
-        log.debug("Login");
-
         // Process the username + password callbacks
         Callback[] callbacks = {
             new NameCallback("Username: "),
@@ -98,33 +96,27 @@ public class BogusLoginModule
     }
 
     public boolean commit() throws LoginException {
-        log.debug("Commit");
-
         principals.add(new UserPrincipal(username));
 
         subject.getPrincipals().addAll(principals);
 
-        clear();
+        reset();
 
         return true;
     }
 
     public boolean abort() throws LoginException {
-        log.debug("Abort");
-
-        clear();
+        reset();
 
         return true;
     }
 
     public boolean logout() throws LoginException {
-        log.debug("Logout");
-
         subject.getPrincipals().removeAll(principals);
 
         principals.clear();
 
-        clear();
+        reset();
 
         return true;
     }

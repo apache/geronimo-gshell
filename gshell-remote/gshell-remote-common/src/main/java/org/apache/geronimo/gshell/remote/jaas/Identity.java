@@ -17,25 +17,42 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client.handler;
+package org.apache.geronimo.gshell.remote.jaas;
 
-import java.security.PublicKey;
+import java.util.UUID;
 
 import javax.security.auth.Subject;
 
-import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class ClientSessionContext
+public class Identity
 {
-    public static final SessionAttributeBinder<ClientSessionContext> BINDER = new SessionAttributeBinder<ClientSessionContext>(ClientSessionContext.class);
+    private final Subject subject;
 
-    /** The server's public key. */
-    public PublicKey pk;
+    private final UUID token;
 
-    public Subject subject;
+    public Identity(final Subject subject) {
+        assert subject != null;
+
+        this.subject = subject;
+        this.token = UUID.randomUUID();
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public UUID getToken() {
+        return token;
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

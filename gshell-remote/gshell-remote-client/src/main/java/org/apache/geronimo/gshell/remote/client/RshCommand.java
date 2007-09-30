@@ -19,19 +19,18 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.PrintWriter;
 
-import jline.Terminal;
 import jline.ConsoleReader;
+import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**

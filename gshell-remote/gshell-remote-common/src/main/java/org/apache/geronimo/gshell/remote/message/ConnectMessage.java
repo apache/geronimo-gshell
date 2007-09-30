@@ -20,10 +20,9 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import java.security.PublicKey;
-import java.util.UUID;
 
 /**
- * Initial client to server message to initiate the connection.
+ * ???
  *
  * @version $Rev$ $Date$
  */
@@ -58,68 +57,11 @@ public class ConnectMessage
         this.publicKey = publicKey;
     }
 
-    /*
-    public void readExternal(final ByteBuffer in) throws Exception {
-        assert in != null;
-
-        super.readExternal(in);
-
-        byte[] bytes = Marshaller.readBytes(in);
-        
-        if (bytes == null) {
-            throw new IllegalStateException();
-        }
-
-        publicKey = getCryptoContext().deserializePublicKey(bytes);
-    }
-
-    public void writeExternal(final ByteBuffer out) throws Exception {
-        assert out != null;
-
-        super.writeExternal(out);
-
-        Marshaller.writeBytes(out, getPublicKey().getEncoded());
-    }
-    */
-
-    /**
-     * Indicates the first part of the connection handshake was successful.
-     */
     public static class Result
         extends ConnectMessage
     {
-        private UUID clientId;
-
-        public Result(final UUID clientId, final PublicKey serverKey) {
+        public Result(final PublicKey serverKey) {
             super(Type.CONNECT_RESULT, serverKey);
-
-            this.clientId = clientId;
         }
-
-        public Result() {
-            this(null, null);
-        }
-
-        public UUID getClientID() {
-            return clientId;
-        }
-
-        /*
-        public void readExternal(final ByteBuffer in) throws Exception {
-            assert in != null;
-
-            super.readExternal(in);
-
-            clientId = Marshaller.readUuid(in);
-        }
-
-        public void writeExternal(final ByteBuffer out) throws Exception {
-            assert out != null;
-
-            super.writeExternal(out);
-
-            Marshaller.writeUuid(out, clientId);
-        }
-        */
     }
 }

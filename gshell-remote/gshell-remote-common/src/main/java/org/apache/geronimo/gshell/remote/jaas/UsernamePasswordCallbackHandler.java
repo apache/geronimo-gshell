@@ -37,11 +37,22 @@ public class UsernamePasswordCallbackHandler
 {
     private final String username;
 
-    private final String password;
+    private final char[] password;
+
+    public UsernamePasswordCallbackHandler(final String username, final char[] password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public UsernamePasswordCallbackHandler(final String username, final String password) {
         this.username = username;
-        this.password = password;
+
+        if (password != null) {
+            this.password = password.toCharArray();
+        }
+        else {
+            this.password = null;
+        }
     }
 
     public void handle(final Callback[] callbacks) throws IOException, UnsupportedCallbackException {
@@ -55,7 +66,7 @@ public class UsernamePasswordCallbackHandler
                 PasswordCallback pc = (PasswordCallback)callback;
 
                 if (password != null) {
-                    pc.setPassword(password.toCharArray());
+                    pc.setPassword(password);
                 }
                 else {
                     pc.setPassword(null);

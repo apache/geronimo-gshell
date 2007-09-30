@@ -63,15 +63,13 @@ public class RemoteLoginModule
         this.callbackHandler = callbackHandler;
     }
 
-    private void clear() {
+    private void reset() {
         username = null;
         clientIdentity = null;
         principal = null;
     }
 
     public boolean login() throws LoginException {
-        log.debug("Login");
-
         // Get a handle on our transport
         Transport transport = getTransport();
 
@@ -97,22 +95,16 @@ public class RemoteLoginModule
         // Send the login message
         Message response;
         try {
-            //
-            // TODO: Encrypt the username/password with our private key here?  Or should that be done in the callback?
-            //
-
-            response = transport.request(new LoginMessage(username, new String(password)));
+            response = transport.request(new LoginMessage(username, password));
         }
         catch (Exception e) {
             throw new LoginException(e.getMessage());
         }
 
         if (response instanceof LoginMessage.Success) {
-            log.debug("Login successful");
-
             clientIdentity = ((LoginMessage.Success)response).getToken();
 
-            log.debug("Using client identity: {}", clientIdentity);
+            log.debug("Client identity: {}", clientIdentity);
         }
         else if (response instanceof LoginMessage.Failure) {
             LoginMessage.Failure failure = (LoginMessage.Failure)response;
@@ -124,11 +116,9 @@ public class RemoteLoginModule
     }
 
     public boolean commit() throws LoginException {
-        log.debug("Commit");
-
         principal = new ClientPrincipal(username, clientIdentity);
 
-        log.debug("Created principal: {}", principal);
+        log.debug("Principal: {}", principal);
 
         subject.getPrincipals().add(principal);
 
@@ -136,16 +126,12 @@ public class RemoteLoginModule
     }
 
     public boolean abort() throws LoginException {
-        log.debug("Abort");
-
-        clear();
+        reset();
 
         return true;
     }
 
     public boolean logout() throws LoginException {
-        log.debug("Logout");
-        
         subject.getPrincipals().remove(principal);
 
         return true;

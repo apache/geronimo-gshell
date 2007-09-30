@@ -126,7 +126,7 @@ public class RshServer
 
             // Install the session context
             ServerSessionContext context = ServerSessionContext.BINDER.bind(session, new ServerSessionContext());
-            log.debug("Created session context: {}", context.id);
+            log.debug("Created session context: {}", context);
             
             // Schedule a task to timeout the handshake process
             timeoutManager.scheduleTimeout(session, AUTH_TIMEOUT, new Runnable() {
@@ -143,7 +143,7 @@ public class RshServer
             assert session != null;
 
             ServerSessionContext context = ServerSessionContext.BINDER.unbind(session);
-            log.debug("Removed session context: {}", context.id);
+            log.debug("Removed session context: {}", context);
         }
     }
 }

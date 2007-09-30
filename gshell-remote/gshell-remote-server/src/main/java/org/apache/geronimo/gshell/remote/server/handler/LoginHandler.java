@@ -19,15 +19,13 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import java.io.Serializable;
-import java.util.UUID;
-
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
+import org.apache.geronimo.gshell.remote.jaas.Identity;
 import org.apache.geronimo.gshell.remote.jaas.JaasConfigurationHelper;
+import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
@@ -64,32 +62,30 @@ public class LoginHandler
             log.warn("Aborting login processing; timeout has triggered");
         }
         else {
-            String realm = "BogusLogin";
+            String realm = message.getRealm();
+            if (realm == null) {
+                realm = "BogusLogin";
+            }
+
             String username = message.getUsername();
-            String password = message.getPassword();
+            char[] password = message.getPassword();
 
             try {
                 LoginContext loginContext = new LoginContext(realm, new UsernamePasswordCallbackHandler(username, password));
                 loginContext.login();
-                
+
                 Subject subject = loginContext.getSubject();
-                Identity identity = new Identity(subject);
+                context.identity = new Identity(subject);
 
-                log.debug("Created client identity: {}", identity.getToken());
+                log.debug("Username: {}, Identity: {}", context.getUsername(), context.identity);
 
-                //
-                // TODO: Hold onto the subject, identity and username, blah, blah?
-                //
-
-                log.info("Successfull authentication for user: {}", username);
-
-                LoginMessage.Success reply = new LoginMessage.Success(identity.getToken());
+                LoginMessage.Success reply = new LoginMessage.Success(context.identity.getToken());
                 reply.setCorrelationId(message.getId());
                 session.write(reply);
             }
             catch (LoginException e) {
                 String reason = e.toString();
-                log.info("Login failed for user: {}, cause: {}", username, reason);
+                log.debug("Login failed for user: {}, cause: {}", username, reason);
 
                 LoginMessage.Failure reply = new LoginMessage.Failure(reason);
                 reply.setCorrelationId(message.getId());
@@ -98,23 +94,4 @@ public class LoginHandler
         }
     }
 
-    private static class Identity
-    {
-        private final Subject subject;
-
-        private final UUID token;
-
-        public Identity(final Subject subject) {
-            this.subject = subject;
-            this.token = UUID.randomUUID();
-        }
-
-        public Subject getSubject() {
-            return subject;
-        }
-
-        public Serializable getToken() {
-            return token;
-        }
-    }
 }

@@ -20,11 +20,12 @@
 package org.apache.geronimo.gshell.remote.server.handler;
 
 import java.security.PublicKey;
-import java.util.UUID;
 
-import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import javax.security.auth.Subject;
+
 import org.apache.geronimo.gshell.remote.RemoteShell;
+import org.apache.geronimo.gshell.remote.jaas.Identity;
+import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
 import org.apache.geronimo.gshell.shell.Environment;
@@ -39,34 +40,19 @@ public class ServerSessionContext
 {
     public static final SessionAttributeBinder<ServerSessionContext> BINDER = new SessionAttributeBinder<ServerSessionContext>(ServerSessionContext.class);
 
-    /** The session id. */
-    public final UUID id = UUID.randomUUID();
-
-    /** The remote client's public key. */
     public PublicKey pk;
 
-    /** The remote client's logged in username. */
-    public String username;
+    public Identity identity;
 
-    /** The container which the remote shell is running in. */
+    public String getUsername() {
+        return identity.getSubject().getPrincipals(UserPrincipal.class).iterator().next().getName();
+    }
+
     public RemoteShellContainer container;
 
-    /** The I/O context for the remote shell. */
     public RemoteIO io;
 
-    /** The environment for the remote shell. */
     public Environment env;
 
-    /** The remote shell instance. */
     public RemoteShell shell;
-
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
-                .toString();
-    }
 }

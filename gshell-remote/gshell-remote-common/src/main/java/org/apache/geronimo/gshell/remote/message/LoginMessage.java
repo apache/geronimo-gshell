@@ -19,8 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
-import java.security.PublicKey;
 import java.io.Serializable;
+
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
  * Contains the user authentication details which the client will pass to the server after the
@@ -33,58 +35,41 @@ public class LoginMessage
 {
     private String username;
 
-    private String password;
+    private char[] password;
 
-    public LoginMessage(final String username, final String password) {
+    private String realm;
+    
+    public LoginMessage(final String username, final char[] password, final String realm) {
         super(Type.LOGIN);
 
         this.username = username;
         
         this.password = password;
+
+        this.realm = realm;
     }
 
-    /*
+    public LoginMessage(final String username, final char[] password) {
+        this(username, password, null);
+    }
+
     public String toString() {
-        return createToStringBuilder()
-                .append("username", username)
-                .append("password", StringUtils.repeat("*", password.length()))
-                .toString();
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .setExcludeFieldNames(new String[] { "password" }).toString();
     }
-    */
-
+    
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    /*
-    public void readExternal(final ByteBuffer in) throws Exception {
-        assert in != null;
-
-        super.readExternal(in);
-
-        username = decryptString(in);
-
-        password = decryptString(in);
+    public String getRealm() {
+        return realm;
     }
 
-    public void writeExternal(final ByteBuffer out) throws Exception {
-        assert out != null;
-
-        super.writeExternal(out);
-
-        encryptString(out, serverKey, username);
-
-        encryptString(out, serverKey, password);
-    }
-    */
-
-    /**
-     * Response for login messages which were sucessful.
-     */
     public static class Success
         extends RshMessage
     {
@@ -101,9 +86,6 @@ public class LoginMessage
         }
     }
 
-    /**
-     * Response for login messages which have failed.
-     */
     public static class Failure
         extends RshMessage
     {
@@ -122,23 +104,5 @@ public class LoginMessage
         public String getReason() {
             return reason;
         }
-
-        /*
-        public void readExternal(final ByteBuffer in) throws Exception {
-            assert in != null;
-
-            super.readExternal(in);
-
-            reason = Marshaller.readString(in);
-        }
-
-        public void writeExternal(final ByteBuffer out) throws Exception {
-            assert out != null;
-
-            super.writeExternal(out);
-
-            Marshaller.writeString(out, reason);
-        }
-        */
     }
 }
