@@ -43,37 +43,16 @@ public class PingPongProtocolTester
         System.err.println(">>> [" + Thread.currentThread().getName() + "] " + msg);
     }
 
-    public static enum PingPongMessageType
-        implements Message.Type
-    {
-        PING(PingMessage.class),
-        PONG(PongMessage.class);
-
-        Class<? extends Message> type;
-
-        PingPongMessageType(Class<? extends Message> type) {
-            this.type = type;
-        }
-
-        public Class<? extends Message> getType() {
-            return type;
-        }
-    }
-
     public static class PingMessage
         extends BaseMessage
     {
-        public PingMessage() {
-            super(PingPongMessageType.PING);
-        }
+        public PingMessage() {}
     }
 
     public static class PongMessage
         extends BaseMessage
     {
-        public PongMessage() {
-            super(PingPongMessageType.PONG);
-        }
+        public PongMessage() {}
     }
 
 

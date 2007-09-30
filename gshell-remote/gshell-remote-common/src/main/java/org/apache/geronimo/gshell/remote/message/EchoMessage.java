@@ -30,8 +30,6 @@ public class EchoMessage
     private final String text;
     
     public EchoMessage(final String text) {
-        super(Type.ECHO);
-        
         this.text = text;
     }
 

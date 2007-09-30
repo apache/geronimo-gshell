@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -35,7 +34,7 @@ public class CloseShellHandler
     extends ServerMessageHandlerSupport<CloseShellMessage>
 {
     public CloseShellHandler() {
-        super(RshMessage.Type.CLOSE_SHELL);
+        super(CloseShellMessage.class);
     }
 
     public void handle(final IoSession session, final ServerSessionContext context, final CloseShellMessage message) throws Exception {

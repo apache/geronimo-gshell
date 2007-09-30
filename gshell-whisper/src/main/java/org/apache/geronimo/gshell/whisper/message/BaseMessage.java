@@ -34,8 +34,6 @@ public class BaseMessage
 {
     private static final AtomicLong SEQUENCE_GENERATOR = new AtomicLong(0);
 
-    private Type type;
-
     private ID id = LongMessageID.generate();
 
     private ID cid;
@@ -44,13 +42,7 @@ public class BaseMessage
 
     private long timestamp = System.currentTimeMillis();
 
-    protected BaseMessage(final Type type) {
-        assert type != null;
-        
-        this.type = type;
-
-        this.timestamp = System.currentTimeMillis();
-    }
+    protected BaseMessage() {}
 
     public int hashCode() {
         return getId().hashCode();
@@ -58,10 +50,6 @@ public class BaseMessage
 
     public String toString() {
         return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).toString();
-    }
-
-    public Type getType() {
-        return type;
     }
 
     public ID getId() {

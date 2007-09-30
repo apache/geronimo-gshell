@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.remote.jaas.Identity;
 import org.apache.geronimo.gshell.remote.jaas.JaasConfigurationHelper;
 import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
-import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
@@ -49,7 +48,7 @@ public class LoginHandler
     private TimeoutManager timeoutManager;
 
     public LoginHandler() {
-        super(RshMessage.Type.LOGIN);
+        super(LoginMessage.class);
     }
 
     public void initialize() throws InitializationException {

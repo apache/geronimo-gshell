@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
-import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.geronimo.gshell.remote.server.RshServer;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.mina.common.IoSession;
@@ -44,7 +43,7 @@ public class ConnectHandler
     private TimeoutManager timeoutManager;
     
     public ConnectHandler() {
-        super(RshMessage.Type.CONNECT);
+        super(ConnectMessage.class);
     }
 
     public void handle(final IoSession session, final ServerSessionContext context, final ConnectMessage message) throws Exception {

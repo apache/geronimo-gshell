@@ -44,8 +44,16 @@ public class ServerSessionContext
 
     public Identity identity;
 
+    public Subject getSubject() {
+        return identity.getSubject();
+    }
+
+    public UserPrincipal getUserPrincipal() {
+        return getSubject().getPrincipals(UserPrincipal.class).iterator().next();
+    }
+
     public String getUsername() {
-        return identity.getSubject().getPrincipals(UserPrincipal.class).iterator().next().getName();
+        return getUserPrincipal().getName();
     }
 
     public RemoteShellContainer container;

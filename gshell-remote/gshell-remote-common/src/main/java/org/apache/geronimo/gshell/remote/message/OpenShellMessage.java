@@ -27,7 +27,5 @@ package org.apache.geronimo.gshell.remote.message;
 public class OpenShellMessage
     extends RshMessage
 {
-    public OpenShellMessage() {
-        super(Type.OPEN_SHELL);
-    }
+    public OpenShellMessage() {}
 }

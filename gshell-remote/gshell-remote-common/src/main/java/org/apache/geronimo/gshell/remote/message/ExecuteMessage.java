@@ -29,15 +29,13 @@ import org.apache.geronimo.gshell.command.CommandExecutor;
 public class ExecuteMessage
     extends RshMessage
 {
-    private Flavor flavor;
+    private final Flavor flavor;
     
-    private String path;
+    private final String path;
 
-    private Object[] args;
+    private final Object[] args;
 
     private ExecuteMessage(final Flavor flavor, final String path, final Object[] args) {
-        super(Type.EXECUTE);
-
         this.flavor = flavor;
         this.path = path;
         this.args = args;
@@ -64,32 +62,6 @@ public class ExecuteMessage
 
         return flavor.execute(this, executor);
     }
-
-    /*
-    public void readExternal(final ByteBuffer in) throws Exception {
-        assert in != null;
-
-        super.readExternal(in);
-
-        this.flavor = Marshaller.readEnum(in, Flavor.class);
-
-        this.path = Marshaller.readString(in);
-
-        this.args = (Object[]) Marshaller.readObject(in);
-    }
-
-    public void writeExternal(final ByteBuffer out) throws Exception {
-        assert out != null;
-
-        super.writeExternal(out);
-
-        Marshaller.writeEnum(out, flavor);
-
-        Marshaller.writeString(out, path);
-
-        Marshaller.writeObject(out, args);
-    }
-    */
 
     //
     // Flavor
@@ -122,65 +94,25 @@ public class ExecuteMessage
         }
     }
 
-    /**
-     * Response for execute messages which contain the result of the command execution.
-     */
     public static class Result
         extends RshMessage
     {
-        private Object result;
-
-        protected Result(final Type type, final Object result) {
-            super(type);
-
-            this.result = result;
-        }
+        private final Object result;
 
         public Result(final Object result) {
-            this(Type.EXECUTE_RESULT, result);
-
             this.result = result;
-        }
-
-        public Result() {
-            this(null, null);
         }
 
         public Object getResult() {
             return result;
         }
-
-        /*
-        public void readExternal(final ByteBuffer in) throws Exception {
-            assert in != null;
-
-            super.readExternal(in);
-
-            result = Marshaller.readObject(in);
-        }
-
-        public void writeExternal(final ByteBuffer out) throws Exception {
-            assert out != null;
-
-            super.writeExternal(out);
-
-            Marshaller.writeObject(out, result);
-        }
-        */
     }
 
-    /**
-     * Response for execute messages which resulted in a server-side exception.
-     */
     public static class Fault
         extends Result
     {
         public Fault(final Throwable cause) {
-            super(Type.EXECUTE_FAULT, cause);
-        }
-
-        public Fault() {
-            this(null);
+            super(cause);
         }
 
         public Throwable getCause() {
@@ -188,18 +120,11 @@ public class ExecuteMessage
         }
     }
 
-    /**
-     * Response for execute messages which resulted in a server-side notification.
-     */
     public static class Notification
         extends Result
     {
         public Notification(final org.apache.geronimo.gshell.common.Notification n) {
-            super(Type.EXECUTE_NOTIFICATION, n);
-        }
-
-        public Notification() {
-            this(null);
+            super(n);
         }
 
         public org.apache.geronimo.gshell.common.Notification getNotification() {

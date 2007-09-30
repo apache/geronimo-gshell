@@ -27,7 +27,5 @@ package org.apache.geronimo.gshell.remote.message;
 public class CloseShellMessage
     extends RshMessage
 {
-    public CloseShellMessage() {
-        super(Type.CLOSE_SHELL);
-    }
+    public CloseShellMessage() {}
 }

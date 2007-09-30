@@ -38,8 +38,6 @@ public interface Message
     //
     // void setCorrelationId(ID id);
 
-    Type getType();
-
     long getTimestamp();
 
     long getSequence();
@@ -48,30 +46,5 @@ public interface Message
         extends Serializable
     {
         // Empty
-    }
-
-    //
-    // TODO: Make the Type an Enum using Generics
-    //
-
-    interface Type
-        extends Serializable
-    {
-        Class<? extends Message> getType();
-
-        //
-        // TODO: Just expose a byte index() and serialize that and leave the mapping up to the protocol implementation
-        //
-    }
-
-    interface Factory
-    {
-        Message create(Type type) throws Exception;
-
-        // TODO: ??
-        // Message create(byte index) throws Exception;
-        //
-        // Would still really like to use enums... but need to do some magic to marshal and unmarshal them...
-        //
     }
 }

@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.common.Notification;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -37,7 +36,7 @@ public class ExecuteHandler
     extends ServerMessageHandlerSupport<ExecuteMessage>
 {
     public ExecuteHandler() {
-        super(RshMessage.Type.EXECUTE);
+        super(ExecuteMessage.class);
     }
 
     public void handle(final IoSession session, final ServerSessionContext context, final ExecuteMessage message) throws Exception {

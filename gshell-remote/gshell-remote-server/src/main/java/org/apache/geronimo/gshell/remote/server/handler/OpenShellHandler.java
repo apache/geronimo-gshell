@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
-import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
 import org.apache.mina.common.IoSession;
@@ -47,7 +46,7 @@ public class OpenShellHandler
     private PlexusContainer container;
 
     public OpenShellHandler() {
-        super(RshMessage.Type.OPEN_SHELL);
+        super(OpenShellMessage.class);
     }
 
     public void handle(final IoSession session, final ServerSessionContext context, final OpenShellMessage message) throws Exception {

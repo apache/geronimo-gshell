@@ -25,7 +25,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 
 import org.apache.geronimo.gshell.whisper.message.BaseMessage;
-import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -36,11 +35,9 @@ import org.apache.mina.common.ByteBuffer;
 public class StreamMessage
     extends BaseMessage
 {
-    private byte[] bytes;
+    private final byte[] bytes;
 
-    public StreamMessage(final Type type, final ByteBuffer buffer) throws IOException {
-        super(type);
-
+    public StreamMessage(final ByteBuffer buffer) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         
         WritableByteChannel channel = Channels.newChannel(baos);
@@ -50,25 +47,7 @@ public class StreamMessage
         bytes = baos.toByteArray();
     }
 
-    public StreamMessage(final ByteBuffer buffer) throws IOException {
-        this(StreamMessage.Type.IN, buffer);
-    }
-
     public ByteBuffer getBuffer() {
         return ByteBuffer.wrap(bytes);
-    }
-
-    public static enum Type
-        implements Message.Type
-    {
-
-        IN,  // (local SYSOUT to remote SYSIN)
-        OUT, // ???
-        ERR  // ???
-        ;
-
-        public Class<? extends Message> getType() {
-            return StreamMessage.class;
-        }
     }
 }

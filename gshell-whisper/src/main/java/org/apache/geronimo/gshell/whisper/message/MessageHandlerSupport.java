@@ -32,16 +32,15 @@ public abstract class MessageHandlerSupport<T extends Message>
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
     
-    private Message.Type type;
+    private Class<T> type;
 
-    protected MessageHandlerSupport(final Message.Type type) {
+    protected MessageHandlerSupport(final Class<T> type) {
         assert type != null;
 
         this.type = type;
     }
 
     public Class<T> getType() {
-        // noinspection unchecked
-        return (Class<T>) type.getType();
+        return type;
     }
 }

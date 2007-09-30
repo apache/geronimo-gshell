@@ -33,15 +33,13 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 public class LoginMessage
     extends RshMessage
 {
-    private String username;
+    private final String username;
 
-    private char[] password;
+    private final char[] password;
 
-    private String realm;
+    private final String realm;
     
     public LoginMessage(final String username, final char[] password, final String realm) {
-        super(Type.LOGIN);
-
         this.username = username;
         
         this.password = password;
@@ -73,11 +71,9 @@ public class LoginMessage
     public static class Success
         extends RshMessage
     {
-        private Serializable token;
+        private final Serializable token;
 
         public Success(Serializable token) {
-            super(Type.LOGIN_SUCCESS);
-
             this.token = token;
         }
 
@@ -89,18 +85,12 @@ public class LoginMessage
     public static class Failure
         extends RshMessage
     {
-        private String reason;
+        private final String reason;
 
         public Failure(final String reason) {
-            super(Type.LOGIN_FAILURE);
-
             this.reason = reason;
         }
 
-        public Failure() {
-            this(null);
-        }
-        
         public String getReason() {
             return reason;
         }

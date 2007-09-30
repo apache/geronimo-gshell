@@ -37,5 +37,6 @@ public class ClientSessionContext
     /** The server's public key. */
     public PublicKey pk;
 
+    /** The subject which the remote client has been authenticated as. */
     public Subject subject;
 }

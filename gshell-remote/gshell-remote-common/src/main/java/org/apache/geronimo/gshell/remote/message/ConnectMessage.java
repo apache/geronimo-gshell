@@ -29,39 +29,21 @@ import java.security.PublicKey;
 public class ConnectMessage
     extends RshMessage
 {
-    private PublicKey publicKey;
+    private final PublicKey publicKey;
 
-    protected ConnectMessage(final Type type, final PublicKey publicKey) {
-        super(type);
-
+    public ConnectMessage(final PublicKey publicKey) {
         this.publicKey = publicKey;
-    }
-
-    public ConnectMessage(final PublicKey clientKey) {
-        this(Type.CONNECT, clientKey);
-    }
-
-    public ConnectMessage() {
-        this(null);
     }
 
     public PublicKey getPublicKey() {
-        if (publicKey == null) {
-            throw new IllegalStateException("Missing public key");
-        }
-
         return publicKey;
-    }
-
-    public void setPublicKey(final PublicKey publicKey) {
-        this.publicKey = publicKey;
     }
 
     public static class Result
         extends ConnectMessage
     {
         public Result(final PublicKey serverKey) {
-            super(Type.CONNECT_RESULT, serverKey);
+            super(serverKey);
         }
     }
 }

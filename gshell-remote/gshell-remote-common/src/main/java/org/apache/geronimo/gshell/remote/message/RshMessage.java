@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import org.apache.geronimo.gshell.whisper.message.BaseMessage;
-import org.apache.geronimo.gshell.whisper.message.Message;
 
 /**
  * ???
@@ -30,37 +29,5 @@ import org.apache.geronimo.gshell.whisper.message.Message;
 public class RshMessage
     extends BaseMessage
 {
-    protected RshMessage(final Type type) {
-        super(type);
-    }
-
-    public static enum Type
-        implements Message.Type
-    {
-        ECHO                    (EchoMessage.class),
-        CONNECT                 (ConnectMessage.class),
-        CONNECT_RESULT          (ConnectMessage.Result.class),
-        LOGIN                   (LoginMessage.class),
-        LOGIN_SUCCESS           (LoginMessage.Success.class),
-        LOGIN_FAILURE           (LoginMessage.Failure.class),
-        OPEN_SHELL              (OpenShellMessage.class),
-        CLOSE_SHELL             (CloseShellMessage.class),
-        EXECUTE                 (ExecuteMessage.class),
-        EXECUTE_RESULT          (ExecuteMessage.Result.class),
-        EXECUTE_NOTIFICATION    (ExecuteMessage.Notification.class),
-        EXECUTE_FAULT           (ExecuteMessage.Fault.class),
-        ;
-
-        private final Class<? extends RshMessage> type;
-
-        private Type(Class<? extends RshMessage> type) {
-            assert type != null;
-
-            this.type = type;
-        }
-
-        public Class<? extends RshMessage> getType() {
-            return type;
-        }
-    }
+    protected RshMessage() {}
 }

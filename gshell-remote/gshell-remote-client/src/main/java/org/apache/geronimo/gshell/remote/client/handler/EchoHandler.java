@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.remote.client.handler;
 
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.mina.common.IoSession;
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -34,7 +33,7 @@ public class EchoHandler
     extends ClientMessageHandlerSupport<EchoMessage>
 {
     public EchoHandler() {
-        super(RshMessage.Type.ECHO);
+        super(EchoMessage.class);
     }
 
     public void handle(final IoSession session, final ClientSessionContext context, final EchoMessage message) throws Exception {

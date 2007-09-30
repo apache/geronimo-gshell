@@ -32,7 +32,7 @@ public abstract class ServerMessageHandlerSupport<T extends Message>
     extends MessageHandlerSupport<T>
     implements ServerMessageHandler<T>
 {
-    protected ServerMessageHandlerSupport(final Message.Type type) {
+    protected ServerMessageHandlerSupport(final Class<T> type) {
         super(type);
     }
 

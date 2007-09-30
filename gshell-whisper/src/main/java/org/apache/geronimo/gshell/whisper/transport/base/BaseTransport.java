@@ -38,8 +38,8 @@ import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
-import org.apache.mina.common.WriteFuture;
 import org.apache.mina.common.ThreadModel;
+import org.apache.mina.common.WriteFuture;
 
 /**
  * Support for {@link Transport} implementations.
