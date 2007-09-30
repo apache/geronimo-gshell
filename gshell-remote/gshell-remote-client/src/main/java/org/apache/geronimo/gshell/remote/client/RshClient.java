@@ -23,7 +23,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.security.PublicKey;
+import java.util.List;
 
+import org.apache.geronimo.gshell.remote.client.handler.ClientMessageHandler;
+import org.apache.geronimo.gshell.remote.client.handler.ClientSessionContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
@@ -37,7 +40,7 @@ import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
-import org.apache.mina.handler.demux.MessageHandler;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -55,6 +58,9 @@ public class RshClient
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
+    private PlexusContainer container;
+
+    @Requirement
     private CryptoContext crypto;
     
     @Requirement
@@ -65,7 +71,7 @@ public class RshClient
     public void connect(final URI remote, final URI local) throws Exception {
         TransportFactory factory = locator.locate(remote);
 
-        transport = factory.connect(remote, local, new ClientHandler());
+        transport = factory.connect(remote, local, new Handler());
 
         log.debug("Connected to: {}", remote);
     }
@@ -193,22 +199,53 @@ public class RshClient
     }
 
     //
-    // ClientHandler
+    // IO Handler
     //
 
-    private class ClientHandler
+    private class Handler
         extends DemuxingIoHandler
     {
-        public ClientHandler() {
-            addMessageHandler(EchoMessage.class, new EchoHandler());
-        }
-    }
+        public Handler() throws Exception {
+            // noinspection unchecked
+            List<ClientMessageHandler> handlers = (List<ClientMessageHandler>)container.lookupList(ClientMessageHandler.class);
 
-    private class EchoHandler
-        implements MessageHandler<EchoMessage>
-    {
-        public void messageReceived(final IoSession session, final EchoMessage message) throws Exception {
-            log.debug("ECHO: {}", message.getText());
+            // Complain if we don't have any handlers
+            if (handlers.isEmpty()) {
+                throw new Error("No client message handlers were discovered");
+            }
+
+            for (ClientMessageHandler handler : handlers) {
+
+                register(handler);
+            }
+        }
+
+        public void register(final org.apache.geronimo.gshell.whisper.message.MessageHandler handler) {
+            assert handler != null;
+
+            Class<?> type = handler.getType();
+
+            log.debug("Registering handler: {} for type: {}", handler, type);
+
+            // noinspection unchecked
+            addMessageHandler(type, handler);
+        }
+
+        @Override
+        public void sessionOpened(final IoSession session) throws Exception {
+            assert session != null;
+
+            // Install the session context
+            ClientSessionContext context = ClientSessionContext.BINDER.bind(session, new ClientSessionContext());
+            log.debug("Created session context: {}", context);
+        }
+
+        @Override
+        public void sessionClosed(final IoSession session) throws Exception {
+            assert session != null;
+
+            ClientSessionContext context = ClientSessionContext.BINDER.unbind(session);
+            log.debug("Removed session context: {}", context);
         }
     }
 }

@@ -17,30 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server.handler;
+package org.apache.geronimo.gshell.remote.client.handler;
 
-import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageHandlerSupport;
+import org.apache.geronimo.gshell.remote.message.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.RshMessage;
 import org.apache.mina.common.IoSession;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public abstract class ServerMessageHandlerSupport<T extends Message>
-    extends MessageHandlerSupport<T>
-    implements ServerMessageHandler<T>
+@Component(role=ClientMessageHandler.class, hint="echo")
+public class EchoHandler
+    extends ClientMessageHandlerSupport<EchoMessage>
 {
-    protected ServerMessageHandlerSupport(final Message.Type type) {
-        super(type);
+    public EchoHandler() {
+        super(RshMessage.Type.ECHO);
     }
 
-    public void messageReceived(final IoSession session, final T message) throws Exception {
-        log.debug("Processing: {}", message);
-
-        ServerSessionContext context = ServerSessionContext.BINDER.lookup(session);
-
-        handle(session, context, message);
+    public void handle(final IoSession session, final ClientSessionContext context, final EchoMessage message) throws Exception {
+        log.info("\n\nECHO: {}\n\n", message.getText());
     }
 }

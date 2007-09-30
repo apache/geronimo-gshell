@@ -17,30 +17,16 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server.handler;
+package org.apache.geronimo.gshell.remote.client.handler;
 
-import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageHandlerSupport;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public abstract class ServerMessageHandlerSupport<T extends Message>
-    extends MessageHandlerSupport<T>
-    implements ServerMessageHandler<T>
+public class ClientSessionContext
 {
-    protected ServerMessageHandlerSupport(final Message.Type type) {
-        super(type);
-    }
-
-    public void messageReceived(final IoSession session, final T message) throws Exception {
-        log.debug("Processing: {}", message);
-
-        ServerSessionContext context = ServerSessionContext.BINDER.lookup(session);
-
-        handle(session, context, message);
-    }
+    public static final SessionAttributeBinder<ClientSessionContext> BINDER = new SessionAttributeBinder<ClientSessionContext>(ClientSessionContext.class);
 }

@@ -64,7 +64,7 @@ public class RshServer
     public void bind(final URI location) throws Exception {
         TransportFactory factory = locator.locate(location);
 
-        server = factory.bind(location, new ServerHandler());
+        server = factory.bind(location, new Handler());
 
         log.debug("Bound to: {}", location);
     }
@@ -75,10 +75,14 @@ public class RshServer
 
     public static final Duration AUTH_TIMEOUT = new Duration(10, TimeUnit.SECONDS);
 
-    private class ServerHandler
+    //
+    // IO Handler
+    //
+
+    private class Handler
         extends DemuxingIoHandler
     {
-        public ServerHandler() throws Exception {
+        public Handler() throws Exception {
             // noinspection unchecked
             List<ServerMessageHandler> handlers = (List<ServerMessageHandler>)container.lookupList(ServerMessageHandler.class);
 
@@ -142,5 +146,4 @@ public class RshServer
             log.debug("Removed session context: {}", context.id);
         }
     }
-
 }

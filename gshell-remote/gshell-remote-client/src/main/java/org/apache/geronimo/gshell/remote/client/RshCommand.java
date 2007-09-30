@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
@@ -68,19 +69,14 @@ public class RshCommand
 
         io.info("Connected");
 
-        // client.echo("HELLO");
-        // Thread.sleep(10 * 1000);
-
-
         //
         // TODO: Allow username and/or password to be read from input, need access to the console instance to get password reading working
         //
 
         client.login(username, password);
-        
-        // client.echo("NOISE MAKER");
 
-        // client.getTransport().request(new EchoMessage("NO REPLY"));
+        // client.echo("HELLO");
+        // Thread.sleep(1 * 1000);
 
         RemoteShellProxy shell = new RemoteShellProxy(client, io, terminal);
 
@@ -102,6 +98,6 @@ public class RshCommand
 
         io.verbose("Disconnected");
 
-        return false;
+        return rv;
     }
 }
