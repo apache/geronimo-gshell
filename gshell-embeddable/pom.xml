@@ -65,7 +65,12 @@
                         <configuration>
                             <artifactSet>
                                 <excludes>
+                                    <!--
+                                    FIXME: For some reason we get test scope stuff in here... so exclude them
+                                    -->
+                                    <exclude>org.slf4j:slf4j-simple</exclude>
                                     <exclude>junit:junit</exclude>
+                                    <exclude>org.apache.geronimo.genesis.config:logging-config</exclude>
                                 </excludes>
                             </artifactSet>
                             <!--

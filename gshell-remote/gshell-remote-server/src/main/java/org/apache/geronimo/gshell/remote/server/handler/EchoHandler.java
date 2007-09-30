@@ -17,31 +17,29 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.message;
+package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.remote.message.EchoMessage;
+import org.apache.geronimo.gshell.remote.message.RshMessage;
+import org.apache.mina.common.IoSession;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public abstract class MessageHandlerSupport<T extends Message>
-    implements MessageHandler<T>
+@Component(role=ServerMessageHandler.class, hint="echo")
+public class EchoHandler
+    extends ServerMessageHandlerSupport<EchoMessage>
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-    
-    private Message.Type type;
-
-    protected MessageHandlerSupport(final Message.Type type) {
-        assert type != null;
-
-        this.type = type;
+    public EchoHandler() {
+        super(RshMessage.Type.ECHO);
     }
 
-    public Class<T> getType() {
-        // noinspection unchecked
-        return (Class<T>) type.getType();
+    public void handle(final IoSession session, final ServerSessionContext context, final EchoMessage message) throws Exception {
+        EchoMessage reply = new EchoMessage(message.getText());
+        reply.setCorrelationId(message.getId());
+        session.write(reply);
     }
 }

@@ -87,7 +87,13 @@
                 <artifactId>log4j</artifactId>
                 <version>1.2.14</version>
             </dependency>
-
+            
+            <dependency>
+                <groupId>blissed</groupId>
+                <artifactId>blissed</artifactId>
+                <version>1.0-beta-3</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-component-annotations</artifactId>
@@ -167,6 +173,20 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     
     <build>
         <pluginManagement>

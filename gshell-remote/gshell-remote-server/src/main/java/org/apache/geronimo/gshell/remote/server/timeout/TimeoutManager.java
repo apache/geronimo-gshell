@@ -17,31 +17,21 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.message;
+package org.apache.geronimo.gshell.remote.server.timeout;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.concurrent.ScheduledFuture;
+
+import org.apache.geronimo.gshell.common.Duration;
+import org.apache.mina.common.IoSession;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public abstract class MessageHandlerSupport<T extends Message>
-    implements MessageHandler<T>
+public interface TimeoutManager
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-    
-    private Message.Type type;
+    ScheduledFuture scheduleTimeout(IoSession session, Duration timeout, Runnable task);
 
-    protected MessageHandlerSupport(final Message.Type type) {
-        assert type != null;
-
-        this.type = type;
-    }
-
-    public Class<T> getType() {
-        // noinspection unchecked
-        return (Class<T>) type.getType();
-    }
+    boolean cancelTimeout(IoSession session);
 }

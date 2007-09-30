@@ -70,12 +70,7 @@
             <artifactId>commons-jexl</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-        </dependency>
-
+        <!-- Required for commons-jexl usage -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl104-over-slf4j</artifactId>
