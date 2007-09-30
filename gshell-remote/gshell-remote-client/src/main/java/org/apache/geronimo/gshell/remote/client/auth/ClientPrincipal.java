@@ -32,7 +32,7 @@ public class ClientPrincipal
         return name;
     }
 
-    public Object getIdentity() {
+    public Object getIdentityToken() {
         return identity;
     }
 

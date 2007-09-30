@@ -44,6 +44,10 @@ public class ServerSessionContext
 
     public Identity identity;
 
+    public Object getIdentityToken() {
+        return identity.getToken();
+    }
+
     public Subject getSubject() {
         return identity.getSubject();
     }
