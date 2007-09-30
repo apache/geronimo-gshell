@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.request.Requestor;
 import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
+import org.apache.geronimo.gshell.whisper.session.ThreadPoolModel;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
 import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
@@ -38,6 +39,7 @@ import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
+import org.apache.mina.common.ThreadModel;
 
 /**
  * Support for {@link Transport} implementations.
@@ -102,6 +104,11 @@ public abstract class BaseTransport<T extends IoConnector>
     @Override
     protected synchronized BaseConfiguration getBaseConfiguration() {
         return (BaseConfiguration) getConfiguration();
+    }
+
+    @Override
+    protected synchronized ThreadModel createThreadModel() throws Exception {
+        return new ThreadPoolModel(getClass(), INSTANCE_COUNTER);
     }
 
     //

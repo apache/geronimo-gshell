@@ -24,8 +24,10 @@ import java.net.URI;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.geronimo.gshell.whisper.session.ThreadPoolModel;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.IoHandler;
+import org.apache.mina.common.ThreadModel;
 
 /**
  * Support for {@link TransportServer} implementations.
@@ -84,6 +86,15 @@ public abstract class BaseTransportServer<T extends IoAcceptor>
         return (BaseConfiguration) getConfiguration();
     }
 
+    @Override
+    protected synchronized ThreadModel createThreadModel() throws Exception {
+        return new ThreadPoolModel(getClass(), INSTANCE_COUNTER);
+    }
+
+    //
+    // Acceptor
+    //
+    
     protected abstract T createAcceptor() throws Exception;
 
     synchronized void bind(final URI location) throws Exception {

@@ -100,7 +100,7 @@ public abstract class BaseService<T extends IoService>
     private ThreadModel threadModel;
 
     protected synchronized ThreadModel createThreadModel() throws Exception {
-        return getBaseConfiguration().getThreadModel();
+        return null;
     }
 
     protected synchronized ThreadModel getThreadModel() throws Exception {
