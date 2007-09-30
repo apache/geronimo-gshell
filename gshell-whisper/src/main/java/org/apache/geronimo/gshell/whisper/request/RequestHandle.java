@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public class Request
+public class RequestHandle
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -53,7 +53,7 @@ public class Request
 
     private volatile boolean signaled;
 
-    public Request(final Message message, final Duration timeout) {
+    public RequestHandle(final Message message, final Duration timeout) {
         assert message != null;
         assert timeout != null;
 
@@ -61,7 +61,7 @@ public class Request
         this.timeout = timeout;
     }
 
-    public Request(final Message message, long timeout, final TimeUnit timeoutUnit) {
+    public RequestHandle(final Message message, long timeout, final TimeUnit timeoutUnit) {
         this(message, new Duration(timeout, timeoutUnit));
     }
 
@@ -76,11 +76,11 @@ public class Request
         else if (obj == null) {
             return false;
         }
-        else if (!(obj instanceof Request)) {
+        else if (!(obj instanceof RequestHandle)) {
             return false;
         }
 
-        Request request = (Request) obj;
+        RequestHandle request = (RequestHandle) obj;
 
         return getId().equals(request.getId());
     }
@@ -109,24 +109,24 @@ public class Request
         return !responses.isEmpty();
     }
 
-    public Response awaitResponse() throws RequestTimeoutException, InterruptedException {
+    public ResponseHandle awaitResponse() throws RequestTimeoutException, InterruptedException {
         chechEndOfResponses();
 
         log.debug("Waiting for response");
 
-        Response resp = decodeResponse(responses.take());
+        ResponseHandle resp = decodeResponse(responses.take());
 
         log.trace("Received response: {}", resp);
 
         return resp;
     }
 
-    public Response awaitResponse(final long timeout, final TimeUnit unit) throws RequestTimeoutException, InterruptedException {
+    public ResponseHandle awaitResponse(final long timeout, final TimeUnit unit) throws RequestTimeoutException, InterruptedException {
         chechEndOfResponses();
 
         log.debug("Polling for response");
 
-        Response resp = decodeResponse(responses.poll(timeout, unit));
+        ResponseHandle resp = decodeResponse(responses.poll(timeout, unit));
 
         if (log.isTraceEnabled()) {
             if (resp != null) {
@@ -140,7 +140,7 @@ public class Request
         return resp;
     }
 
-    public Response awaitResponseUninterruptibly() throws RequestTimeoutException {
+    public ResponseHandle awaitResponseUninterruptibly() throws RequestTimeoutException {
         while (true) {
             try {
                 return awaitResponse();
@@ -149,9 +149,9 @@ public class Request
         }
     }
 
-    private Response decodeResponse(final Object obj) {
-        if (obj instanceof Response) {
-            return (Response) obj;
+    private ResponseHandle decodeResponse(final Object obj) {
+        if (obj instanceof ResponseHandle) {
+            return (ResponseHandle) obj;
         }
         else if (obj == null) {
             return null;
@@ -176,7 +176,7 @@ public class Request
         responses.add(answer);
     }
 
-    void signal(final Response response) {
+    void signal(final ResponseHandle response) {
         assert response != null;
 
         lock.lock();
@@ -191,7 +191,7 @@ public class Request
 
             queueResponse(response);
 
-            if (response.getType() != Response.Type.PARTIAL) {
+            if (response.getType() != ResponseHandle.Type.PARTIAL) {
                 endOfResponses = true;
             }
         }

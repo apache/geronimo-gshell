@@ -32,15 +32,15 @@ import org.apache.geronimo.gshell.whisper.message.Message;
  *
  * @version $Rev$ $Date$
  */
-public class Response
+public class ResponseHandle
 {
-    private final Request request;
+    private final RequestHandle request;
 
     private final Type type;
 
     private final Message message;
 
-    public Response(final Request request, final Message message, final Type type) {
+    public ResponseHandle(final RequestHandle request, final Message message, final Type type) {
         this.request = request;
         this.type = type;
         this.message = message;
@@ -57,11 +57,11 @@ public class Response
         else if (obj == null) {
             return false;
         }
-        else if (!(obj instanceof Response)) {
+        else if (!(obj instanceof ResponseHandle)) {
             return false;
         }
 
-        Response resp = (Response) obj;
+        ResponseHandle resp = (ResponseHandle) obj;
 
         return getRequest().equals(resp.getRequest()) && getType().equals(resp.getType());
     }
@@ -74,7 +74,7 @@ public class Response
                 .toString();
     }
 
-    public Request getRequest() {
+    public RequestHandle getRequest() {
         return request;
     }
 

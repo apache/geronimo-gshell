@@ -72,7 +72,7 @@ public class Requestor
         assert msg != null;
         assert timeout != null;
 
-        Request req = new Request(msg, timeout.getValue(), timeout.getUnit());
+        RequestHandle req = new RequestHandle(msg, timeout.getValue(), timeout.getUnit());
 
         WriteFuture wf = session.write(req);
 
@@ -86,9 +86,9 @@ public class Requestor
     public Message request(final Message msg, final Duration timeout) throws Exception {
         RequestWriteFuture wf = submit(msg, timeout);
 
-        Request req = wf.getRequest();
+        RequestHandle req = wf.getRequest();
 
-        Response resp = req.awaitResponse();
+        ResponseHandle resp = req.awaitResponse();
 
         return resp.getMessage();
     }
@@ -106,14 +106,14 @@ public class Requestor
     {
         private final WriteFuture delegate;
 
-        private final Request request;
+        private final RequestHandle request;
 
-        public RequestWriteFuture(final WriteFuture wf, final Request req) {
+        public RequestWriteFuture(final WriteFuture wf, final RequestHandle req) {
             this.delegate = wf;
             this.request = req;
         }
 
-        public Request getRequest() {
+        public RequestHandle getRequest() {
             return request;
         }
 

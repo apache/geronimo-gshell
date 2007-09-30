@@ -88,7 +88,18 @@ public class RequestManager
         return reg;
     }
 
-    public void register(final Request request) {
+    public boolean contains(final Message.ID id) {
+        lock.lock();
+
+        try {
+            return registrations.containsKey(id);
+        }
+        finally {
+            lock.unlock();
+        }
+    }
+
+    public void register(final RequestHandle request) {
         assert request != null;
 
         lock.lock();
@@ -111,7 +122,7 @@ public class RequestManager
         }
     }
 
-    public Request lookup(final Message.ID id) {
+    public RequestHandle lookup(final Message.ID id) {
         assert id != null;
 
         lock.lock();
@@ -126,7 +137,7 @@ public class RequestManager
         }
     }
 
-    public Request deregister(final Message.ID id) {
+    public RequestHandle deregister(final Message.ID id) {
         assert id != null;
 
         lock.lock();
@@ -158,6 +169,7 @@ public class RequestManager
             log.debug("Activated: {}", reg);
         }
         catch (NotRegisteredException e) {
+            // Sometimes we receive responses to requests faster than we can register them
             log.debug("Ignoring activation; request not registered: {}", id);
         }
         finally {
@@ -242,13 +254,13 @@ public class RequestManager
 
     private class Registration
     {
-        public final Request request;
+        public final RequestHandle request;
 
         public RegistrationState state = RegistrationState.PENDING;
 
         private ScheduledFuture<?> timeoutFuture;
 
-        public Registration(final Request request) {
+        public Registration(final RequestHandle request) {
             assert request != null;
 
             this.request = request;

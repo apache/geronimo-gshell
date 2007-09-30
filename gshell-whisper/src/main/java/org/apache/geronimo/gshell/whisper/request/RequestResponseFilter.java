@@ -64,8 +64,8 @@ public class RequestResponseFilter
     public void filterWrite(final NextFilter nextFilter, final IoSession session, WriteRequest writeRequest) throws Exception {
         Object message = writeRequest.getMessage();
 
-        if (message instanceof Request) {
-            Request request = (Request) message;
+        if (message instanceof RequestHandle) {
+            RequestHandle request = (RequestHandle) message;
 
             RequestManager manager = RequestManager.BINDER.lookup(session);
 
@@ -93,14 +93,14 @@ public class RequestResponseFilter
             id = msg.getCorrelationId();
         }
 
-        // If we have a correlation id, then we can process the response
-        if (id != null) {
-            RequestManager manager = RequestManager.BINDER.lookup(session);
+        RequestManager manager = RequestManager.BINDER.lookup(session);
 
-            Request request = manager.deregister(id);
+        // If we have a correlation id and its been registered, then we can process the response
+        if (id != null && manager.contains(id)) {
+            RequestHandle request = manager.deregister(id);
 
             // Setup the response and signal the request
-            Response response = new Response(request, msg, Response.Type.WHOLE);
+            ResponseHandle response = new ResponseHandle(request, msg, ResponseHandle.Type.WHOLE);
 
             request.signal(response);
 
@@ -117,8 +117,8 @@ public class RequestResponseFilter
      */
     @Override
     public void messageSent(final NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
-        if (message instanceof Request) {
-            Request request = (Request) message;
+        if (message instanceof RequestHandle) {
+            RequestHandle request = (RequestHandle) message;
 
             RequestManager manager = RequestManager.BINDER.lookup(session);
 
