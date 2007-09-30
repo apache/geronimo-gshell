@@ -88,7 +88,7 @@ public class RshServer
 
             // Complain if we don't have any handlers
             if (handlers.isEmpty()) {
-                throw new Error("No server message handlers were discovered");
+                throw new Error("No message handlers were discovered");
             }
 
             for (ServerMessageHandler handler : handlers) {

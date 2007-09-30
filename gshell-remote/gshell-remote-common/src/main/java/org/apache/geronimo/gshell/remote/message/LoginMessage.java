@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import java.security.PublicKey;
+import java.io.Serializable;
 
 /**
  * Contains the user authentication details which the client will pass to the server after the
@@ -87,8 +88,16 @@ public class LoginMessage
     public static class Success
         extends RshMessage
     {
-        public Success() {
+        private Serializable token;
+
+        public Success(Serializable token) {
             super(Type.LOGIN_SUCCESS);
+
+            this.token = token;
+        }
+
+        public Serializable getToken() {
+            return token;
         }
     }
 

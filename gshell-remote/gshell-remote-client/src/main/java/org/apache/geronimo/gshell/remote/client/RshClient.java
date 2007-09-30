@@ -25,14 +25,20 @@ import java.net.URI;
 import java.security.PublicKey;
 import java.util.List;
 
+import javax.security.auth.Subject;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.login.LoginContext;
+
+import org.apache.geronimo.gshell.remote.client.auth.RemoteLoginModule;
 import org.apache.geronimo.gshell.remote.client.handler.ClientMessageHandler;
 import org.apache.geronimo.gshell.remote.client.handler.ClientSessionContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
+import org.apache.geronimo.gshell.remote.jaas.JaasConfigurationHelper;
+import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
@@ -44,6 +50,8 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +62,7 @@ import org.slf4j.LoggerFactory;
  */
 @Component(role=RshClient.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
 public class RshClient
+    implements Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -67,6 +76,10 @@ public class RshClient
     private TransportFactoryLocator locator;
 
     private Transport transport;
+
+    public void initialize() throws InitializationException {
+        new JaasConfigurationHelper("client.login.conf").initialize();
+    }
 
     public void connect(final URI remote, final URI local) throws Exception {
         TransportFactory factory = locator.locate(remote);
@@ -105,19 +118,19 @@ public class RshClient
         PublicKey serverKey = ((ConnectMessage.Result)response).getPublicKey();
 
         log.debug("Logging in: {}", username);
+        
+        CallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(username, password);
+        LoginContext loginContext = new LoginContext("RshClient", callbackHandler);
 
-        response = transport.request(new LoginMessage(username, password));
+        RemoteLoginModule.setTransport(transport);
+        try {
+            loginContext.login();
 
-        if (response instanceof LoginMessage.Success) {
-            log.debug("Login successful");
+            Subject subject = loginContext.getSubject();
+            log.debug("Subject: {}", subject);
         }
-        else if (response instanceof LoginMessage.Failure) {
-            LoginMessage.Failure failure = (LoginMessage.Failure)response;
-
-            throw new Exception("Login failed: " + failure.getReason());
-        }
-        else {
-            throw new InternalError();
+        finally {
+            RemoteLoginModule.unsetTransport();
         }
     }
     
@@ -211,7 +224,7 @@ public class RshClient
 
             // Complain if we don't have any handlers
             if (handlers.isEmpty()) {
-                throw new Error("No client message handlers were discovered");
+                throw new Error("No message handlers were discovered");
             }
 
             for (ClientMessageHandler handler : handlers) {
