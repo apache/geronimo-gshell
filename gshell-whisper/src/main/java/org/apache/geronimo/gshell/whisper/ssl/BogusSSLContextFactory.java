@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=SSLContextFactory.class) // HACK: hint="bogus")
+@Component(role=SSLContextFactory.class, hint="bogus")
 public class BogusSSLContextFactory
     implements SSLContextFactory, Initializable
 {

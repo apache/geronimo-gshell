@@ -26,14 +26,13 @@ import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportServer;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 
 /**
  * Provides TCP server-side support.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TransportServer.class, hint="tcp", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
+@Component(role=TransportServer.class, hint="tcp", instantiationStrategy="per-lookup")
 public class TcpTransportServer
     extends BaseTransportServer
 {

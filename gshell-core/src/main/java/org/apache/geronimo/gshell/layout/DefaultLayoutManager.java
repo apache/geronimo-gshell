@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import java.io.IOException;
-
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
 import org.apache.geronimo.gshell.layout.model.Layout;

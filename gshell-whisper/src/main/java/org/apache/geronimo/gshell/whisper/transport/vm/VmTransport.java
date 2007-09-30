@@ -23,14 +23,13 @@ import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransport;
 import org.apache.mina.transport.vmpipe.VmPipeConnector;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 
 /**
  * Provides in-VM client-side support.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=Transport.class, hint="vm", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
+@Component(role=Transport.class, hint="vm", instantiationStrategy="per-lookup")
 public class VmTransport
     extends BaseTransport<VmPipeConnector>
 {

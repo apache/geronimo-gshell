@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.layout.loader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import org.apache.geronimo.gshell.layout.model.Layout;
@@ -35,17 +35,12 @@ import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//
-// FIXME: Should not need to specify a hint of "default" here, but the @Component will default to "default"
-//        instead of null, as it should.
-//
-
 /**
  * A simple XML to {@link Layout} loader, uses XStream to handle the dirty work.
  * 
  * @version $Rev$ $Date$
  */
-@Component(role= LayoutLoader.class, hint="default") // hint="xml"
+@Component(role=LayoutLoader.class)
 public class XMLLayoutLoader
     implements LayoutLoader, Initializable
 {
@@ -54,33 +49,25 @@ public class XMLLayoutLoader
     @Requirement
     private ShellInfo info;
 
-    //
-    // FIXME: Need to fix the @Configuration annotation so that it works...
-    //
-
-    // @Configuration(key="url", value={"etc/layout.xml"})
-    private URL url;
+    private URI location;
 
     public void initialize() throws InitializationException {
         assert info != null;
 
-        try {
-            //
-            // HACK: Hard code this for now...
-            //
-            
-            url = new File(info.getHomeDir(), "etc/layout.xml").toURI().toURL();
-        }
-        catch (MalformedURLException e) {
-            throw new InitializationException("Invalid URL for layout configuration", e);
-        }
+        //
+        // HACK: Hard code this for now...
+        //
+
+        location = new File(info.getHomeDir(), "etc/layout.xml").toURI();
     }
 
-    private Layout load(final URL url) throws IOException {
-        assert url != null;
+    private Layout load(final URI location) throws IOException {
+        assert location != null;
 
-        log.debug("Loading layout from XML: {}", url);
+        log.debug("Loading layout from XML: {}", location);
 
+        URL url = location.toURL();
+        
         InputStream input = url.openStream();
 
         Layout layout;
@@ -97,6 +84,6 @@ public class XMLLayoutLoader
     }
 
     public Layout load() throws IOException {
-        return load(url);
+        return load(location);
     }
 }

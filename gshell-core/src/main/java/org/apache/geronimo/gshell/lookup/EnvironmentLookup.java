@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.lookup;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
@@ -31,7 +30,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ComponentFactory.class, hint="EnvironmentLookup", instantiationStrategy=InstantiationStrategy.SINGLETON)
+@Component(role=ComponentFactory.class, hint="EnvironmentLookup")
 public class EnvironmentLookup
     extends LookupFactorySupport
 {

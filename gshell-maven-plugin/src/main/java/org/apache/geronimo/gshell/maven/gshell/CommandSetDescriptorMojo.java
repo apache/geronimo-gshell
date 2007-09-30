@@ -48,15 +48,13 @@ import org.codehaus.plexus.util.IOUtil;
 /**
  * Generates a GShell XML commands descriptor.
  *
+ * @version $Rev$ $Date$
  * @goal commands-descriptor
  * @phase process-classes
  * @requiresDependencyResolution runtime
- *
- * @version $Rev$ $Date$
  */
 public class CommandSetDescriptorMojo
-    extends AbstractMojo
-{
+        extends AbstractMojo {
     /**
      * The directory where class files have been built.
      *
@@ -93,7 +91,7 @@ public class CommandSetDescriptorMojo
      * @required
      */
     private MavenProject project;
-    
+
     //
     // Mojo
     //
@@ -122,7 +120,7 @@ public class CommandSetDescriptorMojo
     private List<Class> loadClasses(final ClassLoader cl) throws MojoExecutionException {
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(classesDirectory);
-        scanner.setIncludes(new String[]{ "**/*.class" });
+        scanner.setIncludes(new String[]{"**/*.class"});
         scanner.scan();
 
         List<Class> classes = new ArrayList<Class>();
@@ -146,14 +144,14 @@ public class CommandSetDescriptorMojo
 
     private List<Class> getClasses(Class<?> type) {
         assert type != null;
-        
+
         List<Class> classes = new ArrayList<Class>();
 
         while (type != null) {
             classes.add(type);
             type = type.getSuperclass();
         }
-        
+
         return classes;
     }
 
@@ -180,8 +178,7 @@ public class CommandSetDescriptorMojo
 
                     if (requirementAnno.role().isAssignableFrom(Object.class)) {
                         requirement.setRole(f.getType().getName());
-                    }
-                    else {
+                    } else {
                         requirement.setRole(requirementAnno.role().getName());
                     }
 
@@ -190,7 +187,7 @@ public class CommandSetDescriptorMojo
                     requirement.setFieldMappingType(f.getType().getName());
 
                     getLog().debug("Found requirement: " + requirement);
-                    
+
                     desc.addRequirement(requirement);
                 }
 

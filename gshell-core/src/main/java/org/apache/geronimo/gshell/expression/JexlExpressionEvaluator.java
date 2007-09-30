@@ -29,7 +29,6 @@ import org.apache.commons.jexl.JexlContext;
 import org.apache.commons.jexl.JexlHelper;
 import org.apache.commons.jexl.resolver.FlatResolver;
 import org.apache.geronimo.gshell.command.Variables;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

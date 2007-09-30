@@ -17,20 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.shell;
+package org.apache.geronimo.gshell.remote.client.proxy;
 
-import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.command.Variables;
-import org.codehaus.plexus.component.annotations.Component;
+import jline.History;
+import org.apache.geronimo.gshell.remote.client.RshClient;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public interface Environment
+public class RemoteHistoryProxy
+    extends History
 {
-    IO getIO();
+    private final RshClient client;
 
-    Variables getVariables();
+    public RemoteHistoryProxy(final RshClient client) {
+        assert client != null;
+
+        this.client = client;
+    }
 }

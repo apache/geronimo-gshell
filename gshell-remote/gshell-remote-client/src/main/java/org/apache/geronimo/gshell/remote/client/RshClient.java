@@ -39,14 +39,13 @@ import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.geronimo.gshell.whisper.message.MessageHandler;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -58,14 +57,11 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshClient.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
+@Component(role=RshClient.class, instantiationStrategy="per-lookup")
 public class RshClient
     implements Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Requirement
-    private PlexusContainer container;
 
     @Requirement
     private CryptoContext crypto;
@@ -74,6 +70,9 @@ public class RshClient
     private TransportFactoryLocator locator;
 
     private Transport transport;
+
+    @Requirement(role=ClientMessageHandler.class)
+    private List<ClientMessageHandler> handlers;
 
     public void initialize() throws InitializationException {
         new JaasConfigurationHelper("client.login.conf").initialize();
@@ -229,26 +228,22 @@ public class RshClient
         extends DemuxingIoHandler
     {
         public Handler() throws Exception {
-            // noinspection unchecked
-            List<ClientMessageHandler> handlers = (List<ClientMessageHandler>)container.lookupList(ClientMessageHandler.class);
-
             // Complain if we don't have any handlers
             if (handlers.isEmpty()) {
                 throw new Error("No message handlers were discovered");
             }
 
             for (ClientMessageHandler handler : handlers) {
-
                 register(handler);
             }
         }
 
-        public void register(final org.apache.geronimo.gshell.whisper.message.MessageHandler handler) {
+        public void register(final MessageHandler handler) {
             assert handler != null;
 
             Class<?> type = handler.getType();
 
-            log.debug("Registering handler: {} for type: {}", handler, type);
+            log.debug("Registering handler: {} -> {}", type.getSimpleName(), handler);
 
             // noinspection unchecked
             addMessageHandler(type, handler);

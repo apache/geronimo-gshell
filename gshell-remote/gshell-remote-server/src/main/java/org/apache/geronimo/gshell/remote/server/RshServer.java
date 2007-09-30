@@ -33,9 +33,7 @@ import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,13 +43,10 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshServer.class, instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
+@Component(role=RshServer.class, instantiationStrategy="per-lookup")
 public class RshServer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Requirement
-    private PlexusContainer container;
 
     @Requirement
     private TimeoutManager timeoutManager;
@@ -60,6 +55,9 @@ public class RshServer
     private TransportFactoryLocator locator;
 
     private TransportServer server;
+
+    @Requirement(role=ServerMessageHandler.class)
+    private List<ServerMessageHandler> handlers;
 
     public void bind(final URI location) throws Exception {
         TransportFactory factory = locator.locate(location);
@@ -83,16 +81,12 @@ public class RshServer
         extends DemuxingIoHandler
     {
         public Handler() throws Exception {
-            // noinspection unchecked
-            List<ServerMessageHandler> handlers = (List<ServerMessageHandler>)container.lookupList(ServerMessageHandler.class);
-
             // Complain if we don't have any handlers
             if (handlers.isEmpty()) {
                 throw new Error("No message handlers were discovered");
             }
 
             for (ServerMessageHandler handler : handlers) {
-
                 register(handler);
             }
         }
@@ -102,7 +96,7 @@ public class RshServer
 
             Class<?> type = handler.getType();
 
-            log.debug("Registering handler: {} for type: {}", handler, type);
+            log.debug("Registering handler: {} -> {}", type.getSimpleName(), handler);
 
             // noinspection unchecked
             addMessageHandler(type, handler);

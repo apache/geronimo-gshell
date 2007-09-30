@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -31,15 +32,15 @@ import org.codehaus.plexus.util.IOUtil;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=VersionLoader.class, hint="default") // HACK: hint="properties")
+@Component(role=VersionLoader.class)
 public class PropertiesVersionLoader
     implements VersionLoader
 {
     private Properties props;
 
-    // @Configuraton(key="resourceName", value="version.properties")
-    private String resourceName = "version.properties";
-
+    @Configuration(value="version.properties")
+    private String resourceName;
+    
     public String getVersion() {
         if (props == null) {
             InputStream input = getClass().getResourceAsStream(resourceName);

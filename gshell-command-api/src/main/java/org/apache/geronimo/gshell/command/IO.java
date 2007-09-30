@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.slf4j.helpers.MessageFormatter;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Container for input/output handles.

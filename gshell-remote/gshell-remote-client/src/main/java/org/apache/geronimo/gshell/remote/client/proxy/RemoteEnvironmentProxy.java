@@ -17,48 +17,34 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.remote.client.proxy;
 
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.remote.client.RshClient;
 import org.apache.geronimo.gshell.shell.Environment;
 
 /**
- * Default {@link Environment} implementation.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class DefaultEnvironment
+public class RemoteEnvironmentProxy
     implements Environment
 {
-    private final IO io;
+    private final RshClient client;
 
-    private final Variables vars;
+    public RemoteEnvironmentProxy(final RshClient client) {
+        assert client != null;
 
-    public DefaultEnvironment(final IO io, final Variables vars) {
-        assert io != null;
-        assert vars != null;
-
-        this.io = io;
-        this.vars = vars;
-
-        vars.set("env", System.getenv(), false);
-    }
-
-    public DefaultEnvironment(final IO io) {
-        this(io, new DefaultVariables());
+        this.client = client;
     }
 
     public IO getIO() {
-        return io;
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Variables getVariables() {
-        return vars;
-    }
-
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

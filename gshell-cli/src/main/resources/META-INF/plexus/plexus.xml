@@ -34,22 +34,6 @@
         </component-discoverers>
     </component-discoverer-manager>
 
-    <!--
-    NOTE: We don't need this to use factories... just leaving here right now as reference.
-    
-    <component-factory-manager implementation="org.codehaus.plexus.component.factory.DefaultComponentFactoryManager">
-        <component-factories>
-            <component-factory implementation="org.apache.geronimo.gshell.lookup.IOLookup">
-                <id>IOLookup</id>
-            </component-factory>
-
-            <component-factory implementation="org.apache.geronimo.gshell.lookup.EnvironmentLookup">
-                <id>EnvironmentLookup</id>
-            </component-factory>
-        </component-factories>
-    </component-factory-manager>
-    -->
-
     <components>
         <!--
         Configure our logging component to be used so Plexus will pick it up.
@@ -70,11 +54,8 @@
         </component>
         
         <!--
-        Add our instance lookup components
-
-        TODO: Once the @Component anno supports component-factory we can drop these.
+        Add our instance lookup components.
         -->
-
         <component>
             <role>org.apache.geronimo.gshell.command.IO</role>
             <component-factory>IOLookup</component-factory>
@@ -86,7 +67,7 @@
             <component-factory>EnvironmentLookup</component-factory>
             <instantiation-strategy>per-lookup</instantiation-strategy>
         </component>
-        
+
         <component>
             <role>jline.Terminal</role>
             <component-factory>Terminal</component-factory>

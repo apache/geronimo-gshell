@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.SSLFilter;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.InstantiationStrategy;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
@@ -33,7 +32,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=Transport.class, hint="ssl", instantiationStrategy=InstantiationStrategy.PER_LOOKUP)
+@Component(role=Transport.class, hint="ssl", instantiationStrategy="per-lookup")
 public class SslTransport
     extends TcpTransport
 {

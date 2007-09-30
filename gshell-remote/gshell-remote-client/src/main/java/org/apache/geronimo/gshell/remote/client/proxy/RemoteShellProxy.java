@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client;
+package org.apache.geronimo.gshell.remote.client.proxy;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.remote.RemoteShell;
+import org.apache.geronimo.gshell.remote.client.RshClient;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
@@ -55,6 +56,14 @@ public class RemoteShellProxy
 
     private boolean opened;
 
+    private RemoteEnvironmentProxy env;
+
+    private RemoteShellInfoProxy shellInfo;
+
+    private RemoteHistoryProxy history;
+
+    private RemoteBrandingProxy branding;
+
     public RemoteShellProxy(final RshClient client, final IO io, final Terminal terminal) throws Exception {
         assert client != null;
         assert io != null;
@@ -71,6 +80,12 @@ public class RemoteShellProxy
         
         client.openShell();
 
+        // Setup other proxies
+        env = new RemoteEnvironmentProxy(client);
+        shellInfo = new RemoteShellInfoProxy(client);
+        history = new RemoteHistoryProxy(client);
+        branding = new RemoteBrandingProxy(client);
+
         // Copy the client's input stream to our outputstream so users see command output
         outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);
         outputFeeder.createThread().start();
@@ -80,14 +95,14 @@ public class RemoteShellProxy
 
     public Environment getEnvironment() {
         ensureOpened();
-        
-        throw new Error("TODO");
+
+        return env;
     }
 
     public ShellInfo getShellInfo() {
         ensureOpened();
 
-        throw new Error("TODO");
+        return shellInfo;
     }
 
     private void ensureOpened() {
