@@ -51,7 +51,7 @@
         <module>gshell-builtins</module>
         <module>gshell-optional</module>
     </modules>
-
+    
     <profiles>
         <profile>
             <id>full</id>
