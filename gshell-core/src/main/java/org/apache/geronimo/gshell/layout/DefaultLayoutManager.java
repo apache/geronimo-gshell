@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.layout;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
 import org.apache.geronimo.gshell.layout.model.Layout;
-import org.apache.geronimo.gshell.plugin.CommandRegistry;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -87,6 +87,6 @@ public class DefaultLayoutManager
         // HACK: For now, assume the path is just the id... should eventually change this
         //
 
-        return commandRegistry.getCommandDescriptor(path);
+        return commandRegistry.lookup(path);
     }
 }

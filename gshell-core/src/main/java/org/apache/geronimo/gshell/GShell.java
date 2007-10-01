@@ -81,6 +81,9 @@ public class GShell
             config.setClassWorld(classWorld);
             container = new DefaultPlexusContainer(config);
 
+            // Get our URL handler factory installed
+            container.lookup(URLHandlerFactory.class);
+
             // We first need to stuff in the IO context for the new shell instance
             IOLookup.set(container, io);
 

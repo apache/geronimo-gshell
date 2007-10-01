@@ -17,36 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command.descriptor;
+package org.apache.geronimo.gshell.registry;
 
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import java.util.Collection;
 
-//
-// TODO: Detach from Plexus' ComponentDescriptor
-//
+import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 
 /**
- * Descriptor for a command.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class CommandDescriptor
-    extends ComponentDescriptor
+public interface CommandRegistry
 {
-    private String id;
+    void register(CommandDescriptor descriptor);
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        assert id != null;
-
-        this.id = id;
-    }
-
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
-    }
+    Collection<CommandDescriptor> descriptors();
+    
+    CommandDescriptor lookup(String id);
 }

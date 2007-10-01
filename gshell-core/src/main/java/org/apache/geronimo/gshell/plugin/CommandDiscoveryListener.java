@@ -19,13 +19,11 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.command.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
@@ -33,53 +31,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Registers command components as they are discovered by the container.
+ * Registers commands with the registry as they are discovered by the container.
  * 
  * @version $Rev$ $Date$
  */
-@Component(role= CommandRegistry.class)
-public class CommandRegistry
+@Component(role=ComponentDiscoveryListener.class, hint="command")
+public class CommandDiscoveryListener
     implements ComponentDiscoveryListener
 {
-    public static final String ID = "gshell-command-regsitry";
-
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private Map<String,CommandDescriptor> commandDescriptors = new HashMap<String,CommandDescriptor>();
+    @Requirement
+    private CommandRegistry registry;
 
     public String getId() {
-        return ID;
+        return getClass().getSimpleName();
     }
     
     public void componentDiscovered(final ComponentDiscoveryEvent event) {
         assert event != null;
 
-        ComponentSetDescriptor setDescriptor = event.getComponentSetDescriptor();
+        log.trace("Event: {}", event);
 
-        if (setDescriptor instanceof CommandSetDescriptor) {
-            CommandSetDescriptor commands = (CommandSetDescriptor) setDescriptor;
+        ComponentSetDescriptor set = event.getComponentSetDescriptor();
 
-            for (CommandDescriptor desc : commands.getCommandDescriptors()) {
-                String id = desc.getId();
+        if (set instanceof CommandSetDescriptor) {
+            CommandSetDescriptor commands = (CommandSetDescriptor) set;
 
-                if (commandDescriptors.containsKey(id)) {
-                    log.error("Ignoring duplicate command id: {}", id);
-                }
-                else {
-                    log.debug("Found command: {}", id);
-                    commandDescriptors.put(id, desc);
-                }
+            for (CommandDescriptor descriptor : commands.getCommandDescriptors()) {
+                registry.register(descriptor);
             }
         }
-    }
-
-    public Collection<CommandDescriptor> getCommandDescriptors() {
-        return commandDescriptors.values();
-    }
-
-    public CommandDescriptor getCommandDescriptor(final String id) {
-        assert id != null;
-
-        return commandDescriptors.get(id);
     }
 }

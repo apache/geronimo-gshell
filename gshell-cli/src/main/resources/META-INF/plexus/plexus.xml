@@ -24,8 +24,8 @@
     <component-discoverer-manager implementation="org.codehaus.plexus.component.discovery.DefaultComponentDiscovererManager">
         <listeners>
             <listener implementation="org.codehaus.plexus.component.discovery.DiscoveryListenerDescriptor">
-                <role>org.apache.geronimo.gshell.plugin.CommandRegistry</role>
-                <role-hint>default</role-hint>
+                <role>org.codehaus.plexus.component.discovery.ComponentDiscoveryListener</role>
+                <role-hint>command</role-hint>
             </listener>
         </listeners>
 
@@ -45,12 +45,27 @@
         </component>
 
         <!--
-        Configure the collector, needs to be done here since we are using it above as a discovery listener.
+        Configure the registry.
         -->
         <component>
-            <role>org.apache.geronimo.gshell.plugin.CommandRegistry</role>
+            <role>org.apache.geronimo.gshell.registry.CommandRegistry</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.plugin.CommandRegistry</implementation>
+            <implementation>org.apache.geronimo.gshell.registry.DefaultCommandRegistry</implementation>
+        </component>
+
+        <!--
+        Configure the discovery listener to register commands
+        -->
+        <component>
+            <role>org.codehaus.plexus.component.discovery.ComponentDiscoveryListener</role>
+            <role-hint>command</role-hint>
+            <implementation>org.apache.geronimo.gshell.plugin.CommandDiscoveryListener</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.registry.CommandRegistry</role>
+                    <field-name>registry</field-name>
+                </requirement>
+            </requirements>
         </component>
         
         <!--

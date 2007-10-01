@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ComponentDiscoverer.class)
+@Component(role=ComponentDiscoverer.class, hint="command")
 public class CommandDiscoverer
     extends AbstractComponentDiscoverer
 {
