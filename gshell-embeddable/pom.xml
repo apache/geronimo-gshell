@@ -66,6 +66,16 @@
                             <artifactSet>
                                 <excludes>
                                     <!--
+                                    Exclude org.codehaus.plexus:plexus-component-api because plexus-container-default already includes it (lame)
+                                    -->
+                                    <exclude>org.codehaus.plexus:plexus-component-api</exclude>
+                                    
+                                    <!--
+                                    Exclude org.codehaus.plexus:plexus-classworlds because it will already be on our bootstrap classloader.
+                                    -->
+                                    <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
+                                    
+                                    <!--
                                     FIXME: For some reason we get test scope stuff in here... so exclude them
                                     -->
                                     <exclude>org.slf4j:slf4j-simple</exclude>
