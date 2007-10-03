@@ -31,6 +31,4 @@ public interface CommandContext
     IO getIO();
 
     Variables getVariables();
-
-    CommandDescriptor getCommandDescriptor();
 }

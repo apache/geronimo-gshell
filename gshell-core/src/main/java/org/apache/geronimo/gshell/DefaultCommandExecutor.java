@@ -104,8 +104,8 @@ public class DefaultCommandExecutor
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
         // Look up the command descriptor for the given path
-        final CommandDescriptor desc = layoutManager.find(path);
-        if (desc == null) {
+        final Command command = layoutManager.find(path);
+        if (command == null) {
             throw new CommandNotFoundException(path);
         }
 
@@ -113,9 +113,6 @@ public class DefaultCommandExecutor
         String realmId = "gshell:" + UUID.randomUUID();
 
         log.debug("Child container realm: {}", realmId);
-
-        final PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
-        final Command command = (Command)childContainer.lookup(desc.getRole(), desc.getRoleHint());
 
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {
@@ -130,18 +127,14 @@ public class DefaultCommandExecutor
                 return vars;
             }
 
-            public CommandDescriptor getCommandDescriptor() {
-                return desc;
-            }
         };
-        command.init(context);
 
         // Setup command timings
         StopWatch watch = new StopWatch(true);
 
         Object result;
         try {
-            result = command.execute(args);
+            result = command.execute(context, args);
 
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }
@@ -151,9 +144,6 @@ public class DefaultCommandExecutor
                 env.getIO().flush();
             }
             catch (Exception ignore) {}
-
-            // Nuke the child container
-            container.removeChildContainer(realmId);
         }
 
         return result;

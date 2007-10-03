@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
 import org.apache.geronimo.gshell.layout.model.Layout;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
@@ -78,10 +78,10 @@ public class DefaultLayoutManager
         return layout;
     }
 
-    public CommandDescriptor find(final String path) {
+    public Command find(final String path) {
         assert path != null;
 
-        log.debug("Searching for command descriptor for path: {}", path);
+        log.debug("Searching for command for path: {}", path);
 
         //
         // HACK: For now, assume the path is just the id... should eventually change this

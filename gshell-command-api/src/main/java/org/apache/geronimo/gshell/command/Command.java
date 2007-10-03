@@ -33,14 +33,22 @@ public interface Command
     Result FAILURE = Result.FAILURE;
 
     /**
-     * Initialize the command with its execution context.
+     * Command id
+     *
+     * @return
      */
-    void init(CommandContext context);
+    String getId();
+
+    /**
+     * Description of the command
+     * @return
+     */
+    String getDescription();
 
     /**
      * Execute the commands behavior.
      */
-    Object execute(Object... args) throws Exception;
+    Object execute(CommandContext context, Object... args) throws Exception;
 
     //
     // Result

@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.command;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,22 @@ public abstract class CommandSupport
     @Option(name="-h", aliases={"--help"}, description="Display this help message")
     private boolean displayHelp;
 
+    public String getId() {
+        CommandComponent cmd = getClass().getAnnotation(CommandComponent.class);
+        if (cmd == null) {
+            throw new IllegalStateException("Command id not found");
+        }
+        return cmd.id();
+    }
+
+    public String getDescription() {
+        CommandComponent cmd = getClass().getAnnotation(CommandComponent.class);
+        if (cmd == null) {
+            throw new IllegalStateException("Command description not found");
+        }
+        return cmd.description();
+    }
+
     public void init(final CommandContext context) {
         assert context != null;
 
@@ -53,12 +70,15 @@ public abstract class CommandSupport
         this.variables = context.getVariables();
 
         // Re-setup logging using our id
-        String id = context.getCommandDescriptor().getId();
+        String id = getId();
         log = LoggerFactory.getLogger(getClass().getName() + "." + id);
     }
 
-    public Object execute(final Object... args) throws Exception {
+    public Object execute(final CommandContext context, final Object... args) throws Exception {
+        assert context != null;
         assert args != null;
+
+        init(context);
 
         log.info("Executing w/args: [{}]", Arguments.asString(args));
 
@@ -92,7 +112,7 @@ public abstract class CommandSupport
         // TODO: Need to ask the LayoutManager what the real name is for our command's ID
         //
 
-        io.out.println(context.getCommandDescriptor().getId());
+        io.out.println(getId());
         io.out.println(" -- ");
         io.out.println();
 

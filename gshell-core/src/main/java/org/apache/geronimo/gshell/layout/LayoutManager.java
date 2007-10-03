@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;
 
 /**
@@ -35,7 +35,7 @@ public interface LayoutManager
     Layout getLayout();
 
     /**
-     * Find the command descriptor for the given path, or null if not found.
+     * Find the command for the given path, or null if not found.
      */
-    CommandDescriptor find(String path);
+    Command find(String path);
 }

@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.util.Collection;
-
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.branding.Branding;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
@@ -31,6 +31,8 @@ import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.util.Collection;
 
 /**
  * Display help
@@ -50,48 +52,63 @@ public class HelpCommand
     @Requirement
     private Branding branding;
 
+    @Argument(description = "Command name")
+    private String command;
+
     private Renderer renderer = new Renderer();
 
     protected Object doExecute() throws Exception {
         assert commandRegistry != null;
         assert layoutManager != null;
 
-        io.out.println();
-        io.out.print(branding.getAbout());
-        io.out.println();
+        if (command == null) {
+            io.out.println();
+            io.out.print(branding.getAbout());
+            io.out.println();
 
-        io.out.println("Available commands:");
+            io.out.println("Available commands:");
 
-        Collection<CommandDescriptor> commands = commandRegistry.descriptors();
+            Collection<Command> commands = commandRegistry.commands();
 
-        // Figure out the maximum length of a command name
-        int maxNameLen = 0;
-        for (CommandDescriptor desc : commands) {
-            if (desc.getId().length() > maxNameLen) {
-                maxNameLen = desc.getId().length();
+            // Figure out the maximum length of a command name
+            int maxNameLen = 0;
+            for (Command desc : commands) {
+                if (desc.getId().length() > maxNameLen) {
+                    maxNameLen = desc.getId().length();
+                }
             }
-        }
 
-        //
-        // TODO: Need to ask the LayoutManager...
-        //
+            //
+            // TODO: Need to ask the LayoutManager...
+            //
 
-        for (CommandDescriptor d : commands) {
-            // Hide commands if they don't have descriptions
-            String name = d.getId();
-            name = StringUtils.rightPad(name, maxNameLen);
+            for (Command d : commands) {
+                // Hide commands if they don't have descriptions
+                String name = d.getId();
+                name = StringUtils.rightPad(name, maxNameLen);
 
-            io.out.print("  ");
-            io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
-
-            String desc = d.getDescription();
-
-            if (desc != null) {
                 io.out.print("  ");
-                io.out.println(desc);
+                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+
+                String desc = d.getDescription();
+
+                if (desc != null) {
+                    io.out.print("  ");
+                    io.out.println(desc);
+                }
+                else {
+                    io.out.println();
+                }
+            }
+        } else {
+            Command cmd = commandRegistry.lookup(command);
+            if (cmd == null) {
+                io.out.println("Command " + Renderer.encode(command, Code.BOLD) + " not found.");
+                io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
             }
             else {
-                io.out.println();
+                io.out.println("Command " + Renderer.encode(command, Code.BOLD));
+                io.out.println("   " + cmd.getDescription());
             }
         }
 

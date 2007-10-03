@@ -19,15 +19,16 @@
 
 package org.apache.geronimo.gshell.registry;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Registers command components as they are discovered by the container.
@@ -40,29 +41,43 @@ public class DefaultCommandRegistry
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private Map<String, CommandDescriptor> descriptors = new HashMap<String,CommandDescriptor>();
+    private Map<String, Command> commands = new HashMap<String, Command>();
 
-    public void register(final CommandDescriptor descriptor) {
-        assert descriptor != null;
+    public void register(final Command command) {
+        assert command != null;
 
-        String id = descriptor.getId();
+        String id = command.getId();
 
-        if (descriptors.containsKey(id)) {
+        if (commands.containsKey(id)) {
             log.error("Ignoring duplicate: {}", id);
         }
         else {
-            descriptors.put(id, descriptor);
+            commands.put(id, command);
             log.debug("Registered: {}", id);
         }
     }
 
-    public CommandDescriptor lookup(final String id) {
-        assert id != null;
+    public void unregister(final Command command) {
+        assert command != null;
 
-        return descriptors.get(id);
+        String id = command.getId();
+
+        if (!commands.containsKey(id)) {
+            log.error("Ignoring uregistered: {}", id);
+        }
+        else {
+            commands.remove(id);
+            log.debug("Unregistered: {}", id);
+        }
     }
 
-    public Collection<CommandDescriptor> descriptors() {
-        return Collections.unmodifiableCollection(descriptors.values());
+    public Command lookup(final String id) {
+        assert id != null;
+
+        return commands.get(id);
+    }
+
+    public Collection<Command> commands() {
+        return Collections.unmodifiableCollection(commands.values());
     }
 }

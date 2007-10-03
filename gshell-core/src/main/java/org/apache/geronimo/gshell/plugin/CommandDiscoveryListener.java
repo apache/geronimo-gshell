@@ -21,12 +21,14 @@ package org.apache.geronimo.gshell.plugin;
 
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.command.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,9 @@ public class CommandDiscoveryListener
     implements ComponentDiscoveryListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Requirement
+    private PlexusContainer container;
 
     @Requirement
     private CommandRegistry registry;
@@ -59,7 +64,7 @@ public class CommandDiscoveryListener
             CommandSetDescriptor commands = (CommandSetDescriptor) set;
 
             for (CommandDescriptor descriptor : commands.getCommandDescriptors()) {
-                registry.register(descriptor);
+                registry.register(new PlexusCommandWrapper(container, descriptor));
             }
         }
     }

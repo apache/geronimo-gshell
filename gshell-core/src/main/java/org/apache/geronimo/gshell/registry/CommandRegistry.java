@@ -19,9 +19,10 @@
 
 package org.apache.geronimo.gshell.registry;
 
-import java.util.Collection;
-
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+
+import java.util.Collection;
 
 /**
  * ???
@@ -30,9 +31,11 @@ import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
  */
 public interface CommandRegistry
 {
-    void register(CommandDescriptor descriptor);
+    void register(Command command);
 
-    Collection<CommandDescriptor> descriptors();
+    void unregister(Command command);
+
+    Collection<Command> commands();
     
-    CommandDescriptor lookup(String id);
+    Command lookup(String id);
 }
