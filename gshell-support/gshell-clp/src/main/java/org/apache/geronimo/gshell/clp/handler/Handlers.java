@@ -119,6 +119,8 @@ public class Handlers
         register(URI.class, UriHandler.class);
         register(Integer.class, IntegerHandler.class);
         register(int.class, IntegerHandler.class);
+        register(Long.class, LongHandler.class);
+        register(long.class, LongHandler.class);
         register(Double.class, DoubleHandler.class);
         register(double.class, DoubleHandler.class);
         register(String.class, StringHandler.class);
