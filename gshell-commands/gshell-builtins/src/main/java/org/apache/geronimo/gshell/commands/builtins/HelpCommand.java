@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import java.util.Collection;
+
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.branding.Branding;
@@ -26,13 +28,10 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Collection;
 
 /**
  * Display help

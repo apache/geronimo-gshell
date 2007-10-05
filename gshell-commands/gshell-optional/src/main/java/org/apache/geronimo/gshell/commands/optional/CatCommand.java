@@ -33,8 +33,8 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Concatenate and print files and/or URLs.
