@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
@@ -96,11 +95,8 @@ public class DefaultCommandExecutor
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
-        // Look up the command descriptor for the given path
-        final Command command = layoutManager.find(path);
-        if (command == null) {
-            throw new CommandNotFoundException(path);
-        }
+        // Look up the command for the given path
+        Command command = layoutManager.find(path);
 
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {
@@ -114,7 +110,6 @@ public class DefaultCommandExecutor
             public Variables getVariables() {
                 return vars;
             }
-
         };
 
         // Setup command timings
