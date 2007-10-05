@@ -19,21 +19,8 @@
 
 package org.apache.geronimo.gshell.url;
 
-import java.net.URL;
 import java.net.URLStreamHandler;
-import java.net.URLStreamHandlerFactory;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
-
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides access to URL internals.
