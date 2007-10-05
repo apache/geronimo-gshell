@@ -19,23 +19,29 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.layout.model.Layout;
-
 /**
- * Provies the shell with a simple mechanism to organize commands.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface LayoutManager
+public class LayoutException
+    extends Exception
 {
-    /**
-     * Returns the currently loaded layout; never null.
-     */
-    Layout getLayout();
+    ///CLOVER:OFF
 
-    /**
-     * Find the command for the given path, or null if not found.
-     */
-    Command find(String path) throws NotFoundException;
+    public LayoutException(final String msg) {
+        super(msg);
+    }
+
+    public LayoutException(final String msg, final Throwable cause) {
+        super(msg, cause);
+    }
+
+    public LayoutException(final Throwable cause) {
+        super(cause);
+    }
+
+    public LayoutException() {
+        super();
+    }
 }

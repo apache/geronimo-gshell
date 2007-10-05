@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
 import org.apache.geronimo.gshell.layout.model.Layout;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -78,7 +79,7 @@ public class DefaultLayoutManager
         return layout;
     }
 
-    public Command find(final String path) {
+    public Command find(final String path) throws NotFoundException {
         assert path != null;
 
         log.debug("Searching for command for path: {}", path);
@@ -87,6 +88,11 @@ public class DefaultLayoutManager
         // HACK: For now, assume the path is just the id... should eventually change this
         //
 
-        return commandRegistry.lookup(path);
+        try {
+            return commandRegistry.lookup(path);
+        }
+        catch (NotRegisteredException e) {
+            throw new NotFoundException(e.getMessage());
+        }
     }
 }
