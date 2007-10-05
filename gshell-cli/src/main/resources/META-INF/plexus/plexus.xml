@@ -62,6 +62,10 @@
             <implementation>org.apache.geronimo.gshell.plugin.CommandDiscoveryListener</implementation>
             <requirements>
                 <requirement>
+                    <role>org.codehaus.plexus.PlexusContainer</role>
+                    <field-name>container</field-name>
+                </requirement>
+                <requirement>
                     <role>org.apache.geronimo.gshell.registry.CommandRegistry</role>
                     <field-name>registry</field-name>
                 </requirement>
