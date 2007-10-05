@@ -19,22 +19,17 @@
 
 package org.apache.geronimo.gshell.registry;
 
-import java.util.Collection;
-
-import org.apache.geronimo.gshell.command.Command;
-
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public interface CommandRegistry
+public class NotRegisteredException
+    extends RegistryException
 {
-    void register(Command command) throws DuplicateRegistrationException;
+    ///CLOVER:OFF
 
-    void unregister(Command command) throws NotRegisteredException;
-
-    Command lookup(String id) throws NotRegisteredException;
-
-    Collection<Command> commands();
+    public NotRegisteredException(final String msg) {
+        super(msg);
+    }
 }
