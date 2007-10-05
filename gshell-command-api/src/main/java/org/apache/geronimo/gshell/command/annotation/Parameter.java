@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ????
+ * ???
  *
  * @version $Rev$ $Date$
  */
@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Inherited
-public @interface Configuration
+public @interface Parameter
 {
     String name();
 

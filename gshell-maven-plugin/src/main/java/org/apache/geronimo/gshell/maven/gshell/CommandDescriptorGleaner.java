@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Configuration;
+import org.apache.geronimo.gshell.command.annotation.Parameter;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.descriptor.CommandConfiguration;
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
@@ -193,7 +193,7 @@ public class CommandDescriptorGleaner
     private CommandConfiguration findConfiguration(final Field field) {
         assert field != null;
 
-        Configuration anno = field.getAnnotation(Configuration.class);
+        Parameter anno = field.getAnnotation(Parameter.class);
 
         if (anno == null) {
             return null;
