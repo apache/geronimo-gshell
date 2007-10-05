@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.layout.model;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
  * The rudimentary elemnet of a layout.
@@ -41,6 +42,6 @@ public abstract class Node
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

@@ -28,6 +28,7 @@ import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
  * The root container for a layout tree.
@@ -56,7 +57,7 @@ public class Layout
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
     
     //
