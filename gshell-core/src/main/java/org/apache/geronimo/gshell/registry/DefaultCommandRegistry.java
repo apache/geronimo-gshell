@@ -19,16 +19,15 @@
 
 package org.apache.geronimo.gshell.registry;
 
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
-import org.codehaus.plexus.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.geronimo.gshell.command.Command;
+import org.codehaus.plexus.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Registers command components as they are discovered by the container.
@@ -43,36 +42,42 @@ public class DefaultCommandRegistry
 
     private Map<String, Command> commands = new HashMap<String, Command>();
 
-    public void register(final Command command) {
+    public void register(final Command command) throws DuplicateRegistrationException {
         assert command != null;
 
         String id = command.getId();
 
         if (commands.containsKey(id)) {
-            log.error("Ignoring duplicate: {}", id);
+            throw new DuplicateRegistrationException(id);
         }
-        else {
-            commands.put(id, command);
-            log.debug("Registered: {}", id);
+
+        commands.put(id, command);
+        log.debug("Registered: {}", id);
+    }
+
+    private void ensureRegistered(final String id) throws NotRegisteredException {
+        assert id != null;
+        
+        if (!commands.containsKey(id)) {
+            throw new NotRegisteredException(id);
         }
     }
 
-    public void unregister(final Command command) {
+    public void unregister(final Command command) throws NotRegisteredException {
         assert command != null;
 
         String id = command.getId();
 
-        if (!commands.containsKey(id)) {
-            log.error("Ignoring uregistered: {}", id);
-        }
-        else {
-            commands.remove(id);
-            log.debug("Unregistered: {}", id);
-        }
+        ensureRegistered(id);
+
+        commands.remove(id);
+        log.debug("Unregistered: {}", id);
     }
 
-    public Command lookup(final String id) {
+    public Command lookup(final String id) throws NotRegisteredException {
         assert id != null;
+
+        ensureRegistered(id);
 
         return commands.get(id);
     }
