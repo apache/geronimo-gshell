@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.descriptor;
 
-import java.util.Map;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;

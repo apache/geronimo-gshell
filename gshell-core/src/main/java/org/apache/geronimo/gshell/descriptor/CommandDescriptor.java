@@ -23,9 +23,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Describes a command.
