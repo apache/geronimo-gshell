@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.request.RequestResponseFilter;
 import org.apache.geronimo.gshell.whisper.stream.SessionStreamFilter;
-import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportExceptionMonitor;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;

@@ -23,7 +23,6 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.geronimo.gshell.whisper.transport.base.ThreadPoolModel;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.IoHandler;

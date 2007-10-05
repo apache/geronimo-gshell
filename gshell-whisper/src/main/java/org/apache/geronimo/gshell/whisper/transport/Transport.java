@@ -20,18 +20,12 @@
 package org.apache.geronimo.gshell.whisper.transport;
 
 import java.io.Closeable;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.util.EventListener;
 
-import org.apache.geronimo.gshell.common.Duration;
-import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoHandler;
-import org.apache.mina.common.IoSession;
 import org.apache.mina.common.ThreadModel;
-import org.apache.mina.common.WriteFuture;
 
 /**
  * Provides the client-side protocol interface.

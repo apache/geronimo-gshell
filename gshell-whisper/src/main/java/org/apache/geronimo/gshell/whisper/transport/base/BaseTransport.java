@@ -23,11 +23,9 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
-import org.apache.geronimo.gshell.whisper.transport.base.ThreadPoolModel;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.apache.geronimo.gshell.whisper.transport.base.SessionAdapter;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;

@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
-
 /**
  * Provides commands with the context of its execution.
  *

@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.whisper.transport.base;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 
 import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
@@ -31,7 +30,6 @@ import org.apache.geronimo.gshell.whisper.request.Requestor;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
 import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 
