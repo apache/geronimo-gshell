@@ -59,7 +59,7 @@ public class ComponentSetDescriptorAdapter
         }
 
         //
-        // FIXME: Need to figure out dependencies
+        // TODO: Need to figure out dependencies
         //
         
         setDependencies(null);

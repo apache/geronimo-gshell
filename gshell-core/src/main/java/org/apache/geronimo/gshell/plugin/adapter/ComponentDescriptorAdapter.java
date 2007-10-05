@@ -25,8 +25,11 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.descriptor.CommandParameter;
 import org.apache.geronimo.gshell.descriptor.CommandRequirement;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
  * ???
@@ -79,19 +82,45 @@ public class ComponentDescriptorAdapter
 
         setInstantiationStrategy("per-lookup");
 
-        if (command.hasConfiguration()) {
-            setConfiguration(new PlexusConfigurationAdapter(command.getConfiguration()));
+        if (command.hasParameters()) {
+            XmlPlexusConfiguration root = new XmlPlexusConfiguration("configuration");
+
+            for (CommandParameter param : command.getParameters()) {
+                XmlPlexusConfiguration child = new XmlPlexusConfiguration(param.getName());
+
+                child.setValue(param.getValue());
+
+                root.addChild(child);
+            }
+            
+            setConfiguration(root);
         }
 
         if (command.hasRequirements()) {
             for (CommandRequirement requirement : command.getRequirements()) {
-                this.addRequirement(new ComponentRequirementAdapter(requirement));
+                addRequirement(translate(requirement));
             }
         }
 
         //
         // TODO: What to do about depencencies?  Or are they just on the set level?
         //
+    }
+
+    private ComponentRequirement translate(final CommandRequirement source) {
+        assert source != null;
+
+        ComponentRequirement requirement = new ComponentRequirement();
+
+        requirement.setRole(source.getType());
+
+        requirement.setRoleHint(source.getId());
+
+        requirement.setFieldName(source.getName());
+
+        requirement.setFieldMappingType(null);
+
+        return requirement;
     }
 
     public String toString() {
