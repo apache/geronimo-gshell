@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.server.RshServer;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
@@ -46,7 +46,7 @@ public class ConnectHandler
         super(ConnectMessage.class);
     }
 
-    public void handle(final IoSession session, final ServerSessionContext context, final ConnectMessage message) throws Exception {
+    public void handle(final Session session, final ServerSessionContext context, final ConnectMessage message) throws Exception {
         // Try to cancel the timeout task
         if (!timeoutManager.cancelTimeout(session)) {
             log.warn("Aborting handshake processing; timeout has triggered");
@@ -58,12 +58,13 @@ public class ConnectHandler
             // Reply to the client with some details about the connection
             ConnectMessage.Result reply = new ConnectMessage.Result(crypto.getPublicKey());
             reply.setCorrelationId(message.getId());
-            session.write(reply);
+            session.send(reply);
 
             // Schedule a task to timeout the login process
             timeoutManager.scheduleTimeout(session, RshServer.AUTH_TIMEOUT, new Runnable() {
                 public void run() {
-                    log.error("Timeout waiting for login from: {}", session.getRemoteAddress());
+                    log.error("Timeout waiting for login from: {}", session);
+                    
                     session.close();
                 }
             });

@@ -43,11 +43,13 @@
             <artifactId>gshell-whisper</artifactId>
             <version>${version}</version>
         </dependency>
-        
+
+        <!--
         <dependency>
             <groupId>blissed</groupId>
             <artifactId>blissed</artifactId>
         </dependency>
+        -->
     </dependencies>
 
 </project>

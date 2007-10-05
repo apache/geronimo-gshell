@@ -25,8 +25,8 @@ import java.util.concurrent.ThreadFactory;
 
 import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.common.NamedThreadFactory;
-import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -53,22 +53,22 @@ public class DefaultTimeoutManager
         scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), tf);
     }
 
-    public ScheduledFuture scheduleTimeout(final IoSession session, final Duration timeout, final Runnable task) {
+    public ScheduledFuture scheduleTimeout(final Session session, final Duration timeout, final Runnable task) {
         assert session != null;
         assert timeout != null;
         assert task != null;
 
         ScheduledFuture tf = scheduler.schedule(task, timeout.value, timeout.unit);
 
-        TIMEOUT.rebind(session, tf);
+        TIMEOUT.rebind(session.getSession(), tf);
 
         return tf;
     }
 
-    public boolean cancelTimeout(final IoSession session) {
+    public boolean cancelTimeout(final Session session) {
         assert session != null;
 
-        ScheduledFuture tf = TIMEOUT.lookup(session);
+        ScheduledFuture tf = TIMEOUT.lookup(session.getSession());
 
         return tf.cancel(false);
     }

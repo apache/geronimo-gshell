@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.component.annotations.Component;
@@ -49,7 +49,7 @@ public class OpenShellHandler
         super(OpenShellMessage.class);
     }
 
-    public void handle(final IoSession session, final ServerSessionContext context, final OpenShellMessage message) throws Exception {
+    public void handle(final Session session, final ServerSessionContext context, final OpenShellMessage message) throws Exception {
         // Create a new container which will be the parent for our remote shells
         ClassWorld classWorld = container.getContainerRealm().getWorld();
         context.container = RemoteShellContainer.create(classWorld);
@@ -71,6 +71,6 @@ public class OpenShellHandler
 
         EchoMessage reply = new EchoMessage("OPEN SHELL SUCCESS");
         reply.setCorrelationId(message.getId());
-        session.write(reply);
+        session.send(reply);
     }
 }

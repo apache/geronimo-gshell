@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.client.handler;
 
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.message.MessageHandler;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
  * ???
@@ -31,5 +31,5 @@ import org.apache.mina.common.IoSession;
 public interface ClientMessageHandler<T extends Message>
     extends MessageHandler<T>
 {
-    void handle(final IoSession session, final ClientSessionContext context, final T message) throws Exception;
+    void handle(final Session session, final ClientSessionContext context, final T message) throws Exception;
 }

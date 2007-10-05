@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.server;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
 import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
  * Container for <em>remote</em> input/output handles.
@@ -36,7 +36,7 @@ public class RemoteIO
     // TODO: Figure out how to hook up STDERR to all of this muck
     //
     
-    public RemoteIO(final IoSession session) {
-        super(SessionInputStream.BINDER.lookup(session), SessionOutputStream.BINDER.lookup(session), false);
+    public RemoteIO(final Session session) {
+        super(SessionInputStream.BINDER.lookup(session.getSession()), SessionOutputStream.BINDER.lookup(session.getSession()), false);
     }
 }

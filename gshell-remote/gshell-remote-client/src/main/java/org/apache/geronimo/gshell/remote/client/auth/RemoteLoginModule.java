@@ -34,6 +34,7 @@ import javax.security.auth.spi.LoginModule;
 
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,6 +73,7 @@ public class RemoteLoginModule
     public boolean login() throws LoginException {
         // Get a handle on our transport
         Transport transport = getTransport();
+        Session session = transport.getSession();
 
         // Process the username + password callbacks
         Callback[] callbacks = {
@@ -95,7 +97,7 @@ public class RemoteLoginModule
         // Send the login message
         Message response;
         try {
-            response = transport.request(new LoginMessage(username, password));
+            response = session.request(new LoginMessage(username, password));
         }
         catch (Exception e) {
             throw new LoginException(e.getMessage());

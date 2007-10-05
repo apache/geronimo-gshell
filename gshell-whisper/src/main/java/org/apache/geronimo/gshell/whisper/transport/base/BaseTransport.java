@@ -19,19 +19,14 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.geronimo.gshell.common.Duration;
-import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.request.Requestor;
-import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
-import org.apache.geronimo.gshell.whisper.session.ThreadPoolModel;
-import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
-import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.whisper.transport.base.ThreadPoolModel;
+import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.apache.geronimo.gshell.whisper.transport.base.SessionAdapter;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.ConnectFuture;
@@ -39,7 +34,6 @@ import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.ThreadModel;
-import org.apache.mina.common.WriteFuture;
 
 /**
  * Support for {@link Transport} implementations.
@@ -64,7 +58,7 @@ public abstract class BaseTransport<T extends IoConnector>
 
     protected T connector;
 
-    protected IoSession session;
+    protected Session session;
 
     protected BaseTransport(final AddressFactory addressFactory) {
         super(addressFactory);
@@ -145,16 +139,18 @@ public abstract class BaseTransport<T extends IoConnector>
         cf.join();
 
         // And fetch session so we can talk
-        session = cf.getSession();
+        IoSession s = cf.getSession();
+        session = new SessionAdapter(s);
+
         log.debug("Session: ", session);
 
         // Maybe configure something
-        configure(session);
+        configure(s);
 
         // Stuff the transport instance into the session's context so we can find ourself later
-        TRANSPORT.bind(session, this);
+        TRANSPORT.bind(s, this);
 
-        log.info("Connected to: {}", session.getRemoteAddress());
+        log.info("Connected to: {}", s.getRemoteAddress());
     }
 
     public synchronized void close() {
@@ -164,9 +160,12 @@ public abstract class BaseTransport<T extends IoConnector>
         }
 
         try {
-            TRANSPORT.unbind(session);
+            IoSession s = session.getSession();
+
+            TRANSPORT.unbind(s);
             
-            CloseFuture cf = session.close();
+            CloseFuture cf = s.close();
+            
             cf.join();
         }
         finally {
@@ -186,51 +185,8 @@ public abstract class BaseTransport<T extends IoConnector>
         return connector;
     }
 
-    public IoSession getSession() {
+    public Session getSession() {
         return session;
-    }
-
-    //
-    // Streams
-    //
-
-    public InputStream getInputStream() {
-        return SessionInputStream.BINDER.lookup(session);
-    }
-
-    public OutputStream getOutputStream() {
-        return SessionOutputStream.BINDER.lookup(session);
-    }
-
-    public OutputStream getErrorStream() {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    //
-    // Sending Messages
-    //
-
-    public WriteFuture send(final Object msg) throws Exception {
-        assert msg != null;
-
-        return session.write(msg);
-    }
-
-    public Message request(final Message msg) throws Exception {
-        assert msg != null;
-
-        Requestor requestor = new Requestor(this);
-
-        return requestor.request(msg);
-    }
-
-    public Message request(final Message msg, final Duration timeout) throws Exception {
-        assert msg != null;
-        assert timeout != null;
-
-        Requestor requestor = new Requestor(this);
-
-        return requestor.request(msg, timeout);
     }
 
     //

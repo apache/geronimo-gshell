@@ -17,26 +17,19 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client.handler;
+package org.apache.geronimo.gshell.whisper.rfile;
 
-import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.whisper.message.BaseMessage;
 
 /**
- * ???
+ * Message sent to initiate an <tt>rfile</tt> connection.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ClientMessageHandler.class, hint="echo")
-public class EchoHandler
-    extends ClientMessageHandlerSupport<EchoMessage>
+public class OpenFileMessage
+    extends BaseMessage
 {
-    public EchoHandler() {
-        super(EchoMessage.class);
-    }
-
-    public void handle(final Session session, final ClientSessionContext context, final EchoMessage message) throws Exception {
-        log.info("\n\nECHO: {}\n\n", message.getText());
-    }
+    //
+    // TODO: Response should contain file details or denial
+    //
 }

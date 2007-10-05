@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.common.NamedThreadFactory;
 import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

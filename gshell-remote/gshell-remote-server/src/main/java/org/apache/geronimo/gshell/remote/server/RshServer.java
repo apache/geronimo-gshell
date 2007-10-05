@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.remote.server.handler.ServerMessageHandler;
 import org.apache.geronimo.gshell.remote.server.handler.ServerSessionContext;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.message.MessageHandler;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
@@ -118,14 +119,16 @@ public class RshServer
         public void sessionOpened(final IoSession session) throws Exception {
             assert session != null;
 
+            final Session s = Session.BINDER.lookup(session);
+
             // Install the session context
             ServerSessionContext context = ServerSessionContext.BINDER.bind(session, new ServerSessionContext());
             log.debug("Created session context: {}", context);
             
             // Schedule a task to timeout the handshake process
-            timeoutManager.scheduleTimeout(session, AUTH_TIMEOUT, new Runnable() {
+            timeoutManager.scheduleTimeout(s, AUTH_TIMEOUT, new Runnable() {
                 public void run() {
-                    log.error("Timeout waiting for handshake from: {}", session.getRemoteAddress());
+                    log.error("Timeout waiting for handshake from: {}", s);
 
                     session.close();
                 }

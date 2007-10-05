@@ -40,6 +40,7 @@ import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.message.MessageHandler;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
@@ -71,6 +72,8 @@ public class RshClient
 
     private Transport transport;
 
+    private Session session;
+
     @Requirement(role=ClientMessageHandler.class)
     private List<ClientMessageHandler> handlers;
 
@@ -82,16 +85,17 @@ public class RshClient
         TransportFactory factory = locator.locate(remote);
 
         transport = factory.connect(remote, local, new Handler());
+        session = transport.getSession();
 
         log.debug("Connected to: {}", remote);
     }
 
     public InputStream getInputStream() {
-        return transport.getInputStream();
+        return session.getInputStream();
     }
 
     public OutputStream getOutputStream() {
-        return transport.getOutputStream();
+        return session.getOutputStream();
     }
 
     public Transport getTransport() {
@@ -110,9 +114,9 @@ public class RshClient
     private void doHandshake() throws Exception {
         log.debug("Handshaking");
 
-        ClientSessionContext context = ClientSessionContext.BINDER.lookup(transport.getSession());
+        ClientSessionContext context = ClientSessionContext.BINDER.lookup(session.getSession());
 
-        Message response = transport.request(new ConnectMessage(crypto.getPublicKey()));
+        Message response = session.request(new ConnectMessage(crypto.getPublicKey()));
 
         if (response instanceof ConnectMessage.Result) {
             ConnectMessage.Result result = (ConnectMessage.Result)response;
@@ -126,7 +130,7 @@ public class RshClient
     private void doLogin(final String username, final String password) throws Exception {
         log.debug("Logging in: {}", username);
 
-        ClientSessionContext context = ClientSessionContext.BINDER.lookup(transport.getSession());
+        ClientSessionContext context = ClientSessionContext.BINDER.lookup(session.getSession());
 
         CallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(username, password);
         LoginContext loginContext = new LoginContext("RshClient", callbackHandler);
@@ -148,13 +152,13 @@ public class RshClient
         
         log.debug("Echoing: {}", text);
 
-        transport.send(new EchoMessage(text)).join();
+        session.send(new EchoMessage(text)).join();
     }
 
     public void openShell() throws Exception {
         log.debug("Opening remote shell");
 
-        Message resp = transport.request(new OpenShellMessage());
+        Message resp = session.request(new OpenShellMessage());
 
         //
         // TODO: Need some context from the response
@@ -166,7 +170,7 @@ public class RshClient
     public void closeShell() throws Exception {
         log.debug("Closing remote shell");
 
-        Message resp = transport.request(new CloseShellMessage());
+        Message resp = session.request(new CloseShellMessage());
 
         //
         // TODO: Need some context from the response
@@ -178,7 +182,7 @@ public class RshClient
     private Object doExecute(final ExecuteMessage msg) throws Exception {
         assert msg != null;
 
-        ExecuteMessage.Result result = (ExecuteMessage.Result) transport.request(msg);
+        ExecuteMessage.Result result = (ExecuteMessage.Result) session.request(msg);
 
         // Handle result notifications
         if (result instanceof ExecuteMessage.Notification) {

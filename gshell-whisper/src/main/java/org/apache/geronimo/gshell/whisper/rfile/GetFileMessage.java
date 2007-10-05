@@ -17,26 +17,16 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client.handler;
+package org.apache.geronimo.gshell.whisper.rfile;
 
-import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.geronimo.gshell.whisper.message.BaseMessage;
 
 /**
- * ???
+ * Message to initate a file transfer from remote to local.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ClientMessageHandler.class, hint="echo")
-public class EchoHandler
-    extends ClientMessageHandlerSupport<EchoMessage>
+public class GetFileMessage
+    extends BaseMessage
 {
-    public EchoHandler() {
-        super(EchoMessage.class);
-    }
-
-    public void handle(final Session session, final ClientSessionContext context, final EchoMessage message) throws Exception {
-        log.info("\n\nECHO: {}\n\n", message.getText());
-    }
 }

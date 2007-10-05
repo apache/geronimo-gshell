@@ -17,9 +17,11 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.session;
+package org.apache.geronimo.gshell.whisper.util;
 
 import org.apache.mina.common.IoSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper to manage binding operations for typed session attribute objects.
@@ -28,6 +30,8 @@ import org.apache.mina.common.IoSession;
  */
 public class SessionAttributeBinder<T>
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private final String key;
 
     public SessionAttributeBinder(final String key) {
@@ -88,6 +92,8 @@ public class SessionAttributeBinder<T>
 
         session.setAttribute(key, obj);
 
+        log.trace("Bound {} ", obj);
+
         return obj;
     }
     
@@ -100,6 +106,8 @@ public class SessionAttributeBinder<T>
 
         session.setAttribute(key, obj);
 
+        log.trace("Rebound {}", obj);
+
         return prev;
     }
 
@@ -107,7 +115,11 @@ public class SessionAttributeBinder<T>
     public T unbind(final IoSession session) {
         assert session != null;
 
-        return (T) session.removeAttribute(key);
+        T obj = (T) session.removeAttribute(key);
+
+        log.trace("Unbound {}", obj);
+
+        return obj;
     }
 
     public static class NotBoundException

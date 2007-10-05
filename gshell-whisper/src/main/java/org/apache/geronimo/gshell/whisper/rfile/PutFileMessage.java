@@ -17,9 +17,16 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.whisper.rfile;
+
+import org.apache.geronimo.gshell.whisper.message.BaseMessage;
+
 /**
- * Session support.
+ * Message to initate a file transfer from local to remote.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.whisper.session;
+public class PutFileMessage
+    extends BaseMessage
+{
+}

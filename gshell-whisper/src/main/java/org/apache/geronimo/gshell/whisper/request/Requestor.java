@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.transport.Transport;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.mina.common.IoFutureListener;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
@@ -54,8 +54,8 @@ public class Requestor
         this(session, DEFAULT_TIMEOUT);
     }
 
-    public Requestor(final Transport transport) {
-        this(transport.getSession(), DEFAULT_TIMEOUT);
+    public Requestor(final Session session) {
+        this(session.getSession(), DEFAULT_TIMEOUT);
     }
 
     public Duration getTimeout() {

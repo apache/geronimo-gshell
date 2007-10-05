@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.remote.jaas.JaasConfigurationHelper;
 import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -55,7 +55,7 @@ public class LoginHandler
         new JaasConfigurationHelper("server.login.conf").initialize();
     }
 
-    public void handle(final IoSession session, final ServerSessionContext context, final LoginMessage message) throws Exception {
+    public void handle(final Session session, final ServerSessionContext context, final LoginMessage message) throws Exception {
         // Try to cancel the timeout task
         if (!timeoutManager.cancelTimeout(session)) {
             log.warn("Aborting login processing; timeout has triggered");
@@ -80,7 +80,7 @@ public class LoginHandler
 
                 LoginMessage.Success reply = new LoginMessage.Success(context.identity.getToken());
                 reply.setCorrelationId(message.getId());
-                session.write(reply);
+                session.send(reply);
             }
             catch (LoginException e) {
                 String reason = e.toString();
@@ -88,7 +88,7 @@ public class LoginHandler
 
                 LoginMessage.Failure reply = new LoginMessage.Failure(reason);
                 reply.setCorrelationId(message.getId());
-                session.write(reply);
+                session.send(reply);
             }
         }
     }

@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.whisper.message;
 import java.net.URI;
 import java.util.Map;
 
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
@@ -156,9 +157,11 @@ public class PingPongProtocolTester
 
         log("Client: " + client);
 
+        Session session = client.getSession();
+
         Thread.sleep(5 * 1000);
 
-        client.send(new PingMessage()).join();
+        session.send(new PingMessage()).join();
         
         Thread.sleep(30 * 1000);
 

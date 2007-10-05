@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.common.Notification;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -39,7 +39,7 @@ public class ExecuteHandler
         super(ExecuteMessage.class);
     }
 
-    public void handle(final IoSession session, final ServerSessionContext context, final ExecuteMessage message) throws Exception {
+    public void handle(final Session session, final ServerSessionContext context, final ExecuteMessage message) throws Exception {
         // Need to make sure that the execuing thread has the right I/O and environment in context
         IOLookup.set(context.container, context.io);
         EnvironmentLookup.set(context.container, context.env);
@@ -65,6 +65,6 @@ public class ExecuteHandler
         }
 
         reply.setCorrelationId(message.getId());
-        session.write(reply);
+        session.send(reply);
     }
 }

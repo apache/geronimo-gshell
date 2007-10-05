@@ -22,67 +22,41 @@ package org.apache.geronimo.gshell.whisper.transport;
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.util.EventListener;
 
 import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.mina.common.IoConnector;
-import org.apache.mina.common.IoHandler;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.apache.mina.common.IoSession;
-import org.apache.mina.common.ThreadModel;
 import org.apache.mina.common.WriteFuture;
 
 /**
- * Provides the client-side protocol interface.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface Transport<T extends IoConnector>
+public interface Session
     extends Closeable
 {
-    URI getRemote();
+    SessionAttributeBinder<Session> BINDER = new SessionAttributeBinder<Session>(Session.class);
 
-    URI getLocal();
-
-    T getConnector();
-
-    Session getSession();
+    IoSession getSession();
 
     void close();
 
+    WriteFuture send(Object msg) throws Exception;
+
+    Message request(Message msg, Duration timeout) throws Exception;
+
+    Message request(Message msg) throws Exception;
+
     //
-    // Listeners
+    // NOTE: This could handle setting the correlationId ???
     //
+    // WriteFuture reply(Message reply, Message replyTo) throws Exception;
 
-    void addListener(Listener listener);
+    InputStream getInputStream();
 
-    void removeListener(Listener listener);
+    OutputStream getOutputStream();
 
-    interface Listener
-        extends EventListener
-    {
-        //
-        // TODO:
-        //
-    }
-    
-    //
-    // Configuration
-    //
-
-    void setConfiguration(Configuration config);
-
-    Configuration getConfiguration();
-
-    interface Configuration
-    {
-        IoHandler getHandler();
-
-        void setHandler(IoHandler handler);
-
-        ThreadModel getThreadModel();
-
-        void setThreadModel(ThreadModel threadModel);
-    }
+    OutputStream getErrorStream();
 }

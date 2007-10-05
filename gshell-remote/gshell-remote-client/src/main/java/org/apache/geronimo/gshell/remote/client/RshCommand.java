@@ -31,8 +31,8 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Command to connect to a remote shell server.

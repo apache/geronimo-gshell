@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.server.timeout;
 import java.util.concurrent.ScheduledFuture;
 
 import org.apache.geronimo.gshell.common.Duration;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
  * ???
@@ -31,7 +31,7 @@ import org.apache.mina.common.IoSession;
  */
 public interface TimeoutManager
 {
-    ScheduledFuture scheduleTimeout(IoSession session, Duration timeout, Runnable task);
+    ScheduledFuture scheduleTimeout(Session session, Duration timeout, Runnable task);
 
-    boolean cancelTimeout(IoSession session);
+    boolean cancelTimeout(Session session);
 }

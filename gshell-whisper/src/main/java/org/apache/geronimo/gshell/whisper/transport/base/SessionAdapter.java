@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.whisper.transport;
+package org.apache.geronimo.gshell.whisper.transport.base;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.request.Requestor;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
 import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
@@ -39,12 +40,14 @@ import org.apache.mina.common.WriteFuture;
  *
  * @version $Rev$ $Date$
  */
-public class TransportAdapter
-    implements Transport
+public class SessionAdapter
+    implements Session
 {
     private final IoSession session;
 
-    public TransportAdapter(final IoSession session) {
+    private boolean closed;
+
+    public SessionAdapter(final IoSession session) {
         assert session != null;
 
         this.session = session;
@@ -54,49 +57,31 @@ public class TransportAdapter
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    public URI getRemote() {
-        throw new UnsupportedOperationException();
-    }
-
-    public URI getLocal() {
-        throw new UnsupportedOperationException();
-    }
-
-    public IoConnector getConnector() {
-        throw new UnsupportedOperationException();
-    }
-
     public IoSession getSession() {
         ensureOpened();
 
         return session;
     }
 
-    //
-    // Streams
-    //
-
-    public InputStream getInputStream() {
-        ensureOpened();
-
-        return SessionInputStream.BINDER.lookup(session);
+    public synchronized boolean isClosed() {
+        return closed;
     }
 
-    public OutputStream getOutputStream() {
-        ensureOpened();
-
-        return SessionOutputStream.BINDER.lookup(session);
+    protected void ensureOpened() {
+        if (isClosed()) {
+            throw new IllegalStateException("Closed");
+        }
     }
 
-    public OutputStream getErrorStream() {
-        ensureOpened();
+    public synchronized void close() {
+        if (isClosed()) {
+            return;
+        }
 
-        throw new UnsupportedOperationException();
+        session.close();
+
+        closed = true;
     }
-
-    //
-    // Sending Messages
-    //
 
     public WriteFuture send(final Object msg) throws Exception {
         assert msg != null;
@@ -127,57 +112,21 @@ public class TransportAdapter
         return requestor.request(msg, timeout);
     }
 
-    //
-    // Closeable
-    //
+    public InputStream getInputStream() {
+        ensureOpened();
 
-    private boolean closed;
-
-    public synchronized boolean isClosed() {
-        return closed;
+        return SessionInputStream.BINDER.lookup(session);
     }
 
-    protected void ensureOpened() {
-        if (isClosed()) {
-            throw new IllegalStateException("Closed");
-        }
+    public OutputStream getOutputStream() {
+        ensureOpened();
+
+        return SessionOutputStream.BINDER.lookup(session);
     }
 
-    public synchronized void close() {
-        if (isClosed()) {
-            return;
-        }
+    public OutputStream getErrorStream() {
+        ensureOpened();
 
-        session.close();
-        
-        closed = true;
-    }
-
-    //
-    // Listeners
-    //
-
-    public void addListener(final Listener listener) {
-        assert listener != null;
-
-        throw new UnsupportedOperationException();
-    }
-
-    public void removeListener(final Listener listener) {
-        assert listener != null;
-
-        throw new UnsupportedOperationException();
-    }
-
-    //
-    // Configuration
-    //
-
-    public void setConfiguration(final Configuration config) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Configuration getConfiguration() {
         throw new UnsupportedOperationException();
     }
 }

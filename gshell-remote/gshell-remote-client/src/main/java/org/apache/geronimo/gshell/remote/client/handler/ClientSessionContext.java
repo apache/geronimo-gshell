@@ -24,7 +24,7 @@ import java.security.PublicKey;
 import javax.security.auth.Subject;
 
 import org.apache.geronimo.gshell.remote.client.auth.ClientPrincipal;
-import org.apache.geronimo.gshell.whisper.session.SessionAttributeBinder;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 
 /**
  * ???

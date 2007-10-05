@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.message.MessageHandlerSupport;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.mina.common.IoSession;
 
 /**
@@ -39,6 +40,8 @@ public abstract class ServerMessageHandlerSupport<T extends Message>
     public void messageReceived(final IoSession session, final T message) throws Exception {
         ServerSessionContext context = ServerSessionContext.BINDER.lookup(session);
 
-        handle(session, context, message);
+        Session s = Session.BINDER.lookup(session);
+
+        handle(s, context, message);
     }
 }

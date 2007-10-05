@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -36,9 +36,9 @@ public class EchoHandler
         super(EchoMessage.class);
     }
 
-    public void handle(final IoSession session, final ServerSessionContext context, final EchoMessage message) throws Exception {
+    public void handle(final Session session, final ServerSessionContext context, final EchoMessage message) throws Exception {
         EchoMessage reply = new EchoMessage(message.getText());
         reply.setCorrelationId(message.getId());
-        session.write(reply);
+        session.send(reply);
     }
 }

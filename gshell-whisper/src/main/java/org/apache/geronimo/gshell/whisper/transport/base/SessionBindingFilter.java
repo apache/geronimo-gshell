@@ -17,31 +17,40 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client.handler;
+package org.apache.geronimo.gshell.whisper.transport.base;
 
-import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.message.MessageHandlerSupport;
 import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * A simple filter which handles binding and unbinding the Whisper {@link Session} instance
+ * when Mina creates and closes its native session.
  *
  * @version $Rev$ $Date$
  */
-public abstract class ClientMessageHandlerSupport<T extends Message>
-    extends MessageHandlerSupport<T>
-    implements ClientMessageHandler<T>
+public class SessionBindingFilter
+    extends IoFilterAdapter
 {
-    protected ClientMessageHandlerSupport(final Class<T> type) {
-        super(type);
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Override
+    public void sessionCreated(final NextFilter nextFilter, final IoSession session) throws Exception {
+        Session s = Session.BINDER.bind(session, new SessionAdapter(session));
+
+        log.debug("Bound: {}", s);
+
+        nextFilter.sessionCreated(session);
     }
 
-    public void messageReceived(final IoSession session, final T message) throws Exception {
-        ClientSessionContext context = ClientSessionContext.BINDER.lookup(session);
+    @Override
+    public void sessionClosed(final NextFilter nextFilter, final IoSession session) throws Exception {
+        Session s = Session.BINDER.unbind(session);
 
-        Session s = Session.BINDER.lookup(session);
+        log.debug("Unbound: {}", s);
 
-        handle(s, context, message);
+        nextFilter.sessionClosed(session);
     }
 }

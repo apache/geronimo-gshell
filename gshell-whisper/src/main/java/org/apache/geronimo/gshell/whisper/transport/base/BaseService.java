@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.request.RequestResponseFilter;
 import org.apache.geronimo.gshell.whisper.stream.SessionStreamFilter;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportExceptionMonitor;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
@@ -137,10 +138,14 @@ public abstract class BaseService<T extends IoService>
                 for (IoFilterChain.Entry entry : session.getFilterChain().getAll()) {
                     log.debug("    {}", entry);
                 }
+
+                // Session.BINDER.bind(session, new SessionAdapter(session));
             }
 
             public void sessionDestroyed(final IoSession session) {
                 log.debug("Session destroyed: {}", session);
+
+                // Session.BINDER.unbind(session);
             }
         });
 
@@ -171,6 +176,8 @@ public abstract class BaseService<T extends IoService>
         //
         // HACK: For right now just add a few hard codded to test with
         //
+
+        chain.addLast(SessionBindingFilter.class.getSimpleName(), new SessionBindingFilter());
 
         chain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 

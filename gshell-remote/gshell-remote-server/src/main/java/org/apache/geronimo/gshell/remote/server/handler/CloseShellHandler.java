@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.mina.common.IoSession;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -37,7 +37,7 @@ public class CloseShellHandler
         super(CloseShellMessage.class);
     }
 
-    public void handle(final IoSession session, final ServerSessionContext context, final CloseShellMessage message) throws Exception {
+    public void handle(final Session session, final ServerSessionContext context, final CloseShellMessage message) throws Exception {
         context.shell.close();
         context.shell = null;
 
@@ -50,6 +50,6 @@ public class CloseShellHandler
 
         EchoMessage reply = new EchoMessage("CLOSE SHELL SUCCESS");
         reply.setCorrelationId(message.getId());
-        session.write(reply);
+        session.send(reply);
     }
 }

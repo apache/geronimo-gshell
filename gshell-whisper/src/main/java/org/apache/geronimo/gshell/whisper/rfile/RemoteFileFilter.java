@@ -17,26 +17,19 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client.handler;
+package org.apache.geronimo.gshell.whisper.rfile;
 
-import org.apache.geronimo.gshell.remote.message.EchoMessage;
-import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.mina.common.IoFilterAdapter;
 
 /**
- * ???
+ * Filter which handles the details of the <tt>rfile</tt> (remote-file) protocol.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ClientMessageHandler.class, hint="echo")
-public class EchoHandler
-    extends ClientMessageHandlerSupport<EchoMessage>
+public class RemoteFileFilter
+    extends IoFilterAdapter
 {
-    public EchoHandler() {
-        super(EchoMessage.class);
-    }
-
-    public void handle(final Session session, final ClientSessionContext context, final EchoMessage message) throws Exception {
-        log.info("\n\nECHO: {}\n\n", message.getText());
-    }
+    //
+    // TODO: Probably want to duplicate the StreamWriteHandler and massage it for our needs...
+    //
 }
