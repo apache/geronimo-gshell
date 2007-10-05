@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.plugin;
 
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
-import org.apache.geronimo.gshell.plugin.adapter.ComponentSetDescriptorAdapter;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.DuplicateRegistrationException;
 import org.codehaus.plexus.PlexusContainer;
@@ -49,6 +48,13 @@ public class CommandDiscoveryListener
 
     @Requirement
     private CommandRegistry registry;
+
+    public CommandDiscoveryListener() {}
+    
+    public CommandDiscoveryListener(final PlexusContainer container, final CommandRegistry registry) {
+        this.container = container;
+        this.registry = registry;
+    }
 
     public String getId() {
         return getClass().getSimpleName();

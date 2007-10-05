@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.plugin.adapter;
+package org.apache.geronimo.gshell.plugin;
 
 import java.net.URI;
 

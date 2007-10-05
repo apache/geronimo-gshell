@@ -23,7 +23,6 @@ import java.io.Reader;
 
 import com.thoughtworks.xstream.core.BaseException;
 import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
-import org.apache.geronimo.gshell.plugin.adapter.ComponentSetDescriptorAdapter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
 import org.codehaus.plexus.component.discovery.ComponentDiscoverer;
