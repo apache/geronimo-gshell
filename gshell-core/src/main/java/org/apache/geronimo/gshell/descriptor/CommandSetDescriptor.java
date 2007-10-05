@@ -112,7 +112,7 @@ public class CommandSetDescriptor
                 CommandSetDescriptor.class,
                 CommandDescriptor.class,
                 CommandRequirement.class,
-                CommandConfiguration.class,
+                CommandParameter.class,
                 CommandDependency.class);
 
         return xs;

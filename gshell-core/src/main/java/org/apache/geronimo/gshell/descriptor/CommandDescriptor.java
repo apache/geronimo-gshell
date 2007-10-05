@@ -45,7 +45,7 @@ public class CommandDescriptor
 
     private String version;
 
-    private CommandConfiguration configuration;
+    private List<CommandParameter> parameters;
 
     private List<CommandRequirement> requirements;
 
@@ -95,18 +95,28 @@ public class CommandDescriptor
         this.version = version;
     }
 
-    public CommandConfiguration getConfiguration() {
-        return configuration;
+    public List<CommandParameter> getParameters() {
+        return parameters;
     }
 
-    public void setConfiguration(final CommandConfiguration configuration) {
-        this.configuration = configuration;
+    public void setParameters(final List<CommandParameter> parameters) {
+        this.parameters = parameters;
     }
 
-    public boolean hasConfiguration() {
-        return configuration != null;
+    public void addParameter(final CommandParameter parameter) {
+        assert parameter != null;
+
+        if (parameters == null) {
+            parameters = new ArrayList<CommandParameter>();
+        }
+
+        parameters.add(parameter);
     }
-    
+
+    public boolean hasParameters() {
+        return parameters != null;
+    }
+
     public List<CommandRequirement> getRequirements() {
         return requirements;
     }

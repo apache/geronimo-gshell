@@ -41,7 +41,7 @@ public class CommandDescriptorExtractor
     public static enum Scope
     {
         COMPILE,
-        TEST;
+        TEST; // ';' Here to keep QDox from being a bitch
     }
 
     private final Logger log = LoggerFactory.getLogger(getClass());

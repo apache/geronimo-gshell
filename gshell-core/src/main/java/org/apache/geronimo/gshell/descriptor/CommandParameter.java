@@ -19,25 +19,46 @@
 
 package org.apache.geronimo.gshell.descriptor;
 
+import java.util.Map;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+
 /**
- * Thrown to indicate a problem with a commands configuration.
+ * Describes a comand parameter.
  *
  * @version $Rev$ $Date$
  */
-public class CommandConfigurationException
-    extends Exception
+@XStreamAlias("parameter")
+public class CommandParameter
 {
-    public CommandConfigurationException() {}
+    private String name;
 
-    public CommandConfigurationException(final String msg) {
-        super(msg);
+    private String value;
+
+    public CommandParameter(final String name, final String value) {
+        this.name = name;
+        this.value = value;
     }
 
-    public CommandConfigurationException(final String msg, final Throwable cause) {
-        super(msg, cause);
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    public CommandConfigurationException(final Throwable cause) {
-        super(cause);
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(final String value) {
+        this.value = value;
     }
 }

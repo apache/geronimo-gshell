@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.plugin.adapter;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.descriptor.CommandConfiguration;
+import org.apache.geronimo.gshell.descriptor.CommandParameter;
 import org.apache.geronimo.gshell.descriptor.CommandConfigurationException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
@@ -34,20 +34,20 @@ import org.codehaus.plexus.configuration.PlexusConfigurationException;
 public class PlexusConfigurationAdapter
     implements PlexusConfiguration
 {
-    private final CommandConfiguration configuration;
+    private final CommandParameter parameter;
 
-    public PlexusConfigurationAdapter(final CommandConfiguration configuration) {
-        assert configuration != null;
+    public PlexusConfigurationAdapter(final CommandParameter parameter) {
+        assert parameter != null;
 
-        this.configuration = configuration;
+        this.parameter = parameter;
     }
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    public CommandConfiguration getConfiguration() {
-        return configuration;
+    public CommandParameter getConfiguration() {
+        return parameter;
     }
 
     //
@@ -55,12 +55,12 @@ public class PlexusConfigurationAdapter
     //
 
     public String getName() {
-        return configuration.getName();
+        return parameter.getName();
     }
 
     public String getValue() throws PlexusConfigurationException {
         try {
-            return configuration.getValue();
+            return parameter.getValue();
         }
         catch (CommandConfigurationException e) {
             throw new PlexusConfigurationException(e.getMessage(), e);
@@ -68,7 +68,7 @@ public class PlexusConfigurationAdapter
     }
 
     public String getValue(final String defaultValue) {
-        return configuration.getValue(defaultValue);
+        return parameter.getValue(defaultValue);
     }
 
     //

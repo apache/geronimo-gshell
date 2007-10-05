@@ -24,7 +24,6 @@ import java.net.URI;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.descriptor.CommandConfiguration;
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.descriptor.CommandRequirement;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;

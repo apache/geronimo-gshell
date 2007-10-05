@@ -26,7 +26,7 @@ import java.util.Map;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Parameter;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.descriptor.CommandConfiguration;
+import org.apache.geronimo.gshell.descriptor.CommandParameter;
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.descriptor.CommandRequirement;
 import org.slf4j.Logger;
@@ -118,10 +118,10 @@ public class CommandDescriptorGleaner
                     command.addRequirement(requirement);
                 }
 
-                CommandConfiguration config = findConfiguration(field);
+                CommandParameter parameter = findParameter(field);
 
-                if (config != null) {
-                    command.getConfiguration().addChild(config);
+                if (parameter != null) {
+                    command.addParameter(parameter);
                 }
             }
 
@@ -190,7 +190,7 @@ public class CommandDescriptorGleaner
         return requirement;
     }
 
-    private CommandConfiguration findConfiguration(final Field field) {
+    private CommandParameter findParameter(final Field field) {
         assert field != null;
 
         Parameter anno = field.getAnnotation(Parameter.class);
@@ -207,14 +207,8 @@ public class CommandDescriptorGleaner
         
         name = deHump(name);
 
-        CommandConfiguration config = new CommandConfiguration(name);
-
         String value = filterEmptyAsNull(anno.value());
 
-        if (value != null) {
-            config.setValue(value);
-        }
-
-        return config;
+        return new CommandParameter(name, value);
     }
 }
