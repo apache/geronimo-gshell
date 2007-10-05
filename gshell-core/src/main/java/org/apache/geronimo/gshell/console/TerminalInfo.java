@@ -41,6 +41,12 @@ public class TerminalInfo
     @Requirement
     private Terminal terminal;
 
+    public TerminalInfo() {}
+    
+    public TerminalInfo(final Terminal terminal) {
+        this.terminal = terminal;
+    }
+
     public void initialize() throws InitializationException {
         log.debug("Using terminal: {}", terminal);
         log.debug("  Supported: {}", terminal.isSupported());

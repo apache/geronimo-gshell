@@ -35,7 +35,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  *
  * @version $Rev$ $Date$
  */
-@Component(role= PromptReader.class, instantiationStrategy="per-lookup")
+@Component(role=PromptReader.class, instantiationStrategy="per-lookup")
 public class PromptReader
     implements Initializable
 {
@@ -48,6 +48,13 @@ public class PromptReader
     private char mask = '*';
 
     private ConsoleReader reader;
+
+    public PromptReader() {}
+    
+    public PromptReader(final Terminal terminal, final IO io) {
+        this.terminal = terminal;
+        this.io = io;
+    }
 
     public char getMask() {
         return mask;
