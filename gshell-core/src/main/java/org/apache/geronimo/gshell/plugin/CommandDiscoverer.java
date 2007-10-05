@@ -21,6 +21,9 @@ package org.apache.geronimo.gshell.plugin;
 
 import java.io.Reader;
 
+import com.thoughtworks.xstream.core.BaseException;
+import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.plugin.adapter.ComponentSetDescriptorAdapter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
 import org.codehaus.plexus.component.discovery.ComponentDiscoverer;
@@ -39,18 +42,26 @@ public class CommandDiscoverer
     extends AbstractComponentDiscoverer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    private final CommandSetDescriptorBuilder builder = new CommandSetDescriptorBuilder();
 
-    public String getComponentDescriptorLocation() {
+    protected String getComponentDescriptorLocation() {
         return "META-INF/gshell/commands.xml";
     }
 
-    public ComponentSetDescriptor createComponentDescriptors(final Reader reader, final String source)
-        throws PlexusConfigurationException
-    {
-        log.debug("Creating components from: {}", source);
-        
-        return builder.build(reader, source);
+    protected ComponentSetDescriptor createComponentDescriptors(final Reader reader, final String source) throws PlexusConfigurationException {
+        assert reader != null;
+        assert source != null;
+
+        log.debug("Loading descriptors from: {}", source);
+
+        try {
+            CommandSetDescriptor commands = CommandSetDescriptor.fromXML(reader);
+
+            log.debug("Loaded command set: {}", commands.getId());
+
+            return new ComponentSetDescriptorAdapter(commands);
+        }
+        catch (BaseException e) {
+            throw new PlexusConfigurationException("Failed to load descriptors from: " + source, e);
+        }
     }
 }

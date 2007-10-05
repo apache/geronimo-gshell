@@ -19,16 +19,17 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.command.descriptor.CommandSetDescriptor;
-import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.plugin.adapter.ComponentSetDescriptorAdapter;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.DuplicateRegistrationException;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,13 +59,18 @@ public class CommandDiscoveryListener
 
         log.trace("Event: {}", event);
 
-        ComponentSetDescriptor set = event.getComponentSetDescriptor();
+        ComponentSetDescriptor components = event.getComponentSetDescriptor();
 
-        if (set instanceof CommandSetDescriptor) {
-            CommandSetDescriptor commands = (CommandSetDescriptor) set;
+        if (components instanceof ComponentSetDescriptorAdapter) {
+            CommandSetDescriptor commands = ((ComponentSetDescriptorAdapter)components).getCommands();
 
-            for (CommandDescriptor descriptor : commands.getCommandDescriptors()) {
-                registry.register(new PlexusCommandWrapper(container, descriptor));
+            for (CommandDescriptor descriptor : commands.getCommands()) {
+                try {
+                    registry.register(new PlexusCommandWrapper(container, descriptor));
+                }
+                catch (DuplicateRegistrationException e) {
+                    log.error("Failed to register command: " + descriptor, e);
+                }
             }
         }
     }
