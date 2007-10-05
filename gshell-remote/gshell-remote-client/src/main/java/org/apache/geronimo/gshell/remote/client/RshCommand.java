@@ -19,12 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import jline.ConsoleReader;
 import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.clp.Argument;
@@ -32,6 +30,7 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
+import org.apache.geronimo.gshell.console.PromptReader;
 import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
 
 /**
@@ -62,6 +61,9 @@ public class RshCommand
     private Terminal terminal;
 
     @Requirement
+    private PromptReader prompter;
+
+    @Requirement
     private RshClient client;
 
     protected Object doExecute() throws Exception {
@@ -73,14 +75,12 @@ public class RshCommand
 
         // If the username/password was not configured via cli, then prompt the user for the values
         if (username == null || password == null) {
-            ConsoleReader reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, terminal);
-
             if (username == null) {
-                username = reader.readLine("Username: ");
+                username = prompter.readLine("Username: ");
             }
 
             if (password == null) {
-                password = reader.readLine("Password: ", '*');
+                password = prompter.readPassword("Password: ");
             }
 
             //
