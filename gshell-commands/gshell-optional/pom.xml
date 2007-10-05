@@ -37,21 +37,4 @@
         Provides some optional commands.
     </description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>gshell-maven-plugin</artifactId>
-                <version>${version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>commands-descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

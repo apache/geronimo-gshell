@@ -19,11 +19,13 @@
 
 package org.apache.geronimo.gshell.commands.bsf;
 
+import jline.Terminal;
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 
@@ -36,6 +38,9 @@ import org.apache.geronimo.gshell.console.JLineConsole;
 public class ScriptCommand
     extends CommandSupport
 {
+    @Requirement
+    private Terminal terminal;
+
     private String language;
 
     @Option(name="-l", aliases={"--language"}, required=true, description="Specify the scripting language")
@@ -94,7 +99,7 @@ public class ScriptCommand
                 }
             };
 
-            JLineConsole runner = new JLineConsole(executor, io);
+            JLineConsole runner = new JLineConsole(executor, io, terminal);
 
             runner.setErrorHandler(new Console.ErrorHandler() {
                 public Result handleError(final Throwable error) {

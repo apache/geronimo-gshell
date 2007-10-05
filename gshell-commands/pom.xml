@@ -50,17 +50,25 @@
     <modules>
         <module>gshell-builtins</module>
         <module>gshell-optional</module>
+        <module>gshell-bsf</module>
+        <module>gshell-vfs</module>
     </modules>
     
-    <profiles>
-        <profile>
-            <id>full</id>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-maven-plugin</artifactId>
+                <version>${version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
-            <modules>
-                <module>gshell-bsf</module>
-                <module>gshell-vfs</module>
-            </modules>
-        </profile>
-    </profiles>
-    
 </project>
