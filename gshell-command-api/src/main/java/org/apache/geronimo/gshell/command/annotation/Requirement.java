@@ -26,24 +26,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//
-// TODO: Maybe re-name the Command intf to Executable, and then rename this to Command?
-//
-
 /**
- * ???
+ * ????
  *
  * @version $Rev$ $Date$
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Inherited
-public @interface CommandComponent
+public @interface Requirement
 {
-    String id();
+    String name() default "";
 
-    String description() default "";
+    Class<?> type() default Void.class;
 
-    String version() default "";
+    String id() default "";
 }
