@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.url;
 
 import java.net.URL;
 import java.net.URLStreamHandler;
@@ -34,6 +34,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.url.URLHandlerFactory;
 
 /**
  * Provides access to URL internals.
@@ -41,10 +42,10 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 @Component(role=URLHandlerFactory.class, instantiationStrategy="singleton-keep-alive")
-public class URLHandlerFactory
-    implements Initializable
+public class DefaultURLHandlerFactory
+    implements URLHandlerFactory,Initializable
 {
-    private static URLHandlerFactory SINGLETON;
+    private static DefaultURLHandlerFactory SINGLETON;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -53,7 +54,7 @@ public class URLHandlerFactory
     @Requirement(role=URLStreamHandler.class)
     private Map<String,URLStreamHandler> handlers;
 
-    public URLHandlerFactory() {
+    public DefaultURLHandlerFactory() {
         // Just sanity check that only one of these puppies gets constructed... ever
         synchronized (URLHandlerFactory.class) {
             if (SINGLETON != null) {
@@ -66,7 +67,7 @@ public class URLHandlerFactory
     public void initialize() throws InitializationException {
         try {
             URL.setURLStreamHandlerFactory(factory);
-            
+
             log.debug("URL stream handler factory installed");
         }
         catch (Throwable t) {
@@ -89,7 +90,7 @@ public class URLHandlerFactory
         factory.register(protocol, handler);
     }
 
-    public URLStreamHandler getHandler(final String protocol) {
+    public URLStreamHandler create(final String protocol) {
         return factory.getHandler(protocol);
     }
 
@@ -194,10 +195,10 @@ public class URLHandlerFactory
 
                 return handler;
             }
-            
+
             // Try to get the stream handler from the registered package list
             Class<?> type = findProtocolHandler(protocol);
-            
+
             if (type == null) {
                 throw new IllegalArgumentException("Unknown protocol: " + protocol);
             }
@@ -232,12 +233,12 @@ public class URLHandlerFactory
         private synchronized Map<String,URLStreamHandler> handlers() {
             return Collections.unmodifiableMap(handlers);
         }
-        
+
         private Class<?> findProtocolHandler(final String protocol) {
             assert protocol != null;
 
             log.trace("Finding protocol handler: {}", protocol);
-            
+
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             if (cl == null) {
                 cl = ClassLoader.getSystemClassLoader();
