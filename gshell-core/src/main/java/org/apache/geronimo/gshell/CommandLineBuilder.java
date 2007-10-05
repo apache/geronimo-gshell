@@ -48,7 +48,13 @@ public class CommandLineBuilder
     private PlexusContainer container;
 
     private CommandLineParser parser = new CommandLineParser();
+
+    public CommandLineBuilder() {}
     
+    public CommandLineBuilder(final PlexusContainer container) {
+        this.container = container;
+    }
+
     private ASTCommandLine parse(final String input) throws ParseException {
         assert input != null;
 

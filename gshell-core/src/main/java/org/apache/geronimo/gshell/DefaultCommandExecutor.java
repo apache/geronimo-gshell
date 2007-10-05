@@ -53,6 +53,14 @@ public class DefaultCommandExecutor
     @Requirement
     private Environment env;
 
+    public DefaultCommandExecutor() {}
+    
+    public DefaultCommandExecutor(final LayoutManager layoutManager, final CommandLineBuilder commandLineBuilder, final Environment env) {
+        this.layoutManager = layoutManager;
+        this.commandLineBuilder = commandLineBuilder;
+        this.env = env;
+    }
+
     public Object execute(final String line) throws Exception {
         assert line != null;
 

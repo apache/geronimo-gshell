@@ -51,6 +51,12 @@ public class DefaultShellInfo
 
     private File homeDir;
 
+    public DefaultShellInfo() {}
+    
+    public DefaultShellInfo(final Branding branding) {
+        this.branding = branding;
+    }
+
     public File getHomeDir() {
         if (homeDir == null) {
             throw new IllegalStateException();

@@ -51,6 +51,12 @@ public class XMLLayoutLoader
 
     private URI location;
 
+    public XMLLayoutLoader() {}
+    
+    public XMLLayoutLoader(final ShellInfo info) {
+        this.info = info;
+    }
+
     public void initialize() throws InitializationException {
         assert info != null;
 

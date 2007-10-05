@@ -53,7 +53,15 @@ public class DefaultLayoutManager
     private Environment env;
     
     private Layout layout;
+
+    public DefaultLayoutManager() {}
     
+    public DefaultLayoutManager(final CommandRegistry commandRegistry, final LayoutLoader loader, final Environment env) {
+        this.commandRegistry = commandRegistry;
+        this.loader = loader;
+        this.env = env;
+    }
+
     public void initialize() throws InitializationException {
         assert loader != null;
 

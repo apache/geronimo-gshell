@@ -45,6 +45,13 @@ public class DefaultBranding
     @Requirement
     private Terminal terminal;
 
+    public DefaultBranding() {}
+    
+    public DefaultBranding(final VersionLoader versionLoader, final Terminal terminal) {
+        this.versionLoader = versionLoader;
+        this.terminal = terminal;
+    }
+
     public String getName() {
         return "gshell";
     }

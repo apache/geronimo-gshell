@@ -36,11 +36,17 @@ import org.codehaus.plexus.util.IOUtil;
 public class PropertiesVersionLoader
     implements VersionLoader
 {
-    private Properties props;
-
     @Configuration(value="version.properties")
     private String resourceName;
+
+    private Properties props;
+
+    public PropertiesVersionLoader() {}
     
+    public PropertiesVersionLoader(final String resourceName) {
+        this.resourceName = resourceName;
+    }
+
     public String getVersion() {
         if (props == null) {
             InputStream input = getClass().getResourceAsStream(resourceName);

@@ -77,6 +77,17 @@ public class DefaultShell
     @Requirement
     private IO io;
 
+    public DefaultShell() {}
+    
+    public DefaultShell(final ShellInfo shellInfo, final Branding branding, final CommandExecutor executor, final Terminal terminal, final Environment env, final IO io) {
+        this.shellInfo = shellInfo;
+        this.branding = branding;
+        this.executor = executor;
+        this.terminal = terminal;
+        this.env = env;
+        this.io = io;
+    }
+
     public Environment getEnvironment() {
         return env;
     }
