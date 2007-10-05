@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 @Component(role=URLHandlerFactory.class, instantiationStrategy="singleton-keep-alive")
-public final class URLHandlerFactory
+public class URLHandlerFactory
     implements Initializable
 {
     private static URLHandlerFactory SINGLETON;
