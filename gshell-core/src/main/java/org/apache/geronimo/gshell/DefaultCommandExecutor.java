@@ -19,20 +19,16 @@
 
 package org.apache.geronimo.gshell;
 
-import java.util.UUID;
-
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
@@ -48,9 +44,6 @@ public class DefaultCommandExecutor
     implements CommandExecutor
 {
     private Logger log = LoggerFactory.getLogger(getClass());
-
-    @Requirement
-    private PlexusContainer container;
 
     @Requirement
     private LayoutManager layoutManager;
@@ -108,11 +101,6 @@ public class DefaultCommandExecutor
         if (command == null) {
             throw new CommandNotFoundException(path);
         }
-
-        // Create a new child container for the invocation and lookup the command instance
-        String realmId = "gshell:" + UUID.randomUUID();
-
-        log.debug("Child container realm: {}", realmId);
 
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {
