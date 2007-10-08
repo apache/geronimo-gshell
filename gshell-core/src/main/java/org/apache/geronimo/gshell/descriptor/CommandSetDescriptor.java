@@ -45,6 +45,9 @@ public class CommandSetDescriptor
 
     private List<CommandDescriptor> commands;
 
+    public CommandSetDescriptor() {
+    }
+
     public CommandSetDescriptor(final String id) {
         this.id = id;
     }
