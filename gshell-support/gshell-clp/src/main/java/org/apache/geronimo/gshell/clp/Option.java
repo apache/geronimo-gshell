@@ -50,4 +50,6 @@ public @interface Option
     Class<? extends Handler> handler() default Handler.class;
     
     boolean multiValued() default false;
+    
+    boolean requireOverride() default false;
 }

@@ -43,7 +43,7 @@ public abstract class CommandSupport
 
     protected Variables variables;
     
-    @Option(name="-h", aliases={"--help"}, description="Display this help message")
+    @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
     private boolean displayHelp;
 
     public String getId() {

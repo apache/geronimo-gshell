@@ -53,6 +53,8 @@ public class CommandLineProcessor
 
     private boolean stopAtNonOption = false;
     
+    private boolean overrideRequiredArguments = false;
+    
     public CommandLineProcessor(final Object bean) throws IllegalAnnotationError {
         assert bean != null;
 
@@ -158,7 +160,9 @@ public class CommandLineProcessor
             checkOptionNotInMap(alias);
         }
 
+        overrideRequiredArguments = (option.requireOverride() || overrideRequiredArguments) ? true : false;
         optionHandlers.add(handler);
+
     }
 
     private void checkOptionNotInMap(final String name) throws IllegalAnnotationError {
@@ -285,17 +289,19 @@ public class CommandLineProcessor
         //
         
         // Ensure that all required option handlers are present
-        for (Handler handler : optionHandlers) {
-            if (handler.descriptor.required() && !present.contains(handler)) {
-                throw new ProcessingException(Messages.REQUIRED_OPTION_MISSING.format(handler.descriptor.toString()));
-            }
-        }
-
-        // Ensure that all required argument handlers are present
-        for (Handler handler : argumentHandlers) {
-            if (handler.descriptor.required() && !present.contains(handler)) {
-                throw new ProcessingException(Messages.REQUIRED_ARGUMENT_MISSING.format(handler.descriptor.toString()));
-            }
+        if (!overrideRequiredArguments) {
+	        for (Handler handler : optionHandlers) {
+	            if (handler.descriptor.required() && !present.contains(handler)) {
+	                throw new ProcessingException(Messages.REQUIRED_OPTION_MISSING.format(handler.descriptor.toString()));
+	            }
+	        }
+	
+	        // Ensure that all required argument handlers are present
+	        for (Handler handler : argumentHandlers) {
+	            if (handler.descriptor.required() && !present.contains(handler)) {
+	                throw new ProcessingException(Messages.REQUIRED_ARGUMENT_MISSING.format(handler.descriptor.toString()));
+	            }
+	        }
         }
     }
 
