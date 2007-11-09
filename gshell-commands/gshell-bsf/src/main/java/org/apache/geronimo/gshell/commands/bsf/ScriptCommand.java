@@ -63,6 +63,7 @@ public class ScriptCommand
     protected Object doExecute() throws Exception {
         //
         // TODO: When given a file/url, try to figure out language from ext if language not given
+        //       https://issues.apache.org/jira/browse/GSHELL-49
         //
 
         BSFManager manager = new BSFManager();
@@ -81,6 +82,7 @@ public class ScriptCommand
 
             //
             // TODO: This will change when file/URL processing is added
+            //       https://issues.apache.org/jira/browse/GSHELL-48
             //
         }
 

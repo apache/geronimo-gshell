@@ -66,12 +66,13 @@ public class Main
     
     //
     // TODO: Add flag to capture output to log file
+    //       https://issues.apache.org/jira/browse/GSHELL-47
     //
 
-    @Option(name="-h", aliases={"--help"}, description="Display this help message")
+    @Option(name="-h", aliases={"--help"}, requireOverride=true, description="Display this help message")
     private boolean help;
 
-    @Option(name="-V", aliases={"--version"}, description="Display program version")
+    @Option(name="-V", aliases={"--version"}, requireOverride=true, description="Display program version")
     private boolean version;
 
     @Option(name="-i", aliases={"--interactive"}, description="Run in interactive mode")
@@ -83,6 +84,7 @@ public class Main
 
     //
     // TODO: Add flag to show exception traces
+    //       https://issues.apache.org/jira/browse/GSHELL-46
     //
     
     @Option(name="-d", aliases={"--debug"}, description="Enable DEBUG logging output")

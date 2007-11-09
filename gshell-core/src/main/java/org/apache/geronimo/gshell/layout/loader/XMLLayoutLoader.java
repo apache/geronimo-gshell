@@ -62,6 +62,7 @@ public class XMLLayoutLoader
 
         //
         // HACK: Hard code this for now...
+        //       https://issues.apache.org/jira/browse/GSHELL-50
         //
 
         location = new File(info.getHomeDir(), "etc/layout.xml").toURI();
