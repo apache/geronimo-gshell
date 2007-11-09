@@ -141,6 +141,7 @@ public class RemoteLoginModule
 
     //
     // HACK: Transport access
+    //       https://issues.apache.org/jira/browse/GSHELL-51
     //
     
     private static final ThreadLocal<Transport> transportHolder = new ThreadLocal<Transport>();
