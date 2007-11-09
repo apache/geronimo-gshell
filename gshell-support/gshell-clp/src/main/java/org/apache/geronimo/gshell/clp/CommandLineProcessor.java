@@ -282,11 +282,6 @@ public class CommandLineProcessor
             // Keep a list of the handlers which have been processed (for required validation below)
             present.add(handler);
         }
-
-        //
-        // FIXME: Some options, like --help or --version may be used in conjunction with other options which are marked as required.
-        //        We need to set a little flag on the --help|--verison options to override this  required handling crapo...
-        //
         
         // Ensure that all required option handlers are present
         if (!overrideRequiredArguments) {
