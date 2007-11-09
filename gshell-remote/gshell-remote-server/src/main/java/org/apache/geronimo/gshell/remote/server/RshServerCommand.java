@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.command.annotation.Requirement;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="rsh-server")
+@CommandComponent(id="gshell-remote:rsh-server", description="Start a GShell server")
 public class RshServerCommand
     extends CommandSupport
 {

@@ -38,7 +38,7 @@ import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="rsh")
+@CommandComponent(id="gshell-remote:rsh", description="Connect to a remote GShell server")
 public class RshCommand
     extends CommandSupport
 {

@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="exit", description="Exit the shell")
+@CommandComponent(id="gshell-builtins:exit", description="Exit the shell")
 public class ExitCommand
     extends CommandSupport
 {

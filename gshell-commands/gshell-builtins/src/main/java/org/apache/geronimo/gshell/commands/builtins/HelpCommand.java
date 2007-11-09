@@ -38,7 +38,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="help", description="Show command help")
+@CommandComponent(id="gshell-builtins:help", description="Show command help")
 public class HelpCommand
     extends CommandSupport
 {
@@ -99,7 +99,8 @@ public class HelpCommand
                     io.out.println();
                 }
             }
-        } else {
+        }
+        else {
             Command cmd = commandRegistry.lookup(command);
             if (cmd == null) {
                 io.out.println("Command " + Renderer.encode(command, Code.BOLD) + " not found.");

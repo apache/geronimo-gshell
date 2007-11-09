@@ -39,7 +39,7 @@ import org.codehaus.plexus.util.IOUtil;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="source", description="Load a file/url into the current shell")
+@CommandComponent(id="gshell-builtins:source", description="Load a file/url into the current shell")
 public class SourceCommand
     extends CommandSupport
 {

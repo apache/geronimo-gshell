@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="copy", description="Copy files between VFS sources")
+@CommandComponent(id="gshell-vfs:copy", description="Copy files between VFS sources")
 public class CopyCommand
     extends VFSCommandSupport
 {

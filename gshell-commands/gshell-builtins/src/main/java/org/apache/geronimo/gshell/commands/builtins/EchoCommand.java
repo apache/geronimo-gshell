@@ -31,7 +31,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="echo", description="Echo or print arguments to STDOUT")
+@CommandComponent(id="gshell-builtins:echo", description="Echo or print arguments to STDOUT")
 public class EchoCommand
     extends CommandSupport
 {

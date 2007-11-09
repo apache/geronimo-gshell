@@ -29,7 +29,12 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 
-@CommandComponent(id="clear", description="Clear the terminal screen")
+/**
+ * Clear the terminal screen.
+ *
+ * @version $Rev$ $Date$
+ */
+@CommandComponent(id="gshell-builtins:clear", description="Clear the terminal screen")
 public class ClearCommand
     extends CommandSupport
 {

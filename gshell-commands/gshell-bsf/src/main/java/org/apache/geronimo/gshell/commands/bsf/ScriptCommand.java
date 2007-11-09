@@ -34,7 +34,7 @@ import org.apache.geronimo.gshell.console.JLineConsole;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="script", description="Provides generic scripting language execution support")
+@CommandComponent(id="gshell-bsf:script", description="Provides generic scripting language execution support")
 public class ScriptCommand
     extends CommandSupport
 {

@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="sleep", description="Sleep for a bit then wake up")
+@CommandComponent(id="gshell-optional:sleep", description="Sleep for a bit then wake up")
 public class SleepCommand
     extends CommandSupport
 {

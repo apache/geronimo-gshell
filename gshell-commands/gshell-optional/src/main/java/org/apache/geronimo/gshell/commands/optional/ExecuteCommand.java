@@ -31,7 +31,7 @@ import org.apache.geronimo.gshell.common.io.PumpStreamHandler;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="exec", description="Execute system processes")
+@CommandComponent(id="gshell-optional:exec", description="Execute system processes")
 public class ExecuteCommand
     extends CommandSupport
 {
