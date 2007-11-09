@@ -19,9 +19,15 @@
 
 package org.apache.geronimo.gshell.layout;
 
+import java.io.IOException;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
+import org.apache.geronimo.gshell.layout.model.AliasNode;
+import org.apache.geronimo.gshell.layout.model.CommandNode;
+import org.apache.geronimo.gshell.layout.model.GroupNode;
 import org.apache.geronimo.gshell.layout.model.Layout;
+import org.apache.geronimo.gshell.layout.model.Node;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.apache.geronimo.gshell.shell.Environment;
@@ -33,11 +39,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The default implementation of a {@link LayoutManager}.
+ * The default implementation of the {@link LayoutManager}.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=LayoutManager.class, hint="default")
+@Component(role=LayoutManager.class)
 public class DefaultLayoutManager
     implements LayoutManager, Initializable
 {
@@ -62,45 +68,100 @@ public class DefaultLayoutManager
         this.env = env;
     }
 
+    public DefaultLayoutManager(final CommandRegistry commandRegistry, final Layout layout, final Environment env) {
+        this.commandRegistry = commandRegistry;
+        this.layout = layout;
+        this.env = env;
+    }
+
     public void initialize() throws InitializationException {
         assert loader != null;
 
-        //
-        // FIXME: Turn this off for now...
-        //
-
-        /*
         try {
             layout = loader.load();
         }
         catch (IOException e) {
             throw new InitializationException(e.getMessage(), e);
         }
-        */
     }
 
     public Layout getLayout() {
-        if (layout == null) {
-            throw new IllegalStateException("Layout has not been initalized");
-        }
-        
         return layout;
     }
 
     public Command find(final String path) throws NotFoundException {
         assert path != null;
 
-        log.debug("Searching for command for path: {}", path);
+        log.debug("Searching for command: {}", path);
 
-        //
-        // HACK: For now, assume the path is just the id... should eventually change this
-        //
+        Node start;
+
+        if (path.startsWith("/")) {
+            start = layout;
+        }
+        else {
+            //
+            // FIXME: Use a FQN for this and expose as static final
+            //
+
+            start = (Node) env.getVariables().get("CURRENT_NODE");
+
+            if (start == null) {
+                start = layout;
+            }
+        }
+
+        String id = findCommandId(start, path);
 
         try {
-            return commandRegistry.lookup(path);
+            return commandRegistry.lookup(id);
         }
         catch (NotRegisteredException e) {
             throw new NotFoundException(e.getMessage());
         }
+    }
+
+    private String findCommandId(final Node start, final String path) throws NotFoundException {
+        assert start != null;
+        assert path != null;
+
+        Node node = findNode(start, path);
+
+        if (node instanceof CommandNode) {
+            return ((CommandNode)node).getId();
+        }
+        else if (node instanceof AliasNode) {
+            String cmd = ((AliasNode)node).getCommand();
+
+            return findCommandId(layout, cmd);
+        }
+
+        throw new NotFoundException(path);
+    }
+
+    private Node findNode(final Node start, final String path) throws NotFoundException {
+        assert start != null;
+        assert path != null;
+
+        Node current = start;
+
+        String[] elements = path.split("/");
+        
+        for (String element : elements) {
+            if (current instanceof GroupNode) {
+                Node node = ((GroupNode)current).find(element);
+
+                if (node == null) {
+                    throw new NotFoundException(path);
+                }
+
+                current = node;
+            }
+            else {
+                throw new NotFoundException(path);
+            }
+        }
+
+        return current;
     }
 }

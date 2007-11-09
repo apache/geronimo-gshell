@@ -22,11 +22,11 @@ package org.apache.geronimo.gshell.layout.model;
 import junit.framework.TestCase;
 
 /**
- * Basic validation of the layout model muck.
+ * Tests for the {@link Layout} class.
  *
  * @version $Rev$ $Date$
  */
-public class BasicModelValidationTest
+public class LayoutTest
     extends TestCase
 {
     public void testReadLayout1() throws Exception {
@@ -40,16 +40,16 @@ public class BasicModelValidationTest
     }
     
     public void testDumpLayout1() throws Exception {
-        Layout layout = new Layout("/");
+        Layout layout = new Layout();
         
-        layout.nodes().add(new CommandNode("foo", "bar"));
-        layout.nodes().add(new AliasNode("f", "foo"));
+        layout.add(new CommandNode("foo", "bar"));
+        layout.add(new AliasNode("f", "foo"));
 
         GroupNode g = new GroupNode("test");
-        g.nodes().add(new CommandNode("a", "b"));
-        g.nodes().add(new CommandNode("c", "d"));
+        g.add(new CommandNode("a", "b"));
+        g.add(new CommandNode("c", "d"));
 
-        layout.nodes().add(g);
+        layout.add(g);
         
         String xml = Layout.toXML(layout);
 

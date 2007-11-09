@@ -19,8 +19,9 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -33,13 +34,54 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class GroupNode
     extends Node
 {
-    protected List<Node> nodes = new ArrayList<Node>();
+    protected Set<Node> nodes = new HashSet<Node>();
 
     public GroupNode(final String name) {
         super(name);
     }
 
-    public List<Node> nodes() {
-        return nodes;
+    public void add(final Node child) {
+        assert child != null;
+
+        child.setParent(this);
+
+        nodes.add(child);
+    }
+
+    public Node find(final String name) {
+        assert name != null;
+        
+        for (Node child : nodes) {
+            if (name.equals(child.getName())) {
+                return child;
+            }
+        }
+
+        return null;
+    }
+
+    public Set<Node> nodes() {
+        return Collections.unmodifiableSet(nodes);
+    }
+
+    public int size() {
+        return nodes.size();
+    }
+
+    public boolean isEmpty() {
+        return nodes == null || nodes.isEmpty();
+    }
+    
+    /**
+     * Link children to their parent when deserializing.
+     */
+    private Object readResolve() {
+        if (!isEmpty()) {
+            for (Node child : nodes) {
+                child.setParent(this);
+            }
+        }
+
+        return this;
     }
 }

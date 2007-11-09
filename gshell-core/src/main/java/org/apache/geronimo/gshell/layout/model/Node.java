@@ -19,17 +19,23 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
- * The rudimentary elemnet of a layout.
+ * The rudimentary element of a layout.
  *
  * @version $Rev$ $Date$
  */
 public abstract class Node
 {
+    public static final String ROOT = "/";
+    
     protected String name;
+
+    @XStreamOmitField
+    protected Node parent;
 
     protected Node(final String name) {
         assert name != null;
@@ -39,6 +45,14 @@ public abstract class Node
 
     public String getName() {
         return name;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(final Node parent) {
+        this.parent = parent;
     }
 
     public String toString() {

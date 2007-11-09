@@ -19,46 +19,47 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
-import java.io.InputStream;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import junit.framework.TestCase;
 
 /**
- * The root container for a layout tree.
+ * Test for the {@link GroupNode} class.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("layout")
-public class Layout
-    extends GroupNode
+public class GroupNodeTest
+    extends TestCase
 {
-    public Layout() {
-        super(ROOT);
+    public void testAddLinks() throws Exception {
+        GroupNode group = new GroupNode("test");
+
+        Node n1 = new CommandNode("a", "b");
+
+        group.add(n1);
+
+        assertEquals(group, n1.getParent());
     }
 
-    //
-    // XML Conversion
-    //
-    
-    private static XStream createXStream() {
+    public void testDeserializeLinks() throws Exception {
+        GroupNode g1 = new GroupNode("test");
+
+        Node n1 = new CommandNode("a", "b");
+
+        g1.add(n1);
+
         XStream xs = new XStream();
 
-        Annotations.configureAliases(xs, Layout.class, GroupNode.class, CommandNode.class, AliasNode.class);
+        Annotations.configureAliases(xs, GroupNode.class);
+        
+        String xml = xs.toXML(g1);
 
-        return xs;
-    }
+        System.err.println("XML: " + xml);
 
-    public static Layout fromXML(final InputStream input) {
-        assert input != null;
+        GroupNode g2 = (GroupNode) xs.fromXML(xml);
 
-        return (Layout) createXStream().fromXML(input);
-    }
-
-    public static String toXML(final Layout layout) {
-        assert layout != null;
-
-        return createXStream().toXML(layout);
+        Node n2 = g2.nodes().iterator().next();
+        
+        assertEquals(g2, n2.getParent());
     }
 }
