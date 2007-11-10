@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.util.Collection;
-
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.branding.Branding;
@@ -30,6 +28,10 @@ import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.layout.LayoutManager;
+import org.apache.geronimo.gshell.layout.model.AliasNode;
+import org.apache.geronimo.gshell.layout.model.CommandNode;
+import org.apache.geronimo.gshell.layout.model.GroupNode;
+import org.apache.geronimo.gshell.layout.model.Node;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -60,56 +62,78 @@ public class HelpCommand
         io.out.println();
 
         if (command == null) {
-            displayCommands();
+            displayAvailableCommands();
         }
         else {
             displayCommandHelp(command);
         }
 
-        io.out.println();
-
         return SUCCESS;
     }
 
-    private void displayCommands() throws Exception {
+    private void displayAvailableCommands() throws Exception {
         io.out.print(branding.getAbout());
         io.out.println();
-
         io.out.println("Available commands:");
 
-        Collection<Command> commands = commandRegistry.commands();
+        GroupNode group = layoutManager.getLayout();
 
-        // Figure out the maximum length of a command name
-        int maxNameLen = 0;
-        for (Command desc : commands) {
-            if (desc.getId().length() > maxNameLen) {
-                maxNameLen = desc.getId().length();
+        displayGroupCommands(group);
+    }
+
+    private void displayGroupCommands(final GroupNode group) throws Exception {
+        int maxNameLen = 20; // FIXME: Figure this out dynamically
+
+        // First display command/aliases nodes
+        for (Node child : group.nodes()) {
+            if (child instanceof CommandNode) {
+                CommandNode node = (CommandNode) child;
+                String name = StringUtils.rightPad(node.getName(), maxNameLen);
+
+                io.out.print("  ");
+                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+
+                Command command = commandRegistry.lookup(node.getId());
+                String desc = command.getDescription();
+
+                if (desc != null) {
+                    io.out.print("  ");
+                    io.out.println(desc);
+                }
+                else {
+                    io.out.println();
+                }
+            }
+            else if (child instanceof AliasNode) {
+                AliasNode node = (AliasNode) child;
+                String name = StringUtils.rightPad(node.getName(), maxNameLen);
+
+                io.out.print("  ");
+                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+                io.out.print("  ");
+
+                io.out.print("Alias to: ");
+                io.out.println(renderer.render(Renderer.encode(node.getCommand(), Code.BOLD)));
             }
         }
 
-        //
-        // TODO: Need to ask the LayoutManager...
-        //
+        io.out.println();
 
-        for (Command d : commands) {
-            // Hide commands if they don't have descriptions
-            String name = d.getId();
-            name = StringUtils.rightPad(name, maxNameLen);
+        // Then groups
+        for (Node child : group.nodes()) {
+            if (child instanceof GroupNode) {
+                GroupNode node = (GroupNode) child;
 
-            io.out.print("  ");
-            io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
-
-            String desc = d.getDescription();
-
-            if (desc != null) {
                 io.out.print("  ");
-                io.out.println(desc);
-            }
-            else {
+                io.out.println(renderer.render(Renderer.encode(node.getPath(), Code.BOLD)));
+
+                io.out.println();
+                displayGroupCommands(node);
                 io.out.println();
             }
         }
     }
+
     private void displayCommandHelp(final String path) throws Exception {
         assert path != null;
 
@@ -123,5 +147,7 @@ public class HelpCommand
             io.out.println("Command " + Renderer.encode(path, Code.BOLD));
             io.out.println("   " + cmd.getDescription());
         }
+
+        io.out.println();
     }
 }

@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.apache.geronimo.gshell.layout.LayoutManager;
 
 /**
  * A group of nodes.
@@ -38,6 +39,27 @@ public class GroupNode
 
     public GroupNode(final String name) {
         super(name);
+    }
+
+    public String getPath() {
+        StringBuffer buff = new StringBuffer();
+        Node node = this;
+
+        while (node != null) {
+            buff.insert(0, node.getName());
+
+            node = node.getParent();
+
+            if (node != null) {
+                buff.insert(0, LayoutManager.PATH_SEPARATOR);
+            }
+
+            if (node instanceof Layout) {
+                break;
+            }
+        }
+
+        return buff.toString();
     }
 
     public void add(final Node child) {
