@@ -57,73 +57,71 @@ public class HelpCommand
     private Renderer renderer = new Renderer();
 
     protected Object doExecute() throws Exception {
-        assert commandRegistry != null;
-        assert layoutManager != null;
+        io.out.println();
 
         if (command == null) {
-            io.out.println();
-            io.out.print(branding.getAbout());
-            io.out.println();
-
-            io.out.println("Available commands:");
-
-            Collection<Command> commands = commandRegistry.commands();
-
-            // Figure out the maximum length of a command name
-            int maxNameLen = 0;
-            for (Command desc : commands) {
-                if (desc.getId().length() > maxNameLen) {
-                    maxNameLen = desc.getId().length();
-                }
-            }
-
-            //
-            // TODO: Need to ask the LayoutManager...
-            //
-
-            for (Command d : commands) {
-                // Hide commands if they don't have descriptions
-                String name = d.getId();
-                name = StringUtils.rightPad(name, maxNameLen);
-
-                io.out.print("  ");
-                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
-
-                String desc = d.getDescription();
-
-                if (desc != null) {
-                    io.out.print("  ");
-                    io.out.println(desc);
-                }
-                else {
-                    io.out.println();
-                }
-            }
+            displayCommands();
         }
         else {
-            Command cmd = commandRegistry.lookup(command);
-            if (cmd == null) {
-                io.out.println("Command " + Renderer.encode(command, Code.BOLD) + " not found.");
-                io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
-            }
-            else {
-                io.out.println("Command " + Renderer.encode(command, Code.BOLD));
-                io.out.println("   " + cmd.getDescription());
-            }
+            displayCommandHelp(command);
         }
-
-        //
-        // TODO: Need to figure out a simple way to access i18n text for the command's help
-        //
-        
-        /*
-        io.out.println();
-        io.out.println("For help on a specific command type:");
-        io.out.println("    help <command>");
-        */
 
         io.out.println();
 
         return SUCCESS;
+    }
+
+    private void displayCommands() throws Exception {
+        io.out.print(branding.getAbout());
+        io.out.println();
+
+        io.out.println("Available commands:");
+
+        Collection<Command> commands = commandRegistry.commands();
+
+        // Figure out the maximum length of a command name
+        int maxNameLen = 0;
+        for (Command desc : commands) {
+            if (desc.getId().length() > maxNameLen) {
+                maxNameLen = desc.getId().length();
+            }
+        }
+
+        //
+        // TODO: Need to ask the LayoutManager...
+        //
+
+        for (Command d : commands) {
+            // Hide commands if they don't have descriptions
+            String name = d.getId();
+            name = StringUtils.rightPad(name, maxNameLen);
+
+            io.out.print("  ");
+            io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+
+            String desc = d.getDescription();
+
+            if (desc != null) {
+                io.out.print("  ");
+                io.out.println(desc);
+            }
+            else {
+                io.out.println();
+            }
+        }
+    }
+    private void displayCommandHelp(final String path) throws Exception {
+        assert path != null;
+
+        Command cmd = commandRegistry.lookup(path);
+
+        if (cmd == null) {
+            io.out.println("Command " + Renderer.encode(path, Code.BOLD) + " not found.");
+            io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
+        }
+        else {
+            io.out.println("Command " + Renderer.encode(path, Code.BOLD));
+            io.out.println("   " + cmd.getDescription());
+        }
     }
 }
