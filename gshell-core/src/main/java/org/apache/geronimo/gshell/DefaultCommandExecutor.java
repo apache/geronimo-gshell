@@ -27,6 +27,12 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.layout.LayoutManager;
+import org.apache.geronimo.gshell.layout.NotFoundException;
+import org.apache.geronimo.gshell.layout.model.AliasNode;
+import org.apache.geronimo.gshell.layout.model.CommandNode;
+import org.apache.geronimo.gshell.layout.model.Node;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -46,6 +52,9 @@ public class DefaultCommandExecutor
 
     @Requirement
     private LayoutManager layoutManager;
+
+    @Requirement
+    private CommandRegistry commandRegistry;
 
     @Requirement
     private CommandLineBuilder commandLineBuilder;
@@ -97,6 +106,38 @@ public class DefaultCommandExecutor
         return execute(String.valueOf(args[0]), Arguments.shift(args));
     }
 
+    private String findCommandId(final Node node) throws NotFoundException {
+        assert node != null;
+
+        if (node instanceof AliasNode) {
+            AliasNode aliasNode = (AliasNode) node;
+            String targetPath = aliasNode.getCommand();
+            Node target = layoutManager.findNode(layoutManager.getLayout(), targetPath);
+
+            return findCommandId(target);
+        }
+        else if (node instanceof CommandNode) {
+            CommandNode commandNode = (CommandNode) node;
+
+            return commandNode.getId();
+        }
+
+        throw new NotFoundException("Unable to get command id for: " + node);
+    }
+
+    private Command findCommand(final String path) throws NotFoundException {
+        Node node = layoutManager.findNode(path);
+
+        String id = findCommandId(node);
+
+        try {
+            return commandRegistry.lookup(id);
+        }
+        catch (NotRegisteredException e) {
+            throw new NotFoundException(e.getMessage());
+        }
+    }
+
     public Object execute(final String path, final Object[] args) throws Exception {
         assert path != null;
         assert args != null;
@@ -104,7 +145,7 @@ public class DefaultCommandExecutor
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
         // Look up the command for the given path
-        Command command = layoutManager.find(path);
+        Command command = findCommand(path);
 
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {

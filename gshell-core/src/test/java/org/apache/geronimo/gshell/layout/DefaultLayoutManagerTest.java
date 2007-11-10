@@ -21,16 +21,11 @@ package org.apache.geronimo.gshell.layout;
 
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.DefaultEnvironment;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.layout.loader.XMLLayoutLoader;
-import org.apache.geronimo.gshell.layout.model.Layout;
 import org.apache.geronimo.gshell.layout.model.CommandNode;
-import org.apache.geronimo.gshell.layout.model.AliasNode;
 import org.apache.geronimo.gshell.layout.model.GroupNode;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.registry.DefaultCommandRegistry;
+import org.apache.geronimo.gshell.layout.model.Layout;
+import org.apache.geronimo.gshell.layout.model.Node;
 import org.apache.geronimo.gshell.shell.Environment;
 
 /**
@@ -43,65 +38,32 @@ public class DefaultLayoutManagerTest
 {
     private DefaultLayoutManager layoutManager;
 
-    private CommandRegistry registry;
-
-    private Layout layout;
-
-    private Environment env;
-
     protected void setUp() throws Exception {
-        registry = new DefaultCommandRegistry();
-        env = new DefaultEnvironment(new IO());
+        Environment env = new DefaultEnvironment(new IO());
 
-        layout = new Layout();
+        Layout layout = new Layout();
         layout.add(new CommandNode("help", "help"));
         GroupNode g = new GroupNode("test");
         g.add(new CommandNode("foo", "foo"));
         layout.add(g);
 
-        layoutManager = new DefaultLayoutManager(registry, layout, env);
+        layoutManager = new DefaultLayoutManager(layout, env);
         // layoutManager.initialize();
     }
 
     public void testFind() throws Exception {
-        registry.register(new Command() {
-            public String getId() {
-                return "help";
-            }
-
-            public String getDescription() {
-                return null;
-            }
-
-            public Object execute(CommandContext context, Object... args) throws Exception {
-                return null;
-            }
-        });
-
-        layoutManager.find("help");
+        Node node = layoutManager.findNode("help");
+        assertNotNull(node);
     }
 
     public void testFindInGroup() throws Exception {
-        registry.register(new Command() {
-            public String getId() {
-                return "foo";
-            }
-
-            public String getDescription() {
-                return null;
-            }
-
-            public Object execute(CommandContext context, Object... args) throws Exception {
-                return null;
-            }
-        });
-
-        layoutManager.find("test/foo");
+        Node node = layoutManager.findNode("test/foo");
+        assertNotNull(node);
     }
 
     public void testFindNotFound() throws Exception {
         try {
-            layoutManager.find("no-such-command");
+            layoutManager.findNode("no-such-command");
             fail();
         }
         catch(NotFoundException expected) {}

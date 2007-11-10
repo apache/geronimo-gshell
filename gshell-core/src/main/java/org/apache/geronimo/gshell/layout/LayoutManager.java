@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.layout;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.layout.model.Layout;
+import org.apache.geronimo.gshell.layout.model.Node;
 
 /**
  * Provies the shell with a simple mechanism to organize commands.
@@ -29,13 +30,15 @@ import org.apache.geronimo.gshell.layout.model.Layout;
  */
 public interface LayoutManager
 {
-    /**
-     * Returns the currently loaded layout; never null.
-     */
+    String CURRENT_NODE = LayoutManager.class.getName() + ".currentNode";
+
+    String ROOT = "/";
+
+    String PATH_SEPARATOR = "/";
+
     Layout getLayout();
 
-    /**
-     * Find the command for the given path, or null if not found.
-     */
-    Command find(String path) throws NotFoundException;
+    Node findNode(String path) throws NotFoundException;
+
+    Node findNode(Node start, String path) throws NotFoundException;
 }
