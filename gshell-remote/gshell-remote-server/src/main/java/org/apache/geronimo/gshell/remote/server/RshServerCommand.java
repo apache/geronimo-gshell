@@ -36,10 +36,10 @@ import org.apache.geronimo.gshell.command.annotation.Requirement;
 public class RshServerCommand
     extends CommandSupport
 {
-    @Option(name="-b", aliases={ "--background" })
+    @Option(name="-b", aliases={ "--background" }, description="Run in background")
     private boolean background;
 
-    @Argument(metaVar="URI", required=true, index=0)
+    @Argument(metaVar="URI", required=true, description="Listen for connections on URI")
     private URI location;
 
     @Requirement
