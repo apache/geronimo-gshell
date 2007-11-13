@@ -29,4 +29,10 @@ public interface CommandContext
     IO getIO();
 
     Variables getVariables();
+
+    String getCommandId();
+
+    String getCommandName();
+
+    String getAliasName();
 }

@@ -46,6 +46,7 @@ public abstract class CommandSupport
     @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
     private boolean displayHelp;
 
+    @Deprecated
     public String getId() {
         CommandComponent cmd = getClass().getAnnotation(CommandComponent.class);
         if (cmd == null) {
@@ -54,6 +55,7 @@ public abstract class CommandSupport
         return cmd.id();
     }
 
+    @Deprecated
     public String getDescription() {
         CommandComponent cmd = getClass().getAnnotation(CommandComponent.class);
         if (cmd == null) {
@@ -91,7 +93,7 @@ public abstract class CommandSupport
             // TODO: Make a special PrinterHandler to abstrat this muck from having to process it by hand
             //
             
-            displayHelp(clp);
+            displayHelp(context, clp);
             
             return SUCCESS;
         }
@@ -105,14 +107,16 @@ public abstract class CommandSupport
 
     protected abstract Object doExecute() throws Exception;
 
-    protected void displayHelp(final CommandLineProcessor clp) {
+    protected void displayHelp(final CommandContext context, final CommandLineProcessor clp) {
+        assert context != null;
         assert clp != null;
 
-        //
-        // TODO: Need to ask the LayoutManager what the real name is for our command's ID
-        //
+        String name = context.getAliasName();
+        if (name == null) {
+            name = context.getCommandName();
+        }
 
-        io.out.println(getId());
+        io.out.println(name);
         io.out.println(" -- ");
         io.out.println();
 

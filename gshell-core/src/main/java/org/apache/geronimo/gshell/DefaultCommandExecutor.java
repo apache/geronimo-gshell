@@ -125,27 +125,23 @@ public class DefaultCommandExecutor
         throw new NotFoundException("Unable to get command id for: " + node);
     }
 
-    private Command findCommand(final String path) throws NotFoundException {
-        Node node = layoutManager.findNode(path);
-
-        String id = findCommandId(node);
-
-        try {
-            return commandRegistry.lookup(id);
-        }
-        catch (NotRegisteredException e) {
-            throw new NotFoundException(e.getMessage());
-        }
-    }
-
     public Object execute(final String path, final Object[] args) throws Exception {
         assert path != null;
         assert args != null;
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
-        // Look up the command for the given path
-        Command command = findCommand(path);
+        final Node node = layoutManager.findNode(path);
+
+        final String id = findCommandId(node);
+
+        final Command command;
+        try {
+            command = commandRegistry.lookup(id);
+        }
+        catch (NotRegisteredException e) {
+            throw new NotFoundException(e.getMessage());
+        }
 
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {
@@ -158,6 +154,26 @@ public class DefaultCommandExecutor
 
             public Variables getVariables() {
                 return vars;
+            }
+
+            public String getCommandId() {
+                return id;
+            }
+
+            public String getCommandName() {
+                if (node instanceof AliasNode) {
+                    return ((AliasNode)node).getCommand();
+                }
+
+                return node.getName();
+            }
+
+            public String getAliasName() {
+                if (node instanceof AliasNode) {
+                    return ((AliasNode)node).getName();
+                }
+
+                return null;
             }
         };
 

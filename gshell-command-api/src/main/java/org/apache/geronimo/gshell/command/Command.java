@@ -32,17 +32,10 @@ public interface Command
     /** Standard command failure status code. */
     Result FAILURE = Result.FAILURE;
 
-    /**
-     * Command id
-     *
-     * @return
-     */
+    @Deprecated
     String getId();
 
-    /**
-     * Description of the command
-     * @return
-     */
+    @Deprecated
     String getDescription();
 
     /**
