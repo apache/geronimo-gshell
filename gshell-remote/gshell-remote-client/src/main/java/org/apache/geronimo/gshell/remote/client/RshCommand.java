@@ -42,19 +42,19 @@ import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
 public class RshCommand
     extends CommandSupport
 {
-    @Option(name="-b", aliases={"--bind"}, metaVar="URI")
+    @Option(name="-b", aliases={"--bind"}, metaVar="URI", description="Bind local address to URI")
     private URI local;
 
-    @Option(name="-u", aliases={"--username"}, metaVar="USERNAME")
+    @Option(name="-u", aliases={"--username"}, metaVar="USERNAME", description="Remote user name")
     private String username;
 
-    @Option(name="-p", aliases={"--password"}, metaVar="PASSWORD")
+    @Option(name="-p", aliases={"--password"}, metaVar="PASSWORD", description="Remote user password")
     private String password;
     
-    @Argument(metaVar="URI", required=true, index=0)
+    @Argument(metaVar="URI", required=true, index=0, description="Connect to remote server at URI")
     private URI remote;
 
-    @Argument(metaVar="COMMAND", index=1, multiValued=true)
+    @Argument(metaVar="COMMAND", index=1, multiValued=true, description="Execute COMMAND in remote shell")
     private List<String> command = new ArrayList<String>();
 
     @Requirement
