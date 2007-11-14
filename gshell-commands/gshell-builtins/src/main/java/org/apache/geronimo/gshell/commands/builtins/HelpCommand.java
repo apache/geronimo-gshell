@@ -53,7 +53,7 @@ public class HelpCommand
     @Requirement
     private Branding branding;
 
-    @Argument(description = "Command name")
+    @Argument(metaVar="COMMAND", description="Display help for COMMAND")
     private String command;
 
     private Renderer renderer = new Renderer();
