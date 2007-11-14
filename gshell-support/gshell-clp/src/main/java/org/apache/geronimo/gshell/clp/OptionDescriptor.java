@@ -33,12 +33,15 @@ public class OptionDescriptor
 
     private boolean argumentRequired;
 
+    private boolean requireOverride;
+
     public OptionDescriptor(final Option option, final boolean forceMultiValued) {
         super(option.description(), option.metaVar(), option.required(), option.handler(), option.multiValued() || forceMultiValued);
     	
     	this.name = option.name();
     	this.aliases = option.aliases();
         this.argumentRequired = option.argumentRequired();
+        this.requireOverride = option.requireOverride();
     }
     
     public String name() {
@@ -52,7 +55,11 @@ public class OptionDescriptor
     public boolean isArgumentRequired() {
         return argumentRequired;
     }
-    
+
+    public boolean isRequireOverride() {
+        return requireOverride;
+    }
+
     @Override
     public String toString() {
     	if (aliases != null && aliases.length > 0) {

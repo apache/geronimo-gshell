@@ -53,8 +53,6 @@ public class CommandLineProcessor
 
     private boolean stopAtNonOption = false;
     
-    private boolean overrideRequiredArguments = false;
-    
     public CommandLineProcessor(final Object bean) throws IllegalAnnotationError {
         assert bean != null;
 
@@ -160,7 +158,6 @@ public class CommandLineProcessor
             checkOptionNotInMap(alias);
         }
 
-        overrideRequiredArguments = (option.requireOverride() || overrideRequiredArguments) ? true : false;
         optionHandlers.add(handler);
 
     }
@@ -220,6 +217,7 @@ public class CommandLineProcessor
         Set<Handler> present = new HashSet<Handler>();
         int argIndex = 0;
         boolean processOptions = true;
+        boolean requireOverride = false;
 
         //
         // TODO: Need to rewrite some of this to allow more posix-style argument processing, like --foo=bar and --foo bar, and -vvvv
@@ -266,11 +264,15 @@ public class CommandLineProcessor
             }
 
             try {
-                //
-                // HACK: Hook up the current handler to the params for error message rendering
-                //
+                //Hook up the current handler to the params for error message rendering
                 params.handler = handler;
 
+                // If this is an option which overrides requirements track it
+                if (!requireOverride && handler.descriptor instanceof OptionDescriptor) {
+                    OptionDescriptor d = (OptionDescriptor) handler.descriptor;
+                    requireOverride = d.isRequireOverride();
+                }
+                
                 // Invoker the handler and then skip arguments which it has eatten up
                 int consumed = handler.handle(params);
                 params.skip(consumed);
@@ -283,14 +285,14 @@ public class CommandLineProcessor
             present.add(handler);
         }
         
-        // Ensure that all required option handlers are present
-        if (!overrideRequiredArguments) {
+        // Ensure that all required option handlers are present, unless a processed option has overridden requirments
+        if (!requireOverride) {
 	        for (Handler handler : optionHandlers) {
 	            if (handler.descriptor.required() && !present.contains(handler)) {
 	                throw new ProcessingException(Messages.REQUIRED_OPTION_MISSING.format(handler.descriptor.toString()));
 	            }
 	        }
-	
+
 	        // Ensure that all required argument handlers are present
 	        for (Handler handler : argumentHandlers) {
 	            if (handler.descriptor.required() && !present.contains(handler)) {
