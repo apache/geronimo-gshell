@@ -58,6 +58,15 @@ public class HelpCommand
 
     private Renderer renderer = new Renderer();
 
+    public HelpCommand() {
+    }
+
+    public HelpCommand(CommandRegistry commandRegistry, LayoutManager layoutManager, Branding branding) {
+        this.commandRegistry = commandRegistry;
+        this.layoutManager = layoutManager;
+        this.branding = branding;
+    }
+
     protected Object doExecute() throws Exception {
         io.out.println();
 
