@@ -38,9 +38,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.codehaus.mojo.groovy.runtime</groupId>
+            <artifactId>groovy-runtime-default</artifactId>
+            <version>1.0-beta-3-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.codehaus.mojo.groovy</groupId>
             <artifactId>groovy-mojo-support</artifactId>
-            <version>1.0-beta-2</version>
+            <version>1.0-beta-3-SNAPSHOT</version>
         </dependency>
         
         <dependency>
@@ -81,7 +87,94 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo.groovy</groupId>
+                    <artifactId>groovy-maven-plugin</artifactId>
+                    <version>1.0-beta-3-SNAPSHOT</version>
+                    <configuration>
+                        <providerSelection>default</providerSelection>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>2.3</version>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.0.2</version>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.0-beta-6</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <source>1.4</source>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-idea-plugin</artifactId>
+                    <version>2.1</version>
+                    <configuration>
+                        <jdkName>1.4</jdkName>
+                        <jdkLevel>1.4</jdkLevel>
+                        <linkModules>true</linkModules>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-docck-plugin</artifactId>
+                    <version>1.0-beta-2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo.groovy</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -99,31 +192,6 @@
                     <jdkLevel>1.4</jdkLevel>
                 </configuration>
             </plugin>
-            
-            <plugin>
-                <groupId>org.codehaus.mojo.groovy</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
-                <version>1.0-beta-2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.mojo.groovy</groupId>
-                        <artifactId>groovy-mojo-tools</artifactId>
-                        <version>1.0-beta-2</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
     </build>
     
@@ -131,8 +199,17 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
+                <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.3</version>
+                <configuration>
+                    <source>1.4</source>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.2-SNAPSHOT</version>
             </plugin>
         </plugins>
     </reporting>
