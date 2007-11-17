@@ -20,15 +20,35 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Provides commands with the context of its execution.
+ * Details about the command.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandContext
+public interface CommandInfo
 {
-    IO getIO();
+    /**
+     * Returns the <em>identifier</em> for the command.
+     */
+    String getId();
 
-    Variables getVariables();
+    /**
+     * Returns the name of the command.
+     */
+    String getName();
 
-    CommandInfo getInfo();
+    /**
+     * Returns the alias used to invoke the command if any.
+     *
+     * @return  The alias used to invoke the command; null if not aliased.
+     */
+    String getAlias();
+
+    //
+    // TODO: Add alias path?  And/or expose layout node?
+    //
+
+    /**
+     * Returns the full path of the command.
+     */
+    String getPath();
 }

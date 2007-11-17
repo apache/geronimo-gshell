@@ -30,6 +30,8 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
  */
 public abstract class Node
 {
+    public static final String SEPARATOR = "/";
+
     public static final String ROOT = "/";
     
     protected String name;
@@ -53,6 +55,27 @@ public abstract class Node
 
     public void setParent(final Node parent) {
         this.parent = parent;
+    }
+
+    public String getPath() {
+        StringBuffer buff = new StringBuffer();
+        Node node = this;
+
+        while (node != null) {
+            buff.insert(0, node.getName());
+
+            node = node.getParent();
+
+            if (node != null) {
+                buff.insert(0, SEPARATOR);
+            }
+
+            if (node instanceof Layout) {
+                break;
+            }
+        }
+
+        return buff.toString();
     }
 
     public String toString() {

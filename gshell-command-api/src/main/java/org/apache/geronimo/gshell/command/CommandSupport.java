@@ -90,17 +90,13 @@ public abstract class CommandSupport
         // Handle --help/-h automatically for the command
         if (displayHelp) {
             //
-            // TODO: Make a special PrinterHandler to abstrat this muck from having to process it by hand
+            // TODO: Make a special PrinterHandler to abstract this muck from having to process it by hand
             //
             
             displayHelp(context, clp);
             
             return SUCCESS;
         }
-
-        assert context != null;
-        assert io != null;
-        assert variables != null;
 
         return doExecute();
     }
@@ -111,11 +107,16 @@ public abstract class CommandSupport
         assert context != null;
         assert clp != null;
 
-        String name = context.getAliasName();
+        // Use the alias if we have one, else use the command name
+        String name = context.getInfo().getAlias();
         if (name == null) {
-            name = context.getCommandName();
+            name = context.getInfo().getName();
         }
 
+        //
+        // FIXME: This is uuuuuggggllyyyy
+        //
+        
         io.out.println(name);
         io.out.println(" -- ");
         io.out.println();

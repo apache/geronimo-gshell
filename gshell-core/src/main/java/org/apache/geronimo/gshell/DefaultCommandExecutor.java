@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.layout.LayoutManager;
@@ -148,6 +149,8 @@ public class DefaultCommandExecutor
             // Command instances get their own namespace with defaults from the current
             final Variables vars = new DefaultVariables(env.getVariables());
 
+            CommandInfo info;
+
             public IO getIO() {
                 return env.getIO();
             }
@@ -156,24 +159,41 @@ public class DefaultCommandExecutor
                 return vars;
             }
 
-            public String getCommandId() {
-                return id;
-            }
+            public CommandInfo getInfo() {
+                if (info == null) {
+                    info = new CommandInfo()
+                    {
+                        public String getId() {
+                            return id;
+                        }
 
-            public String getCommandName() {
-                if (node instanceof AliasNode) {
-                    return ((AliasNode)node).getCommand();
+                        public String getName() {
+                            if (node instanceof AliasNode) {
+                                return ((AliasNode)node).getCommand();
+                            }
+
+                            return node.getName();
+                        }
+
+                        public String getAlias() {
+                            if (node instanceof AliasNode) {
+                                return node.getName();
+                            }
+
+                            return null;
+                        }
+
+                        public String getPath() {
+                            //
+                            // TODO:
+                            //
+
+                            return null;
+                        }
+                    };
                 }
 
-                return node.getName();
-            }
-
-            public String getAliasName() {
-                if (node instanceof AliasNode) {
-                    return ((AliasNode)node).getName();
-                }
-
-                return null;
+                return info;
             }
         };
 
