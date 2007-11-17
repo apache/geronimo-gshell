@@ -21,7 +21,7 @@
 <!-- $Rev$ $Date$ -->
 
 <assembly>
-    <id>bin</id>
+    <id>minimal</id>
     
     <formats>
         <format>tar.gz</format>
@@ -30,10 +30,10 @@
     
     <fileSets>
         <fileSet>
+            <directory>src/main/underlay</directory>
+            <outputDirectory>/</outputDirectory>
             <includes>
-                <include>README.txt</include>
-                <include>NOTICE.txt</include>
-                <include>LICENSE.txt</include>
+                <include>*.txt</include>
             </includes>
         </fileSet>
         
@@ -69,30 +69,11 @@
             <includes>
                 <include>org.apache.geronimo.gshell:gshell-embeddable</include>
                 <include>org.apache.geronimo.gshell:gshell-cli</include>
-                <include>org.apache.geronimo.gshell.commands:gshell-optional</include>
-
+                
                 <!-- Logging -->
                 <include>org.slf4j:jcl104-over-slf4j</include>
                 <include>org.slf4j:slf4j-log4j12</include>
                 <include>org.apache.geronimo.gshell:gshell-diet-log4j</include>
-
-                <!-- BSF -->
-                <include>org.apache.geronimo.gshell.commands:gshell-bsf</include>
-                <include>bsf:bsf</include>
-                <include>org.beanshell:bsh-core</include>
-                <include>org.beanshell:bsh-bsf</include>
-
-                <!-- VFS -->
-                <include>org.apache.geronimo.gshell.commands:gshell-vfs</include>
-                <include>commons-vfs:commons-vfs</include>
-
-                <!-- Remote -->
-                <include>org.apache.geronimo.gshell:gshell-whisper</include>
-                <include>org.apache.geronimo.gshell.remote:gshell-remote-common</include>
-                <include>org.apache.geronimo.gshell.remote:gshell-remote-server</include>
-                <include>org.apache.geronimo.gshell.remote:gshell-remote-client</include>
-                <include>org.apache.mina:mina-core</include>
-                <include>org.apache.mina:mina-filter-ssl</include>
             </includes>
         </dependencySet>
 
