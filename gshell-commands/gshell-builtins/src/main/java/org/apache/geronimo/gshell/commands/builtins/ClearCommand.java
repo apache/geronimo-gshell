@@ -28,6 +28,7 @@ import jline.Terminal;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
+import org.apache.geronimo.gshell.ansi.ANSI;
 
 /**
  * Clear the terminal screen.
@@ -44,7 +45,13 @@ public class ClearCommand
     protected Object doExecute() throws Exception {
         ConsoleReader reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/ null, terminal);
         
-        reader.clearScreen();
+        if (!ANSI.isEnabled()) {
+        	io.out.println("ANSI is not enabled.  The clear command is not functional");
+        }
+        else {
+        	reader.clearScreen();
+        	return SUCCESS;
+        }
         
         return SUCCESS;
     }
