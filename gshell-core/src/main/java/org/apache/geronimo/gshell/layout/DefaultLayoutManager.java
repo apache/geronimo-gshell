@@ -59,11 +59,6 @@ public class DefaultLayoutManager
         this.env = env;
     }
 
-    public DefaultLayoutManager(final Layout layout, final Environment env) {
-        this.layout = layout;
-        this.env = env;
-    }
-
     public void initialize() throws InitializationException {
         assert loader != null;
 

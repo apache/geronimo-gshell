@@ -65,8 +65,12 @@ public class DefaultCommandExecutor
 
     public DefaultCommandExecutor() {}
     
-    public DefaultCommandExecutor(final LayoutManager layoutManager, final CommandLineBuilder commandLineBuilder, final Environment env) {
+    public DefaultCommandExecutor(final LayoutManager layoutManager,
+                                  final CommandRegistry commandRegistry,
+                                  final CommandLineBuilder commandLineBuilder,
+                                  final Environment env) {
         this.layoutManager = layoutManager;
+        this.commandRegistry = commandRegistry;
         this.commandLineBuilder = commandLineBuilder;
         this.env = env;
     }

@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.layout;
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.DefaultEnvironment;
 import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.layout.loader.DummyLayoutLoader;
 import org.apache.geronimo.gshell.layout.model.CommandNode;
 import org.apache.geronimo.gshell.layout.model.GroupNode;
 import org.apache.geronimo.gshell.layout.model.Layout;
@@ -47,8 +48,8 @@ public class DefaultLayoutManagerTest
         g.add(new CommandNode("foo", "foo"));
         layout.add(g);
 
-        layoutManager = new DefaultLayoutManager(layout, env);
-        // layoutManager.initialize();
+        layoutManager = new DefaultLayoutManager(new DummyLayoutLoader(layout), env);
+        layoutManager.initialize();
     }
 
     public void testFind() throws Exception {

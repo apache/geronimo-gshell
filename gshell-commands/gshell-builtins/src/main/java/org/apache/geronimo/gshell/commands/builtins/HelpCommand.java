@@ -33,6 +33,7 @@ import org.apache.geronimo.gshell.layout.model.CommandNode;
 import org.apache.geronimo.gshell.layout.model.GroupNode;
 import org.apache.geronimo.gshell.layout.model.Node;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -96,21 +97,25 @@ public class HelpCommand
         // First display command/aliases nodes
         for (Node child : group.nodes()) {
             if (child instanceof CommandNode) {
-                CommandNode node = (CommandNode) child;
-                String name = StringUtils.rightPad(node.getName(), maxNameLen);
+                try {
+                    CommandNode node = (CommandNode) child;
+                    String name = StringUtils.rightPad(node.getName(), maxNameLen);
 
-                io.out.print("  ");
-                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+                    Command command = commandRegistry.lookup(node.getId());
+                    String desc = command.getDescription();
 
-                Command command = commandRegistry.lookup(node.getId());
-                String desc = command.getDescription();
-
-                if (desc != null) {
                     io.out.print("  ");
-                    io.out.println(desc);
-                }
-                else {
-                    io.out.println();
+                    io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+
+                    if (desc != null) {
+                        io.out.print("  ");
+                        io.out.println(desc);
+                    }
+                    else {
+                        io.out.println();
+                    }
+                } catch (NotRegisteredException e) {
+                    // Ignore those exceptions (command will not be displayed)
                 }
             }
             else if (child instanceof AliasNode) {

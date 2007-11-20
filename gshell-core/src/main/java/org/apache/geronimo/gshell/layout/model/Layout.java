@@ -24,6 +24,9 @@ import java.io.InputStream;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.core.JVM;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 /**
  * The root container for a layout tree.
@@ -43,7 +46,14 @@ public class Layout
     //
     
     private static XStream createXStream() {
-        XStream xs = new XStream();
+        XStream xs;
+
+        try {
+            Class.forName("org.xmlpull.mxp1.MXParser");
+            xs = new XStream(new XppDriver());
+        } catch (ClassNotFoundException e) {
+            xs = new XStream(new DomDriver());
+        }
 
         Annotations.configureAliases(xs, Layout.class, GroupNode.class, CommandNode.class, AliasNode.class);
 
