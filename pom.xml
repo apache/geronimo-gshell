@@ -211,6 +211,15 @@
                 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-remote-resources-plugin</artifactId>
+                    <!--
+                    <version>1.0-alpha-6</version>
+                    -->
+                    <version>1.0-beta-1-SNAPSHOT</version>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>2.0.2</version>
                 </plugin>
@@ -359,15 +368,18 @@
             </plugin>
             
             <plugin>
-                <groupId>org.apache.geronimo.genesis.plugins</groupId>
-                <artifactId>tools-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>install-legal-files</id>
-                        <phase>generate-resources</phase>
                         <goals>
-                            <goal>copy-legal-files</goal>
+                            <goal>process</goal>
                         </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>org.apache:apache-jar-resource-bundle:1.2</resourceBundle>
+                            </resourceBundles>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
