@@ -63,6 +63,13 @@ public class SourceCommand
         try {
             String line;
             while ((line = reader.readLine()) != null) {
+                String tmp = line.trim();
+                
+                // Ignore empty lines and comments
+                if (tmp.length() == 0 || tmp.startsWith("#")) {
+                    continue;
+                }
+                
                 executor.execute(line);
             }
         }
