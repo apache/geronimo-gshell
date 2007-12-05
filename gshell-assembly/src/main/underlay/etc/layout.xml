@@ -157,7 +157,7 @@
 
                 <alias>
                     <name>rshd</name>
-                    <command>rsh-server</command>
+                    <command>remote/rsh-server</command>
                 </alias>
             </nodes>
         </group>
