@@ -60,6 +60,16 @@ public class RshServer
     @Requirement(role=ServerMessageHandler.class)
     private List<ServerMessageHandler> handlers;
 
+    public RshServer() {
+    }
+
+    public RshServer(final TimeoutManager timeoutManager, final TransportFactoryLocator locator, final List<ServerMessageHandler> handlers) {
+        this.timeoutManager = timeoutManager;
+        this.locator = locator;
+        this.handlers = handlers;
+        
+    }
+
     public void bind(final URI location) throws Exception {
         TransportFactory factory = locator.locate(location);
 

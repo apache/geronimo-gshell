@@ -49,6 +49,15 @@ public class DefaultRemoteShell
     private Environment env;
 
     private boolean opened = true;
+
+    public DefaultRemoteShell() {
+    }
+
+    public DefaultRemoteShell(final ShellInfo shellInfo, final CommandExecutor executor, final Environment env) {
+        this.shellInfo = shellInfo;
+        this.executor = executor;
+        this.env = env;
+    }
     
     private void ensureOpened() {
         if (!opened) {

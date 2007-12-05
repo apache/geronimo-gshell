@@ -51,6 +51,11 @@ public class LoginHandler
         super(LoginMessage.class);
     }
 
+    public LoginHandler(final TimeoutManager timeoutManager) {
+        this();
+        this.timeoutManager = timeoutManager;
+    }
+
     public void initialize() throws InitializationException {
         new JaasConfigurationHelper("server.login.conf").initialize();
     }

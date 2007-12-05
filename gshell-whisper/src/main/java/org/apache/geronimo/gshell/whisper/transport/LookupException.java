@@ -19,15 +19,18 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
-import java.net.URI;
-
 /**
- * Helper to locate a {@link TransportFactory} instance.
+ * Exception thrown when the TranportFactoryLocator can not find the given transport
  *
- * @version $Rev$ $Date$
+ * @version $Rev: 579828 $ $Date: 2007-09-27 00:15:42 +0200 (Thu, 27 Sep 2007) $
  */
-public interface TransportFactoryLocator<T extends TransportFactory> {
+public class LookupException extends TransportException {
 
-    T locate(URI location) throws TransportException;
+    public LookupException(final String name) {
+        super("Unabled to lookup: " + name, null);
+    }
 
+    public LookupException(final String name, Throwable cause) {
+        super("Unabled to lookup: " + name, cause);
+    }
 }

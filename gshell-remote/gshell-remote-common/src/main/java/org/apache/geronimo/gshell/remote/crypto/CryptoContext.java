@@ -61,6 +61,12 @@ public class CryptoContext
         keyPair = keyGen.genKeyPair();
     }
 
+    public CryptoContext(final String transformation, final String provider) throws Exception {
+        this();
+        this.transformation = transformation;
+        this.provider = provider;
+    }
+
     public PublicKey getPublicKey() {
         return keyPair.getPublic();
     }

@@ -46,6 +46,12 @@ public class ConnectHandler
         super(ConnectMessage.class);
     }
 
+    public ConnectHandler(final CryptoContext crypto, final TimeoutManager timeoutManager) {
+        this();
+        this.crypto = crypto;
+        this.timeoutManager = timeoutManager;
+    }
+
     public void handle(final Session session, final ServerSessionContext context, final ConnectMessage message) throws Exception {
         // Try to cancel the timeout task
         if (!timeoutManager.cancelTimeout(session)) {

@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.vm.VmTransportFactory;
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Tests for the {@link TransportFactoryLocator} class.
@@ -81,7 +80,7 @@ public class TransportFactoryLocatorTest
             locator.locate(uri);
             fail();
         }
-        catch (ComponentLookupException expected) {}
+        catch (LookupException expected) {}
     }
 
     public void testLocate_badLocation() throws Exception {

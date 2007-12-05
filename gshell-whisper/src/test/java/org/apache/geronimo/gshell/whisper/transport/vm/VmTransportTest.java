@@ -22,12 +22,12 @@ package org.apache.geronimo.gshell.whisper.transport.vm;
 import java.net.URI;
 
 import org.apache.geronimo.gshell.whisper.transport.InvalidLocationException;
+import org.apache.geronimo.gshell.whisper.transport.LookupException;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Tests for the {@link VmTransport} class.
@@ -84,7 +84,7 @@ public class VmTransportTest
             locator.locate(uri);
             fail();
         }
-        catch (ComponentLookupException expected) {}
+        catch (LookupException expected) {}
     }
 
     public void testLocate_badLocation() throws Exception {

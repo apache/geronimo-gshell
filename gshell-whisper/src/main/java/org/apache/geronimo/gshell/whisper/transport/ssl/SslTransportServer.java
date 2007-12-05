@@ -43,6 +43,11 @@ public class SslTransportServer
         super(new SslAddressFactory());
     }
 
+    public SslTransportServer(final SSLContextFactory contextFactory) {
+        this();
+        this.contextFactory = contextFactory;
+    }
+
     @Override
     protected void configure(final DefaultIoFilterChainBuilder chain) throws Exception {
         assert chain != null;
