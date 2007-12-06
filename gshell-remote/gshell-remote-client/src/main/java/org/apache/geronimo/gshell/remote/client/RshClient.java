@@ -77,6 +77,15 @@ public class RshClient
     @Requirement(role=ClientMessageHandler.class)
     private List<ClientMessageHandler> handlers;
 
+    public RshClient() {
+    }
+
+    public RshClient(final CryptoContext crypto, final TransportFactoryLocator locator, final List<ClientMessageHandler> handlers) {
+        this.crypto = crypto;
+        this.locator = locator;
+        this.handlers = handlers;
+    }
+
     public void initialize() throws InitializationException {
         new JaasConfigurationHelper("client.login.conf").initialize();
     }
