@@ -33,6 +33,7 @@ import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.TerminalInfo;
+import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.Shell;
@@ -76,6 +77,8 @@ public class DefaultShell
 
     @Requirement
     private IO io;
+
+	private Prompter prompter;
 
     public DefaultShell() {}
     
@@ -167,21 +170,7 @@ public class DefaultShell
         JLineConsole console = new JLineConsole(executor, io, terminal);
 
         // Setup the prompt
-        console.setPrompter(new Console.Prompter() {
-            Renderer renderer = new Renderer();
-
-            public String prompt() {
-                String userName = shellInfo.getUserName();
-                String hostName = shellInfo.getLocalHost().getHostName();
-
-                //
-                // HACK: There is no path... yet ;-)
-                //
-                String path = "/";
-
-                return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
-            }
-        });
+        console.setPrompter(getPrompter());
 
         // Delegate errors for display and then continue
         console.setErrorHandler(new Console.ErrorHandler() {
@@ -218,6 +207,39 @@ public class DefaultShell
             throw n;
         }
     }
+
+	public Prompter getPrompter() {
+		if( prompter == null ) {
+			prompter = createPrompter();
+		}
+		return prompter;
+	}
+	
+	public void setPrompter(Prompter prompter) {
+		this.prompter = prompter;
+	}
+
+	/**
+	 * Allow subclasses to override the default Prompter implementation 
+	 * used.
+	 * @return
+	 */
+	protected Prompter createPrompter() {
+		return new Prompter() {
+		    Renderer renderer = new Renderer();
+		    public String prompt() {
+		        String userName = shellInfo.getUserName();
+		        String hostName = shellInfo.getLocalHost().getHostName();
+
+		        //
+		        // HACK: There is no path... yet ;-)
+		        //
+		        String path = "/";
+
+		        return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
+		    }
+		};
+	}
 
     //
     // Error Display
@@ -331,4 +353,5 @@ public class DefaultShell
             log.debug("Shared script is not present: {}", file);
         }
     }
+
 }
