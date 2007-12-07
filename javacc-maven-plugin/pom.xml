@@ -40,13 +40,13 @@
         <dependency>
             <groupId>org.codehaus.mojo.groovy.runtime</groupId>
             <artifactId>groovy-runtime-default</artifactId>
-            <version>1.0-beta-3-SNAPSHOT</version>
+            <version>1.0-beta-3</version>
         </dependency>
         
         <dependency>
             <groupId>org.codehaus.mojo.groovy</groupId>
             <artifactId>groovy-mojo-support</artifactId>
-            <version>1.0-beta-3-SNAPSHOT</version>
+            <version>1.0-beta-3</version>
         </dependency>
         
         <dependency>
@@ -107,7 +107,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo.groovy</groupId>
                     <artifactId>groovy-maven-plugin</artifactId>
-                    <version>1.0-beta-3-SNAPSHOT</version>
+                    <version>1.0-beta-3</version>
                     <configuration>
                         <providerSelection>default</providerSelection>
                     </configuration>
