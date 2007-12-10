@@ -377,7 +377,7 @@
                                 <!--
                                 <resourceBundle>org.apache:apache-jar-resource-bundle:1.3</resourceBundle>
                                 -->
-                                <resourceBundle>org.apache.geronimo.gshell:gshell-legal-bundle:1.0-alpha-1-SNAPSHOT</resourceBundle>
+                                <resourceBundle>org.apache.geronimo.genesis:legal-bundle:1.3-SNAPSHOT</resourceBundle>
                             </resourceBundles>
                         </configuration>
                     </execution>
@@ -438,7 +438,6 @@
     </build>
     
     <modules>
-        <module>gshell-legal-bundle</module>
         <module>gshell-diet</module>
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
