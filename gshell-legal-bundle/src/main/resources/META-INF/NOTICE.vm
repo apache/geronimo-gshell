@@ -1,0 +1,31 @@
+// ------------------------------------------------------------------
+// NOTICE file corresponding to the section 4d of The Apache License,
+// Version 2.0, in this case for #if ($projectName)$projectName#else${project.name}#end
+
+// ------------------------------------------------------------------
+
+#if ($projectName)$projectName#else${project.name}#end
+
+Copyright ${projectTimespan}#if($project.organization.name) $project.organization.name#else The Apache Software Foundation#end
+
+#if($preProjectText)
+$preProjectText
+#end
+
+###foreach ( $organizationName in $projectsSortedByOrganization.keySet() )
+##This product includes/uses software(s) developed by '$organizationName.name'#if($organizationName.url) ($organizationName.url)#end
+##
+###foreach ( $project in $projectsSortedByOrganization.get( $organizationName ) )
+##  - $project.name#if ($addVersion) (version $project.version)#end#if ($addArtifact) ($project.artifact)#end#if($project.url) ($project.url)#end
+###if ($addLicense)#foreach ( $license in $project.licenses)
+##
+##      License: $license.name #if ($license.url) ($license.url)#end
+###end#end
+##
+###end
+##
+###end
+
+#if($postProjectText)
+$postProjectText
+#end
