@@ -50,9 +50,29 @@
             <version>${version}</version>
         </dependency>
     </dependencies>
-
+    
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>org.apache.geronimo.genesis:legal-bundle:1.3-SNAPSHOT</resourceBundle>
+                            </resourceBundles>
+                            <properties>
+                                <includeProjectDependencies>true</includeProjectDependencies>
+                            </properties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>shade-maven-plugin</artifactId>
