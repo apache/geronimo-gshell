@@ -45,6 +45,29 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>org.apache.geronimo.genesis:legal-bundle:1.3-SNAPSHOT</resourceBundle>
+                            </resourceBundles>
+                            <properties>
+                                <preProjectText>
+This product includes/uses software(s) developed by 'Apache Software Foundation' (http://www.apache.org)
+  - Log4j (http://logging.apache.org/log4j/docs/)
+                                </preProjectText>
+                            </properties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
