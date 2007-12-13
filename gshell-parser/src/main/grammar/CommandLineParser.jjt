@@ -111,6 +111,12 @@ PARSER_END(CommandLineParser)
             | ["0"-"3"] ["0"-"7"] ["0"-"7"]
             )
           )
+        | ( "="
+        	( <QUOTED_STRING> )
+          )
+        | ( "="
+        	( <OPAQUE_STRING> )
+          )        	
       )+
     >
 |
@@ -139,6 +145,9 @@ PARSER_END(CommandLineParser)
       )*
       "\""
     >
+    
+|
+	< SET_QUOTED_STRING >
 }
 
 //

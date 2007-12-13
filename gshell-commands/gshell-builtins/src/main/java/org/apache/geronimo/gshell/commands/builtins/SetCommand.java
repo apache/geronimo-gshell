@@ -124,11 +124,21 @@ public class SetCommand
         NameValue nv = new NameValue();
 
         int i = input.indexOf("=");
+        int firstDoubleQuote = input.indexOf("\"");
+        int firstSingleQuote = input.indexOf("'");
 
         if (i == -1) {
             nv.name = input;
             nv.value = "true";
         }
+        else if ( firstDoubleQuote != -1) {
+        	nv.name = input.substring(0,i);
+        	nv.value = input.substring(firstDoubleQuote + 1, input.length()-1); 
+        } 
+        else if ( firstSingleQuote != -1) {
+        	nv.name = input.substring(0,i);
+        	nv.value = input.substring(firstSingleQuote + 1, input.length()-1); 
+        } 
         else {
             nv.name = input.substring(0, i);
             nv.value = input.substring(i + 1, input.length());
