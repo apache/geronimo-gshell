@@ -138,8 +138,19 @@ public class HelpCommand
             if (child instanceof GroupNode) {
                 GroupNode node = (GroupNode) child;
 
+                String path = node.getPath();
+                
+                //
+                // HACK: Until we get / and ../ stuff working, we have to strip off the leading "/"
+                //
+                //       https://issues.apache.org/jira/browse/GSHELL-86
+                //
+                if (path != null && path.startsWith("/")) {
+                    path = path.substring(1, path.length());
+                }
+                
                 io.out.print("  ");
-                io.out.println(renderer.render(Renderer.encode(node.getPath(), Code.BOLD)));
+                io.out.println(renderer.render(Renderer.encode(path, Code.BOLD)));
 
                 io.out.println();
                 displayGroupCommands(node);
