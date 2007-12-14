@@ -57,17 +57,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-remote-resources-plugin</artifactId>
                 <executions>
+                    <!--
+                    Skip processing, we handle legal files below.
+                    -->
                     <execution>
                         <goals>
                             <goal>process</goal>
                         </goals>
                         <configuration>
-                            <resourceBundles>
-                                <resourceBundle>org.apache.geronimo.genesis:legal-bundle:1.3-SNAPSHOT</resourceBundle>
-                            </resourceBundles>
-                            <properties>
-                                <includeProjectDependencies>true</includeProjectDependencies>
-                            </properties>
+                            <skip>true</skip>
                         </configuration>
                     </execution>
                 </executions>
@@ -104,24 +102,63 @@
                                     <exclude>org.apache.geronimo.genesis.config:logging-config</exclude>
                                 </excludes>
                             </artifactSet>
-                            <!--
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.codehaus.plexus.util</pattern>
-                                    <excludes>
-                                        <exclude>org.codehaus.plexus.util.xml.Xpp3Dom</exclude>
-                                        <exclude>org.codehaus.plexus.util.xml.pull.*</exclude>
-                                    </excludes>
-                                </relocation>
-                            </relocations>
-                            -->
                             <transformers>
                                 <transformer implementation="org.codehaus.mojo.shade.resource.ComponentsXmlResourceTransformer"/>
-                                <!--
-                                <transformer implementation="org.codehaus.mojo.shade.resource.ApacheLicenseResourceTransformer"/>
-                                <transformer implementation="org.codehaus.mojo.shade.resource.ApacheNoticeResourceTransformer"/>
-                                -->
                             </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo.groovy</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <executions>
+                    <!--
+                    This will unzip the shaded file and handle cleaning up the legal files in the artifact,
+                    basically replacing what is included by the shader with staticly defined versions.
+                    -->
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                // First clean up
+                                def dir = new File(project.build.directory, 'legal-work')
+                                ant.delete(dir: dir)
+                                ant.mkdir(dir: dir)
+                                
+                                // Then unpack the main artifact, excluding the legal muck
+                                def file = new File(project.build.directory, "${project.build.finalName}.jar")
+                                ant.unzip(src: file, dest: dir) {
+                                    patternset {
+                                        // Exclude any legal muck we find, cause its probably wrong
+                                        exclude(name: 'META-INF/LICENSE*')
+                                        exclude(name: 'META-INF/NOTICE*')
+                                        
+                                        // Exclude, as the LICENSE and NOTICE should include all legal details, this just makes things fuzzy
+                                        exclude(name: 'META-INF/NOTES.TXT')
+                                        
+                                        // Exclude this too, all details should be in the LICENSE and NOTICE files
+                                        exclude(name: 'licenses/**')
+                                    }
+                                }
+                                
+                                // Then install our static bits
+                                def resources = new File(project.basedir, 'src/main/resources')
+                                ant.copy(todir: dir) {
+                                    fileset(dir: resources) {
+                                        include(name: '**')
+                                    }
+                                }
+                                
+                                // And make a copy for sanity and re-zip her up
+                                ant.copy(file: file, tofile: "${file}.orig", overwrite: true)
+                                ant.delete(file: file)
+                                ant.zip(destfile: file, basedir: dir)
+                            </source>
                         </configuration>
                     </execution>
                 </executions>

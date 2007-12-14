@@ -1,0 +1,82 @@
+=========================================================================
+==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
+==  Version 2.0, in this case for the Apache Geronimo GShell.          ==
+=========================================================================
+
+Apache Geronimo
+Copyright 2007 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+
+#########################################################################
+## The gshell-embeddable jar includes class files from a number of     ##
+## dependent projects. Their notice information is given below.        ##
+#########################################################################
+
+
+=========================================================================
+==  Apache Commons JEXL (commons-jexl-1.1.jar)                         ==
+=========================================================================
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+
+=========================================================================
+==  JLine Notice (jline-0.9.93.jar)                                    ==
+=========================================================================
+
+This product includes software developed by the JLine project
+(http://jline.sourceforge.net/)
+
+Copyright (c) 2002-2006, Marc Prud'hommeaux <mwp1@cornell.edu>
+All rights reserved.
+
+
+=========================================================================
+==  Plexus Notice                                                      ==
+== (plexus-container-default-1.0-alpha-32.jar,                         ==
+==  plexus-component-annotation-1.0-alpha-1.jar,                       ==
+==  plexus-utils-1.4.5.jar)                                            ==
+=========================================================================
+
+This product includes software developed by the Plexus project
+(http://plexus.codehaus.org/)
+
+The source code for the Plexus project can be downloaded from:
+
+http://plexus.codehaus.org/source-repository.html
+
+
+=========================================================================
+==  SL4J Notice (sl4j-api-1.4.3.jar)                                   ==
+=========================================================================
+
+This product includes software developed by the SL4J project
+(http://www.slf4j.org/)
+
+Copyright (c) 2004-2007 QOS.ch
+
+
+=========================================================================
+==  XPP3 Notice (xpp3_min-1.1.3.4.0.jar)                               ==
+=========================================================================
+
+This product includes software developed by the XML Pull Parser project
+(http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/index.html)
+
+Copyright (c) 2002 Extreme! Lab, Indiana University. All rights reserved.
+
+
+=========================================================================
+==  XStream Notice (xstream-1.2.2.jar)                                 ==
+=========================================================================
+
+This product includes software developed by the XStream project
+(http://xstream.codehaus.org/)
+
+Copyright (c) 2003-2006, Joe Walnes
+Copyright (c) 2006-2007, XStream Committers
+All rights reserved.
