@@ -220,17 +220,11 @@
                 </configuration>
             </plugin>
             
-            <!--
-            NOTE: Disabled for now, until 2.2 is released.
-            
-                  https://issues.apache.org/jira/browse/GSHELL-78
-            
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.2-SNAPSHOT</version>
+                <version>2.2</version>
             </plugin>
-            -->
         </plugins>
     </reporting>
     
