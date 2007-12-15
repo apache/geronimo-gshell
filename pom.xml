@@ -380,7 +380,7 @@
                         </goals>
                         <configuration>
                             <resourceBundles>
-                                <resourceBundle>org.apache.geronimo.genesis:legal-bundle:1.3-SNAPSHOT</resourceBundle>
+                                <resourceBundle>org.apache.geronimo.genesis:legal-bundle:1.3</resourceBundle>
                             </resourceBundles>
                         </configuration>
                     </execution>
