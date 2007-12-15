@@ -208,38 +208,36 @@ public class DefaultShell
         }
     }
 
-	public Prompter getPrompter() {
-		if( prompter == null ) {
-			prompter = createPrompter();
-		}
-		return prompter;
-	}
-	
-	public void setPrompter(Prompter prompter) {
-		this.prompter = prompter;
-	}
+    public Prompter getPrompter() {
+        if (prompter == null) {
+            prompter = createPrompter();
+        }
+        return prompter;
+    }
+    
+    public void setPrompter(final Prompter prompter) {
+        this.prompter = prompter;
+    }
 
-	/**
-	 * Allow subclasses to override the default Prompter implementation 
-	 * used.
-	 * @return
-	 */
-	protected Prompter createPrompter() {
-		return new Prompter() {
-		    Renderer renderer = new Renderer();
-		    public String prompt() {
-		        String userName = shellInfo.getUserName();
-		        String hostName = shellInfo.getLocalHost().getHostName();
+    /**
+     * Allow subclasses to override the default Prompter implementation used.
+     */
+    protected Prompter createPrompter() {
+        return new Prompter() {
+            Renderer renderer = new Renderer();
+            public String prompt() {
+                String userName = shellInfo.getUserName();
+                String hostName = shellInfo.getLocalHost().getHostName();
 
-		        //
-		        // HACK: There is no path... yet ;-)
-		        //
-		        String path = "/";
+                //
+                // HACK: There is no path... yet ;-)
+                //
+                String path = "/";
 
-		        return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
-		    }
-		};
-	}
+                return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
+            }
+        };
+    }
 
     //
     // Error Display
