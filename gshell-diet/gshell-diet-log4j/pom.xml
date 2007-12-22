@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell-diet</artifactId>
-        <version>1.0-alpha-2-SNAPSHOT</version>
+        <version>1.0-alpha-1-SNAPSHOT</version>
     </parent>
     
     <artifactId>gshell-diet-log4j</artifactId>
