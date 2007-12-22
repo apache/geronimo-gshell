@@ -245,10 +245,13 @@
                     <version>2.2</version>
                 </plugin>
 
+                <!--
+                NOTE: maven-javadoc-plugin 2.3 seems to loop... ?
+                -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>2.2</version>
                 </plugin>
 
                 <plugin>
