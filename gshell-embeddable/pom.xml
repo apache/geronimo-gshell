@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
-        <version>1.0-alpha-1-SNAPSHOT</version>
+        <version>1.0-alpha-1</version>
     </parent>
 
     <artifactId>gshell-embeddable</artifactId>
@@ -103,7 +103,7 @@
                                 </excludes>
                             </artifactSet>
                             <transformers>
-                                <transformer implementation="org.codehaus.mojo.shade.resource.ComponentsXmlResourceTransformer"/>
+                                <transformer implementation="org.codehaus.mojo.shade.resource.ComponentsXmlResourceTransformer" />
                             </transformers>
                         </configuration>
                     </execution>
