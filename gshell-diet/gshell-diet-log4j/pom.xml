@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell-diet</artifactId>
-        <version>1.0-alpha-1-SNAPSHOT</version>
+        <version>1.0-alpha-1</version>
     </parent>
     
     <artifactId>gshell-diet-log4j</artifactId>
@@ -99,18 +99,18 @@ This product includes/uses software(s) developed by 'Apache Software Foundation'
                         </goals>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${project.build.directory}/generated-source/diet"/>
+                                <mkdir dir="${project.build.directory}/generated-source/diet" />
                                 <copy todir="${project.build.directory}/generated-source/diet">
                                     <fileset dir="${project.build.directory}/dependency">
-                                        <include name="org/apache/log4j/*.java"/>
-                                        <include name="org/apache/log4j/spi/*.java"/>
-                                        <include name="org/apache/log4j/helpers/*.java"/>
-                                        <include name="org/apache/log4j/or/*.java"/>
-                                        <include name="org/apache/log4j/config/*.java"/>
+                                        <include name="org/apache/log4j/*.java" />
+                                        <include name="org/apache/log4j/spi/*.java" />
+                                        <include name="org/apache/log4j/helpers/*.java" />
+                                        <include name="org/apache/log4j/or/*.java" />
+                                        <include name="org/apache/log4j/config/*.java" />
 
                                         <!-- Pick off some deprecated/unsed bits from the list -->
-                                        <exclude name="org/apache/log4j/Dispatcher.java"/>
-                                        <exclude name="org/apache/log4j/spi/RootCategory.java"/>
+                                        <exclude name="org/apache/log4j/Dispatcher.java" />
+                                        <exclude name="org/apache/log4j/spi/RootCategory.java" />
                                     </fileset>
                                 </copy>
                             </tasks>

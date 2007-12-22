@@ -35,16 +35,16 @@
     <name>GShell</name>
     <packaging>pom</packaging>
     
-    <version>1.0-alpha-1-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
     
     <description>
         GShell is a framework for building rich command-line applications.
     </description>
     
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</developerConnection>
-        <url>https://svn.apache.org/viewvc/geronimo/sandbox/gshell/trunk/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/genesis/tags/gshell-1.0-alpha-1</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/genesis/tags/gshell-1.0-alpha-1</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/genesis/tags/gshell-1.0-alpha-1</url>
     </scm>
     
     <dependencyManagement>
@@ -425,7 +425,7 @@
                         <configuration>
                             <extractors>
                                 <classComponentDescriptorExtractor>
-                                    <gleaner implementation="org.codehaus.plexus.cdc.gleaner.AnnotationComponentGleaner"/>
+                                    <gleaner implementation="org.codehaus.plexus.cdc.gleaner.AnnotationComponentGleaner" />
                                 </classComponentDescriptorExtractor>
                             </extractors>
                         </configuration>
