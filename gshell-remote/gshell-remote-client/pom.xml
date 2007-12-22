@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.gshell.remote</groupId>
         <artifactId>gshell-remote</artifactId>
-        <version>1.0-alpha-1-SNAPSHOT</version>
+        <version>1.0-alpha-1</version>
     </parent>
 
     <artifactId>gshell-remote-client</artifactId>
