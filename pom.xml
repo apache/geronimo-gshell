@@ -42,9 +42,9 @@
     </description>
     
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/sandbox/gshell/trunk/</developerConnection>
-        <url>https://svn.apache.org/viewvc/geronimo/sandbox/gshell/trunk/</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/gshell/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/gshell/trunk/</developerConnection>
+        <url>https://svn.apache.org/viewvc/geronimo/gshell/trunk/</url>
     </scm>
     
     <dependencyManagement>
