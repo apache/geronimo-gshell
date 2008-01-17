@@ -19,10 +19,17 @@
 
 package org.apache.geronimo.gshell.commands.bsf;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
+
 import jline.Terminal;
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
@@ -43,7 +50,7 @@ public class ScriptCommand
 
     private String language;
 
-    @Option(name="-l", aliases={"--language"}, required=true, description="Specify the scripting language")
+    @Option(name="-l", aliases={"--language"}, description="Specify the scripting language")
     private void setLanguage(final String language) {
         assert language != null;
         
@@ -59,14 +66,33 @@ public class ScriptCommand
 
     @Option(name="-e", aliases={"--expression"}, description="Evaluate the given expression")
     private String expression;
+    
+    @Argument(description="A file or URL to execute")
+    private List<String> args;
 
     protected Object doExecute() throws Exception {
         //
         // TODO: When given a file/url, try to figure out language from ext if language not given
         //       https://issues.apache.org/jira/browse/GSHELL-49
         //
+        
+        String path = null;
+        String filename = null;
 
-        BSFManager manager = new BSFManager();
+    	if (args != null) {
+    		path = args.get(0); // Only allowing one script for now
+    		filename = ((path.lastIndexOf('/')) == -1) ? path : path.substring(path.lastIndexOf('/') + 1) ; // Just the filename, please   		
+    	}
+    	
+    	if (language == null) {
+    		if (filename == null) {
+    			throw new CommandException("If a file/URL is not provided, language must" +
+    					" be specified using the -l (--language) option.");
+    		}
+    		language = BSFManager.getLangFromFilename(filename);   		
+    	}
+
+    	BSFManager manager = new BSFManager();
         final BSFEngine engine = manager.loadScriptingEngine(language);
 
         if (this.expression != null) {
@@ -76,14 +102,23 @@ public class ScriptCommand
 
             log.info("Expression result: " + obj);
         }
-        else {
-            // No expression, assume interactive (else we don't do anything)
-            interactive = true;
-
-            //
-            // TODO: This will change when file/URL processing is added
-            //       https://issues.apache.org/jira/browse/GSHELL-48
-            //
+        else if (path != null){
+        	log.info("Evaluating file: " + path);
+        	//Make a file.  Is it really a file?  Sweet, execute it.
+        	//Is it not a file?  Make a URI, convert that to a URL, or maybe just make a URL, check on that.  Execute it.
+        	//Do it in a nifty way so mother would be proud.
+        	File pathFile = new File(path);
+        	URL pathURL;
+        	if (pathFile.isFile()) {
+        		pathURL = pathFile.toURL();
+        	} else {
+        		URI pathURI = new URI(path);
+        		pathURL = pathURI.toURL();
+        	}
+        	
+        	engine.exec(path, 1, 1, pathURL.getContent());
+        	
+        	log.info("Finished executing script: " + filename);
         }
 
         if (this.interactive) {
