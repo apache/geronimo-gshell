@@ -47,7 +47,15 @@ public class BooleanHandler
             setter.set(value);
 
             return 1;
-    	}
+    	} 
+        else if (descriptor instanceof OptionDescriptor && isKeyValuePair) {
+        	String token = params.get(0);
+        	token = token.substring(token.indexOf('=') + 1, token.length());
+        	boolean value = Boolean.parseBoolean(token);
+        	setter.set(value);
+        	
+        	return 1;
+        }
         else {
             if (((OptionDescriptor)descriptor).isArgumentRequired()) {
                 String token = params.get(0);

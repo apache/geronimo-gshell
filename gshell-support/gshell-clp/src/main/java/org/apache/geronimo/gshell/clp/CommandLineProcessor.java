@@ -244,6 +244,10 @@ public class CommandLineProcessor
                         throw new ProcessingException(Messages.UNDEFINED_OPTION.format(arg));
                     }
                 }
+                else if (isKeyValuePair){
+                	// known option, but further processing is required in the handler.
+                	handler.isKeyValuePair = isKeyValuePair;
+                }
                 else {
                     // known option; skip its name
                     params.skip(1);
@@ -330,9 +334,17 @@ public class CommandLineProcessor
         Map<String, Handler> map = new TreeMap<String, Handler>();
 
         for (Handler handler : handlers) {
-            if (handlers.toString().startsWith(keyFilter)) {
-                map.put(handlers.toString(), handler);
-            }
+        	if (keyFilter.contains("--")) {
+        		for (String alias : ((OptionDescriptor)handler.descriptor).aliases()) {
+        			if (alias.startsWith(keyFilter)) {
+        				map.put(alias, handler);
+        			}
+        		}
+        	} else {
+        		if (((OptionDescriptor)handler.descriptor).name().startsWith(keyFilter)) {
+                    map.put(((OptionDescriptor)handler.descriptor).name(), handler);
+                }
+        	}
         }
 
         return map;

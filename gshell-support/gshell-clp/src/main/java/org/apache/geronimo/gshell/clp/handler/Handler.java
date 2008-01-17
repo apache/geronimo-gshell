@@ -31,6 +31,8 @@ import org.apache.geronimo.gshell.clp.setter.Setter;
 public abstract class Handler<T>
 {
     public final Descriptor descriptor;
+    
+    public Boolean isKeyValuePair = false;
 
     public final Setter<? super T> setter;
 
