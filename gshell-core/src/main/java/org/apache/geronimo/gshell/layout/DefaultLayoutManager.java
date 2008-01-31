@@ -73,14 +73,43 @@ public class DefaultLayoutManager
     public Layout getLayout() {
         return layout;
     }
-
+    
     public Node findNode(final String path) throws NotFoundException {
+        return findNode(path, null);
+    }
+
+    public Node findNode(final String path, final String searchPath) throws NotFoundException {
         assert path != null;
 
         Node start;
 
         if (path.startsWith(PATH_SEPARATOR)) {
             start = layout;
+            return findNode(start, path);
+        }
+        else if (searchPath != null) {
+            String[] pathList = searchPath.split(SEARCH_PATH_SEPARATOR);
+            Node foundNode = null;
+            
+            for (String commandPath : pathList) {
+                try {
+                    Node pathNode = findNode(commandPath);
+                    foundNode = findNode(pathNode, path);
+                    
+                    if (foundNode != null) {
+                        break;
+                    }
+                }
+                catch (NotFoundException e) {
+                    // Ignore this for now.  We might still have paths to check
+                }
+            }
+            
+            if (foundNode == null) {
+                foundNode = findNode(layout, path);
+            }
+            
+            return foundNode;
         }
         else {
             start = (Node) env.getVariables().get(CURRENT_NODE);
@@ -88,9 +117,9 @@ public class DefaultLayoutManager
             if (start == null) {
                 start = layout;
             }
+            
+            return findNode(start, path);
         }
-
-        return findNode(start, path);
     }
 
     public Node findNode(final Node start, final String path) throws NotFoundException {

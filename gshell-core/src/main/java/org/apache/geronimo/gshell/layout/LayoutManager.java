@@ -34,11 +34,18 @@ public interface LayoutManager
 
     String ROOT = "/";
 
+    // FIXME: Rename, this is a file name sep, not a path sep
     String PATH_SEPARATOR = "/";
+    
+    String COMMAND_PATH = "path";
+    
+    String SEARCH_PATH_SEPARATOR = ":";
 
     Layout getLayout();
 
     Node findNode(String path) throws NotFoundException;
+    
+    Node findNode(String path, String searchPath) throws NotFoundException;
 
     Node findNode(Node start, String path) throws NotFoundException;
 }

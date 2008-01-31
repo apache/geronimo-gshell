@@ -135,9 +135,11 @@ public class DefaultCommandExecutor
         assert args != null;
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
-
-        final Node node = layoutManager.findNode(path);
-
+        
+        final String searchPath = (String) env.getVariables().get(LayoutManager.COMMAND_PATH);
+        
+        final Node node = layoutManager.findNode(path, searchPath);
+        
         final String id = findCommandId(node);
 
         final Command command;
@@ -191,7 +193,7 @@ public class DefaultCommandExecutor
                             //
                             // TODO:
                             //
-
+                            
                             return null;
                         }
                     };

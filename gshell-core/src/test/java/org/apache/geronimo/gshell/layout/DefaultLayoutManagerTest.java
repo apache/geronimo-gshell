@@ -61,6 +61,11 @@ public class DefaultLayoutManagerTest
         Node node = layoutManager.findNode("test/foo");
         assertNotNull(node);
     }
+    
+    public void testFindWithCommandPath() throws Exception {
+        Node node = layoutManager.findNode("foo", "/:test");
+        assertNotNull(node);
+    }
 
     public void testFindNotFound() throws Exception {
         try {
