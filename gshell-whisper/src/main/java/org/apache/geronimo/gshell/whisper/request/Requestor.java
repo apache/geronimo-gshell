@@ -129,6 +129,10 @@ public class Requestor
             return delegate.getSession();
         }
 
+        public Object getLock() {
+            return delegate.getLock();
+        }
+
         public void join() {
             delegate.join();
         }

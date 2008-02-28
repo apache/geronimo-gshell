@@ -39,22 +39,6 @@
         Support for remote access in GShell.
     </description>
     
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.mina</groupId>
-                <artifactId>mina-core</artifactId>
-                <version>1.1.2</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.apache.mina</groupId>
-                <artifactId>mina-filter-ssl</artifactId>
-                <version>1.1.2</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
