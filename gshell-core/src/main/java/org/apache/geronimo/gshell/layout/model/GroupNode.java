@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.layout.LayoutManager;
 
 /**
  * A group of nodes.

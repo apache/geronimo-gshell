@@ -22,9 +22,7 @@ package org.apache.geronimo.gshell.layout.model;
 import java.io.InputStream;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.core.JVM;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
@@ -51,11 +49,12 @@ public class Layout
         try {
             Class.forName("org.xmlpull.mxp1.MXParser");
             xs = new XStream(new XppDriver());
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException ignore) {
             xs = new XStream(new DomDriver());
         }
 
-        Annotations.configureAliases(xs, Layout.class, GroupNode.class, CommandNode.class, AliasNode.class);
+        xs.processAnnotations(new Class[] { Layout.class, GroupNode.class, CommandNode.class, AliasNode.class });
 
         return xs;
     }
