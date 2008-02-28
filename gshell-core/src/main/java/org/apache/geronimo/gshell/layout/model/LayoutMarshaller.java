@@ -19,46 +19,44 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
+import java.io.InputStream;
+
 import com.thoughtworks.xstream.XStream;
-import junit.framework.TestCase;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 /**
- * Test for the {@link GroupNode} class.
+ * {@link Layout} XStream marshalling helper.
  *
  * @version $Rev$ $Date$
  */
-public class GroupNodeTest
-    extends TestCase
+public class LayoutMarshaller
 {
-    public void testAddLinks() throws Exception {
-        GroupNode group = new GroupNode("test");
+    private static XStream createXStream() {
+        XStream xs;
 
-        Node n1 = new CommandNode("a", "b");
+        try {
+            Class.forName("org.xmlpull.mxp1.MXParser");
+            xs = new XStream(new XppDriver());
+        }
+        catch (ClassNotFoundException ignore) {
+            xs = new XStream(new DomDriver());
+        }
 
-        group.add(n1);
+        xs.processAnnotations(new Class[] { Layout.class, GroupNode.class, CommandNode.class, AliasNode.class });
 
-        assertEquals(group, n1.getParent());
+        return xs;
     }
 
-    public void testDeserializeLinks() throws Exception {
-        GroupNode g1 = new GroupNode("test");
+    public static String marshal(final Layout layout) {
+        assert layout != null;
 
-        Node n1 = new CommandNode("a", "b");
+        return createXStream().toXML(layout);
+    }
+    
+    public static Layout unmarshal(final InputStream input) {
+        assert input != null;
 
-        g1.add(n1);
-
-        XStream xs = new XStream();
-
-        xs.processAnnotations(GroupNode.class);
-        
-        String xml = xs.toXML(g1);
-
-        System.err.println("XML: " + xml);
-
-        GroupNode g2 = (GroupNode) xs.fromXML(xml);
-
-        Node n2 = g2.nodes().iterator().next();
-        
-        assertEquals(g2, n2.getParent());
+        return (Layout) createXStream().fromXML(input);
     }
 }

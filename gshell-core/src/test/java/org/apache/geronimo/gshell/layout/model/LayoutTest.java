@@ -30,12 +30,12 @@ public class LayoutTest
     extends TestCase
 {
     public void testReadLayout1() throws Exception {
-        Layout layout = Layout.fromXML(getClass().getResourceAsStream("layout1.xml"));
+        Layout layout = LayoutMarshaller.unmarshal(getClass().getResourceAsStream("layout1.xml"));
         assertNotNull(layout);
     }
 
     public void testReadLayout2() throws Exception {
-        Layout layout = Layout.fromXML(getClass().getResourceAsStream("layout2.xml"));
+        Layout layout = LayoutMarshaller.unmarshal(getClass().getResourceAsStream("layout2.xml"));
         assertNotNull(layout);
     }
     
@@ -51,7 +51,7 @@ public class LayoutTest
 
         layout.add(g);
         
-        String xml = Layout.toXML(layout);
+        String xml = LayoutMarshaller.marshal(layout);
 
         System.err.println("XML: " + xml);
     }

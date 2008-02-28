@@ -26,6 +26,7 @@ import java.net.URI;
 import java.net.URL;
 
 import org.apache.geronimo.gshell.layout.model.Layout;
+import org.apache.geronimo.gshell.layout.model.LayoutMarshaller;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -79,7 +80,7 @@ public class XMLLayoutLoader
 
         Layout layout;
         try {
-            layout = Layout.fromXML(input);
+            layout = LayoutMarshaller.unmarshal(input);
         }
         finally {
            IOUtil.close(input);

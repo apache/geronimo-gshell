@@ -19,12 +19,7 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
-import java.io.InputStream;
-
-import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.xml.XppDriver;
 
 /**
  * The root container for a layout tree.
@@ -37,37 +32,5 @@ public class Layout
 {
     public Layout() {
         super(ROOT);
-    }
-
-    //
-    // XML Conversion
-    //
-    
-    private static XStream createXStream() {
-        XStream xs;
-
-        try {
-            Class.forName("org.xmlpull.mxp1.MXParser");
-            xs = new XStream(new XppDriver());
-        }
-        catch (ClassNotFoundException ignore) {
-            xs = new XStream(new DomDriver());
-        }
-
-        xs.processAnnotations(new Class[] { Layout.class, GroupNode.class, CommandNode.class, AliasNode.class });
-
-        return xs;
-    }
-
-    public static Layout fromXML(final InputStream input) {
-        assert input != null;
-
-        return (Layout) createXStream().fromXML(input);
-    }
-
-    public static String toXML(final Layout layout) {
-        assert layout != null;
-
-        return createXStream().toXML(layout);
     }
 }
