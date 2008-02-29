@@ -257,11 +257,18 @@ public class DefaultShell
         io.err.print(cause.getClass().getSimpleName());
         io.err.println(": @|bold,red " + cause.getMessage() + "|");
 
+        // Determine if the stack trace flag is set
+        String stackTraceProperty = System.getProperty("gshell.show.stacktrace");
+        boolean stackTraceFlag = false;
+        if (stackTraceProperty != null) {
+        	stackTraceFlag = stackTraceProperty.trim().equals("true");
+        }
+        
         if (io.isDebug()) {
             // If we have debug enabled then skip the fancy bits below, and log the full error, don't decode shit
             log.debug(error.toString(), error);
         }
-        else if (io.isVerbose()) {
+        else if (io.isVerbose() || stackTraceFlag) {
             // Render a fancy ansi colored stack trace
             StackTraceElement[] trace = cause.getStackTrace();
             StringBuffer buff = new StringBuffer();

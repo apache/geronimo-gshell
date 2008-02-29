@@ -82,10 +82,12 @@ public class Main
         System.setProperty("gshell.log.console.level", level);
     }
 
-    //
-    // TODO: Add flag to show exception traces
-    //       https://issues.apache.org/jira/browse/GSHELL-46
-    //
+    @Option(name="-e", aliases={"--exception"}, description="Enable exception stack traces")
+    private void setException(boolean flag) {
+    	if (flag) {
+    		System.setProperty("gshell.show.stacktrace","true");
+    	}
+    }
     
     @Option(name="-d", aliases={"--debug"}, description="Enable DEBUG logging output")
     private void setDebug(boolean flag) {
