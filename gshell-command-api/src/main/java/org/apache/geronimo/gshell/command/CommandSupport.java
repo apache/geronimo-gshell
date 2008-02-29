@@ -116,13 +116,9 @@ public abstract class CommandSupport
         //
         // FIXME: This is uuuuuggggllyyyy
         //
-        
-        io.out.println(name);
-        io.out.println(" -- ");
-        io.out.println();
 
         Printer printer = new Printer(clp);
-        printer.printUsage(io.out);
+        printer.printUsage(io.out, name);
         io.out.println();
     }
 }

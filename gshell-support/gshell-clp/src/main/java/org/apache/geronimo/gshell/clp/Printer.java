@@ -93,7 +93,7 @@ public class Printer
         return getNameAndMeta(handler, bundle).length();
     }
 
-    public void printUsage(final Writer writer, final ResourceBundle bundle) {
+    public void printUsage(final Writer writer, final ResourceBundle bundle, final String name) {
         assert writer != null;
 
         PrintWriter out = new PrintWriter(writer);
@@ -110,9 +110,22 @@ public class Printer
                 return a.descriptor.toString().compareTo(b.descriptor.toString());
             }
         });
+        
+        if (name != null) {
+        	String syntax = "syntax: " + name;
+        	if (!optionHandlers.isEmpty()) {
+        		syntax += " [options]";
+        	}
+        	if (!argumentHandlers.isEmpty()) {
+        		syntax += " [arguments]";
+        	}
+        	out.println(syntax);
+        	out.println();
+        }
 
         // Compute the maximum length of the syntax column
         int len = 0;
+        
 
         for (Handler handler : optionHandlers) {
             int curLen = getPrefixLen(handler, bundle);
@@ -125,10 +138,17 @@ public class Printer
         }
 
         // And then render the handler usage
+        if (!argumentHandlers.isEmpty()) {
+        	out.println("arguments:");
+        }
         for (Handler handler : argumentHandlers) {
             printHandler(out, handler, len, bundle);
         }
 
+        if (!optionHandlers.isEmpty()) {
+        	out.println();
+        	out.println("options:");
+        }
         for (Handler handler : optionHandlers) {
             printHandler(out, handler, len, bundle);
         }
@@ -137,7 +157,11 @@ public class Printer
     }
 
     public void printUsage(final Writer writer) {
-        printUsage(writer, null);
+        printUsage(writer, null, null);
+    }
+    
+    public void printUsage(final Writer writer, final String name) {
+    	printUsage(writer, null, name);
     }
 
     private void printHandler(final PrintWriter out, final Handler handler, final int len, final ResourceBundle bundle) {
