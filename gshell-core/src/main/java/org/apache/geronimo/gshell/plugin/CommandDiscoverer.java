@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.plugin;
 
 import java.io.Reader;
 
-import com.thoughtworks.xstream.core.BaseException;
+import com.thoughtworks.xstream.XStreamException;
 import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
@@ -59,7 +59,7 @@ public class CommandDiscoverer
 
             return new ComponentSetDescriptorAdapter(commands);
         }
-        catch (BaseException e) {
+        catch (XStreamException e) {
             throw new PlexusConfigurationException("Failed to load descriptors from: " + source, e);
         }
     }
