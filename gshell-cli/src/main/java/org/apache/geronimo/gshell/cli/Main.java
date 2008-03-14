@@ -116,6 +116,7 @@ public class Main
     @Option(name="-c", aliases={"--commands"}, description="Read commands from string")
     private String commands;
 
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(description="Command")
     private List<String> commandArgs = new ArrayList<String>(0);
 
