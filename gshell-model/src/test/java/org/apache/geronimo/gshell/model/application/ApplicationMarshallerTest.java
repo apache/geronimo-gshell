@@ -23,6 +23,9 @@ import junit.framework.TestCase;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.DependencyGroup;
 
+import java.net.URL;
+import java.io.InputStream;
+
 /**
  * Test for the {@link ApplicationMarshaller} class.
  *
@@ -60,5 +63,21 @@ public class ApplicationMarshallerTest
         assertNotNull(xml);
 
         System.out.println(xml);
+    }
+
+    public void testUnmarshal1_FromStream() throws Exception {
+        InputStream input = getClass().getResourceAsStream("application1.xml");
+
+        Application root = marshaller.unmarshal(input);
+
+        System.out.println(root);
+    }
+
+    public void testUnmarshal1_FromURL() throws Exception {
+        URL url = getClass().getResource("application1.xml");
+
+        Application root = marshaller.unmarshal(url);
+
+        System.out.println(root);
     }
 }
