@@ -76,13 +76,13 @@ public class Application
         return dependencyGroups;
     }
 
-    public void add(final DependencyGroup dependencyGroup) {
-        assert dependencyGroup != null;
+    public void add(final DependencyGroup group) {
+        assert group != null;
 
         if (dependencyGroups == null) {
             dependencyGroups = new ArrayList<DependencyGroup>();
         }
 
-        dependencyGroups.add(dependencyGroup);
+        dependencyGroups.add(group);
     }
 }

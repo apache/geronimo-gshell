@@ -36,7 +36,7 @@ public class Dependency
         return dependencyGroup;
     }
 
-    public void setDependencyGroup(final DependencyGroup dependencyGroup) {
-        this.dependencyGroup = dependencyGroup;
+    public void setDependencyGroup(final DependencyGroup group) {
+        this.dependencyGroup = group;
     }
 }
