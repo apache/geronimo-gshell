@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * ???
+ * Application model root element.
  *
  * @version $Rev$ $Date$
  */

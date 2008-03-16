@@ -26,13 +26,13 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
 import java.io.InputStream;
 
 /**
- * Support for model marshallers.
+ * Support for model {@link Marshaller} implementations.
  *
  * @version $Rev$ $Date$
  */
 public abstract class MarshallerSupport<T>
     implements Marshaller<T>
-{
+{   
     protected XStream createXStream() {
         XStream xs;
 

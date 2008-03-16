@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
- * ???
+ * Base class for model elements.
  *
  * @version $Rev$ $Date$
  */

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.model.common;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * ???
+ * Dependency element.
  *
  * @version $Rev$ $Date$
  */

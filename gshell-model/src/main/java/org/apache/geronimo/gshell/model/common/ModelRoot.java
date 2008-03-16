@@ -19,11 +19,8 @@
 
 package org.apache.geronimo.gshell.model.common;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-
 /**
- * ???
+ * Base class for root model elements.
  *
  * @version $Rev$ $Date$
  */

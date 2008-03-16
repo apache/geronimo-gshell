@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.model.application;
 import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 
 /**
- * ???
+ * Marshaller for {@link Application} models.
  *
  * @version $Rev$ $Date$
  */

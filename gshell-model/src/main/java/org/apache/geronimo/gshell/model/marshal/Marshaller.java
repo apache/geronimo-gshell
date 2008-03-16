@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.model.marshal;
 import java.io.InputStream;
 
 /**
- * ???
+ * Model marshaller interface.
  *
  * @version $Rev$ $Date$
  */
