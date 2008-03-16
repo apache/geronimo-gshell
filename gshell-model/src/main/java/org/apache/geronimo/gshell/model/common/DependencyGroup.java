@@ -58,4 +58,17 @@ public class DependencyGroup
     public boolean isEmpty() {
         return dependencies == null || dependencies.isEmpty();
     }
+
+    /**
+     * Link children to their parent when deserializing.
+     */
+    private Object readResolve() {
+        if (!isEmpty()) {
+            for (Dependency child : dependencies) {
+                child.setDependencyGroup(this);
+            }
+        }
+
+        return this;
+    }
 }
