@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.model.application;
 
 import junit.framework.TestCase;
+import org.apache.geronimo.gshell.model.common.Dependency;
+import org.apache.geronimo.gshell.model.common.DependencyGroup;
 
 /**
  * Test for the {@link ApplicationMarshaller} class.
@@ -31,8 +33,28 @@ public class ApplicationMarshallerTest
 {
     private ApplicationMarshaller marshaller = new ApplicationMarshaller();
     
-    public void testMarshal() throws Exception {
+    public void testMarshal1() throws Exception {
         Application root = new Application();
+
+        Dependency d1 = new Dependency();
+        d1.setGroupId("a");
+        d1.setArtifactId("b");
+        d1.setVersion("c");
+        root.add(d1);
+
+        DependencyGroup g1 = new DependencyGroup();
+        g1.setGroupId("d");
+        g1.setVersion("e");
+        root.add(g1);
+        
+        Dependency d2 = new Dependency();
+        d2.setArtifactId("f");
+        g1.add(d2);
+
+        Dependency d3 = new Dependency();
+        d3.setArtifactId("g");
+        d3.setClassifier("h");
+        g1.add(d3);
 
         String xml = marshaller.marshal(root);
         assertNotNull(xml);

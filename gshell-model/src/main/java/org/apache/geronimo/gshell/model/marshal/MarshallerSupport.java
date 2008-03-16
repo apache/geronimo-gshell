@@ -24,6 +24,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
 import java.io.InputStream;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Support for model {@link Marshaller} implementations.
@@ -32,7 +34,16 @@ import java.io.InputStream;
  */
 public abstract class MarshallerSupport<T>
     implements Marshaller<T>
-{   
+{
+    private Class rootType;
+
+    protected MarshallerSupport(final Class rootType) {
+        assert rootType != null;
+
+        this.rootType = rootType;
+    }
+
+
     protected XStream createXStream() {
         XStream xs;
 
@@ -44,9 +55,7 @@ public abstract class MarshallerSupport<T>
             xs = new XStream(new DomDriver());
         }
 
-        //
-        // TODO: Process annotations... how to do tht from T ?
-        //
+        xs.processAnnotations(rootType);
 
         return xs;
     }
@@ -62,5 +71,22 @@ public abstract class MarshallerSupport<T>
 
         //noinspection unchecked
         return (T)createXStream().fromXML(input);
+    }
+
+    //
+    // Helpers
+    //
+    
+    public T unmarshal(final URL url) throws IOException {
+        assert url != null;
+
+        InputStream input = url.openStream();
+
+        try {
+            return unmarshal(input);
+        }
+        finally {
+            input.close();
+        }
     }
 }

@@ -29,5 +29,7 @@ import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 public class SettingsMarshaller
     extends MarshallerSupport<Settings>
 {
-    // ???
+    protected SettingsMarshaller() {
+        super(Settings.class);
+    }
 }

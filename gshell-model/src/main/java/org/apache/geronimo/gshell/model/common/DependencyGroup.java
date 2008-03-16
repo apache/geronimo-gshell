@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.model.common;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -33,5 +34,28 @@ import java.util.ArrayList;
 public class DependencyGroup
     extends DependencySupport
 {
-    private List<Dependency> dependencies = new ArrayList<Dependency>();
+    @XStreamImplicit
+    private List<Dependency> dependencies;
+
+    public List<Dependency> dependencies() {
+        return dependencies;
+    }
+    
+    public void add(final Dependency dependency) {
+        assert dependency != null;
+
+        if (dependencies == null) {
+            dependencies = new ArrayList<Dependency>();
+        }
+
+        dependencies.add(dependency);
+    }
+
+    public int size() {
+        return dependencies == null ? 0 : dependencies.size();
+    }
+    
+    public boolean isEmpty() {
+        return dependencies == null || dependencies.isEmpty();
+    }
 }

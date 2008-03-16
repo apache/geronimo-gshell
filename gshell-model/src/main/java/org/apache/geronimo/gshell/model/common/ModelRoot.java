@@ -27,5 +27,5 @@ package org.apache.geronimo.gshell.model.common;
 public abstract class ModelRoot
     extends ModelElement
 {
-    // ???
+    // Version?
 }

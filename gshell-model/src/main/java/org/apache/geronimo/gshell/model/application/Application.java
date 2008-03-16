@@ -48,13 +48,41 @@ public class Application
 
     // Source Repositories
 
-    private List<Dependency> dependencies = new ArrayList<Dependency>();
+    private List<Dependency> dependencies;
 
-    private List<DependencyGroup> dependencyGroups = new ArrayList<DependencyGroup>();
-
+    private List<DependencyGroup> dependencyGroups;
+    
     // Layout
 
     // Branding
 
     // Paths
+
+    public List<Dependency> dependencies() {
+        return dependencies;
+    }
+
+    public void add(final Dependency dependency) {
+        assert dependency != null;
+
+        if (dependencies == null) {
+            dependencies = new ArrayList<Dependency>();
+        }
+
+        dependencies.add(dependency);
+    }
+
+    public List<DependencyGroup> dependencyGroups() {
+        return dependencyGroups;
+    }
+
+    public void add(final DependencyGroup dependencyGroup) {
+        assert dependencyGroup != null;
+
+        if (dependencyGroups == null) {
+            dependencyGroups = new ArrayList<DependencyGroup>();
+        }
+
+        dependencyGroups.add(dependencyGroup);
+    }
 }

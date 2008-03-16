@@ -29,5 +29,7 @@ import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 public class PluginMarshaller
     extends MarshallerSupport<Plugin>
 {
-    // ???
+    protected PluginMarshaller() {
+        super(Plugin.class);
+    }
 }
