@@ -60,8 +60,11 @@ public class DependencyGroup
     }
 
     /**
-     * Link children to their parent when deserializing.
+     * Link children to their parent group when deserializing.
+     *
+     * @return  Model element instance.
      */
+    @SuppressWarnings({"UnusedDeclaration"})
     private Object readResolve() {
         if (!isEmpty()) {
             for (Dependency child : dependencies) {
