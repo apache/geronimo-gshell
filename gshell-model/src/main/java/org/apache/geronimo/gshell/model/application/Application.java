@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.model.application;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.ModelRoot;
 import org.apache.geronimo.gshell.model.common.Dependency;
+import org.apache.geronimo.gshell.model.common.DependencyGroup;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -36,4 +37,6 @@ public class Application
     extends ModelRoot
 {
     private List<Dependency> dependencies = new ArrayList<Dependency>();
+
+    private List<DependencyGroup> dependencyGroups = new ArrayList<DependencyGroup>();
 }

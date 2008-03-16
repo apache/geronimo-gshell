@@ -21,14 +21,17 @@ package org.apache.geronimo.gshell.model.common;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
- * Dependency element.
+ * Groups dependency elements.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("dependency")
-public class Dependency
+@XStreamAlias("dependencyGroup")
+public class DependencyGroup
     extends DependencySupport
 {
-    // ???
+    private List<Dependency> dependencies = new ArrayList<Dependency>();
 }
