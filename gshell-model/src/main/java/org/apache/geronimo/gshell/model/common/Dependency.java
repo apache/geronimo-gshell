@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.model.common;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Dependency element.
+ * Dependency artifact configuration.
  *
  * @version $Rev$ $Date$
  */
@@ -30,5 +30,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class Dependency
     extends DependencySupport
 {
-    // ???
+    private transient DependencyGroup dependencyGroup;
+
+    public DependencyGroup getDependencyGroup() {
+        return dependencyGroup;
+    }
+
+    public void setDependencyGroup(final DependencyGroup dependencyGroup) {
+        this.dependencyGroup = dependencyGroup;
+    }
 }

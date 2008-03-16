@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Groups dependency elements.
+ * Groups dependency elements to allow artifact configuration to be shared.
  *
  * @version $Rev$ $Date$
  */

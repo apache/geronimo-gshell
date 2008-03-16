@@ -17,27 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.settings;
+package org.apache.geronimo.gshell.model.plugin;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelRoot;
+import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 
 /**
- * User settings model root element.
+ * Marshaller for {@link Plugin} models.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("settings")
-public class Settings
-    extends ModelRoot
+public class PluginMarshaller
+    extends MarshallerSupport<Plugin>
 {
-    // Properties
-
-    // Proxies
-    
-    // Repository
-
-    // Source Repositories
-
-    // Paths
+    // ???
 }

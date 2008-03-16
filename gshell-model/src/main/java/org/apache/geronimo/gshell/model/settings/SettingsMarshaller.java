@@ -19,25 +19,15 @@
 
 package org.apache.geronimo.gshell.model.settings;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelRoot;
+import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 
 /**
- * User settings model root element.
+ * Marshaller for {@link Settings} models.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("settings")
-public class Settings
-    extends ModelRoot
+public class SettingsMarshaller
+    extends MarshallerSupport<Settings>
 {
-    // Properties
-
-    // Proxies
-    
-    // Repository
-
-    // Source Repositories
-
-    // Paths
+    // ???
 }

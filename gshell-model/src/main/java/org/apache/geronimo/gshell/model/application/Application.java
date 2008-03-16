@@ -36,7 +36,25 @@ import java.util.ArrayList;
 public class Application
     extends ModelRoot
 {
+    // ID
+
+    // Name
+
+    // Description
+    
+    // Properties
+    
+    // Repository
+
+    // Source Repositories
+
     private List<Dependency> dependencies = new ArrayList<Dependency>();
 
     private List<DependencyGroup> dependencyGroups = new ArrayList<DependencyGroup>();
+
+    // Layout
+
+    // Branding
+
+    // Paths
 }

@@ -21,9 +21,14 @@ package org.apache.geronimo.gshell.model.plugin;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.ModelRoot;
+import org.apache.geronimo.gshell.model.common.DependencyGroup;
+import org.apache.geronimo.gshell.model.common.Dependency;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
- * ???
+ * Plugin model root element.
  *
  * @version $Rev$ $Date$
  */
@@ -31,5 +36,19 @@ import org.apache.geronimo.gshell.model.common.ModelRoot;
 public class Plugin
     extends ModelRoot
 {
-    // ???
+    // ID
+
+    // Name
+
+    // Description
+
+    // Properties
+    
+    private List<Dependency> dependencies = new ArrayList<Dependency>();
+
+    private List<DependencyGroup> dependencyGroups = new ArrayList<DependencyGroup>();
+
+    // Commands
+    
+    // Layout
 }
