@@ -60,7 +60,7 @@
                 <artifactId>gshell-command-api</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-	
+            
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-parser</artifactId>
@@ -72,7 +72,19 @@
                 <artifactId>gshell-model</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-
+            
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-core</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-builtins</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
