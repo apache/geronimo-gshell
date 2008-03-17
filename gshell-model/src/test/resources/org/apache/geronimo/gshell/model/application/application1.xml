@@ -21,6 +21,19 @@
 <!-- $Rev$ $Date$ -->
 
 <application>
+    <id>app.test</id>
+    <name>App Test</name>
+    <description>A test app descriptor.</description>
+
+    <properties>
+        <property name="a" value="b"/>
+    </properties>
+
+    <sourceRepositories>
+        <sourceRepository>
+            <location>foo:bar</location>
+        </sourceRepository>
+    </sourceRepositories>
 
     <dependencies>
         <dependency>
@@ -34,15 +47,15 @@
         <dependencyGroup>
             <groupId>d</groupId>
             <version>e</version>
+
             <dependency>
                 <artifactId>f</artifactId>
             </dependency>
-            
+
             <dependency>
                 <artifactId>g</artifactId>
                 <classifier>h</classifier>
             </dependency>
         </dependencyGroup>
     </dependencyGroups>
-
 </application>

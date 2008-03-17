@@ -22,9 +22,12 @@ package org.apache.geronimo.gshell.model.application;
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.DependencyGroup;
+import org.apache.geronimo.gshell.model.common.SourceRepository;
 
 import java.net.URL;
+import java.net.URI;
 import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * Test for the {@link ApplicationMarshaller} class.
@@ -38,6 +41,18 @@ public class ApplicationMarshallerTest
     
     public void testMarshal1() throws Exception {
         Application root = new Application();
+
+        root.setId("app.test");
+        root.setName("App Test");
+        root.setDescription("A test app descriptor.");
+
+        Properties props = new Properties();
+        props.setProperty("a", "b");
+        root.setProperties(props);
+
+        SourceRepository sr1 = new SourceRepository();
+        sr1.setLocation("foo:bar");
+        root.add(sr1);
 
         Dependency d1 = new Dependency();
         d1.setGroupId("a");

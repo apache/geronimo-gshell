@@ -23,9 +23,11 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.ModelRoot;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.DependencyGroup;
+import org.apache.geronimo.gshell.model.common.SourceRepository;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Application model root element.
@@ -36,17 +38,17 @@ import java.util.ArrayList;
 public class Application
     extends ModelRoot
 {
-    // ID
+    private String id;
 
-    // Name
+    private String name;
 
-    // Description
-    
-    // Properties
+    private String description;
+
+    private Properties properties;
     
     // Repository
 
-    // Source Repositories
+    private List<SourceRepository> sourceRepositories;
 
     private List<Dependency> dependencies;
 
@@ -57,6 +59,52 @@ public class Application
     // Branding
 
     // Paths
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Properties properties) {
+        this.properties = properties;
+    }
+
+    public List<SourceRepository> sourceRepositories() {
+        return sourceRepositories;
+    }
+
+    public void add(final SourceRepository repository) {
+        assert repository != null;
+
+        if (sourceRepositories == null) {
+            sourceRepositories = new ArrayList<SourceRepository>();
+        }
+
+        sourceRepositories.add(repository);
+    }
 
     public List<Dependency> dependencies() {
         return dependencies;
