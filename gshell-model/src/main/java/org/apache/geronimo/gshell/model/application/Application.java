@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.model.common.ModelRoot;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.SourceRepository;
+import org.apache.geronimo.gshell.model.layout.Layout;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -45,8 +46,8 @@ public class Application
     private String description;
 
     private Properties properties;
-    
-    // Repository
+
+    private String repository;
 
     private List<SourceRepository> sourceRepositories;
 
@@ -54,9 +55,9 @@ public class Application
 
     private List<DependencyGroup> dependencyGroups;
     
-    // Layout
+    private Branding branding;
 
-    // Branding
+    private Layout layout;
 
     // Paths
 
@@ -90,6 +91,14 @@ public class Application
 
     public void setProperties(final Properties properties) {
         this.properties = properties;
+    }
+
+    public String getRepository() {
+        return repository;
+    }
+
+    public void setRepository(final String repository) {
+        this.repository = repository;
     }
 
     public List<SourceRepository> sourceRepositories() {
@@ -132,5 +141,21 @@ public class Application
         }
 
         dependencyGroups.add(group);
+    }
+
+    public Branding getBranding() {
+        return branding;
+    }
+
+    public void setBranding(final Branding branding) {
+        this.branding = branding;
+    }
+
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(final Layout layout) {
+        this.layout = layout;
     }
 }

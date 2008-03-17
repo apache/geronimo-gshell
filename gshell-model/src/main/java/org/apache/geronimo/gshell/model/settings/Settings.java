@@ -21,6 +21,11 @@ package org.apache.geronimo.gshell.model.settings;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.ModelRoot;
+import org.apache.geronimo.gshell.model.common.SourceRepository;
+
+import java.util.Properties;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * User settings model root element.
@@ -31,13 +36,35 @@ import org.apache.geronimo.gshell.model.common.ModelRoot;
 public class Settings
     extends ModelRoot
 {
-    // Properties
+    private Properties properties;
 
     // Proxies
-    
+
+    private List<SourceRepository> sourceRepositories;
+
     // Repository
 
-    // Source Repositories
-
     // Paths
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Properties properties) {
+        this.properties = properties;
+    }
+
+    public List<SourceRepository> sourceRepositories() {
+        return sourceRepositories;
+    }
+
+    public void add(final SourceRepository repository) {
+        assert repository != null;
+
+        if (sourceRepositories == null) {
+            sourceRepositories = new ArrayList<SourceRepository>();
+        }
+
+        sourceRepositories.add(repository);
+    }
 }
