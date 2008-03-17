@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.model.common.Dependency;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Plugin model root element.
@@ -36,13 +37,13 @@ import java.util.ArrayList;
 public class Plugin
     extends ModelRoot
 {
-    // ID
+    private String id;
 
-    // Name
+    private String name;
 
-    // Description
+    private String description;
 
-    // Properties
+    private Properties properties;
     
     private List<Dependency> dependencies = new ArrayList<Dependency>();
 
@@ -51,4 +52,64 @@ public class Plugin
     // Commands
     
     // Layout
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Properties properties) {
+        this.properties = properties;
+    }
+
+    public List<Dependency> dependencies() {
+        return dependencies;
+    }
+
+    public void add(final Dependency dependency) {
+        assert dependency != null;
+
+        if (dependencies == null) {
+            dependencies = new ArrayList<Dependency>();
+        }
+
+        dependencies.add(dependency);
+    }
+
+    public List<DependencyGroup> dependencyGroups() {
+        return dependencyGroups;
+    }
+
+    public void add(final DependencyGroup group) {
+        assert group != null;
+
+        if (dependencyGroups == null) {
+            dependencyGroups = new ArrayList<DependencyGroup>();
+        }
+
+        dependencyGroups.add(group);
+    }
 }
