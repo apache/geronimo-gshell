@@ -151,6 +151,12 @@ public class RemoteShellProxy
         return client.execute(path, args);
     }
 
+    public Object execute(Object[][] commands) throws Exception {
+        ensureOpened();
+
+        return client.execute(commands);
+    }
+
     //
     // Interactive Shell
     //
@@ -200,7 +206,7 @@ public class RemoteShellProxy
 
             public String prompt() {
                 //
-                // TODO: Get the real details and ue them...
+                // TODO: Get the real details and use them...
                 //
 
                 String userName = "user"; // shellInfo.getUserName();

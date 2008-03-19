@@ -67,6 +67,7 @@ public class CommandLineParserVisitorTest
         private SimpleNode simpleNode;
         private ASTCommandLine commandLine;
         private ASTExpression expression;
+        private ASTProcess process;
         private ASTQuotedString quotedString;
         private ASTOpaqueString opaqueString;
         private ASTPlainString plainString;
@@ -89,6 +90,12 @@ public class CommandLineParserVisitorTest
             return node.childrenAccept(this, data);
         }
 
+        public Object visit(ASTProcess node, Object data) {
+            this.process = node;
+
+            return node.childrenAccept(this, data);
+        }
+
         public Object visit(ASTQuotedString node, Object data) {
             this.quotedString = node;
 
@@ -106,5 +113,6 @@ public class CommandLineParserVisitorTest
 
             return node.childrenAccept(this, data);
         }
+
     }
 }

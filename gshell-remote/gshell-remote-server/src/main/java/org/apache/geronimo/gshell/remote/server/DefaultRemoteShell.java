@@ -109,6 +109,12 @@ public class DefaultRemoteShell
         return executor.execute(path, args);
     }
 
+    public Object execute(Object[][] commands) throws Exception {
+        ensureOpened();
+
+        return executor.execute(commands);
+    }
+
     //
     // TODO: Hookup profile script processing bits
     //

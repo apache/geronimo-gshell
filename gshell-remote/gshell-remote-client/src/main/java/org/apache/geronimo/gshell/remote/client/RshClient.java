@@ -233,6 +233,12 @@ public class RshClient
         return doExecute(new ExecuteMessage(path, args));
     }
 
+    public Object execute(final Object[][] cmds) throws Exception {
+        assert cmds != null;
+
+        return doExecute(new ExecuteMessage(cmds));
+    }
+
     //
     // IO Handler
     //

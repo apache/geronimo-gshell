@@ -84,8 +84,12 @@ public class CommandLineParserTest
         // One expression
         assertEquals(1, cl.jjtGetNumChildren());
 
-        // 3 plain strings
+        // One process
         Node child = cl.jjtGetChild(0);
+        assertEquals(1, child.jjtGetNumChildren());
+
+        // 3 plain strings
+        child = child.jjtGetChild(0);
         assertEquals(3, child.jjtGetNumChildren());
 
         for (int i=0; i<3; i++ ) {
@@ -106,8 +110,12 @@ public class CommandLineParserTest
         // One expression
         assertEquals(1, cl.jjtGetNumChildren());
 
-        // 4 plain strings
+        // One process
         Node child = cl.jjtGetChild(0);
+        assertEquals(1, child.jjtGetNumChildren());
+
+        // 4 plain strings
+        child = child.jjtGetChild(0);
         assertEquals(4, child.jjtGetNumChildren());
 
         for (int i=0; i<4; i++ ) {
@@ -129,7 +137,11 @@ public class CommandLineParserTest
         // One expression
         assertEquals(1, cl.jjtGetNumChildren());
 
+        // One process
         Node child = cl.jjtGetChild(0);
+        assertEquals(1, child.jjtGetNumChildren());
+
+        child = child.jjtGetChild(0);
         assertEquals(3, child.jjtGetNumChildren());
 
         // Verify 2 plain strings + 1 quoted
@@ -157,7 +169,11 @@ public class CommandLineParserTest
         // One expression
         assertEquals(1, cl.jjtGetNumChildren());
 
+        // One process
         Node child = cl.jjtGetChild(0);
+        assertEquals(1, child.jjtGetNumChildren());
+
+        child = child.jjtGetChild(0);
         assertEquals(3, child.jjtGetNumChildren());
 
         // Verify 2 plain strings + 1 opaque
@@ -184,7 +200,11 @@ public class CommandLineParserTest
         // One expression
         assertEquals(1, cl.jjtGetNumChildren());
 
+        // One process
         Node child = cl.jjtGetChild(0);
+        assertEquals(1, child.jjtGetNumChildren());
+
+        child = child.jjtGetChild(0);
         assertEquals(4, child.jjtGetNumChildren());
 
         Node node;
@@ -215,7 +235,11 @@ public class CommandLineParserTest
         // One expression
         assertEquals(1, cl.jjtGetNumChildren());
 
+        // One process
         Node child = cl.jjtGetChild(0);
+        assertEquals(1, child.jjtGetNumChildren());
+
+        child = child.jjtGetChild(0);
         assertEquals(4, child.jjtGetNumChildren());
 
         Node node;
@@ -300,5 +324,16 @@ public class CommandLineParserTest
         //
         // TODO: Verify 1 expression
         //
+    }
+
+    public void testProcesses1() throws Exception {
+        String input = "a b c | d e f";
+
+        ASTCommandLine cl = parse(input);
+
+        assertEquals(1, cl.jjtGetNumChildren());
+
+        Node child = cl.jjtGetChild(0);
+        assertEquals(2, child.jjtGetNumChildren());
     }
 }

@@ -31,4 +31,6 @@ public interface CommandExecutor
     Object execute(String command, final Object[] args) throws Exception;
 
     Object execute(Object... args) throws Exception;
+
+    Object execute(Object[][] commands) throws Exception;
 }

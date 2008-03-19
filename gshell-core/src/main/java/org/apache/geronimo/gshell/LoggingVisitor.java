@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.parser.ASTPlainString;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
+import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,6 +119,10 @@ public class LoggingVisitor
 
     public Object visit(final ASTExpression node, Object data) {
         return log(ASTExpression.class, node, data);
+    }
+
+    public Object visit(ASTProcess node, Object data) {
+        return log(ASTProcess.class, node, data);
     }
 
     public Object visit(final ASTQuotedString node, Object data) {

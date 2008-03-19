@@ -19,12 +19,20 @@
 
 package org.apache.geronimo.gshell;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.layout.LayoutManager;
@@ -37,6 +45,7 @@ import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,26 +117,7 @@ public class DefaultCommandExecutor
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
-        return execute(String.valueOf(args[0]), Arguments.shift(args));
-    }
-
-    private String findCommandId(final Node node) throws NotFoundException {
-        assert node != null;
-
-        if (node instanceof AliasNode) {
-            AliasNode aliasNode = (AliasNode) node;
-            String targetPath = aliasNode.getCommand();
-            Node target = layoutManager.findNode(layoutManager.getLayout(), targetPath);
-
-            return findCommandId(target);
-        }
-        else if (node instanceof CommandNode) {
-            CommandNode commandNode = (CommandNode) node;
-
-            return commandNode.getId();
-        }
-
-        throw new NotFoundException("Unable to get command id for: " + node);
+        return execute(String.valueOf(args[0]), Arguments.shift(args), env.getIO());
     }
 
     public Object execute(final String path, final Object[] args) throws Exception {
@@ -135,7 +125,73 @@ public class DefaultCommandExecutor
         assert args != null;
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
-        
+
+        return execute(path, args, env.getIO());
+    }
+
+    public Object execute(final Object[][] commands) throws Exception {
+        // Prepare IOs
+        final IO[] ios = new IO[commands.length];
+        PipedOutputStream pos = null;
+        for (int i = 0; i < ios.length; i++) {
+            InputStream is = (i == 0) ? env.getIO().inputStream : new PipedInputStream(pos);
+            OutputStream os;
+            if (i == ios.length - 1) {
+                os = env.getIO().outputStream;
+            } else {
+                os = pos = new PipedOutputStream();
+            }
+            ios[i] = new IO(is, os, env.getIO().errorStream);
+        }
+        Thread[] threads = new Thread[commands.length];
+        final List<Throwable> errors = new CopyOnWriteArrayList<Throwable>();
+        final AtomicReference ref = new AtomicReference();
+        for (int i = 0; i < commands.length; i++) {
+            final int idx = i;
+            threads[i] = createThread(new Runnable() {
+                public void run() {
+                    try {
+                        Object o = execute(String.valueOf(commands[idx][0]), Arguments.shift(commands[idx]), ios[idx]);
+                        if (idx == commands.length - 1) {
+                            ref.set(o);
+                        }
+                    } catch (Throwable t) {
+                        errors.add(t);
+                    } finally {
+                        if (idx > 0) {
+                            IOUtil.close(ios[idx].inputStream);
+                        }
+                        if (idx < commands.length - 1) {
+                            IOUtil.close(ios[idx].outputStream);
+                        }
+                    }
+                }
+            });
+            threads[i].start();
+        }
+        for (int i = 0; i < commands.length; i++) {
+            threads[i].join();
+        }
+        if (!errors.isEmpty()) {
+            Throwable t = errors.get(0);
+            if (t instanceof Exception) {
+                throw (Exception) t;
+            } else if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else if (t instanceof Error) {
+                throw (Error) t;
+            } else {
+                throw new RuntimeException(t);
+            }
+        }
+        return ref.get();
+    }
+
+    protected Thread createThread(Runnable run) {
+        return new Thread(run);
+    }
+
+    protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
         final String searchPath = (String) env.getVariables().get(LayoutManager.COMMAND_PATH);
         
         final Node node = layoutManager.findNode(path, searchPath);
@@ -158,7 +214,7 @@ public class DefaultCommandExecutor
             CommandInfo info;
 
             public IO getIO() {
-                return env.getIO();
+                return io;
             }
 
             public Variables getVariables() {
@@ -222,4 +278,24 @@ public class DefaultCommandExecutor
 
         return result;
     }
+
+    protected String findCommandId(final Node node) throws NotFoundException {
+        assert node != null;
+
+        if (node instanceof AliasNode) {
+            AliasNode aliasNode = (AliasNode) node;
+            String targetPath = aliasNode.getCommand();
+            Node target = layoutManager.findNode(layoutManager.getLayout(), targetPath);
+
+            return findCommandId(target);
+        }
+        else if (node instanceof CommandNode) {
+            CommandNode commandNode = (CommandNode) node;
+
+            return commandNode.getId();
+        }
+
+        throw new NotFoundException("Unable to get command id for: " + node);
+    }
+
 }

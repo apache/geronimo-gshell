@@ -30,8 +30,10 @@ import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.ASTExpression;
 import org.apache.geronimo.gshell.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.parser.ASTPlainString;
+import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
+import org.apache.geronimo.gshell.parser.Node;
 import org.apache.geronimo.gshell.parser.SimpleNode;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.slf4j.Logger;
@@ -82,22 +84,28 @@ public class ExecutingVisitor
     public Object visit(final ASTExpression node, final Object data) {
         assert node != null;
 
-        // Create the argument list (cmd name + args)
-        List<Object> list = new ArrayList<Object>(node.jjtGetNumChildren());
-        node.childrenAccept(this, list);
-
-        Object[] args = list.toArray(new Object[list.size()]);
-        assert list.size() >= 1;
-
-        String path = String.valueOf(args[0]);
-        args = Arguments.shift(args);
-
+        Object[][] commands = new Object[node.jjtGetNumChildren()][];
+        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+            ASTProcess proc = (ASTProcess) node.jjtGetChild(i);
+            List<Object> list = new ArrayList<Object>(proc.jjtGetNumChildren());
+            proc.childrenAccept(this, list);
+            commands[i] = list.toArray(new Object[list.size()]);
+            assert list.size() >= 1;
+        }
         try {
-            return executor.execute(path, args);
+            return executor.execute(commands);
         }
         catch (Exception e) {
-            throw new ErrorNotification("Shell execution failed; path=" + path + "; args=" + Arguments.asString(args), e);
+            String s = Arguments.asString(commands[0]);
+            for (int i = 1; i < commands.length; i++) {
+                s += " | " + Arguments.asString(commands[i]);
+            }
+            throw new ErrorNotification("Shell execution failed; commands=" + s, e);
         }
+    }
+
+    public Object visit(ASTProcess node, Object data) {
+        return null;
     }
 
     private Object appendString(final String value, final Object data) {

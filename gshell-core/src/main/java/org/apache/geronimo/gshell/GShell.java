@@ -147,7 +147,19 @@ public class GShell
             System.setSecurityManager(psm);
         }
     }
-    
+
+    public Object execute(Object[][] commands) throws Exception {
+        SecurityManager psm = System.getSecurityManager();
+        System.setSecurityManager(sm);
+
+        try {
+            return shell.execute(commands);
+        }
+        finally {
+            System.setSecurityManager(psm);
+        }
+    }
+
     public void run(final Object... args) throws Exception {
         SecurityManager psm = System.getSecurityManager();
         System.setSecurityManager(sm);

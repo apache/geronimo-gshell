@@ -31,6 +31,7 @@ import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
+import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.TerminalInfo;
 import org.apache.geronimo.gshell.console.Console.Prompter;
@@ -79,6 +80,8 @@ public class DefaultShell
     private IO io;
 
 	private Prompter prompter;
+
+    private ErrorHandler errorHandler;
 
     public DefaultShell() {}
     
@@ -131,6 +134,10 @@ public class DefaultShell
         return executor.execute(path, args);
     }
 
+    public Object execute(Object[][] commands) throws Exception {
+        return executor.execute(commands);
+    }
+
     //
     // Interactive Shell
     //
@@ -173,15 +180,7 @@ public class DefaultShell
         console.setPrompter(getPrompter());
 
         // Delegate errors for display and then continue
-        console.setErrorHandler(new Console.ErrorHandler() {
-            public Result handleError(final Throwable error) {
-                assert error != null;
-
-                displayError(error);
-                
-                return Result.CONTINUE;
-            }
-        });
+        console.setErrorHandler(getErrorHandler());
 
         // Hook up a nice history file (we gotta hold on to the history object at some point so the 'history' command can get to it) 
         History history = new History();
@@ -235,6 +234,29 @@ public class DefaultShell
                 String path = "/";
 
                 return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
+            }
+        };
+    }
+
+    public ErrorHandler getErrorHandler() {
+        if (errorHandler == null) {
+            errorHandler = createErrorHandler();
+        }
+        return errorHandler;
+    }
+
+    public void setErrorHandler(ErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
+    }
+
+    public ErrorHandler createErrorHandler() {
+        return new ErrorHandler() {
+            public Result handleError(final Throwable error) {
+                assert error != null;
+
+                displayError(error);
+
+                return Result.CONTINUE;
             }
         };
     }

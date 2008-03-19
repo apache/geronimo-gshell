@@ -104,7 +104,7 @@ PARSER_END(CommandLineParser)
 <DEFAULT> TOKEN :
 {
     < STRING:
-      (   (~["\"","\\"," ","\t","\n","\r","\f",";","\"","'"])
+      (   (~["\"","\\"," ","\t","\n","\r","\f",";","|","\"","'"])
         | ("\\"
             ( ["n","t","b","r","f","\\","'","\"",";"]
             | ["0"-"7"] ( ["0"-"7"] )?
@@ -159,6 +159,11 @@ PARSER_END(CommandLineParser)
     < SEMICOLON: ";" >
 }
 
+<DEFAULT> TOKEN :
+{
+    < PIPE: "|" >
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -173,6 +178,13 @@ ASTCommandLine commandLine() #CommandLine: {}
 }
 
 void expression() #Expression: {}
+{
+    (
+        process() ( "|" [ process() ] )*
+    )
+}
+
+void process() #Process: {}
 {
     ( argument() )+
 }

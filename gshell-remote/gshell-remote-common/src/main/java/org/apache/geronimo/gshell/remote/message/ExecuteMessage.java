@@ -35,26 +35,33 @@ public class ExecuteMessage
 
     private final Object[] args;
 
-    private ExecuteMessage(final Flavor flavor, final String path, final Object[] args) {
+    private final Object[][] cmds;
+
+    private ExecuteMessage(final Flavor flavor, final String path, final Object[] args, final Object[][] cmds) {
         this.flavor = flavor;
         this.path = path;
         this.args = args;
+        this.cmds = cmds;
     }
 
     public ExecuteMessage(final String commandLine) {
-        this(Flavor.STRING, null, new Object[] { commandLine });
+        this(Flavor.STRING, null, new Object[] { commandLine }, null);
     }
 
     public ExecuteMessage(final Object[] args) {
-        this(Flavor.OBJECTS, null, args);
+        this(Flavor.OBJECTS, null, args, null);
     }
 
     public ExecuteMessage(final String path, final Object[] args) {
-        this(Flavor.STRING_OBJECTS, path, args);
+        this(Flavor.STRING_OBJECTS, path, args, null);
+    }
+
+    public ExecuteMessage(final Object[][] cmds) {
+        this(Flavor.COMMANDS, null, null, cmds);
     }
 
     public ExecuteMessage() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
     public Object execute(final CommandExecutor executor) throws Exception {
@@ -71,7 +78,8 @@ public class ExecuteMessage
     {
         STRING,         // execute(String)
         OBJECTS,        // execute(Object[])
-        STRING_OBJECTS  // execute(String, Object[])
+        STRING_OBJECTS, // execute(String, Object[])
+        COMMANDS,       // execute(Object[][])
         ;
 
         public Object execute(final ExecuteMessage msg, final CommandExecutor executor) throws Exception {
@@ -87,6 +95,9 @@ public class ExecuteMessage
 
                 case STRING_OBJECTS:
                     return executor.execute(msg.path, msg.args);
+
+                case COMMANDS:
+                    return executor.execute(msg.cmds);
             }
 
             // This should never happen
