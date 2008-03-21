@@ -133,13 +133,13 @@
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-component-annotations</artifactId>
-                <version>1.0-alpha-1</version>
+                <version>1.0-alpha-13</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-classworlds</artifactId>
-                <version>1.2-alpha-10</version>
+                <version>1.2-alpha-12</version>
             </dependency>
 
             <dependency>
@@ -157,7 +157,7 @@
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-utils</artifactId>
-                <version>1.4.5</version>
+                <version>1.5.1</version>
             </dependency>
 
             <dependency>
