@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.lookup;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
+import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +32,14 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public class LookupFactorySupport
-    extends AbstractComponentFactory
+public class LookupFactorySupport<T>
+    implements ComponentFactory
 {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
-    protected final ThreadLocal holder = new ThreadLocal();
+    protected final ThreadLocal<T> holder = new ThreadLocal<T>();
 
-    public synchronized void set(final Object obj) {
+    public synchronized void set(final T obj) {
         if (obj == null) {
             throw new IllegalArgumentException("Instance can not be null");
         }
@@ -55,11 +55,18 @@ public class LookupFactorySupport
         holder.set(obj);
     }
 
-    public synchronized Object get() {
+    public synchronized T get() {
         return holder.get();
     }
 
-    public Object newInstance(ComponentDescriptor descriptor, ClassRealm classRealm, PlexusContainer container) throws ComponentInstantiationException {
+    public String getId() {
+        //
+        // FIXME: What is this supposed to return?
+        //
+        return null;
+    }
+
+    public Object newInstance(final ComponentDescriptor descriptor, final ClassRealm classRealm, final PlexusContainer container) throws ComponentInstantiationException {
         Object obj = get();
 
         if (obj == null) {

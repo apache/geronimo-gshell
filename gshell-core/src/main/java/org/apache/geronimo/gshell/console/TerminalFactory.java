@@ -23,7 +23,6 @@ import jline.Terminal;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -37,9 +36,16 @@ import org.slf4j.LoggerFactory;
  */
 @Component(role=ComponentFactory.class, hint="Terminal")
 public class TerminalFactory
-    extends AbstractComponentFactory
+    implements ComponentFactory
 {
     protected Logger log = LoggerFactory.getLogger(getClass());
+
+    public String getId() {
+        //
+        // FIXME: What is this supposed to return?
+        //
+        return null;
+    }
 
     public Object newInstance(ComponentDescriptor d, ClassRealm cr, PlexusContainer c) throws ComponentInstantiationException {
         Terminal term =  Terminal.getTerminal();

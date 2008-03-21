@@ -32,7 +32,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  */
 @Component(role=ComponentFactory.class, hint="EnvironmentLookup")
 public class EnvironmentLookup
-    extends LookupFactorySupport
+    extends LookupFactorySupport<Environment>
 {
     public static void set(final PlexusContainer container, final Environment env) throws ComponentLookupException {
         assert container != null;

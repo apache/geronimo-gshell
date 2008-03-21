@@ -32,7 +32,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  */
 @Component(role=ComponentFactory.class, hint="IOLookup")
 public class IOLookup
-    extends LookupFactorySupport
+    extends LookupFactorySupport<IO>
 {
     public static void set(final PlexusContainer container, final IO io) throws ComponentLookupException {
         assert container != null;
