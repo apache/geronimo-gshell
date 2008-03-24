@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=InteractiveShell.class)
+@Component(role=InteractiveShell.class, hint="default")
 public class DefaultShell
     implements InteractiveShell, Initializable
 {
