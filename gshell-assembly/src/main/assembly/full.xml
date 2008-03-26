@@ -70,6 +70,7 @@
                 <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
                 <exclude>org.apache.geronimo.gshell:gshell-assembly</exclude>
                 <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
+                <exclude>junit:junit</exclude>
             </excludes>
         </dependencySet>
 
