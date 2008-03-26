@@ -82,11 +82,6 @@
                             <artifactSet>
                                 <excludes>
                                     <!--
-                                    Exclude org.codehaus.plexus:plexus-component-api because plexus-container-default already includes it (lame)
-                                    -->
-                                    <exclude>org.codehaus.plexus:plexus-component-api</exclude>
-                                    
-                                    <!--
                                     Exclude org.codehaus.plexus:plexus-classworlds because it will already be on our bootstrap classloader.
                                     -->
                                     <exclude>org.codehaus.plexus:plexus-classworlds</exclude>

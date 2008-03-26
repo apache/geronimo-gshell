@@ -54,7 +54,31 @@
                 <artifactId>gshell-common</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-			
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-i18n</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-ansi</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-clp</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-prefs</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-command-api</artifactId>
@@ -78,13 +102,79 @@
                 <artifactId>gshell-core</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-            
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-bootstrap</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-embeddable</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-cli</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-whisper</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.remote</groupId>
+                <artifactId>gshell-remote-common</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.remote</groupId>
+                <artifactId>gshell-remote-client</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.remote</groupId>
+                <artifactId>gshell-remote-server</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-builtins</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-            
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-optional</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-bsf</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-vfs</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-diet-log4j</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -125,12 +215,6 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-vfs</groupId>
-                <artifactId>commons-vfs</artifactId>
-                <version>1.0</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-component-annotations</artifactId>
                 <version>1.0-alpha-13</version>
@@ -142,16 +226,13 @@
                 <version>1.2-alpha-12</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-component-api</artifactId>
-                <version>1.0-alpha-32</version>
-            </dependency>
-
+            <!--
+            NOTE: 1.0-alpha-44 does not have sources published, which is a huge PITA, so use the previous for now.
+            -->
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-container-default</artifactId>
-                <version>1.0-alpha-32</version>
+                <version>1.0-alpha-43</version>
             </dependency>
 
             <dependency>
@@ -161,17 +242,23 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.maven</groupId>
+                <groupId>org.apache.maven.artifact</groupId>
                 <artifactId>maven-artifact</artifactId>
-                <version>2.0.8</version>
+                <version>3.0-SNAPSHOT</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.sf.retrotranslator</groupId>
+                        <artifactId>retrotranslator-runtime</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-artifact-manager</artifactId>
-                <version>2.0.8</version>
+                <groupId>commons-vfs</groupId>
+                <artifactId>commons-vfs</artifactId>
+                <version>1.0</version>
             </dependency>
-
+            
             <dependency>
                 <groupId>commons-jexl</groupId>
                 <artifactId>commons-jexl</artifactId>

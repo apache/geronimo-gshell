@@ -26,10 +26,11 @@ import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
+import org.apache.geronimo.gshell.plugin.CommandDiscoveryListener;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,7 @@ public class GShell
 
     private final IO io;
     
-    private final PlexusContainer container;
+    private final DefaultPlexusContainer container;
 
     private final SecurityManager sm;
 
@@ -77,8 +78,11 @@ public class GShell
 
         try {
             ContainerConfiguration config = new DefaultContainerConfiguration();
-            config.setName("gshell.core");
+            config.setName("gshell");
             config.setClassWorld(classWorld);
+            config.addComponentDiscoverer(new CommandDiscoverer());
+            config.addComponentDiscoveryListener(new CommandDiscoveryListener());
+
             container = new DefaultPlexusContainer(config);
 
             //

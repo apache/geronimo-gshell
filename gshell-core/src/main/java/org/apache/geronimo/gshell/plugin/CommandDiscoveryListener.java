@@ -21,40 +21,34 @@ package org.apache.geronimo.gshell.plugin;
 
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
 import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.registry.DuplicateRegistrationException;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
- * Registers commands with the registry as they are discovered by the container.
- * 
+ * Maps command ids to command descriptors for just in time component initialization.
+ *
+ * This is not a typical Plexus component and can not have any requirements or custom configuration
+ * due to how the container hacks this puppy into existance.  This component is bound to a role
+ * which is the same as its classname.
+ *
  * @version $Rev$ $Date$
  */
-@Component(role=ComponentDiscoveryListener.class, hint="command")
+@Component(role=CommandDiscoveryListener.class)
 public class CommandDiscoveryListener
     implements ComponentDiscoveryListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
-    private PlexusContainer container;
-
-    @Requirement
-    private CommandRegistry registry;
+    private Map<String,CommandDescriptor> descriptors = new HashMap<String,CommandDescriptor>();
 
     public CommandDiscoveryListener() {}
-    
-    public CommandDiscoveryListener(final PlexusContainer container, final CommandRegistry registry) {
-        this.container = container;
-        this.registry = registry;
-    }
 
     public String getId() {
         return getClass().getSimpleName();
@@ -71,13 +65,16 @@ public class CommandDiscoveryListener
             CommandSetDescriptor commands = ((ComponentSetDescriptorAdapter)components).getCommands();
 
             for (CommandDescriptor descriptor : commands.getCommands()) {
-                try {
-                    registry.register(new PlexusCommandWrapper(container, descriptor));
-                }
-                catch (DuplicateRegistrationException e) {
-                    log.error("Failed to register command: " + descriptor, e);
-                }
+                log.debug("Found: {}", descriptor);
+
+                descriptors.put(descriptor.getId(), descriptor);
             }
         }
+    }
+
+    public CommandDescriptor getCommandDescriptor(final String id) {
+        assert id != null;
+
+        return descriptors.get(id);
     }
 }

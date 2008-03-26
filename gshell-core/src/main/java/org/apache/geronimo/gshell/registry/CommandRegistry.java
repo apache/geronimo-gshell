@@ -30,11 +30,11 @@ import org.apache.geronimo.gshell.command.Command;
  */
 public interface CommandRegistry
 {
-    void register(Command command) throws DuplicateRegistrationException;
+    void register(Command command) throws RegistryException;
 
-    void unregister(Command command) throws NotRegisteredException;
+    void unregister(Command command) throws RegistryException;
 
-    Command lookup(String id) throws NotRegisteredException;
+    Command lookup(String id) throws RegistryException;
 
     Collection<Command> commands();
 }

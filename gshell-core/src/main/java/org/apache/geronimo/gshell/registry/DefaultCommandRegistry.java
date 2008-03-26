@@ -25,7 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.plugin.CommandDiscoveryListener;
+import org.apache.geronimo.gshell.plugin.PlexusCommandWrapper;
+import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,12 +39,18 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandRegistry.class, hint="default")
+@Component(role=CommandRegistry.class)
 public class DefaultCommandRegistry
     implements CommandRegistry
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Requirement
+    private PlexusContainer container;
+
+    @Requirement
+    private CommandDiscoveryListener collector;
+    
     private Map<String, Command> commands = new HashMap<String, Command>();
 
     public void register(final Command command) throws DuplicateRegistrationException {
@@ -55,15 +66,23 @@ public class DefaultCommandRegistry
         log.debug("Registered: {}", id);
     }
 
-    private void ensureRegistered(final String id) throws NotRegisteredException {
+    private void ensureRegistered(final String id) throws RegistryException {
         assert id != null;
         
         if (!commands.containsKey(id)) {
-            throw new NotRegisteredException(id);
+            CommandDescriptor descriptor = collector.getCommandDescriptor(id);
+
+            if (descriptor == null) {
+                throw new NotRegisteredException(id);
+            }
+
+            log.debug("Registering command id: {}", id);
+            
+            register(new PlexusCommandWrapper(container, descriptor));
         }
     }
 
-    public void unregister(final Command command) throws NotRegisteredException {
+    public void unregister(final Command command) throws RegistryException {
         assert command != null;
 
         String id = command.getId();
@@ -74,7 +93,7 @@ public class DefaultCommandRegistry
         log.debug("Unregistered: {}", id);
     }
 
-    public Command lookup(final String id) throws NotRegisteredException {
+    public Command lookup(final String id) throws RegistryException {
         assert id != null;
 
         ensureRegistered(id);

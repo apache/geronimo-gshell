@@ -21,19 +21,6 @@
 <!-- $Rev$ $Date$ -->
 
 <plexus>
-    <component-discoverer-manager implementation="org.codehaus.plexus.component.discovery.DefaultComponentDiscovererManager">
-        <listeners>
-            <listener implementation="org.codehaus.plexus.component.discovery.DiscoveryListenerDescriptor">
-                <role>org.codehaus.plexus.component.discovery.ComponentDiscoveryListener</role>
-                <role-hint>command</role-hint>
-            </listener>
-        </listeners>
-
-        <component-discoverers>
-            <component-discoverer implementation="org.apache.geronimo.gshell.plugin.CommandDiscoverer"/>
-        </component-discoverers>
-    </component-discoverer-manager>
-
     <components>
         <!--
         Configure our logging component to be used so Plexus will pick it up.
@@ -45,35 +32,9 @@
         </component>
 
         <!--
-        Configure the registry.
-        -->
-        <component>
-            <role>org.apache.geronimo.gshell.registry.CommandRegistry</role>
-            <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.registry.DefaultCommandRegistry</implementation>
-        </component>
-
-        <!--
-        Configure the discovery listener to register commands
-        -->
-        <component>
-            <role>org.codehaus.plexus.component.discovery.ComponentDiscoveryListener</role>
-            <role-hint>command</role-hint>
-            <implementation>org.apache.geronimo.gshell.plugin.CommandDiscoveryListener</implementation>
-            <requirements>
-                <requirement>
-                    <role>org.codehaus.plexus.PlexusContainer</role>
-                    <field-name>container</field-name>
-                </requirement>
-                <requirement>
-                    <role>org.apache.geronimo.gshell.registry.CommandRegistry</role>
-                    <field-name>registry</field-name>
-                </requirement>
-            </requirements>
-        </component>
-        
-        <!--
         Add our instance lookup components.
+
+        TODO: Drop this and use the annotations to set factories.
         -->
         <component>
             <role>org.apache.geronimo.gshell.command.IO</role>

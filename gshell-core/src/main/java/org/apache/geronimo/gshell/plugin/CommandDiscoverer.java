@@ -23,9 +23,7 @@ import java.io.Reader;
 
 import com.thoughtworks.xstream.XStreamException;
 import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
-import org.codehaus.plexus.component.discovery.ComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.slf4j.Logger;
@@ -36,11 +34,12 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ComponentDiscoverer.class, hint="command")
 public class CommandDiscoverer
     extends AbstractComponentDiscoverer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    public CommandDiscoverer() {}
 
     protected String getComponentDescriptorLocation() {
         return "META-INF/gshell/commands.xml";

@@ -41,31 +41,26 @@
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-common</artifactId>
-            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-ansi</artifactId>
-            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-i18n</artifactId>
-            <version>${version}</version>
         </dependency>
         
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-clp</artifactId>
-            <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-prefs</artifactId>
-            <version>${version}</version>
         </dependency>
         
         <dependency>

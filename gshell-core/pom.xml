@@ -59,10 +59,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.maven</groupId>
+            <groupId>org.apache.maven.artifact</groupId>
             <artifactId>maven-artifact</artifactId>
         </dependency>
-
+        
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
