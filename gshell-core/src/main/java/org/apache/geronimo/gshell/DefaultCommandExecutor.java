@@ -130,34 +130,46 @@ public class DefaultCommandExecutor
     }
 
     public Object execute(final Object[][] commands) throws Exception {
+        assert commands != null;
+
         // Prepare IOs
         final IO[] ios = new IO[commands.length];
         PipedOutputStream pos = null;
+
         for (int i = 0; i < ios.length; i++) {
             InputStream is = (i == 0) ? env.getIO().inputStream : new PipedInputStream(pos);
             OutputStream os;
+
             if (i == ios.length - 1) {
                 os = env.getIO().outputStream;
-            } else {
+            }
+            else {
                 os = pos = new PipedOutputStream();
             }
+
             ios[i] = new IO(is, os, env.getIO().errorStream);
         }
+
         Thread[] threads = new Thread[commands.length];
         final List<Throwable> errors = new CopyOnWriteArrayList<Throwable>();
-        final AtomicReference ref = new AtomicReference();
+        final AtomicReference<Object> ref = new AtomicReference<Object>();
+
         for (int i = 0; i < commands.length; i++) {
             final int idx = i;
+
             threads[i] = createThread(new Runnable() {
                 public void run() {
                     try {
                         Object o = execute(String.valueOf(commands[idx][0]), Arguments.shift(commands[idx]), ios[idx]);
+
                         if (idx == commands.length - 1) {
                             ref.set(o);
                         }
-                    } catch (Throwable t) {
+                    }
+                    catch (Throwable t) {
                         errors.add(t);
-                    } finally {
+                    }
+                    finally {
                         if (idx > 0) {
                             IOUtil.close(ios[idx].inputStream);
                         }
@@ -167,23 +179,35 @@ public class DefaultCommandExecutor
                     }
                 }
             });
+
             threads[i].start();
         }
+
         for (int i = 0; i < commands.length; i++) {
             threads[i].join();
         }
+
         if (!errors.isEmpty()) {
             Throwable t = errors.get(0);
+
+            //
+            // FIXME: Should not throw here, as that will cause the originating stack trace to be lost
+            //
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            }
             if (t instanceof Exception) {
                 throw (Exception) t;
-            } else if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else if (t instanceof Error) {
+            }
+            else if (t instanceof Error) {
                 throw (Error) t;
-            } else {
+            }
+            else {
                 throw new RuntimeException(t);
             }
         }
+
         return ref.get();
     }
 
@@ -297,5 +321,4 @@ public class DefaultCommandExecutor
 
         throw new NotFoundException("Unable to get command id for: " + node);
     }
-
 }
