@@ -25,27 +25,28 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.support</groupId>
-    <artifactId>gshell-support</artifactId>
-    <name>GShell Support</name>
-    <packaging>pom</packaging>
+    <artifactId>gshell-plexus</artifactId>
+    <name>GShell Support :: Plexus</name>
     
     <description>
-        Support modules for GShell fluff.
+        Customizations of Plexus for GShell.
     </description>
     
-    <modules>
-        <module>gshell-ansi</module>
-        <module>gshell-clp</module>
-        <module>gshell-common</module>
-        <module>gshell-i18n</module>
-        <module>gshell-prefs</module>
-        <module>gshell-plexus</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-container-default</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

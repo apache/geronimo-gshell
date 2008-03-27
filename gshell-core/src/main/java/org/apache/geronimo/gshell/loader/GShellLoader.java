@@ -19,28 +19,27 @@
 
 package org.apache.geronimo.gshell.loader;
 
-import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.model.settings.Settings;
-import org.apache.geronimo.gshell.command.IO;
-import org.apache.geronimo.gshell.lookup.IOLookup;
-import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
-import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.shell.InteractiveShell;
-import org.apache.geronimo.gshell.DefaultEnvironment;
-import org.apache.geronimo.gshell.security.ShellSecurityManager;
+import java.io.File;
+import java.net.MalformedURLException;
+
 import org.apache.geronimo.gshell.GShell;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
-import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.support.plexus.GShellPlexusContainer;
+import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
+import org.apache.geronimo.gshell.plugin.CommandDiscoveryListener;
+import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.model.application.Application;
 import org.codehaus.plexus.classworlds.ClassWorld;
-import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.DefaultArtifactRepository;
+import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Loads {@link org.apache.geronimo.gshell.GShell} instances.
@@ -55,15 +54,9 @@ public class GShellLoader
 
     private final IO io;
 
-    private final Environment environment;
-
-    private final SecurityManager securityManager;
-
-    private final PlexusContainer container;
-
     private Application application;
 
-    private Settings settings;
+    private GShellPlexusContainer container;
 
     public GShellLoader(final ClassWorld classWorld, final IO io) throws Exception {
         assert classWorld != null;
@@ -71,73 +64,53 @@ public class GShellLoader
 
         this.classWorld = classWorld;
         this.io = io;
-        this.environment = new DefaultEnvironment(io);
-        this.securityManager = new ShellSecurityManager();
-
-        this.container = createContainer();
-
-        // Install IO and Environment lookups
-        IOLookup.set(container, io);
-        EnvironmentLookup.set(container, environment);
     }
 
-    private PlexusContainer createContainer() throws Exception {
-        ContainerConfiguration config = new DefaultContainerConfiguration();
-        config.setName("gshell.core");
-        config.setClassWorld(classWorld);
-
-        return new DefaultPlexusContainer(config);
+    public GShellLoader(final IO io) throws Exception {
+        this(new ClassWorld("gshell", Thread.currentThread().getContextClassLoader()), io);
     }
 
-    private ArtifactRepository createArtifactRepository() throws ComponentLookupException {
-        ArtifactRepositoryLayout repositoryLayout =
-                (ArtifactRepositoryLayout) container.lookup(ArtifactRepositoryLayout.ROLE, "default");
-
-        ArtifactRepositoryFactory artifactRepositoryFactory =
-                (ArtifactRepositoryFactory) container.lookup(ArtifactRepositoryFactory.ROLE);
-
-        String url = null; //settings.getLocalRepository();
-
-        if (!url.startsWith("file:")) {
-            url = "file://" + url;
-        }
-
-        ArtifactRepository localRepository = new DefaultArtifactRepository("local", url, repositoryLayout);
-
-        /*
-        boolean snapshotPolicySet = false;
-
-        if (commandLine.hasOption(CLIManager.OFFLINE)) {
-            settings.setOffline(true);
-
-            snapshotPolicySet = true;
-        }
-
-        if (!snapshotPolicySet && commandLine.hasOption(CLIManager.UPDATE_SNAPSHOTS)) {
-            artifactRepositoryFactory.setGlobalUpdatePolicy(ArtifactRepositoryPolicy.UPDATE_POLICY_ALWAYS);
-        }
-
-        if (commandLine.hasOption(CLIManager.CHECKSUM_FAILURE_POLICY)) {
-            System.out.println("+ Enabling strict checksum verification on all artifact downloads.");
-
-            artifactRepositoryFactory.setGlobalChecksumPolicy(ArtifactRepositoryPolicy.CHECKSUM_POLICY_FAIL);
-        } else if (commandLine.hasOption(CLIManager.CHECKSUM_WARNING_POLICY)) {
-            System.out.println("+ Disabling strict checksum verification on all artifact downloads.");
-
-            artifactRepositoryFactory.setGlobalChecksumPolicy(ArtifactRepositoryPolicy.CHECKSUM_POLICY_WARN);
-        }
-        */
-
-        return localRepository;
+    public GShellLoader() throws Exception {
+        this(new IO());
     }
 
-    //
-    // Loading
-    //
+    public ArtifactRepository createLocalRepository(final File dir) throws ComponentLookupException, MalformedURLException {
+        assert dir != null;
+        
+        ArtifactRepositoryLayout layout = container.lookupComponent(ArtifactRepositoryLayout.class, "default");
+
+        DefaultArtifactRepository repo = new DefaultArtifactRepository("local",
+            dir.toURI().toURL().toExternalForm(),
+            layout,
+            new ArtifactRepositoryPolicy(),  // snapshots
+            new ArtifactRepositoryPolicy()); // releases
+
+        repo.setBasedir(dir.getAbsolutePath());
+
+        return repo;
+    }
 
     public GShell load() throws Exception {
-        InteractiveShell shell = (InteractiveShell) container.lookup(InteractiveShell.class);
-
         return null;
+    }
+
+    public void test() throws Exception {
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+        config.setName("gshell");
+        config.setClassWorld(classWorld);
+        // config.addComponentDiscoverer(new CommandDiscoverer());
+        // config.addComponentDiscoveryListener(new CommandDiscoveryListener());
+
+        container = new GShellPlexusContainer(config);
+
+        File repositoryDir = new File(new File(System.getProperty("user.home")), ".gshell/repository");
+        ArtifactRepository repository = createLocalRepository(repositoryDir);
+
+        System.out.println("Repository: " + repository);
+    }
+
+    public static void main(final String[] args) throws Exception {
+        GShellLoader loader = new GShellLoader();
+        loader.test();
     }
 }
