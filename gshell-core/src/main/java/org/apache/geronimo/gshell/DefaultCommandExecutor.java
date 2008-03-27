@@ -194,9 +194,6 @@ public class DefaultCommandExecutor
             // FIXME: Should not throw here, as that will cause the originating stack trace to be lost
             //
 
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            }
             if (t instanceof Exception) {
                 throw (Exception) t;
             }
