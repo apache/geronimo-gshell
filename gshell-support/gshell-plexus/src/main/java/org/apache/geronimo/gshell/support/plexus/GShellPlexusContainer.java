@@ -39,6 +39,10 @@ public class GShellPlexusContainer
     public GShellPlexusContainer(final ContainerConfiguration configuration) throws PlexusContainerException {
         super(configuration);
     }
+
+    //
+    // Add type-safe lookups based on class roles
+    //
     
     @SuppressWarnings("unchecked")
     public <T> T lookupComponent(final Class<T> role) throws ComponentLookupException {
