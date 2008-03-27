@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
 import org.apache.geronimo.gshell.plugin.CommandDiscoveryListener;
+import org.apache.geronimo.gshell.security.ShellSecurityManager;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;

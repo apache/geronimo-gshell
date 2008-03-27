@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.loader;
 
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
@@ -26,9 +26,11 @@ import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
+import org.apache.geronimo.gshell.DefaultEnvironment;
+import org.apache.geronimo.gshell.security.ShellSecurityManager;
+import org.apache.geronimo.gshell.GShell;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.slf4j.Logger;
@@ -41,7 +43,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
- * Loads {@link GShell} instances.
+ * Loads {@link org.apache.geronimo.gshell.GShell} instances.
  *
  * @version $Rev$ $Date$
  */

@@ -28,7 +28,7 @@
         <component>
             <role>org.codehaus.plexus.logging.LoggerManager</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.Slf4jLoggingManager</implementation>
+            <implementation>org.apache.geronimo.gshell.logging.Slf4jLoggingManager</implementation>
         </component>
 
         <!--

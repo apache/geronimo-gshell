@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.logging;
 
 import org.codehaus.plexus.logging.AbstractLogger;
 import org.codehaus.plexus.logging.BaseLoggerManager;

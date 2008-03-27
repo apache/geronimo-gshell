@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.security;
 
 import java.security.Permission;
 
