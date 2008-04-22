@@ -45,21 +45,18 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>2.0.5</version>
         </dependency>
         
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
-            <version>2.0.5</version>
         </dependency>
         
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-project</artifactId>
-            <version>2.0.5</version>
         </dependency>
-
+        
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-container-default</artifactId>
@@ -69,24 +66,104 @@
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-component-annotations</artifactId>
         </dependency>
-
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
         </dependency>
     </dependencies>
     
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>descriptor</goal>
+                            <goal>helpmojo</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
     <reporting>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>2.3</version>
+                <version>2.4.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <quiet>true</quiet>
+                    <links>
+                        <link>http://java.sun.com/j2ee/1.4/docs/api</link>
+                        <!--
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+                        -->
+                    </links>
+                    <tags>
+                        <tag>
+                            <name>goal</name>
+                            <placement>Xt</placement>
+                        </tag>
+                        <tag>
+                            <name>phase</name>
+                            <placement>Xt</placement>
+                        </tag>
+                        <tag>
+                            <name>execute</name>
+                            <placement>Xt</placement>
+                        </tag>
+                        <tag>
+                            <name>requiresDependencyResolution</name>
+                            <placement>Xt</placement>
+                        </tag>
+                        <tag>
+                            <name>parameter</name>
+                            <placement>Xf</placement>
+                        </tag>
+                        <tag>
+                            <name>required</name>
+                            <placement>Xf</placement>
+                        </tag>
+                        <tag>
+                            <name>readonly</name>
+                            <placement>Xf</placement>
+                        </tag>
+                        <tag>
+                            <name>component</name>
+                            <placement>Xf</placement>
+                        </tag>
+                        <tag>
+                            <name>plexus.component</name>
+                            <placement>Xf</placement>
+                        </tag>
+                        <tag>
+                            <name>plexus.requirement</name>
+                            <placement>Xf</placement>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.2</version>
             </plugin>
         </plugins>
     </reporting>

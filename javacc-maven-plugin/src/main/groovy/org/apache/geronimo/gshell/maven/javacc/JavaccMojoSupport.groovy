@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.maven.javacc
 
-import org.codehaus.mojo.groovy.GroovyMojoSupport
+import org.codehaus.groovy.maven.mojo.GroovyMojo
 
 import org.apache.maven.plugin.MojoExecutionException
 import org.apache.maven.project.MavenProject
@@ -33,7 +33,7 @@ import com.thoughtworks.qdox.JavaDocBuilder
  * @version $Id$
  */
 abstract class JavaccMojoSupport
-    extends GroovyMojoSupport
+    extends GroovyMojo
 {
     /**
      * @parameter expression="${project}"
