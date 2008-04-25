@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
+import org.apache.geronimo.gshell.console.FileHistory;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.TerminalInfo;
 import org.apache.geronimo.gshell.console.Console.Prompter;
@@ -79,19 +80,23 @@ public class DefaultShell
     @Requirement
     private IO io;
 
+    @Requirement
+    private History history;
+
 	private Prompter prompter;
 
     private ErrorHandler errorHandler;
 
     public DefaultShell() {}
     
-    public DefaultShell(final ShellInfo shellInfo, final Branding branding, final CommandExecutor executor, final Terminal terminal, final Environment env, final IO io) {
+    public DefaultShell(final ShellInfo shellInfo, final Branding branding, final CommandExecutor executor, final Terminal terminal, final Environment env, final IO io, final History history) {
         this.shellInfo = shellInfo;
         this.branding = branding;
         this.executor = executor;
         this.terminal = terminal;
         this.env = env;
         this.io = io;
+        this.history = history;
     }
 
     public Environment getEnvironment() {
@@ -183,9 +188,10 @@ public class DefaultShell
         console.setErrorHandler(getErrorHandler());
 
         // Hook up a nice history file (we gotta hold on to the history object at some point so the 'history' command can get to it) 
-        History history = new History();
+        if (history == null) {
+            history = new FileHistory(branding);
+        }
         console.setHistory(history);
-        console.setHistoryFile(new File(branding.getUserDirectory(), branding.getHistoryFileName()));
 
         // Unless the user wants us to shut up, then display a nice welcome banner
         if (!io.isQuiet()) {

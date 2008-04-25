@@ -72,22 +72,6 @@ public class JLineConsole
         reader.setHistory(history);
     }
 
-    public void setHistoryFile(final File file) throws IOException {
-        assert file != null;
-
-        File dir = file.getParentFile();
-
-        if (!dir.exists()) {
-            dir.mkdirs();
-
-            log.debug("Created base directory for history file: {}", dir);
-        }
-
-        log.debug("Using history file: {}", file);
-
-        reader.getHistory().setHistoryFile(file);
-    }
-
     protected String readLine(final String prompt) throws IOException {
         return reader.readLine(prompt);
     }
