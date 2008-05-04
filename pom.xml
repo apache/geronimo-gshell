@@ -189,13 +189,13 @@
             <dependency>
                 <groupId>org.codehaus.groovy.maven</groupId>
                 <artifactId>gmaven-mojo</artifactId>
-                <version>1.0-beta-4-SNAPSHOT</version>
+                <version>1.0-rc-1</version>
             </dependency>
             
             <dependency>
                 <groupId>org.codehaus.groovy.maven.runtime</groupId>
                 <artifactId>gmaven-runtime-default</artifactId>
-                <version>1.0-beta-4-SNAPSHOT</version>
+                <version>1.0-rc-1</version>
             </dependency>
             
             <dependency>
@@ -515,7 +515,7 @@
                 <plugin>
                     <groupId>org.codehaus.groovy.maven</groupId>
                     <artifactId>gmaven-plugin</artifactId>
-                    <version>1.0-beta-4-SNAPSHOT</version>
+                    <version>1.0-beta-rc-1</version>
                 </plugin>
 
                 <plugin>
