@@ -74,6 +74,12 @@
         </dependency>
 
         <dependency>
+            <groupId>xpp3</groupId>
+            <artifactId>xpp3</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
         </dependency>
