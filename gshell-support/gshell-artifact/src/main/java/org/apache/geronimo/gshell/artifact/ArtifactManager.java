@@ -33,7 +33,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 /**
- * ???
+ * Provides a facade over the artifact + repository subsystem.
  *
  * @version $Rev$ $Date$
  */
