@@ -30,6 +30,7 @@ import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ???
+ * Default implementation of the {@link ArtifactManager} component.
  *
  * @version $Rev$ $Date$
  */
@@ -114,6 +115,12 @@ public class DefaultArtifactManager
         return artifactFactory;
     }
 
+    public void setDownloadMonitor(final TransferListener listener) {
+        assert listener != null;
+
+        wagonManager.setDownloadMonitor(listener);
+    }
+    
     public ArtifactResolutionResult resolve(final ArtifactResolutionRequest request) {
         assert request != null;
 

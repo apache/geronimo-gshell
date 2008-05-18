@@ -25,6 +25,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.InvalidRepositoryException;
 import org.apache.maven.artifact.UnknownRepositoryLayoutException;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.wagon.events.TransferListener;
 
 import java.util.List;
 import java.io.File;
@@ -51,6 +52,8 @@ public interface ArtifactManager
     void addRemoteRepository(String id, URL url) throws UnknownRepositoryLayoutException;
 
     ArtifactFactory getArtifactFactory();
+
+    void setDownloadMonitor(TransferListener listener);
 
     ArtifactResolutionResult resolve(ArtifactResolutionRequest request);
 }
