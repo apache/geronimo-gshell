@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell.console;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import jline.ConsoleReader;
 import jline.History;
 import jline.Terminal;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.Shell;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Support for running a {@link Shell} using the <a href="http://jline.sf.net">JLine</a> library.

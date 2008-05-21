@@ -19,43 +19,61 @@
 
 package org.apache.geronimo.gshell.console;
 
-import java.io.File;
-import java.io.IOException;
 import jline.History;
 import org.apache.geronimo.gshell.branding.Branding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * Preserves command history to a file.
+ *
+ * @version $Rev: 573669 $ $Date: 2007-09-07 11:47:20 -0700 (Fri, 07 Sep 2007) $
+ */
 @Component(role=History.class, hint="default")
-public class FileHistory extends History {
-	
+public class FileHistory
+    extends History
+{
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
     private Branding branding;
 
-    public FileHistory() {
-    }
+    public FileHistory() {}
 
     public FileHistory(final Branding branding) throws IOException {
         this.branding = branding;
+
         initialize();
     }
 
     public void initialize() throws IOException {
+        assert branding != null;
+
+        //
+        // FIXME: Branding should just expose getHistoryFile() that handles this
+        //
+        
         setHistoryFile(new File(branding.getUserDirectory(), branding.getHistoryFileName()));
     }
 
     public void setHistoryFile(final File file) throws IOException {
         assert file != null;
+
         File dir = file.getParentFile();
+
         if (!dir.exists()) {
             dir.mkdirs();
+
             log.debug("Created base directory for history file: {}", dir);
         }
+
         log.debug("Using history file: {}", file);
+
         super.setHistoryFile(file);
     }
 

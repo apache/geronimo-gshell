@@ -41,10 +41,7 @@ public class TerminalFactory
     protected Logger log = LoggerFactory.getLogger(getClass());
 
     public String getId() {
-        //
-        // FIXME: What is this supposed to return?
-        //
-        return null;
+        return getClass().getSimpleName();
     }
 
     public Object newInstance(ComponentDescriptor d, ClassRealm cr, PlexusContainer c) throws ComponentInstantiationException {
