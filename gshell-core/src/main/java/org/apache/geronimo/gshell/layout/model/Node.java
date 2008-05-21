@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.layout.model;
 
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
