@@ -188,7 +188,14 @@ public class IO
     public Verbosity getVerbosity() {
         return verbosity;
     }
-
+    
+    /**
+     * Check if the verbosity level is set to {@link Verbosity#SILENT}.
+     */
+    public boolean isSilent() {
+        return verbosity == Verbosity.SILENT;
+    }
+    
     /**
      * Check if the verbosity level is set to {@link Verbosity#QUIET}.
      */
@@ -254,6 +261,7 @@ public class IO
      */
     public static enum Verbosity
     {
+        SILENT,
         QUIET,
         INFO,
         VERBOSE,
