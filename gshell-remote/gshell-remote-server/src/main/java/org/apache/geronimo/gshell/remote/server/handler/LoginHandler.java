@@ -47,6 +47,8 @@ public class LoginHandler
     @Requirement
     private TimeoutManager timeoutManager;
 
+    private String defaultRealm = "BogusLogin";
+
     public LoginHandler() {
         super(LoginMessage.class);
     }
@@ -54,6 +56,11 @@ public class LoginHandler
     public LoginHandler(final TimeoutManager timeoutManager) {
         this();
         this.timeoutManager = timeoutManager;
+    }
+
+    public LoginHandler(final TimeoutManager timeoutManager, final String defaultRealm) {
+        this(timeoutManager);
+        this.defaultRealm = defaultRealm;
     }
 
     public void initialize() throws InitializationException {
@@ -68,7 +75,7 @@ public class LoginHandler
         else {
             String realm = message.getRealm();
             if (realm == null) {
-                realm = "BogusLogin";
+                realm = defaultRealm;
             }
 
             String username = message.getUsername();
