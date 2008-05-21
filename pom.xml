@@ -257,37 +257,6 @@
                 <version>1.0-rc-1</version>
             </dependency>
 
-            <!--
-            FIXME: Have to move this to each plugin, cause these conflict with the 
-                   bits we need from Maven 2.1
-                   
-                   Need to create a gshell-buildsupport module to hold this Maven specific crapksi
-                   
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-project</artifactId>
-                <version>2.0.5</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-artifact</artifactId>
-                <version>2.0.5</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-plugin-api</artifactId>
-                <version>2.0.5</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-model</artifactId>
-                <version>2.0.5</version>
-            </dependency>
-            -->
-
             <dependency>
                 <groupId>org.apache.maven.shared</groupId>
                 <artifactId>file-management</artifactId>
@@ -469,15 +438,14 @@
     </dependencies>
 
     <modules>
+        <module>gshell-buildsupport</module>
         <module>gshell-diet</module>
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
         <module>gshell-model</module>
         <module>gshell-command-api</module>
-        <module>javacc-maven-plugin</module>
         <module>gshell-parser</module>
         <module>gshell-core</module>
-        <module>gshell-maven-plugin</module>
         <module>gshell-cli</module>
         <module>gshell-whisper</module>
         <module>gshell-commands</module>
@@ -634,13 +602,13 @@
                 <!-- INTERNAL -->
                 
                 <plugin>
-                    <groupId>org.apache.geronimo.gshell</groupId>
+                    <groupId>org.apache.geronimo.gshell.buildsupport</groupId>
                     <artifactId>gshell-maven-plugin</artifactId>
                     <version>1.0-alpha-2-SNAPSHOT</version>
                 </plugin>
                 
                 <plugin>
-                    <groupId>org.apache.geronimo.gshell</groupId>
+                    <groupId>org.apache.geronimo.gshell.buildsupport</groupId>
                     <artifactId>javacc-maven-plugin</artifactId>
                     <version>1.0-alpha-2-SNAPSHOT</version>
                 </plugin>
