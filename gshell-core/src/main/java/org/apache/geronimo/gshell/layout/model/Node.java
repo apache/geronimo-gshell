@@ -36,8 +36,7 @@ public abstract class Node
     
     protected String name;
 
-    @XStreamOmitField
-    protected Node parent;
+    protected transient Node parent;
 
     protected Node(final String name) {
         assert name != null;
