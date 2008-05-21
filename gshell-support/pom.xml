@@ -41,9 +41,11 @@
     
     <modules>
         <module>gshell-ansi</module>
+        <module>gshell-artifact</module>
         <module>gshell-clp</module>
         <module>gshell-common</module>
         <module>gshell-i18n</module>
+        <module>gshell-io</module>
         <module>gshell-prefs</module>
         <module>gshell-plexus</module>
     </modules>

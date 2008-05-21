@@ -49,6 +49,7 @@ public interface ArtifactManager
 
     void addRemoteRepository(ArtifactRepository repository);
 
+    // TODO: Change to URI
     void addRemoteRepository(String id, URL url) throws UnknownRepositoryLayoutException;
 
     ArtifactFactory getArtifactFactory();

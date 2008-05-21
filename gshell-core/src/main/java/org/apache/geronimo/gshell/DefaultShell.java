@@ -29,7 +29,7 @@ import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.FileHistory;

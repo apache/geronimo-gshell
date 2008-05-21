@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.artifact.monitor;
 import static org.apache.maven.wagon.WagonConstants.UNKNOWN_LENGTH;
 import org.apache.maven.wagon.events.TransferEvent;
 import static org.apache.maven.wagon.events.TransferEvent.REQUEST_PUT;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
  * A download monitor providing a simple spinning progress interface.
@@ -31,13 +32,17 @@ import static org.apache.maven.wagon.events.TransferEvent.REQUEST_PUT;
 public class ProgressSpinnerMonitor
     extends TransferListenerSupport
 {
-    private long complete;
+    private IO io;
 
     private ProgressSpinner spinner = new ProgressSpinner();
 
-    //
-    // FIXME: Need to abstract the actualy IO here... But IO is not accessible ATM
-    //
+    private long complete;
+
+    public ProgressSpinnerMonitor(final IO io) {
+        assert io != null;
+
+        this.io = io;
+    }
 
     public void transferInitiated(TransferEvent event) {
         complete = 0;
@@ -48,7 +53,7 @@ public class ProgressSpinnerMonitor
 
         String url = event.getWagon().getRepository().getUrl();
 
-        System.out.println(message + ": " + url + "/" + event.getResource().getName());
+        io.info("{}: {}/{}", message, url, event.getResource().getName());
     }
 
     public void transferProgress(final TransferEvent event, final byte[] buffer, final int length) {
@@ -64,7 +69,7 @@ public class ProgressSpinnerMonitor
             message = complete + "/" + (total == UNKNOWN_LENGTH ? "?" : total + "b");
         }
 
-        System.out.print(spinner.spin(message));
+        io.info(spinner.spin(message));
     }
 
     public void transferCompleted(final TransferEvent event) {
@@ -73,8 +78,8 @@ public class ProgressSpinnerMonitor
         if (length != UNKNOWN_LENGTH) {
             String type = (event.getRequestType() == REQUEST_PUT ? "uploaded" : "downloaded");
             String l = length >= 1024 ? (length / 1024) + "K" : length + "b";
-            
-            System.out.println(l + " " + type);
+
+            io.info("{} {}", l, type);
         }
     }
 }

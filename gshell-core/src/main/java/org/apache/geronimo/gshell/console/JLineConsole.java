@@ -19,14 +19,13 @@
 
 package org.apache.geronimo.gshell.console;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import jline.ConsoleReader;
 import jline.History;
 import jline.Terminal;
-import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.Shell;
 
 /**

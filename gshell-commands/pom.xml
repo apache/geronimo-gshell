@@ -49,6 +49,7 @@
     <modules>
         <module>gshell-builtins</module>
         <module>gshell-optional</module>
+        <module>gshell-repository</module>
         <module>gshell-bsf</module>
         <module>gshell-vfs</module>
     </modules>
@@ -58,7 +59,6 @@
             <plugin>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-maven-plugin</artifactId>
-                <version>${version}</version>
                 <executions>
                     <execution>
                         <goals>

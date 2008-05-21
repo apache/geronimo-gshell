@@ -75,7 +75,6 @@
             <plugin>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>javacc-maven-plugin</artifactId>
-                <version>${version}</version>
                 <executions>
                     <execution>
                         <id>jjtree</id>

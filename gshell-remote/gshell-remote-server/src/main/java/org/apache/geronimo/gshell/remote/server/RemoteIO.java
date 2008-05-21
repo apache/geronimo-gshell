@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
-import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
 import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.whisper.transport.Session;

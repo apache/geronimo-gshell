@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.layout;
 
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.DefaultEnvironment;
-import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.layout.loader.DummyLayoutLoader;
 import org.apache.geronimo.gshell.layout.model.CommandNode;
 import org.apache.geronimo.gshell.layout.model.GroupNode;

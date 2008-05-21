@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.model.layout.Layout;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.io.File;
 
 /**
  * Application model root element.
@@ -47,7 +48,7 @@ public class Application
 
     private Properties properties;
 
-    private String repository;
+    private File repository;
 
     private List<SourceRepository> sourceRepositories;
 
@@ -93,11 +94,11 @@ public class Application
         this.properties = properties;
     }
 
-    public String getRepository() {
+    public File getRepository() {
         return repository;
     }
 
-    public void setRepository(final String repository) {
+    public void setRepository(final File repository) {
         this.repository = repository;
     }
 
@@ -114,6 +115,14 @@ public class Application
 
         sourceRepositories.add(repository);
     }
+
+    //
+    // TODO: Change to Plugin*
+    //
+
+    //
+    // TODO: Provide accessor to aggregate dependencies w/group dependencies
+    //
 
     public List<Dependency> dependencies() {
         return dependencies;

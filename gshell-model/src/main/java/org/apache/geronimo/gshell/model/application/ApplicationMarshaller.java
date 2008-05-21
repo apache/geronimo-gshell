@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 public class ApplicationMarshaller
     extends MarshallerSupport<Application>
 {
-    protected ApplicationMarshaller() {
+    public ApplicationMarshaller() {
         super(Application.class);
     }
 }

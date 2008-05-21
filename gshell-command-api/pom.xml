@@ -62,7 +62,12 @@
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-prefs</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-io</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

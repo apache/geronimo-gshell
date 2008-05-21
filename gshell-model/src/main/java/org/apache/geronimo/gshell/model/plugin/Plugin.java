@@ -39,6 +39,12 @@ public class Plugin
 {
     private String id;
 
+    // groupId
+
+    // artifactId
+
+    // version
+
     private String name;
 
     private String description;

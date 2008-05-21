@@ -25,6 +25,7 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.Reader;
 import java.net.URL;
 
 /**
@@ -73,6 +74,13 @@ public abstract class MarshallerSupport<T>
         return (T)createXStream().fromXML(input);
     }
 
+    public T unmarshal(final Reader reader) {
+        assert reader != null;
+
+        //noinspection unchecked
+        return (T)createXStream().fromXML(reader);
+    }
+    
     //
     // Helpers
     //

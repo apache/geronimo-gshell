@@ -39,4 +39,56 @@ public class Dependency
     public void setDependencyGroup(final DependencyGroup group) {
         this.dependencyGroup = group;
     }
+
+    // Return configuration detals from the group if not directly configured
+    
+    public String getGroupId() {
+        String tmp = super.getGroupId();
+
+        if (tmp == null && dependencyGroup != null) {
+            tmp = dependencyGroup.getGroupId();
+        }
+
+        return tmp;
+    }
+
+    public String getArtifactId() {
+        String tmp = super.getArtifactId();
+
+        if (tmp == null && dependencyGroup != null) {
+            tmp = dependencyGroup.getArtifactId();
+        }
+
+        return tmp;
+    }
+
+    public String getClassifier() {
+        String tmp = super.getClassifier();
+
+        if (tmp == null && dependencyGroup != null) {
+            tmp = dependencyGroup.getClassifier();
+        }
+
+        return tmp;
+    }
+
+    public String getType() {
+        String tmp = super.getType();
+
+        if (tmp == null && dependencyGroup != null) {
+            tmp = dependencyGroup.getType();
+        }
+
+        return tmp;
+    }
+
+    public String getVersion() {
+        String tmp = super.getVersion();
+
+        if (tmp == null && dependencyGroup != null) {
+            tmp = dependencyGroup.getVersion();
+        }
+
+        return tmp;
+    }
 }

@@ -70,6 +70,10 @@ abstract class JavaccMojoSupport
         def builder = new JavaDocBuilder()
         builder.addSourceTree(sourceDir)
         
+        //
+        // FIXME: Install generated sources into the proper package
+        //
+        
         // Install generated classes which were not overridden in some source root
         ant.mkdir(dir: outputDirectory)
         ant.copy(todir: outputDirectory) {

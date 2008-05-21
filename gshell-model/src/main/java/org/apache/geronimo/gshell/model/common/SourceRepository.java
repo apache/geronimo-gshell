@@ -34,6 +34,7 @@ public class SourceRepository
 
     // Name
 
+    // TODO: Change to URI
     private String location;
 
     // Layout

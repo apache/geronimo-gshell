@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.client.proxy;
 
-import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.remote.client.RshClient;
 import org.apache.geronimo.gshell.shell.Environment;

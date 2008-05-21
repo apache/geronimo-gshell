@@ -25,13 +25,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.GShellImpl;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
-import org.apache.geronimo.gshell.command.IO;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -240,7 +241,8 @@ public class Main
         });
 
         try {
-            GShell gshell = new GShell(classWorld, io);
+            // FIXME:
+            GShell gshell = new GShellImpl(classWorld, io);
 
             // clp gives us a list, but we need an array
             String[] _args = commandArgs.toArray(new String[commandArgs.size()]);

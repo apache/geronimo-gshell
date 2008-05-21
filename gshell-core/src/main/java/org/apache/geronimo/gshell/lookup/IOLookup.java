@@ -19,7 +19,8 @@
 
 package org.apache.geronimo.gshell.lookup;
 
-import org.apache.geronimo.gshell.command.IO;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.plexus.LookupFactorySupport;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.factory.ComponentFactory;

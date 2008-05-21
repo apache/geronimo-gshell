@@ -37,7 +37,7 @@
         TODO: Drop this and use the annotations to set factories.
         -->
         <component>
-            <role>org.apache.geronimo.gshell.command.IO</role>
+            <role>org.apache.geronimo.gshell.io.IO</role>
             <component-factory>IOLookup</component-factory>
             <instantiation-strategy>per-lookup</instantiation-strategy>
         </component>

@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.command;
 
+import org.apache.geronimo.gshell.io.IO;
+
 /**
  * Provides commands with the context of its execution.
  *
