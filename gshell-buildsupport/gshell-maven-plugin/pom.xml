@@ -29,7 +29,7 @@
     </parent>
 
     <artifactId>gshell-maven-plugin</artifactId>
-    <name>GShell Maven Plugin</name>
+    <name>GShell Build Support :: GShell Maven Plugin</name>
     <packaging>maven-plugin</packaging>
 
     <description>
