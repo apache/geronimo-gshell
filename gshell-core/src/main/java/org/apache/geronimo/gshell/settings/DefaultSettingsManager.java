@@ -19,18 +19,16 @@
 
 package org.apache.geronimo.gshell.settings;
 
+import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.model.common.SourceRepository;
+import org.apache.geronimo.gshell.model.settings.Settings;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.apache.geronimo.gshell.model.settings.Settings;
-import org.apache.geronimo.gshell.model.common.SourceRepository;
-import org.apache.geronimo.gshell.artifact.ArtifactManager;
-import org.apache.maven.artifact.UnknownRepositoryLayoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.net.URL;
-import java.net.MalformedURLException;
+import java.util.List;
 
 /**
  * Default implementation of the {@link SettingsManager} component.
@@ -46,20 +44,25 @@ public class DefaultSettingsManager
     @Requirement
     private ArtifactManager artifactManager;
 
-    private Settings settings;
-
-    public void setSettings(final Settings settings) {
-        assert settings != null;
-
-        this.settings = settings;
-    }
+    private SettingsConfiguration settingsConfiguration;
 
     public Settings getSettings() {
-        return settings;
+        if (settingsConfiguration == null) {
+            throw new IllegalStateException("Not configured");
+        }
+
+        return settingsConfiguration.getSettings();
     }
 
-    public void configure() throws Exception {
-        log.debug("Configuring");
+    public void configure(SettingsConfiguration config) throws Exception {
+        assert config != null;
+
+        log.debug("Configuring; config: {}", config);
+
+        Settings settings = config.getSettings();
+        if (settings == null) {
+            throw new IllegalStateException("Missing settings configuration");
+        }
 
         List<SourceRepository> sourceRepositories = settings.sourceRepositories();
         if (sourceRepositories != null) {
@@ -73,5 +76,7 @@ public class DefaultSettingsManager
         }
         
         // TODO: apply other artifact related settings (proxy, auth, whatever)
+
+        settingsConfiguration = config;
     }
 }

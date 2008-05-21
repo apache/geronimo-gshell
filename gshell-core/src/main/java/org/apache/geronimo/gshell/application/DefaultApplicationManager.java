@@ -116,7 +116,7 @@ public class DefaultApplicationManager
         // Setup container
         ArtifactFactory factory = artifactManager.getArtifactFactory();
 
-        Artifact originating = factory.createArtifact("dummy", "dummy", "1.0", null, "jar");
+        Artifact originating = factory.createArtifact("dummy", "dummy", "dummy", null, "jar");
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
         request.setArtifact(originating);
@@ -164,6 +164,8 @@ public class DefaultApplicationManager
         cc.setName(application.getId());
         cc.setClassWorld(classWorld);
         cc.setRealm(realm);
+
+        // For now use the old Command* bits to get things working, then refactor to use the new Plugin* bits
         cc.addComponentDiscoverer(new CommandDiscoverer());
         cc.addComponentDiscoveryListener(new CommandDiscoveryListener());
         // cc.addComponentDiscoverer(new PluginDiscoverer());

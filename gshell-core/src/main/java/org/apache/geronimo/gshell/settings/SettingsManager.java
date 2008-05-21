@@ -20,9 +20,6 @@
 package org.apache.geronimo.gshell.settings;
 
 import org.apache.geronimo.gshell.model.settings.Settings;
-import org.apache.maven.artifact.UnknownRepositoryLayoutException;
-
-import java.net.MalformedURLException;
 
 /**
  * ???
@@ -31,9 +28,7 @@ import java.net.MalformedURLException;
  */
 public interface SettingsManager
 {
-    void setSettings(Settings settings);
-
     Settings getSettings();
 
-    void configure() throws Exception;
+    void configure(SettingsConfiguration config) throws Exception;
 }

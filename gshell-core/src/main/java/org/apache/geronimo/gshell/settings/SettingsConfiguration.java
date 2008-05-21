@@ -17,18 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.application;
+package org.apache.geronimo.gshell.settings;
+
+import org.apache.geronimo.gshell.model.settings.Settings;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public interface ApplicationManager
+public class SettingsConfiguration
 {
-    void configure(ApplicationConfiguration config) throws Exception;
+    private Settings settings;
 
-    // createShell()
+    public Settings getSettings() {
+        return settings;
+    }
 
-    // getContext()
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
+    }
 }

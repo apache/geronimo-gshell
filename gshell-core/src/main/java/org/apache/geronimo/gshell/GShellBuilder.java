@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.settings.SettingsManager;
+import org.apache.geronimo.gshell.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
@@ -54,9 +55,9 @@ public class GShellBuilder
 
     private ClassWorld classWorld;
 
-    private Settings settings;
-
     private SettingsManager settingsManager;
+
+    private SettingsConfiguration settingsConfig = new SettingsConfiguration();
 
     private ApplicationManager applicationManager;
 
@@ -71,8 +72,6 @@ public class GShellBuilder
         
         config.setName(DEFAULT_CONTAINER_NAME);
         config.setClassWorld(getClassWorld());
-        // config.addComponentDiscoverer(new PluginDiscoverer());
-        // config.addComponentDiscoveryListener(new PluginCollector());
 
         return new GShellPlexusContainer(config);
     }
@@ -120,11 +119,11 @@ public class GShellBuilder
     }
 
     public Settings getSettings() {
-        return settings;
+        return settingsConfig.getSettings();
     }
 
     public void setSettings(final Settings settings) {
-        this.settings = settings;
+        settingsConfig.setSettings(settings);
     }
 
     private SettingsManager createSettingsManager() throws ComponentLookupException {
@@ -187,17 +186,14 @@ public class GShellBuilder
     public GShell build() throws Exception {
         log.debug("Building");
 
-        // Initialize the container & components
+        // Initialize the container
         getContainer();
 
         // Configure download monitor
         getArtifactManager().setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
 
-        // Configure settings (settings)
-        if (settings != null) {
-            getSettingsManager().setSettings(settings);
-        }
-        getSettingsManager().configure();
+        // Configure settings
+        getSettingsManager().configure(settingsConfig);
 
         // Configure application
         getApplicationManager().configure(applicationConfig);

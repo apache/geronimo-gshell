@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.DefaultEnvironment;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.model.application.Application;
+import org.apache.geronimo.gshell.shell.Environment;
 
 /**
  * ???
