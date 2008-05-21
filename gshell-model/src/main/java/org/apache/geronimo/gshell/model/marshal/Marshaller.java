@@ -20,6 +20,9 @@
 package org.apache.geronimo.gshell.model.marshal;
 
 import java.io.InputStream;
+import java.io.Reader;
+import java.io.OutputStream;
+import java.io.Writer;
 
 /**
  * Model marshaller interface.
@@ -28,7 +31,15 @@ import java.io.InputStream;
  */
 public interface Marshaller<T>
 {
+    void marshal(T root, OutputStream output);
+
+    void marshal(T root, Writer writer);
+
     String marshal(T root);
 
     T unmarshal(InputStream input);
+
+    T unmarshal(Reader reader);
+
+    T unmarshal(String xml);
 }

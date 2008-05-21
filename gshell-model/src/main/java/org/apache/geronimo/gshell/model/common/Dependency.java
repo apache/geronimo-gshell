@@ -30,6 +30,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class Dependency
     extends DependencySupport
 {
+    public static final String DEFAULT_TYPE = "jar";
+
     private transient DependencyGroup dependencyGroup;
 
     public DependencyGroup getDependencyGroup() {
@@ -77,6 +79,10 @@ public class Dependency
 
         if (tmp == null && dependencyGroup != null) {
             tmp = dependencyGroup.getType();
+        }
+
+        if (tmp == null) {
+            tmp = DEFAULT_TYPE;
         }
 
         return tmp;

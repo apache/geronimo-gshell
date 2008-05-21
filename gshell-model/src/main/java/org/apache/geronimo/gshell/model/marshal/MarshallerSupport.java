@@ -26,6 +26,9 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.net.URL;
 
 /**
@@ -33,7 +36,7 @@ import java.net.URL;
  *
  * @version $Rev$ $Date$
  */
-public abstract class MarshallerSupport<T>
+public class MarshallerSupport<T>
     implements Marshaller<T>
 {
     private Class rootType;
@@ -61,6 +64,20 @@ public abstract class MarshallerSupport<T>
         return xs;
     }
 
+    public void marshal(final T root, final OutputStream output) {
+        assert root != null;
+        assert output != null;
+
+        createXStream().toXML(root, output);
+    }
+
+    public void marshal(final T root, final Writer writer) {
+        assert root != null;
+        assert writer != null;
+
+        createXStream().toXML(root, writer);
+    }
+
     public String marshal(final T root) {
         assert root != null;
 
@@ -80,10 +97,12 @@ public abstract class MarshallerSupport<T>
         //noinspection unchecked
         return (T)createXStream().fromXML(reader);
     }
-    
-    //
-    // Helpers
-    //
+
+    public T unmarshal(final String xml) {
+        assert xml != null;
+
+        return unmarshal(new StringReader(xml));
+    }
     
     public T unmarshal(final URL url) throws IOException {
         assert url != null;
