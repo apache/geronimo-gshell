@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.application;
 
+import org.apache.geronimo.gshell.GShell;
+
 /**
  * ???
  *
@@ -28,7 +30,7 @@ public interface ApplicationManager
 {
     void configure(ApplicationConfiguration config) throws Exception;
 
-    // createShell()
+    GShell createShell() throws Exception;
 
     // getContext()
 }

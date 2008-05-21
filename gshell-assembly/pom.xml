@@ -109,6 +109,16 @@
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-diet-log4j</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-file</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-http-lightweight</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

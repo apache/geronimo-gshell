@@ -213,12 +213,17 @@ public class DefaultCommandExecutor
     }
 
     protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
-        final String searchPath = (String) env.getVariables().get(LayoutManager.COMMAND_PATH);
-        
-        final Node node = layoutManager.findNode(path, searchPath);
-        
-        final String id = findCommandId(node);
+        log.debug("Executing");
 
+        final String searchPath = (String) env.getVariables().get(LayoutManager.COMMAND_PATH);
+        log.debug("Search path: {}", searchPath);
+
+        final Node node = layoutManager.findNode(path, searchPath);
+        log.debug("Layout node: {}", node);
+
+        final String id = findCommandId(node);
+        log.debug("Command ID: {}", id);
+        
         final Command command;
         try {
             command = commandRegistry.lookup(id);

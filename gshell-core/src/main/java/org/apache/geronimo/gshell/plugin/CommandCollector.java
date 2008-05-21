@@ -40,15 +40,17 @@ import java.util.HashMap;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandDiscoveryListener.class)
-public class CommandDiscoveryListener
+@Component(role= CommandCollector.class)
+public class CommandCollector
     implements ComponentDiscoveryListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private Map<String,CommandDescriptor> descriptors = new HashMap<String,CommandDescriptor>();
 
-    public CommandDiscoveryListener() {}
+    public CommandCollector() {
+        log.trace("Created: {}", this);
+    }
 
     public String getId() {
         return getClass().getSimpleName();
@@ -75,6 +77,8 @@ public class CommandDiscoveryListener
     public CommandDescriptor getCommandDescriptor(final String id) {
         assert id != null;
 
+        log.debug("Lookup descriptor for ID: {}", id);
+        
         return descriptors.get(id);
     }
 }

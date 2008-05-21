@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.application;
 
+import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
@@ -26,8 +27,9 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.SourceRepository;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
-import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
-import org.apache.geronimo.gshell.plugin.CommandDiscoveryListener;
+import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.InteractiveShell;
+import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -47,8 +49,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -70,6 +74,8 @@ public class DefaultApplicationManager
 
     private GShellPlexusContainer container;
 
+    private ApplicationConfiguration applicationConfig;
+
     public void contextualize(final Context context) throws ContextException {
         assert context != null;
 
@@ -87,19 +93,40 @@ public class DefaultApplicationManager
 
         log.debug("Configuring; config: {}", config);
 
+        // Validate the configuration
         Application application = config.getApplication();
         if (application == null) {
             throw new IllegalStateException("Missing application configuration");
         }
+        log.debug("Application: {}", application);
 
-        // Setup artifact manager repositories
+        // Apply artifact manager configuration settings for application
+        configureArtifactManager(application);
+
+        // Create the application container
+        container = createContainer(application);
+
+        // TODO: Configure other application bits (branding, layout)
+
+        // Install lookup intestances
+        IOLookup.set(container, config.getIo());
+        EnvironmentLookup.set(container, config.getEnvironment());
+
+        // Track the configuration, mark configured
+        applicationConfig = config;
+    }
+
+    private void configureArtifactManager(final Application application) throws Exception {
+        assert application != null;
         assert artifactManager != null;
-        
+
+        // Setup the local repository
         File repository = application.getRepository();
         if (repository != null) {
             artifactManager.setLocalRepository(repository);
         }
 
+        // Setup remote repositories
         List<SourceRepository> sourceRepositories = application.sourceRepositories();
         if (sourceRepositories != null) {
             for (SourceRepository repo : sourceRepositories) {
@@ -109,11 +136,45 @@ public class DefaultApplicationManager
                 artifactManager.addRemoteRepository(id, url);
             }
         }
+    }
 
-        // Configure other application bits (branding, layout)
-        // TODO:
+    private GShellPlexusContainer createContainer(final Application application) throws Exception {
+        assert application != null;
 
-        // Setup container
+        log.debug("Creating application container");
+
+        List<URL> classPath = createClassPath(application);
+        ClassWorld classWorld = parentContainer.getContainerRealm().getWorld();
+        ClassRealm realm = parentContainer.getContainerRealm().createChildRealm(application.getId());
+
+        for (URL url : classPath) {
+            realm.addURL(url);
+        }
+
+        ContainerConfiguration cc = new DefaultContainerConfiguration();
+        cc.setName(application.getId());
+        cc.setClassWorld(classWorld);
+        cc.setRealm(realm);
+
+        // HACK: Should need these here, but for some reason components are getting instantiated in the wrong container
+        //       so for now to get something working again, use the parent containers configuration set in GShellBuilder
+
+        // For now use the old Command* bits to get things working, then refactor to use the new Plugin* bits
+        // cc.addComponentDiscoverer(new CommandDiscoverer());
+        // cc.addComponentDiscoveryListener(new CommandCollector());
+        // cc.addComponentDiscoverer(new PluginDiscoverer());
+        // cc.addComponentDiscoveryListener(new PluginCollector());
+
+        GShellPlexusContainer child = parentContainer.createChild(cc);
+
+        log.debug("Application container: {}", child);
+
+        return child;
+    }
+
+    private List<URL> createClassPath(final Application application) throws MalformedURLException {
+        assert application != null;
+
         ArtifactFactory factory = artifactManager.getArtifactFactory();
 
         Artifact originating = factory.createArtifact("dummy", "dummy", "dummy", null, "jar");
@@ -124,7 +185,7 @@ public class DefaultApplicationManager
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         List<Dependency> dependencies = application.dependencies();
-        
+
         if (dependencies != null && !dependencies.isEmpty()) {
             log.debug("Application dependencies:");
 
@@ -141,10 +202,12 @@ public class DefaultApplicationManager
         request.setArtifactDependencies(artifacts);
 
         ArtifactResolutionResult result = artifactManager.resolve(request);
-        // TODO: Validate the result and complain if not valid (exceptions/missing/whatever), may want to move that to the AM
 
-        ClassWorld classWorld = parentContainer.getContainerRealm().getWorld();
-        ClassRealm realm = parentContainer.getContainerRealm().createChildRealm(application.getId());
+        //
+        // FIXME: Validate the result and complain if not valid (exceptions/missing/whatever), may want to move that to the AM
+        //
+
+        List<URL> classPath = new LinkedList<URL>();
         Set<Artifact> resolvedArtifacts = result.getArtifacts();
 
         if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
@@ -154,28 +217,62 @@ public class DefaultApplicationManager
                 File file = artifact.getFile();
                 assert file != null;
 
-                log.debug(" + {}", file);
+                URL url = file.toURI().toURL();
+                log.debug(" + {}", url);
 
-                realm.addURL(file.toURI().toURL());
+                classPath.add(url);
             }
         }
 
-        ContainerConfiguration cc = new DefaultContainerConfiguration();
-        cc.setName(application.getId());
-        cc.setClassWorld(classWorld);
-        cc.setRealm(realm);
+        return classPath;
+    }
 
-        // For now use the old Command* bits to get things working, then refactor to use the new Plugin* bits
-        cc.addComponentDiscoverer(new CommandDiscoverer());
-        cc.addComponentDiscoveryListener(new CommandDiscoveryListener());
-        // cc.addComponentDiscoverer(new PluginDiscoverer());
-        // cc.addComponentDiscoveryListener(new PluginCollector());
+    public GShell createShell() throws Exception {
+        if (applicationConfig == null) {
+            throw new IllegalStateException("Not configured");
+        }
 
-        container = parentContainer.createChild(cc);
-        log.debug("Container: {}", container);
+        final InteractiveShell shell = container.lookupComponent(InteractiveShell.class);
 
-        // Install lookup intestances
-        IOLookup.set(container, config.getIo());
-        EnvironmentLookup.set(container, config.getEnvironment());
+        log.debug("Created shell instance: {}", shell);
+
+        //
+        // FIXME: Use a real proxy, so we can add generic interception muck to handle security muck and whatever ?
+        //        or shall we use an aspect to handle this muck?
+        //
+        
+        GShell proxy = new GShell() {
+            public void run(final Object... args) throws Exception {
+                shell.run(args);
+            }
+
+            public ShellInfo getShellInfo() {
+                return shell.getShellInfo();
+            }
+
+            public Environment getEnvironment() {
+                return shell.getEnvironment();
+            }
+
+            public Object execute(String line) throws Exception {
+                return shell.execute(line);
+            }
+
+            public Object execute(String command, Object[] args) throws Exception {
+                return shell.execute(command, args);
+            }
+
+            public Object execute(Object... args) throws Exception {
+                return shell.execute(args);
+            }
+
+            public Object execute(Object[][] commands) throws Exception {
+                return shell.execute(commands);
+            }
+        };
+
+        log.debug("Create shell proxy: {}", proxy);
+
+        return proxy;
     }
 }

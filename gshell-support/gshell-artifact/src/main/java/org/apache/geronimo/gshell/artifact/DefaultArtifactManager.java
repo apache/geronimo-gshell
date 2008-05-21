@@ -79,6 +79,8 @@ public class DefaultArtifactManager
         assert repository != null;
 
         localRepository = repository;
+
+        log.debug("Using local repository: {}", repository);
     }
 
     public void setLocalRepository(final File dir) throws InvalidRepositoryException {
@@ -95,6 +97,8 @@ public class DefaultArtifactManager
         assert repository != null;
 
         remoteRepositories.add(repository);
+
+        log.debug("Added remote repository: {}", repository);
     }
 
     public void addRemoteRepository(final String id, final URL url) throws UnknownRepositoryLayoutException {
@@ -119,6 +123,8 @@ public class DefaultArtifactManager
         assert listener != null;
 
         wagonManager.setDownloadMonitor(listener);
+
+        log.debug("Using download monitor: {}", listener);
     }
     
     public ArtifactResolutionResult resolve(final ArtifactResolutionRequest request) {

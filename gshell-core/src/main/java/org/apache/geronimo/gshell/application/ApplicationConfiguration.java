@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.DefaultEnvironment;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.shell.Environment;
@@ -74,5 +76,9 @@ public class ApplicationConfiguration
 
     public void setApplication(final Application application) {
         this.application = application;
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

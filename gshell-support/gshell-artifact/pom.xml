@@ -73,16 +73,6 @@
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-provider-api</artifactId>
         </dependency>
-
-        <!--
-        TODO: Move this out of here...
-        -->
-        
-        <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-http-lightweight</artifactId>
-            <scope>runtime</scope>
-        </dependency>
     </dependencies>
 
 </project>

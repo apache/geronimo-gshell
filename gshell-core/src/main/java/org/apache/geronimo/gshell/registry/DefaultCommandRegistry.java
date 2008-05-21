@@ -25,12 +25,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.plugin.CommandDiscoveryListener;
+import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.plugin.PlexusCommandWrapper;
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,17 +47,29 @@ import org.slf4j.LoggerFactory;
  */
 @Component(role=CommandRegistry.class)
 public class DefaultCommandRegistry
-    implements CommandRegistry
+    implements CommandRegistry, Contextualizable, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
     private PlexusContainer container;
 
     @Requirement
-    private CommandDiscoveryListener collector;
+    private CommandCollector collector;
     
     private Map<String, Command> commands = new HashMap<String, Command>();
+
+    public void contextualize(Context context) throws ContextException {
+        assert context != null;
+
+        container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
+        assert container != null;
+        log.debug("Container: {}", container);
+    }
+
+    public void initialize() throws InitializationException {
+        assert collector != null;
+        log.debug("Collector: {}", collector);
+    }
 
     public void register(final Command command) throws DuplicateRegistrationException {
         assert command != null;

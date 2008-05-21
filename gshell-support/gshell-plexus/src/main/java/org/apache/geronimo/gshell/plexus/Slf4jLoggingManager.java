@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.logging;
+package org.apache.geronimo.gshell.plexus;
 
 import org.codehaus.plexus.logging.AbstractLogger;
 import org.codehaus.plexus.logging.BaseLoggerManager;
@@ -32,10 +32,21 @@ import org.slf4j.LoggerFactory;
 public class Slf4jLoggingManager
     extends BaseLoggerManager
 {
+    // FIXME: Probably need to change this to avoid picking up the BaseLoggerManager, just implement everything ourselves
+    //        Might be able to use AbstractLoggerManager
+
     protected org.codehaus.plexus.logging.Logger createLogger(final String key) {
         return new LoggerImpl(getThreshold(), LoggerFactory.getLogger(key));
     }
 
+    public org.codehaus.plexus.logging.Logger getLoggerForComponent(final String role, final String roleHint) {
+        return createLogger(toMapKey(role, roleHint));
+    }
+
+    public void returnComponentLogger(final String role, final String roleHint) {
+        // Ignore
+    }
+    
     /**
      * Adapts the Plexus {@link org.codehaus.plexus.logging.Logger} interface to SLF4J
      */

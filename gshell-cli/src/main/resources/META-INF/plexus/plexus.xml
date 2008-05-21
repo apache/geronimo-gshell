@@ -25,12 +25,14 @@
         <!--
         Configure our logging component to be used so Plexus will pick it up.
         -->
+        <!--
         <component>
             <role>org.codehaus.plexus.logging.LoggerManager</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.logging.Slf4jLoggingManager</implementation>
+            <implementation>org.apache.geronimo.gshell.plexus.Slf4jLoggingManager</implementation>
         </component>
-
+        -->
+        
         <!--
         Add our instance lookup components.
 

@@ -60,9 +60,17 @@ public class DefaultSettingsManager
         log.debug("Configuring; config: {}", config);
 
         Settings settings = config.getSettings();
-        if (settings == null) {
-            throw new IllegalStateException("Missing settings configuration");
+        if (settings != null) {
+            configure(settings);
         }
+        
+        // TODO: Merge in some default settings or something?
+
+        settingsConfiguration = config;
+    }
+
+    private void configure(final Settings settings) throws Exception {
+        assert settings != null;
 
         List<SourceRepository> sourceRepositories = settings.sourceRepositories();
         if (sourceRepositories != null) {
@@ -70,13 +78,10 @@ public class DefaultSettingsManager
                 String loc = repo.getLocation();
                 URL url = new URL(loc);
                 String id = url.getHost(); // FIXME: Need to expose the repo id in the model, for now assume the id is the hostname
-
                 artifactManager.addRemoteRepository(id, url);
             }
         }
-        
-        // TODO: apply other artifact related settings (proxy, auth, whatever)
 
-        settingsConfiguration = config;
+        // TODO: apply other artifact related settings (proxy, auth, whatever)
     }
 }

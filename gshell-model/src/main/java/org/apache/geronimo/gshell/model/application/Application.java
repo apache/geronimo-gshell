@@ -42,6 +42,12 @@ public class Application
 {
     private String id;
 
+    // groupId
+
+    // artifactId
+
+    // version
+    
     private String name;
 
     private String description;
@@ -117,7 +123,7 @@ public class Application
     }
 
     //
-    // TODO: Change to Plugin*
+    // TODO: Change to Plugin* ?
     //
 
     //

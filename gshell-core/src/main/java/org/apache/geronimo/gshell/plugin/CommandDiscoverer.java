@@ -25,6 +25,7 @@ import com.thoughtworks.xstream.XStreamException;
 import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
+@Component(role=CommandDiscoverer.class)
 public class CommandDiscoverer
     extends AbstractComponentDiscoverer
 {

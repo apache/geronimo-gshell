@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandDiscoveryListener.class)
+@Component(role= CommandCollector.class)
 public class PluginCollector
     implements ComponentDiscoveryListener
 {

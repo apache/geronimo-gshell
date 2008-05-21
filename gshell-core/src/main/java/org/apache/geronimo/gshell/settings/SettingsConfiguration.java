@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.settings;
 
 import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
  * ???
@@ -36,5 +38,9 @@ public class SettingsConfiguration
 
     public void setSettings(final Settings settings) {
         this.settings = settings;
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

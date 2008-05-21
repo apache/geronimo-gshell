@@ -35,18 +35,24 @@ public class TransferListenerSupport
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     public void transferInitiated(final TransferEvent event) {
+        log.trace("Transfer initiated: {}", event);
     }
 
     public void transferStarted(final TransferEvent event) {
+        log.trace("Transfer started: {}", event);
     }
 
     public void transferProgress(final TransferEvent event, final byte[] buffer, final int length) {
+        log.trace("Transfer progress: {}, {}, {}", new Object[] { event, buffer, length });
     }
 
     public void transferCompleted(final TransferEvent event) {
+        log.trace("Transfer completed: {}", event);
     }
 
     public void transferError(final TransferEvent event) {
+        log.trace("Transfer error: {}", event);
+
         assert event != null;
 
         Throwable cause = event.getException();

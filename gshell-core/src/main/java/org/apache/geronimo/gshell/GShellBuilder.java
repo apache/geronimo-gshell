@@ -30,6 +30,9 @@ import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
+import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
+import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.PlexusContainerException;
@@ -73,7 +76,16 @@ public class GShellBuilder
         config.setName(DEFAULT_CONTAINER_NAME);
         config.setClassWorld(getClassWorld());
 
-        return new GShellPlexusContainer(config);
+        // HACK: Should not need these here, but for some reason components are getting instantiated in the wrong container
+        config.addComponentDiscoverer(new CommandDiscoverer());
+        config.addComponentDiscoveryListener(new CommandCollector());
+
+        GShellPlexusContainer container = new GShellPlexusContainer(config);
+
+        // Install our logging muck
+        container.setLoggerManager(new Slf4jLoggingManager());
+
+        return container;
     }
 
     public GShellPlexusContainer getContainer() throws PlexusContainerException {
@@ -198,9 +210,6 @@ public class GShellBuilder
         // Configure application
         getApplicationManager().configure(applicationConfig);
 
-        // TODO: Get application shell
-        // return getApplicationManager().createShell();
-        
-        return null;
+        return getApplicationManager().createShell();
     }
 }

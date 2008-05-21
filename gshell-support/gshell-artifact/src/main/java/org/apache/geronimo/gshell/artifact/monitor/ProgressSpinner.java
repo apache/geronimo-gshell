@@ -26,8 +26,6 @@ package org.apache.geronimo.gshell.artifact.monitor;
  */
 public class ProgressSpinner
 {
-    private static final String CARRIAGE_RETURN = "\r";
-
     private static final String MESSAGE_PAD = " ";
 
     private final Style style;
@@ -66,8 +64,6 @@ public class ProgressSpinner
             buff.append(MESSAGE_PAD);
             buff.append(message);
         }
-
-        buff.append(CARRIAGE_RETURN);
 
         state++;
         if (state >= elements.length) {
@@ -114,26 +110,6 @@ public class ProgressSpinner
 
         public String getSuffix() {
             return ")";
-        }
-    }
-
-    public static class BounceStyle
-        extends DefaultStyle
-    {
-        private static final String[] ELEMENTS = {
-            "*    ",
-            " *   ",
-            "  *  ",
-            "   * ",
-            "    *",
-            "   * ",
-            "  *  ",
-            " *   ",
-            "*    "
-        };
-
-        public String[] getElements() {
-            return ELEMENTS;
         }
     }
 }

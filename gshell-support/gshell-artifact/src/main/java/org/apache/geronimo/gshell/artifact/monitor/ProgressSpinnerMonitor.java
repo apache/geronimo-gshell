@@ -19,10 +19,12 @@
 
 package org.apache.geronimo.gshell.artifact.monitor;
 
+import org.apache.geronimo.gshell.io.IO;
 import static org.apache.maven.wagon.WagonConstants.UNKNOWN_LENGTH;
 import org.apache.maven.wagon.events.TransferEvent;
 import static org.apache.maven.wagon.events.TransferEvent.REQUEST_PUT;
-import org.apache.geronimo.gshell.io.IO;
+
+import java.io.IOException;
 
 /**
  * A download monitor providing a simple spinning progress interface.
@@ -32,31 +34,55 @@ import org.apache.geronimo.gshell.io.IO;
 public class ProgressSpinnerMonitor
     extends TransferListenerSupport
 {
+    private static final String CARRIAGE_RETURN = "\r";
+
     private IO io;
 
     private ProgressSpinner spinner = new ProgressSpinner();
 
     private long complete;
 
-    public ProgressSpinnerMonitor(final IO io) {
+    public ProgressSpinnerMonitor(final IO io) throws IOException {
         assert io != null;
 
         this.io = io;
     }
+    
+    private void print(final String message) {
+        if (!io.isQuiet()) {
+            io.out.print(message);
+            io.out.print(CARRIAGE_RETURN);
+            io.out.flush();
+        }
+    }
 
-    public void transferInitiated(TransferEvent event) {
+    private void println(final String message) {
+        if (!io.isQuiet()) {
+            io.out.println(message);
+            io.out.flush();
+        }
+    }
+
+    public void transferInitiated(final TransferEvent event) {
+        assert event != null;
+
+        super.transferInitiated(event);
+
         complete = 0;
 
         spinner.reset();
 
         String message = event.getRequestType() == REQUEST_PUT ? "Uploading" : "Downloading";
-
         String url = event.getWagon().getRepository().getUrl();
 
-        io.info("{}: {}/{}", message, url, event.getResource().getName());
+        println(message + ": " + url + "/" + event.getResource().getName());
     }
-
+    
     public void transferProgress(final TransferEvent event, final byte[] buffer, final int length) {
+        assert event != null;
+
+        super.transferProgress(event, buffer, length);
+
         long total = event.getResource().getContentLength();
         complete += length;
 
@@ -69,17 +95,6 @@ public class ProgressSpinnerMonitor
             message = complete + "/" + (total == UNKNOWN_LENGTH ? "?" : total + "b");
         }
 
-        io.info(spinner.spin(message));
-    }
-
-    public void transferCompleted(final TransferEvent event) {
-        long length = event.getResource().getContentLength();
-
-        if (length != UNKNOWN_LENGTH) {
-            String type = (event.getRequestType() == REQUEST_PUT ? "uploaded" : "downloaded");
-            String l = length >= 1024 ? (length / 1024) + "K" : length + "b";
-
-            io.info("{} {}", l, type);
-        }
+        print(spinner.spin(message));
     }
 }
