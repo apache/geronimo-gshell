@@ -40,6 +40,7 @@ import java.io.File;
 public class Application
     extends ModelRoot
 {
+    // TODO: Generate from g+a+v
     private String id;
 
     // groupId
@@ -54,6 +55,7 @@ public class Application
 
     private Properties properties;
 
+    // TODO: Change to String, provide File get* accessor to type
     private File repository;
 
     private List<SourceRepository> sourceRepositories;
