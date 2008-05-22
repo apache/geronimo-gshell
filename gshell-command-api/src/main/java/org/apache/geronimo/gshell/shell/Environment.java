@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.Variables;
 
 /**
- * ???
+ * Abstraction of the environment of a shell.
  *
  * @version $Rev$ $Date$
  */
