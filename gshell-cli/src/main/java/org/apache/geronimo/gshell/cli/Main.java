@@ -235,8 +235,10 @@ public class Main
                     // Give the user a warning when the JVM shutdown abnormally, normal shutdown
                     // will set an exit code through the proper channels
 
-                    io.err.println();
-                    io.err.println("WARNING: Abnormal JVM shutdown detected");
+                    if (!io.isSilent()) {
+                        io.err.println();
+                        io.err.println("WARNING: Abnormal JVM shutdown detected");
+                    }
                 }
 
                 io.flush();
