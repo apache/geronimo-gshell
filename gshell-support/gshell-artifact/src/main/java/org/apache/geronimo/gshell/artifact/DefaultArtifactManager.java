@@ -138,7 +138,7 @@ public class DefaultArtifactManager
         log.debug("Using download monitor: {}", listener);
     }
     
-    public ArtifactResolutionResult resolve(final ArtifactResolutionRequest request) throws ArtifactResolutionException {
+    public ArtifactResolutionResult resolve(final ArtifactResolutionRequest request) throws ResolutionException {
         assert request != null;
 
         // Automatically fill in some missing bits
@@ -162,14 +162,14 @@ public class DefaultArtifactManager
         return validateResolutionResult(request, result);
     }
 
-    private ArtifactResolutionResult validateResolutionResult(final ArtifactResolutionRequest request, final ArtifactResolutionResult result) throws ArtifactResolutionException {
+    private ArtifactResolutionResult validateResolutionResult(final ArtifactResolutionRequest request, final ArtifactResolutionResult result) throws ResolutionException {
         assert request != null;
         assert result != null;
 
         log.debug("Validating result: {}", result);
 
         if (/* TODO: detect failure */ false) {
-            throw new ArtifactResolutionException(request, result);
+            throw new ResolutionException(request, result);
         }
 
         return result;

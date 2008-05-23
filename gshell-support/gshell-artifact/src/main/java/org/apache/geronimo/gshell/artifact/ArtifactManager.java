@@ -52,5 +52,5 @@ public interface ArtifactManager
 
     void setDownloadMonitor(TransferListener listener);
 
-    ArtifactResolutionResult resolve(ArtifactResolutionRequest request) throws ArtifactResolutionException;
+    ArtifactResolutionResult resolve(ArtifactResolutionRequest request) throws ResolutionException;
 }

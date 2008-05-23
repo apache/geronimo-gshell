@@ -23,11 +23,11 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 
 /**
- * Thrown to indicate that a given repository is not valid.
+ * Thrown to indicate that an artifact resolution request has failed.
  *
  * @version $Rev$ $Date$
  */
-public class ArtifactResolutionException
+public class ResolutionException
     extends ArtifactManagerException
 {
     private static final long serialVersionUID = 1;
@@ -36,7 +36,7 @@ public class ArtifactResolutionException
     
     public final ArtifactResolutionResult result;
 
-    public ArtifactResolutionException(final ArtifactResolutionRequest request, final ArtifactResolutionResult result) {
+    public ResolutionException(final ArtifactResolutionRequest request, final ArtifactResolutionResult result) {
         assert request != null;
         assert result != null;
 
