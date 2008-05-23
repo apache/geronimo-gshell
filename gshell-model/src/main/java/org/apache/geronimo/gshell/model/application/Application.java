@@ -30,7 +30,6 @@ import org.apache.geronimo.gshell.model.layout.Layout;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.io.File;
 
 /**
  * Application model root element.
@@ -41,15 +40,12 @@ import java.io.File;
 public class Application
     extends ModelRoot
 {
-    // TODO: Generate from g+a+v
-    private String id;
+    private String groupId;
 
-    // TODO: groupId
+    private String artifactId;
 
-    // TODO: artifactId
+    private String version;
 
-    // TODO: version
-    
     private String name;
 
     private String description;
@@ -70,12 +66,32 @@ public class Application
 
     // TODO: Paths
 
-    public String getId() {
-        return id;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    public void setGroupId(final String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getArtifactId() {
+        return artifactId;
+    }
+
+    public void setArtifactId(final String artifactId) {
+        this.artifactId = artifactId;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(final String version) {
+        this.version = version;
+    }
+
+    public String getId() {
+        return getGroupId() + ":" + getArtifactId() + ":" + getVersion();
     }
 
     public String getName() {
@@ -114,6 +130,10 @@ public class Application
         return remoteRepositories;
     }
 
+    //
+    // TODO: Consider making accessors of collection types return non-null always to simplify usage (avoid needing that null check)
+    //
+
     public void add(final RemoteRepository repository) {
         assert repository != null;
 
@@ -122,28 +142,6 @@ public class Application
         }
 
         remoteRepositories.add(repository);
-    }
-
-    //
-    // TODO: Change to Plugin* ?
-    //
-
-    //
-    // TODO: Provide accessor to aggregate dependencies w/group dependencies
-    //
-
-    public List<Dependency> dependencies() {
-        return dependencies;
-    }
-
-    public void add(final Dependency dependency) {
-        assert dependency != null;
-
-        if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
-        }
-
-        dependencies.add(dependency);
     }
 
     public List<DependencyGroup> dependencyGroups() {
@@ -158,6 +156,48 @@ public class Application
         }
 
         dependencyGroups.add(group);
+    }
+
+    public List<Dependency> dependencies() {
+        return dependencies(false);
+    }
+
+    public List<Dependency> dependencies(boolean includeGroups) {
+        if (!includeGroups) {
+            return dependencies;
+        }
+
+        // Don't bother making a new list if we have nothing to populate it with
+        if (dependencies == null && dependencyGroups == null) {
+            return null;
+        }
+
+        List<Dependency> list = new ArrayList<Dependency>();
+
+        if (dependencies != null) {
+            list.addAll(dependencies);
+        }
+        
+        if (dependencyGroups != null) {
+            for (DependencyGroup group : dependencyGroups) {
+                List<Dependency> tmp = group.dependencies();
+                if (tmp != null) {
+                    list.addAll(tmp);
+                }
+            }
+        }
+
+        return list;
+    }
+
+    public void add(final Dependency dependency) {
+        assert dependency != null;
+
+        if (dependencies == null) {
+            dependencies = new ArrayList<Dependency>();
+        }
+
+        dependencies.add(dependency);
     }
 
     public Branding getBranding() {

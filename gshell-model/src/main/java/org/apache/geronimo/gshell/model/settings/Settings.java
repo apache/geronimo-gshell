@@ -46,6 +46,10 @@ public class Settings
 
     // TODO: Paths
 
+    //
+    // TODO: Consider making accessors of collection types return non-null always to simplify usage (avoid needing that null check)
+    //
+    
     public Properties getProperties() {
         return properties;
     }

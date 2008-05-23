@@ -37,6 +37,10 @@ public class DependencyGroup
     @XStreamImplicit
     private List<Dependency> dependencies;
 
+    //
+    // TODO: Consider making accessors of collection types return non-null always to simplify usage (avoid needing that null check)
+    //
+    
     public List<Dependency> dependencies() {
         return dependencies;
     }

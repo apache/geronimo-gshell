@@ -21,6 +21,10 @@
 <!-- $Rev$ $Date$ -->
 
 <application>
+
+    <groupId>org.apache.geronimo.gshell</groupId>
+    <artifactId>gshell</artifactId>
+    <version>1.0-alpha-2-SNAPSHOT</version>
     
     <localRepository>
         <directory>repository</directory>
@@ -40,13 +44,28 @@
         </remoteRepository>
     </remoteRepositories>
 
-    <dependencies>
-        <dependency>
+    <dependencyGroups>
+        <dependencyGroup>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-builtins</artifactId>
             <version>1.0-alpha-2-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+
+            <dependency>
+                <artifactId>gshell-builtins</artifactId>
+            </dependency>
+
+            <dependency>
+                <artifactId>gshell-optional</artifactId>
+            </dependency>
+
+            <dependency>
+                <artifactId>gshell-bsf</artifactId>
+            </dependency>
+
+            <dependency>
+                <artifactId>gshell-vfs</artifactId>
+            </dependency>
+        </dependencyGroup>
+    </dependencyGroups>
 
     <layout>
         <nodes>
@@ -107,7 +126,6 @@
 
             <group>
                 <name>optional</name>
-
                 <nodes>
                     <command>
                         <name>cat</name>
@@ -138,7 +156,6 @@
 
             <group>
                 <name>bsf</name>
-
                 <nodes>
                     <command>
                         <name>script</name>
@@ -149,7 +166,6 @@
 
             <group>
                 <name>vfs</name>
-
                 <nodes>
                     <command>
                         <name>copy</name>
@@ -160,7 +176,6 @@
 
             <group>
                 <name>remote</name>
-
                 <nodes>
                     <command>
                         <name>rsh</name>

@@ -41,7 +41,9 @@ public class ApplicationMarshallerTest
     public void testMarshal1() throws Exception {
         Application root = new Application();
 
-        root.setId("app.test");
+        root.setGroupId("app.test");
+        root.setArtifactId("app-test");
+        root.setVersion("1.0");
         root.setName("App Test");
         root.setDescription("A test app descriptor.");
 

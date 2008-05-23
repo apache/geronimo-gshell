@@ -204,7 +204,7 @@ public class DefaultApplicationManager
         request.setFilter(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<Dependency> dependencies = application.dependencies();
+        List<Dependency> dependencies = application.dependencies(true); // include groups
 
         if (dependencies != null && !dependencies.isEmpty()) {
             log.debug("Application dependencies:");

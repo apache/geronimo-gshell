@@ -21,7 +21,9 @@
 <!-- $Rev$ $Date$ -->
 
 <application>
-    <id>app.test</id>
+    <groupId>app.test</groupId>
+    <artifactId>app-test</artifactId>
+    <version>1.0</version>
     <name>App Test</name>
     <description>A test app descriptor.</description>
 

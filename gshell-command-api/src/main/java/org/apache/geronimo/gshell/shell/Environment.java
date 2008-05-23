@@ -29,6 +29,8 @@ import org.apache.geronimo.gshell.command.Variables;
  */
 public interface Environment
 {
+    // TODO: Rename to ShellContext
+    
     IO getIO();
 
     Variables getVariables();
