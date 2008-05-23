@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.descriptor;
+package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.model.common.ModelElement;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -33,7 +32,8 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 @XStreamAlias("command")
-public class CommandDescriptor
+public class Command
+    extends ModelElement
 {
     private URI source;
 
@@ -45,15 +45,13 @@ public class CommandDescriptor
 
     private String version;
 
-    private List<CommandParameter> parameters;
+    //
+    // FIXME: Make collection accessors null-safe
+    //
+    
+    private List<Parameter> parameters;
 
-    private List<CommandRequirement> requirements;
-
-    private List<CommandDependency> dependencies;
-
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+    private List<Requirement> requirements;
 
     public URI getSource() {
         return source;
@@ -95,19 +93,19 @@ public class CommandDescriptor
         this.version = version;
     }
 
-    public List<CommandParameter> getParameters() {
+    public List<Parameter> getParameters() {
         return parameters;
     }
 
-    public void setParameters(final List<CommandParameter> parameters) {
+    public void setParameters(final List<Parameter> parameters) {
         this.parameters = parameters;
     }
 
-    public void addParameter(final CommandParameter parameter) {
+    public void addParameter(final Parameter parameter) {
         assert parameter != null;
 
         if (parameters == null) {
-            parameters = new ArrayList<CommandParameter>();
+            parameters = new ArrayList<Parameter>();
         }
 
         parameters.add(parameter);
@@ -117,19 +115,19 @@ public class CommandDescriptor
         return parameters != null;
     }
 
-    public List<CommandRequirement> getRequirements() {
+    public List<Requirement> getRequirements() {
         return requirements;
     }
 
-    public void setRequirements(final List<CommandRequirement> requirements) {
+    public void setRequirements(final List<Requirement> requirements) {
         this.requirements = requirements;
     }
 
-    public void addRequirement(final CommandRequirement requirement) {
+    public void addRequirement(final Requirement requirement) {
         assert requirement != null;
 
         if (requirements == null) {
-            requirements = new ArrayList<CommandRequirement>();
+            requirements = new ArrayList<Requirement>();
         }
 
         requirements.add(requirement);
@@ -137,27 +135,5 @@ public class CommandDescriptor
 
     public boolean hasRequirements() {
         return requirements != null;
-    }
-
-    public List<CommandDependency> getDependencies() {
-        return dependencies;
-    }
-
-    public void setDependencies(final List<CommandDependency> dependencies) {
-        this.dependencies = dependencies;
-    }
-
-    public void addDependency(final CommandDependency dependency) {
-        assert dependency != null;
-
-        if (dependencies == null) {
-            dependencies = new ArrayList<CommandDependency>();
-        }
-
-        dependencies.add(dependency);
-    }
-
-    public boolean hasDependencies() {
-        return dependencies != null;
     }
 }

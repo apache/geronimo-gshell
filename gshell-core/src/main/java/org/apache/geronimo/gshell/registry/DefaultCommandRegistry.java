@@ -19,8 +19,7 @@
 
 package org.apache.geronimo.gshell.registry;
 
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.plugin.PlexusCommandWrapper;
 import org.codehaus.plexus.PlexusConstants;
@@ -56,7 +55,7 @@ public class DefaultCommandRegistry
     @Requirement
     private CommandCollector collector;
     
-    private Map<String, Command> commands = new HashMap<String, Command>();
+    private Map<String, org.apache.geronimo.gshell.command.Command> commands = new HashMap<String, org.apache.geronimo.gshell.command.Command>();
 
     public void contextualize(Context context) throws ContextException {
         assert context != null;
@@ -71,7 +70,7 @@ public class DefaultCommandRegistry
         log.debug("Collector: {}", collector);
     }
 
-    public void register(final Command command) throws DuplicateRegistrationException {
+    public void register(final org.apache.geronimo.gshell.command.Command command) throws DuplicateRegistrationException {
         assert command != null;
 
         String id = command.getId();
@@ -88,7 +87,7 @@ public class DefaultCommandRegistry
         assert id != null;
         
         if (!commands.containsKey(id)) {
-            CommandDescriptor descriptor = collector.getCommandDescriptor(id);
+            Command descriptor = collector.getCommandDescriptor(id);
 
             if (descriptor == null) {
                 throw new NotRegisteredException(id);
@@ -100,7 +99,7 @@ public class DefaultCommandRegistry
         }
     }
 
-    public void unregister(final Command command) throws RegistryException {
+    public void unregister(final org.apache.geronimo.gshell.command.Command command) throws RegistryException {
         assert command != null;
 
         String id = command.getId();
@@ -111,7 +110,7 @@ public class DefaultCommandRegistry
         log.debug("Unregistered: {}", id);
     }
 
-    public Command lookup(final String id) throws RegistryException {
+    public org.apache.geronimo.gshell.command.Command lookup(final String id) throws RegistryException {
         assert id != null;
 
         ensureRegistered(id);
@@ -119,7 +118,7 @@ public class DefaultCommandRegistry
         return commands.get(id);
     }
 
-    public Collection<Command> commands() {
+    public Collection<org.apache.geronimo.gshell.command.Command> commands() {
         return Collections.unmodifiableCollection(commands.values());
     }
 }

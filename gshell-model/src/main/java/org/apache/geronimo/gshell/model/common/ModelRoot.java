@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.model.common;
 
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 /**
  * Base class for root model elements.
  *
@@ -27,5 +29,14 @@ package org.apache.geronimo.gshell.model.common;
 public abstract class ModelRoot
     extends ModelElement
 {
-    // Version?
+    @XStreamAsAttribute
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(final String version) {
+        this.version = version;
+    }
 }

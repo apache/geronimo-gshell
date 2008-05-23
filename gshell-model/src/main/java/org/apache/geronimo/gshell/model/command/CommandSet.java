@@ -17,17 +17,12 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.descriptor;
+package org.apache.geronimo.gshell.model.command;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.Annotations;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
-import java.io.Reader;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,19 +31,23 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
+// FIXME: Use consistent case for XML tags
 @XStreamAlias("command-set")
-public class CommandSetDescriptor
+public class CommandSet
 {
     private String id;
 
     private String description;
 
-    private List<CommandDescriptor> commands;
+    //
+    // FIXME: Make collection accessors null-safe
+    //
 
-    public CommandSetDescriptor() {
-    }
+    private List<Command> commands;
 
-    public CommandSetDescriptor(final String id) {
+    public CommandSet() {}
+
+    public CommandSet(final String id) {
         this.id = id;
     }
 
@@ -72,26 +71,26 @@ public class CommandSetDescriptor
         this.description = description;
     }
 
-    public List<CommandDescriptor> getCommands() {
+    public List<Command> getCommands() {
         return commands;
     }
 
-    public void setCommands(final List<CommandDescriptor> commands) {
+    public void setCommands(final List<Command> commands) {
         this.commands = commands;
     }
 
-    public void addCommand(final CommandDescriptor command) {
+    public void addCommand(final Command command) {
         assert command != null;
 
         if (commands == null) {
-            commands = new ArrayList<CommandDescriptor>();
+            commands = new ArrayList<Command>();
         }
 
         commands.add(command);
     }
 
     public int size() {
-        List<CommandDescriptor> list = getCommands();
+        List<Command> list = getCommands();
 
         if (list != null) {
             return list.size();
@@ -102,41 +101,5 @@ public class CommandSetDescriptor
 
     public boolean isEmpty() {
         return size() == 0;
-    }
-
-    //
-    // XML Conversion
-    //
-
-    private static XStream createXStream() {
-        XStream xs = new XStream(new DomDriver());
-
-        Annotations.configureAliases(xs,
-                CommandSetDescriptor.class,
-                CommandDescriptor.class,
-                CommandRequirement.class,
-                CommandParameter.class,
-                CommandDependency.class);
-
-        return xs;
-    }
-
-    public static CommandSetDescriptor fromXML(final Reader input) {
-        assert input != null;
-
-        return (CommandSetDescriptor) createXStream().fromXML(input);
-    }
-
-    public static String toXML(final CommandSetDescriptor commands) {
-        assert commands != null;
-
-        return createXStream().toXML(commands);
-    }
-
-    public static void toXML(final CommandSetDescriptor commands, final Writer writer) {
-        assert commands != null;
-        assert writer != null;
-
-        createXStream().toXML(commands, writer);
     }
 }

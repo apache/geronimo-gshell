@@ -19,12 +19,11 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.descriptor.CommandParameter;
-import org.apache.geronimo.gshell.descriptor.CommandRequirement;
+import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.Parameter;
+import org.apache.geronimo.gshell.model.command.Requirement;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
@@ -39,9 +38,9 @@ import java.net.URI;
 public class ComponentDescriptorAdapter
     extends ComponentDescriptor
 {
-    private final CommandDescriptor command;
+    private final Command command;
 
-    public ComponentDescriptorAdapter(final CommandDescriptor command) {
+    public ComponentDescriptorAdapter(final Command command) {
         assert command != null;
 
         this.command = command;
@@ -56,7 +55,7 @@ public class ComponentDescriptorAdapter
 
         setAlias(null);
 
-        setRole(Command.class.getName());
+        setRole(org.apache.geronimo.gshell.command.Command.class.getName());
 
         setRoleHint(command.getId());
 
@@ -85,7 +84,7 @@ public class ComponentDescriptorAdapter
         if (command.hasParameters()) {
             XmlPlexusConfiguration root = new XmlPlexusConfiguration("configuration");
 
-            for (CommandParameter param : command.getParameters()) {
+            for (Parameter param : command.getParameters()) {
                 XmlPlexusConfiguration child = new XmlPlexusConfiguration(param.getName());
 
                 child.setValue(param.getValue());
@@ -97,7 +96,7 @@ public class ComponentDescriptorAdapter
         }
 
         if (command.hasRequirements()) {
-            for (CommandRequirement requirement : command.getRequirements()) {
+            for (Requirement requirement : command.getRequirements()) {
                 addRequirement(translate(requirement));
             }
         }
@@ -107,7 +106,7 @@ public class ComponentDescriptorAdapter
         //
     }
 
-    private ComponentRequirement translate(final CommandRequirement source) {
+    private ComponentRequirement translate(final Requirement source) {
         assert source != null;
 
         ComponentRequirement requirement = new ComponentRequirement();
@@ -127,7 +126,7 @@ public class ComponentDescriptorAdapter
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
     
-    public CommandDescriptor getCommand() {
+    public Command getCommand() {
         return command;
     }
 }

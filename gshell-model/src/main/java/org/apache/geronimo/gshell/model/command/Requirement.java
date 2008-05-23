@@ -17,46 +17,34 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.descriptor;
+package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.model.common.ModelElement;
 
 /**
- * Describes a dependency of a command.
+ * Describes a required component of a command.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("dependency")
-public class CommandDependency
+@XStreamAlias("requirement")
+public class Requirement
+    extends ModelElement
 {
-    private String groupId;
-
-    private String artifactId;
+    private String name;
 
     private String type;
 
-    private String version;
+    private String id;
 
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    private Boolean collection;
+
+    public String getName() {
+        return name;
     }
 
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(final String groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getArtifactId() {
-        return artifactId;
-    }
-
-    public void setArtifactId(final String artifactId) {
-        this.artifactId = artifactId;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public String getType() {
@@ -67,11 +55,19 @@ public class CommandDependency
         this.type = type;
     }
 
-    public String getVersion() {
-        return version;
+    public String getId() {
+        return id;
     }
 
-    public void setVersion(final String version) {
-        this.version = version;
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public boolean isCollection() {
+        return collection;
+    }
+
+    public void setCollection(final boolean collection) {
+        this.collection = collection;
     }
 }

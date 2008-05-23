@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.descriptor;
+package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.model.common.ModelElement;
 
 /**
  * Describes a comand parameter.
@@ -29,19 +28,16 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
  * @version $Rev$ $Date$
  */
 @XStreamAlias("parameter")
-public class CommandParameter
+public class Parameter
+    extends ModelElement
 {
     private String name;
 
     private String value;
 
-    public CommandParameter(final String name, final String value) {
+    public Parameter(final String name, final String value) {
         this.name = name;
         this.value = value;
-    }
-
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
     public String getName() {

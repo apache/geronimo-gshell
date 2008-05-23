@@ -20,7 +20,8 @@
 package org.apache.geronimo.gshell.plugin;
 
 import com.thoughtworks.xstream.XStreamException;
-import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.model.command.CommandSet;
+import org.apache.geronimo.gshell.model.command.CommandSetMarshaller;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
@@ -53,8 +54,9 @@ public class CommandDiscoverer
 
         log.debug("Loading descriptors from: {}", source);
 
+        CommandSetMarshaller marshaller = new CommandSetMarshaller();
         try {
-            CommandSetDescriptor commands = CommandSetDescriptor.fromXML(reader);
+            CommandSet commands = marshaller.unmarshal(reader);
 
             log.debug("Loaded command set: {}", commands.getId());
 

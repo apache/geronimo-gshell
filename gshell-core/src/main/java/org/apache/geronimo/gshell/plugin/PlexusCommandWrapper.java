@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.model.command.Command;
 import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,15 +33,15 @@ import java.util.UUID;
  * @version $Rev: 581061 $ $Date: 2007-10-01 22:18:31 +0200 (Mon, 01 Oct 2007) $
  */
 public class PlexusCommandWrapper
-    implements Command
+    implements org.apache.geronimo.gshell.command.Command
 {
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private CommandDescriptor descriptor;
+    private Command descriptor;
 
     private PlexusContainer container;
 
-    public PlexusCommandWrapper(final PlexusContainer container, final CommandDescriptor descriptor) {
+    public PlexusCommandWrapper(final PlexusContainer container, final Command descriptor) {
         this.container = container;
         this.descriptor = descriptor;
     }
@@ -63,7 +62,7 @@ public class PlexusCommandWrapper
 
         PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
 
-        Command command = (Command) childContainer.lookup(Command.class, descriptor.getId());
+        org.apache.geronimo.gshell.command.Command command = (org.apache.geronimo.gshell.command.Command) childContainer.lookup(org.apache.geronimo.gshell.command.Command.class, descriptor.getId());
 
         Object result;
 

@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandSet;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryEvent;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
@@ -46,7 +46,7 @@ public class CommandCollector
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private Map<String,CommandDescriptor> descriptors = new HashMap<String,CommandDescriptor>();
+    private Map<String, Command> descriptors = new HashMap<String, Command>();
 
     public CommandCollector() {
         log.trace("Created: {}", this);
@@ -64,9 +64,9 @@ public class CommandCollector
         ComponentSetDescriptor components = event.getComponentSetDescriptor();
 
         if (components instanceof ComponentSetDescriptorAdapter) {
-            CommandSetDescriptor commands = ((ComponentSetDescriptorAdapter)components).getCommands();
+            CommandSet commands = ((ComponentSetDescriptorAdapter)components).getCommands();
 
-            for (CommandDescriptor descriptor : commands.getCommands()) {
+            for (Command descriptor : commands.getCommands()) {
                 log.debug("Found: {}", descriptor);
 
                 descriptors.put(descriptor.getId(), descriptor);
@@ -74,7 +74,7 @@ public class CommandCollector
         }
     }
 
-    public CommandDescriptor getCommandDescriptor(final String id) {
+    public Command getCommandDescriptor(final String id) {
         assert id != null;
 
         log.debug("Lookup descriptor for ID: {}", id);

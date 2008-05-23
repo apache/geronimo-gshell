@@ -17,29 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.descriptor;
+package org.apache.geronimo.gshell.model.command;
 
-import junit.framework.TestCase;
+import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
+
+//
+// FIXME: Remove this guy, once we have the Plugin descriptor hooked up.
+//
 
 /**
- * Tests for the {@link CommandSetDescriptor} class.
+ * Marshaller for {@link CommandSet} models.
  *
  * @version $Rev$ $Date$
  */
-public class CommandSetDescriptorTest
-    extends TestCase
+@Deprecated
+public class CommandSetMarshaller
+    extends MarshallerSupport<CommandSet>
 {
-    public void testToXml() throws Exception {
-        CommandSetDescriptor commands = new CommandSetDescriptor("testing");
-
-        CommandDescriptor command = new CommandDescriptor();
-        command.setId("foo");
-        command.setImplementation("bar");
-
-        commands.addCommand(command);
-
-        String xml = CommandSetDescriptor.toXML(commands);
-
-        System.err.println("XML:\n" + xml);
+    public CommandSetMarshaller() {
+        super(CommandSet.class);
     }
 }

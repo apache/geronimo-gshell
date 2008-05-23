@@ -27,11 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Parameter;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.descriptor.CommandParameter;
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.descriptor.CommandRequirement;
+import org.apache.geronimo.gshell.model.command.Parameter;
+import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +78,7 @@ public class CommandDescriptorGleaner
         return buff.toString().trim().toLowerCase();
     }
 
-    public CommandDescriptor glean(final Class clazz) throws Exception {
+    public Command glean(final Class clazz) throws Exception {
         assert clazz != null;
 
         // Cast to <?> so that we don't have to cast below
@@ -99,7 +97,7 @@ public class CommandDescriptorGleaner
 
         log.debug("Creating descriptor for: {}", type);
 
-        CommandDescriptor command = new CommandDescriptor();
+        Command command = new Command();
 
         //
         // TODO: Set the source...
@@ -115,13 +113,13 @@ public class CommandDescriptorGleaner
 
         for (Class t : getClasses(type)) {
             for (Field field : t.getDeclaredFields()) {
-                CommandRequirement requirement = findRequirement(field);
+                Requirement requirement = findRequirement(field);
 
                 if (requirement != null) {
                     command.addRequirement(requirement);
                 }
 
-                CommandParameter parameter = findParameter(field);
+                Parameter parameter = findParameter(field);
 
                 if (parameter != null) {
                     command.addParameter(parameter);
@@ -156,10 +154,10 @@ public class CommandDescriptorGleaner
         return classes;
     }
 
-    private CommandRequirement findRequirement(final Field field) {
+    private Requirement findRequirement(final Field field) {
         assert field != null;
 
-        Requirement anno = field.getAnnotation(Requirement.class);
+        org.apache.geronimo.gshell.command.annotation.Requirement anno = field.getAnnotation(org.apache.geronimo.gshell.command.annotation.Requirement.class);
 
         if (anno == null) {
             return null;
@@ -167,7 +165,7 @@ public class CommandDescriptorGleaner
 
         Class<?> type = field.getType();
 
-        CommandRequirement requirement = new CommandRequirement();
+        Requirement requirement = new Requirement();
 
         if (isRequirementListType(type)) {
             requirement.setCollection(true);
@@ -193,10 +191,10 @@ public class CommandDescriptorGleaner
         return requirement;
     }
 
-    private CommandParameter findParameter(final Field field) {
+    private Parameter findParameter(final Field field) {
         assert field != null;
 
-        Parameter anno = field.getAnnotation(Parameter.class);
+        org.apache.geronimo.gshell.command.annotation.Parameter anno = field.getAnnotation(org.apache.geronimo.gshell.command.annotation.Parameter.class);
 
         if (anno == null) {
             return null;
@@ -212,6 +210,6 @@ public class CommandDescriptorGleaner
 
         String value = filterEmptyAsNull(anno.value());
 
-        return new CommandParameter(name, value);
+        return new Parameter(name, value);
     }
 }

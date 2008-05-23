@@ -25,8 +25,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandSet;
+import org.apache.geronimo.gshell.model.command.CommandSetMarshaller;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -89,12 +90,12 @@ public class DescriptorMojo
         assert scope != null;
         assert outputFile != null;
 
-        List<CommandDescriptor> descriptors = new ArrayList<CommandDescriptor>();
+        List<Command> descriptors = new ArrayList<Command>();
 
         CommandDescriptorExtractor extractor = new CommandDescriptorExtractor();
 
         try {
-            List<CommandDescriptor> list = extractor.extract(project, scope);
+            List<Command> list = extractor.extract(project, scope);
 
             if (list != null && !list.isEmpty()) {
                 descriptors.addAll(list);
@@ -110,7 +111,7 @@ public class DescriptorMojo
         else {
             getLog().info("Discovered " + descriptors.size() + " command descriptors(s)");
 
-            CommandSetDescriptor commands = new CommandSetDescriptor(project.getId()); // .getArtifactId());
+            CommandSet commands = new CommandSet(project.getId()); // .getArtifactId());
             commands.setCommands(descriptors);
 
             try {
@@ -122,7 +123,7 @@ public class DescriptorMojo
         }
     }
 
-    private void writeDescriptor(final CommandSetDescriptor commands, final File outputFile) throws Exception {
+    private void writeDescriptor(final CommandSet commands, final File outputFile) throws Exception {
         assert commands != null;
         assert outputFile != null;
 
@@ -130,8 +131,10 @@ public class DescriptorMojo
 
         BufferedWriter output = new BufferedWriter(new FileWriter(outputFile));
 
+        CommandSetMarshaller marshaller = new CommandSetMarshaller();
+
         try {
-            CommandSetDescriptor.toXML(commands, output);
+            marshaller.marshal(commands, output);
             output.flush();
         }
         finally {

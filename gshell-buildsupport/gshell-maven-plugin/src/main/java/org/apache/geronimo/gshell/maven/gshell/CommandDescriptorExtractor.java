@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
+import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Extracts {@link CommandDescriptor} instances from class files.
+ * Extracts {@link org.apache.geronimo.gshell.model.command.Command} instances from class files.
  *
  * @version $Id$
  */
@@ -51,7 +51,7 @@ public class CommandDescriptorExtractor
 
     private CommandDescriptorGleaner gleaner = new CommandDescriptorGleaner();
 
-    public List<CommandDescriptor> extract(final MavenProject project, final Scope scope) throws Exception {
+    public List<Command> extract(final MavenProject project, final Scope scope) throws Exception {
         assert project != null;
         assert scope != null;
 
@@ -117,11 +117,11 @@ public class CommandDescriptorExtractor
         return new URLClassLoader(urls, getClass().getClassLoader());
     }
 
-    private List<CommandDescriptor> extract(final File classesDir, final ClassLoader cl) throws Exception {
+    private List<Command> extract(final File classesDir, final ClassLoader cl) throws Exception {
         assert classesDir != null;
         assert cl != null;
 
-        List<CommandDescriptor> descriptors = new ArrayList<CommandDescriptor>();
+        List<Command> descriptors = new ArrayList<Command>();
 
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(classesDir);
@@ -142,7 +142,7 @@ public class CommandDescriptorExtractor
 
                 log.debug("Gleaning from: {}", type);
 
-                CommandDescriptor command = gleaner.glean(type);
+                Command command = gleaner.glean(type);
                 
                 if (command != null) {
                     descriptors.add(command);

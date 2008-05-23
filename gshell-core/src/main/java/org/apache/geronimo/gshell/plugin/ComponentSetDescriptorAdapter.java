@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.plugin;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
-import org.apache.geronimo.gshell.descriptor.CommandSetDescriptor;
+import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandSet;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 
@@ -34,9 +34,9 @@ import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 public class ComponentSetDescriptorAdapter
     extends ComponentSetDescriptor
 {
-    private final CommandSetDescriptor commands;
+    private final CommandSet commands;
 
-    public ComponentSetDescriptorAdapter(final CommandSetDescriptor commands) {
+    public ComponentSetDescriptorAdapter(final CommandSet commands) {
         assert commands != null;
 
         this.commands = commands;
@@ -46,7 +46,7 @@ public class ComponentSetDescriptorAdapter
         setIsolatedRealm(false);
 
         if (!commands.isEmpty()) {
-            for (CommandDescriptor command : commands.getCommands()) {
+            for (Command command : commands.getCommands()) {
                 ComponentDescriptor component = new ComponentDescriptorAdapter(command);
                 
                 addComponentDescriptor(component);
@@ -69,7 +69,7 @@ public class ComponentSetDescriptorAdapter
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    public CommandSetDescriptor getCommands() {
+    public CommandSet getCommands() {
         return commands;
     }
 }
