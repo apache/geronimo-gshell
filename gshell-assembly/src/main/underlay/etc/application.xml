@@ -57,6 +57,7 @@
                 <artifactId>gshell-optional</artifactId>
             </dependency>
 
+            <!--
             <dependency>
                 <artifactId>gshell-bsf</artifactId>
             </dependency>
@@ -64,6 +65,7 @@
             <dependency>
                 <artifactId>gshell-vfs</artifactId>
             </dependency>
+            -->
         </dependencyGroup>
     </dependencyGroups>
 
@@ -154,6 +156,7 @@
                 </nodes>
             </group>
 
+            <!--
             <group>
                 <name>bsf</name>
                 <nodes>
@@ -193,6 +196,7 @@
                     </alias>
                 </nodes>
             </group>
+            -->
         </nodes>
     </layout>
 

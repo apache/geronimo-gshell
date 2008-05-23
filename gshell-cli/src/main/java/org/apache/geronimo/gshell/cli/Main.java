@@ -22,6 +22,8 @@ package org.apache.geronimo.gshell.cli;
 import org.apache.geronimo.gshell.ExitNotification;
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.GShellBuilder;
+import org.apache.geronimo.gshell.settings.SettingsLocator;
+import org.apache.geronimo.gshell.application.ApplicationLocator;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.clp.Argument;
@@ -31,6 +33,7 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.application.ApplicationMarshaller;
+import org.apache.geronimo.gshell.model.settings.Settings;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -249,17 +252,18 @@ public class Main
             GShellBuilder builder = new GShellBuilder();
             builder.setClassWorld(classWorld);
             builder.setIo(io);
-            // builder.setSettings();
 
-            // TODO: Move to ApplicationFinder
-            ApplicationMarshaller applicationMarshaller = new ApplicationMarshaller();
-            URL applicationUrl = getClass().getClassLoader().getResource("application.xml");
-            Application application = applicationMarshaller.unmarshal(applicationUrl);
+            // Find our settings descriptor
+            SettingsLocator settingsLocator = new SettingsLocator();
+            Settings settings = settingsLocator.locate();
+            builder.setSettings(settings);
 
-            // FIXME: Need to root the local repo's directory to user.home if its relative for now util ${user.home} expansion is supported
-             
+            // Find our application descriptor
+            ApplicationLocator applicationLocator = new ApplicationLocator();
+            Application application = applicationLocator.locate();
             builder.setApplication(application);
 
+            // Build the shell instance
             GShell gshell = builder.build();
 
             // clp gives us a list, but we need an array

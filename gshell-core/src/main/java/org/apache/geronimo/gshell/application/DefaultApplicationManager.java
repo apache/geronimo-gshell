@@ -145,6 +145,7 @@ public class DefaultApplicationManager
         LocalRepository localRepository = application.getLocalRepository();
 
         if (localRepository != null) {
+            // FIXME: Need to root the local repo's directory to user.home if its relative for now util ${user.home} expansion is supported
             artifactManager.setLocalRepository(localRepository.getDirectoryFile());
         }
 
