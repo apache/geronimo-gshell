@@ -57,6 +57,10 @@
                 <artifactId>gshell-optional</artifactId>
             </dependency>
 
+            <dependency>
+                <artifactId>gshell-repository</artifactId>
+            </dependency>
+
             <!--
             <dependency>
                 <artifactId>gshell-bsf</artifactId>
@@ -152,6 +156,16 @@
                     <command>
                         <name>wait</name>
                         <id>gshell-optional:wait</id>
+                    </command>
+                </nodes>
+            </group>
+
+            <group>
+                <name>repository</name>
+                <nodes>
+                    <command>
+                        <name>resolve</name>
+                        <id>gshell-repository:resolve</id>
                     </command>
                 </nodes>
             </group>

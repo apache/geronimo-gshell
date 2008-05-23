@@ -66,6 +66,12 @@
 
         <dependency>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
+            <artifactId>gshell-repository</artifactId>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-bsf</artifactId>
         </dependency>
 
@@ -94,6 +100,7 @@
             <groupId>org.apache.geronimo.gshell.remote</groupId>
             <artifactId>gshell-remote-server</artifactId>
         </dependency>
+        -->
 
         <dependency>
             <groupId>org.slf4j</groupId>

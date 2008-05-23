@@ -37,4 +37,11 @@
         Provides commands to opperate on the repository.
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-artifact</artifactId>
+        </dependency>
+    </dependencies>
+    
 </project>
