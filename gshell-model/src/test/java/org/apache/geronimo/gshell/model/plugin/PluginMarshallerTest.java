@@ -40,7 +40,9 @@ public class PluginMarshallerTest
     public void testMarshal1() throws Exception {
         Plugin root = new Plugin();
 
-        root.setId("plugin.test");
+        root.setGroupId("plugin.test");
+        root.setArtifactId("plugin-test");
+        root.setVersion("1.0");
         root.setName("Plugin Test");
         root.setDescription("A test plugin descriptor.");
 

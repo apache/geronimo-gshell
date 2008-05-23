@@ -20,13 +20,14 @@
 package org.apache.geronimo.gshell.model.plugin;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelRoot;
-import org.apache.geronimo.gshell.model.common.DependencyGroup;
+import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.geronimo.gshell.model.common.Dependency;
+import org.apache.geronimo.gshell.model.common.DependencyGroup;
+import org.apache.geronimo.gshell.model.common.DescriptorSupport;
+import org.apache.geronimo.gshell.model.layout.Layout;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.List;
 
 /**
  * Plugin model root element.
@@ -35,65 +36,23 @@ import java.util.Properties;
  */
 @XStreamAlias("plugin")
 public class Plugin
-    extends ModelRoot
+    extends DescriptorSupport
 {
-    private String id;
-
-    // groupId
-
-    // artifactId
-
-    // version
-
-    private String name;
-
-    private String description;
-
-    private Properties properties;
+    //
+    // FIXME: Might not really need these here, since we are using the pom.xml information to load dependencies/plugins
+    //
     
     private List<Dependency> dependencies;
 
     private List<DependencyGroup> dependencyGroups;
-    
-    // Commands
-    
-    // Layout
 
-    public String getId() {
-        return id;
-    }
+    //
+    // FIXME: Make collection accessors null-safe
+    //
 
-    public void setId(final String id) {
-        this.id = id;
-    }
+    private List<Command> commands;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public Properties getProperties() {
-        if (properties == null) {
-            properties = new Properties();
-        }
-
-        return properties;
-    }
-
-    public void setProperties(final Properties properties) {
-        this.properties = properties;
-    }
+    private Layout layout;
 
     public List<DependencyGroup> dependencyGroups() {
         if (dependencyGroups == null) {

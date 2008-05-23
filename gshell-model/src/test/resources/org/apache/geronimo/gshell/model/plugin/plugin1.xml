@@ -21,10 +21,12 @@
 <!-- $Rev$ $Date$ -->
 
 <plugin>
-    <id>plugin.test</id>
+    <groupId>plugin.test</groupId>
+    <artifactId>plugin-test</artifactId>
+    <version>1.0</version>
     <name>Plugin Test</name>
     <description>A test plugin descriptor.</description>
-
+    
     <properties>
         <property name="a" value="b"/>
     </properties>
