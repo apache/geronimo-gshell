@@ -47,6 +47,10 @@ public class Settings
     // TODO: Paths
 
     public Properties getProperties() {
+        if (properties == null) {
+            properties = new Properties();
+        }
+
         return properties;
     }
 

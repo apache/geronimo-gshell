@@ -53,8 +53,8 @@ public class Plugin
     
     private List<Dependency> dependencies;
 
-    private List<DependencyGroup> dependencyGroups = new ArrayList<DependencyGroup>();
-
+    private List<DependencyGroup> dependencyGroups;
+    
     // Commands
     
     // Layout
@@ -84,6 +84,10 @@ public class Plugin
     }
 
     public Properties getProperties() {
+        if (properties == null) {
+            properties = new Properties();
+        }
+
         return properties;
     }
 
@@ -122,7 +126,7 @@ public class Plugin
 
         list.addAll(dependencies);
 
-        for (DependencyGroup group : dependencyGroups) {
+        for (DependencyGroup group : dependencyGroups()) {
             list.addAll(group.dependencies());
         }
 

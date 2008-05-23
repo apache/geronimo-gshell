@@ -37,6 +37,8 @@ public abstract class DependencySupport
 
     private String version;
 
+    // TODO: optional? Any other stuff?
+
     public String getGroupId() {
         return groupId;
     }

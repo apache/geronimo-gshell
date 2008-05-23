@@ -111,6 +111,10 @@ public class Application
     }
 
     public Properties getProperties() {
+        if (properties == null) {
+            properties = new Properties();
+        }
+
         return properties;
     }
 
@@ -171,7 +175,7 @@ public class Application
 
         list.addAll(dependencies);
 
-        for (DependencyGroup group : dependencyGroups) {
+        for (DependencyGroup group : dependencyGroups()) {
             list.addAll(group.dependencies());
         }
 
