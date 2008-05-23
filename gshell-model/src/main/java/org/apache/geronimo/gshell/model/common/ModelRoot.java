@@ -30,13 +30,13 @@ public abstract class ModelRoot
     extends ModelElement
 {
     @XStreamAsAttribute
-    private String version;
+    private String modelVersion;
 
-    public String getVersion() {
-        return version;
+    public String getModelVersion() {
+        return modelVersion;
     }
 
-    public void setVersion(final String version) {
-        this.version = version;
+    public void setModelVersion(final String modelVersion) {
+        this.modelVersion = modelVersion;
     }
 }

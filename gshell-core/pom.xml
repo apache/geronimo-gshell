@@ -72,20 +72,7 @@
             <groupId>commons-jexl</groupId>
             <artifactId>commons-jexl</artifactId>
         </dependency>
-        
-        <!-- Required for layout bits that have not yet migrated to gshell-model -->
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-        </dependency>
-        
-        <!-- Not really sure this is needed, but GSHELL-113 thinks it is -->
-        <dependency>
-            <groupId>xpp3</groupId>
-            <artifactId>xpp3</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
+
         <!-- Required for commons-jexl usage -->
         <dependency>
             <groupId>org.slf4j</groupId>
