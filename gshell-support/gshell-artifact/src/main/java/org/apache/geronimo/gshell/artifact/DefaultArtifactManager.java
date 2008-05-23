@@ -37,7 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.net.URL;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +87,9 @@ public class DefaultArtifactManager
     public void setLocalRepository(final File dir) throws InvalidRepositoryException {
         assert dir != null;
 
-        localRepository = repositoryFactory.createLocalRepository(dir);
+        ArtifactRepository repo = repositoryFactory.createLocalRepository(dir);
+
+        setLocalRepository(repo);
     }
 
     public List<ArtifactRepository> getRemoteRepositories() {
@@ -101,18 +104,20 @@ public class DefaultArtifactManager
         log.debug("Added remote repository: {}", repository);
     }
 
-    public void addRemoteRepository(final String id, final URL url) throws UnknownRepositoryLayoutException {
+    public void addRemoteRepository(final String id, final URI location) throws UnknownRepositoryLayoutException, MalformedURLException {
         assert id != null;
-        assert url != null;
+        assert location != null;
 
         ArtifactRepository repo = repositoryFactory.createArtifactRepository(
             id,
-            url.toExternalForm(),
+            location.toURL().toExternalForm(),
             ArtifactRepositoryFactory.DEFAULT_LAYOUT_ID,
+
+            // FIXME: Expose more configuration to user API
             new ArtifactRepositoryPolicy(),  // snapshots
             new ArtifactRepositoryPolicy()); // releases
         
-        remoteRepositories.add(repo);
+        addRemoteRepository(repo);
     }
 
     public ArtifactFactory getArtifactFactory() {
@@ -149,6 +154,10 @@ public class DefaultArtifactManager
         ArtifactResolutionResult result = artifactResolver.resolve(request);
 
         log.debug("Resolution result: {}", result);
+
+        //
+        // TODO: Perform error/failure detection muck here, and toss a new exception with an easier interface for consuption of this information
+        //
 
         return result;
     }

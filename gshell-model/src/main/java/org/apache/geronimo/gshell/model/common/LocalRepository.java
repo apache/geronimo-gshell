@@ -43,10 +43,13 @@ public class LocalRepository
     }
 
     public File getDirectoryFile() {
-        String path = getDirectory();
-        assert path != null;
-        
-        return new File(path);
+        String tmp = getDirectory();
+
+        if (tmp != null) {
+            return new File(tmp);
+        }
+
+        return null;
     }
 
     public void setDirectoryFile(final File directory) {

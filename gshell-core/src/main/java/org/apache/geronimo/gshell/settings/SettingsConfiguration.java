@@ -40,6 +40,10 @@ public class SettingsConfiguration
         this.settings = settings;
     }
 
+    public void validate() {
+        // Nothing ATM
+    }
+    
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }

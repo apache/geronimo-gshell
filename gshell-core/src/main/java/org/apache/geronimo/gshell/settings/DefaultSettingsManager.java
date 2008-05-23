@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -59,6 +60,9 @@ public class DefaultSettingsManager
 
         log.debug("Configuring; config: {}", config);
 
+        // Validate the configuration
+        config.validate();
+        
         Settings settings = config.getSettings();
         if (settings != null) {
             configure(settings);
@@ -76,10 +80,7 @@ public class DefaultSettingsManager
         
         if (remoteRepositories != null) {
             for (RemoteRepository repo : remoteRepositories) {
-                String loc = repo.getLocation();
-                URL url = new URL(loc);
-                String id = url.getHost(); // FIXME: Need to expose the repo id in the model, for now assume the id is the hostname
-                artifactManager.addRemoteRepository(id, url);
+                artifactManager.addRemoteRepository(repo.getId(), repo.getLocationUri());
             }
         }
 

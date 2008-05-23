@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
@@ -29,7 +28,6 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
-import org.apache.geronimo.gshell.model.layout.Layout;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -102,10 +100,9 @@ public class DefaultApplicationManager
         log.debug("Configuring; config: {}", config);
 
         // Validate the configuration
+        config.validate();
+
         Application application = config.getApplication();
-        if (application == null) {
-            throw new IllegalStateException("Missing application configuration");
-        }
         log.debug("Application: {}", application);
 
         // Apply artifact manager configuration settings for application
@@ -153,10 +150,7 @@ public class DefaultApplicationManager
 
         if (remoteRepositories != null) {
             for (RemoteRepository repo : remoteRepositories) {
-                String loc = repo.getLocation();
-                URL url = new URL(loc);
-                String id = url.getHost(); // FIXME: Need to expose the repo id in the model, for now assume the id is the hostname
-                artifactManager.addRemoteRepository(id, url);
+                artifactManager.addRemoteRepository(repo.getId(), repo.getLocationUri());
             }
         }
     }
@@ -174,21 +168,21 @@ public class DefaultApplicationManager
             realm.addURL(url);
         }
 
-        ContainerConfiguration cc = new DefaultContainerConfiguration();
-        cc.setName(application.getId());
-        cc.setClassWorld(classWorld);
-        cc.setRealm(realm);
+        ContainerConfiguration config = new DefaultContainerConfiguration();
+        config.setName(application.getId());
+        config.setClassWorld(classWorld);
+        config.setRealm(realm);
 
         // HACK: Should need these here, but for some reason components are getting instantiated in the wrong container
         //       so for now to get something working again, use the parent containers configuration set in GShellBuilder
 
         // For now use the old Command* bits to get things working, then refactor to use the new Plugin* bits
-        // cc.addComponentDiscoverer(new CommandDiscoverer());
-        // cc.addComponentDiscoveryListener(new CommandCollector());
-        // cc.addComponentDiscoverer(new PluginDiscoverer());
-        // cc.addComponentDiscoveryListener(new PluginCollector());
+        // config.addComponentDiscoverer(new CommandDiscoverer());
+        // config.addComponentDiscoveryListener(new CommandCollector());
+        // config.addComponentDiscoverer(new PluginDiscoverer());
+        // config.addComponentDiscoveryListener(new PluginCollector());
 
-        GShellPlexusContainer child = parentContainer.createChild(cc);
+        GShellPlexusContainer child = parentContainer.createChild(config);
 
         log.debug("Application container: {}", child);
 

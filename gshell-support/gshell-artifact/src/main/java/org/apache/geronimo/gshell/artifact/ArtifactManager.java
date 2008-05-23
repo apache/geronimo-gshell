@@ -19,18 +19,18 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.InvalidRepositoryException;
 import org.apache.maven.artifact.UnknownRepositoryLayoutException;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.wagon.events.TransferListener;
 
-import java.util.List;
 import java.io.File;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.util.List;
 
 /**
  * Provides a facade over the artifact + repository subsystem.
@@ -49,8 +49,7 @@ public interface ArtifactManager
 
     void addRemoteRepository(ArtifactRepository repository);
 
-    // TODO: Change to URI
-    void addRemoteRepository(String id, URL url) throws UnknownRepositoryLayoutException;
+    void addRemoteRepository(String id, URI location) throws MalformedURLException, UnknownRepositoryLayoutException;
 
     ArtifactFactory getArtifactFactory();
 

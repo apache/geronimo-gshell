@@ -78,6 +78,12 @@ public class ApplicationConfiguration
         this.application = application;
     }
 
+    public void validate() {
+        if (application == null) {
+            throw new IllegalStateException("Missing application configuration");
+        }    
+    }
+
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
