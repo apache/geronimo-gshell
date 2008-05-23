@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import org.codehaus.plexus.component.annotations.Component;
 import org.apache.geronimo.gshell.model.plugin.Plugin;
+import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

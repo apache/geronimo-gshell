@@ -19,9 +19,6 @@
 
 package org.apache.geronimo.gshell;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.expression.ExpressionEvaluator;
@@ -33,11 +30,13 @@ import org.apache.geronimo.gshell.parser.ASTPlainString;
 import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
-import org.apache.geronimo.gshell.parser.Node;
 import org.apache.geronimo.gshell.parser.SimpleNode;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Visitor which will execute command-lines as parsed.

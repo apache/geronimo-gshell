@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell.plugin;
 
+import org.apache.geronimo.gshell.model.plugin.Plugin;
+import org.apache.geronimo.gshell.model.plugin.PluginMarshaller;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.geronimo.gshell.model.plugin.PluginMarshaller;
-import org.apache.geronimo.gshell.model.plugin.Plugin;
 
 import java.io.Reader;
 

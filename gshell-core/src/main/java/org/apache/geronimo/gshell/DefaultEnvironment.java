@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.Environment;
 
 /**

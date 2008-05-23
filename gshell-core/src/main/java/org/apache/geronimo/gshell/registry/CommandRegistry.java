@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.registry;
 
-import java.util.Collection;
-
 import org.apache.geronimo.gshell.command.Command;
+
+import java.util.Collection;
 
 /**
  * ???

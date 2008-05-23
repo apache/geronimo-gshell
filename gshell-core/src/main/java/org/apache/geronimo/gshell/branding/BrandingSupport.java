@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.branding;
 
-import java.io.File;
-
 import org.codehaus.plexus.util.StringUtils;
+
+import java.io.File;
 
 /**
  * Support for {@link Branding} implementations.

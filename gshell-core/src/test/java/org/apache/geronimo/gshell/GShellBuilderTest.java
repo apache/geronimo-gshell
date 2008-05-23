@@ -20,16 +20,12 @@
 package org.apache.geronimo.gshell;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.model.application.ApplicationMarshaller;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.model.settings.SettingsMarshaller;
+import org.apache.geronimo.gshell.model.application.ApplicationMarshaller;
 import org.apache.geronimo.gshell.model.settings.Settings;
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.classworlds.ClassWorld;
+import org.apache.geronimo.gshell.model.settings.SettingsMarshaller;
 
 import java.net.URL;
-import java.util.Collection;
 
 /**
  * Unit tests for the {@link GShellBuilder} class.

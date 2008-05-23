@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell;
 
-import java.util.Iterator;
-
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.command.Variables;
+
+import java.util.Iterator;
 
 /**
  * Unit tests for the {@link DefaultVariables} class.

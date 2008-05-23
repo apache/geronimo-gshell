@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.layout;
 
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Layout;
 import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;

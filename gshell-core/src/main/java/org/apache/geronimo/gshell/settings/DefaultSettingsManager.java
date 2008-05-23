@@ -27,8 +27,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URL;
-import java.net.URI;
 import java.util.List;
 
 /**

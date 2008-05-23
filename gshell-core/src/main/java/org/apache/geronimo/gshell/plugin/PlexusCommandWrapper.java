@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import java.util.UUID;
-
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.descriptor.CommandDescriptor;
 import org.codehaus.plexus.PlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
 
 /**
  * A wrapper for Plexus-based commands.

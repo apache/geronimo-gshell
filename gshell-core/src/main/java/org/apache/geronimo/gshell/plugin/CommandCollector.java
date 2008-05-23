@@ -28,8 +28,8 @@ import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Maps command ids to command descriptors for just in time component initialization.

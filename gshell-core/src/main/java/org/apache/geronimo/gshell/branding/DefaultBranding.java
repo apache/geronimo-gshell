@@ -19,9 +19,6 @@
 
 package org.apache.geronimo.gshell.branding;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.Buffer;
 import org.apache.geronimo.gshell.ansi.Code;
@@ -29,6 +26,9 @@ import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * Provides the default branding for GShell.

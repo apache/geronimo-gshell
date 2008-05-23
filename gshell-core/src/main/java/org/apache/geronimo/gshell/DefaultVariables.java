@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell;
 
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 
 /**
  * Default {@link Variables} implementation.

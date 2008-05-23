@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell.branding;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.util.IOUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * Loads a version number from a properties file.

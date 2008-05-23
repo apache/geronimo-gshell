@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import java.net.URI;
-
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
@@ -30,6 +28,8 @@ import org.apache.geronimo.gshell.descriptor.CommandRequirement;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+
+import java.net.URI;
 
 /**
  * ???

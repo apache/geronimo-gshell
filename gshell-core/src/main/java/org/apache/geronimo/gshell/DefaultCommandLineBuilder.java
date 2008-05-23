@@ -19,21 +19,21 @@
 
 package org.apache.geronimo.gshell;
 
-import java.io.Reader;
-import java.io.StringReader;
-
 import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.logging.LoggingVisitor;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.logging.LoggingVisitor;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * Builds {@link CommandLine} instances ready for executing.

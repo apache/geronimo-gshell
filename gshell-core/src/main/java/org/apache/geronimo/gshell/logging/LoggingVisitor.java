@@ -23,10 +23,10 @@ import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.ASTExpression;
 import org.apache.geronimo.gshell.parser.ASTOpaqueString;
 import org.apache.geronimo.gshell.parser.ASTPlainString;
+import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
-import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

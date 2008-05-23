@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.expression;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
@@ -31,6 +27,10 @@ import org.apache.commons.jexl.resolver.FlatResolver;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 //
 // TODO: Consider using BeanShell for this instead, its about the same size dependency
