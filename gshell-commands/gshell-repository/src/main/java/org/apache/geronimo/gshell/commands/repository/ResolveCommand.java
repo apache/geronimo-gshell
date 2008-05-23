@@ -45,7 +45,7 @@ public class ResolveCommand
     private ArtifactManager artifactManager;
 
     //
-    // TODO: Consider using <g>:<a>:<v>:<t> notation instead of this?
+    // TODO: Consider using <g>:<a>:<v>:<s>:<t> notation instead of this?
     //
     
     @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, metaVar="GROUP-ID", required=true, description="Specify the artifact's groupId")
