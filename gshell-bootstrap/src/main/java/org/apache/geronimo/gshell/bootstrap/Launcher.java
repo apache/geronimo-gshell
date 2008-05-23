@@ -49,6 +49,11 @@ public class Launcher
         homeDir = getHomeDir();
         setProperty("gshell.home", homeDir.getCanonicalPath());
 
+        //
+        // FIXME: Should load the classworlds.conf from a resource, and hide it in the bootstrap jar, as folks should not
+        //        alter it anymore...
+        //
+        
         File classworldsConf = getClassworldsConf();
         setProperty("classworlds.conf", classworldsConf.getCanonicalPath());
 

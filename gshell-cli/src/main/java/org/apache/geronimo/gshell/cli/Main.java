@@ -255,6 +255,9 @@ public class Main
             ApplicationMarshaller applicationMarshaller = new ApplicationMarshaller();
             URL applicationUrl = getClass().getClassLoader().getResource("application.xml");
             Application application = applicationMarshaller.unmarshal(applicationUrl);
+
+            // FIXME: Need to root the local repo's directory to user.home if its relative for now util ${user.home} expansion is supported
+             
             builder.setApplication(application);
 
             GShell gshell = builder.build();
