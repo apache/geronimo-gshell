@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout.model;
+package org.apache.geronimo.gshell.model.layout;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * A group of nodes.
@@ -75,6 +75,7 @@ public class GroupNode
     /**
      * Link children to their parent when deserializing.
      */
+    @SuppressWarnings({"UnusedDeclaration"})
     private Object readResolve() {
         if (!isEmpty()) {
             for (Node child : nodes) {

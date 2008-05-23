@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout.model;
+package org.apache.geronimo.gshell.model.layout;
 
 import com.thoughtworks.xstream.XStream;
 import junit.framework.TestCase;

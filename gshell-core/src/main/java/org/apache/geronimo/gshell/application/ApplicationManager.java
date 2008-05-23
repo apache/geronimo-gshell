@@ -32,5 +32,5 @@ public interface ApplicationManager
 
     GShell createShell() throws Exception;
 
-    // getContext()
+    ApplicationContext getContext();
 }

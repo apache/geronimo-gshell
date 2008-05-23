@@ -23,7 +23,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.ModelRoot;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.DependencyGroup;
-import org.apache.geronimo.gshell.model.common.SourceRepository;
+import org.apache.geronimo.gshell.model.common.RemoteRepository;
+import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.layout.Layout;
 
 import java.util.List;
@@ -43,11 +44,11 @@ public class Application
     // TODO: Generate from g+a+v
     private String id;
 
-    // groupId
+    // TODO: groupId
 
-    // artifactId
+    // TODO: artifactId
 
-    // version
+    // TODO: version
     
     private String name;
 
@@ -55,10 +56,9 @@ public class Application
 
     private Properties properties;
 
-    // TODO: Change to String, provide File get* accessor to type
-    private File repository;
+    private LocalRepository localRepository;
 
-    private List<SourceRepository> sourceRepositories;
+    private List<RemoteRepository> remoteRepositories;
 
     private List<Dependency> dependencies;
 
@@ -68,7 +68,7 @@ public class Application
 
     private Layout layout;
 
-    // Paths
+    // TODO: Paths
 
     public String getId() {
         return id;
@@ -102,26 +102,26 @@ public class Application
         this.properties = properties;
     }
 
-    public File getRepository() {
-        return repository;
+    public LocalRepository getLocalRepository() {
+        return localRepository;
     }
 
-    public void setRepository(final File repository) {
-        this.repository = repository;
+    public void setLocalRepository(final LocalRepository localRepository) {
+        this.localRepository = localRepository;
     }
 
-    public List<SourceRepository> sourceRepositories() {
-        return sourceRepositories;
+    public List<RemoteRepository> remoteRepositories() {
+        return remoteRepositories;
     }
 
-    public void add(final SourceRepository repository) {
+    public void add(final RemoteRepository repository) {
         assert repository != null;
 
-        if (sourceRepositories == null) {
-            sourceRepositories = new ArrayList<SourceRepository>();
+        if (remoteRepositories == null) {
+            remoteRepositories = new ArrayList<RemoteRepository>();
         }
 
-        sourceRepositories.add(repository);
+        remoteRepositories.add(repository);
     }
 
     //

@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.layout;
 
 /**
- * ???
+ * Thrown to indicate a missing node in the layout tree.
  *
  * @version $Rev$ $Date$
  */

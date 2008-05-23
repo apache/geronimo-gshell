@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 public class LookupFactorySupport<T>
     implements ComponentFactory
 {
-    protected Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     protected final ThreadLocal<T> holder = new ThreadLocal<T>();
 
@@ -71,7 +71,8 @@ public class LookupFactorySupport<T>
         Object obj = get();
 
         if (obj == null) {
-            throw new IllegalStateException("Instance not registered");
+            // Include the factory id in the detail for better error reporting
+            throw new IllegalStateException("Instance for " + getId() + " was not registered for thread: " + Thread.currentThread().getName());
         }
         
         log.trace("Handing out: {}", obj);

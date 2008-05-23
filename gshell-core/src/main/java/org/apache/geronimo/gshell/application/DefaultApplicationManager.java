@@ -20,12 +20,16 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.common.Dependency;
-import org.apache.geronimo.gshell.model.common.SourceRepository;
+import org.apache.geronimo.gshell.model.common.RemoteRepository;
+import org.apache.geronimo.gshell.model.common.LocalRepository;
+import org.apache.geronimo.gshell.model.layout.Layout;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -74,7 +78,7 @@ public class DefaultApplicationManager
 
     private GShellPlexusContainer container;
 
-    private ApplicationConfiguration applicationConfig;
+    private ApplicationContext applicationContext;
 
     public void contextualize(final Context context) throws ContextException {
         assert context != null;
@@ -84,9 +88,13 @@ public class DefaultApplicationManager
         log.debug("Parent container: {}", parentContainer);
     }
 
-    // createContext()
-    
-    // getContext()
+    public ApplicationContext getContext() {
+        if (applicationContext == null) {
+            throw new IllegalStateException("Application has not been configured");
+        }
+        
+        return applicationContext;
+    }
 
     public void configure(final ApplicationConfiguration config) throws Exception {
         assert config != null;
@@ -106,14 +114,27 @@ public class DefaultApplicationManager
         // Create the application container
         container = createContainer(application);
 
-        // TODO: Configure other application bits (branding, layout)
+        // TODO: Configure other application bits (branding, etc) ?
+        // TODO: May want to have those components pull from the application's context instead, like we are doing for layout
 
         // Install lookup intestances
         IOLookup.set(container, config.getIo());
         EnvironmentLookup.set(container, config.getEnvironment());
 
-        // Track the configuration, mark configured
-        applicationConfig = config;
+        // Create a new context
+        applicationContext = new ApplicationContext() {
+            public IO getIo() {
+                return config.getIo();
+            }
+
+            public Environment getEnvironment() {
+                return config.getEnvironment();
+            }
+
+            public Application getApplication() {
+                return config.getApplication();
+            }
+        };
     }
 
     private void configureArtifactManager(final Application application) throws Exception {
@@ -121,15 +142,17 @@ public class DefaultApplicationManager
         assert artifactManager != null;
 
         // Setup the local repository
-        File repository = application.getRepository();
-        if (repository != null) {
-            artifactManager.setLocalRepository(repository);
+        LocalRepository localRepository = application.getLocalRepository();
+
+        if (localRepository != null) {
+            artifactManager.setLocalRepository(localRepository.getDirectoryFile());
         }
 
         // Setup remote repositories
-        List<SourceRepository> sourceRepositories = application.sourceRepositories();
-        if (sourceRepositories != null) {
-            for (SourceRepository repo : sourceRepositories) {
+        List<RemoteRepository> remoteRepositories = application.remoteRepositories();
+
+        if (remoteRepositories != null) {
+            for (RemoteRepository repo : remoteRepositories) {
                 String loc = repo.getLocation();
                 URL url = new URL(loc);
                 String id = url.getHost(); // FIXME: Need to expose the repo id in the model, for now assume the id is the hostname
@@ -228,9 +251,8 @@ public class DefaultApplicationManager
     }
 
     public GShell createShell() throws Exception {
-        if (applicationConfig == null) {
-            throw new IllegalStateException("Not configured");
-        }
+        // Make sure that we have a valid context
+        getContext();
 
         final InteractiveShell shell = container.lookupComponent(InteractiveShell.class);
 

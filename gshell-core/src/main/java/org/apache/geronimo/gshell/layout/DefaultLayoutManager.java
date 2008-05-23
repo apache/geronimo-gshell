@@ -19,17 +19,13 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import java.io.IOException;
-
-import org.apache.geronimo.gshell.layout.loader.LayoutLoader;
-import org.apache.geronimo.gshell.layout.model.GroupNode;
-import org.apache.geronimo.gshell.layout.model.Layout;
-import org.apache.geronimo.gshell.layout.model.Node;
+import org.apache.geronimo.gshell.model.layout.GroupNode;
+import org.apache.geronimo.gshell.model.layout.Layout;
+import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,46 +36,54 @@ import org.slf4j.LoggerFactory;
  */
 @Component(role=LayoutManager.class)
 public class DefaultLayoutManager
-    implements LayoutManager, Initializable
+    implements LayoutManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
-    private LayoutLoader loader;
+    private Environment env;
 
     @Requirement
-    private Environment env;
+    private ApplicationManager applicationManager;
     
     private Layout layout;
 
     public DefaultLayoutManager() {}
     
-    public DefaultLayoutManager(final LayoutLoader loader, final Environment env) {
-        this.loader = loader;
+    public DefaultLayoutManager(final Environment env) {
+        assert env != null;
+        
         this.env = env;
     }
 
-    public void initialize() throws InitializationException {
-        assert loader != null;
+    private Layout lookupLayout() {
+        Layout layout = applicationManager.getContext().getApplication().getLayout();
+        if (layout == null) {
+            throw new IllegalStateException("Layout has not been configured for application");
+        }
 
-        try {
-            layout = loader.load();
-        }
-        catch (IOException e) {
-            throw new InitializationException(e.getMessage(), e);
-        }
+        return layout;
     }
 
     public Layout getLayout() {
+        if (layout == null) {
+            layout = lookupLayout();
+
+            log.debug("Using layout: {}", layout);
+        }
+        
         return layout;
     }
-    
+
     public Node findNode(final String path) throws NotFoundException {
         return findNode(path, null);
     }
 
     public Node findNode(final String path, final String searchPath) throws NotFoundException {
         assert path != null;
+
+        // Make sure we have initialized the layout
+        getLayout();
 
         Node start;
 

@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.settings;
 
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
-import org.apache.geronimo.gshell.model.common.SourceRepository;
+import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -72,9 +72,10 @@ public class DefaultSettingsManager
     private void configure(final Settings settings) throws Exception {
         assert settings != null;
 
-        List<SourceRepository> sourceRepositories = settings.sourceRepositories();
-        if (sourceRepositories != null) {
-            for (SourceRepository repo : sourceRepositories) {
+        List<RemoteRepository> remoteRepositories = settings.remoteRepositories();
+        
+        if (remoteRepositories != null) {
+            for (RemoteRepository repo : remoteRepositories) {
                 String loc = repo.getLocation();
                 URL url = new URL(loc);
                 String id = url.getHost(); // FIXME: Need to expose the repo id in the model, for now assume the id is the hostname

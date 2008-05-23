@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.layout;
 
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.layout.model.Layout;
-import org.apache.geronimo.gshell.layout.model.Node;
+import org.apache.geronimo.gshell.model.layout.Layout;
+import org.apache.geronimo.gshell.model.layout.Node;
 
 /**
  * Provies the shell with a simple mechanism to organize commands.
@@ -42,7 +41,7 @@ public interface LayoutManager
     String SEARCH_PATH_SEPARATOR = ":";
 
     Layout getLayout();
-
+    
     Node findNode(String path) throws NotFoundException;
     
     Node findNode(String path, String searchPath) throws NotFoundException;

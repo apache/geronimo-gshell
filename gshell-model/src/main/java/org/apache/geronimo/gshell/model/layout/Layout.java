@@ -20,16 +20,17 @@
 package org.apache.geronimo.gshell.model.layout;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelElement;
 
 /**
- * Layout configuration element.
+ * The root container for a layout tree.
  *
  * @version $Rev$ $Date$
  */
 @XStreamAlias("layout")
 public class Layout
-    extends ModelElement
+    extends GroupNode
 {
-    // ???
+    public Layout() {
+        super(ROOT);
+    }
 }

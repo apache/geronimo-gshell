@@ -19,6 +19,10 @@
 
 package org.apache.geronimo.gshell.application;
 
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.model.application.Application;
+
 /**
  * ???
  *
@@ -26,11 +30,11 @@ package org.apache.geronimo.gshell.application;
  */
 public interface ApplicationContext
 {
-    // getIo()
+    IO getIo();
 
-    // getEnvironment()
+    Environment getEnvironment();
 
-    // getApplication()
+    Application getApplication();
     
-    // getContainer()
+    // getContainer();
 }

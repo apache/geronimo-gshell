@@ -136,12 +136,7 @@
                 </executions>
                 <configuration>
                     <descriptors>
-                        <!--
-                        NOTE: Disabled while refactoring
-                        
-                        <descriptor>${pom.basedir}/src/main/assembly/minimal.xml</descriptor>
-                        -->
-                        <descriptor>${pom.basedir}/src/main/assembly/full.xml</descriptor>
+                        <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
                     </descriptors>
                     <finalName>gshell-${version}</finalName>
                 </configuration>

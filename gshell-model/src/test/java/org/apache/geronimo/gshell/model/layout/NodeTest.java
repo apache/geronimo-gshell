@@ -17,42 +17,51 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout.model;
+package org.apache.geronimo.gshell.model.layout;
 
 import junit.framework.TestCase;
 
 /**
- * Tests for the {@link Layout} class.
+ * Test for the {@link org.apache.geronimo.gshell.model.layout.Node} class.
  *
  * @version $Rev$ $Date$
  */
-public class LayoutTest
+public class NodeTest
     extends TestCase
 {
-    public void testReadLayout1() throws Exception {
-        Layout layout = LayoutMarshaller.unmarshal(getClass().getResourceAsStream("layout1.xml"));
-        assertNotNull(layout);
+    public void testGetPath1() throws Exception {
+        Layout layout = new Layout();
+
+        CommandNode c = new CommandNode("foo", "bar");
+        layout.add(c);
+
+        assertEquals("/foo", c.getPath());
     }
 
-    public void testReadLayout2() throws Exception {
-        Layout layout = LayoutMarshaller.unmarshal(getClass().getResourceAsStream("layout2.xml"));
-        assertNotNull(layout);
-    }
-    
-    public void testDumpLayout1() throws Exception {
+    public void testGetPath2() throws Exception {
         Layout layout = new Layout();
-        
-        layout.add(new CommandNode("foo", "bar"));
-        layout.add(new AliasNode("f", "foo"));
 
         GroupNode g = new GroupNode("test");
-        g.add(new CommandNode("a", "b"));
-        g.add(new CommandNode("c", "d"));
-
         layout.add(g);
-        
-        String xml = LayoutMarshaller.marshal(layout);
 
-        System.err.println("XML: " + xml);
+        CommandNode c = new CommandNode("foo", "bar");
+        g.add(c);
+
+        assertEquals("/test/foo", c.getPath());
+    }
+
+    public void testGetPath3() throws Exception {
+        Layout layout = new Layout();
+
+        GroupNode g1 = new GroupNode("a");
+        layout.add(g1);
+
+        GroupNode g2 = new GroupNode("b");
+        g1.add(g2);
+
+        CommandNode c = new CommandNode("foo", "bar");
+        g2.add(c);
+
+        assertEquals("/a/b/foo", c.getPath());
     }
 }

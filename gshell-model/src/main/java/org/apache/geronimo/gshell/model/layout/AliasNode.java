@@ -17,20 +17,30 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout.model;
+package org.apache.geronimo.gshell.model.layout;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * The root container for a layout tree.
+ * An alias to a command.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("layout")
-public class Layout
-    extends GroupNode
+@XStreamAlias("alias")
+public class AliasNode
+    extends Node
 {
-    public Layout() {
-        super(ROOT);
+    protected String command;
+
+    public AliasNode(final String name, final String command) {
+        super(name);
+
+        assert command != null;
+
+        this.command = command;
+    }
+
+    public String getCommand() {
+        return command;
     }
 }

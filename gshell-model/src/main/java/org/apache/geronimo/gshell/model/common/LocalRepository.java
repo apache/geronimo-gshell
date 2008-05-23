@@ -17,21 +17,41 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout.loader;
+package org.apache.geronimo.gshell.model.common;
 
-import java.io.IOException;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import org.apache.geronimo.gshell.layout.model.Layout;
+import java.io.File;
 
 /**
- * A simple abstraction for how one actually loads a layout.
+ * Local repository configuration.
  *
  * @version $Rev$ $Date$
  */
-public interface LayoutLoader
+@XStreamAlias("localRepository")
+public class LocalRepository
+    extends ModelElement
 {
-    /**
-     * Returns the currently loaded layout; never null.
-     */
-    Layout load() throws IOException;
+    private String directory;
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(final String directory) {
+        this.directory = directory;
+    }
+
+    public File getDirectoryFile() {
+        String path = getDirectory();
+        assert path != null;
+        
+        return new File(path);
+    }
+
+    public void setDirectoryFile(final File directory) {
+        assert directory != null;
+
+        setDirectory(directory.getAbsolutePath());
+    }
 }

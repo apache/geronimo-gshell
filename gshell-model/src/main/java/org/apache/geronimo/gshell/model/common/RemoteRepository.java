@@ -17,9 +17,42 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.model.common;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
- * Defines the model used for configuring and using layouts.
+ * Remote repository configuration.
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.layout.model;
+@XStreamAlias("remoteRepository")
+public class RemoteRepository
+    extends ModelElement
+{
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(final String location) {
+        this.location = location;
+    }
+
+    public URI getLocationUri() throws URISyntaxException {
+        String tmp = getLocation();
+        assert tmp != null;
+
+        return new URI(tmp);
+    }
+
+    public void setLocationUri(final URI uri) {
+        assert uri != null;
+
+        setLocation(uri.toString());
+    }
+}

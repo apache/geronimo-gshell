@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.model.settings;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.ModelRoot;
-import org.apache.geronimo.gshell.model.common.SourceRepository;
+import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
 import java.util.Properties;
 import java.util.List;
@@ -38,13 +38,13 @@ public class Settings
 {
     private Properties properties;
 
-    // Proxies
+    // TODO: Proxies
 
-    private List<SourceRepository> sourceRepositories;
+    private List<RemoteRepository> remoteRepositories;
 
-    // Repository
+    // TODO: Repository
 
-    // Paths
+    // TODO: Paths
 
     public Properties getProperties() {
         return properties;
@@ -54,17 +54,17 @@ public class Settings
         this.properties = properties;
     }
 
-    public List<SourceRepository> sourceRepositories() {
-        return sourceRepositories;
+    public List<RemoteRepository> remoteRepositories() {
+        return remoteRepositories;
     }
 
-    public void add(final SourceRepository repository) {
+    public void add(final RemoteRepository repository) {
         assert repository != null;
 
-        if (sourceRepositories == null) {
-            sourceRepositories = new ArrayList<SourceRepository>();
+        if (remoteRepositories == null) {
+            remoteRepositories = new ArrayList<RemoteRepository>();
         }
 
-        sourceRepositories.add(repository);
+        remoteRepositories.add(repository);
     }
 }

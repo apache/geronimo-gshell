@@ -22,12 +22,8 @@ package org.apache.geronimo.gshell.model.plugin;
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.DependencyGroup;
-import org.apache.geronimo.gshell.model.common.SourceRepository;
-import org.apache.geronimo.gshell.model.application.ApplicationMarshaller;
-import org.apache.geronimo.gshell.model.application.Application;
 
 import java.net.URL;
-import java.net.URI;
 import java.io.InputStream;
 import java.util.Properties;
 

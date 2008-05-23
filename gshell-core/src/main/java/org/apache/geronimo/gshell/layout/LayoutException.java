@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.layout;
 
 /**
- * ???
+ * Thrown to indicate a layout-related problem.
  *
  * @version $Rev$ $Date$
  */

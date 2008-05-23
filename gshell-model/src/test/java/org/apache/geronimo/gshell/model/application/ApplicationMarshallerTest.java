@@ -22,10 +22,9 @@ package org.apache.geronimo.gshell.model.application;
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.DependencyGroup;
-import org.apache.geronimo.gshell.model.common.SourceRepository;
+import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
 import java.net.URL;
-import java.net.URI;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -50,7 +49,7 @@ public class ApplicationMarshallerTest
         props.setProperty("a", "b");
         root.setProperties(props);
 
-        SourceRepository sr1 = new SourceRepository();
+        RemoteRepository sr1 = new RemoteRepository();
         sr1.setLocation("foo:bar");
         root.add(sr1);
 

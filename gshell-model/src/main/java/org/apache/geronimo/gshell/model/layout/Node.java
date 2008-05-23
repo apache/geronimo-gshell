@@ -17,10 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout.model;
+package org.apache.geronimo.gshell.model.layout;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.model.common.ModelElement;
 
 /**
  * The rudimentary element of a layout.
@@ -28,6 +27,7 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
  * @version $Rev$ $Date$
  */
 public abstract class Node
+    extends ModelElement
 {
     public static final String SEPARATOR = "/";
 
@@ -74,9 +74,5 @@ public abstract class Node
         }
 
         return buff.toString();
-    }
-
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

@@ -39,14 +39,13 @@ import java.net.URL;
 public class MarshallerSupport<T>
     implements Marshaller<T>
 {
-    private Class rootType;
+    private final Class rootType;
 
     protected MarshallerSupport(final Class rootType) {
         assert rootType != null;
 
         this.rootType = rootType;
     }
-
 
     protected XStream createXStream() {
         XStream xs;
@@ -59,11 +58,24 @@ public class MarshallerSupport<T>
             xs = new XStream(new DomDriver());
         }
 
-        xs.processAnnotations(rootType);
-
+        configure(xs);
+        
         return xs;
     }
 
+    protected void configure(final XStream xs) {
+        assert xs != null;
+
+        xs.processAnnotations(rootType);
+    }
+
+    protected void configureAnnotations(final XStream xs, final Class... classes) {
+        assert xs != null;
+        assert classes != null;
+
+        xs.processAnnotations(classes);
+    }
+    
     public void marshal(final T root, final OutputStream output) {
         assert root != null;
         assert output != null;
@@ -84,17 +96,17 @@ public class MarshallerSupport<T>
         return createXStream().toXML(root);
     }
 
+    @SuppressWarnings({"unchecked"})
     public T unmarshal(final InputStream input) {
         assert input != null;
 
-        //noinspection unchecked
         return (T)createXStream().fromXML(input);
     }
 
+    @SuppressWarnings({"unchecked"})
     public T unmarshal(final Reader reader) {
         assert reader != null;
 
-        //noinspection unchecked
         return (T)createXStream().fromXML(reader);
     }
 
