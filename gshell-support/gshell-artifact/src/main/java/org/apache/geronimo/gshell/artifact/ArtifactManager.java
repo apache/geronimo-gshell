@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import org.apache.maven.artifact.InvalidRepositoryException;
-import org.apache.maven.artifact.UnknownRepositoryLayoutException;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -28,7 +26,6 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.wagon.events.TransferListener;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.List;
 
@@ -41,19 +38,19 @@ public interface ArtifactManager
 {
     ArtifactRepository getLocalRepository();
 
-    void setLocalRepository(ArtifactRepository repository);
+    void setLocalRepository(ArtifactRepository repository) throws InvalidRepositoryException;
 
-    void setLocalRepository(File dir) throws MalformedURLException, InvalidRepositoryException;
+    void setLocalRepository(File dir) throws InvalidRepositoryException;
 
     List<ArtifactRepository> getRemoteRepositories();
 
-    void addRemoteRepository(ArtifactRepository repository);
+    void addRemoteRepository(ArtifactRepository repository) throws InvalidRepositoryException;
 
-    void addRemoteRepository(String id, URI location) throws MalformedURLException, UnknownRepositoryLayoutException;
+    void addRemoteRepository(String id, URI location) throws InvalidRepositoryException;
 
     ArtifactFactory getArtifactFactory();
 
     void setDownloadMonitor(TransferListener listener);
 
-    ArtifactResolutionResult resolve(ArtifactResolutionRequest request);
+    ArtifactResolutionResult resolve(ArtifactResolutionRequest request) throws ArtifactResolutionException;
 }

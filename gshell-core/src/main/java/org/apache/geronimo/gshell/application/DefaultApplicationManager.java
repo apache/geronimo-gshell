@@ -20,14 +20,14 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.GShell;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
 import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.common.Dependency;
-import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
+import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -51,7 +51,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -81,6 +80,10 @@ public class DefaultApplicationManager
     public void contextualize(final Context context) throws ContextException {
         assert context != null;
 
+        //
+        // FIXME: See if we need to use Contextualize here, or if the @Requirement bits inject the correct container instance
+        //
+        
         parentContainer = (GShellPlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
         
         log.debug("Parent container: {}", parentContainer);
@@ -189,7 +192,7 @@ public class DefaultApplicationManager
         return child;
     }
 
-    private List<URL> createClassPath(final Application application) throws MalformedURLException {
+    private List<URL> createClassPath(final Application application) throws Exception {
         assert application != null;
 
         ArtifactFactory factory = artifactManager.getArtifactFactory();
@@ -219,10 +222,6 @@ public class DefaultApplicationManager
         request.setArtifactDependencies(artifacts);
 
         ArtifactResolutionResult result = artifactManager.resolve(request);
-
-        //
-        // FIXME: Validate the result and complain if not valid (exceptions/missing/whatever), may want to move that to the AM
-        //
 
         List<URL> classPath = new LinkedList<URL>();
         Set<Artifact> resolvedArtifacts = result.getArtifacts();

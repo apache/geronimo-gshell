@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import org.apache.maven.artifact.InvalidRepositoryException;
-import org.apache.maven.artifact.UnknownRepositoryLayoutException;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
@@ -37,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +73,7 @@ public class DefaultArtifactManager
         return localRepository;
     }
 
-    public void setLocalRepository(final ArtifactRepository repository) {
+    public void setLocalRepository(final ArtifactRepository repository) throws InvalidRepositoryException {
         assert repository != null;
 
         localRepository = repository;
@@ -87,16 +84,20 @@ public class DefaultArtifactManager
     public void setLocalRepository(final File dir) throws InvalidRepositoryException {
         assert dir != null;
 
-        ArtifactRepository repo = repositoryFactory.createLocalRepository(dir);
-
-        setLocalRepository(repo);
+        try {
+            ArtifactRepository repo = repositoryFactory.createLocalRepository(dir);
+            setLocalRepository(repo);
+        }
+        catch (Exception e) {
+            throw new InvalidRepositoryException(e);
+        }
     }
 
     public List<ArtifactRepository> getRemoteRepositories() {
         return remoteRepositories;
     }
 
-    public void addRemoteRepository(final ArtifactRepository repository) {
+    public void addRemoteRepository(final ArtifactRepository repository) throws InvalidRepositoryException {
         assert repository != null;
 
         remoteRepositories.add(repository);
@@ -104,20 +105,25 @@ public class DefaultArtifactManager
         log.debug("Added remote repository: {}", repository);
     }
 
-    public void addRemoteRepository(final String id, final URI location) throws UnknownRepositoryLayoutException, MalformedURLException {
+    public void addRemoteRepository(final String id, final URI location) throws InvalidRepositoryException {
         assert id != null;
         assert location != null;
 
-        ArtifactRepository repo = repositoryFactory.createArtifactRepository(
-            id,
-            location.toURL().toExternalForm(),
-            ArtifactRepositoryFactory.DEFAULT_LAYOUT_ID,
+        try {
+            ArtifactRepository repo = repositoryFactory.createArtifactRepository(
+                id,
+                location.toURL().toExternalForm(),
+                ArtifactRepositoryFactory.DEFAULT_LAYOUT_ID,
 
-            // FIXME: Expose more configuration to user API
-            new ArtifactRepositoryPolicy(),  // snapshots
-            new ArtifactRepositoryPolicy()); // releases
-        
-        addRemoteRepository(repo);
+                // FIXME: Expose more configuration to user API
+                new ArtifactRepositoryPolicy(),  // snapshots
+                new ArtifactRepositoryPolicy()); // releases
+            
+            addRemoteRepository(repo);
+        }
+        catch (Exception e) {
+            throw new InvalidRepositoryException(e);
+        }
     }
 
     public ArtifactFactory getArtifactFactory() {
@@ -132,7 +138,7 @@ public class DefaultArtifactManager
         log.debug("Using download monitor: {}", listener);
     }
     
-    public ArtifactResolutionResult resolve(final ArtifactResolutionRequest request) {
+    public ArtifactResolutionResult resolve(final ArtifactResolutionRequest request) throws ArtifactResolutionException {
         assert request != null;
 
         // Automatically fill in some missing bits
@@ -153,11 +159,18 @@ public class DefaultArtifactManager
 
         ArtifactResolutionResult result = artifactResolver.resolve(request);
 
-        log.debug("Resolution result: {}", result);
+        return validateResolutionResult(request, result);
+    }
 
-        //
-        // TODO: Perform error/failure detection muck here, and toss a new exception with an easier interface for consuption of this information
-        //
+    private ArtifactResolutionResult validateResolutionResult(final ArtifactResolutionRequest request, final ArtifactResolutionResult result) throws ArtifactResolutionException {
+        assert request != null;
+        assert result != null;
+
+        log.debug("Validating result: {}", result);
+
+        if (/* TODO: detect failure */ false) {
+            throw new ArtifactResolutionException(request, result);
+        }
 
         return result;
     }
