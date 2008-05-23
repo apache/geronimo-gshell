@@ -54,23 +54,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>${pom.basedir}/src/main/resources</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </resource>
-
-            <resource>
-                <directory>${pom.basedir}/src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>org/apache/geronimo/gshell/cli/version.properties</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
-
 </project>
