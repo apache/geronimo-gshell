@@ -28,6 +28,10 @@
 
     <remoteRepositories>
         <remoteRepository>
+            <id>maven-cache</id>
+            <!--
+            FIXME: Need to get ${user.home} expansion working soon to drop this hard-coded muck
+            -->
             <location>file:/Users/jason/.m2/repository</location>
         </remoteRepository>
         
