@@ -37,41 +37,35 @@ public class DependencyGroup
     @XStreamImplicit
     private List<Dependency> dependencies;
 
-    //
-    // TODO: Consider making accessors of collection types return non-null always to simplify usage (avoid needing that null check)
-    //
-    
     public List<Dependency> dependencies() {
+        if (dependencies == null) {
+            dependencies = new ArrayList<Dependency>();
+        }
+
         return dependencies;
     }
     
     public void add(final Dependency dependency) {
         assert dependency != null;
 
-        if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
-        }
-
-        dependencies.add(dependency);
+        dependencies().add(dependency);
     }
 
     public int size() {
-        return dependencies == null ? 0 : dependencies.size();
+        return dependencies().size();
     }
     
     public boolean isEmpty() {
-        return dependencies == null || dependencies.isEmpty();
+        return dependencies().isEmpty();
     }
 
     /**
      * Link children to their parent group when deserializing.
-     *
-     * @return  Model element instance.
      */
     @SuppressWarnings({"UnusedDeclaration"})
     private Object readResolve() {
         if (!isEmpty()) {
-            for (Dependency child : dependencies) {
+            for (Dependency child : dependencies()) {
                 child.setDependencyGroup(this);
             }
         }

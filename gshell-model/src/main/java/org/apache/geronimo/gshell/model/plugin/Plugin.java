@@ -51,7 +51,7 @@ public class Plugin
 
     private Properties properties;
     
-    private List<Dependency> dependencies = new ArrayList<Dependency>();
+    private List<Dependency> dependencies;
 
     private List<DependencyGroup> dependencyGroups = new ArrayList<DependencyGroup>();
 
@@ -91,35 +91,47 @@ public class Plugin
         this.properties = properties;
     }
 
-    //
-    // TODO: Consider making accessors of collection types return non-null always to simplify usage (avoid needing that null check)
-    //
-    
-    public List<Dependency> dependencies() {
-        return dependencies;
-    }
-
-    public void add(final Dependency dependency) {
-        assert dependency != null;
-
-        if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
+    public List<DependencyGroup> dependencyGroups() {
+        if (dependencyGroups == null) {
+            dependencyGroups = new ArrayList<DependencyGroup>();
         }
 
-        dependencies.add(dependency);
-    }
-
-    public List<DependencyGroup> dependencyGroups() {
         return dependencyGroups;
     }
 
     public void add(final DependencyGroup group) {
         assert group != null;
 
-        if (dependencyGroups == null) {
-            dependencyGroups = new ArrayList<DependencyGroup>();
+        dependencyGroups().add(group);
+    }
+
+    public List<Dependency> dependencies() {
+        return dependencies(false);
+    }
+
+    public List<Dependency> dependencies(boolean includeGroups) {
+        if (dependencies == null) {
+            dependencies = new ArrayList<Dependency>();
         }
 
-        dependencyGroups.add(group);
+        if (!includeGroups) {
+            return dependencies;
+        }
+
+        List<Dependency> list = new ArrayList<Dependency>();
+
+        list.addAll(dependencies);
+
+        for (DependencyGroup group : dependencyGroups) {
+            list.addAll(group.dependencies());
+        }
+
+        return list;
+    }
+
+    public void add(final Dependency dependency) {
+        assert dependency != null;
+
+        dependencies().add(dependency);
     }
 }

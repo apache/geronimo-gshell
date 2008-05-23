@@ -150,12 +150,8 @@ public class DefaultApplicationManager
         }
 
         // Setup remote repositories
-        List<RemoteRepository> remoteRepositories = application.remoteRepositories();
-
-        if (remoteRepositories != null) {
-            for (RemoteRepository repo : remoteRepositories) {
-                artifactManager.addRemoteRepository(repo.getId(), repo.getLocationUri());
-            }
+        for (RemoteRepository repo : application.remoteRepositories()) {
+            artifactManager.addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
     }
 
@@ -207,7 +203,7 @@ public class DefaultApplicationManager
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         List<Dependency> dependencies = application.dependencies(true); // include groups
 
-        if (dependencies != null && !dependencies.isEmpty()) {
+        if (!dependencies.isEmpty()) {
             log.debug("Application dependencies:");
 
             for (Dependency dep : dependencies) {

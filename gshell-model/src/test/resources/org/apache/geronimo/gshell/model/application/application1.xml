@@ -41,6 +41,7 @@
         </remoteRepository>
     </remoteRepositories>
 
+    <!--
     <dependencies>
         <dependency>
             <groupId>a</groupId>
@@ -48,6 +49,7 @@
             <version>c</version>
         </dependency>
     </dependencies>
+    -->
 
     <dependencyGroups>
         <dependencyGroup>

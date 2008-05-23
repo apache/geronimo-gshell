@@ -41,6 +41,10 @@ public class ApplicationLocator
     // FIXME: Need to make this more robust, allow a file override/hint look in META-INF/gshell, etc.
     //
 
+    //
+    // TODO: Use builder pattern to add additonal bits to help location
+    //
+    
     public Application locate() throws Exception {
         log.debug("Locating");
 

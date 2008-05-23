@@ -24,6 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * A group of nodes.
@@ -34,7 +35,7 @@ import java.util.Set;
 public class GroupNode
     extends Node
 {
-    protected Set<Node> nodes = new HashSet<Node>();
+    protected Set<Node> nodes;
 
     public GroupNode(final String name) {
         super(name);
@@ -45,13 +46,13 @@ public class GroupNode
 
         child.setParent(this);
 
-        nodes.add(child);
+        nodes().add(child);
     }
 
     public Node find(final String name) {
         assert name != null;
         
-        for (Node child : nodes) {
+        for (Node child : nodes()) {
             if (name.equals(child.getName())) {
                 return child;
             }
@@ -61,15 +62,19 @@ public class GroupNode
     }
 
     public Set<Node> nodes() {
-        return Collections.unmodifiableSet(nodes);
+        if (nodes == null) {
+            nodes = new LinkedHashSet<Node>();
+        }
+
+        return nodes;
     }
 
     public int size() {
-        return nodes.size();
+        return nodes().size();
     }
 
     public boolean isEmpty() {
-        return nodes == null || nodes.isEmpty();
+        return nodes().isEmpty();
     }
     
     /**
@@ -78,7 +83,7 @@ public class GroupNode
     @SuppressWarnings({"UnusedDeclaration"})
     private Object readResolve() {
         if (!isEmpty()) {
-            for (Node child : nodes) {
+            for (Node child : nodes()) {
                 child.setParent(this);
             }
         }

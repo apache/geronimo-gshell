@@ -74,14 +74,11 @@ public class DefaultSettingsManager
     private void configure(final Settings settings) throws Exception {
         assert settings != null;
 
-        List<RemoteRepository> remoteRepositories = settings.remoteRepositories();
-        
-        if (remoteRepositories != null) {
-            for (RemoteRepository repo : remoteRepositories) {
-                artifactManager.addRemoteRepository(repo.getId(), repo.getLocationUri());
-            }
+        // Setup remote repositories
+        for (RemoteRepository repo : settings.remoteRepositories()) {
+            artifactManager.addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
-
+        
         // TODO: apply other artifact related settings (proxy, auth, whatever)
     }
 }

@@ -39,6 +39,10 @@ public class SettingsLocator
     // FIXME: Need to make this more robust, allow a file override/hint look in META-INF/gshell, user.home, etc.
     //
 
+    //
+    // TODO: Use builder pattern to add additonal bits to help location
+    //
+
     public Settings locate() throws Exception {
         log.debug("Locating");
 

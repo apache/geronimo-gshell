@@ -86,6 +86,8 @@ public class ApplicationMarshallerTest
 
         Application root = marshaller.unmarshal(input);
 
+        root.dependencies(true);
+        
         System.out.println(root);
     }
 
@@ -93,6 +95,8 @@ public class ApplicationMarshallerTest
         URL url = getClass().getResource("application1.xml");
 
         Application root = marshaller.unmarshal(url);
+
+        root.dependencies(true);
 
         System.out.println(root);
     }

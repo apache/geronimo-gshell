@@ -46,10 +46,6 @@ public class Settings
 
     // TODO: Paths
 
-    //
-    // TODO: Consider making accessors of collection types return non-null always to simplify usage (avoid needing that null check)
-    //
-    
     public Properties getProperties() {
         return properties;
     }
@@ -59,16 +55,16 @@ public class Settings
     }
 
     public List<RemoteRepository> remoteRepositories() {
+        if (remoteRepositories == null) {
+            remoteRepositories = new ArrayList<RemoteRepository>();
+        }
+
         return remoteRepositories;
     }
 
     public void add(final RemoteRepository repository) {
         assert repository != null;
 
-        if (remoteRepositories == null) {
-            remoteRepositories = new ArrayList<RemoteRepository>();
-        }
-
-        remoteRepositories.add(repository);
+        remoteRepositories().add(repository);
     }
 }

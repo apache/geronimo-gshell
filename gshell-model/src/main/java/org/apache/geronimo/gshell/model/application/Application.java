@@ -127,35 +127,31 @@ public class Application
     }
 
     public List<RemoteRepository> remoteRepositories() {
-        return remoteRepositories;
-    }
-
-    //
-    // TODO: Consider making accessors of collection types return non-null always to simplify usage (avoid needing that null check)
-    //
-
-    public void add(final RemoteRepository repository) {
-        assert repository != null;
-
         if (remoteRepositories == null) {
             remoteRepositories = new ArrayList<RemoteRepository>();
         }
 
-        remoteRepositories.add(repository);
+        return remoteRepositories;
+    }
+
+    public void add(final RemoteRepository repository) {
+        assert repository != null;
+
+        remoteRepositories().add(repository);
     }
 
     public List<DependencyGroup> dependencyGroups() {
+        if (dependencyGroups == null) {
+            dependencyGroups = new ArrayList<DependencyGroup>();
+        }
+
         return dependencyGroups;
     }
 
     public void add(final DependencyGroup group) {
         assert group != null;
 
-        if (dependencyGroups == null) {
-            dependencyGroups = new ArrayList<DependencyGroup>();
-        }
-
-        dependencyGroups.add(group);
+        dependencyGroups().add(group);
     }
 
     public List<Dependency> dependencies() {
@@ -163,28 +159,20 @@ public class Application
     }
 
     public List<Dependency> dependencies(boolean includeGroups) {
+        if (dependencies == null) {
+            dependencies = new ArrayList<Dependency>();
+        }
+
         if (!includeGroups) {
             return dependencies;
         }
 
-        // Don't bother making a new list if we have nothing to populate it with
-        if (dependencies == null && dependencyGroups == null) {
-            return null;
-        }
-
         List<Dependency> list = new ArrayList<Dependency>();
 
-        if (dependencies != null) {
-            list.addAll(dependencies);
-        }
-        
-        if (dependencyGroups != null) {
-            for (DependencyGroup group : dependencyGroups) {
-                List<Dependency> tmp = group.dependencies();
-                if (tmp != null) {
-                    list.addAll(tmp);
-                }
-            }
+        list.addAll(dependencies);
+
+        for (DependencyGroup group : dependencyGroups) {
+            list.addAll(group.dependencies());
         }
 
         return list;
@@ -193,11 +181,7 @@ public class Application
     public void add(final Dependency dependency) {
         assert dependency != null;
 
-        if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
-        }
-
-        dependencies.add(dependency);
+        dependencies().add(dependency);
     }
 
     public Branding getBranding() {

@@ -254,13 +254,11 @@ public class Main
             builder.setIo(io);
 
             // Find our settings descriptor
-            SettingsLocator settingsLocator = new SettingsLocator();
-            Settings settings = settingsLocator.locate();
+            Settings settings = new SettingsLocator().locate();
             builder.setSettings(settings);
 
             // Find our application descriptor
-            ApplicationLocator applicationLocator = new ApplicationLocator();
-            Application application = applicationLocator.locate();
+            Application application = new ApplicationLocator().locate();
             builder.setApplication(application);
 
             // Build the shell instance
