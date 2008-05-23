@@ -57,7 +57,10 @@ public class DefaultLayoutManager
     }
 
     private Layout lookupLayout() {
+        assert applicationManager != null;
+
         Layout layout = applicationManager.getContext().getApplication().getLayout();
+
         if (layout == null) {
             throw new IllegalStateException("Layout has not been configured for application");
         }
