@@ -326,10 +326,6 @@ public class DefaultShell
     //
 
     private void loadProfileScripts() throws Exception {
-        //
-        // TODO: Load gsh.properties if it exists?
-        //
-
         // Load profile scripts if they exist
         loadSharedScript(branding.getProfileScriptName());
         loadUserScript(branding.getProfileScriptName());
