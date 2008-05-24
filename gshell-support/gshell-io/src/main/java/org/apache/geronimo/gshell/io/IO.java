@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.helpers.MessageFormatter;
+import jline.Terminal;
 
 /**
  * Container for input/output handles.
@@ -169,6 +170,13 @@ public class IO
     
     public boolean isSharedOutputStreams() {
         return outputStream == errorStream;
+    }
+
+    //
+    // HACK: Expose the terminal instance here, need to refactor all this muck!!!
+    //
+    public Terminal getTerminal() {
+        return Terminal.getTerminal();
     }
 
     /**
