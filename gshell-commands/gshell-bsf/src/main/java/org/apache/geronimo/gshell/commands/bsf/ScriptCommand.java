@@ -19,12 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.bsf;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
-
-import jline.Terminal;
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
 import org.apache.geronimo.gshell.clp.Argument;
@@ -32,9 +26,13 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
@@ -45,9 +43,6 @@ import org.apache.geronimo.gshell.console.JLineConsole;
 public class ScriptCommand
     extends CommandSupport
 {
-    @Requirement
-    private Terminal terminal;
-
     private String language;
 
     @Option(name="-l", aliases={"--language"}, description="Specify the scripting language")
@@ -136,7 +131,7 @@ public class ScriptCommand
                 }
             };
 
-            JLineConsole runner = new JLineConsole(executor, io, terminal);
+            JLineConsole runner = new JLineConsole(executor, io);
 
             runner.setErrorHandler(new Console.ErrorHandler() {
                 public Result handleError(final Throwable error) {

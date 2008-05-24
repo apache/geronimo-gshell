@@ -45,6 +45,7 @@ public class DefaultRemoteShell
     @Requirement
     private CommandExecutor executor;
 
+    // FIXME: Pull this from some manager's context
     @Requirement
     private Environment env;
 

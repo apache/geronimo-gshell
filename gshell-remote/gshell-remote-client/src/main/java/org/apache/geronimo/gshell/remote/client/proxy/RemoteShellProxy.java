@@ -19,14 +19,11 @@
 
 package org.apache.geronimo.gshell.remote.client.proxy;
 
-import java.util.concurrent.atomic.AtomicReference;
-
-import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.client.RshClient;
 import org.apache.geronimo.gshell.shell.Environment;
@@ -35,6 +32,8 @@ import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.whisper.stream.StreamFeeder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Provides a shell interface which will proxy to a remote shell instance.
@@ -50,8 +49,6 @@ public class RemoteShellProxy
 
     private IO io;
 
-    private Terminal terminal;
-
     private StreamFeeder outputFeeder;
 
     private boolean opened;
@@ -64,14 +61,12 @@ public class RemoteShellProxy
 
     private RemoteBrandingProxy branding;
 
-    public RemoteShellProxy(final RshClient client, final IO io, final Terminal terminal) throws Exception {
+    public RemoteShellProxy(final RshClient client, final IO io) throws Exception {
         assert client != null;
         assert io != null;
-        assert terminal != null;
 
         this.client = client;
         this.io = io;
-        this.terminal = terminal;
 
         //
         // TODO: send over some client-side details, like the terminal features, etc, as well, verbosity too)
@@ -199,7 +194,7 @@ public class RemoteShellProxy
             }
         };
 
-        JLineConsole console = new JLineConsole(executor, io, terminal);
+        JLineConsole console = new JLineConsole(executor, io);
 
         console.setPrompter(new Console.Prompter() {
             Renderer renderer = new Renderer();

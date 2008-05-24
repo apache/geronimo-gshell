@@ -20,8 +20,6 @@
 package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.common.Notification;
-import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
-import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.component.annotations.Component;
@@ -41,8 +39,10 @@ public class ExecuteHandler
 
     public void handle(final Session session, final ServerSessionContext context, final ExecuteMessage message) throws Exception {
         // Need to make sure that the execuing thread has the right I/O and environment in context
-        IOLookup.set(context.container, context.io);
-        EnvironmentLookup.set(context.container, context.env);
+        // FIXME: Need to find out what to do here, w/o this lookup
+        // IOLookup.set(context.container, context.io);
+        // FIXME: Need to find out what to do here, w/o this lookup
+        // EnvironmentLookup.set(context.container, context.env);
 
         ExecuteMessage.Result reply;
 

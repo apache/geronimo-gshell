@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Layout;
 import org.apache.geronimo.gshell.model.layout.Node;
-import org.apache.geronimo.gshell.shell.Environment;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
@@ -41,19 +40,16 @@ public class DefaultLayoutManager
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
-    private Environment env;
-
-    @Requirement
     private ApplicationManager applicationManager;
     
     private Layout layout;
 
     public DefaultLayoutManager() {}
     
-    public DefaultLayoutManager(final Environment env) {
-        assert env != null;
-        
-        this.env = env;
+    public DefaultLayoutManager(final ApplicationManager applicationManager) {
+        assert applicationManager != null;
+
+        this.applicationManager = applicationManager;
     }
 
     private Layout lookupLayout() {
@@ -119,7 +115,9 @@ public class DefaultLayoutManager
             return foundNode;
         }
         else {
-            start = (Node) env.getVariables().get(CURRENT_NODE);
+            assert applicationManager != null;
+            
+            start = (Node) applicationManager.getContext().getEnvironment().getVariables().get(CURRENT_NODE);
 
             if (start == null) {
                 start = layout;

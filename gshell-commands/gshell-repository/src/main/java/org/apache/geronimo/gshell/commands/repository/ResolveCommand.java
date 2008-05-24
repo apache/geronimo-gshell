@@ -70,6 +70,14 @@ public class ResolveCommand
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 
+        //
+        // TODO: Add support for --transitive
+        //
+
+        //
+        // TODO: Update the AM API to use this as originating when artifact == null and artifact dependencies != null
+        //
+        
         Artifact originating = factory.createArtifact("dummy", "dummy", "dummy", null, "jar");
         request.setArtifact(originating);
 

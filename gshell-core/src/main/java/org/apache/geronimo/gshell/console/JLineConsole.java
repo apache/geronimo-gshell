@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.console;
 
 import jline.ConsoleReader;
 import jline.History;
-import jline.Terminal;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.Shell;
 
@@ -40,12 +39,12 @@ public class JLineConsole
 
     // final CommandsMultiCompletor completor
 
-    public JLineConsole(final Executor executor, final IO io, final Terminal terminal) throws IOException {
+    public JLineConsole(final Executor executor, final IO io) throws IOException {
         super(executor);
 
         assert io != null;
 
-        reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, terminal);
+        reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, io.getTerminal());
         reader.setUsePagination(true);
         
         // this.completor = new CommandsMultiCompletor()

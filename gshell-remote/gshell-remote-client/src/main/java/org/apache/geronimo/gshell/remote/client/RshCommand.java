@@ -19,19 +19,18 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-import jline.Terminal;
 import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.io.PromptReader;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
+import org.apache.geronimo.gshell.io.PromptReader;
 import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Command to connect to a remote shell server.
@@ -56,9 +55,6 @@ public class RshCommand
 
     @Argument(metaVar="COMMAND", index=1, multiValued=true, description="Execute COMMAND in remote shell")
     private List<String> command = new ArrayList<String>();
-
-    @Requirement
-    private Terminal terminal;
 
     @Requirement
     private PromptReader prompter;
@@ -93,7 +89,7 @@ public class RshCommand
         // client.echo("HELLO");
         // Thread.sleep(1 * 1000);
 
-        RemoteShellProxy shell = new RemoteShellProxy(client, io, terminal);
+        RemoteShellProxy shell = new RemoteShellProxy(client, io);
 
         Object rv = SUCCESS;
 

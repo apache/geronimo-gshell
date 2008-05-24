@@ -22,8 +22,6 @@ package org.apache.geronimo.gshell.application;
 import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
-import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
@@ -116,10 +114,6 @@ public class DefaultApplicationManager
 
         // TODO: Configure other application bits (branding, etc) ?
         // TODO: May want to have those components pull from the application's context instead, like we are doing for layout
-
-        // Install lookup intestances
-        IOLookup.set(container, config.getIo());
-        EnvironmentLookup.set(container, config.getEnvironment());
 
         // Create a new context
         applicationContext = new ApplicationContext() {

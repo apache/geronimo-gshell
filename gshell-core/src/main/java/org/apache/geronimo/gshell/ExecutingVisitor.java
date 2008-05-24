@@ -48,9 +48,9 @@ public class ExecutingVisitor
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private Environment env;
+    private final Environment env;
     
-    private CommandExecutor executor;
+    private final CommandExecutor executor;
 
     public ExecutingVisitor(final CommandExecutor executor, final Environment env) {
         assert executor != null;
@@ -63,10 +63,7 @@ public class ExecutingVisitor
     public Object visit(final SimpleNode node, final Object data) {
         assert node != null;
 
-        //
         // It is an error if we forgot to implement a node handler
-        //
-
         throw new Error("Unhandled node type: " + node.getClass().getName());
     }
 
@@ -107,11 +104,12 @@ public class ExecutingVisitor
         return null;
     }
 
+    @SuppressWarnings({"unchecked"})
     private Object appendString(final String value, final Object data) {
         assert data != null;
         assert data instanceof List;
 
-        List args = (List)data;
+        List<Object> args = (List<Object>)data;
         args.add(value);
 
         return value;

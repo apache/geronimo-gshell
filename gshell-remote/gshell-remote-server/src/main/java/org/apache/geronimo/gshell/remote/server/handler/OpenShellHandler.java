@@ -20,8 +20,6 @@
 package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.DefaultEnvironment;
-import org.apache.geronimo.gshell.lookup.EnvironmentLookup;
-import org.apache.geronimo.gshell.lookup.IOLookup;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
@@ -56,11 +54,13 @@ public class OpenShellHandler
 
         // Setup the I/O context (w/o auto-flushing)
         context.io = new RemoteIO(session);
-        IOLookup.set(context.container, context.io);
+        // FIXME: Need to find out what to do here, w/o this lookup
+        // IOLookup.set(context.container, context.io);
 
         // Setup shell environemnt
         context.env = new DefaultEnvironment(context.io);
-        EnvironmentLookup.set(context.container, context.env);
+        // FIXME: Need to find out what to do here, w/o this lookup
+        // EnvironmentLookup.set(context.container, context.env);
 
         // Create a new shell instance
         context.shell = (RemoteShell) context.container.lookup(RemoteShell.class);

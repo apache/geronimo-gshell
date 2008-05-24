@@ -35,9 +35,12 @@ import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +59,12 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Component(role=CommandExecutor.class, hint="default")
 public class DefaultCommandExecutor
-    implements CommandExecutor
+    implements CommandExecutor, Initializable
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Requirement
+    private ApplicationManager applicationManager;
 
     @Requirement
     private LayoutManager layoutManager;
@@ -69,19 +75,26 @@ public class DefaultCommandExecutor
     @Requirement
     private CommandLineBuilder commandLineBuilder;
 
-    @Requirement
     private Environment env;
 
     public DefaultCommandExecutor() {}
     
-    public DefaultCommandExecutor(final LayoutManager layoutManager,
-                                  final CommandRegistry commandRegistry,
-                                  final CommandLineBuilder commandLineBuilder,
-                                  final Environment env) {
+    public DefaultCommandExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandRegistry commandRegistry, final CommandLineBuilder commandLineBuilder) {
+        assert applicationManager != null;
+        assert layoutManager != null;
+        assert commandRegistry != null;
+        assert commandLineBuilder != null;
+
+        this.applicationManager = applicationManager;
         this.layoutManager = layoutManager;
         this.commandRegistry = commandRegistry;
         this.commandLineBuilder = commandLineBuilder;
-        this.env = env;
+    }
+
+    public void initialize() throws InitializationException {
+        assert applicationManager != null;
+        
+        this.env = applicationManager.getContext().getEnvironment();
     }
 
     public Object execute(final String line) throws Exception {

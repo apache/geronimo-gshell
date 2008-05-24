@@ -19,40 +19,26 @@
 
 package org.apache.geronimo.gshell.io;
 
-import java.io.PrintWriter;
-import java.io.IOException;
-
 import jline.ConsoleReader;
-import jline.Terminal;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Helper to prompt a user for information.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=PromptReader.class, instantiationStrategy="per-lookup")
 public class PromptReader
-    implements Initializable
 {
-    @Requirement
-    private Terminal terminal;
-
-    @Requirement
-    private IO io;
-
     private char mask = '*';
 
-    private ConsoleReader reader;
+    private final ConsoleReader reader;
 
-    public PromptReader() {}
-    
-    public PromptReader(final Terminal terminal, final IO io) {
-        this.terminal = terminal;
-        this.io = io;
+    public PromptReader(final IO io) throws IOException {
+        assert io != null;
+        
+        this.reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/ null, io.getTerminal());
     }
 
     public char getMask() {
@@ -61,15 +47,6 @@ public class PromptReader
 
     public void setMask(final char mask) {
         this.mask = mask;
-    }
-
-    public void initialize() throws InitializationException {
-        try {
-            reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/ null, terminal);
-        }
-        catch (IOException e) {
-            throw new InitializationException("Failed to create reader", e);
-        }
     }
 
     public String readLine(final String prompt) throws IOException {

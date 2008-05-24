@@ -20,8 +20,9 @@
 package org.apache.geronimo.gshell;
 
 import jline.History;
-import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.application.ApplicationContext;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -29,7 +30,6 @@ import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.FileHistory;
 import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.console.TerminalInfo;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
@@ -60,6 +60,9 @@ public class DefaultShell
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
+    private ApplicationManager applicationManager;
+
+    @Requirement
     private ShellInfo shellInfo;
 
     @Requirement
@@ -69,33 +72,29 @@ public class DefaultShell
     private CommandExecutor executor;
 
     @Requirement
-    private TerminalInfo termInfo;
-
-    @Requirement
-    private Terminal terminal;
-
-    @Requirement
-    private Environment env;
-
-    @Requirement
-    private IO io;
-
-    @Requirement
     private History history;
 
-	private Prompter prompter;
+    private Environment env;
+
+    private IO io;
+
+    private Prompter prompter;
 
     private ErrorHandler errorHandler;
 
     public DefaultShell() {}
     
-    public DefaultShell(final ShellInfo shellInfo, final Branding branding, final CommandExecutor executor, final Terminal terminal, final Environment env, final IO io, final History history) {
+    public DefaultShell(final ApplicationManager applicationManager, final ShellInfo shellInfo, final Branding branding, final CommandExecutor executor, final History history) {
+        assert applicationManager != null;
+        assert shellInfo != null;
+        assert branding != null;
+        assert executor != null;
+        assert history != null;
+
+        this.applicationManager = applicationManager;
         this.shellInfo = shellInfo;
         this.branding = branding;
         this.executor = executor;
-        this.terminal = terminal;
-        this.env = env;
-        this.io = io;
         this.history = history;
     }
 
@@ -108,6 +107,13 @@ public class DefaultShell
     }
 
     public void initialize() throws InitializationException {
+        assert applicationManager != null;
+        
+        // Get IO/Env from application context
+        ApplicationContext context = applicationManager.getContext();
+        this.io = context.getIo();
+        this.env = context.getEnvironment();
+        
         //
         // FIXME: This won't work as desired, as this shell instance is not yet registered, so if a profile
         //        tries to run something that needs the shell instance... well, loopsvile.
@@ -152,6 +158,7 @@ public class DefaultShell
 
         log.debug("Starting interactive console; args: {}", args);
 
+        assert branding != null;
         loadUserScript(branding.getInteractiveScriptName());
 
         // Setup 2 final refs to allow our executor to pass stuff back to us
@@ -179,7 +186,7 @@ public class DefaultShell
         };
 
         // Ya, bust out the sexy JLine console baby!
-        JLineConsole console = new JLineConsole(executor, io, terminal);
+        JLineConsole console = new JLineConsole(executor, io);
 
         // Setup the prompt
         console.setPrompter(getPrompter());
@@ -230,7 +237,10 @@ public class DefaultShell
     protected Prompter createPrompter() {
         return new Prompter() {
             Renderer renderer = new Renderer();
+            
             public String prompt() {
+                assert shellInfo != null;
+
                 String userName = shellInfo.getUserName();
                 String hostName = shellInfo.getLocalHost().getHostName();
 
@@ -303,14 +313,14 @@ public class DefaultShell
 
             for (StackTraceElement e : trace) {
                 buff.append("        @|bold at| ").
-                        append(e.getClassName()).
-                        append(".").
-                        append(e.getMethodName()).
-                        append(" (@|bold ");
+                    append(e.getClassName()).
+                    append(".").
+                    append(e.getMethodName()).
+                    append(" (@|bold ");
 
                 buff.append(e.isNativeMethod() ? "Native Method" :
-                            (e.getFileName() != null && e.getLineNumber() != -1 ? e.getFileName() + ":" + e.getLineNumber() :
-                                (e.getFileName() != null ? e.getFileName() : "Unknown Source")));
+                        (e.getFileName() != null && e.getLineNumber() != -1 ? e.getFileName() + ":" + e.getLineNumber() :
+                            (e.getFileName() != null ? e.getFileName() : "Unknown Source")));
 
                 buff.append("|)");
 
@@ -326,6 +336,8 @@ public class DefaultShell
     //
 
     private void loadProfileScripts() throws Exception {
+        assert branding != null;
+
         // Load profile scripts if they exist
         loadSharedScript(branding.getProfileScriptName());
         loadUserScript(branding.getProfileScriptName());

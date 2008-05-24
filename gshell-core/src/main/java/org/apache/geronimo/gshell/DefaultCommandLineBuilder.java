@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell;
 
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.logging.LoggingVisitor;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
@@ -41,19 +42,27 @@ import java.io.StringReader;
  * @version $Rev$ $Date$
  */
 @Component(role=CommandLineBuilder.class)
-public class DefaultCommandLineBuilder implements CommandLineBuilder
+public class DefaultCommandLineBuilder
+    implements CommandLineBuilder
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
     private PlexusContainer container;
 
-    private CommandLineParser parser = new CommandLineParser();
+    @Requirement
+    private ApplicationManager applicationManager;
+
+    private final CommandLineParser parser = new CommandLineParser();
 
     public DefaultCommandLineBuilder() {}
     
-    public DefaultCommandLineBuilder(final PlexusContainer container) {
+    public DefaultCommandLineBuilder(final PlexusContainer container, final ApplicationManager applicationManager) {
+        assert container != null;
+        assert applicationManager != null;
+
         this.container = container;
+        this.applicationManager = applicationManager;
     }
 
     private ASTCommandLine parse(final String input) throws ParseException {
@@ -85,8 +94,11 @@ public class DefaultCommandLineBuilder implements CommandLineBuilder
         }
 
         try {
+            assert container != null;
             CommandExecutor executor = (CommandExecutor) container.lookup(CommandExecutor.class);
-            Environment env = (Environment) container.lookup(Environment.class);
+
+            assert applicationManager != null;
+            Environment env = applicationManager.getContext().getEnvironment();
 
             final ExecutingVisitor visitor = new ExecutingVisitor(executor, env);
             final ASTCommandLine root = parse(commandLine);

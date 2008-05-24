@@ -42,14 +42,12 @@ public class DefaultBranding
     @Requirement
     private VersionLoader versionLoader;
 
-    @Requirement
-    private Terminal terminal;
-
     public DefaultBranding() {}
     
-    public DefaultBranding(final VersionLoader versionLoader, final Terminal terminal) {
+    public DefaultBranding(final VersionLoader versionLoader) {
+        assert versionLoader != null;
+
         this.versionLoader = versionLoader;
-        this.terminal = terminal;
     }
 
     public String getName() {
@@ -76,6 +74,8 @@ public class DefaultBranding
     }
 
     public String getVersion() {
+        assert versionLoader != null;
+
         return versionLoader.getVersion();
     }
 
@@ -132,8 +132,12 @@ public class DefaultBranding
         out.println();
         out.println("Type '@|bold help|' for more information.");
 
+        //
+        // HACK: Need a better way to abstract the terminal here
+        //
+        
         // If we can't tell, or have something bogus then use a reasonable default
-        int width = terminal.getTerminalWidth();
+        int width = Terminal.getTerminal().getTerminalWidth();
         if (width < 1) {
             width = 80;
         }

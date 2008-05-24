@@ -19,16 +19,12 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import jline.ConsoleReader;
-import jline.Terminal;
-
+import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.ansi.ANSI;
+
+import java.io.PrintWriter;
 
 /**
  * Clear the terminal screen.
@@ -39,11 +35,8 @@ import org.apache.geronimo.gshell.ansi.ANSI;
 public class ClearCommand
     extends CommandSupport
 {
-    @Requirement
-    private Terminal terminal;
-    
     protected Object doExecute() throws Exception {
-        ConsoleReader reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/ null, terminal);
+        ConsoleReader reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/ null, io.getTerminal());
         
         if (!ANSI.isEnabled()) {
         	io.out.println("ANSI is not enabled.  The clear command is not functional");
