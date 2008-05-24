@@ -31,6 +31,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * Resolve repository artifacts.
@@ -45,51 +46,60 @@ public class ResolveCommand
     private ArtifactManager artifactManager;
 
     //
-    // TODO: Consider using <g>:<a>:<v>:<s>:<t> notation instead of this?
+    // TODO: Consider using <g>:<a>:<v>:<s>:<t> notation instead of, or in addtion this?
     //
     
-    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, metaVar="GROUP-ID", required=true, description="Specify the artifact's groupId")
+    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, metaVar="GROUP-ID", required=true, description="Specify the groupId")
     private String groupId;
 
-    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, metaVar="ARTIFACT-ID", required=true, description="Specify the artifact's artifactId")
+    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, metaVar="ARTIFACT-ID", required=true, description="Specify the artifactId")
     private String artifactId;
 
-    @Option(name="-v", aliases={"--version"}, argumentRequired=true, metaVar="VERSION", required=true, description="Specify the artifact's version")
+    @Option(name="-v", aliases={"--version"}, argumentRequired=true, metaVar="VERSION", required=true, description="Specify the version")
     private String version;
 
-    @Option(name="-t", aliases={"--type"}, argumentRequired=true, metaVar="TYPE", description="Specify the artifact's type")
+    @Option(name="-t", aliases={"--type"}, argumentRequired=true, metaVar="TYPE", description="Specify the type")
     private String type = "jar";
 
     @Option(name="-s", aliases={"--scope"}, argumentRequired=true, metaVar="SCOPE", description="Specify the resolution scope")
     private String scope;
+
+    @Option(name="-T", aliases={"--transitive"}, description="Resolve transitive dependencies")
+    private boolean transitive;
 
     protected Object doExecute() throws Exception {
         assert artifactManager != null;
 
         ArtifactFactory factory = artifactManager.getArtifactFactory();
 
-        ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+        Artifact artifact = factory.createArtifact(groupId, artifactId, version, scope, type);
 
-        //
-        // TODO: Add support for --transitive
-        //
+        ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 
         //
         // TODO: Update the AM API to use this as originating when artifact == null and artifact dependencies != null
         //
-        
-        Artifact originating = factory.createArtifact("dummy", "dummy", "dummy", null, "jar");
-        request.setArtifact(originating);
 
-        if (scope != null) {
-            request.setFilter(new ScopeArtifactFilter(scope));
+        if (transitive) {
+            io.info("Resolving artifact (transitively): {}", artifact);
+
+            Artifact originating = factory.createArtifact("dummy", "dummy", "dummy", null, "jar");
+            request.setArtifact(originating);
+            request.setArtifactDependencies(Collections.singleton(artifact));
+        }
+        else {
+            io.info("Resolving artifact: {}", artifact);
+
+            request.setArtifact(artifact);
+            Set<Artifact> deps = Collections.emptySet();
+            request.setArtifactDependencies(deps);
         }
 
-        Artifact artifact = factory.createArtifact(groupId, artifactId, version, scope, type);
-
-        io.info("Resolving artifact: {}", artifact);
-        
-        request.setArtifactDependencies(Collections.singleton(artifact));
+        if (scope != null) {
+            io.debug("Using scope: {}", scope);
+            
+            request.setFilter(new ScopeArtifactFilter(scope));
+        }
 
         ArtifactResolutionResult result = artifactManager.resolve(request);
 
