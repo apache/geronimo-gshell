@@ -32,7 +32,7 @@
 
     <artifactId>gshell-assembly</artifactId>
     <name>GShell Assembly</name>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <description>
         The GShell assembly

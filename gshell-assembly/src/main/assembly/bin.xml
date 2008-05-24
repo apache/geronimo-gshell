@@ -68,7 +68,6 @@
             <useStrictFiltering>true</useStrictFiltering>
             <excludes>
                 <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
-                <exclude>org.apache.geronimo.gshell:gshell-assembly</exclude>
                 <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
             </excludes>
         </dependencySet>
