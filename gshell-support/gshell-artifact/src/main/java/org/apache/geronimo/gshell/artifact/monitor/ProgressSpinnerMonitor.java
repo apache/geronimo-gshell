@@ -36,9 +36,9 @@ public class ProgressSpinnerMonitor
 {
     private static final String CARRIAGE_RETURN = "\r";
 
-    private IO io;
+    private final IO io;
 
-    private ProgressSpinner spinner = new ProgressSpinner();
+    private final ProgressSpinner spinner = new ProgressSpinner();
 
     private long complete;
 
@@ -63,6 +63,9 @@ public class ProgressSpinnerMonitor
         }
     }
 
+    /*
+    NOTE: Seems liked this is not always called, so use transferStarted to display the banner
+
     public void transferInitiated(final TransferEvent event) {
         assert event != null;
 
@@ -72,12 +75,42 @@ public class ProgressSpinnerMonitor
 
         spinner.reset();
 
-        String message = event.getRequestType() == REQUEST_PUT ? "Uploading" : "Downloading";
+        String type = event.getRequestType() == REQUEST_PUT ? "Uploading" : "Downloading";
         String url = event.getWagon().getRepository().getUrl();
 
-        println(message + ": " + url + "/" + event.getResource().getName());
+        String message = type + ": " + url + "/" + event.getResource().getName();
+
+        log.debug(message);
+
+        println(message);
     }
+    */
+
+    //
+    // TODO: May actually want to use a little timmer thread to make this spin more often for better user feedback
+    //       that we are still working, then use the event to update the message.  Or really, put the timer in
+    //       the spinner impl, and then just update the status message
+    //
     
+    public void transferStarted(final TransferEvent event) {
+        assert event != null;
+
+        super.transferStarted(event);
+
+        complete = 0;
+
+        spinner.reset();
+
+        String type = event.getRequestType() == REQUEST_PUT ? "Uploading" : "Downloading";
+        String url = event.getWagon().getRepository().getUrl();
+
+        String message = type + ": " + url + "/" + event.getResource().getName();
+
+        log.debug(message);
+
+        println(message);
+    }
+
     public void transferProgress(final TransferEvent event, final byte[] buffer, final int length) {
         assert event != null;
 
@@ -95,6 +128,8 @@ public class ProgressSpinnerMonitor
             message = complete + "/" + (total == UNKNOWN_LENGTH ? "?" : total + "b");
         }
 
+        log.debug(message);
+        
         print(spinner.spin(message));
     }
 }
