@@ -23,6 +23,10 @@ import java.net.URI;
 
 import org.apache.mina.common.IoHandler;
 
+//
+// FIXME: This won't compile under Java 6 due to the T. and S. bits (trying to select from a type variable)
+//
+
 /**
  * Factory for producing client and server transport implementations.
  *
