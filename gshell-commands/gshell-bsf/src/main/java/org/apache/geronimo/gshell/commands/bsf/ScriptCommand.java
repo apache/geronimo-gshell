@@ -105,7 +105,7 @@ public class ScriptCommand
         	File pathFile = new File(path);
         	URL pathURL;
         	if (pathFile.isFile()) {
-        		pathURL = pathFile.toURL();
+        		pathURL = pathFile.toURI().toURL();
         	} else {
         		URI pathURI = new URI(path);
         		pathURL = pathURI.toURL();
