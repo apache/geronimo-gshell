@@ -35,21 +35,19 @@ import java.io.File;
 public class Branding
     extends ModelElement
 {
-    //
-    // TODO: Provide some linkage to parent
-    //
-
     private transient Application parent;
 
     private Properties properties;
 
+    //
+    // FIXME: Probably need to move some of these up to the Application descriptor?
+    //
+    
     private String name;
 
     private String displayName;
 
     private String programName;
-
-    private String version;
 
     private String userDirectory;
 
@@ -115,22 +113,6 @@ public class Branding
         this.programName = programName;
     }
 
-    public String getVersion() {
-        if (version == null) {
-            return getParent().getVersion();
-        }
-
-        return version;
-    }
-
-    public void setVersion(final String version) {
-        this.version = version;
-    }
-
-    //
-    // TODO: Add type File accessors, need to rename these, so the accessor can be *File or *Directory
-    //
-
     public String getUserDirectory() {
         if (userDirectory == null) {
             File userHome = new File(System.getProperty("user.home"));
@@ -166,14 +148,6 @@ public class Branding
         return profileScriptName;
     }
 
-    public File getUserProfileScriptFile() {
-        return new File(getUserDirectory(), getProfileScriptName());
-    }
-
-    public File getSharedProfileScriptFile() {
-        return new File(getSharedDirectory(), getProfileScriptName());
-    }
-
     public void setProfileScriptName(final String profileScriptName) {
         this.profileScriptName = profileScriptName;
     }
@@ -200,10 +174,6 @@ public class Branding
         }
 
         return interactiveScriptName;
-    }
-
-    public File getInteractiveScriptFile() {
-        return new File(getUserDirectory(), getInteractiveScriptName());
     }
 
     public void setInteractiveScriptName(final String interactiveScriptName) {

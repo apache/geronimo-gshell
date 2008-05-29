@@ -30,7 +30,6 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.settings.SettingsLocator;
 import org.codehaus.plexus.classworlds.ClassWorld;
@@ -219,21 +218,19 @@ public class Main
             builder.setApplication(application);
 
             //
-            // HACK: --help and --version need access to the application's branding information, so we have to handle these options late
+            // HACK: --help and --version need access to the application's information, so we have to handle these options late
             //
+            
             if (help|version) {
-                Branding branding = application.getBranding();
-
                 if (help) {
-                    io.out.println(branding.getProgramName() + " [options] <command> [args]");
+                    io.out.println(application.getBranding().getProgramName() + " [options] <command> [args]");
                     io.out.println();
 
                     Printer printer = new Printer(clp);
                     printer.printUsage(io.out);
                 }
-
-                if (version) {
-                    io.out.println(branding.getVersion());
+                else if (version) {
+                    io.out.println(application.getVersion());
                 }
 
                 io.out.println();

@@ -56,7 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DefaultShell
     implements InteractiveShell, Initializable
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
     private ApplicationManager applicationManager;
@@ -156,7 +156,7 @@ public class DefaultShell
         log.debug("Starting interactive console; args: {}", args);
 
         assert branding != null;
-        loadUserScript(branding.getInteractiveScriptFile());
+        loadUserScript(branding.getInteractiveScriptName());
 
         // Setup 2 final refs to allow our executor to pass stuff back to us
         final AtomicReference<ExitNotification> exitNotifHolder = new AtomicReference<ExitNotification>();
@@ -340,8 +340,8 @@ public class DefaultShell
         assert branding != null;
 
         // Load profile scripts if they exist
-        loadSharedScript(branding.getSharedProfileScriptFile());
-        loadUserScript(branding.getUserProfileScriptFile());
+        loadSharedScript(branding.getProfileScriptName());
+        loadUserScript(branding.getProfileScriptName());
     }
 
     private void loadScript(final File file) throws Exception {
@@ -366,8 +366,10 @@ public class DefaultShell
         }
     }
 
-    private void loadUserScript(final File file) throws Exception {
-        assert file != null;
+    private void loadUserScript(final String fileName) throws Exception {
+        assert fileName != null;
+
+        File file = new File(branding.getUserDirectory(), fileName);
 
         if (file.exists()) {
             log.debug("Loading user-script: {}", file);
@@ -379,8 +381,10 @@ public class DefaultShell
         }
     }
 
-    private void loadSharedScript(final File file) throws Exception {
-        assert file != null;
+    private void loadSharedScript(final String fileName) throws Exception {
+        assert fileName != null;
+
+        File file = new File(branding.getUserDirectory(), fileName);
 
         if (file.exists()) {
             log.debug("Loading shared-script: {}", file);
@@ -391,5 +395,4 @@ public class DefaultShell
             log.debug("Shared script is not present: {}", file);
         }
     }
-
 }
