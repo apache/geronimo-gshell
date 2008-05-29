@@ -58,7 +58,7 @@ public class Launcher
         setProperty("classworlds.conf", classworldsConf.getCanonicalPath());
 
         File log4jConf = getLog4jConf();
-        setProperty("log4j.configuration", log4jConf.toURI().toURL().toString());
+        setProperty("log4j.configuration", log4jConf.toURI().toURL().toExternalForm());
 
         // Delegate to the Classworlds launcher to finish booting
         org.codehaus.plexus.classworlds.launcher.Launcher.main(args);
@@ -94,7 +94,7 @@ public class Launcher
 
         if (path == null) {
             String jarPath = Launcher.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-            jarPath = java.net.URLDecoder.decode(jarPath);
+            jarPath = java.net.URLDecoder.decode(jarPath, "UTF-8");
 
             // The jar containing this class is expected to be in <gshell.home>/lib/boot
             File bootJar = new File(jarPath);
