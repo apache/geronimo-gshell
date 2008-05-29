@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandSupport;
@@ -34,6 +33,7 @@ import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NotRegisteredException;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -46,13 +46,13 @@ public class HelpCommand
     extends CommandSupport
 {
     @Requirement
+    private ApplicationManager applicationManager;
+
+    @Requirement
     private CommandRegistry commandRegistry;
 
     @Requirement
     private LayoutManager layoutManager;
-
-    @Requirement
-    private Branding branding;
 
     @Argument(metaVar="COMMAND", description="Display help for COMMAND")
     private String command;
@@ -62,10 +62,9 @@ public class HelpCommand
     public HelpCommand() {
     }
 
-    public HelpCommand(CommandRegistry commandRegistry, LayoutManager layoutManager, Branding branding) {
+    public HelpCommand(CommandRegistry commandRegistry, LayoutManager layoutManager) {
         this.commandRegistry = commandRegistry;
         this.layoutManager = layoutManager;
-        this.branding = branding;
     }
 
     protected Object doExecute() throws Exception {
@@ -82,8 +81,13 @@ public class HelpCommand
     }
 
     private void displayAvailableCommands() throws Exception {
-        io.out.print(branding.getAbout());
-        io.out.println();
+        String about = applicationManager.getContext().getApplication().getBranding().getAboutMessage();
+
+        if (about != null) {
+            io.out.print(about);
+            io.out.println();
+        }
+
         io.out.println("Available commands:");
 
         GroupNode group = layoutManager.getLayout();

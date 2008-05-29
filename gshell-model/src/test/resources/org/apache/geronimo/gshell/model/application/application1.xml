@@ -67,6 +67,17 @@
         </dependencyGroup>
     </dependencyGroups>
 
+    <!--
+    <branding class="org.apache.geronimo.gshell.model.application.TestBranding">
+        <programName>foo</programName>
+        <customThingy>bar</customThingy>
+    </branding>
+    -->
+
+    <branding>
+        <programName>foo</programName>
+    </branding>
+
     <layout>
         <nodes>
             <command>

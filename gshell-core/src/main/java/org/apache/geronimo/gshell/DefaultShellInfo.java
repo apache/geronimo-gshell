@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -44,19 +43,12 @@ public class DefaultShellInfo
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
-    private Branding branding;
-
     private InetAddress localHost;
 
     private File homeDir;
 
     public DefaultShellInfo() {}
     
-    public DefaultShellInfo(final Branding branding) {
-        this.branding = branding;
-    }
-
     public File getHomeDir() {
         if (homeDir == null) {
             throw new IllegalStateException();
@@ -91,7 +83,11 @@ public class DefaultShellInfo
     }
     
     private File detectHomeDir() throws InitializationException {
-        String homePath = branding.getProperty(Branding.HOME);
+        //
+        // FIXME:
+        //
+
+        String homePath = null; // branding.getProperty(Branding.HOME);
 
         if (homePath == null) {
             //

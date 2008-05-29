@@ -51,8 +51,6 @@ public class Application
 
     private Layout layout;
 
-    // TODO: Paths
-
     public LocalRepository getLocalRepository() {
         return localRepository;
     }
@@ -90,21 +88,21 @@ public class Application
     }
 
     public List<Dependency> dependencies() {
-        return dependencies(false);
-    }
-
-    public List<Dependency> dependencies(boolean includeGroups) {
         if (dependencies == null) {
             dependencies = new ArrayList<Dependency>();
         }
 
+        return dependencies;
+    }
+
+    public List<Dependency> dependencies(boolean includeGroups) {
         if (!includeGroups) {
-            return dependencies;
+            return dependencies();
         }
 
         List<Dependency> list = new ArrayList<Dependency>();
 
-        list.addAll(dependencies);
+        list.addAll(dependencies());
 
         for (DependencyGroup group : dependencyGroups()) {
             list.addAll(group.dependencies());
@@ -120,6 +118,10 @@ public class Application
     }
 
     public Branding getBranding() {
+        if (branding == null) {
+            throw new IllegalStateException("Missing 'branding' configuration");
+        }
+        
         return branding;
     }
 
@@ -133,5 +135,17 @@ public class Application
 
     public void setLayout(final Layout layout) {
         this.layout = layout;
+    }
+
+    /**
+     * Link children to their parent when deserializing.
+     */
+    @SuppressWarnings({"UnusedDeclaration"})
+    private Object readResolve() {
+        if (branding != null) {
+            branding.setParent(this);
+        }
+
+        return this;
     }
 }

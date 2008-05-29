@@ -24,20 +24,15 @@ import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.GShellBuilder;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.application.ApplicationLocator;
-import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
+import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.settings.SettingsLocator;
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.DefaultContainerConfiguration;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.util.ArrayList;
@@ -94,7 +89,7 @@ public class Main
     	}
     }
     
-    @Option(name="-d", aliases={"--debug"}, description="Enable DEBUG logging output")
+    @Option(name="-d", aliases={"--debug"}, description="Enable DEBUG output")
     private void setDebug(boolean flag) {
         if (flag) {
             setConsoleLogLevel("DEBUG");
@@ -102,7 +97,15 @@ public class Main
         }
     }
 
-    @Option(name="-v", aliases={"--verbose"}, description="Enable INFO logging output")
+    @Option(name="-X", aliases={"--trace"}, description="Enable TRACE output")
+    private void setTrace(boolean flag) {
+        if (flag) {
+            setConsoleLogLevel("TRACE");
+            io.setVerbosity(IO.Verbosity.DEBUG);
+        }
+    }
+
+    @Option(name="-v", aliases={"--verbose"}, description="Enable INFO output")
     private void setVerbose(boolean flag) {
         if (flag) {
             setConsoleLogLevel("INFO");
@@ -110,7 +113,7 @@ public class Main
         }
     }                                                 
 
-    @Option(name="-q", aliases={"--quiet"}, description="Limit logging output to ERROR")
+    @Option(name="-q", aliases={"--quiet"}, description="Limit output to ERROR")
     private void setQuiet(boolean flag) {
         if (flag) {
             setConsoleLogLevel("ERROR");
@@ -172,15 +175,6 @@ public class Main
         System.setProperty("jline.terminal", type);
     }
 
-    private PlexusContainer createContainer() throws PlexusContainerException {
-        // Boot up the container
-        ContainerConfiguration config = new DefaultContainerConfiguration();
-        config.setName("gshell.core");
-        config.setClassWorld(classWorld);
-
-        return new DefaultPlexusContainer(config);
-    }
-
     public void boot(final String[] args) throws Exception {
         assert args != null;
 
@@ -190,41 +184,6 @@ public class Main
         CommandLineProcessor clp = new CommandLineProcessor(this);
         clp.setStopAtNonOption(true);
         clp.process(args);
-
-        //
-        // HACK: We need the dang branding...
-        //
-
-        Branding branding = null;
-        if (help || version) {
-            PlexusContainer container = createContainer();
-            branding = (Branding) container.lookup(Branding.class);
-        }
-
-        //
-        // TODO: Use methods to handle these...
-        //
-
-        if (help) {
-            io.out.println(branding.getProgramName() + " [options] <command> [args]");
-            io.out.println();
-
-            Printer printer = new Printer(clp);
-            printer.printUsage(io.out);
-
-            io.out.println();
-            io.out.flush();
-
-            System.exit(ExitNotification.DEFAULT_CODE);
-        }
-
-        if (version) {
-            io.out.println(branding.getVersion());
-            io.out.println();
-            io.out.flush();
-
-            System.exit(ExitNotification.DEFAULT_CODE);
-        }
 
         // Setup a refereence for our exit code so our callback thread can tell if we've shutdown normally or not
         final AtomicReference<Integer> codeRef = new AtomicReference<Integer>();
@@ -258,6 +217,30 @@ public class Main
             // Find our application descriptor
             Application application = new ApplicationLocator().locate();
             builder.setApplication(application);
+
+            //
+            // HACK: --help and --version need access to the application's branding information, so we have to handle these options late
+            //
+            if (help|version) {
+                Branding branding = application.getBranding();
+
+                if (help) {
+                    io.out.println(branding.getProgramName() + " [options] <command> [args]");
+                    io.out.println();
+
+                    Printer printer = new Printer(clp);
+                    printer.printUsage(io.out);
+                }
+
+                if (version) {
+                    io.out.println(branding.getVersion());
+                }
+
+                io.out.println();
+                io.out.flush();
+
+                throw new ExitNotification();
+            }
 
             // Build the shell instance
             GShell gshell = builder.build();

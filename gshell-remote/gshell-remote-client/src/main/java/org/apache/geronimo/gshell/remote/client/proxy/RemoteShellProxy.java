@@ -59,8 +59,6 @@ public class RemoteShellProxy
 
     private RemoteHistoryProxy history;
 
-    private RemoteBrandingProxy branding;
-
     public RemoteShellProxy(final RshClient client, final IO io) throws Exception {
         assert client != null;
         assert io != null;
@@ -79,7 +77,6 @@ public class RemoteShellProxy
         env = new RemoteEnvironmentProxy(client);
         shellInfo = new RemoteShellInfoProxy(client);
         history = new RemoteHistoryProxy(client);
-        branding = new RemoteBrandingProxy(client);
 
         // Copy the client's input stream to our outputstream so users see command output
         outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);

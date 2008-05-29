@@ -27,8 +27,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 /**
  * Default implementation of the {@link SettingsManager} component.
  *

@@ -20,9 +20,11 @@
 package org.apache.geronimo.gshell.console;
 
 import jline.History;
-import org.apache.geronimo.gshell.branding.Branding;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,31 +36,27 @@ import java.io.IOException;
  *
  * @version $Rev: 573669 $ $Date: 2007-09-07 11:47:20 -0700 (Fri, 07 Sep 2007) $
  */
-@Component(role=History.class, hint="default")
+@Component(role=History.class, hint="default") // FIXME: should really be "file" here, or rename to DefaultHistory (or sub-class for DefaultHistory support)
 public class FileHistory
     extends History
+    implements Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Requirement
-    private Branding branding;
+    private ApplicationManager applicationManager;
 
     public FileHistory() {}
 
-    public FileHistory(final Branding branding) throws IOException {
-        this.branding = branding;
-
-        initialize();
-    }
-
-    public void initialize() throws IOException {
-        assert branding != null;
-
-        //
-        // FIXME: Branding should just expose getHistoryFile() that handles this
-        //
+    public void initialize() throws InitializationException {
+        assert applicationManager != null;
         
-        setHistoryFile(new File(branding.getUserDirectory(), branding.getHistoryFileName()));
+        try {
+            setHistoryFile(applicationManager.getContext().getApplication().getBranding().getHistoryFile());
+        }
+        catch (IOException e) {
+            throw new InitializationException("Failed to set history file", e);
+        }
     }
 
     public void setHistoryFile(final File file) throws IOException {

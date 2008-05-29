@@ -73,6 +73,10 @@
         </dependencyGroup>
     </dependencyGroups>
 
+    <branding>
+        <name>gshell</name>
+    </branding>
+
     <layout>
         <nodes>
             <command>

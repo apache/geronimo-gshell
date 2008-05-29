@@ -17,9 +17,15 @@
  * under the License.
  */
 
+package org.apache.geronimo.gshell.model.application;
+
 /**
- * Provides muck for branding a GShell application.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-package org.apache.geronimo.gshell.branding;
+public class TestBranding
+    extends Branding
+{
+    private String customThingy;
+}

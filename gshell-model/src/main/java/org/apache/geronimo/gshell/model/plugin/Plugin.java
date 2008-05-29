@@ -69,21 +69,21 @@ public class Plugin
     }
 
     public List<Dependency> dependencies() {
-        return dependencies(false);
-    }
-
-    public List<Dependency> dependencies(boolean includeGroups) {
         if (dependencies == null) {
             dependencies = new ArrayList<Dependency>();
         }
 
+        return dependencies;
+    }
+
+    public List<Dependency> dependencies(boolean includeGroups) {
         if (!includeGroups) {
-            return dependencies;
+            return dependencies();
         }
 
         List<Dependency> list = new ArrayList<Dependency>();
 
-        list.addAll(dependencies);
+        list.addAll(dependencies());
 
         for (DependencyGroup group : dependencyGroups()) {
             list.addAll(group.dependencies());

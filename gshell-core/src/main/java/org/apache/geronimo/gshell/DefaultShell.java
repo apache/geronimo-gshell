@@ -23,14 +23,13 @@ import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationContext;
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.branding.Branding;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
-import org.apache.geronimo.gshell.console.FileHistory;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.Shell;
@@ -66,9 +65,6 @@ public class DefaultShell
     private ShellInfo shellInfo;
 
     @Requirement
-    private Branding branding;
-
-    @Requirement
     private CommandExecutor executor;
 
     @Requirement
@@ -78,22 +74,22 @@ public class DefaultShell
 
     private IO io;
 
+    private Branding branding;
+
     private Prompter prompter;
 
     private ErrorHandler errorHandler;
 
     public DefaultShell() {}
     
-    public DefaultShell(final ApplicationManager applicationManager, final ShellInfo shellInfo, final Branding branding, final CommandExecutor executor, final History history) {
+    public DefaultShell(final ApplicationManager applicationManager, final ShellInfo shellInfo, final CommandExecutor executor, final History history) {
         assert applicationManager != null;
         assert shellInfo != null;
-        assert branding != null;
         assert executor != null;
         assert history != null;
 
         this.applicationManager = applicationManager;
         this.shellInfo = shellInfo;
-        this.branding = branding;
         this.executor = executor;
         this.history = history;
     }
@@ -109,10 +105,11 @@ public class DefaultShell
     public void initialize() throws InitializationException {
         assert applicationManager != null;
         
-        // Get IO/Env from application context
+        // Dereference some bits from the applciation context
         ApplicationContext context = applicationManager.getContext();
         this.io = context.getIo();
         this.env = context.getEnvironment();
+        this.branding = context.getApplication().getBranding();
         
         //
         // FIXME: This won't work as desired, as this shell instance is not yet registered, so if a profile
@@ -159,7 +156,7 @@ public class DefaultShell
         log.debug("Starting interactive console; args: {}", args);
 
         assert branding != null;
-        loadUserScript(branding.getInteractiveScriptName());
+        loadUserScript(branding.getInteractiveScriptFile());
 
         // Setup 2 final refs to allow our executor to pass stuff back to us
         final AtomicReference<ExitNotification> exitNotifHolder = new AtomicReference<ExitNotification>();
@@ -195,14 +192,18 @@ public class DefaultShell
         console.setErrorHandler(getErrorHandler());
 
         // Hook up a nice history file (we gotta hold on to the history object at some point so the 'history' command can get to it) 
-        if (history == null) {
-            history = new FileHistory(branding);
-        }
         console.setHistory(history);
 
         // Unless the user wants us to shut up, then display a nice welcome banner
         if (!io.isQuiet()) {
-            io.out.println(branding.getWelcomeBanner());
+            String message = branding.getWelcomeMessage();
+            if (message != null) {
+                io.out.println(message);
+            }
+
+            //
+            // TODO: Render a nice line here if the branding has some property configured to enable it (move that bit out of branding's job)
+            //
         }
 
         // Check if there are args, and run them and then enter interactive
@@ -339,8 +340,8 @@ public class DefaultShell
         assert branding != null;
 
         // Load profile scripts if they exist
-        loadSharedScript(branding.getProfileScriptName());
-        loadUserScript(branding.getProfileScriptName());
+        loadSharedScript(branding.getSharedProfileScriptFile());
+        loadUserScript(branding.getUserProfileScriptFile());
     }
 
     private void loadScript(final File file) throws Exception {
@@ -365,10 +366,8 @@ public class DefaultShell
         }
     }
 
-    private void loadUserScript(final String fileName) throws Exception {
-        assert fileName != null;
-
-        File file = new File(branding.getUserDirectory(), fileName);
+    private void loadUserScript(final File file) throws Exception {
+        assert file != null;
 
         if (file.exists()) {
             log.debug("Loading user-script: {}", file);
@@ -380,10 +379,8 @@ public class DefaultShell
         }
     }
 
-    private void loadSharedScript(final String fileName) throws Exception {
-        assert fileName != null;
-
-        File file = new File(branding.getSharedDirectory(), fileName);
+    private void loadSharedScript(final File file) throws Exception {
+        assert file != null;
 
         if (file.exists()) {
             log.debug("Loading shared-script: {}", file);
