@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * ???
+ * Provides the ability to execute commands.
  *
  * @version $Rev$ $Date$
  */
