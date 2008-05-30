@@ -111,7 +111,13 @@ public class DefaultArtifactManager
 
         log.debug("Validating result: {}", result);
 
-        if (/* TODO: detect failure */ false) {
+        if (result.hasErrorArtifactExceptions() ||
+            result.hasCircularDependencyExceptions() ||
+            result.hasMetadataResolutionExceptions() ||
+            result.hasVersionRangeViolations() ||
+            !result.getMissingArtifacts().isEmpty())
+        {
+            // Puke
             throw new ResolutionException(request, result);
         }
 
