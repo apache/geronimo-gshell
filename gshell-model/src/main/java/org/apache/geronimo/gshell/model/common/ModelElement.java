@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
  */
 public abstract class ModelElement
 {
+    @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }

@@ -43,7 +43,8 @@ public class Dependency
     }
 
     // Return configuration detals from the group if not directly configured
-    
+
+    @Override
     public String getGroupId() {
         String tmp = super.getGroupId();
 
@@ -54,6 +55,7 @@ public class Dependency
         return tmp;
     }
 
+    @Override
     public String getArtifactId() {
         String tmp = super.getArtifactId();
 
@@ -64,6 +66,7 @@ public class Dependency
         return tmp;
     }
 
+    @Override
     public String getClassifier() {
         String tmp = super.getClassifier();
 
@@ -74,6 +77,7 @@ public class Dependency
         return tmp;
     }
 
+    @Override
     public String getType() {
         String tmp = super.getType();
 
@@ -88,6 +92,7 @@ public class Dependency
         return tmp;
     }
 
+    @Override
     public String getVersion() {
         String tmp = super.getVersion();
 
