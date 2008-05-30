@@ -67,53 +67,53 @@ public class GShellArtifactResolver
         delegate.resolve(artifact, repositoryManager.selectRemoteRepositories(remoteRepositories), localRepository);
     }
 
-    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact originatingArtifact, List<ArtifactRepository> remoteRepositories, ArtifactRepository localRepository, ArtifactMetadataSource source) throws ArtifactResolutionException, ArtifactNotFoundException {
+    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact artifact, List<ArtifactRepository> remoteRepositories, ArtifactRepository localRepository, ArtifactMetadataSource source) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;
         assert repositoryManager != null;
         
-        return delegate.resolveTransitively(artifacts, originatingArtifact, repositoryManager.selectRemoteRepositories(remoteRepositories), localRepository, source);
+        return delegate.resolveTransitively(artifacts, artifact, repositoryManager.selectRemoteRepositories(remoteRepositories), localRepository, source);
     }
 
-    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact originatingArtifact, List<ArtifactRepository> remoteRepositories, ArtifactRepository localRepository, ArtifactMetadataSource source, List<ResolutionListener> listeners) throws ArtifactResolutionException, ArtifactNotFoundException {
+    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact artifact, List<ArtifactRepository> remoteRepositories, ArtifactRepository localRepository, ArtifactMetadataSource source, List<ResolutionListener> listeners) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;
         assert repositoryManager != null;
         
-        return delegate.resolveTransitively(artifacts, originatingArtifact, repositoryManager.selectRemoteRepositories(remoteRepositories), localRepository, source, listeners);
+        return delegate.resolveTransitively(artifacts, artifact, repositoryManager.selectRemoteRepositories(remoteRepositories), localRepository, source, listeners);
     }
 
-    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact originatingArtifact, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter) throws ArtifactResolutionException, ArtifactNotFoundException {
+    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact artifact, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;
         assert repositoryManager != null;
         
-        return delegate.resolveTransitively(artifacts, originatingArtifact, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter);
+        return delegate.resolveTransitively(artifacts, artifact, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter);
     }
 
-    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact originatingArtifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source) throws ArtifactResolutionException, ArtifactNotFoundException {
+    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact artifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;
         assert repositoryManager != null;
         
-        return delegate.resolveTransitively(artifacts, originatingArtifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source);
+        return delegate.resolveTransitively(artifacts, artifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source);
     }
 
-    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact originatingArtifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter) throws ArtifactResolutionException, ArtifactNotFoundException {
+    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact artifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;
         assert repositoryManager != null;
         
-        return delegate.resolveTransitively(artifacts, originatingArtifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter);
+        return delegate.resolveTransitively(artifacts, artifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter);
     }
 
-    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact originatingArtifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter, List<ResolutionListener> listeners) throws ArtifactResolutionException, ArtifactNotFoundException {
+    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact artifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter, List<ResolutionListener> listeners) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;
         assert repositoryManager != null;
         
-        return delegate.resolveTransitively(artifacts, originatingArtifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter, listeners);
+        return delegate.resolveTransitively(artifacts, artifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter, listeners);
     }
 
-    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact originatingArtifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter, List<ResolutionListener> listeners, List<ConflictResolver> conflictResolvers) throws ArtifactResolutionException, ArtifactNotFoundException {
+    public ArtifactResolutionResult resolveTransitively(Set<Artifact> artifacts, Artifact artifact, Map managedVersions, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter, List<ResolutionListener> listeners, List<ConflictResolver> conflictResolvers) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;
         assert repositoryManager != null;
         
-        return delegate.resolveTransitively(artifacts, originatingArtifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter, listeners, conflictResolvers);
+        return delegate.resolveTransitively(artifacts, artifact, managedVersions, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories), source, filter, listeners, conflictResolvers);
     }
 
     public void resolveAlways(Artifact artifact, List<ArtifactRepository> remoteRepositories, ArtifactRepository localRepository) throws ArtifactResolutionException, ArtifactNotFoundException {
