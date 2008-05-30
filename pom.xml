@@ -332,8 +332,20 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>gshell-command-api</artifactId>
+                <groupId>org.apache.geronimo.gshell.api</groupId>
+                <artifactId>gshell-command</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.api</groupId>
+                <artifactId>gshell-command-annotation</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.api</groupId>
+                <artifactId>gshell-shell</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
             
@@ -438,6 +450,13 @@
                 <artifactId>gshell-diet-log4j</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
+            
+            <!-- FIXME: Remove me!!!! -->
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-command-api</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -461,7 +480,7 @@
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
         <module>gshell-model</module>
-        <module>gshell-command-api</module>
+        <module>gshell-api</module>
         <module>gshell-plugin</module>
         <module>gshell-parser</module>
         <module>gshell-core</module>

@@ -21,51 +21,26 @@
 <!-- $Rev$ $Date$ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+    
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.api</groupId>
+        <artifactId>gshell-api</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
-
-    <artifactId>gshell-core</artifactId>
-    <name>GShell Core</name>
+    
+    <artifactId>gshell-shell</artifactId>
+    <name>GShell API :: Shell</name>
 
     <description>
-        Provides the core of what is GShell ;-)
+        Profides the inteface for shells.
     </description>
-
+    
     <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-plexus</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-expr</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.geronimo.gshell.api</groupId>
             <artifactId>gshell-command</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.api</groupId>
-            <artifactId>gshell-shell</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-parser</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-plugin</artifactId>
         </dependency>
     </dependencies>
 
