@@ -58,7 +58,7 @@ public class DefaultSettingsManager
 
         // Validate the configuration
         config.validate();
-        
+
         Settings settings = config.getSettings();
         if (settings != null) {
             configure(settings);
@@ -72,6 +72,8 @@ public class DefaultSettingsManager
     private void configure(final Settings settings) throws Exception {
         assert settings != null;
 
+        // TODO: Add settings interpolation here
+        
         // Setup remote repositories
         for (RemoteRepository repo : settings.remoteRepositories()) {
             artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());

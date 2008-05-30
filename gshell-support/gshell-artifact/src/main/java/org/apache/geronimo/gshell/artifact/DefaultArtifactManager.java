@@ -25,6 +25,7 @@ import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -88,6 +89,13 @@ public class DefaultArtifactManager
 
         if (request.getMetadataSource() == null) {
             request.setMetadataSource(artifactMetadataSource);
+        }
+
+        // If there is no artifact, then assume we want to do some full transitive resolve and install a dummy artifact
+        Artifact originating = request.getArtifact();
+        if (originating == null) {
+            originating = artifactFactory.createArtifact("dummy", "dummy", "dummy", null, "jar");
+            request.setArtifact(originating);
         }
 
         log.debug("Resolving request: {}", request);

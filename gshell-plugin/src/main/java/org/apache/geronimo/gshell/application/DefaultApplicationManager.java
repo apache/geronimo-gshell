@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
 import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
@@ -72,7 +73,10 @@ public class DefaultApplicationManager
 
     @Requirement
     private ArtifactManager artifactManager;
-    
+
+    @Requirement
+    private SettingsManager settingsManager;
+
     private GShellPlexusContainer parentContainer;
 
     private GShellPlexusContainer container;
@@ -107,15 +111,7 @@ public class DefaultApplicationManager
         // Validate the configuration
         config.validate();
 
-        Application application = config.getApplication();
-        log.debug("Application ID: {}", application.getId());
-        log.trace("Application descriptor: {}", application);
-
-        // Apply artifact manager configuration settings for application
-        configureArtifactManager(application);
-
-        // Create the application container
-        container = createContainer(application);
+        configure(config.getApplication());
 
         // Create a new context
         applicationContext = new ApplicationContext() {
@@ -131,6 +127,21 @@ public class DefaultApplicationManager
                 return config.getApplication();
             }
         };
+    }
+
+    private void configure(final Application application) throws Exception {
+        assert application != null;
+
+        // TODO: Add application interpolation here, include settings properties
+        
+        log.debug("Application ID: {}", application.getId());
+        log.trace("Application descriptor: {}", application);
+
+        // Apply artifact manager configuration settings for application
+        configureArtifactManager(application);
+
+        // Create the application container
+        container = createContainer(application);
     }
 
     private void configureArtifactManager(final Application application) throws Exception {
@@ -187,18 +198,15 @@ public class DefaultApplicationManager
     private List<URL> createClassPath(final Application application) throws Exception {
         assert application != null;
 
-        ArtifactFactory factory = artifactManager.getArtifactFactory();
-
-        Artifact originating = factory.createArtifact("dummy", "dummy", "dummy", null, "jar");
-
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
-        request.setArtifact(originating);
         request.setFilter(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         List<Dependency> dependencies = application.dependencies(true); // include groups
 
         if (!dependencies.isEmpty()) {
+            ArtifactFactory factory = artifactManager.getArtifactFactory();
+
             log.debug("Application dependencies:");
 
             for (Dependency dep : dependencies) {
