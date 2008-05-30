@@ -25,13 +25,13 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.api</groupId>
+        <artifactId>gshell-api</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-command-api</artifactId>
-    <name>GShell Command API</name>
+    <artifactId>gshell-command</artifactId>
+    <name>GShell API :: Command</name>
 
     <description>
         Profides the basic interface for GShell commands.
