@@ -31,12 +31,14 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
 
+import org.apache.geronimo.gshell.model.common.ModelRoot;
+
 /**
  * Support for model {@link Marshaller} implementations.
  *
  * @version $Rev$ $Date$
  */
-public class MarshallerSupport<T>
+public class MarshallerSupport<T extends ModelRoot>
     implements Marshaller<T>
 {
     private final Class rootType;
@@ -100,14 +102,22 @@ public class MarshallerSupport<T>
     public T unmarshal(final InputStream input) {
         assert input != null;
 
-        return (T)createXStream().fromXML(input);
+        T model = (T)createXStream().fromXML(input);
+
+        model.setMarshaller(this);
+
+        return model;
     }
 
     @SuppressWarnings({"unchecked"})
     public T unmarshal(final Reader reader) {
         assert reader != null;
 
-        return (T)createXStream().fromXML(reader);
+        T model = (T)createXStream().fromXML(reader);
+
+        model.setMarshaller(this);
+        
+        return model;
     }
 
     public T unmarshal(final String xml) {

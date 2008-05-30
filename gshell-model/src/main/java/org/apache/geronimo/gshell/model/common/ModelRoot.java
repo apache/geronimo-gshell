@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.model.common;
 
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.apache.geronimo.gshell.model.marshal.Marshaller;
 
 /**
  * Base class for root model elements.
@@ -29,8 +30,18 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 public abstract class ModelRoot
     extends ModelElement
 {
+    private transient Marshaller marshaller;
+
     @XStreamAsAttribute
     private String modelVersion;
+
+    public Marshaller getMarshaller() {
+        return marshaller;
+    }
+
+    public void setMarshaller(final Marshaller marshaller) {
+        this.marshaller = marshaller;
+    }
 
     public String getModelVersion() {
         return modelVersion;

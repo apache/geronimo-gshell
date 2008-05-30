@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.model.marshal;
 
+import org.apache.geronimo.gshell.model.common.ModelRoot;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.OutputStream;
@@ -29,7 +31,7 @@ import java.io.Writer;
  *
  * @version $Rev$ $Date$
  */
-public interface Marshaller<T>
+public interface Marshaller<T extends ModelRoot>
 {
     void marshal(T root, OutputStream output);
 
