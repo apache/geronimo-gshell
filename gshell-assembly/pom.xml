@@ -43,18 +43,6 @@
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-bootstrap</artifactId>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-builtins</artifactId>
-        </dependency>
-        -->
         
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
@@ -65,51 +53,6 @@
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-loader</artifactId>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-optional</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-repository</artifactId>
-        </dependency>
-        -->
-
-        <!--
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-bsf</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.beanshell</groupId>
-            <artifactId>bsh-bsf</artifactId>
-            <version>2.0b4</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-vfs</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-whisper</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.remote</groupId>
-            <artifactId>gshell-remote-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.remote</groupId>
-            <artifactId>gshell-remote-server</artifactId>
-        </dependency>
-        -->
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -159,27 +102,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>full</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.geronimo.gshell.commands</groupId>
-                    <artifactId>gshell-bsf</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.beanshell</groupId>
-                    <artifactId>bsh</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.apache.geronimo.gshell.commands</groupId>
-                    <artifactId>gshell-vfs</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
 </project>

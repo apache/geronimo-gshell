@@ -109,4 +109,17 @@ public class ProgressSpinnerMonitor
         
         print(spinner.spin(message));
     }
+
+    public void transferCompleted(final TransferEvent event) {
+        assert event != null;
+
+        super.transferCompleted(event);
+
+        long length = event.getResource().getContentLength();
+        String type = event.getRequestType() == REQUEST_PUT ? "Uploaded" : "Downloaded";
+        String bytes = length >= 1024 ? ( length / 1024 ) + "K" : length + "b";
+
+        // pad at end just incase, should really blank the reset of the line
+        print(type + " " + bytes + "          ");
+    }
 }

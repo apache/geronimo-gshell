@@ -48,7 +48,6 @@
             <artifactId>commons-jexl</artifactId>
         </dependency>
 
-        <!-- Required for commons-jexl usage -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl104-over-slf4j</artifactId>
