@@ -54,7 +54,7 @@ public class DefaultSettingsManager
     public void configure(SettingsConfiguration config) throws Exception {
         assert config != null;
 
-        log.debug("Configuring; config: {}", config);
+        log.trace("Configuring; config: {}", config);
 
         // Validate the configuration
         config.validate();

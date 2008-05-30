@@ -21,11 +21,9 @@ package org.apache.geronimo.gshell.plugin;
 
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.model.command.Command;
-import org.codehaus.plexus.PlexusContainer;
+import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.UUID;
 
 /**
  * A wrapper for Plexus-based commands.
@@ -35,13 +33,16 @@ import java.util.UUID;
 public class PlexusCommandWrapper
     implements org.apache.geronimo.gshell.command.Command
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private Command descriptor;
 
-    private PlexusContainer container;
+    private GShellPlexusContainer container;
 
-    public PlexusCommandWrapper(final PlexusContainer container, final Command descriptor) {
+    public PlexusCommandWrapper(final GShellPlexusContainer container, final Command descriptor) {
+        assert container != null;
+        assert descriptor != null;
+        
         this.container = container;
         this.descriptor = descriptor;
     }
@@ -55,25 +56,11 @@ public class PlexusCommandWrapper
     }
 
     public Object execute(final CommandContext context, final Object... args) throws Exception {
-        // Create a new child container for the invocation and lookup the command instance
-        String realmId = "gshell:" + UUID.randomUUID();
+        assert context != null;
 
-        log.debug("Child container realm: {}", realmId);
+        org.apache.geronimo.gshell.command.Command command =
+            container.lookupComponent(org.apache.geronimo.gshell.command.Command.class, descriptor.getId());
 
-        PlexusContainer childContainer = container.createChildContainer(realmId, container.getContainerRealm());
-
-        org.apache.geronimo.gshell.command.Command command = (org.apache.geronimo.gshell.command.Command) childContainer.lookup(org.apache.geronimo.gshell.command.Command.class, descriptor.getId());
-
-        Object result;
-
-        try {
-            result = command.execute(context, args);
-        }
-        finally {
-            // Nuke the child container
-            container.removeChildContainer(realmId);
-        }
-
-        return result;
+        return command.execute(context, args);
     }
 }

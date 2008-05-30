@@ -46,7 +46,7 @@ public class ApplicationLocator
     //
     
     public Application locate() throws Exception {
-        log.debug("Locating");
+        log.debug("Locating application descriptor");
 
         URL url = getClass().getClassLoader().getResource("application.xml");
 

@@ -67,7 +67,8 @@ public class CommandCollector
             CommandSet commands = ((ComponentSetDescriptorAdapter)components).getCommands();
 
             for (Command descriptor : commands.getCommands()) {
-                log.debug("Found: {}", descriptor);
+                log.debug("Found command ID: {}", descriptor.getId());
+                log.trace("Found descriptor: {}", descriptor);
 
                 descriptors.put(descriptor.getId(), descriptor);
             }

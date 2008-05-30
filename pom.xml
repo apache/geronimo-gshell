@@ -326,6 +326,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-expr</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-command-api</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
@@ -342,7 +348,13 @@
                 <artifactId>gshell-model</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-            
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-loader</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-core</artifactId>
@@ -450,6 +462,7 @@
         <module>gshell-bootstrap</module>
         <module>gshell-model</module>
         <module>gshell-command-api</module>
+        <module>gshell-loader</module>
         <module>gshell-parser</module>
         <module>gshell-core</module>
         <module>gshell-cli</module>

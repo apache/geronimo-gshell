@@ -28,8 +28,6 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
-import org.apache.geronimo.gshell.plugin.CommandCollector;
-import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
 import org.apache.geronimo.gshell.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.shell.Environment;
@@ -75,10 +73,6 @@ public class GShellBuilder
         
         config.setName(DEFAULT_CONTAINER_NAME);
         config.setClassWorld(getClassWorld());
-
-        // HACK: Should not need these here, but for some reason components are getting instantiated in the wrong container
-        config.addComponentDiscoverer(new CommandDiscoverer());
-        config.addComponentDiscoveryListener(new CommandCollector());
 
         GShellPlexusContainer container = new GShellPlexusContainer(config);
 

@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.expression.ExpressionEvaluator;
 import org.apache.geronimo.gshell.expression.JexlExpressionEvaluator;
@@ -37,6 +38,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Visitor which will execute command-lines as parsed.
@@ -115,10 +119,25 @@ public class ExecutingVisitor
         return value;
     }
 
+
+    private static Map convertToMap(final Variables vars) {
+        assert vars != null;
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        Iterator<String> iter = vars.names();
+
+        while (iter.hasNext()) {
+            String name = iter.next();
+            map.put(name, vars.get(name));
+        }
+
+        return map;
+    }
+
     private String evaluate(final String expr) {
         assert expr != null;
         
-        ExpressionEvaluator evaluator = new JexlExpressionEvaluator(env.getVariables());
+        ExpressionEvaluator evaluator = new JexlExpressionEvaluator(convertToMap(env.getVariables()));
 
         try {
             return evaluator.parse(expr);

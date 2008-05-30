@@ -21,34 +21,42 @@
 <!-- $Rev$ $Date$ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
-    
-    <groupId>org.apache.geronimo.gshell.support</groupId>
-    <artifactId>gshell-support</artifactId>
-    <name>GShell Support</name>
-    <packaging>pom</packaging>
-    
+
+    <artifactId>gshell-loader</artifactId>
+    <name>GShell Loader</name>
+
     <description>
-        Support modules for GShell fluff.
+        Provides loading infrastructure for GShell.
     </description>
-    
-    <modules>
-        <module>gshell-ansi</module>
-        <module>gshell-artifact</module>
-        <module>gshell-clp</module>
-        <module>gshell-common</module>
-        <module>gshell-i18n</module>
-        <module>gshell-io</module>
-        <module>gshell-prefs</module>
-        <module>gshell-plexus</module>
-        <module>gshell-expr</module>
-    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-plexus</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-artifact</artifactId>
+        </dependency>
+		
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-command-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

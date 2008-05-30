@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.logging.LoggingVisitor;
+import org.apache.geronimo.gshell.LoggingVisitor;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;

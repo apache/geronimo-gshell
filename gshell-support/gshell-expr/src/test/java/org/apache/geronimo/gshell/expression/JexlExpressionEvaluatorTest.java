@@ -51,6 +51,7 @@ public class JexlExpressionEvaluatorTest
         assertEquals("BEFORE" + System.getProperty("java.home") + "AFTER", result);
     }
 
+    @SuppressWarnings({"unchecked"})
     public void testComplexVariable() throws Exception {
         String myvar = "this is my variable";
         evaluator.getVariables().put("my.var", myvar);
@@ -60,6 +61,7 @@ public class JexlExpressionEvaluatorTest
         assertEquals(myvar, result);
     }
 
+    @SuppressWarnings({"unchecked"})
     public void testComplexFlatVariable() throws Exception {
         String myvar = "this is my variable";
         evaluator.getVariables().put("my.var", myvar);
@@ -74,7 +76,7 @@ public class JexlExpressionEvaluatorTest
         String value = "${java.home";
 
         try {
-            String result = evaluator.parse(value);
+            evaluator.parse(value);
             fail("Should have thrown an exception");
         }
         catch (ExpressionEvaluator.SyntaxException expected) {

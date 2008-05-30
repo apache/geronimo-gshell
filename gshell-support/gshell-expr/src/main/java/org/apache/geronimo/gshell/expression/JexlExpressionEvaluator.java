@@ -24,12 +24,9 @@ import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
 import org.apache.commons.jexl.JexlHelper;
 import org.apache.commons.jexl.resolver.FlatResolver;
-import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 //
@@ -63,24 +60,6 @@ public class JexlExpressionEvaluator
 
 
         log.trace("Using variables: {}", context.getVars());
-    }
-
-    private static Map convertToMap(final Variables vars) {
-        assert vars != null;
-
-        Map<String,Object> map = new HashMap<String,Object>();
-        Iterator<String> iter = vars.names();
-
-        while (iter.hasNext()) {
-            String name = iter.next();
-            map.put(name, vars.get(name));
-        }
-
-        return map;
-    }
-
-    public JexlExpressionEvaluator(final Variables vars) {
-        this(convertToMap(vars));
     }
 
     public Map getVariables() {

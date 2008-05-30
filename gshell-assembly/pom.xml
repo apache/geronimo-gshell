@@ -44,6 +44,7 @@
             <artifactId>gshell-bootstrap</artifactId>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-core</artifactId>
@@ -53,12 +54,19 @@
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-builtins</artifactId>
         </dependency>
+        -->
         
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-cli</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-loader</artifactId>
+        </dependency>
+
+        <!--
         <dependency>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-optional</artifactId>
@@ -68,6 +76,7 @@
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-repository</artifactId>
         </dependency>
+        -->
 
         <!--
         <dependency>
@@ -143,7 +152,7 @@
                 </executions>
                 <configuration>
                     <descriptors>
-                        <descriptor>${pom.basedir}/src/main/assembly/bin.xml</descriptor>
+                        <descriptor>src/main/assembly/bin.xml</descriptor>
                     </descriptors>
                     <finalName>gshell-${version}</finalName>
                 </configuration>

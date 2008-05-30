@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;

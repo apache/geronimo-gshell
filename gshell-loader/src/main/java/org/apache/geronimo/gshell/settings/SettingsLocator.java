@@ -44,7 +44,7 @@ public class SettingsLocator
     //
 
     public Settings locate() throws Exception {
-        log.debug("Locating");
+        log.debug("Locating settings descriptor");
 
         //
         // TODO: For now we just ignore user settings, but should try to locate a descriptor and unmarshal

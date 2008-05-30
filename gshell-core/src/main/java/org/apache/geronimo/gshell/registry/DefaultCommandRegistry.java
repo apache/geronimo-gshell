@@ -20,10 +20,10 @@
 package org.apache.geronimo.gshell.registry;
 
 import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.plugin.PlexusCommandWrapper;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.context.Context;
@@ -50,7 +50,7 @@ public class DefaultCommandRegistry
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private PlexusContainer container;
+    private GShellPlexusContainer container;
 
     @Requirement
     private CommandCollector collector;
@@ -60,7 +60,7 @@ public class DefaultCommandRegistry
     public void contextualize(Context context) throws ContextException {
         assert context != null;
 
-        container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
+        container = (GShellPlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
         assert container != null;
         log.debug("Container: {}", container);
     }

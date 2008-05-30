@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
+import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
@@ -35,6 +37,7 @@ import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.PlexusConstants;
@@ -54,6 +57,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Default implementation of the {@link ApplicationManager} component.
@@ -98,22 +102,20 @@ public class DefaultApplicationManager
     public void configure(final ApplicationConfiguration config) throws Exception {
         assert config != null;
 
-        log.debug("Configuring; config: {}", config);
+        log.trace("Configuring; config: {}", config);
 
         // Validate the configuration
         config.validate();
 
         Application application = config.getApplication();
-        log.debug("Application: {}", application);
+        log.debug("Application ID: {}", application.getId());
+        log.trace("Application descriptor: {}", application);
 
         // Apply artifact manager configuration settings for application
         configureArtifactManager(application);
 
         // Create the application container
         container = createContainer(application);
-
-        // TODO: Configure other application bits (branding, etc) ?
-        // TODO: May want to have those components pull from the application's context instead, like we are doing for layout
 
         // Create a new context
         applicationContext = new ApplicationContext() {
@@ -155,8 +157,10 @@ public class DefaultApplicationManager
         log.debug("Creating application container");
 
         List<URL> classPath = createClassPath(application);
-        ClassWorld classWorld = parentContainer.getContainerRealm().getWorld();
-        ClassRealm realm = parentContainer.getContainerRealm().createChildRealm(application.getId());
+
+        ClassWorld world = new ClassWorld();
+        ClassRealm realm = world.newRealm("gshell.application[" + application.getId().replace(".", "/") + "]");
+        realm.setParentRealm(parentContainer.getContainerRealm());
 
         for (URL url : classPath) {
             realm.addURL(url);
@@ -164,15 +168,12 @@ public class DefaultApplicationManager
 
         ContainerConfiguration config = new DefaultContainerConfiguration();
         config.setName(application.getId());
-        config.setClassWorld(classWorld);
+        config.setClassWorld(world);
         config.setRealm(realm);
-
-        // HACK: Should need these here, but for some reason components are getting instantiated in the wrong container
-        //       so for now to get something working again, use the parent containers configuration set in GShellBuilder
-
-        // For now use the old Command* bits to get things working, then refactor to use the new Plugin* bits
-        // config.addComponentDiscoverer(new CommandDiscoverer());
-        // config.addComponentDiscoveryListener(new CommandCollector());
+        
+        // FIXME: For now use the old Command* bits to get things working, then refactor to use the new Plugin* bits
+        config.addComponentDiscoverer(new CommandDiscoverer());
+        config.addComponentDiscoveryListener(new CommandCollector());
         // config.addComponentDiscoverer(new PluginDiscoverer());
         // config.addComponentDiscoveryListener(new PluginCollector());
 
@@ -217,17 +218,56 @@ public class DefaultApplicationManager
         List<URL> classPath = new LinkedList<URL>();
         Set<Artifact> resolvedArtifacts = result.getArtifacts();
 
+        Set<String> excludes = new HashSet<String>();
+        excludes.add("aspectjrt");
+        excludes.add("plexus-classworlds");
+        excludes.add("gshell-ansi");
+        excludes.add("gshell-artifact");
+        excludes.add("gshell-cli");
+        excludes.add("gshell-clp");
+        excludes.add("gshell-command-api");
+        excludes.add("gshell-common");
+        excludes.add("gshell-diet-log4j");
+        excludes.add("gshell-i18n");
+        excludes.add("gshell-io");
+        excludes.add("gshell-loader");
+        excludes.add("gshell-model");
+        excludes.add("gshell-plexus");
+        excludes.add("jcl104-over-slf4j");
+        excludes.add("jline");
+        excludes.add("maven-artifact");
+        excludes.add("maven-model");
+        excludes.add("maven-profile");
+        excludes.add("maven-project");
+        excludes.add("maven-workspace");
+        excludes.add("plexus-component-annotations");
+        excludes.add("plexus-container-default");
+        excludes.add("plexus-interpolation");
+        excludes.add("plexus-utils");
+        excludes.add("slf4j-api");
+        excludes.add("slf4j-log4j12");
+        excludes.add("wagon-file");
+        excludes.add("wagon-http-lightweight");
+        excludes.add("wagon-http-shared");
+        excludes.add("wagon-provider-api");
+        excludes.add("xpp3_min");
+        excludes.add("xstream");
+
+        ExclusionSetFilter filter = new ExclusionSetFilter(excludes);
+
         if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
             log.debug("Application classpath:");
 
             for (Artifact artifact : resolvedArtifacts) {
-                File file = artifact.getFile();
-                assert file != null;
+                if (filter.include(artifact)) {
+                    File file = artifact.getFile();
+                    assert file != null;
 
-                URL url = file.toURI().toURL();
-                log.debug(" + {}", url);
+                    URL url = file.toURI().toURL();
+                    log.debug(" + {}", url);
 
-                classPath.add(url);
+                    classPath.add(url);
+                }
             }
         }
 

@@ -27,6 +27,9 @@
     <version>1.0-alpha-2-SNAPSHOT</version>
     
     <localRepository>
+        <!--
+        <directory>${gshell.home}/repository</directory>
+        -->
         <directory>repository</directory>
     </localRepository>
 
@@ -39,12 +42,23 @@
             <location>file:/Users/jason/.m2/repository</location>
         </remoteRepository>
         
+        <!--
         <remoteRepository>
             <location>http://repo1.maven.org/maven2</location>
         </remoteRepository>
+        -->
     </remoteRepositories>
 
     <dependencyGroups>
+        <dependencyGroup>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <version>1.0-alpha-2-SNAPSHOT</version>
+
+            <dependency>
+                <artifactId>gshell-core</artifactId>
+            </dependency>
+        </dependencyGroup>
+
         <dependencyGroup>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>
