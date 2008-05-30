@@ -82,6 +82,8 @@ public class DefaultArtifactRepositoryManager
         assert repository != null;
 
         remoteRepositories.add(repository);
+
+         log.debug("Added remote repository: {}", repository);
     }
 
     public List<ArtifactRepository> selectRemoteRepositories(final List<ArtifactRepository> repositories) {
