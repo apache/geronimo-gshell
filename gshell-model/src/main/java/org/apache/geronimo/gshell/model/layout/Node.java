@@ -37,7 +37,7 @@ public abstract class Node
 
     protected transient Node parent;
 
-    protected Node(final String name) {
+   protected Node(final String name) {
         assert name != null;
         
         this.name = name;

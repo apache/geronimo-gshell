@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.commands.repository;
 
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.maven.artifact.Artifact;

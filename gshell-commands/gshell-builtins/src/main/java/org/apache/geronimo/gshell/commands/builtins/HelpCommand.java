@@ -22,8 +22,6 @@ package org.apache.geronimo.gshell.commands.builtins;
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.layout.LayoutManager;

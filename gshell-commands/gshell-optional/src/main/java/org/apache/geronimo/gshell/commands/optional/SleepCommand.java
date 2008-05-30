@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 
 /**

@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.commands.vfs;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.VFS;
-import org.apache.geronimo.gshell.command.CommandSupport;
 
 /**
  * Support for VFS commands.

@@ -23,8 +23,6 @@ import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;

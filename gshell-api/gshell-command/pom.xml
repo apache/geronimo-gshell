@@ -34,7 +34,7 @@
     <name>GShell API :: Command</name>
 
     <description>
-        Profides the basic interface for GShell commands.
+        Provides the basic interface for GShell commands.
     </description>
 
     <dependencies>
