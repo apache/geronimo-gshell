@@ -74,7 +74,7 @@ public class DefaultSettingsManager
 
         // Setup remote repositories
         for (RemoteRepository repo : settings.remoteRepositories()) {
-            artifactManager.addRemoteRepository(repo.getId(), repo.getLocationUri());
+            artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
         
         // TODO: apply other artifact related settings (proxy, auth, whatever)

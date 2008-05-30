@@ -19,23 +19,30 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.wagon.events.TransferListener;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+
+import java.io.File;
+import java.net.URI;
+import java.util.List;
 
 /**
  * Provides a facade over the artifact + repository subsystem.
  *
  * @version $Rev$ $Date$
  */
-public interface ArtifactManager
+public interface ArtifactRepositoryManager
 {
-    ArtifactRepositoryManager getRepositoryManager();
+    ArtifactRepository getLocalRepository();
 
-    ArtifactFactory getArtifactFactory();
+    void setLocalRepository(ArtifactRepository repository) throws InvalidRepositoryException;
 
-    void setDownloadMonitor(TransferListener listener);
+    void setLocalRepository(File dir) throws InvalidRepositoryException;
 
-    ArtifactResolutionResult resolve(ArtifactResolutionRequest request) throws ResolutionException;
+    List<ArtifactRepository> getRemoteRepositories();
+
+    void addRemoteRepository(ArtifactRepository repository) throws InvalidRepositoryException;
+
+    void addRemoteRepository(String id, URI location) throws InvalidRepositoryException;
+
+    List<ArtifactRepository> selectRemoteRepositories(List<ArtifactRepository> repositories);
 }

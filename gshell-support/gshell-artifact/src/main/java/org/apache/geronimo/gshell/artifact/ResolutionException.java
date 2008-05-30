@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 
 /**
  * Thrown to indicate that an artifact resolution request has failed.

@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.artifact.monitor;
 
-import org.apache.maven.wagon.events.TransferListener;
 import org.apache.maven.wagon.events.TransferEvent;
+import org.apache.maven.wagon.events.TransferListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

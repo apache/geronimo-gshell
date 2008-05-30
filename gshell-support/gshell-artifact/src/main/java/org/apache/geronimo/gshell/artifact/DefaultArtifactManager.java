@@ -22,9 +22,6 @@ package org.apache.geronimo.gshell.artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
@@ -33,11 +30,6 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Default implementation of the {@link ArtifactManager} component.
@@ -54,76 +46,19 @@ public class DefaultArtifactManager
     private ArtifactFactory artifactFactory;
 
     @Requirement
-    private ArtifactRepositoryFactory repositoryFactory;
+    private ArtifactRepositoryManager repositoryManager;
 
     @Requirement
     private ArtifactResolver artifactResolver;
 
-    @Requirement
+    @Requirement(hint="gshell")
     private ArtifactMetadataSource artifactMetadataSource;
 
     @Requirement
     private WagonManager wagonManager;
 
-    private ArtifactRepository localRepository;
-
-    private List<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
-
-    public ArtifactRepository getLocalRepository() {
-        return localRepository;
-    }
-
-    public void setLocalRepository(final ArtifactRepository repository) throws InvalidRepositoryException {
-        assert repository != null;
-
-        localRepository = repository;
-
-        log.debug("Using local repository: {}", repository);
-    }
-
-    public void setLocalRepository(final File dir) throws InvalidRepositoryException {
-        assert dir != null;
-
-        try {
-            ArtifactRepository repo = repositoryFactory.createLocalRepository(dir);
-            setLocalRepository(repo);
-        }
-        catch (Exception e) {
-            throw new InvalidRepositoryException(e);
-        }
-    }
-
-    public List<ArtifactRepository> getRemoteRepositories() {
-        return remoteRepositories;
-    }
-
-    public void addRemoteRepository(final ArtifactRepository repository) throws InvalidRepositoryException {
-        assert repository != null;
-
-        remoteRepositories.add(repository);
-
-        log.debug("Added remote repository: {}", repository);
-    }
-
-    public void addRemoteRepository(final String id, final URI location) throws InvalidRepositoryException {
-        assert id != null;
-        assert location != null;
-
-        try {
-            ArtifactRepository repo = repositoryFactory.createArtifactRepository(
-                id,
-                location.toURL().toExternalForm(),
-                ArtifactRepositoryFactory.DEFAULT_LAYOUT_ID,
-
-                // FIXME: Expose more configuration to user API
-                new ArtifactRepositoryPolicy(),  // snapshots
-                new ArtifactRepositoryPolicy()); // releases
-            
-            addRemoteRepository(repo);
-        }
-        catch (Exception e) {
-            throw new InvalidRepositoryException(e);
-        }
+    public ArtifactRepositoryManager getRepositoryManager() {
+        return repositoryManager;
     }
 
     public ArtifactFactory getArtifactFactory() {
@@ -144,11 +79,11 @@ public class DefaultArtifactManager
         // Automatically fill in some missing bits
 
         if (request.getLocalRepository() == null) {
-            request.setLocalRepository(localRepository);
+            request.setLocalRepository(repositoryManager.getLocalRepository());
         }
 
         if (request.getRemoteRepostories() == null) {
-            request.setRemoteRepostories(remoteRepositories);
+            request.setRemoteRepostories(repositoryManager.getRemoteRepositories());
         }
 
         if (request.getMetadataSource() == null) {
