@@ -92,10 +92,10 @@ public class DefaultArtifactManager
         }
 
         // If there is no artifact, then assume we want to do some full transitive resolve and install a dummy artifact
-        Artifact originating = request.getArtifact();
-        if (originating == null) {
-            originating = artifactFactory.createArtifact("dummy", "dummy", "dummy", null, "jar");
-            request.setArtifact(originating);
+        Artifact artifact = request.getArtifact();
+        if (artifact == null) {
+            artifact = artifactFactory.createArtifact("dummy", "dummy", "dummy", null, "jar");
+            request.setArtifact(artifact);
         }
 
         log.debug("Resolving request: {}", request);
