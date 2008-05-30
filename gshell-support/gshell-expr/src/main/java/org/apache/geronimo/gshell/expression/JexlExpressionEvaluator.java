@@ -43,7 +43,7 @@ import java.util.Map;
 public class JexlExpressionEvaluator
     implements ExpressionEvaluator
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     //
     // NOTE: May want to add the ${...} bits the the CommandLineParser directly.
@@ -80,13 +80,13 @@ public class JexlExpressionEvaluator
     public Object evaluate(final String expression) throws Exception {
         assert expression != null;
 
-        log.debug("Evaluating expression: {}", expression);
+        log.trace("Evaluating expression: {}", expression);
 
         Expression expr = createExpression(expression);
         
         Object result = expr.evaluate(context);
 
-        log.debug("Result: {}", result);
+        log.trace("Result: {}", result);
 
         return result;
     }
@@ -134,9 +134,7 @@ public class JexlExpressionEvaluator
 
             String expr = input.substring(start + (complex ? 2 : 1), end);
 
-            // System.err.println("b: " + buff);
             String tmp = input.substring(current, start);
-            // System.err.println("t: " + tmp + "<");
             buff.append(tmp);
 
             try {
@@ -146,33 +144,16 @@ public class JexlExpressionEvaluator
                 throw new SyntaxException("Failed to evaluate: " + expr, e);
             }
 
-            // System.err.println("s:" + start);
-            // System.err.println("e:" + end);
-            // System.err.println("c:" + current);
-
             current = end + (complex ? 1 : 0);
         }
 
-        // System.err.println("c:" + current);
-
         if (current < input.length()) {
-            // System.err.println("b: " + buff);
             String tmp = input.substring(current);
-            // System.err.println("t: " + tmp);
             buff.append(tmp);
         }
 
         log.trace("Parsed result: {}", buff);
 
         return buff.toString();
-    }
-
-    public String parse(final String input, final boolean trim) throws SyntaxException {
-        String output = parse(input);
-        if (trim && output != null) {
-            output = output.trim();
-        }
-
-        return output;
     }
 }

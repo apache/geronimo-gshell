@@ -218,6 +218,10 @@ public class DefaultApplicationManager
         List<URL> classPath = new LinkedList<URL>();
         Set<Artifact> resolvedArtifacts = result.getArtifacts();
 
+        //
+        // FIXME: Load this list from build-generated properties or something like that
+        //
+        
         Set<String> excludes = new HashSet<String>();
         excludes.add("aspectjrt");
         excludes.add("plexus-classworlds");
@@ -230,7 +234,7 @@ public class DefaultApplicationManager
         excludes.add("gshell-diet-log4j");
         excludes.add("gshell-i18n");
         excludes.add("gshell-io");
-        excludes.add("gshell-loader");
+        excludes.add("gshell-plugin");
         excludes.add("gshell-model");
         excludes.add("gshell-plexus");
         excludes.add("jcl104-over-slf4j");

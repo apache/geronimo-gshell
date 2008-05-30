@@ -21,6 +21,8 @@ package org.apache.geronimo.gshell.expression;
 
 import junit.framework.TestCase;
 
+import java.util.Map;
+
 /**
  * Tests for the {@link JexlExpressionEvaluator} class.
  *
@@ -101,4 +103,18 @@ public class JexlExpressionEvaluatorTest
         String result = evaluator.parse(value);
         assertEquals("BEFORE" + System.getProperty("java.home") + "\tAFTER", result);
     }
+
+    /*
+    FIXME: gshell-expr can't currently handle dereferencing, need to fix.
+    
+    public void testDeref1() throws Exception {
+        Map vars = evaluator.getVariables();
+        vars.put("foo", "${bar}");
+        vars.put("bar", System.getProperty("java.home"));
+
+        String value = "${foo}";
+        String result = evaluator.parse(value);
+        assertEquals(System.getProperty("java.home"), result);
+    }
+    */
 }

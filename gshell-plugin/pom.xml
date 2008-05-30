@@ -30,11 +30,11 @@
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gshell-loader</artifactId>
-    <name>GShell Loader</name>
+    <artifactId>gshell-plugin</artifactId>
+    <name>GShell Plugin</name>
 
     <description>
-        Provides loading infrastructure for GShell.
+        Provides the GShell plugin mechanism.
     </description>
 
     <dependencies>
