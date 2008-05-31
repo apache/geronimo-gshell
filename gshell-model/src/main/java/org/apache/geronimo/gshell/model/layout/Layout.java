@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.model.layout;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * The root container for a layout tree.
+ * Layout configuration element.
  *
  * @version $Rev$ $Date$
  */
