@@ -20,9 +20,6 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.GShell;
-import org.apache.geronimo.gshell.settings.SettingsManager;
-import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
-import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
@@ -30,6 +27,8 @@ import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
+import org.apache.geronimo.gshell.plugin.CommandCollector;
+import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
@@ -37,8 +36,8 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.PlexusConstants;
@@ -54,11 +53,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * Default implementation of the {@link ApplicationManager} component.
@@ -73,9 +72,6 @@ public class DefaultApplicationManager
 
     @Requirement
     private ArtifactManager artifactManager;
-
-    @Requirement
-    private SettingsManager settingsManager;
 
     private GShellPlexusContainer parentContainer;
 
