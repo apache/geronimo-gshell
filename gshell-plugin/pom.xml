@@ -49,15 +49,10 @@
         </dependency>
 		
         <dependency>
-            <groupId>org.apache.geronimo.gshell.api</groupId>
-            <artifactId>gshell-command</artifactId>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.api</groupId>
-            <artifactId>gshell-shell</artifactId>
-        </dependency>
-        
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-model</artifactId>

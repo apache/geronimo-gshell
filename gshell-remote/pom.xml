@@ -41,7 +41,7 @@
     
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell.api</groupId>
+            <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-command-support</artifactId>
         </dependency>
 

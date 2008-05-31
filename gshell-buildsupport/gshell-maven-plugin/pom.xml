@@ -38,8 +38,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell.api</groupId>
-            <artifactId>gshell-command-annotation</artifactId>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-api</artifactId>
         </dependency>
 
         <dependency>

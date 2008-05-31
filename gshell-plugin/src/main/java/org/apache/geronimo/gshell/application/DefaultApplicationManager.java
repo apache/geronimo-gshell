@@ -237,7 +237,7 @@ public class DefaultApplicationManager
         excludes.add("gshell-artifact");
         excludes.add("gshell-cli");
         excludes.add("gshell-clp");
-        excludes.add("gshell-command-api");
+        excludes.add("gshell-api");
         excludes.add("gshell-common");
         excludes.add("gshell-diet-log4j");
         excludes.add("gshell-i18n");

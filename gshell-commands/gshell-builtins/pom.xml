@@ -36,11 +36,11 @@
     <description>
         Provides the default "built-in" commands.
     </description>
-    
+
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-ansi</artifactId>
+            <groupId>org.apache.geronimo.gshell.commands</groupId>
+            <artifactId>gshell-command-support</artifactId>
         </dependency>
 
         <dependency>

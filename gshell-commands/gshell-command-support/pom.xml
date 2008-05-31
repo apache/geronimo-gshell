@@ -25,22 +25,37 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell.api</groupId>
-        <artifactId>gshell-api</artifactId>
+        <groupId>org.apache.geronimo.gshell.commands</groupId>
+        <artifactId>gshell-commands</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-shell</artifactId>
-    <name>GShell API :: Shell</name>
-
+    <artifactId>gshell-command-support</artifactId>
+    <name>GShell Commands :: Support</name>
+    
     <description>
-        Profides the inteface for shells.
+        Provides support for command implementations.
     </description>
     
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell.api</groupId>
-            <artifactId>gshell-command</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-clp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-api</artifactId>
         </dependency>
     </dependencies>
 

@@ -39,14 +39,8 @@
         Collection of commands for GShell functionality.
     </description>
     
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.api</groupId>
-            <artifactId>gshell-command-support</artifactId>
-        </dependency>
-    </dependencies>
-    
     <modules>
+        <module>gshell-command-support</module>
         <module>gshell-builtins</module>
         <module>gshell-optional</module>
         <module>gshell-repository</module>

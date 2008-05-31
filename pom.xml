@@ -332,29 +332,11 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.geronimo.gshell.api</groupId>
-                <artifactId>gshell-command</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.api</groupId>
-                <artifactId>gshell-command-annotation</artifactId>
+                <groupId>org.apache.geronimo.gshell</groupId>
+                <artifactId>gshell-api</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.api</groupId>
-                <artifactId>gshell-command-support</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.api</groupId>
-                <artifactId>gshell-shell</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-            
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-parser</artifactId>
@@ -423,6 +405,12 @@
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-command-support</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-builtins</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
@@ -476,10 +464,10 @@
     <modules>
         <module>gshell-buildsupport</module>
         <module>gshell-diet</module>
+        <module>gshell-api</module>
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
         <module>gshell-model</module>
-        <module>gshell-api</module>
         <module>gshell-plugin</module>
         <module>gshell-parser</module>
         <module>gshell-core</module>
