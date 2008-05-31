@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ????
+ * Defines a requirement of a command.
  *
  * @version $Rev$ $Date$
  */

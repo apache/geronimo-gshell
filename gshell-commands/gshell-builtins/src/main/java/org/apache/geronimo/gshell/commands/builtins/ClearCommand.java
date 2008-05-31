@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.commands.builtins;
 import jline.ConsoleReader;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.command.CommandSupport;
 
 import java.io.PrintWriter;
 

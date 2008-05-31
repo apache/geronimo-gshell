@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 //
 
 /**
- * ???
+ * Defines a command componet.
  *
  * @version $Rev$ $Date$
  */

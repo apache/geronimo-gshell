@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
+import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;

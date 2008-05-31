@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.command.CommandSupport;
 
 //
 // HACK: This is a temporary to handle shells which need to keep around after running

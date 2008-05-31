@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.command.CommandSupport;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 

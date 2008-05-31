@@ -30,6 +30,8 @@ import java.net.URL;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
+import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.codehaus.plexus.util.IOUtil;
 
 /**

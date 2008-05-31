@@ -52,6 +52,11 @@
             <groupId>org.apache.geronimo.gshell.api</groupId>
             <artifactId>gshell-command</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.api</groupId>
+            <artifactId>gshell-shell</artifactId>
+        </dependency>
         
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>

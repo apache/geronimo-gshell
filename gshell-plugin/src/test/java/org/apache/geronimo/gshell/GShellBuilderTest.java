@@ -42,7 +42,7 @@ public class GShellBuilderTest
     }
 
     protected void tearDown() throws Exception {
-        super.tearDown();
+        builder = null;
     }
 
     public void testBuild1() throws Exception {
