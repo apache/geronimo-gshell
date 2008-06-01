@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.StopWatch;
+import org.apache.geronimo.gshell.common.Notification;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.layout.NotFoundException;
@@ -204,19 +205,13 @@ public class DefaultCommandExecutor
         if (!errors.isEmpty()) {
             Throwable t = errors.get(0);
 
-            //
-            // FIXME: Should not throw here, as that will cause the originating stack trace to be lost
-            //
+            // Always preserve the type of notication throwables, reguardless of the trace
+            if (t instanceof Notification) {
+                throw (Notification)t;
+            }
 
-            if (t instanceof Exception) {
-                throw (Exception) t;
-            }
-            else if (t instanceof Error) {
-                throw (Error) t;
-            }
-            else {
-                throw new RuntimeException(t);
-            }
+            // Otherwise wrap to preserve the trace
+            throw new CommandExecutionFailied(t);
         }
 
         return ref.get();
