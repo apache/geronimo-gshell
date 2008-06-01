@@ -140,10 +140,8 @@ public class DefaultApplicationManager
 
         // Add value sources to resolve muck
         interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
-        
-        //
-        // TODO: Add more
-        //
+        interp.addValueSource(new PropertiesBasedValueSource(app.getProperties()));
+        // TODO: Add settings.properties
         
         app = interp.interpolate(app);
         

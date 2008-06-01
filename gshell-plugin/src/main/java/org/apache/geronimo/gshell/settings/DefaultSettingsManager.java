@@ -83,10 +83,7 @@ public class DefaultSettingsManager
 
         // Add value sources to resolve muck
         interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
-        
-        //
-        // TODO: Add more
-        //
+        interp.addValueSource(new PropertiesBasedValueSource(settings.getProperties()));
         
         settings = interp.interpolate(settings);
         
