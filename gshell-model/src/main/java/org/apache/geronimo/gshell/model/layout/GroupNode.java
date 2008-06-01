@@ -21,10 +21,8 @@ package org.apache.geronimo.gshell.model.layout;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A group of nodes.

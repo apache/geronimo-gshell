@@ -64,8 +64,9 @@ public class InterpolatorSupport<T extends Model>
 
 	public T interpolate(final T input) throws InterpolationException {
 		assert input != null;
-		
-		Marshaller<T> marshaller = input.getMarshaller();
+
+        //noinspection unchecked
+        Marshaller<T> marshaller = input.getMarshaller();
 		String xml = marshaller.marshal(input);
 		
 		log.trace("Interpolating: {}", xml);

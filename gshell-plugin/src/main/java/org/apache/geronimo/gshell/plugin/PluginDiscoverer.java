@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.model.plugin.Plugin;
 import org.apache.geronimo.gshell.model.plugin.PluginMarshaller;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,12 @@ import java.io.Reader;
  *
  * @version $Rev$ $Date$
  */
+@Component(role=PluginDiscoverer.class)
 public class PluginDiscoverer
     extends AbstractComponentDiscoverer
 {
+    public static final String DESCRIPTOR_LOCATION = "META-INF/gshell/plugin.xml";
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final PluginMarshaller marshaller = new PluginMarshaller();
@@ -44,7 +48,7 @@ public class PluginDiscoverer
     public PluginDiscoverer() {}
 
     protected String getComponentDescriptorLocation() {
-        return "META-INF/gshell/plugin.xml";
+        return DESCRIPTOR_LOCATION;
     }
 
     protected ComponentSetDescriptor createComponentDescriptors(final Reader reader, final String source) throws PlexusConfigurationException {

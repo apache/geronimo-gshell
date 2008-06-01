@@ -82,18 +82,22 @@ public class MarshallerSupport<T extends Model>
         xs.processAnnotations(classes);
     }
     
-    public void marshal(final T root, final OutputStream output) {
-        assert root != null;
+    public void marshal(final T model, final OutputStream output) {
+        assert model != null;
         assert output != null;
 
-        createXStream().toXML(root, output);
+        log.debug("Marshalling: {}", model);
+
+        createXStream().toXML(model, output);
     }
 
-    public void marshal(final T root, final Writer writer) {
-        assert root != null;
+    public void marshal(final T model, final Writer writer) {
+        assert model != null;
         assert writer != null;
 
-        createXStream().toXML(root, writer);
+        log.debug("Marshalling: {}", model);
+
+        createXStream().toXML(model, writer);
     }
 
     public String marshal(final T root) {
@@ -110,6 +114,8 @@ public class MarshallerSupport<T extends Model>
 
         model.setMarshaller(this);
 
+        log.trace("Unmarshalled: {}", model);
+
         return model;
     }
 
@@ -120,6 +126,8 @@ public class MarshallerSupport<T extends Model>
         T model = (T)createXStream().fromXML(reader);
 
         model.setMarshaller(this);
+
+        log.trace("Unmarshalled: {}", model);
         
         return model;
     }
