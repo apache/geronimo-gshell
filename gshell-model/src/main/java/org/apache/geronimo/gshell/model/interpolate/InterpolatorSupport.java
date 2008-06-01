@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Provides support for {@link Interpolator} implemntations.
  *
  * @version $Rev$ $Date$
  */
@@ -38,14 +38,14 @@ public class InterpolatorSupport<T extends ModelRoot>
 {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	private org.codehaus.plexus.interpolation.Interpolator interpolator;
+	private final org.codehaus.plexus.interpolation.Interpolator interpolator;
 	
 	private String prefixPattern;
 	
 	private RecursionInterceptor recursionInterceptor;
 	
 	public InterpolatorSupport() {
-		interpolator = new RegexBasedInterpolator();
+		this.interpolator = new RegexBasedInterpolator();
 	}
 	
 	public void setPrefixPattern(final String pattern) {

@@ -25,7 +25,7 @@ import org.codehaus.plexus.interpolation.RecursionInterceptor;
 import org.codehaus.plexus.interpolation.ValueSource;
 
 /**
- * ???
+ * Provides variable/context interpolation for models.
  *
  * @version $Rev$ $Date$
  */
