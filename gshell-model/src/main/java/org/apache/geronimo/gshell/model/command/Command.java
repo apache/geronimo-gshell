@@ -20,7 +20,8 @@
 package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelElement;
+
+import org.apache.geronimo.gshell.model.ModelElement;
 
 import java.net.URI;
 import java.util.ArrayList;

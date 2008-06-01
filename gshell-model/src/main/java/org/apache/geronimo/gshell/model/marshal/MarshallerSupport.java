@@ -31,7 +31,9 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
 
-import org.apache.geronimo.gshell.model.common.ModelRoot;
+import org.apache.geronimo.gshell.model.ModelRoot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Support for model {@link Marshaller} implementations.
@@ -41,6 +43,8 @@ import org.apache.geronimo.gshell.model.common.ModelRoot;
 public class MarshallerSupport<T extends ModelRoot>
     implements Marshaller<T>
 {
+	private final Logger log = LoggerFactory.getLogger(getClass());
+	
     private final Class rootType;
 
     protected MarshallerSupport(final Class rootType) {

@@ -20,7 +20,8 @@
 package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelElement;
+
+import org.apache.geronimo.gshell.model.ModelElement;
 
 /**
  * Describes a required component of a command.

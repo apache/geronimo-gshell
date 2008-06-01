@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.model.command;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.model.common.ModelRoot;
+import org.apache.geronimo.gshell.model.ModelRoot;
 
 import java.util.ArrayList;
 import java.util.List;

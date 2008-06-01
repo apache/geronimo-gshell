@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.model.marshal;
 
-import org.apache.geronimo.gshell.model.common.ModelRoot;
+import org.apache.geronimo.gshell.model.ModelRoot;
 
 import java.io.InputStream;
 import java.io.Reader;

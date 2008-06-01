@@ -20,7 +20,8 @@
 package org.apache.geronimo.gshell.model.settings;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelRoot;
+
+import org.apache.geronimo.gshell.model.ModelRoot;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
 import java.util.Properties;

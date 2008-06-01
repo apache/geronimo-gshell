@@ -21,9 +21,12 @@ package org.apache.geronimo.gshell.settings;
 
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
+import org.apache.geronimo.gshell.model.interpolate.Interpolator;
+import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,10 +61,13 @@ public class DefaultSettingsManager
 
         // Validate the configuration
         config.validate();
+        
+        if (config.getSettings() != null) {
+	        // Interpolate the model
+	        interpolate(config);
 
-        Settings settings = config.getSettings();
-        if (settings != null) {
-            configure(settings);
+	        // Configure settings
+            configure(config.getSettings());
         }
         
         // TODO: Merge in some default settings or something?
@@ -69,6 +75,25 @@ public class DefaultSettingsManager
         settingsConfiguration = config;
     }
 
+    private void interpolate(final SettingsConfiguration config) throws Exception {
+    	assert config != null;
+    	
+    	Settings settings = config.getSettings();
+        Interpolator<Settings> interp = new InterpolatorSupport<Settings>();
+
+        // Add value sources to resolve muck
+        interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
+        
+        //
+        // TODO: Add more
+        //
+        
+        settings = interp.interpolate(settings);
+        
+        // Update the configuration with the new model
+        config.setSettings(settings);
+    }
+    
     private void configure(final Settings settings) throws Exception {
         assert settings != null;
 

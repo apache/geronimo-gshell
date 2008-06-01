@@ -17,20 +17,25 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.common;
+package org.apache.geronimo.gshell.model.interpolate;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.model.ModelRoot;
+import org.codehaus.plexus.interpolation.InterpolationException;
+import org.codehaus.plexus.interpolation.RecursionInterceptor;
+import org.codehaus.plexus.interpolation.ValueSource;
 
 /**
- * Base class for model elements.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public abstract class ModelElement
+public interface Interpolator<T extends ModelRoot>
 {
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+	void setPrefixPattern(String pattern);
+	
+	void setRecursionInterceptor(RecursionInterceptor interceptor);
+	
+	void addValueSource(ValueSource source);
+	
+	T interpolate(T input) throws InterpolationException;
 }

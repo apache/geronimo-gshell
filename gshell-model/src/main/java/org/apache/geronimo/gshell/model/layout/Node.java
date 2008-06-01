@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.model.layout;
 
-import org.apache.geronimo.gshell.model.common.ModelElement;
+import org.apache.geronimo.gshell.model.ModelElement;
 
 /**
  * The rudimentary element of a layout.

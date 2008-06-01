@@ -21,6 +21,8 @@ package org.apache.geronimo.gshell.model.common;
 
 import java.util.Properties;
 
+import org.apache.geronimo.gshell.model.ModelRoot;
+
 /**
  * Support for descriptor models.
  *

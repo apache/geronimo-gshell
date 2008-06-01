@@ -20,7 +20,8 @@
 package org.apache.geronimo.gshell.model.application;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.ModelElement;
+
+import org.apache.geronimo.gshell.model.ModelElement;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Properties;

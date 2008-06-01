@@ -17,43 +17,41 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.command;
+package org.apache.geronimo.gshell.model;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
-import org.apache.geronimo.gshell.model.ModelElement;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import org.apache.geronimo.gshell.model.marshal.Marshaller;
 
 /**
- * Describes a comand parameter.
+ * Base class for root model elements.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("parameter")
-public class Parameter
+public abstract class ModelRoot
     extends ModelElement
 {
-    private String name;
+    private transient Marshaller marshaller;
 
-    private String value;
+    @XStreamAsAttribute
+    private String modelVersion;
 
-    public Parameter(final String name, final String value) {
-        this.name = name;
-        this.value = value;
+    public Marshaller getMarshaller() {
+    	if (marshaller == null) {
+    		throw new IllegalStateException("Marshaller is not bound");
+    	}
+    	
+        return marshaller;
     }
 
-    public String getName() {
-        return name;
+    public void setMarshaller(final Marshaller marshaller) {
+        this.marshaller = marshaller;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public String getModelVersion() {
+        return modelVersion;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(final String value) {
-        this.value = value;
+    public void setModelVersion(final String modelVersion) {
+        this.modelVersion = modelVersion;
     }
 }

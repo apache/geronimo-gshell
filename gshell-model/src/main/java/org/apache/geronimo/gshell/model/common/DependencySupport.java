@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.model.common;
 
+import org.apache.geronimo.gshell.model.ModelElement;
+
 /**
  * Support for {@link Dependency} and {@link DependencyGroup} elements.
  *

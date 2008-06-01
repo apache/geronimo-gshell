@@ -23,6 +23,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.io.File;
 
+import org.apache.geronimo.gshell.model.ModelElement;
+
 /**
  * Local repository configuration.
  *

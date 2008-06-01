@@ -27,23 +27,24 @@
     <version>1.0-alpha-2-SNAPSHOT</version>
     
     <localRepository>
-        <!--
-        <directory>${gshell.home}/repository</directory>
+        <!-- 
+        FIXME: Update the interpolation muck to auto-resolve relative paths to ${gshell.home}
         -->
-        <directory>repository</directory>
+        <directory>${gshell.home}/repository</directory>
     </localRepository>
 
     <remoteRepositories>
         <remoteRepository>
-            <id>maven-cache</id>
-            <!--
-            FIXME: Need to get ${user.home} expansion working soon to drop this hard-coded muck
+            <id>cache</id>
+            <!-- 
+            FIXME: Allow a normal file path to be used here and auto-converted to a URI
             -->
-            <location>file:/Users/jason/.m2/repository</location>
+            <location>file:${user.home}/.m2/repository</location>
         </remoteRepository>
         
         <!--
         <remoteRepository>
+            <id>central</id>
             <location>http://repo1.maven.org/maven2</location>
         </remoteRepository>
         -->

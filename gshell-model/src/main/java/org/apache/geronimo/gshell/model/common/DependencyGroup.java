@@ -62,7 +62,6 @@ public class DependencyGroup
     /**
      * Link children to their parent group when deserializing.
      */
-    @SuppressWarnings({"UnusedDeclaration"})
     private Object readResolve() {
         if (!isEmpty()) {
             for (Dependency child : dependencies()) {

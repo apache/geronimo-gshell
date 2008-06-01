@@ -26,6 +26,8 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
+import org.apache.geronimo.gshell.model.interpolate.Interpolator;
+import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
@@ -47,6 +49,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,6 +110,10 @@ public class DefaultApplicationManager
         // Validate the configuration
         config.validate();
 
+        // Interpolate the model
+        interpolate(config);
+        
+        // Configure the application
         configure(config.getApplication());
 
         // Create a new context
@@ -125,14 +132,31 @@ public class DefaultApplicationManager
         };
     }
 
+    private void interpolate(ApplicationConfiguration config) throws Exception {
+    	assert config != null;
+    	
+        Application app = config.getApplication();
+        Interpolator<Application> interp = new InterpolatorSupport<Application>();
+
+        // Add value sources to resolve muck
+        interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
+        
+        //
+        // TODO: Add more
+        //
+        
+        app = interp.interpolate(app);
+        
+        // Update the configuration with the new model
+        config.setApplication(app);
+    }
+    
     private void configure(final Application application) throws Exception {
         assert application != null;
 
-        // TODO: Add application interpolation here, include settings properties
-        
         log.debug("Application ID: {}", application.getId());
         log.trace("Application descriptor: {}", application);
-
+        
         // Apply artifact manager configuration settings for application
         configureArtifactManager(application);
 

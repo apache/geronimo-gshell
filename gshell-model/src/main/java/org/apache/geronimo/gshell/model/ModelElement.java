@@ -17,37 +17,20 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.common;
+package org.apache.geronimo.gshell.model;
 
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import org.apache.geronimo.gshell.model.marshal.Marshaller;
+import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 
 /**
- * Base class for root model elements.
+ * Base class for model elements.
  *
  * @version $Rev$ $Date$
  */
-public abstract class ModelRoot
-    extends ModelElement
+public abstract class ModelElement
 {
-    private transient Marshaller marshaller;
-
-    @XStreamAsAttribute
-    private String modelVersion;
-
-    public Marshaller getMarshaller() {
-        return marshaller;
-    }
-
-    public void setMarshaller(final Marshaller marshaller) {
-        this.marshaller = marshaller;
-    }
-
-    public String getModelVersion() {
-        return modelVersion;
-    }
-
-    public void setModelVersion(final String modelVersion) {
-        this.modelVersion = modelVersion;
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }
