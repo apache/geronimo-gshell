@@ -132,7 +132,7 @@ public class DefaultApplicationManager
         };
     }
 
-    private void interpolate(ApplicationConfiguration config) throws Exception {
+    private void interpolate(final ApplicationConfiguration config) throws Exception {
     	assert config != null;
     	
         Application app = config.getApplication();

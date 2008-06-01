@@ -54,7 +54,7 @@ public class DefaultSettingsManager
         return settingsConfiguration.getSettings();
     }
 
-    public void configure(SettingsConfiguration config) throws Exception {
+    public void configure(final SettingsConfiguration config) throws Exception {
         assert config != null;
 
         log.trace("Configuring; config: {}", config);
