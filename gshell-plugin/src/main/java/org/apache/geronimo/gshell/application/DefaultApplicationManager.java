@@ -90,10 +90,6 @@ public class DefaultApplicationManager
     public void contextualize(final Context context) throws ContextException {
         assert context != null;
 
-        //
-        // FIXME: See if we need to use Contextualize here, or if the @Requirement bits inject the correct container instance
-        //
-        
         parentContainer = (GShellPlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
         
         log.debug("Parent container: {}", parentContainer);
