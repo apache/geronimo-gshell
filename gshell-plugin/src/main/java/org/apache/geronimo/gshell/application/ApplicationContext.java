@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.shell.Environment;
 
 /**
- * ???
+ * Encapsulates the context for an application.
  *
  * @version $Rev$ $Date$
  */

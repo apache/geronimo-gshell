@@ -41,7 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Builds {@link org.apache.geronimo.gshell.shell.Shell} instances.
+ * Builds {@link Shell} instances.
  *
  * @version $Rev$ $Date$
  */

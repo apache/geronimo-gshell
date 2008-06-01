@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.application;
 import org.apache.geronimo.gshell.shell.Shell;
 
 /**
- * ???
+ * Provides the interface to manager applications.
  *
  * @version $Rev$ $Date$
  */

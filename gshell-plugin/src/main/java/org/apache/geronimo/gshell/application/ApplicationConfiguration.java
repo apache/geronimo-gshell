@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.shell.Environment;
 
 /**
- * ???
+ * Container for application configuration.
  *
  * @version $Rev$ $Date$
  */

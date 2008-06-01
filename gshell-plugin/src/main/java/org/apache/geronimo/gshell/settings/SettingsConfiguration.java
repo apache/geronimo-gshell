@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.model.settings.Settings;
 
 /**
- * ???
+ * Container for settings configuration.
  *
  * @version $Rev$ $Date$
  */

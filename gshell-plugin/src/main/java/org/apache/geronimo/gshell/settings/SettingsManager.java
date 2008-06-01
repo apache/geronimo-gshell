@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.settings;
 import org.apache.geronimo.gshell.model.settings.Settings;
 
 /**
- * ???
+ * Provides the interface to manage settings.
  *
  * @version $Rev$ $Date$
  */
