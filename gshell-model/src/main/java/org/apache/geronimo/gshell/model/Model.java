@@ -28,8 +28,8 @@ import org.apache.geronimo.gshell.model.marshal.Marshaller;
  *
  * @version $Rev$ $Date$
  */
-public abstract class ModelRoot
-    extends ModelElement
+public abstract class Model
+    extends Element
 {
     private transient Marshaller marshaller;
 

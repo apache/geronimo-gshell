@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.model.common;
 
-import org.apache.geronimo.gshell.model.ModelElement;
+import org.apache.geronimo.gshell.model.Element;
 
 /**
  * Support for {@link Dependency} and {@link DependencyGroup} elements.
@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.model.ModelElement;
  * @version $Rev$ $Date$
  */
 public abstract class DependencySupport
-    extends ModelElement
+    extends Element
 {
     private String groupId;
 

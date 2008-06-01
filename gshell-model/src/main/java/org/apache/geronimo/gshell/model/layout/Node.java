@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.model.layout;
 
-import org.apache.geronimo.gshell.model.ModelElement;
+import org.apache.geronimo.gshell.model.Element;
 
 /**
  * The rudimentary element of a layout.
@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.model.ModelElement;
  * @version $Rev$ $Date$
  */
 public abstract class Node
-    extends ModelElement
+    extends Element
 {
     public static final String SEPARATOR = "/";
 

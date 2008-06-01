@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.io.File;
 
-import org.apache.geronimo.gshell.model.ModelElement;
+import org.apache.geronimo.gshell.model.Element;
 
 /**
  * Local repository configuration.
@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.model.ModelElement;
  */
 @XStreamAlias("localRepository")
 public class LocalRepository
-    extends ModelElement
+    extends Element
 {
     private String directory;
 

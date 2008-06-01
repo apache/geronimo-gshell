@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.model.interpolate;
 
-import org.apache.geronimo.gshell.model.ModelRoot;
+import org.apache.geronimo.gshell.model.Model;
 import org.apache.geronimo.gshell.model.marshal.Marshaller;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.RecursionInterceptor;
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public class InterpolatorSupport<T extends ModelRoot>
+public class InterpolatorSupport<T extends Model>
 	implements Interpolator<T>
 {
 	private final Logger log = LoggerFactory.getLogger(getClass());

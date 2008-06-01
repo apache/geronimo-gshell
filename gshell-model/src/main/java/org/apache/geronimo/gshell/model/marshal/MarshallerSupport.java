@@ -31,7 +31,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
 
-import org.apache.geronimo.gshell.model.ModelRoot;
+import org.apache.geronimo.gshell.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public class MarshallerSupport<T extends ModelRoot>
+public class MarshallerSupport<T extends Model>
     implements Marshaller<T>
 {
 	private final Logger log = LoggerFactory.getLogger(getClass());

@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.model.settings;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import org.apache.geronimo.gshell.model.ModelRoot;
+import org.apache.geronimo.gshell.model.Model;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
 import java.util.Properties;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
  */
 @XStreamAlias("settings")
 public class Settings
-    extends ModelRoot
+    extends Model
 {
     private Properties properties;
 

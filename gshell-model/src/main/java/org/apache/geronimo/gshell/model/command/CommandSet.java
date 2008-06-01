@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.model.command;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.model.ModelRoot;
+import org.apache.geronimo.gshell.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.List;
 // FIXME: Use consistent case for XML tags
 @XStreamAlias("command-set")
 public class CommandSet
-    extends ModelRoot
+    extends Model
 {
     private String id;
 

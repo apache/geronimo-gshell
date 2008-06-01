@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import org.apache.geronimo.gshell.model.ModelElement;
+import org.apache.geronimo.gshell.model.Element;
 
 /**
  * Describes a comand parameter.
@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.model.ModelElement;
  */
 @XStreamAlias("parameter")
 public class Parameter
-    extends ModelElement
+    extends Element
 {
     private String name;
 

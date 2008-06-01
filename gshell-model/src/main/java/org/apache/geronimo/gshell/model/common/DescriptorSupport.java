@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.model.common;
 
 import java.util.Properties;
 
-import org.apache.geronimo.gshell.model.ModelRoot;
+import org.apache.geronimo.gshell.model.Model;
 
 /**
  * Support for descriptor models.
@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.model.ModelRoot;
  * @version $Rev$ $Date$
  */
 public class DescriptorSupport
-    extends ModelRoot
+    extends Model
 {
     private String groupId;
 

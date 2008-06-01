@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import org.apache.geronimo.gshell.model.ModelElement;
+import org.apache.geronimo.gshell.model.Element;
 
 /**
  * Describes a required component of a command.
@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.model.ModelElement;
  */
 @XStreamAlias("requirement")
 public class Requirement
-    extends ModelElement
+    extends Element
 {
     private String name;
 

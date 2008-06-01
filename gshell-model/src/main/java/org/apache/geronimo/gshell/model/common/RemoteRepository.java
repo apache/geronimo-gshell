@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.apache.geronimo.gshell.model.ModelElement;
+import org.apache.geronimo.gshell.model.Element;
 
 /**
  * Remote repository configuration.
@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.model.ModelElement;
  */
 @XStreamAlias("remoteRepository")
 public class RemoteRepository
-    extends ModelElement
+    extends Element
 {
     private String id;
 

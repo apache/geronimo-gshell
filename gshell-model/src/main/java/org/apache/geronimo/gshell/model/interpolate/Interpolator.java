@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.model.interpolate;
 
-import org.apache.geronimo.gshell.model.ModelRoot;
+import org.apache.geronimo.gshell.model.Model;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.RecursionInterceptor;
 import org.codehaus.plexus.interpolation.ValueSource;
@@ -29,7 +29,7 @@ import org.codehaus.plexus.interpolation.ValueSource;
  *
  * @version $Rev$ $Date$
  */
-public interface Interpolator<T extends ModelRoot>
+public interface Interpolator<T extends Model>
 {
 	void setPrefixPattern(String pattern);
 	

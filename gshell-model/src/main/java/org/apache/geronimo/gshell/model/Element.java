@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
  *
  * @version $Rev$ $Date$
  */
-public abstract class ModelElement
+public abstract class Element
 {
     @Override
     public String toString() {

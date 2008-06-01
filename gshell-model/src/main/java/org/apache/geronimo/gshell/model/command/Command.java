@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import org.apache.geronimo.gshell.model.ModelElement;
+import org.apache.geronimo.gshell.model.Element;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
  */
 @XStreamAlias("command")
 public class Command
-    extends ModelElement
+    extends Element
 {
     private URI source;
 
