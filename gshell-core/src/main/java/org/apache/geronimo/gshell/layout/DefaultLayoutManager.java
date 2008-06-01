@@ -86,7 +86,7 @@ public class DefaultLayoutManager
 
         Node start;
 
-        if (path.startsWith(PATH_SEPARATOR)) {
+        if (path.startsWith(FILE_SEPARATOR)) {
             start = layout;
             return findNode(start, path);
         }
@@ -133,7 +133,7 @@ public class DefaultLayoutManager
 
         Node current = start;
 
-        String[] elements = path.split(PATH_SEPARATOR);
+        String[] elements = path.split(FILE_SEPARATOR);
         
         for (String element : elements) {
             if (current instanceof GroupNode) {

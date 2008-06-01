@@ -33,8 +33,7 @@ public interface LayoutManager
 
     String ROOT = "/";
 
-    // FIXME: Rename, this is a file name sep, not a path sep
-    String PATH_SEPARATOR = "/";
+    String FILE_SEPARATOR = "/";
     
     String COMMAND_PATH = "path";
     
