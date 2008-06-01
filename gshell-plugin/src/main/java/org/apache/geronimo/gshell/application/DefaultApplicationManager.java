@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
@@ -32,8 +31,8 @@ import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
+import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -56,6 +55,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -320,44 +322,21 @@ public class DefaultApplicationManager
 
         log.debug("Created shell instance: {}", shell);
 
-        //
-        // FIXME: Use a real proxy, so we can add generic interception muck to handle security muck and whatever ?
-        //        or shall we use an aspect to handle this muck?
-        //
-        
-        Shell proxy = new Shell() {
-            public void run(final Object... args) throws Exception {
-                shell.run(args);
-            }
+        InvocationHandler handler = new InvocationHandler()
+        {
+            public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+                if (method.getDeclaringClass() == Object.class) {
+                    return method.invoke(proxy, args);
+                }
 
-            public ShellInfo getShellInfo() {
-                return shell.getShellInfo();
-            }
-
-            public boolean isInteractive() {
-                return shell.isInteractive();
-            }
-
-            public Environment getEnvironment() {
-                return shell.getEnvironment();
-            }
-
-            public Object execute(String line) throws Exception {
-                return shell.execute(line);
-            }
-
-            public Object execute(String command, Object[] args) throws Exception {
-                return shell.execute(command, args);
-            }
-
-            public Object execute(Object... args) throws Exception {
-                return shell.execute(args);
-            }
-
-            public Object execute(Object[][] commands) throws Exception {
-                return shell.execute(commands);
+                // TODO: Add security handling?
+                
+                return method.invoke(shell, args);
             }
         };
+        
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        Shell proxy = (Shell) Proxy.newProxyInstance(cl, new Class[] { Shell.class }, handler);
 
         log.debug("Create shell proxy: {}", proxy);
 
