@@ -195,6 +195,10 @@ public class DefaultVariables
         return parent;
     }
 
+    //
+    // FIXME: Move to some other class...
+    //
+
     public static boolean isIdentifier(final String name) {
         if (name == null || name.length() == 0) {
             return false;
@@ -207,7 +211,6 @@ public class DefaultVariables
         }
 
         /*
-
         FIXME: This fails for stuff like 'gshell.prompt' which we should allow
                Eventually need to get this fixed, for now just skip part checking
 
