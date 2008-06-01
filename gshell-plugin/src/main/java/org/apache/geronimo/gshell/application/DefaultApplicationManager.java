@@ -58,6 +58,7 @@ import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -324,14 +325,34 @@ public class DefaultApplicationManager
 
         InvocationHandler handler = new InvocationHandler()
         {
+            //
+            // FIXME: Need to resolve how to handle the security manager for the application,
+            //        the SM is not thread-specific, but VM specific... so not sure this is
+            //        the right approache at all :-(
+            //
+
+            private final ApplicationSecurityManager securityManager = new ApplicationSecurityManager();
+
             public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+                assert proxy != null;
+                assert method != null;
+                // args may be null
+                
                 if (method.getDeclaringClass() == Object.class) {
-                    return method.invoke(proxy, args);
+                    return method.invoke(this, args);
                 }
 
-                // TODO: Add security handling?
-                
-                return method.invoke(shell, args);
+                SecurityManager previous = System.getSecurityManager();
+                System.setSecurityManager(securityManager);
+                try {
+                    return method.invoke(shell, args);
+                }
+                catch (InvocationTargetException e) {
+                    throw e.getTargetException();
+                }
+                finally {
+                    System.setSecurityManager(previous);
+                }
             }
         };
         

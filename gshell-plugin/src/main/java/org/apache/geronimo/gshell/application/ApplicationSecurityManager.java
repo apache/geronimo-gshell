@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.security;
+package org.apache.geronimo.gshell.application;
 
 import java.security.Permission;
 
@@ -26,18 +26,18 @@ import java.security.Permission;
  *
  * @version $Rev$ $Date$
  */
-public class ShellSecurityManager
+public class ApplicationSecurityManager
     extends SecurityManager
 {
     private final SecurityManager parent;
 
-    public ShellSecurityManager(final SecurityManager parent) {
-        assert parent != null;
+    public ApplicationSecurityManager(final SecurityManager parent) {
+        // parent may be null if there is no installed secrutiy manager
 
         this.parent = parent;
     }
 
-    public ShellSecurityManager() {
+    public ApplicationSecurityManager() {
         this(System.getSecurityManager());
     }
 
@@ -48,19 +48,16 @@ public class ShellSecurityManager
     }
 
     /**
-     * Always throws {@link SecurityException}.
+     * Prevent any command or component from forcing the VM to exit.
+     *
+     * @throws SecurityException Always throws {@link SecurityException}.
      */
     public void checkExit(final int code) {
         throw new SecurityException("Use of System.exit() is forbidden!");
     }
 
-    /*
-    public void checkPermission(final Permission perm) {
-        assert perm != null;
-        
-        if (perm.getName().equals("exitVM")) {
-            System.out.println("exitVM");
-        }
-    }
-    */
+    //
+    // TODO: Never allow application to change ${gshell.home}
+    //
+
 }
