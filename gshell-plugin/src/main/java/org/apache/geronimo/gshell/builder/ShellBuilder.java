@@ -196,6 +196,10 @@ public class ShellBuilder
         // Initialize the container
         getContainer();
 
+        //
+        // TODO: Allow someway to configure a non-interactive monitor
+        //
+        
         // Configure download monitor
         getArtifactManager().setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
 
