@@ -105,7 +105,7 @@ public class JexlExpressionEvaluatorTest
     }
 
     /*
-    FIXME: gshell-expr can't currently handle dereferencing, need to fix.
+    FIXME: gshell-expr can't currently handle dereferencing, need to fix, use plexus-interpolation instead.
     
     public void testDeref1() throws Exception {
         Map vars = evaluator.getVariables();
