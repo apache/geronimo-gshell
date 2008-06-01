@@ -41,10 +41,6 @@ public class CommandSet
 
     private String description;
 
-    //
-    // FIXME: Make collection accessors null-safe
-    //
-
     private List<Command> commands;
 
     public CommandSet() {}
@@ -74,6 +70,9 @@ public class CommandSet
     }
 
     public List<Command> getCommands() {
+        if (commands == null) {
+            commands = new ArrayList<Command>();
+        }
         return commands;
     }
 

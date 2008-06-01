@@ -46,10 +46,6 @@ public class Plugin
 
     private List<DependencyGroup> dependencyGroups;
 
-    //
-    // FIXME: Make collection accessors null-safe
-    //
-
     private List<Command> commands;
 
     private Layout layout;

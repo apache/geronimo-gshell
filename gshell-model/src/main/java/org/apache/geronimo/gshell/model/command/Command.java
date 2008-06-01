@@ -46,10 +46,6 @@ public class Command
 
     private String version;
 
-    //
-    // FIXME: Make collection accessors null-safe
-    //
-    
     private List<Parameter> parameters;
 
     private List<Requirement> requirements;
@@ -95,6 +91,9 @@ public class Command
     }
 
     public List<Parameter> getParameters() {
+        if (parameters == null) {
+            parameters = new ArrayList<Parameter>();
+        }
         return parameters;
     }
 
@@ -117,6 +116,9 @@ public class Command
     }
 
     public List<Requirement> getRequirements() {
+        if (requirements == null) {
+            requirements = new ArrayList<Requirement>();
+        }
         return requirements;
     }
 
