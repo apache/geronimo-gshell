@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.GShell;
+import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
@@ -28,6 +29,7 @@ import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
+import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
@@ -75,6 +77,9 @@ public class DefaultApplicationManager
 
     @Requirement
     private ArtifactManager artifactManager;
+
+    @Requirement
+    private SettingsManager settingsManager;
 
     private GShellPlexusContainer parentContainer;
 
@@ -140,9 +145,17 @@ public class DefaultApplicationManager
 
         // Add value sources to resolve muck
         interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
+
+        // User settings should override the applications
+        assert settingsManager != null;
+        Settings settings = settingsManager.getSettings();
+        if (settings != null) {
+            interp.addValueSource(new PropertiesBasedValueSource(settings.getProperties()));
+        }
+
+        // Add application settings
         interp.addValueSource(new PropertiesBasedValueSource(app.getProperties()));
-        // TODO: Add settings.properties
-        
+
         app = interp.interpolate(app);
         
         // Update the configuration with the new model
