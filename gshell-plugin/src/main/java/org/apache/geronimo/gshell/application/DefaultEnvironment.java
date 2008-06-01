@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;

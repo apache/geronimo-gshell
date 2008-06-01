@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.builder;
 
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.application.ApplicationMarshaller;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.model.settings.SettingsMarshaller;
+import org.apache.geronimo.gshell.builder.ShellBuilder;
 
 import java.net.URL;
 

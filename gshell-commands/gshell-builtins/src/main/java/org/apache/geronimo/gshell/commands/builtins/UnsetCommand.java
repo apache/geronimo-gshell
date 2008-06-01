@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import java.util.List;
 
-import org.apache.geronimo.gshell.DefaultVariables;
+import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;

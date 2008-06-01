@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.DefaultEnvironment;
+import org.apache.geronimo.gshell.application.DefaultEnvironment;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;

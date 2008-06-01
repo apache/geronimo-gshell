@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.application;
 
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.command.Variables;

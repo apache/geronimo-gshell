@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.builder;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;

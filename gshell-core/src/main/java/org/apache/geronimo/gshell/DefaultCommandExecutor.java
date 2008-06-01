@@ -36,6 +36,7 @@ import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;

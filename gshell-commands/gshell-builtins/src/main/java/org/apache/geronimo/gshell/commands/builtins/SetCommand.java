@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.geronimo.gshell.DefaultVariables;
+import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
