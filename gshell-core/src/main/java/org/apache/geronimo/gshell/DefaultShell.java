@@ -31,7 +31,6 @@ import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
@@ -52,9 +51,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=InteractiveShell.class, hint="default")
+@Component(role=Shell.class, hint="default")
 public class DefaultShell
-    implements InteractiveShell, Initializable
+    implements Shell, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -100,6 +99,10 @@ public class DefaultShell
 
     public ShellInfo getShellInfo() {
         return shellInfo;
+    }
+
+    public boolean isInteractive() {
+        return true;
     }
 
     public void initialize() throws InitializationException {

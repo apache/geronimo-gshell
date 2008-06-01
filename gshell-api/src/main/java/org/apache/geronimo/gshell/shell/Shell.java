@@ -32,4 +32,8 @@ public interface Shell
     ShellInfo getShellInfo();
 
     Environment getEnvironment();
+
+    boolean isInteractive();
+    
+    void run(Object... args) throws Exception;
 }

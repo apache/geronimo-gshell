@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.cli;
 
 import org.apache.geronimo.gshell.ExitNotification;
-import org.apache.geronimo.gshell.GShell;
-import org.apache.geronimo.gshell.GShellBuilder;
+import org.apache.geronimo.gshell.ShellBuilder;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.application.ApplicationLocator;
 import org.apache.geronimo.gshell.clp.Argument;
@@ -205,7 +205,7 @@ public class Main
         });
 
         try {
-            GShellBuilder builder = new GShellBuilder();
+            ShellBuilder builder = new ShellBuilder();
             builder.setClassWorld(classWorld);
             builder.setIo(io);
 
@@ -240,7 +240,7 @@ public class Main
             }
 
             // Build the shell instance
-            GShell gshell = builder.build();
+            Shell gshell = builder.build();
 
             // clp gives us a list, but we need an array
             String[] _args = commandArgs.toArray(new String[commandArgs.size()]);

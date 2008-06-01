@@ -76,6 +76,10 @@ public class DefaultRemoteShell
         opened = false;
     }
 
+    public boolean isInteractive() {
+        return false;
+    }
+
     public Environment getEnvironment() {
         ensureOpened();
         
@@ -110,10 +114,14 @@ public class DefaultRemoteShell
         return executor.execute(path, args);
     }
 
-    public Object execute(Object[][] commands) throws Exception {
+    public Object execute(final Object[][] commands) throws Exception {
         ensureOpened();
 
         return executor.execute(commands);
+    }
+
+    public void run(final Object... args) throws Exception {
+        throw new UnsupportedOperationException();
     }
 
     //

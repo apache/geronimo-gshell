@@ -28,17 +28,17 @@ import org.apache.geronimo.gshell.model.settings.SettingsMarshaller;
 import java.net.URL;
 
 /**
- * Unit tests for the {@link GShellBuilder} class.
+ * Unit tests for the {@link ShellBuilder} class.
  *
  * @version $Rev$ $Date$
  */
-public class GShellBuilderTest
+public class ShellBuilderTest
     extends TestCase
 {
-    private GShellBuilder builder;
+    private ShellBuilder builder;
 
     protected void setUp() throws Exception {
-        builder = new GShellBuilder();
+        builder = new ShellBuilder();
     }
 
     protected void tearDown() throws Exception {

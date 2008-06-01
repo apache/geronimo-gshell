@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.GShell;
 import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.io.IO;
@@ -34,8 +33,8 @@ import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plugin.CommandCollector;
 import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.shell.InteractiveShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -313,11 +312,11 @@ public class DefaultApplicationManager
         return classPath;
     }
 
-    public GShell createShell() throws Exception {
+    public Shell createShell() throws Exception {
         // Make sure that we have a valid context
         getContext();
 
-        final InteractiveShell shell = container.lookupComponent(InteractiveShell.class);
+        final Shell shell = container.lookupComponent(Shell.class);
 
         log.debug("Created shell instance: {}", shell);
 
@@ -326,13 +325,17 @@ public class DefaultApplicationManager
         //        or shall we use an aspect to handle this muck?
         //
         
-        GShell proxy = new GShell() {
+        Shell proxy = new Shell() {
             public void run(final Object... args) throws Exception {
                 shell.run(args);
             }
 
             public ShellInfo getShellInfo() {
                 return shell.getShellInfo();
+            }
+
+            public boolean isInteractive() {
+                return shell.isInteractive();
             }
 
             public Environment getEnvironment() {

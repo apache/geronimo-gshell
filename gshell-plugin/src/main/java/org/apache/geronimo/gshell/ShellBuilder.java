@@ -31,6 +31,7 @@ import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
 import org.apache.geronimo.gshell.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.PlexusContainerException;
@@ -40,11 +41,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Builds {@link GShell} instances.
+ * Builds {@link org.apache.geronimo.gshell.shell.Shell} instances.
  *
  * @version $Rev$ $Date$
  */
-public class GShellBuilder
+public class ShellBuilder
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -66,7 +67,7 @@ public class GShellBuilder
 
     private ArtifactManager artifactManager;
 
-    public GShellBuilder() {}
+    public ShellBuilder() {}
 
     private GShellPlexusContainer createContainer() throws PlexusContainerException {
         ContainerConfiguration config = new DefaultContainerConfiguration();
@@ -189,7 +190,7 @@ public class GShellBuilder
     // Building
     //
 
-    public GShell build() throws Exception {
+    public Shell build() throws Exception {
         log.debug("Building");
 
         // Initialize the container
