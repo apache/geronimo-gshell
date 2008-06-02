@@ -124,11 +124,15 @@ public class JexlExpressionEvaluator
             else {
                 end = input.indexOf(" ", start);
                 if (end == -1) {
-                    end = input.indexOf("\t", start);
+                	end = input.indexOf("\"", start);
+                	
+                	if (end == -1) {
+                        end = input.indexOf("\t", start);
 
-                    if (end == -1) {
-                        end = input.length();
-                    }
+                        if (end == -1) {
+                            end = input.length();
+                        }
+                	}
                 }
             }
 
