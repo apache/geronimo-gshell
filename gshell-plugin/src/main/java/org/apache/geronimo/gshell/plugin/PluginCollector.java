@@ -56,10 +56,10 @@ public class PluginCollector
     public void componentDiscovered(final ComponentDiscoveryEvent event) {
         assert event != null;
 
-        log.trace("Component discovered: {}", event);
-
         ComponentSetDescriptor descriptor = event.getComponentSetDescriptor();
-
+        
+        log.trace("Discovered: {}", descriptor);
+        
         if (descriptor instanceof PluginDescriptor) {
             collect((PluginDescriptor)descriptor);
         }
