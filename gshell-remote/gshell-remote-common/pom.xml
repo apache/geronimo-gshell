@@ -42,13 +42,6 @@
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-whisper</artifactId>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>blissed</groupId>
-            <artifactId>blissed</artifactId>
-        </dependency>
-        -->
     </dependencies>
 
 </project>
