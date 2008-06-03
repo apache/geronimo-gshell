@@ -123,14 +123,22 @@ public class JexlExpressionEvaluator
             }
             else {
                 end = input.indexOf(" ", start);
+               
+                //
+                //  HACK: Trailing quotes should really be handled by the parser rather than this post-parsing stuff
+                //                
                 if (end == -1) {
                     end = input.indexOf("\"", start);
                     
                     if (end == -1) {
-                        end = input.indexOf("\t", start);
-
+                    	end = input.indexOf("'", start);
+                    
                         if (end == -1) {
-                            end = input.length();
+                            end = input.indexOf("\t", start);
+
+                            if (end == -1) {
+                                end = input.length();
+                            }
                         }
                     }
                 }
