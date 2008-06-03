@@ -25,31 +25,28 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.support</groupId>
-    <artifactId>gshell-support</artifactId>
-    <name>GShell Support</name>
-    <packaging>pom</packaging>
+    <artifactId>gshell-url</artifactId>
+    <name>GShell Support :: URL</name>
     
     <description>
-        Support modules for GShell fluff.
+        Provides support for URL factories and handlers.
     </description>
     
-    <modules>
-        <module>gshell-ansi</module>
-        <module>gshell-artifact</module>
-        <module>gshell-clp</module>
-        <module>gshell-common</module>
-        <module>gshell-i18n</module>
-        <module>gshell-io</module>
-        <module>gshell-prefs</module>
-        <module>gshell-plexus</module>
-        <module>gshell-expr</module>
-        <module>gshell-url</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-plexus</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
