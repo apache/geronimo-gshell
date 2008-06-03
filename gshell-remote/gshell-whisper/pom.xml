@@ -25,13 +25,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.remote</groupId>
+        <artifactId>gshell-remote</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
     <artifactId>gshell-whisper</artifactId>
-    <name>GShell Whisper</name>
+    <name>GShell Remote :: Whisper</name>
     
     <description>
         Messaging framework muck and fluff.

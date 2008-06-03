@@ -395,7 +395,7 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.geronimo.gshell</groupId>
+                <groupId>org.apache.geronimo.gshell.remote</groupId>
                 <artifactId>gshell-whisper</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
@@ -486,7 +486,6 @@
         <module>gshell-parser</module>
         <module>gshell-core</module>
         <module>gshell-cli</module>
-        <module>gshell-whisper</module>
         <module>gshell-commands</module>
         <module>gshell-remote</module>
         <module>gshell-assembly</module>

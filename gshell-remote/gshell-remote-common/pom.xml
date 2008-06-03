@@ -39,7 +39,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
+            <groupId>org.apache.geronimo.gshell.remote</groupId>
             <artifactId>gshell-whisper</artifactId>
         </dependency>
     </dependencies>
