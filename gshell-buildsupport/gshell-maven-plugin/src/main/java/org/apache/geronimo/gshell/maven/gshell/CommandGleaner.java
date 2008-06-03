@@ -99,10 +99,6 @@ public class CommandGleaner
 
         Command command = new Command();
 
-        //
-        // TODO: Set the source...
-        //
-
         command.setId(anno.id());
 
         command.setDescription(filterEmptyAsNull(anno.description()));

@@ -114,13 +114,6 @@ public class DefaultShell
         this.env = context.getEnvironment();
         this.branding = context.getApplication().getBranding();
         
-        //
-        // FIXME: This won't work as desired, as this shell instance is not yet registered, so if a profile
-        //        tries to run something that needs the shell instance... well, loopsvile.
-        //
-        //        This could be a warning sign that some of this class needs to be split up into smaller bits...
-        //
-        
         try {
             loadProfileScripts();
         }
