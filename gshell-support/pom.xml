@@ -48,7 +48,6 @@
         <module>gshell-io</module>
         <module>gshell-prefs</module>
         <module>gshell-plexus</module>
-        <module>gshell-expr</module>
         <module>gshell-url</module>
     </modules>
 
