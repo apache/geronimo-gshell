@@ -21,9 +21,10 @@ package org.apache.geronimo.gshell.plugin;
 
 import org.apache.geronimo.gshell.model.plugin.Plugin;
 import org.apache.geronimo.gshell.model.plugin.PluginMarshaller;
+import org.apache.geronimo.gshell.plugin.descriptor.PluginDescriptor;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.discovery.AbstractComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Reader;
 
 /**
- * ???
+ * Handles the discovery of GShell plugins from <tt>plugin.xml</tt> models.
  *
  * @version $Rev$ $Date$
  */
@@ -55,12 +56,16 @@ public class PluginDiscoverer
         assert reader != null;
         assert source != null;
 
-        log.debug("Discovered plugin: {}", source);
+        log.trace("Loading plugin model from: {}", source);
 
         Plugin plugin = marshaller.unmarshal(reader);
 
-        // TODO: Build plexus component set descriptor
-
-        return null;
+        log.debug("Discovered plugin: {}", plugin.getId());
+        log.trace("Plugin model: {}", plugin);
+        
+        PluginDescriptor descriptor = new PluginDescriptor(plugin);
+        descriptor.setSource(source);
+        
+        return descriptor;
     }
 }

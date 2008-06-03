@@ -35,11 +35,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Extracts {@link org.apache.geronimo.gshell.model.command.Command} instances from class files.
+ * Extracts {@link Command} instances from class files.
  *
  * @version $Id$
  */
-public class CommandDescriptorExtractor
+public class CommandExtractor
 {
     public static enum Scope
     {
@@ -49,7 +49,7 @@ public class CommandDescriptorExtractor
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private CommandDescriptorGleaner gleaner = new CommandDescriptorGleaner();
+    private CommandGleaner gleaner = new CommandGleaner();
 
     public List<Command> extract(final MavenProject project, final Scope scope) throws Exception {
         assert project != null;

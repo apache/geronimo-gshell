@@ -22,8 +22,8 @@ package org.apache.geronimo.gshell.model.common;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Groups dependency elements to allow artifact configuration to be shared.

@@ -20,10 +20,8 @@
 package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import org.apache.geronimo.gshell.model.Element;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +34,6 @@ import java.util.List;
 public class Command
     extends Element
 {
-    private URI source;
-
     private String id;
 
     private String implementation;
@@ -49,14 +45,6 @@ public class Command
     private List<Parameter> parameters;
 
     private List<Requirement> requirements;
-
-    public URI getSource() {
-        return source;
-    }
-
-    public void setSource(final URI source) {
-        this.source = source;
-    }
 
     public String getId() {
         return id;

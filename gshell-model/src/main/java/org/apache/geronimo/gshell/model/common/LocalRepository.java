@@ -20,10 +20,9 @@
 package org.apache.geronimo.gshell.model.common;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.apache.geronimo.gshell.model.Element;
 
 import java.io.File;
-
-import org.apache.geronimo.gshell.model.Element;
 
 /**
  * Local repository configuration.

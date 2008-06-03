@@ -20,12 +20,11 @@
 package org.apache.geronimo.gshell.model.application;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import org.apache.geronimo.gshell.model.Element;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.Properties;
 import java.io.File;
+import java.util.Properties;
 
 /**
  * Branding configuration element.

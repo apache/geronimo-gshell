@@ -29,8 +29,8 @@ import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
-import org.apache.geronimo.gshell.plugin.CommandCollector;
-import org.apache.geronimo.gshell.plugin.CommandDiscoverer;
+import org.apache.geronimo.gshell.plugin.PluginCollector;
+import org.apache.geronimo.gshell.plugin.PluginDiscoverer;
 import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.Shell;
@@ -56,9 +56,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -209,12 +209,8 @@ public class DefaultApplicationManager
         config.setName(application.getId());
         config.setClassWorld(world);
         config.setRealm(realm);
-        
-        // FIXME: For now use the old Command* bits to get things working, then refactor to use the new Plugin* bits
-        config.addComponentDiscoverer(new CommandDiscoverer());
-        config.addComponentDiscoveryListener(new CommandCollector());
-        // config.addComponentDiscoverer(new PluginDiscoverer());
-        // config.addComponentDiscoveryListener(new PluginCollector());
+        config.addComponentDiscoverer(new PluginDiscoverer());
+        config.addComponentDiscoveryListener(new PluginCollector());
 
         GShellPlexusContainer child = parentContainer.createChild(config);
 

@@ -17,59 +17,53 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.plugin;
+package org.apache.geronimo.gshell.plugin.descriptor;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.Command;
-import org.apache.geronimo.gshell.model.command.CommandSet;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.apache.geronimo.gshell.model.plugin.Plugin;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 
 /**
- * ???
+ * Descriptor for a GShell plugin's plexus component set.
  *
  * @version $Rev$ $Date$
  */
-public class ComponentSetDescriptorAdapter
+public class PluginDescriptor
     extends ComponentSetDescriptor
 {
-    private final CommandSet commands;
+    private final Plugin plugin;
 
-    public ComponentSetDescriptorAdapter(final CommandSet commands) {
-        assert commands != null;
+    public PluginDescriptor(final Plugin plugin) {
+        assert plugin != null;
 
-        this.commands = commands;
+        this.plugin = plugin;
 
-        setId(commands.getId());
+        setId(plugin.getId());
 
         setIsolatedRealm(false);
 
-        if (!commands.isEmpty()) {
-            for (Command command : commands.getCommands()) {
-                ComponentDescriptor component = new ComponentDescriptorAdapter(command);
-                
-                addComponentDescriptor(component);
-
-                //
-                // TODO: Should we attach our selves?
-                //
-                // component.setComponentSetDescriptor(this);
-            }
+        for (Command command : plugin.commands()) {
+            addCommand(command);
         }
+    }
 
-        //
-        // TODO: Need to figure out dependencies
-        //
+    private void addCommand(final Command command) {
+        assert command != null;
         
-        setDependencies(null);
+        CommandDescriptor descriptor = new CommandDescriptor(command);
+        descriptor.setComponentSetDescriptor(this);
+        descriptor.setSource(getSource());
+
+        addComponentDescriptor(descriptor);
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
-
-    public CommandSet getCommands() {
-        return commands;
     }
 }

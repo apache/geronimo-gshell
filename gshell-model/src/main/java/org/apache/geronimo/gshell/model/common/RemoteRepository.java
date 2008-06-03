@@ -20,11 +20,10 @@
 package org.apache.geronimo.gshell.model.common;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.apache.geronimo.gshell.model.Element;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import org.apache.geronimo.gshell.model.Element;
 
 /**
  * Remote repository configuration.

@@ -50,26 +50,6 @@ public class PluginMarshallerTest
         props.setProperty("a", "b");
         root.setProperties(props);
 
-        Dependency d1 = new Dependency();
-        d1.setGroupId("a");
-        d1.setArtifactId("b");
-        d1.setVersion("c");
-        root.add(d1);
-
-        DependencyGroup g1 = new DependencyGroup();
-        g1.setGroupId("d");
-        g1.setVersion("e");
-        root.add(g1);
-
-        Dependency d2 = new Dependency();
-        d2.setArtifactId("f");
-        g1.add(d2);
-
-        Dependency d3 = new Dependency();
-        d3.setArtifactId("g");
-        d3.setClassifier("h");
-        g1.add(d3);
-
         String xml = marshaller.marshal(root);
         assertNotNull(xml);
 

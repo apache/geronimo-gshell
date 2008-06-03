@@ -21,8 +21,6 @@ package org.apache.geronimo.gshell.model.plugin;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.command.Command;
-import org.apache.geronimo.gshell.model.common.Dependency;
-import org.apache.geronimo.gshell.model.common.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.DescriptorSupport;
 import org.apache.geronimo.gshell.model.layout.Layout;
 
@@ -38,59 +36,29 @@ import java.util.List;
 public class Plugin
     extends DescriptorSupport
 {
-    //
-    // FIXME: Might not really need these here, since we are using the pom.xml information to load dependencies/plugins
-    //
-    
-    private List<Dependency> dependencies;
-
-    private List<DependencyGroup> dependencyGroups;
-
     private List<Command> commands;
 
     private Layout layout;
 
-    public List<DependencyGroup> dependencyGroups() {
-        if (dependencyGroups == null) {
-            dependencyGroups = new ArrayList<DependencyGroup>();
+    public List<Command> commands() {
+        if (commands == null) {
+            commands = new ArrayList<Command>();
         }
-
-        return dependencyGroups;
+        
+        return commands;
     }
 
-    public void add(final DependencyGroup group) {
-        assert group != null;
-
-        dependencyGroups().add(group);
+    public void add(final Command command) {
+        assert command != null;
+        
+        commands().add(command);
     }
 
-    public List<Dependency> dependencies() {
-        if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
-        }
-
-        return dependencies;
+    public Layout getLayout() {
+        return layout;
     }
 
-    public List<Dependency> dependencies(boolean includeGroups) {
-        if (!includeGroups) {
-            return dependencies();
-        }
-
-        List<Dependency> list = new ArrayList<Dependency>();
-
-        list.addAll(dependencies());
-
-        for (DependencyGroup group : dependencyGroups()) {
-            list.addAll(group.dependencies());
-        }
-
-        return list;
-    }
-
-    public void add(final Dependency dependency) {
-        assert dependency != null;
-
-        dependencies().add(dependency);
+    public void setLayout(final Layout layout) {
+        this.layout = layout;
     }
 }

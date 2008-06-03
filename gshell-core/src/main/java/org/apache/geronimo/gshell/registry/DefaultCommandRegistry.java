@@ -21,8 +21,7 @@ package org.apache.geronimo.gshell.registry;
 
 import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
-import org.apache.geronimo.gshell.plugin.CommandCollector;
-import org.apache.geronimo.gshell.plugin.PlexusCommandWrapper;
+import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -53,7 +52,7 @@ public class DefaultCommandRegistry
     private GShellPlexusContainer container;
 
     @Requirement
-    private CommandCollector collector;
+    private PluginCollector collector;
     
     private Map<String, org.apache.geronimo.gshell.command.Command> commands = new HashMap<String, org.apache.geronimo.gshell.command.Command>();
 
@@ -87,15 +86,15 @@ public class DefaultCommandRegistry
         assert id != null;
         
         if (!commands.containsKey(id)) {
-            Command descriptor = collector.getCommandDescriptor(id);
+            Command command = collector.getCommand(id);
 
-            if (descriptor == null) {
+            if (command == null) {
                 throw new NotRegisteredException(id);
             }
 
             log.debug("Registering command id: {}", id);
             
-            register(new PlexusCommandWrapper(container, descriptor));
+            register(new PlexusCommandWrapper(container, command));
         }
     }
 

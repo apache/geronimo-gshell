@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.model;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import org.apache.geronimo.gshell.model.marshal.Marshaller;
 
 /**
@@ -33,9 +31,11 @@ public abstract class Model
 {
     private transient Marshaller marshaller;
 
+    /*
     @XStreamAlias("version")
     @XStreamAsAttribute
     private String modelVersion;
+    */
 
     public Marshaller getMarshaller() {
     	if (marshaller == null) {
@@ -49,6 +49,7 @@ public abstract class Model
         this.marshaller = marshaller;
     }
 
+    /*
     public String getModelVersion() {
         return modelVersion;
     }
@@ -56,4 +57,5 @@ public abstract class Model
     public void setModelVersion(final String modelVersion) {
         this.modelVersion = modelVersion;
     }
+    */
 }

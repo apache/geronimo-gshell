@@ -34,11 +34,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ????
+ * Gleans off command elements from annotations.
  *
  * @version $Id$
  */
-public class CommandDescriptorGleaner
+public class CommandGleaner
 {
     private static final String EMPTY_STRING = "";
 

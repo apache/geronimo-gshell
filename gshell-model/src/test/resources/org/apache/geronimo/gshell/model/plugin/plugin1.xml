@@ -30,26 +30,4 @@
     <properties>
         <property name="a" value="b"/>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>a</groupId>
-            <artifactId>b</artifactId>
-            <version>c</version>
-        </dependency>
-    </dependencies>
-
-    <dependencyGroups>
-        <dependencyGroup>
-            <groupId>d</groupId>
-            <version>e</version>
-            <dependency>
-                <artifactId>f</artifactId>
-            </dependency>
-            <dependency>
-                <artifactId>g</artifactId>
-                <classifier>h</classifier>
-            </dependency>
-        </dependencyGroup>
-    </dependencyGroups>
 </plugin>

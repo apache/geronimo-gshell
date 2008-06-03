@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.plugin;
+package org.apache.geronimo.gshell.plugin.descriptor;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
@@ -28,28 +28,20 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
-import java.net.URI;
-
 /**
- * ???
+ * Descriptor for a GShell command's plexus component.
  *
  * @version $Rev$ $Date$
  */
-public class ComponentDescriptorAdapter
+public class CommandDescriptor
     extends ComponentDescriptor
 {
     private final Command command;
 
-    public ComponentDescriptorAdapter(final Command command) {
+    public CommandDescriptor(final Command command) {
         assert command != null;
 
         this.command = command;
-
-        URI source = command.getSource();
-        
-        if (source != null) {
-            setSource(source.toString());
-        }
 
         setDescription(command.getDescription());
 
@@ -91,7 +83,7 @@ public class ComponentDescriptorAdapter
 
                 root.addChild(child);
             }
-            
+
             setConfiguration(root);
         }
 
@@ -100,10 +92,10 @@ public class ComponentDescriptorAdapter
                 addRequirement(translate(requirement));
             }
         }
+    }
 
-        //
-        // TODO: What to do about depencencies?  Or are they just on the set level?
-        //
+    public Command getCommand() {
+        return command;
     }
 
     private ComponentRequirement translate(final Requirement source) {
@@ -124,9 +116,5 @@ public class ComponentDescriptorAdapter
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
-    
-    public Command getCommand() {
-        return command;
     }
 }

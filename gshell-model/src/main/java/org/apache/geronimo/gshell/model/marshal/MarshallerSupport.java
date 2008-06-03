@@ -22,18 +22,17 @@ package org.apache.geronimo.gshell.model.marshal;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.net.URL;
-
 import org.apache.geronimo.gshell.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
+import java.net.URL;
 
 /**
  * Support for model {@link Marshaller} implementations.

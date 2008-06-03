@@ -20,13 +20,12 @@
 package org.apache.geronimo.gshell.model.settings;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import org.apache.geronimo.gshell.model.Model;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
-import java.util.Properties;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * User settings model root element.

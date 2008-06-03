@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.plugin;
+package org.apache.geronimo.gshell.registry;
 
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.model.command.Command;
@@ -58,6 +58,8 @@ public class PlexusCommandWrapper
     public Object execute(final CommandContext context, final Object... args) throws Exception {
         assert context != null;
 
+        log.trace("Executing w/context={}, args={}", context, args);
+        
         org.apache.geronimo.gshell.command.Command command =
             container.lookupComponent(org.apache.geronimo.gshell.command.Command.class, descriptor.getId());
 

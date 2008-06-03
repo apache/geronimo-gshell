@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.model.command;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import org.apache.geronimo.gshell.model.Element;
 
 /**

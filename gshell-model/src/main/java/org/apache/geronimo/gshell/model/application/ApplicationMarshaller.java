@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
-import org.apache.geronimo.gshell.model.layout.CommandNode;
-import org.apache.geronimo.gshell.model.layout.AliasNode;
 import com.thoughtworks.xstream.XStream;
+import org.apache.geronimo.gshell.model.layout.AliasNode;
+import org.apache.geronimo.gshell.model.layout.CommandNode;
+import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 
 /**
  * Marshaller for {@link Application} models.

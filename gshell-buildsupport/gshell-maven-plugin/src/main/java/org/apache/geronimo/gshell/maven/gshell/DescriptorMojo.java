@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.geronimo.gshell.model.command.Command;
-import org.apache.geronimo.gshell.model.command.CommandSet;
-import org.apache.geronimo.gshell.model.command.CommandSetMarshaller;
+import org.apache.geronimo.gshell.model.plugin.PluginMarshaller;
+import org.apache.geronimo.gshell.model.plugin.Plugin;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -35,10 +35,10 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
-import org.apache.geronimo.gshell.maven.gshell.CommandDescriptorExtractor.Scope;
+import org.apache.geronimo.gshell.maven.gshell.CommandExtractor.Scope;
 
 /**
- * Generates a GShell <tt>commands.xml</tt> descriptor.
+ * Generates a GShell <tt>plugin.xml</tt> descriptor.
  *
  * @goal descriptor
  * @phase process-classes
@@ -55,14 +55,16 @@ public class DescriptorMojo
      * @parameter expression="${project.build.outputDirectory}"
      * @required
      */
+    @SuppressWarnings({"UnusedDeclaration"})
     private File outputDirectory;
 
     /**
      * The filename of the descriptor.
      *
-     * @parameter expression="META-INF/gshell/commands.xml"
+     * @parameter expression="META-INF/gshell/plugin.xml"
      * @required
      */
+    @SuppressWarnings({"UnusedDeclaration"})
     private String fileName;
 
     /**
@@ -70,6 +72,7 @@ public class DescriptorMojo
      * @readonly
      * @required
      */
+    @SuppressWarnings({"UnusedDeclaration"})
     private MavenProject project;
 
     public void execute() throws MojoExecutionException {
@@ -90,32 +93,40 @@ public class DescriptorMojo
         assert scope != null;
         assert outputFile != null;
 
-        List<Command> descriptors = new ArrayList<Command>();
+        List<Command> commands = new ArrayList<Command>();
 
-        CommandDescriptorExtractor extractor = new CommandDescriptorExtractor();
+        CommandExtractor extractor = new CommandExtractor();
 
         try {
             List<Command> list = extractor.extract(project, scope);
 
             if (list != null && !list.isEmpty()) {
-                descriptors.addAll(list);
+                commands.addAll(list);
             }
         }
         catch (Exception e) {
             throw new MojoExecutionException("Failed to extract descriptors", e);
         }
 
-        if (descriptors.size() == 0) {
+        if (commands.size() == 0) {
             getLog().debug("No commands found");
         }
         else {
-            getLog().info("Discovered " + descriptors.size() + " command descriptors(s)");
+            getLog().info("Discovered " + commands.size() + " commands");
 
-            CommandSet commands = new CommandSet(project.getId()); // .getArtifactId());
-            commands.setCommands(descriptors);
+            Plugin plugin = new Plugin();
+            
+            plugin.setGroupId(project.getGroupId());
+            plugin.setArtifactId(project.getArtifactId());
+            plugin.setVersion(project.getVersion());
+            plugin.setDescription(project.getDescription());
 
+            for (Command command : commands) {
+                plugin.add(command);
+            }
+            
             try {
-                writeDescriptor(commands, outputFile);
+                writeDescriptor(plugin, outputFile);
             }
             catch (Exception e) {
                 throw new MojoExecutionException("Failed to write descriptor: " + outputFile, e);
@@ -123,18 +134,18 @@ public class DescriptorMojo
         }
     }
 
-    private void writeDescriptor(final CommandSet commands, final File outputFile) throws Exception {
-        assert commands != null;
+    private void writeDescriptor(final Plugin plugin, final File outputFile) throws Exception {
+        assert plugin != null;
         assert outputFile != null;
 
         FileUtils.forceMkdir(outputFile.getParentFile());
 
         BufferedWriter output = new BufferedWriter(new FileWriter(outputFile));
 
-        CommandSetMarshaller marshaller = new CommandSetMarshaller();
+        PluginMarshaller marshaller = new PluginMarshaller();
 
         try {
-            marshaller.marshal(commands, output);
+            marshaller.marshal(plugin, output);
             output.flush();
         }
         finally {
