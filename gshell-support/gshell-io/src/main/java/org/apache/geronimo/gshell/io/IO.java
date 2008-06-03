@@ -19,18 +19,19 @@
 
 package org.apache.geronimo.gshell.io;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Reader;
-
+import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.helpers.MessageFormatter;
-import jline.Terminal;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.OutputStream;
 
 /**
  * Container for input/output handles.
@@ -51,14 +52,14 @@ public class IO
      *
      * @see #out    For general usage, please use the writer.
      */
-    public final OutputStream outputStream;
+    public final PrintStream outputStream;
 
     /**
      * Raw error output stream.
      *
      * @see #err    For general usage, please use the writer.
      */
-    public final OutputStream errorStream;
+    public final PrintStream errorStream;
 
     /**
      * Prefered input reader.
@@ -89,7 +90,7 @@ public class IO
      * @param err           The error output stream; must not be null
      * @param autoFlush     True to enable auto-flushing off writers.
      */
-    public IO(final InputStream in, final OutputStream out, final OutputStream err, final boolean autoFlush) {
+    public IO(final InputStream in, final PrintStream out, final PrintStream err, final boolean autoFlush) {
         assert in != null;
         assert out != null;
         assert err != null;
@@ -120,6 +121,14 @@ public class IO
         // this.err = new PrintWriter(err, autoFlush);
     }
 
+    public IO(final InputStream in, final OutputStream out, final OutputStream err, final boolean autoFlush) {
+        this(in, new PrintStream(out, autoFlush), new PrintStream(err, autoFlush), autoFlush);    
+    }
+
+    public IO(final InputStream in, final OutputStream out, final boolean autoFlush) {
+        this(in, new PrintStream(out, autoFlush), autoFlush);    
+    }
+
     /**
      * Construct a new IO container.
      *
@@ -127,7 +136,7 @@ public class IO
      * @param out   The output stream; must not be null
      * @param err   The error output stream; must not be null
      */
-    public IO(final InputStream in, final OutputStream out, final OutputStream err) {
+    public IO(final InputStream in, final PrintStream out, final PrintStream err) {
         this(in, out, err, true);
     }
 
@@ -138,7 +147,7 @@ public class IO
      * @param out           The output stream and error stream; must not be null
      * @param autoFlush     True to enable auto-flushing off writers.
      */
-    public IO(final InputStream in, final OutputStream out, final boolean autoFlush) {
+    public IO(final InputStream in, final PrintStream out, final boolean autoFlush) {
         this(in, out, out, autoFlush);
     }
 
@@ -148,7 +157,7 @@ public class IO
      * @param in    The input steam; must not be null
      * @param out   The output stream and error stream; must not be null
      */
-    public IO(final InputStream in, final OutputStream out) {
+    public IO(final InputStream in, final PrintStream out) {
         this(in, out, out);
     }
 

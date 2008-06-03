@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.PlexusContainerException;
@@ -192,6 +193,15 @@ public class ShellBuilder
 
     public Shell build() throws Exception {
         log.debug("Building");
+
+        // Hijack the system output streams
+        if (!SystemOutputHijacker.isInstalled()) {
+            SystemOutputHijacker.install();
+        }
+
+        // Register the application IO streams
+        IO io = getIo();
+        SystemOutputHijacker.register(io.outputStream, io.errorStream);
 
         // Initialize the container
         getContainer();

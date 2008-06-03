@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.common;
+package org.apache.geronimo.gshell.io;
 
 import java.io.IOException;
 
 /**
  * Nested {@link IOException}.
  *
- * @version $Rev: 577545 $ $Date: 2007-09-19 21:55:19 -0700 (Wed, 19 Sep 2007) $
+ * @version $Rev$ $Date$
  */
 public class NestedIOException
     extends IOException

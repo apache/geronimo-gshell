@@ -26,7 +26,7 @@ package org.apache.geronimo.gshell.whisper.stream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.geronimo.gshell.common.NestedIOException;
+import org.apache.geronimo.gshell.io.NestedIOException;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;

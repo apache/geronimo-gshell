@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.common.Notification;
+import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.layout.NotFoundException;
@@ -50,6 +51,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -162,7 +164,7 @@ public class DefaultCommandExecutor
                 os = pos = new PipedOutputStream();
             }
 
-            ios[i] = new IO(is, os, env.getIO().errorStream);
+            ios[i] = new IO(is, new PrintStream(os), env.getIO().errorStream);
         }
 
         Thread[] threads = new Thread[commands.length];
@@ -297,6 +299,9 @@ public class DefaultCommandExecutor
         // Setup command timings
         StopWatch watch = new StopWatch(true);
 
+        // Hijack the system streams in the current thread's context
+        SystemOutputHijacker.register(io.outputStream, io.errorStream);
+
         Object result;
         try {
             result = command.execute(context, args);
@@ -304,9 +309,12 @@ public class DefaultCommandExecutor
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }
         finally {
+            // Restore hijacked streams
+            SystemOutputHijacker.deregister();
+
             // Make sure that the commands output has been flushed
             try {
-                env.getIO().flush();
+                io.flush();
             }
             catch (Exception ignore) {}
         }

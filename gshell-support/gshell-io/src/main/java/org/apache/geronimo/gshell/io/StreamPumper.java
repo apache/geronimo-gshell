@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.common.io;
+package org.apache.geronimo.gshell.io;
 
 import java.io.InputStream;
 import java.io.OutputStream;

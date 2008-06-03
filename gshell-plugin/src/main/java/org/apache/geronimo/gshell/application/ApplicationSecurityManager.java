@@ -60,4 +60,7 @@ public class ApplicationSecurityManager
     // TODO: Never allow application to change ${gshell.home}
     //
 
+    //
+    // TODO: Add check for RuntimePermission("setIO"), to prevent unhijacking of the system streams
+
 }

@@ -17,11 +17,15 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.common;
+package org.apache.geronimo.gshell.io;
 
 import java.io.PrintStream;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
+
+//
+// FIXME: Probably need to add some support to hijack System.in too
+//
 
 /**
  * Hijacks the systems standard output and error streams on a per-thread basis
@@ -92,7 +96,15 @@ public class SystemOutputHijacker
         install();
         register(out);
     }
-    
+
+    /**
+     * Install the hijacker and register streams for the current thread.
+     */
+    public static synchronized void install(final StreamPair pair) {
+        install();
+        register(pair);
+    }
+
     /**
      * Uninstall the hijacker.
      */
