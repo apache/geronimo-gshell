@@ -82,20 +82,7 @@ public class DefaultShellInfo
     }
     
     private File detectHomeDir() throws InitializationException {
-        //
-        // FIXME:
-        //
-
-        String homePath = null; // branding.getProperty(Branding.HOME);
-
-        if (homePath == null) {
-            //
-            // FIXME: For now just use the user's home ?  We may actually want to try and figure this our harder (like
-            //        how Launcher does...
-            //
-
-            homePath = System.getProperty("user.home");
-        }
+        String homePath = System.getProperty("user.home");
 
         // And now lets resolve this sucker
         File dir;
