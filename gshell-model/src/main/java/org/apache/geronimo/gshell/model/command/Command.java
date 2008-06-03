@@ -42,6 +42,11 @@ public class Command
 
     private String version;
 
+    //
+    // FIXME: Parameters and requirements are very plexus specific, and can be handled automatically by having
+    //        the components gleaned while loading.
+    //
+    
     private List<Parameter> parameters;
 
     private List<Requirement> requirements;
