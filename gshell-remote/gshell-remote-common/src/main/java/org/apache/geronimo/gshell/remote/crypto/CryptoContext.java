@@ -37,10 +37,10 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= CryptoContext.class)
+@Component(role=CryptoContext.class)
 public class CryptoContext
 {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
     
     //
     // TODO: See if we should use DSA or RSA for this...
