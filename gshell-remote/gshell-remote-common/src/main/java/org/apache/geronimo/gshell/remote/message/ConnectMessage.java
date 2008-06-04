@@ -29,6 +29,12 @@ import java.security.PublicKey;
 public class ConnectMessage
     extends RshMessage
 {
+    //
+    // FIXME: Need to customize serialization of this puppy... which means we need to become CryptoContextAware too
+    //
+    //        https://issues.apache.org/jira/browse/GSHELL-118
+    //
+
     private final PublicKey publicKey;
 
     public ConnectMessage(final PublicKey publicKey) {
