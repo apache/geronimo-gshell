@@ -302,18 +302,23 @@ public class RequestManager
         }
 
         public void timeout() {
-            Message.ID id = request.getId();
-
-            if (timeoutFuture.isCancelled()) {
-                throw new TimeoutAbortedException("Timeout has been canceled: " + id);
-            }
-            else if (request.isSignaled()) {
-                throw new TimeoutAbortedException("Request has been singled: " + id);
+            if (state != RegistrationState.ACTIVE) {
+                log.debug("Can not timeout; state is not ACTIVE, found: {}", state);
             }
             else {
-                request.timeout();
+                Message.ID id = request.getId();
 
-                state = RegistrationState.TIMEDOUT;
+                if (timeoutFuture.isCancelled()) {
+                    throw new TimeoutAbortedException("Timeout has been canceled: " + id);
+                }
+                else if (request.isSignaled()) {
+                    throw new TimeoutAbortedException("Request has been singled: " + id);
+                }
+                else {
+                    request.timeout();
+
+                    state = RegistrationState.TIMEDOUT;
+                }
             }
         }
 
