@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Provides interpolation for shell varibles.
+ * Provides interpolation for shell variables.
  * 
  * @version $Rev$ $Date$
  */
