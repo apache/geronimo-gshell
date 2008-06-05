@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.plugin;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Executable;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
@@ -68,15 +67,9 @@ public class DefaultCommandContainer
     }
 
     public String getDescription() {
-        //
-        // FIXME: Can fetch this from the model... ?
-        //
-
-        CommandComponent cmd = getExecutable().getClass().getAnnotation(CommandComponent.class);
-        if (cmd == null) {
-            throw new IllegalStateException("Command description not found");
-        }
-        return cmd.description();
+        assert container != null;
+        
+        return container.getComponentDescriptor(CommandContainer.class.getName(), commandId).getDescription();
     }
 
     public Executable getExecutable() {
