@@ -24,8 +24,8 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
- * ???
- *
+ * Support for {@link ComponentDescriptor} implementations.
+ * 
  * @version $Rev$ $Date$
  */
 public class ComponentDescriptorSupport

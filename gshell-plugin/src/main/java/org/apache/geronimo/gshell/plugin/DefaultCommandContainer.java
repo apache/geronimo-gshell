@@ -22,11 +22,14 @@ package org.apache.geronimo.gshell.plugin;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.Executable;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
@@ -45,7 +48,7 @@ public class DefaultCommandContainer
 
     private GShellPlexusContainer container;
 
-    @Configuration("")
+    @Configuration("invalid")
     private String commandId;
 
     // Contextualizable
@@ -55,10 +58,38 @@ public class DefaultCommandContainer
 
         container = (GShellPlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
         assert container != null;
+        
         log.debug("Container: {}", container);
     }
 
     // CommandContainer
+
+    public String getId() {
+        return commandId;
+    }
+
+    public String getDescription() {
+        //
+        // FIXME:
+        //
+
+        CommandComponent cmd = getExecutable().getClass().getAnnotation(CommandComponent.class);
+        if (cmd == null) {
+            throw new IllegalStateException("Command description not found");
+        }
+        return cmd.description();
+    }
+
+    public Executable getExecutable() {
+        assert container != null;
+
+        try {
+            return container.lookupComponent(Command.class, commandId);
+        }
+        catch (ComponentLookupException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Object execute(final CommandContext context, final Object... args) throws Exception {
         assert context != null;
@@ -66,11 +97,15 @@ public class DefaultCommandContainer
 
         log.trace("Executing; context={}, args={}", context, args);
 
-        assert container != null;
-        
-        Command command = container.lookupComponent(Command.class, commandId);
+        Executable executable = getExecutable();
 
-        Object result = command.execute(context, args);
+        // TODO: Handle logging muck
+        
+        // TODO: Bind context, io and variables
+
+        // TODO: Process CLP
+
+        Object result = executable.execute(context, args);
 
         log.trace("Result: {}", result);
 

@@ -20,17 +20,25 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Provides the basic interface for commands.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-@Deprecated
-public interface Command
-    extends Executable
+public interface Executable
 {
-    @Deprecated
-    String getId();
+    Result SUCCESS = Result.SUCCESS;
 
-    @Deprecated
-    String getDescription();
+    Result FAILURE = Result.FAILURE;
+
+    Object execute(CommandContext context, Object... args) throws Exception;
+
+    //
+    // Result
+    //
+
+    enum Result
+    {
+        SUCCESS,
+        FAILURE
+    }
 }
