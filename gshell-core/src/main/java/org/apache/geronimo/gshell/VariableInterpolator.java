@@ -36,7 +36,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Provides interpolation for shell variables.
+ * Provides interpolation for shell variables using Jexl.
+ * 
+ * Still using Jexl here for now, since it can handle expression like <tt>${env.TERM}</tt>
+ * (where <tt>env</tt> is a variable bound to a map, ...).
  * 
  * @version $Rev$ $Date$
  */
@@ -153,8 +156,6 @@ public class VariableInterpolator
 
             public Object getValue(final String s) {
                 try {
-                    // Still using Jexl here for now, since it can handle expression like ${env.TERM}
-                    // (where "env" is a variable bound to a map, ...)
                     Expression expr = ExpressionFactory.createExpression(s);
                     expr.addPreResolver(resolver);
                     
