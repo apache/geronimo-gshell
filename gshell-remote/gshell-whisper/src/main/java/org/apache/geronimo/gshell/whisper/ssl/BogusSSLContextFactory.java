@@ -79,7 +79,7 @@ public class BogusSSLContextFactory
     //               O=Bogus Inc, L=Stockholm, S=Stockholm, C=SE"
     //           -keypass boguspw -storepass boguspw -keystore bogus.cert
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     // @Configuration
     private boolean preload = true;
