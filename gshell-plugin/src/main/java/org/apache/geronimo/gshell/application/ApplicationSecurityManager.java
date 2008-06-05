@@ -17,9 +17,14 @@
  * under the License.
  */
 
+
 package org.apache.geronimo.gshell.application;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.Permission;
+import java.util.PropertyPermission;
 
 /**
  * Custom security manager to prevent commands from doing bad things.
@@ -29,6 +34,8 @@ import java.security.Permission;
 public class ApplicationSecurityManager
     extends SecurityManager
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private final SecurityManager parent;
 
     public ApplicationSecurityManager(final SecurityManager parent) {
@@ -42,25 +49,35 @@ public class ApplicationSecurityManager
     }
 
     public void checkPermission(final Permission perm) {
+        assert perm != null;
+
+        log.trace("Checking permission of: {}", perm);
+
+        //
+        // TODO: See if there is a more efficent and/or recommended way to implement custom permission handling
+        //
+
+        if (perm instanceof RuntimePermission) {
+            // Prevent System.exit()
+            if (perm.implies(new RuntimePermission("exitVM"))) {
+                throw new SecurityException();
+            }
+
+            // Prevent unhijacking of the system streams
+            if (perm.implies(new RuntimePermission("setIO"))) {
+                throw new SecurityException();
+            }
+        }
+
+        if (perm instanceof PropertyPermission) {
+            // Never allow application to change ${gshell.home}
+            if (perm.implies(new PropertyPermission("gshell.home", "write"))) {
+                throw new SecurityException();
+            }
+        }
+        
         if (parent != null) {
             parent.checkPermission(perm);
         }
     }
-
-    /**
-     * Prevent any command or component from forcing the VM to exit.
-     *
-     * @throws SecurityException Always throws {@link SecurityException}.
-     */
-    public void checkExit(final int code) {
-        throw new SecurityException("Use of System.exit() is forbidden!");
-    }
-
-    //
-    // TODO: Never allow application to change ${gshell.home}
-    //
-
-    //
-    // TODO: Add check for RuntimePermission("setIO"), to prevent unhijacking of the system streams
-
 }
