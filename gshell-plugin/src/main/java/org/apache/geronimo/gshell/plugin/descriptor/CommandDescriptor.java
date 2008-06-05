@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.geronimo.gshell.model.command.Parameter;
 import org.apache.geronimo.gshell.model.command.Requirement;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
@@ -34,7 +33,7 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
  * @version $Rev$ $Date$
  */
 public class CommandDescriptor
-    extends ComponentDescriptor
+    extends ComponentDescriptorSupport
 {
     private final Command command;
 
@@ -44,44 +43,18 @@ public class CommandDescriptor
         this.command = command;
 
         setDescription(command.getDescription());
-
-        setAlias(null);
-
-        setRole(org.apache.geronimo.gshell.command.Command.class.getName());
-
+        setRole(org.apache.geronimo.gshell.command.Command.class);
         setRoleHint(command.getId());
-
         setImplementation(command.getImplementation());
-
         setVersion(command.getVersion());
-
-        setComponentType(null);
-
-        setLifecycleHandler(null);
-
-        setComponentProfile(null);
-
-        setComponentFactory(null);
-
-        setComponentComposer(null);
-
-        setComponentConfigurator(null);
-
-        setRealmId(null);
-
         setIsolatedRealm(false);
-
         setInstantiationStrategy("per-lookup");
 
         if (command.hasParameters()) {
             XmlPlexusConfiguration root = new XmlPlexusConfiguration("configuration");
 
             for (Parameter param : command.getParameters()) {
-                XmlPlexusConfiguration child = new XmlPlexusConfiguration(param.getName());
-
-                child.setValue(param.getValue());
-
-                root.addChild(child);
+                root.addChild(new XmlPlexusConfiguration(param.getName(), param.getValue()));
             }
 
             setConfiguration(root);
@@ -104,11 +77,8 @@ public class CommandDescriptor
         ComponentRequirement requirement = new ComponentRequirement();
 
         requirement.setRole(source.getType());
-
         requirement.setRoleHint(source.getId());
-
         requirement.setFieldName(source.getName());
-
         requirement.setFieldMappingType(null);
 
         return requirement;

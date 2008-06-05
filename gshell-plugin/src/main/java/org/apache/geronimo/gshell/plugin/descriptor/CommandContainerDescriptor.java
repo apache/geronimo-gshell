@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.geronimo.gshell.plugin.DefaultCommandContainer;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
@@ -33,7 +32,7 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
  * @version $Rev$ $Date$
  */
 public class CommandContainerDescriptor
-    extends ComponentDescriptor
+    extends ComponentDescriptorSupport
 {
     private final Command command;
 
@@ -42,22 +41,15 @@ public class CommandContainerDescriptor
 
         this.command = command;
 
-        setRole(CommandContainer.class.getName());
-
+        setRole(CommandContainer.class);
         setRoleHint(command.getId());
-
-        setImplementation(DefaultCommandContainer.class.getName());
-
+        setImplementation(DefaultCommandContainer.class);
         setVersion(command.getVersion());
-
         setIsolatedRealm(false);
-
         setInstantiationStrategy("singleton");
 
         XmlPlexusConfiguration config = new XmlPlexusConfiguration("configuration");
-
         config.addChild(new XmlPlexusConfiguration("commandId", command.getId()));
-
         setConfiguration(config);
     }
 

@@ -21,52 +21,26 @@ package org.apache.geronimo.gshell.plugin.descriptor;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.model.command.Command;
-import org.apache.geronimo.gshell.model.plugin.Plugin;
-import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
- * Descriptor for a GShell plugin's plexus component set.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class PluginDescriptor
-    extends ComponentSetDescriptor
+public class ComponentDescriptorSupport
+    extends ComponentDescriptor
 {
-    private final Plugin plugin;
+    public void setRole(final Class type) {
+        assert type != null;
 
-    public PluginDescriptor(final Plugin plugin) {
-        assert plugin != null;
-
-        this.plugin = plugin;
-
-        setId(plugin.getId());
-        setIsolatedRealm(false);
-
-        for (Command command : plugin.commands()) {
-            addCommand(command);
-        }
+        super.setRole(type.getName());
     }
 
-    private void addCommand(final Command command) {
-        assert command != null;
-
-        addComponentDescriptor(new CommandContainerDescriptor(command));
-        addComponentDescriptor(new CommandDescriptor(command));
-    }
-
-    public void addComponentDescriptor(final ComponentDescriptor descriptor) {
-        assert descriptor != null;
-
-        descriptor.setComponentSetDescriptor(this);
-        descriptor.setSource(getSource());
-
-        super.addComponentDescriptor(descriptor);
-    }
-
-    public Plugin getPlugin() {
-        return plugin;
+    public void setImplementation(final Class type) {
+        assert type != null;
+        
+        super.setImplementation(type.getName());
     }
 
     public String toString() {
