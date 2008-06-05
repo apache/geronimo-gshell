@@ -30,6 +30,8 @@ public interface Executable
 
     Result FAILURE = Result.FAILURE;
 
+    // TODO: Change this to ExecutionContext
+    
     Object execute(CommandContext context, Object... args) throws Exception;
 
     //

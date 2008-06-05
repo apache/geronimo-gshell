@@ -20,20 +20,19 @@
 package org.apache.geronimo.gshell.plugin;
 
 import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Executable;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.codehaus.plexus.component.annotations.Configuration;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ???
@@ -70,7 +69,7 @@ public class DefaultCommandContainer
 
     public String getDescription() {
         //
-        // FIXME:
+        // FIXME: Can fetch this from the model... ?
         //
 
         CommandComponent cmd = getExecutable().getClass().getAnnotation(CommandComponent.class);
@@ -84,7 +83,7 @@ public class DefaultCommandContainer
         assert container != null;
 
         try {
-            return container.lookupComponent(Command.class, commandId);
+            return container.lookupComponent(Executable.class, commandId);
         }
         catch (ComponentLookupException e) {
             throw new RuntimeException(e);

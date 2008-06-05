@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.geronimo.gshell.model.command.Parameter;
 import org.apache.geronimo.gshell.model.command.Requirement;
+import org.apache.geronimo.gshell.command.Executable;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
@@ -43,7 +44,7 @@ public class CommandDescriptor
         this.command = command;
 
         setDescription(command.getDescription());
-        setRole(org.apache.geronimo.gshell.command.Command.class);
+        setRole(Executable.class);
         setRoleHint(command.getId());
         setImplementation(command.getImplementation());
         setVersion(command.getVersion());
