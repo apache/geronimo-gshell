@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.ansi;
 
-//
-// TODO: Rename this puppy
-//
-
 /**
  * A stringbuffer-like thingy to help with using ANSI escape-codes.
  *

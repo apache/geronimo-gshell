@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.ansi;
 
-//
-// TODO: Rename this puppy
-//
-
 /**
  * Renders ANSI color escape-codes in strings by parsing out some special syntax to pick up the correct fluff to use.
  *
