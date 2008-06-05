@@ -27,18 +27,12 @@
     <version>1.0-alpha-2-SNAPSHOT</version>
 
     <localRepository>
-        <!-- 
-        FIXME: Update the interpolation muck to auto-resolve relative paths to ${gshell.home}
-        -->
         <directory>${gshell.home}/repository</directory>
     </localRepository>
 
     <remoteRepositories>
         <remoteRepository>
             <id>cache</id>
-            <!-- 
-            FIXME: Allow a normal file path to be used here and auto-converted to a URI
-            -->
             <location>file:${user.home}/.m2/repository</location>
         </remoteRepository>
         
@@ -76,7 +70,6 @@
                 <artifactId>gshell-repository</artifactId>
             </dependency>
 
-            <!--
             <dependency>
                 <artifactId>gshell-bsf</artifactId>
             </dependency>
@@ -84,7 +77,19 @@
             <dependency>
                 <artifactId>gshell-vfs</artifactId>
             </dependency>
-            -->
+        </dependencyGroup>
+
+        <dependencyGroup>
+            <groupId>org.apache.geronimo.gshell.remote</groupId>
+            <version>1.0-alpha-2-SNAPSHOT</version>
+
+            <dependency>
+                <artifactId>gshell-remote-client</artifactId>
+            </dependency>
+
+            <dependency>
+                <artifactId>gshell-remote-server</artifactId>
+            </dependency>
         </dependencyGroup>
     </dependencyGroups>
 
@@ -189,7 +194,6 @@
                 </nodes>
             </group>
 
-            <!--
             <group>
                 <name>bsf</name>
                 <nodes>
@@ -229,7 +233,6 @@
                     </alias>
                 </nodes>
             </group>
-            -->
         </nodes>
     </layout>
 

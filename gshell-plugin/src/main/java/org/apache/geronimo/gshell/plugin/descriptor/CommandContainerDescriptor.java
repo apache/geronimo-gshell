@@ -19,63 +19,52 @@
 
 package org.apache.geronimo.gshell.plugin.descriptor;
 
+import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.Command;
-import org.apache.geronimo.gshell.model.plugin.Plugin;
-import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.apache.geronimo.gshell.plugin.DefaultCommandContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
- * Descriptor for a GShell plugin's plexus component set.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class PluginDescriptor
-    extends ComponentSetDescriptor
+public class CommandContainerDescriptor
+    extends ComponentDescriptor
 {
-    private final Plugin plugin;
+    private final Command command;
 
-    public PluginDescriptor(final Plugin plugin) {
-        assert plugin != null;
+    public CommandContainerDescriptor(final Command command) {
+        assert command != null;
 
-        this.plugin = plugin;
+        this.command = command;
 
-        setId(plugin.getId());
+        setRole(CommandContainer.class.getName());
+
+        setRoleHint(command.getId());
+
+        setImplementation(DefaultCommandContainer.class.getName());
+
+        setVersion(command.getVersion());
 
         setIsolatedRealm(false);
 
-        for (Command command : plugin.commands()) {
-            addCommand(command);
-        }
+        setInstantiationStrategy("singleton");
+
+        XmlPlexusConfiguration config = new XmlPlexusConfiguration("configuration");
+
+        config.addChild(new XmlPlexusConfiguration("commandId", command.getId()));
+
+        setConfiguration(config);
     }
 
-    private void addCommand(final Command command) {
-        assert command != null;
-
-        ComponentDescriptor descriptor;
-
-        descriptor = new CommandContainerDescriptor(command);
-        descriptor.setSource(getSource());
-        addComponentDescriptor(descriptor);
-
-        descriptor = new CommandDescriptor(command);
-        descriptor.setSource(getSource());
-        addComponentDescriptor(descriptor);
+    public Command getCommand() {
+        return command;
     }
-
-    public void addComponentDescriptor(final ComponentDescriptor descriptor) {
-        assert descriptor != null;
-
-        descriptor.setComponentSetDescriptor(this);
-
-        super.addComponentDescriptor(descriptor);
-    }
-
-    public Plugin getPlugin() {
-        return plugin;
-    }
-
+    
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }

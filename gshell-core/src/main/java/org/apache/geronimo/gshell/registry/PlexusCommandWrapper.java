@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.registry;
 
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.model.command.Command;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.slf4j.Logger;
@@ -58,10 +59,7 @@ public class PlexusCommandWrapper
     public Object execute(final CommandContext context, final Object... args) throws Exception {
         assert context != null;
 
-        log.trace("Executing w/context={}, args={}", context, args);
-        
-        org.apache.geronimo.gshell.command.Command command =
-            container.lookupComponent(org.apache.geronimo.gshell.command.Command.class, descriptor.getId());
+        CommandContainer command = container.lookupComponent(CommandContainer.class, descriptor.getId());
 
         return command.execute(context, args);
     }
