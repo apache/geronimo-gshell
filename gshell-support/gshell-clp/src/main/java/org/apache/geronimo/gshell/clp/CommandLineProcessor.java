@@ -45,24 +45,18 @@ import org.apache.geronimo.gshell.clp.setter.Setter;
  */
 public class CommandLineProcessor
 {
-    private final Object bean;
-
     private final List<Handler> optionHandlers = new ArrayList<Handler>();
 
     private final List<Handler> argumentHandlers = new ArrayList<Handler>();
 
     private boolean stopAtNonOption = false;
+
+    public CommandLineProcessor() {}
     
-    public CommandLineProcessor(final Object bean) throws IllegalAnnotationError {
+    public CommandLineProcessor(final Object bean) {
         assert bean != null;
 
-        this.bean = bean;
-
-        discoverDescriptors();
-    }
-
-    public Object getBean() {
-        return bean;
+        addBean(bean);
     }
     
     public List<Handler> getOptionHandlers() {
@@ -80,12 +74,20 @@ public class CommandLineProcessor
     public void setStopAtNonOption(final boolean flag) {
         stopAtNonOption = flag;
     }
-    
+
+    public void addBean(final Object bean) {
+        assert bean != null;
+
+        discoverDescriptors(bean);
+    }
+
     //
     // Discovery
     //
     
-    private void discoverDescriptors() {
+    private void discoverDescriptors(final Object bean) {
+        assert bean != null;
+
         // Recursively process all the methods/fields.
         for (Class type=bean.getClass(); type!=null; type=type.getSuperclass()) {
             // Discover methods
@@ -105,12 +107,12 @@ public class CommandLineProcessor
             for (Field field : type.getDeclaredFields()) {
                 Option option = field.getAnnotation(Option.class);
                 if (option != null) {
-                    addOption(createFieldSetter(field), option);
+                    addOption(createFieldSetter(bean, field), option);
                 }
 
                 Argument argument = field.getAnnotation(Argument.class);
                 if (argument != null) {
-                    addArgument(createFieldSetter(field), argument);
+                    addArgument(createFieldSetter(bean, field), argument);
                 }
             }
         }
@@ -123,7 +125,8 @@ public class CommandLineProcessor
         }
     }
     
-    private Setter createFieldSetter(final Field field) {
+    private Setter createFieldSetter(final Object bean, final Field field) {
+        assert bean != null;
         assert field != null;
 
         if (Collection.class.isAssignableFrom(field.getType())) {
