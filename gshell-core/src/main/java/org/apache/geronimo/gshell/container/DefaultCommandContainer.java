@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
+import org.apache.geronimo.gshell.clp.ProcessingException;
 import org.apache.geronimo.gshell.io.IO;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
@@ -101,7 +102,22 @@ public class DefaultCommandContainer
         
         // TODO: Bind context, io and variables
 
-        // Process command line options/arguments
+        // Process command line options/arguments, return if we have been asked to display --help
+        if (processArguments(context, executable, args)) {
+            return Command.SUCCESS;
+        }
+
+        Object result = executable.execute(context, args);
+
+        log.trace("Result: {}", result);
+
+        return result;
+    }
+
+    private boolean processArguments(final CommandContext context, final Executable executable, final Object... args) throws ProcessingException {
+        assert context != null;
+        assert args != null;
+
         CommandLineProcessor clp = new CommandLineProcessor();
         clp.addBean(executable);
 
@@ -114,15 +130,11 @@ public class DefaultCommandContainer
 
         // Display help if option detected
         if (help.displayHelp) {
-            help.displayHelp(context, clp);
-            return Command.SUCCESS;
+            help.display(context, clp);
+            return true;
         }
-        
-        Object result = executable.execute(context, args);
 
-        log.trace("Result: {}", result);
-
-        return result;
+        return false;
     }
 
     private static class HelpSupport
@@ -130,7 +142,7 @@ public class DefaultCommandContainer
         @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
         public boolean displayHelp;
 
-        protected void displayHelp(final CommandContext context, final CommandLineProcessor clp) {
+        protected void display(final CommandContext context, final CommandLineProcessor clp) {
             assert context != null;
             assert clp != null;
 
