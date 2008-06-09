@@ -30,7 +30,7 @@ public interface Executable
 
     Result FAILURE = Result.FAILURE;
 
-    // TODO: Change this to ExecutionContext
+    // TODO: Change this to ExecutionContext, and/or implement a lifecycle to inject the context, and leave Executable context free?
     
     Object execute(CommandContext context, Object... args) throws Exception;
 

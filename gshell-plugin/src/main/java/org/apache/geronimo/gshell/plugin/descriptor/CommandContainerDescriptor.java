@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.Command;
-import org.apache.geronimo.gshell.plugin.DefaultCommandContainer;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
@@ -43,7 +42,7 @@ public class CommandContainerDescriptor
 
         setRole(CommandContainer.class);
         setRoleHint(command.getId());
-        setImplementation(DefaultCommandContainer.class);
+        setImplementation("org.apache.geronimo.gshell.container.DefaultCommandContainer"); // Avoid dependency on gshell-core
         setVersion(command.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");

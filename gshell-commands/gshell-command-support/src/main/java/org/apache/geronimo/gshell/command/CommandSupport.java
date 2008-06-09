@@ -85,8 +85,12 @@ public abstract class CommandSupport
 
         log.info("Executing w/args: [{}]", Arguments.asString(args));
 
+        //
+        // HACK: Need to move all of this up to the container, exposing a help support component
+        //
+
         CommandLineProcessor clp = new CommandLineProcessor(this);
-        clp.process(Arguments.toStringArray(args));
+        // clp.process(Arguments.toStringArray(args));
 
         // Handle --help/-h automatically for the command
         if (displayHelp) {

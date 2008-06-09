@@ -40,6 +40,11 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-clp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-plexus</artifactId>
         </dependency>
         

@@ -43,6 +43,10 @@ public class Command
     private String version;
 
     //
+    // TODO: Add containerClass (and/or container w/nested configuration?)
+    //
+
+    //
     // FIXME: Parameters and requirements are very plexus specific, and can be handled automatically by having
     //        the components gleaned while loading.
     //
