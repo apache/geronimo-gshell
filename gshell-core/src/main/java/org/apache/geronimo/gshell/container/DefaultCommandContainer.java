@@ -142,7 +142,7 @@ public class DefaultCommandContainer
                 name = context.getInfo().getName();
             }
 
-            IO io = context.getIO();
+            IO io = context.getIo();
             Printer printer = new Printer(clp);
             printer.printUsage(io.out, name);
             io.out.println();

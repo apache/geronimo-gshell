@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.io.IO;
  */
 public interface CommandContext
 {
-    IO getIO();
+    IO getIo();
 
     Variables getVariables();
 

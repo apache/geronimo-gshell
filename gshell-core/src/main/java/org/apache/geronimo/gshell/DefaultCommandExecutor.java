@@ -250,7 +250,7 @@ public class DefaultCommandExecutor
 
             CommandInfo info;
 
-            public IO getIO() {
+            public IO getIo() {
                 return io;
             }
 

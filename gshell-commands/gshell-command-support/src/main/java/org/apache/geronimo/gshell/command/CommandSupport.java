@@ -40,7 +40,7 @@ public abstract class CommandSupport
     public void init(final CommandContext context) {
         assert context != null;
 
-        this.io = context.getIO();
+        this.io = context.getIo();
         this.variables = context.getVariables();
 
         // Re-setup logging using our id
