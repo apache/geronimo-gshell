@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-
 /**
  * ???
  * 
@@ -28,13 +26,13 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  */
 public interface CommandContainer
 {
-    String getId();
-
-    String getDescription();
-
     Executable getExecutable();
     
     // TODO: Change to ShellContext, let the container build its own CommandContext
 
     Object execute(CommandContext context, Object... args) throws Exception;
+
+    // TODO: Completor
+
+    // TODO: Documentor (for --help and `help <command>`) handling
 }

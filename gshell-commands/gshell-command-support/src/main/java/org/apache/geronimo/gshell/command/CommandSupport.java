@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,43 +29,22 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public abstract class CommandSupport
-    implements Command
+    implements Executable
 {
     protected Logger log = LoggerFactory.getLogger(getClass());
-
-    protected CommandContext context;
 
     protected IO io;
 
     protected Variables variables;
 
-    @Deprecated
-    public String getId() {
-        CommandComponent cmd = getClass().getAnnotation(CommandComponent.class);
-        if (cmd == null) {
-            throw new IllegalStateException("Command id not found");
-        }
-        return cmd.id();
-    }
-
-    @Deprecated
-    public String getDescription() {
-        CommandComponent cmd = getClass().getAnnotation(CommandComponent.class);
-        if (cmd == null) {
-            throw new IllegalStateException("Command description not found");
-        }
-        return cmd.description();
-    }
-
     public void init(final CommandContext context) {
         assert context != null;
 
-        this.context = context;
         this.io = context.getIO();
         this.variables = context.getVariables();
 
         // Re-setup logging using our id
-        String id = getId();
+        String id = context.getInfo().getId();
         log = LoggerFactory.getLogger(getClass().getName() + "." + id);
     }
 

@@ -69,16 +69,6 @@ public class DefaultCommandContainer
 
     // CommandContainer
 
-    public String getId() {
-        return commandId;
-    }
-
-    public String getDescription() {
-        assert container != null;
-        
-        return container.getComponentDescriptor(CommandContainer.class.getName(), commandId).getDescription();
-    }
-
     public Executable getExecutable() {
         assert container != null;
 

@@ -26,6 +26,10 @@ package org.apache.geronimo.gshell.command;
  */
 public interface CommandExecutor
 {
+    //
+    // TODO: This is starting to look like it needs a CommandExecutionRequest and CommandExecutionResult object
+    //
+    
     Object execute(String line) throws Exception;
 
     Object execute(String command, final Object[] args) throws Exception;
