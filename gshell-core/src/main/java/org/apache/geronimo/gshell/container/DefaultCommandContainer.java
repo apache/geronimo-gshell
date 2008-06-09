@@ -48,7 +48,7 @@ public class DefaultCommandContainer
 
     private GShellPlexusContainer container;
 
-    @Configuration("invalid")
+    @Configuration("invalid") // Just to mark what this is used for, since we have to configure a default value
     private String commandId;
 
     // Contextualizable
