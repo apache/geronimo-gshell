@@ -37,8 +37,6 @@ public class JLineConsole
 {
     private final ConsoleReader reader;
 
-    // final CommandsMultiCompletor completor
-
     public JLineConsole(final Executor executor, final IO io) throws IOException {
         super(executor);
 
@@ -46,22 +44,13 @@ public class JLineConsole
 
         reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, io.getTerminal());
         reader.setUsePagination(true);
-        
-        // this.completor = new CommandsMultiCompletor()
 
-        // reader.addCompletor(completor)
+        // TODO: Install completion handler
     }
 
     public void run() {
-        /*
-        for (command in shell.registry) {
-            completor << command
-        }
-
-        // Force things to become clean
-        completor.refresh()
-        */
-
+        // TODO: Update/install/whatever the completion handler
+        
         // And then actually run
         super.run();
     }
