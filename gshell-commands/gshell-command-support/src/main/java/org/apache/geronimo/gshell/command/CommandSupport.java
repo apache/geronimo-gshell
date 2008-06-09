@@ -19,11 +19,7 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.clp.CommandLineProcessor;
-import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +39,6 @@ public abstract class CommandSupport
     protected IO io;
 
     protected Variables variables;
-    
-    @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
-    private boolean displayHelp;
 
     @Deprecated
     public String getId() {
@@ -82,48 +75,9 @@ public abstract class CommandSupport
         assert args != null;
 
         init(context);
-
-        log.info("Executing w/args: [{}]", Arguments.asString(args));
-
-        //
-        // HACK: Need to move all of this up to the container, exposing a help support component
-        //
-
-        CommandLineProcessor clp = new CommandLineProcessor(this);
-        // clp.process(Arguments.toStringArray(args));
-
-        // Handle --help/-h automatically for the command
-        if (displayHelp) {
-            //
-            // TODO: Make a special PrinterHandler to abstract this muck from having to process it by hand
-            //
-            
-            displayHelp(context, clp);
-            
-            return SUCCESS;
-        }
-
+        
         return doExecute();
     }
 
     protected abstract Object doExecute() throws Exception;
-
-    protected void displayHelp(final CommandContext context, final CommandLineProcessor clp) {
-        assert context != null;
-        assert clp != null;
-
-        // Use the alias if we have one, else use the command name
-        String name = context.getInfo().getAlias();
-        if (name == null) {
-            name = context.getInfo().getName();
-        }
-
-        //
-        // FIXME: This is uuuuuggggllyyyy
-        //
-
-        Printer printer = new Printer(clp);
-        printer.printUsage(io.out, name);
-        io.out.println();
-    }
 }

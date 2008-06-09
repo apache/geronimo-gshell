@@ -22,9 +22,13 @@ package org.apache.geronimo.gshell.container;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Executable;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
+import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.clp.Printer;
+import org.apache.geronimo.gshell.io.IO;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
@@ -98,17 +102,48 @@ public class DefaultCommandContainer
         // TODO: Bind context, io and variables
 
         // Process command line options/arguments
-        CommandLineProcessor clp = new CommandLineProcessor(executable);
+        CommandLineProcessor clp = new CommandLineProcessor();
+        clp.addBean(executable);
+
+        // Attach some help context
+        HelpSupport help = new HelpSupport();
+        clp.addBean(help);
+
+        // Process the arguments
         clp.process(Arguments.toStringArray(args));
 
-        //
-        // TODO: Need to augment the clp to allow it to handle a set of objects, so we can use a nested object here to inject --help support automatically
-        //
-
+        // Display help if option detected
+        if (help.displayHelp) {
+            help.displayHelp(context, clp);
+            return Command.SUCCESS;
+        }
+        
         Object result = executable.execute(context, args);
 
         log.trace("Result: {}", result);
 
         return result;
+    }
+
+    private static class HelpSupport
+    {
+        @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
+        public boolean displayHelp;
+
+        protected void displayHelp(final CommandContext context, final CommandLineProcessor clp) {
+            assert context != null;
+            assert clp != null;
+
+            // Use the alias if we have one, else use the command name
+            String name = context.getInfo().getAlias();
+            if (name == null) {
+                name = context.getInfo().getName();
+            }
+
+            IO io = context.getIO();
+            Printer printer = new Printer(clp);
+            printer.printUsage(io.out, name);
+            io.out.println();
+        }
     }
 }
