@@ -30,11 +30,11 @@
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gshell-core</artifactId>
-    <name>GShell Core</name>
+    <artifactId>gshell-rapture</artifactId>
+    <name>GShell Rapture</name>
 
     <description>
-        Provides the core of what is GShell ;-)
+        Provides the glue for using GShell with Plexus.
     </description>
 
     <dependencies>

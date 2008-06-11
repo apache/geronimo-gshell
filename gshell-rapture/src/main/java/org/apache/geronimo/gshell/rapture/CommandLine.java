@@ -17,19 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
-
-import jline.History;
-import org.codehaus.plexus.component.annotations.Component;
+package org.apache.geronimo.gshell.rapture;
 
 /**
- * Default implementation of the {@link History} component.
+ * A abstraction of an executable command-line.
+ *
+ * <p>
+ * Could be a simple command or a complex command pipe-line.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=History.class,hint="default")
-public class DefaultHistory
-    extends FileHistory
+public interface CommandLine
 {
-    // Empty
+    /**
+     * Execute the command-line.
+     *
+     * @return  The final result of the command-line.
+     *
+     * @throws Exception    Failed to execute command-line.
+     */
+    Object execute() throws Exception;
 }

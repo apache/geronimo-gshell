@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.rapture;
 
 import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
@@ -33,6 +33,8 @@ import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.ErrorNotification;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;

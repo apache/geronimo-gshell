@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.model.layout.GroupNode;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.DefaultVariables;
@@ -37,6 +37,7 @@ import org.apache.geronimo.gshell.model.layout.AliasNode;
 import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.ErrorNotification;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;

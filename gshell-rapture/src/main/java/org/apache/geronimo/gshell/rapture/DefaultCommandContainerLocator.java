@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
@@ -70,7 +70,7 @@ public class DefaultCommandContainerLocator
         }
         catch (ComponentLookupException e) {
             // TODO: Throw typed exception
-            throw new RuntimeException("Failed to access command containe for ID: " + id, e);
+            throw new RuntimeException("Failed to access command container for ID: " + id, e);
         }
 
         return commandContainer;

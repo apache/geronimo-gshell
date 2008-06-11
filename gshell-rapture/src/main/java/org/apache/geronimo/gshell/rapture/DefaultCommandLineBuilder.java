@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.LoggingVisitor;
+import org.apache.geronimo.gshell.rapture.LoggingVisitor;
+import org.apache.geronimo.gshell.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;

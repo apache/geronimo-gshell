@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell;
+package org.apache.geronimo.gshell.rapture;
 
 import jline.History;
 import org.apache.geronimo.gshell.application.ApplicationManager;

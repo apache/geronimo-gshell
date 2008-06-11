@@ -42,7 +42,7 @@ public class CommandContainerDescriptor
 
         setRole(CommandContainer.class);
         setRoleHint(model.getId());
-        setImplementation("org.apache.geronimo.gshell.container.DefaultCommandContainer"); // Avoid dependency on gshell-core
+        setImplementation("org.apache.geronimo.gshell.rapture.DefaultCommandContainer");
         setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");
