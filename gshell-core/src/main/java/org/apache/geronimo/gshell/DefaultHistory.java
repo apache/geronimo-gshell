@@ -27,7 +27,7 @@ import org.codehaus.plexus.component.annotations.Component;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=History.class)
+@Component(role=History.class,hint="default")
 public class DefaultHistory
     extends FileHistory
 {
