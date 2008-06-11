@@ -31,7 +31,7 @@
     </parent>
     
     <artifactId>gshell-clp</artifactId>
-    <name>GShell Support :: Command-Line Processor (CLP)</name>
+    <name>GShell Support :: CLP</name>
     
     <description>
         Annotation-based command-line processing support.
