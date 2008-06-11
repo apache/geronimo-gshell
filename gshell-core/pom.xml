@@ -47,7 +47,12 @@
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-plexus</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-console</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-api</artifactId>

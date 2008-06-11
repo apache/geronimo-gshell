@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.console;
+package org.apache.geronimo.gshell;
 
 import jline.History;
 import org.apache.geronimo.gshell.application.ApplicationManager;
@@ -36,7 +36,7 @@ import java.io.IOException;
  *
  * @version $Rev: 573669 $ $Date: 2007-09-07 11:47:20 -0700 (Fri, 07 Sep 2007) $
  */
-@Component(role=History.class, hint="default") // FIXME: should really be "file" here, or rename to DefaultHistory (or sub-class for DefaultHistory support)
+@Component(role=History.class, hint="file")
 public class FileHistory
     extends History
     implements Initializable
