@@ -1492,30 +1492,30 @@
 						</mdElement>
 						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213207063799_556173_6892'>
 							<elementID xmi:idref='_15_1_640021c_1213180606410_110446_384'/>
-							<geometry>971, 525, 119, 49</geometry>
-							<text>Optional User Components</text>
+							<geometry>971, 525, 119, 99</geometry>
+							<text>Optional User Components.  If no user configuration, then the glue will install reasonable implementations.</text>
 							<active xmi:idref='_15_1_640021c_1213207092251_152750_6905'/>
 						</mdElement>
 						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213207092251_152750_6905'>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213180606411_815922_385'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213207063799_556173_6892'/>
-							<geometry>835, 609; 971, 567; </geometry>
+							<geometry>853, 610; 971, 585; </geometry>
 						</mdElement>
 						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213207094667_420977_6906'>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213180617826_343380_405'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213207063799_556173_6892'/>
-							<geometry>821, 658; 982, 574; </geometry>
+							<geometry>828, 658; 971, 598; </geometry>
 						</mdElement>
 						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213207122963_599277_6907'>
 							<elementID xmi:idref='_15_1_640021c_1213180578587_641176_364'/>
-							<geometry>574, 609, 100, 47</geometry>
-							<text>Required User Component</text>
+							<geometry>574, 609, 100, 86</geometry>
+							<text>Required User Component.  Provides the &quot;execution&quot; logic for the command.</text>
 							<active xmi:idref='_15_1_640021c_1213207141340_426324_6918'/>
 						</mdElement>
 						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213207141340_426324_6918'>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213180578587_918028_365'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213207122963_599277_6907'/>
-							<geometry>741, 591; 674, 622; </geometry>
+							<geometry>744, 591; 674, 626; </geometry>
 						</mdElement>
 						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213207195657_613093_6919'>
 							<elementID xmi:idref='_15_1_640021c_1213180637361_354944_424'/>
@@ -1531,7 +1531,7 @@
 						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213207238659_421665_6932'>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213180637362_392894_425'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213207063799_556173_6892'/>
-							<geometry>802, 444; 978, 525; </geometry>
+							<geometry>796, 444; 971, 540; </geometry>
 						</mdElement>
 						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213207287852_490223_6935'>
 							<elementID xmi:idref='_15_1_640021c_1213207287844_194082_6934'/>
@@ -4695,7 +4695,7 @@
 						<mdElement elementClass='StringProperty'>
 							<propertyID>INFO_PROPERTY</propertyID>
 							<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-							<value>f 1d 39 42 6a 2a 59 57 35 51 56 a9 62 b8 1b eb f5 71 27 f3 d3 f1 81 ee d4 de 53 e7 cc d b5 c0 29 26 f 8b 6e 37 74 28 fa c9 c7 79 26 df 3f d0 4e 4 41 7c 29 e7 fa 2 f1 ec c2 d1 3d 11 8 4e e0 27 0 fd 3b 5b d8 9d de 92 2a e0 ed c0 b 95 ba 9a 43 74 1c 2f d1 81 f ca 16 3f 34 4d 97 c6 28 91 47 ff ec 28 ab 61 39 ed </value>
+							<value>f 1d 39 42 6a 2a 59 57 35 51 56 a9 62 b8 1b eb f5 71 27 f3 d3 f1 81 ee d4 de 57 e7 cd 9 b5 c0 29 26 f 8b 6e 37 74 28 fa c9 c7 79 26 df 3f d0 4e 4 41 7c 29 e7 fa 2 f1 ec c2 d1 3d 11 8 4e e0 27 0 fd 3b 5b d8 9d de 92 2a e0 ed c0 b 95 ba 9a 43 74 1c 2f d1 81 f ca 16 3f 34 4d 97 c6 28 91 47 ff ec 28 ab 61 39 ed </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='LIST_PROPERTY'>
