@@ -19,17 +19,17 @@
 
 package org.apache.geronimo.gshell.container;
 
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.Executable;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
-import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.clp.ProcessingException;
+import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.command.Executable;
+import org.apache.geronimo.gshell.common.Arguments;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
@@ -94,7 +94,7 @@ public class DefaultCommandContainer
 
         // Process command line options/arguments, return if we have been asked to display --help
         if (processArguments(context, executable, args)) {
-            return Command.SUCCESS;
+            return Executable.Result.SUCCESS;
         }
 
         Object result = executable.execute(context, args);
@@ -137,9 +137,10 @@ public class DefaultCommandContainer
             assert clp != null;
 
             // Use the alias if we have one, else use the command name
-            String name = context.getInfo().getAlias();
+            CommandInfo info = context.getInfo();
+            String name = info.getAlias();
             if (name == null) {
-                name = context.getInfo().getName();
+                name = info.getName();
             }
 
             IO io = context.getIo();

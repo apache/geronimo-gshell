@@ -19,31 +19,29 @@
 
 package org.apache.geronimo.gshell;
 
-import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.DefaultVariables;
+import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandExecutor;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.common.Arguments;
-import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.common.Notification;
-import org.apache.geronimo.gshell.io.SystemOutputHijacker;
+import org.apache.geronimo.gshell.common.StopWatch;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.layout.NotFoundException;
 import org.apache.geronimo.gshell.model.layout.AliasNode;
 import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.Node;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.registry.NotRegisteredException;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,11 +55,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The default command executor.
+ * The default {@link CommandExecutor} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandExecutor.class, hint="default")
+@Component(role=CommandExecutor.class)
 public class DefaultCommandExecutor
     implements CommandExecutor, Initializable
 {
@@ -74,7 +72,7 @@ public class DefaultCommandExecutor
     private LayoutManager layoutManager;
 
     @Requirement
-    private CommandRegistry commandRegistry;
+    private CommandContainer.Locator commandContainerLocator;
 
     @Requirement
     private CommandLineBuilder commandLineBuilder;
@@ -83,15 +81,15 @@ public class DefaultCommandExecutor
 
     public DefaultCommandExecutor() {}
     
-    public DefaultCommandExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandRegistry commandRegistry, final CommandLineBuilder commandLineBuilder) {
+    public DefaultCommandExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandContainer.Locator commandContainerLocator, final CommandLineBuilder commandLineBuilder) {
         assert applicationManager != null;
         assert layoutManager != null;
-        assert commandRegistry != null;
+        assert commandContainerLocator != null;
         assert commandLineBuilder != null;
 
         this.applicationManager = applicationManager;
         this.layoutManager = layoutManager;
-        this.commandRegistry = commandRegistry;
+        this.commandContainerLocator = commandContainerLocator;
         this.commandLineBuilder = commandLineBuilder;
     }
 
@@ -235,11 +233,11 @@ public class DefaultCommandExecutor
         final String id = findCommandId(node);
         log.debug("Command ID: {}", id);
         
-        final Command command;
+        final CommandContainer container;
         try {
-            command = commandRegistry.lookup(id);
+            container = commandContainerLocator.locate(id);
         }
-        catch (NotRegisteredException e) {
+        catch (Exception e) {
             throw new NotFoundException(e.getMessage());
         }
 
@@ -304,7 +302,7 @@ public class DefaultCommandExecutor
 
         Object result;
         try {
-            result = command.execute(context, args);
+            result = container.execute(context, args);
 
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }

@@ -21,19 +21,17 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.model.layout.AliasNode;
-import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.CommandNode;
+import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Node;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.registry.NotRegisteredException;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -49,7 +47,7 @@ public class HelpCommand
     private ApplicationManager applicationManager;
 
     @Requirement
-    private CommandRegistry commandRegistry;
+    private CommandContainer.Locator commandContainerLocator;
 
     @Requirement
     private LayoutManager layoutManager;
@@ -59,11 +57,13 @@ public class HelpCommand
 
     private Renderer renderer = new Renderer();
 
-    public HelpCommand() {
-    }
+    public HelpCommand() {}
 
-    public HelpCommand(CommandRegistry commandRegistry, LayoutManager layoutManager) {
-        this.commandRegistry = commandRegistry;
+    public HelpCommand(final CommandContainer.Locator commandContainerLocator, final LayoutManager layoutManager) {
+        assert commandContainerLocator != null;
+        assert layoutManager != null;
+
+        this.commandContainerLocator = commandContainerLocator;
         this.layoutManager = layoutManager;
     }
 
@@ -105,8 +105,10 @@ public class HelpCommand
                     CommandNode node = (CommandNode) child;
                     String name = StringUtils.rightPad(node.getName(), maxNameLen);
 
-                    Command command = commandRegistry.lookup(node.getId());
-                    String desc = command.getDescription();
+                    CommandContainer container = commandContainerLocator.locate(node.getId());
+
+                    // FIXME:
+                    String desc = container.toString(); // command.getDescription();
 
                     io.out.print("  ");
                     io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
@@ -118,7 +120,7 @@ public class HelpCommand
                     else {
                         io.out.println();
                     }
-                } catch (NotRegisteredException e) {
+                } catch (/*NotRegistered*/Exception e) {
                     // Ignore those exceptions (command will not be displayed)
                 }
             }
@@ -166,6 +168,11 @@ public class HelpCommand
     private void displayCommandHelp(final String path) throws Exception {
         assert path != null;
 
+        // FIXME:
+
+        log.error("Unable to display command specific help for: {}", path);
+
+        /*
         Command cmd = commandRegistry.lookup(path);
 
         if (cmd == null) {
@@ -178,5 +185,6 @@ public class HelpCommand
         }
 
         io.out.println();
+        */
     }
 }

@@ -26,8 +26,10 @@ package org.apache.geronimo.gshell.command;
  */
 public interface Executable
 {
+    @Deprecated
     Result SUCCESS = Result.SUCCESS;
 
+    @Deprecated
     Result FAILURE = Result.FAILURE;
 
     // TODO: Change this to ExecutionContext, and/or implement a lifecycle to inject the context, and leave Executable context free?

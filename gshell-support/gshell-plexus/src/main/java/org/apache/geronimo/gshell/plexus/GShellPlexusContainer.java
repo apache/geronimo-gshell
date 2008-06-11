@@ -27,6 +27,7 @@ import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DuplicateChildContainerException;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 /**
@@ -112,4 +113,11 @@ public class GShellPlexusContainer
     //
     // TODO: lookupComponentList, lookupComponentMap, createChildContainer
     //
+
+    public ComponentDescriptor getComponentDescriptor(final Class role, final String hint) {
+        assert role != null;
+        assert hint != null;
+
+        return getComponentDescriptor(role.getName(), hint);
+    }
 }

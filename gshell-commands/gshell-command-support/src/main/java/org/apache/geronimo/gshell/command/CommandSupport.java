@@ -24,10 +24,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provides support for {@link Command} implemenations.
+ * Provides support for command implemenations.
  *
  * @version $Rev$ $Date$
  */
+@Deprecated
 public abstract class CommandSupport
     implements Executable
 {

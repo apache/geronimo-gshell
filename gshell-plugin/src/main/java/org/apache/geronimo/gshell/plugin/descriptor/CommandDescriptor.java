@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.plugin.descriptor;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.command.Parameter;
 import org.apache.geronimo.gshell.model.command.Requirement;
 import org.apache.geronimo.gshell.command.Executable;
@@ -36,40 +36,40 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 public class CommandDescriptor
     extends ComponentDescriptorSupport
 {
-    private final Command command;
+    private final CommandModel model;
 
-    public CommandDescriptor(final Command command) {
-        assert command != null;
+    public CommandDescriptor(final CommandModel model) {
+        assert model != null;
 
-        this.command = command;
+        this.model = model;
 
-        setDescription(command.getDescription());
+        setDescription(model.getDescription());
         setRole(Executable.class);
-        setRoleHint(command.getId());
-        setImplementation(command.getImplementation());
-        setVersion(command.getVersion());
+        setRoleHint(model.getId());
+        setImplementation(model.getImplementation());
+        setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("per-lookup");
 
-        if (command.hasParameters()) {
+        if (model.hasParameters()) {
             XmlPlexusConfiguration root = new XmlPlexusConfiguration("configuration");
 
-            for (Parameter param : command.getParameters()) {
+            for (Parameter param : model.getParameters()) {
                 root.addChild(new XmlPlexusConfiguration(param.getName(), param.getValue()));
             }
 
             setConfiguration(root);
         }
 
-        if (command.hasRequirements()) {
-            for (Requirement requirement : command.getRequirements()) {
+        if (model.hasRequirements()) {
+            for (Requirement requirement : model.getRequirements()) {
                 addRequirement(translate(requirement));
             }
         }
     }
 
-    public Command getCommand() {
-        return command;
+    public CommandModel getCommand() {
+        return model;
     }
 
     private ComponentRequirement translate(final Requirement source) {

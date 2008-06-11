@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.plugin.descriptor;
 
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.plugin.Plugin;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -44,16 +44,16 @@ public class PluginDescriptor
         setId(plugin.getId());
         setIsolatedRealm(false);
 
-        for (Command command : plugin.commands()) {
-            addCommand(command);
+        for (CommandModel model : plugin.getCommands()) {
+            addCommand(model);
         }
     }
 
-    private void addCommand(final Command command) {
-        assert command != null;
+    private void addCommand(final CommandModel model) {
+        assert model != null;
 
-        addComponentDescriptor(new CommandContainerDescriptor(command));
-        addComponentDescriptor(new CommandDescriptor(command));
+        addComponentDescriptor(new CommandContainerDescriptor(model));
+        addComponentDescriptor(new CommandDescriptor(model));
     }
 
     public void addComponentDescriptor(final ComponentDescriptor descriptor) {

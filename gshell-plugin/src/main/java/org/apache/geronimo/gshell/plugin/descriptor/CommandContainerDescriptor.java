@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.plugin.descriptor;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
@@ -33,27 +33,27 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 public class CommandContainerDescriptor
     extends ComponentDescriptorSupport
 {
-    private final Command command;
+    private final CommandModel model;
 
-    public CommandContainerDescriptor(final Command command) {
-        assert command != null;
+    public CommandContainerDescriptor(final CommandModel model) {
+        assert model != null;
 
-        this.command = command;
+        this.model = model;
 
         setRole(CommandContainer.class);
-        setRoleHint(command.getId());
+        setRoleHint(model.getId());
         setImplementation("org.apache.geronimo.gshell.container.DefaultCommandContainer"); // Avoid dependency on gshell-core
-        setVersion(command.getVersion());
+        setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");
 
         XmlPlexusConfiguration config = new XmlPlexusConfiguration("configuration");
-        config.addChild(new XmlPlexusConfiguration("commandId", command.getId()));
+        config.addChild(new XmlPlexusConfiguration("commandId", model.getId()));
         setConfiguration(config);
     }
 
-    public Command getCommand() {
-        return command;
+    public CommandModel getCommand() {
+        return model;
     }
     
     public String toString() {

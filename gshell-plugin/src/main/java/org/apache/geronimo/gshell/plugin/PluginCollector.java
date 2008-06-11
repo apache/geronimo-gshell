@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.plugin;
 
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.plugin.Plugin;
 import org.apache.geronimo.gshell.plugin.descriptor.PluginDescriptor;
 import org.codehaus.plexus.component.annotations.Component;
@@ -47,7 +47,7 @@ public class PluginCollector
 
     private final List<PluginDescriptor> descriptors = new ArrayList<PluginDescriptor>();
 
-    private final Map<String,Command> commands = new LinkedHashMap<String,Command>();
+    private final Map<String, CommandModel> commands = new LinkedHashMap<String, CommandModel>();
 
     public String getId() {
         return getClass().getSimpleName();
@@ -72,11 +72,11 @@ public class PluginCollector
 
         log.trace("Collecting plugin components for: {}", plugin.getId());
 
-        for (Command command : plugin.commands()) {
-            log.debug("Found command: {}", command.getId());
-            log.trace("Command model: {}", command);
+        for (CommandModel model : plugin.getCommands()) {
+            log.debug("Found command: {}", model.getId());
+            log.trace("Command model: {}", model);
             
-            commands.put(command.getId(), command);
+            commands.put(model.getId(), model);
         }
 
         descriptors.add(descriptor);
@@ -86,11 +86,11 @@ public class PluginCollector
         return descriptors;
     }
 
-    public Map<String, Command> getCommands() {
+    public Map<String, CommandModel> getCommands() {
         return commands;
     }
 
-    public Command getCommand(final String id) {
+    public CommandModel getCommand(final String id) {
         assert id != null;
 
         return commands.get(id);

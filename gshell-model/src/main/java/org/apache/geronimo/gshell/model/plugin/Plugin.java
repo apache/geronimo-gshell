@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.model.plugin;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.common.DescriptorSupport;
 import org.apache.geronimo.gshell.model.layout.Layout;
 
@@ -36,22 +36,22 @@ import java.util.List;
 public class Plugin
     extends DescriptorSupport
 {
-    private List<Command> commands;
+    private List<CommandModel> commands;
 
     private Layout layout;
 
-    public List<Command> commands() {
+    public List<CommandModel> getCommands() {
         if (commands == null) {
-            commands = new ArrayList<Command>();
+            commands = new ArrayList<CommandModel>();
         }
         
         return commands;
     }
 
-    public void add(final Command command) {
-        assert command != null;
+    public void add(final CommandModel model) {
+        assert model != null;
         
-        commands().add(command);
+        getCommands().add(model);
     }
 
     public Layout getLayout() {

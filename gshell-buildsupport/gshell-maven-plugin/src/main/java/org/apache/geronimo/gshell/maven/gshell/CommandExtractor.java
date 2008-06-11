@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Extracts {@link Command} instances from class files.
+ * Extracts {@link org.apache.geronimo.gshell.model.command.CommandModel} instances from class files.
  *
  * @version $Id$
  */
@@ -51,7 +51,7 @@ public class CommandExtractor
 
     private CommandGleaner gleaner = new CommandGleaner();
 
-    public List<Command> extract(final MavenProject project, final Scope scope) throws Exception {
+    public List<CommandModel> extract(final MavenProject project, final Scope scope) throws Exception {
         assert project != null;
         assert scope != null;
 
@@ -117,11 +117,11 @@ public class CommandExtractor
         return new URLClassLoader(urls, getClass().getClassLoader());
     }
 
-    private List<Command> extract(final File classesDir, final ClassLoader cl) throws Exception {
+    private List<CommandModel> extract(final File classesDir, final ClassLoader cl) throws Exception {
         assert classesDir != null;
         assert cl != null;
 
-        List<Command> descriptors = new ArrayList<Command>();
+        List<CommandModel> descriptors = new ArrayList<CommandModel>();
 
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(classesDir);
@@ -142,10 +142,10 @@ public class CommandExtractor
 
                 log.debug("Gleaning from: {}", type);
 
-                Command command = gleaner.glean(type);
+                CommandModel model = gleaner.glean(type);
                 
-                if (command != null) {
-                    descriptors.add(command);
+                if (model != null) {
+                    descriptors.add(model);
                 }
             }
             catch (VerifyError e) {

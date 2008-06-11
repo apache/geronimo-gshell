@@ -33,4 +33,8 @@ public interface CommandContext
     Variables getVariables();
 
     CommandInfo getInfo();
+
+    // CommandModel getModel();
+    
+    // CommandContainer getContainer();
 }

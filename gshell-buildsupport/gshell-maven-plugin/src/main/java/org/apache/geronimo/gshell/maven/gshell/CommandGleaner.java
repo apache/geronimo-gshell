@@ -28,7 +28,7 @@ import java.util.Map;
 
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.model.command.Parameter;
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.command.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +78,7 @@ public class CommandGleaner
         return buff.toString().trim().toLowerCase();
     }
 
-    public Command glean(final Class clazz) throws Exception {
+    public CommandModel glean(final Class clazz) throws Exception {
         assert clazz != null;
 
         // Cast to <?> so that we don't have to cast below
@@ -97,28 +97,28 @@ public class CommandGleaner
 
         log.debug("Creating descriptor for: {}", type);
 
-        Command command = new Command();
+        CommandModel model = new CommandModel();
 
-        command.setId(anno.id());
+        model.setId(anno.id());
 
-        command.setDescription(filterEmptyAsNull(anno.description()));
+        model.setDescription(filterEmptyAsNull(anno.description()));
 
-        command.setImplementation(type.getName());
+        model.setImplementation(type.getName());
 
-        command.setVersion(filterEmptyAsNull(anno.version()));
+        model.setVersion(filterEmptyAsNull(anno.version()));
 
         for (Class t : getClasses(type)) {
             for (Field field : t.getDeclaredFields()) {
                 Requirement requirement = findRequirement(field);
 
                 if (requirement != null) {
-                    command.addRequirement(requirement);
+                    model.addRequirement(requirement);
                 }
 
                 Parameter parameter = findParameter(field);
 
                 if (parameter != null) {
-                    command.addParameter(parameter);
+                    model.addParameter(parameter);
                 }
             }
 
@@ -127,7 +127,7 @@ public class CommandGleaner
             //
         }
 
-        return command;
+        return model;
     }
 
     /**

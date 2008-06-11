@@ -31,7 +31,7 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 @XStreamAlias("command")
-public class Command
+public class CommandModel
     extends Element
 {
     private String id;

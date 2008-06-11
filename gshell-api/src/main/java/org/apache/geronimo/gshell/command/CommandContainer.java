@@ -35,4 +35,13 @@ public interface CommandContainer
     // TODO: Completor
 
     // TODO: Documentor (for --help and `help <command>`) handling
+
+    //
+    // Locator
+    //
+    
+    interface Locator
+    {
+        CommandContainer locate(String id);
+    }
 }

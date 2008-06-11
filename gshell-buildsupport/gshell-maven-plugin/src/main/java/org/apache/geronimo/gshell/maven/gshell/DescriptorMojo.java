@@ -25,7 +25,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.geronimo.gshell.model.command.Command;
+import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.plugin.PluginMarshaller;
 import org.apache.geronimo.gshell.model.plugin.Plugin;
 import org.apache.maven.artifact.handler.ArtifactHandler;
@@ -93,12 +93,12 @@ public class DescriptorMojo
         assert scope != null;
         assert outputFile != null;
 
-        List<Command> commands = new ArrayList<Command>();
+        List<CommandModel> commands = new ArrayList<CommandModel>();
 
         CommandExtractor extractor = new CommandExtractor();
 
         try {
-            List<Command> list = extractor.extract(project, scope);
+            List<CommandModel> list = extractor.extract(project, scope);
 
             if (list != null && !list.isEmpty()) {
                 commands.addAll(list);
@@ -121,8 +121,8 @@ public class DescriptorMojo
             plugin.setVersion(project.getVersion());
             plugin.setDescription(project.getDescription());
 
-            for (Command command : commands) {
-                plugin.add(command);
+            for (CommandModel model : commands) {
+                plugin.add(model);
             }
             
             try {
