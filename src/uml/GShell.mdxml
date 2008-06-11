@@ -358,7 +358,7 @@
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
-					<active xmi:value='true'/>
+					<active xmi:value='false'/>
 					<mdOwnedViews>
 						<mdElement elementClass='DiagramFrame' xmi:id='_15_1_640021c_1213180231987_314992_268'>
 							<elementID xmi:idref='_15_1_640021c_1213180231986_792359_255'/>
@@ -1660,7 +1660,7 @@
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
-					<active xmi:value='false'/>
+					<active xmi:value='true'/>
 					<mdOwnedViews>
 						<mdElement elementClass='DiagramFrame' xmi:id='_15_1_640021c_1213202307558_548186_860'>
 							<elementID xmi:idref='_15_1_640021c_1213202307554_862299_847'/>
@@ -3420,6 +3420,50 @@
 							<linkConveyedAID xmi:idref='_15_1_640021c_1213206007715_123456_6664'/>
 							<linkConveyedBID xmi:idref='_15_1_640021c_1213206007715_73211_6666'/>
 						</mdElement>
+						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213212030918_356134_6978'>
+							<elementID xmi:idref='_15_1_640021c_1213180648464_630720_444'/>
+							<geometry>903, 462, 189, 63</geometry>
+							<text>Creates new instances or looks up cached instances, whatever the implementing glue wants to do really.</text>
+							<active xmi:idref='_15_1_640021c_1213212064750_615918_6989'/>
+						</mdElement>
+						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213212064750_615918_6989'>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327955_410564_3512'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213212030918_356134_6978'/>
+							<geometry>796, 501; 903, 496; </geometry>
+						</mdElement>
+						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213212080583_718508_6990'>
+							<elementID xmi:idref='_15_1_640021c_1213180606410_110446_384'/>
+							<geometry>903, 546, 231, 63</geometry>
+							<text>Provides the shell with some clues abolut how to complete the command-line when this command is used.</text>
+							<active xmi:idref='_15_1_640021c_1213212134542_490116_7001'/>
+						</mdElement>
+						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213212134542_490116_7001'>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327955_881318_3509'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213212080583_718508_6990'/>
+							<geometry>811, 575; 903, 575; </geometry>
+						</mdElement>
+						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213212150071_378108_7002'>
+							<elementID xmi:idref='_15_1_640021c_1213180617825_991939_404'/>
+							<geometry>903, 630, 224, 70</geometry>
+							<text>Allows access to command specific documentation muck, like --help reports and &#39;help &lt;command&gt;&#39; muck.</text>
+							<active xmi:idref='_15_1_640021c_1213212179455_503411_7013'/>
+						</mdElement>
+						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213212179455_503411_7013'>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327955_112415_3505'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213212150071_378108_7002'/>
+							<geometry>821, 651; 903, 657; </geometry>
+						</mdElement>
+						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213212209607_362412_7019'>
+							<elementID xmi:idref='_15_1_640021c_1213180637361_354944_424'/>
+							<geometry>91, 399, 294, 91</geometry>
+							<text>Normally configured with the glue&#39;s prefered default, but can be changed to provide the users desired behavior to orchastrate copmletion/documentation and execution of the command.</text>
+							<active xmi:idref='_15_1_640021c_1213212260647_714631_7030'/>
+						</mdElement>
+						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213212260647_714631_7030'>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_431333_3524'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213212209607_362412_7019'/>
+							<geometry>490, 498; 385, 477; </geometry>
+						</mdElement>
 					</mdOwnedViews>
 				</mdElement>
 			</mdElement>
@@ -4573,7 +4617,7 @@
 						<mdElement elementClass='StringProperty'>
 							<propertyID>DIAGRAMS_LAYOUT</propertyID>
 							<propertyDescriptionID>DIAGRAMS_LAYOUT_DESCRIPTION</propertyDescriptionID>
-							<value>0 0 0 14 0 0 0 0 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 30 0 32 0 33 0 31 0 39 0 38 0 36 0 5f 0 37 0 39 0 32 0 33 0 35 0 39 0 5f 0 32 0 35 0 35 0 0 0 1 0 0 0 cc 0 0 0 e2 0 0 0 0 0 0 0 3 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 30 0 32 0 33 0 31 0 39 0 38 0 36 0 5f 0 37 0 39 0 32 0 33 0 35 0 39 0 5f 0 32 0 35 0 35 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 34 0 33 0 37 0 35 0 31 0 33 0 31 0 5f 0 34 0 36 0 36 0 34 0 31 0 35 0 5f 0 35 0 32 0 39 0 38 </value>
+							<value>0 0 0 14 0 0 0 0 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 1 0 0 0 cc 0 0 0 e2 0 0 0 1 0 0 0 3 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 30 0 32 0 33 0 31 0 39 0 38 0 36 0 5f 0 37 0 39 0 32 0 33 0 35 0 39 0 5f 0 32 0 35 0 35 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 34 0 33 0 37 0 35 0 31 0 33 0 31 0 5f 0 34 0 36 0 36 0 34 0 31 0 35 0 5f 0 35 0 32 0 39 0 38 </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='StringProperty'>
@@ -4651,7 +4695,7 @@
 						<mdElement elementClass='StringProperty'>
 							<propertyID>INFO_PROPERTY</propertyID>
 							<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-							<value>f 1d 39 42 6a 2a 59 57 35 51 56 a9 62 b8 1b eb f5 71 27 f3 d3 f1 81 ed d4 da 57 e7 cc a b5 c0 29 26 f 8b 6e 37 74 28 fa c9 c7 79 26 df 3f d0 4e 4 41 7c 29 e7 fa 2 f1 ec c2 d1 3d 11 8 4e e0 27 0 fd 3b 5b d8 9d de 92 2a e0 ed c0 b 95 ba 9a 43 74 1c 2f d1 81 f ca 16 3f 34 4d 97 c6 28 91 47 ff ec 28 ab 61 39 ed </value>
+							<value>f 1d 39 42 6a 2a 59 57 35 51 56 a9 62 b8 1b eb f5 71 27 f3 d3 f1 81 ee d4 d8 54 e7 cf 9 b5 c0 29 26 f 8b 6e 37 74 28 fa c9 c7 79 26 df 3f d0 4e 4 41 7c 29 e7 fa 2 f1 ec c2 d1 3d 11 8 4e e0 27 0 fd 3b 5b d8 9d de 92 2a e0 ed c0 b 95 ba 9a 43 74 1c 2f d1 81 f ca 16 3f 34 4d 97 c6 28 91 47 ff ec 28 ab 61 39 ed </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='LIST_PROPERTY'>
