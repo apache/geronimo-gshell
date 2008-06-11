@@ -17,23 +17,25 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout;
+package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Layout;
 import org.apache.geronimo.gshell.model.layout.Node;
+import org.apache.geronimo.gshell.layout.LayoutManager;
+import org.apache.geronimo.gshell.layout.NotFoundException;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The default implementation of the {@link LayoutManager}.
+ * The default implementation of the {@link LayoutManager} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=LayoutManager.class)
+@Component(role= LayoutManager.class)
 public class DefaultLayoutManager
     implements LayoutManager
 {

@@ -21,41 +21,26 @@
 <!-- $Rev$ $Date$ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
-        <groupId>org.apache.geronimo.gshell.commands</groupId>
-        <artifactId>gshell-commands</artifactId>
+        <groupId>org.apache.geronimo.gshell</groupId>
+        <artifactId>gshell</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
-    
-    <artifactId>gshell-builtins</artifactId>
-    <name>GShell Commands :: Builtins</name>
-    
+
+    <artifactId>gshell-layout</artifactId>
+    <name>GShell Layout</name>
+
     <description>
-        Provides the default "built-in" commands.
+        Provides access to command layout configuration details.
     </description>
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <artifactId>gshell-command-support</artifactId>
-        </dependency>
-        
-        <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-model</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-plugin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-layout</artifactId>
         </dependency>
     </dependencies>
 

@@ -1621,6 +1621,22 @@
 							<linkConveyedAID xmi:idref='_15_1_640021c_1213207328445_846925_6961'/>
 							<linkConveyedBID xmi:idref='_15_1_640021c_1213207328445_276076_6963'/>
 						</mdElement>
+						<mdElement elementClass='Note' xmi:id='_15_1_640021c_1213207616728_128440_6965'>
+							<elementID xmi:idref='_15_1_640021c_1213183422570_237805_1323'/>
+							<geometry>378, 910, 100, 73</geometry>
+							<text>These are really container implementation specific</text>
+							<active xmi:idref='_15_1_640021c_1213207630605_262912_6976'/>
+						</mdElement>
+						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213207630605_262912_6976'>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213183422570_628704_1324'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213207616728_128440_6965'/>
+							<geometry>273, 943; 378, 945; </geometry>
+						</mdElement>
+						<mdElement elementClass='NoteAnchor' xmi:id='_15_1_640021c_1213207633491_530735_6977'>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213183493139_853602_1384'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213207616728_128440_6965'/>
+							<geometry>262, 833; 378, 912; </geometry>
+						</mdElement>
 					</mdOwnedViews>
 				</mdElement>
 			</mdElement>
@@ -4635,7 +4651,7 @@
 						<mdElement elementClass='StringProperty'>
 							<propertyID>INFO_PROPERTY</propertyID>
 							<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-							<value>f 1d 39 42 6a 2a 59 57 35 51 56 a9 62 b8 1b eb f5 71 27 f3 d3 f1 81 ed d4 da 55 e7 ce 8 b5 c0 29 26 f 8b 6e 37 74 28 fa c9 c7 79 26 df 3f d0 4e 4 41 7c 29 e7 fa 2 f1 ec c2 d1 3d 11 8 4e e0 27 0 fd 3b 5b d8 9d de 92 2a e0 ed c0 b 95 ba 9a 43 74 1c 2f d1 81 f ca 16 3f 34 4d 97 c6 28 91 47 ff ec 28 ab 61 39 ed </value>
+							<value>f 1d 39 42 6a 2a 59 57 35 51 56 a9 62 b8 1b eb f5 71 27 f3 d3 f1 81 ed d4 da 57 e7 cc a b5 c0 29 26 f 8b 6e 37 74 28 fa c9 c7 79 26 df 3f d0 4e 4 41 7c 29 e7 fa 2 f1 ec c2 d1 3d 11 8 4e e0 27 0 fd 3b 5b d8 9d de 92 2a e0 ed c0 b 95 ba 9a 43 74 1c 2f d1 81 f ca 16 3f 34 4d 97 c6 28 91 47 ff ec 28 ab 61 39 ed </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='LIST_PROPERTY'>
