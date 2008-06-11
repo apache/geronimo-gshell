@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.container;
+package org.apache.geronimo.gshell;
 
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
