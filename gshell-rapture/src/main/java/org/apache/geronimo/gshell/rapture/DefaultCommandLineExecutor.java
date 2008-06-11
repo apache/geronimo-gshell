@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -38,6 +38,9 @@ import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.chronos.StopWatch;
+import org.apache.geronimo.gshell.commandline.CommandLine;
+import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.commandline.CommandExecutionFailied;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -56,13 +59,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The default {@link CommandExecutor} component.
+ * The default {@link CommandLineExecutor} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandExecutor.class)
-public class DefaultCommandExecutor
-    implements CommandExecutor, Initializable
+@Component(role= CommandLineExecutor.class)
+public class DefaultCommandLineExecutor
+    implements CommandLineExecutor, Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -80,9 +83,9 @@ public class DefaultCommandExecutor
 
     private Environment env;
 
-    public DefaultCommandExecutor() {}
+    public DefaultCommandLineExecutor() {}
     
-    public DefaultCommandExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandContainer.Locator commandContainerLocator, final CommandLineBuilder commandLineBuilder) {
+    public DefaultCommandLineExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandContainer.Locator commandContainerLocator, final CommandLineBuilder commandLineBuilder) {
         assert applicationManager != null;
         assert layoutManager != null;
         assert commandContainerLocator != null;

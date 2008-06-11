@@ -17,24 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.commandline;
 
 /**
- * Provides the ability to execute commands.
+ * A abstraction of an executable command-line.
+ *
+ * <p>
+ * Could be a simple command or a complex command pipe-line.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandExecutor
+public interface CommandLine
 {
-    //
-    // TODO: This is starting to look like it needs a CommandExecutionRequest and CommandExecutionResult object
-    //
-    
-    Object execute(String line) throws Exception;
-
-    Object execute(String command, final Object[] args) throws Exception;
-
-    Object execute(Object... args) throws Exception;
-
-    Object execute(Object[][] commands) throws Exception;
+    /**
+     * Execute the command-line.
+     *
+     * @return  The final result of the command-line.
+     *
+     * @throws Exception    Failed to execute command-line.
+     */
+    Object execute() throws Exception;
 }

@@ -20,13 +20,15 @@
 package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.rapture.LoggingVisitor;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
 import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.commandline.CommandLine;
+import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -96,7 +98,7 @@ public class DefaultCommandLineBuilder
 
         try {
             assert container != null;
-            CommandExecutor executor = (CommandExecutor) container.lookup(CommandExecutor.class);
+            CommandLineExecutor executor = (CommandLineExecutor) container.lookup(CommandLineExecutor.class);
 
             assert applicationManager != null;
             Environment env = applicationManager.getContext().getEnvironment();

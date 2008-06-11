@@ -31,7 +31,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -44,7 +44,7 @@ public class SourceCommand
     extends CommandSupport
 {
     @Requirement
-    private CommandExecutor executor;
+    private CommandLineExecutor executor;
 
     @Argument(required=true, description="Source file")
     private String source;

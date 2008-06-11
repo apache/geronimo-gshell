@@ -17,17 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.rapture;
+package org.apache.geronimo.gshell.commandline;
 
 /**
- * Thrown when a command execution fails.
+ * Builds {@link CommandLine} instances ready for executing.
  *
  * @version $Rev$ $Date$
  */
-public class CommandExecutionFailied
-    extends Exception
+public interface CommandLineBuilder
 {
-    public CommandExecutionFailied(final Throwable cause) {
-        super(cause);
-    }
+    CommandLine create(final String commandLine) throws Exception;
 }

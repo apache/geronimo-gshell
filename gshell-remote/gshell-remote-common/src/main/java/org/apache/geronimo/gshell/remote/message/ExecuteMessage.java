@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 
 /**
- * Execute a command.  This supports all flavors of the {@link CommandExecutor} execution methods.
+ * Execute a command.  This supports all flavors of the {@link org.apache.geronimo.gshell.commandline.CommandLineExecutor} execution methods.
  *
  * @version $Rev$ $Date$
  */
@@ -64,7 +64,7 @@ public class ExecuteMessage
         this(null, null, null, null);
     }
 
-    public Object execute(final CommandExecutor executor) throws Exception {
+    public Object execute(final CommandLineExecutor executor) throws Exception {
         assert executor != null;
 
         return flavor.execute(this, executor);
@@ -82,7 +82,7 @@ public class ExecuteMessage
         COMMANDS,       // execute(Object[][])
         ;
 
-        public Object execute(final ExecuteMessage msg, final CommandExecutor executor) throws Exception {
+        public Object execute(final ExecuteMessage msg, final CommandLineExecutor executor) throws Exception {
             assert msg != null;
             assert executor != null;
 

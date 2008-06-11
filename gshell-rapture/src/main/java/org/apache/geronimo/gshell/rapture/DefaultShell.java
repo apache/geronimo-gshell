@@ -23,7 +23,7 @@ import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationContext;
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
@@ -66,7 +66,7 @@ public class DefaultShell
     private ShellInfo shellInfo;
 
     @Requirement
-    private CommandExecutor executor;
+    private CommandLineExecutor executor;
 
     @Requirement
     private History history;
@@ -83,7 +83,7 @@ public class DefaultShell
 
     public DefaultShell() {}
     
-    public DefaultShell(final ApplicationManager applicationManager, final ShellInfo shellInfo, final CommandExecutor executor, final History history) {
+    public DefaultShell(final ApplicationManager applicationManager, final ShellInfo shellInfo, final CommandLineExecutor executor, final History history) {
         assert applicationManager != null;
         assert shellInfo != null;
         assert executor != null;

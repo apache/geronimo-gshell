@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.ShellInfo;
@@ -43,7 +43,7 @@ public class DefaultRemoteShell
     private ShellInfo shellInfo;
 
     @Requirement
-    private CommandExecutor executor;
+    private CommandLineExecutor executor;
 
     // FIXME: Pull this from some manager's context
     @Requirement
@@ -54,7 +54,7 @@ public class DefaultRemoteShell
     public DefaultRemoteShell() {
     }
 
-    public DefaultRemoteShell(final ShellInfo shellInfo, final CommandExecutor executor, final Environment env) {
+    public DefaultRemoteShell(final ShellInfo shellInfo, final CommandLineExecutor executor, final Environment env) {
         this.shellInfo = shellInfo;
         this.executor = executor;
         this.env = env;

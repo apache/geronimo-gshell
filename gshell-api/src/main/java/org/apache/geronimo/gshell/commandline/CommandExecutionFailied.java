@@ -17,24 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.rapture;
+package org.apache.geronimo.gshell.commandline;
 
 /**
- * A abstraction of an executable command-line.
- *
- * <p>
- * Could be a simple command or a complex command pipe-line.
+ * Thrown when a command execution fails.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandLine
+public class CommandExecutionFailied
+    extends Exception
 {
-    /**
-     * Execute the command-line.
-     *
-     * @return  The final result of the command-line.
-     *
-     * @throws Exception    Failed to execute command-line.
-     */
-    Object execute() throws Exception;
+    public CommandExecutionFailied(final Throwable cause) {
+        super(cause);
+    }
 }

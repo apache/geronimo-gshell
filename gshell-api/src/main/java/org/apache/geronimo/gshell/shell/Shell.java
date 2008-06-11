@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.shell;
 
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 
 /**
  * This is the primary interface to executing commands.
@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.command.CommandExecutor;
  * @version $Rev$ $Date$
  */
 public interface Shell
-    extends CommandExecutor
+    extends CommandLineExecutor
 {
     ShellInfo getShellInfo();
 

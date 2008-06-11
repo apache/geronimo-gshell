@@ -17,16 +17,32 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.rapture;
-
-import org.apache.geronimo.gshell.parser.ParseException;
+package org.apache.geronimo.gshell.commandline;
 
 /**
- * Builds {@link CommandLine} instances ready for executing.
+ * Provides the ability to execute commands.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandLineBuilder
+public interface CommandLineExecutor
 {
-    CommandLine create(final String commandLine) throws ParseException;
+    /**
+     * Execute a command-line, parsing out valid recognized syntax.
+     */
+    Object execute(String line) throws Exception;
+
+    /**
+     * Execute command name/path with the given arguments.
+     */
+    Object execute(String command, final Object[] args) throws Exception;
+
+    /**
+     * Execute a pre-processed command-line.
+     */
+    Object execute(Object... args) throws Exception;
+
+    /**
+     * Execute a piped-command-line.
+     */
+    Object execute(Object[][] commands) throws Exception;
 }

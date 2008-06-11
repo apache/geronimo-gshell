@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.rapture;
 
-import org.apache.geronimo.gshell.command.CommandExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.ASTExpression;
@@ -49,11 +49,11 @@ public class ExecutingVisitor
 
     private final Environment env;
     
-    private final CommandExecutor executor;
+    private final CommandLineExecutor executor;
 
     private final VariableInterpolator interp = new VariableInterpolator();
 
-    public ExecutingVisitor(final CommandExecutor executor, final Environment env) {
+    public ExecutingVisitor(final CommandLineExecutor executor, final Environment env) {
         assert executor != null;
         assert env != null;
 
