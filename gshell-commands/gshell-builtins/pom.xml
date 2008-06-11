@@ -42,6 +42,21 @@
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <artifactId>gshell-command-support</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-model</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-plugin</artifactId>
+        </dependency>
+        
+        <!--
+        FIXME: This is currently needed for the 'help' command implementation, and should be removed once the
+               command has been refactored as well as the Layout API sorted/moved out of core.
+        -->
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
