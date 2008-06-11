@@ -40,10 +40,11 @@
     </description>
     
     <modules>
+        <module>gshell-yarn</module>
+        <module>gshell-chronos</module>
         <module>gshell-ansi</module>
         <module>gshell-artifact</module>
         <module>gshell-clp</module>
-        <module>gshell-common</module>
         <module>gshell-i18n</module>
         <module>gshell-io</module>
         <module>gshell-prefs</module>

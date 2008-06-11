@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.cli;
 
-import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.builder.ShellBuilder;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.ansi.ANSI;

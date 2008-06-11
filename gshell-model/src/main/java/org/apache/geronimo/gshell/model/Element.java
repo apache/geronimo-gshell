@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.model;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 
 /**
  * Base class for model elements.

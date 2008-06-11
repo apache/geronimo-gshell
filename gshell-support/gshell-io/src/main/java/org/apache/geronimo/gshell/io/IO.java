@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.io;
 
 import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.RenderWriter;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.helpers.MessageFormatter;
 

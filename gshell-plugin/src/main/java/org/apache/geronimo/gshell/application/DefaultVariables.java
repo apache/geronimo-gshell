@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 
 import java.util.HashMap;
 import java.util.HashSet;

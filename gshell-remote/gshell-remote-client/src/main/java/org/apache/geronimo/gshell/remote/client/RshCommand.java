@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;

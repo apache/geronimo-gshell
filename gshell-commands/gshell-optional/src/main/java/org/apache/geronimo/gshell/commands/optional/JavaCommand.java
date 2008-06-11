@@ -26,7 +26,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.CommandSupport;
-import org.apache.geronimo.gshell.common.Arguments;
+import org.apache.geronimo.gshell.util.Arguments;
 
 /**
  * Execute a Java standard application.

@@ -23,8 +23,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 
-import org.apache.geronimo.gshell.common.Duration;
-import org.apache.geronimo.gshell.common.NamedThreadFactory;
+import org.apache.geronimo.gshell.chronos.Duration;
+import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.codehaus.plexus.component.annotations.Component;

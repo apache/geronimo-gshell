@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.whisper.transport.base;
 
 import java.net.SocketAddress;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.request.RequestResponseFilter;
 import org.apache.geronimo.gshell.whisper.stream.SessionStreamFilter;
 import org.apache.geronimo.gshell.whisper.transport.Transport;

@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.ThreadModel;
 

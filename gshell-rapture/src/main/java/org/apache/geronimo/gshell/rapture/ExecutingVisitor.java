@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.command.CommandExecutor;
-import org.apache.geronimo.gshell.common.Arguments;
+import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.ASTExpression;
 import org.apache.geronimo.gshell.parser.ASTOpaqueString;
@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
 import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.ErrorNotification;
+import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

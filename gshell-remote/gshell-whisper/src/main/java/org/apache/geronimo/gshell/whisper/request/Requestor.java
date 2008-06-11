@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.whisper.request;
 
 import java.util.concurrent.TimeUnit;
 
-import org.apache.geronimo.gshell.common.Duration;
+import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.mina.common.IoFutureListener;

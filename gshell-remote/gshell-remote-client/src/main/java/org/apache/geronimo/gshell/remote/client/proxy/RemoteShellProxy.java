@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.client.proxy;
 
-import org.apache.geronimo.gshell.ExitNotification;
+import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;

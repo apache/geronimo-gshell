@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.plugin.descriptor;
 
 import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 

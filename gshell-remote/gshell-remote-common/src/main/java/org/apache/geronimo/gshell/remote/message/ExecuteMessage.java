@@ -134,12 +134,12 @@ public class ExecuteMessage
     public static class Notification
         extends Result
     {
-        public Notification(final org.apache.geronimo.gshell.common.Notification n) {
+        public Notification(final org.apache.geronimo.gshell.notification.Notification n) {
             super(n);
         }
 
-        public org.apache.geronimo.gshell.common.Notification getNotification() {
-            return (org.apache.geronimo.gshell.common.Notification) getResult();
+        public org.apache.geronimo.gshell.notification.Notification getNotification() {
+            return (org.apache.geronimo.gshell.notification.Notification) getResult();
         }
     }
 }

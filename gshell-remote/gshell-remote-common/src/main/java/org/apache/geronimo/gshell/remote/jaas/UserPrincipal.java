@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.remote.jaas;
 
 import java.security.Principal;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 
 /**
  * ???

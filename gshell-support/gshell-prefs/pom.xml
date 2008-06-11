@@ -36,12 +36,5 @@
     <description>
         Annotation-based preferences support.
     </description>
-    
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-common</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

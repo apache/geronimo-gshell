@@ -22,9 +22,9 @@ package org.apache.geronimo.gshell.whisper.transport.base;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.geronimo.gshell.common.Duration;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.chronos.Duration;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.request.Requestor;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;

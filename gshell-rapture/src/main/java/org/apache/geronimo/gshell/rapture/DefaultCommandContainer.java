@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Executable;
-import org.apache.geronimo.gshell.common.Arguments;
+import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;

@@ -27,8 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.geronimo.gshell.io.NestedIOException;
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.apache.mina.common.ByteBuffer;
 import org.slf4j.Logger;

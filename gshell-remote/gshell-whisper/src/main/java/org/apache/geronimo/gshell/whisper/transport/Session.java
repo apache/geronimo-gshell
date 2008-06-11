@@ -23,9 +23,9 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.geronimo.gshell.common.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 

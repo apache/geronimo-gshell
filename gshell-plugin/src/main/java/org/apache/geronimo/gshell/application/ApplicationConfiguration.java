@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.common.tostring.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.shell.Environment;

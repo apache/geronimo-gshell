@@ -39,8 +39,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-common</artifactId>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
         </dependency>
     </dependencies>
 

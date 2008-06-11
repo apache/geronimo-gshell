@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.geronimo.gshell.common.Duration;
+import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.geronimo.gshell.remote.server.handler.ServerMessageHandler;
 import org.apache.geronimo.gshell.remote.server.handler.ServerSessionContext;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;

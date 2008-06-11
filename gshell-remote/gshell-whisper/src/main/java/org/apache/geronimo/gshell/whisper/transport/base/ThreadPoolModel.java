@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.geronimo.gshell.common.NamedThreadFactory;
+import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
 import org.apache.mina.common.IoFilterChain;
 import org.apache.mina.common.ThreadModel;
 import org.apache.mina.filter.executor.ExecutorFilter;

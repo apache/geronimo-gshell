@@ -28,10 +28,10 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.geronimo.gshell.common.Duration;
-import org.apache.geronimo.gshell.common.NamedThreadFactory;
-import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.chronos.Duration;
+import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
+import org.apache.geronimo.gshell.yarn.ToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.slf4j.Logger;

@@ -24,7 +24,7 @@ import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
 import org.apache.commons.jexl.resolver.FlatResolver;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.ErrorNotification;
+import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.Interpolator;
 import org.codehaus.plexus.interpolation.RegexBasedInterpolator;

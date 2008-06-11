@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.common.Notification;
+import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.codehaus.plexus.component.annotations.Component;

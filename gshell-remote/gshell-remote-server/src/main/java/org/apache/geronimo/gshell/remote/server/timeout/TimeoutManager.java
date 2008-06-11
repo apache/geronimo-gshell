@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.server.timeout;
 
 import java.util.concurrent.ScheduledFuture;
 
-import org.apache.geronimo.gshell.common.Duration;
+import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**

@@ -36,13 +36,18 @@
     <description>
         Messaging framework muck and fluff.
     </description>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-common</artifactId>
+            <artifactId>gshell-yarn</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-chronos</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-io</artifactId>

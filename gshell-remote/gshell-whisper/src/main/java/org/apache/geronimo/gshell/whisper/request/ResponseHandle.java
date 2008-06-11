@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.whisper.request;
 
-import org.apache.geronimo.gshell.common.tostring.ToStringBuilder;
-import org.apache.geronimo.gshell.common.tostring.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.ToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
 
 //
