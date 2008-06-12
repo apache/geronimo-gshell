@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.settings.SettingsManager;
 import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.shell.ShellFactory;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
@@ -47,6 +48,7 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public class ShellBuilder
+    implements ShellFactory
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -220,5 +222,9 @@ public class ShellBuilder
         getApplicationManager().configure(applicationConfig);
 
         return getApplicationManager().create();
+    }
+
+    public Shell create() throws Exception {
+        return build();
     }
 }
