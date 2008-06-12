@@ -308,7 +308,7 @@ public class DefaultApplicationManager
         return classPath;
     }
 
-    public Shell createShell() throws Exception {
+    public Shell create() throws Exception {
         // Make sure that we have a valid context
         getContext();
 

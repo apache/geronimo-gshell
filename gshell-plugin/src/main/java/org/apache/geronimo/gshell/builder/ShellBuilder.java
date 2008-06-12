@@ -219,6 +219,6 @@ public class ShellBuilder
         // Configure application
         getApplicationManager().configure(applicationConfig);
 
-        return getApplicationManager().createShell();
+        return getApplicationManager().create();
     }
 }
