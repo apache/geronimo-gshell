@@ -468,7 +468,7 @@
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>gshell-diet-log4j</artifactId>
+                <artifactId>gshell-wisdom</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
         </dependencies>
@@ -498,6 +498,7 @@
         <module>gshell-parser</module>
         <module>gshell-layout</module>
         <module>gshell-rapture</module>
+        <module>gshell-wisdom</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
         <module>gshell-remote</module>
