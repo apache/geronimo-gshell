@@ -190,10 +190,10 @@ public class ShellBuilder
     }
 
     //
-    // Building
+    // ShellFactory
     //
 
-    public Shell build() throws Exception {
+    public Shell create() throws Exception {
         log.debug("Building");
 
         // Hijack the system output streams
@@ -222,9 +222,5 @@ public class ShellBuilder
         getApplicationManager().configure(applicationConfig);
 
         return getApplicationManager().create();
-    }
-
-    public Shell create() throws Exception {
-        return build();
     }
 }

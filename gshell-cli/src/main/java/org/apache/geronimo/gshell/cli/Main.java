@@ -240,7 +240,7 @@ public class Main
             }
 
             // Build the shell instance
-            Shell gshell = builder.build();
+            Shell gshell = builder.create();
 
             // clp gives us a list, but we need an array
             String[] _args = commandArgs.toArray(new String[commandArgs.size()]);
