@@ -60,7 +60,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -253,42 +252,42 @@ public class DefaultApplicationManager
         //
         // FIXME: Load this list from build-generated properties or something like that
         //
-        
-        Set<String> excludes = new HashSet<String>();
-        excludes.add("aspectjrt");
-        excludes.add("plexus-classworlds");
-        excludes.add("gshell-ansi");
-        excludes.add("gshell-artifact");
-        excludes.add("gshell-cli");
-        excludes.add("gshell-clp");
-        excludes.add("gshell-api");
-        excludes.add("log4j");
-        excludes.add("gshell-i18n");
-        excludes.add("gshell-io");
-        excludes.add("gshell-plugin");
-        excludes.add("gshell-model");
-        excludes.add("gshell-plexus");
-        excludes.add("jcl104-over-slf4j");
-        excludes.add("jline");
-        excludes.add("maven-artifact");
-        excludes.add("maven-model");
-        excludes.add("maven-profile");
-        excludes.add("maven-project");
-        excludes.add("maven-workspace");
-        excludes.add("plexus-component-annotations");
-        excludes.add("plexus-container-default");
-        excludes.add("plexus-interpolation");
-        excludes.add("plexus-utils");
-        excludes.add("slf4j-api");
-        excludes.add("slf4j-log4j12");
-        excludes.add("wagon-file");
-        excludes.add("wagon-http-lightweight");
-        excludes.add("wagon-http-shared");
-        excludes.add("wagon-provider-api");
-        excludes.add("xpp3_min");
-        excludes.add("xstream");
 
-        ExclusionSetFilter filter = new ExclusionSetFilter(excludes);
+        ExclusionSetFilter filter = new ExclusionSetFilter(new String[] {
+            "aspectjrt",
+            "plexus-classworlds",
+            "gshell-ansi",
+            "gshell-artifact",
+            "gshell-cli",
+            "gshell-clp",
+            "gshell-api",
+            "log4j",
+            "gshell-i18n",
+            "gshell-io",
+            "gshell-plugin",
+            "gshell-model",
+            "gshell-plexus",
+            "gshell-yarn",
+            "jcl104-over-slf4j",
+            "jline",
+            "maven-artifact",
+            "maven-model",
+            "maven-profile",
+            "maven-project",
+            "maven-workspace",
+            "plexus-component-annotations",
+            "plexus-container-default",
+            "plexus-interpolation",
+            "plexus-utils",
+            "slf4j-api",
+            "slf4j-log4j12",
+            "wagon-file",
+            "wagon-http-lightweight",
+            "wagon-http-shared",
+            "wagon-provider-api",
+            "xpp3_min",
+            "xstream"
+        });
 
         if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
             log.debug("Application classpath:");
