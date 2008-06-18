@@ -57,6 +57,11 @@ public class ApplicationSecurityManager
         // TODO: See if there is a more efficent and/or recommended way to implement custom permission handling
         //
 
+        //
+        // FIXME: These don't work as desired ATM, so disable and re-implement a little bit later
+        //
+        
+        /*
         if (perm instanceof RuntimePermission) {
             // Prevent System.exit()
             if (perm.implies(new RuntimePermission("exitVM"))) {
@@ -75,6 +80,7 @@ public class ApplicationSecurityManager
                 throw new SecurityException();
             }
         }
+        */
         
         if (parent != null) {
             parent.checkPermission(perm);
