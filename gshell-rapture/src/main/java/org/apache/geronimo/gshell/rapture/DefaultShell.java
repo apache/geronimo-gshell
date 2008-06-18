@@ -323,6 +323,10 @@ public class DefaultShell
 
                 buff.append("|)");
 
+                //
+                // FIXME: This does not properly display the full exception detail when cause contains nested exceptions
+                //
+                
                 io.err.println(buff);
 
                 buff.setLength(0);
