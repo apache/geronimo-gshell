@@ -117,7 +117,7 @@
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-classworlds</artifactId>
-                <version>1.2-alpha-12</version>
+                <version>1.2-alpha-13</version>
                 <exclusions>
                     <exclusion>
                         <groupId>junit</groupId>
@@ -129,7 +129,7 @@
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-container-default</artifactId>
-                <version>1.0-alpha-45</version>
+                <version>1.0-alpha-48</version>
                 <exclusions>
                     <exclusion>
                         <groupId>junit</groupId>
@@ -594,6 +594,7 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.2</version>
                 </plugin>
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -642,14 +643,6 @@
                     <version>1.0</version>
                 </plugin>
                 
-                <!--
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>antlr3-maven-plugin</artifactId>
-                    <version>1.0-SNAPSHOT</version>
-                </plugin>
-                -->
-
                 <plugin>
                     <groupId>org.codehaus.plexus</groupId>
                     <artifactId>plexus-maven-plugin</artifactId>
