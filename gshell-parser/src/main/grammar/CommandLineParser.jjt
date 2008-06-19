@@ -24,7 +24,6 @@ options {
     MULTI = true;
     VISITOR = true;
     NODE_DEFAULT_VOID = true;
-    NODE_EXTENDS = "NodeSupport";
 }
 
 //
@@ -52,7 +51,6 @@ import org.codehaus.plexus.component.annotations.Component;
  */
 @Component(role=CommandLineParser.class)
 public class CommandLineParser
-    extends CommandLineParserSupport
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
