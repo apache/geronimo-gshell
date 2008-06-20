@@ -28,6 +28,10 @@ import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContainerFactory;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandResolver;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandException;
+import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
@@ -181,10 +185,20 @@ public class HelpCommand
         }
     }
 
-    private void displayCommandManual(final String command, final ShellContext context) {
+    private void displayCommandManual(final String command, final ShellContext context) throws CommandException {
         assert command != null;
         assert context != null;
 
-        // CommandContainer command = commandResolver.resolve(context, command);
+        IO io = context.getIo();
+
+        Command cmd = commandResolver.resolve(context, command);
+
+        CommandDocumenter documenter = cmd.getDocumenter();
+        CommandInfo info = cmd.getInfo();
+
+        log.debug("Rendering help for command: {}", info.getName());
+
+        documenter.renderManual(info, io.out);
+
     }
 }

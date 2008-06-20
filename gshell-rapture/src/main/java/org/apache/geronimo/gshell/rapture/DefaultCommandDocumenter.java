@@ -142,6 +142,8 @@ public class DefaultCommandDocumenter
         assert info != null;
         assert out != null;
 
-        // TODO: Render a more complete manual for the command, maybe using simple APT-like syntax.
+        out.println(info.getName());
+        out.println();
+        out.println("TODO: Full docs");
     }
 }
