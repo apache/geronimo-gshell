@@ -45,8 +45,4 @@ public class CommandCompleterDescriptor
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");
     }
-
-    public CommandModel getCommand() {
-        return model;
-    }
 }

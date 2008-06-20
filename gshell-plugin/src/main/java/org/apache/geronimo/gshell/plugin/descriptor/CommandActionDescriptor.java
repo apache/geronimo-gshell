@@ -66,10 +66,6 @@ public class CommandActionDescriptor
         }
     }
 
-    public CommandModel getCommand() {
-        return model;
-    }
-
     private ComponentRequirement translate(final Requirement source) {
         assert source != null;
 

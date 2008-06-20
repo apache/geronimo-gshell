@@ -45,8 +45,4 @@ public class CommandDocumenterDescriptor
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");
     }
-
-    public CommandModel getCommand() {
-        return model;
-    }
 }

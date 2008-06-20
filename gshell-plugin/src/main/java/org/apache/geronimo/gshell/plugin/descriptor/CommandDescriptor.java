@@ -50,8 +50,4 @@ public class CommandDescriptor
         config.addChild(new XmlPlexusConfiguration("commandId", model.getId()));
         setConfiguration(config);
     }
-
-    public CommandModel getCommand() {
-        return model;
-    }
 }
