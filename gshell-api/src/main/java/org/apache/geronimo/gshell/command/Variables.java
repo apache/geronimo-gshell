@@ -31,44 +31,44 @@ public interface Variables
     /**
      * Set a value of a variable.
      *
-     * @param name
-     * @param value
-     * @throws ImmutableVariableException
+     * @param name  The name of the variable to set.
+     * @param value The value of the variable.
+     * @throws ImmutableVariableException   The variable is immutable.
      */
     void set(String name, Object value) throws ImmutableVariableException;
 
     /**
      * Set a value of a variable, optional making the variable immutable.
      *
-     * @param name
-     * @param value
-     * @param mutable
-     * @throws ImmutableVariableException
+     * @param name      The name of the variable to set.
+     * @param value     The value of the variable.
+     * @param mutable   False to make the variable immutable.
+     * @throws ImmutableVariableException   The variable is immutable.
      */
     void set(String name, Object value, boolean mutable) throws ImmutableVariableException;
 
     /**
      * Get the value of a variable.
      *
-     * @param name
-     * @return
+     * @param name  The name of the variable to get.
+     * @return      The value of the variable, or null if not set.
      */
     Object get(String name);
 
     /**
      * Get the value of a variable, if not set using the provided default.
      *
-     * @param name
-     * @param defaultValue
-     * @return
+     * @param name          The name of the variable to get.
+     * @param defaultValue  The default value of the variable to return if the variable was not set.
+     * @return              The value of the named variable or <tt>defaultValue</tt> if the variable was not set.
      */
     Object get(String name, Object defaultValue);
 
     /**
      * Check if a variable is mutable.
      *
-     * @param name
-     * @return
+     * @param name  The name of the variable to query mutable status.
+     * @return      True if the variable is mutable.
      */
     boolean isMutable(String name);
 
@@ -76,38 +76,38 @@ public interface Variables
      * Check if a variable is cloaked.  Cloaked variables exist when a variable of the same name
      * has been set in the parent and that variable was not immutable.
      *
-     * @param name
-     * @return
+     * @param name  The name of the variable to query cloaked status.
+     * @return      True if the variable is cloaked.
      */
     boolean isCloaked(String name);
 
     /**
      * Unset a variable.
      *
-     * @param name
-     * @throws ImmutableVariableException
+     * @param name  The name of the variable to unset.
+     * @throws ImmutableVariableException   The variable is immutable.
      */
     void unset(String name) throws ImmutableVariableException;
 
     /**
      * Check for the existance of a variable.
      *
-     * @param name
-     * @return
+     * @param name  The name of the variable to query existance of.
+     * @return      True if there is a variable of the given name.
      */
     boolean contains(String name);
 
     /**
      * Get all variable names.
      *
-     * @return
+     * @return  All variable names.
      */
     Iterator<String> names();
 
     /**
      * Returns the parent variables container.
      *
-     * @return
+     * @return  The parent variables container.
      */
     Variables parent();
 
