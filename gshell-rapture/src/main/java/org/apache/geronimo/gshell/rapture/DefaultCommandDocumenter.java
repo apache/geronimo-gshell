@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.rapture;
 
-import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -50,9 +49,6 @@ public class DefaultCommandDocumenter
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private GShellPlexusContainer container;
-
-    private Renderer renderer = new Renderer();
-
     // Contextualizable
 
     public void contextualize(final Context context) throws ContextException {
@@ -96,6 +92,9 @@ public class DefaultCommandDocumenter
 
     /**
      * Get the action instance for the given command context.
+     *
+     * @param info  The command-info to previde an action for.
+     * @return      The command action for the given information.
      */
     private CommandAction getAction(final CommandInfo info) {
         assert info != null;
