@@ -1057,7 +1057,7 @@
 			<supplier xmi:idref='_15_1_640021c_1213181386344_882093_527'/>
 			<client xmi:idref='_15_1_640021c_1213181386344_882093_527'/>
 		</packagedElement>
-		<packagedElement xmi:type='uml:Dependency' xmi:id='_15_1_640021c_1213969149227_450804_2601' visibility='public'>
+		<packagedElement xmi:type='uml:Dependency' xmi:id='_15_1_640021c_1213969149227_450804_2601' name='creates' visibility='public'>
 			<supplier xmi:idref='_15_1_640021c_1213968981104_573215_2567'/>
 			<client xmi:idref='_15_1_640021c_1213180637361_354944_424'/>
 		</packagedElement>
@@ -2124,8 +2124,8 @@ The implementing glue may create new instances each time, cache them, use protot
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213969149231_660817_2603'>
-									<visible xmi:value='false'/>
-									<geometry>665, 555, 24, 13</geometry>
+									<geometry>659, 555, 37, 13</geometry>
+									<text>creates</text>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213969149231_525554_2605'>
 									<editable xmi:value='false'/>
@@ -10196,7 +10196,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						<mdElement elementClass='StringProperty'>
 							<propertyID>INFO_PROPERTY</propertyID>
 							<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-							<value>20 29 56 59 34 d 32 35 53 4d 98 ab b5 a7 ee c b0 6 da d9 1e 78 97 43 5a aa a8 ed d3 f3 0 d7 f3 2e 89 a a4 4e e5 6 c6 20 71 c1 e9 15 5e a4 c5 db fc 4c aa 7e 36 67 15 41 3b c4 a8 36 10 fa 87 80 dc 7 2c </value>
+							<value>20 29 56 59 34 d 32 35 53 4d 98 ab b5 a7 ee c b0 6 da d9 1e 78 97 43 5a aa aa ed d5 f3 0 d7 f3 2e 89 a a4 4e e5 6 c6 20 71 c1 e9 15 5e a4 c5 db fc 4c aa 7e 36 67 15 41 3b c4 a8 36 10 fa 87 80 dc 7 2c </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='LIST_PROPERTY'>

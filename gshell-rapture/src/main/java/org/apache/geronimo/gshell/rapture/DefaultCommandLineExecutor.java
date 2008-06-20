@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.CommandFactory;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.commandline.CommandExecutionFailied;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailied;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
@@ -217,7 +217,7 @@ public class DefaultCommandLineExecutor
             }
 
             // Otherwise wrap to preserve the trace
-            throw new CommandExecutionFailied(t);
+            throw new CommandLineExecutionFailied(t);
         }
 
         return ref.get();

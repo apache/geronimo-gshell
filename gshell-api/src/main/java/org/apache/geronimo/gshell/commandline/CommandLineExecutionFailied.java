@@ -24,10 +24,10 @@ package org.apache.geronimo.gshell.commandline;
  *
  * @version $Rev$ $Date$
  */
-public class CommandExecutionFailied
+public class CommandLineExecutionFailied
     extends Exception
 {
-    public CommandExecutionFailied(final Throwable cause) {
+    public CommandLineExecutionFailied(final Throwable cause) {
         super(cause);
     }
 }
