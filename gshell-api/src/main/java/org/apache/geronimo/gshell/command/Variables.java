@@ -59,10 +59,10 @@ public interface Variables
      * Get the value of a variable, if not set using the provided default.
      *
      * @param name
-     * @param _default
+     * @param defaultValue
      * @return
      */
-    Object get(String name, Object _default);
+    Object get(String name, Object defaultValue);
 
     /**
      * Check if a variable is mutable.
