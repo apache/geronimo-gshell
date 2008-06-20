@@ -19,12 +19,16 @@
 
 package org.apache.geronimo.gshell.commands.optional;
 
-import java.util.List;
-
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.PumpStreamHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Execute system processes.
@@ -33,14 +37,20 @@ import org.apache.geronimo.gshell.io.PumpStreamHandler;
  */
 @CommandComponent(id="gshell-optional:exec", description="Execute system processes")
 public class ExecuteCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private ProcessBuilder builder;
 
     @Argument(description="Argument", required=true)
     private List<String> args;
-    
-    protected Object doExecute() throws Exception {
+
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        IO io = context.getIo();
+        
         assert builder != null;
 
         log.info("Executing: {}", builder.command());

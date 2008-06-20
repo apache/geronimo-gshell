@@ -23,16 +23,20 @@ import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.model.layout.AliasNode;
 import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Node;
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Display help
@@ -41,8 +45,10 @@ import org.codehaus.plexus.util.StringUtils;
  */
 @CommandComponent(id="gshell-builtins:help", description="Show command help")
 public class HelpCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Requirement
     private ApplicationManager applicationManager;
 
@@ -67,7 +73,15 @@ public class HelpCommand
         this.layoutManager = layoutManager;
     }
 
-    protected Object doExecute() throws Exception {
+    // HACK:
+    private IO io;
+
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        // HACK:
+        io = context.getIo();
+
         io.out.println();
 
         if (command == null) {
@@ -77,7 +91,7 @@ public class HelpCommand
             displayCommandHelp(command);
         }
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 
     private void displayAvailableCommands() throws Exception {

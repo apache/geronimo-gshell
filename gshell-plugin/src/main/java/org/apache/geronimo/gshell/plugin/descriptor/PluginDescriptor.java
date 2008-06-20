@@ -52,8 +52,8 @@ public class PluginDescriptor
     private void addCommand(final CommandModel model) {
         assert model != null;
 
+        addComponentDescriptor(new CommandActionDescriptor(model));
         addComponentDescriptor(new CommandContainerDescriptor(model));
-        addComponentDescriptor(new CommandDescriptor(model));
     }
 
     public void addComponentDescriptor(final ComponentDescriptor descriptor) {

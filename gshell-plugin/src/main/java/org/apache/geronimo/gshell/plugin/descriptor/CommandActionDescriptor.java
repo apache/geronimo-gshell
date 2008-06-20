@@ -19,32 +19,32 @@
 
 package org.apache.geronimo.gshell.plugin.descriptor;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.command.Parameter;
 import org.apache.geronimo.gshell.model.command.Requirement;
-import org.apache.geronimo.gshell.command.Executable;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
- * Descriptor for a GShell command's plexus component.
+ * Descriptor for a GShell command action's plexus component.
  *
  * @version $Rev$ $Date$
  */
-public class CommandDescriptor
+public class CommandActionDescriptor
     extends ComponentDescriptorSupport
 {
     private final CommandModel model;
 
-    public CommandDescriptor(final CommandModel model) {
+    public CommandActionDescriptor(final CommandModel model) {
         assert model != null;
 
         this.model = model;
 
         setDescription(model.getDescription());
-        setRole(Executable.class);
+        setRole(CommandAction.class);
         setRoleHint(model.getId());
         setImplementation(model.getImplementation());
         setVersion(model.getVersion());

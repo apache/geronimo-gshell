@@ -23,13 +23,13 @@ import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.clp.ProcessingException;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.command.Executable;
-import org.apache.geronimo.gshell.util.Arguments;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
+import org.apache.geronimo.gshell.util.Arguments;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
@@ -53,7 +53,7 @@ public class DefaultCommandContainer
 
     private GShellPlexusContainer container;
 
-    @Configuration("invalid") // Just to mark what this is used for, since we have to configure a default value
+    @Configuration("") // Just to mark what this is used for, since we have to configure a default value
     private String commandId;
 
     // Contextualizable
@@ -67,49 +67,50 @@ public class DefaultCommandContainer
         log.debug("Container: {}", container);
     }
 
-    // CommandContainer
-
-    public Executable getExecutable() {
+    private CommandAction getAction() {
         assert container != null;
 
         try {
-            return container.lookupComponent(Executable.class, commandId);
+            return container.lookupComponent(CommandAction.class, commandId);
         }
         catch (ComponentLookupException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Object execute(final CommandContext context, final Object... args) throws Exception {
+    // CommandContainer
+
+    public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-        assert args != null;
 
-        log.trace("Executing; context={}, args={}", context, args);
+        log.trace("Executing; context={}");
 
-        Executable executable = getExecutable();
+        CommandAction action = getAction();
 
         // TODO: Handle logging muck
+        // NOTE: For logging, just set the NDC/MDC and let the loggers name be whatever the command set it to be.
         
         // TODO: Bind context, io and variables
+        // NOTE: No, no no...
 
         // Process command line options/arguments, return if we have been asked to display --help
-        if (processArguments(context, executable, args)) {
-            return Executable.Result.SUCCESS;
+        if (processArguments(context, action, context.getArguments())) {
+            return CommandAction.Result.SUCCESS;
         }
 
-        Object result = executable.execute(context, args);
+        Object result = action.execute(context);
 
         log.trace("Result: {}", result);
 
         return result;
     }
 
-    private boolean processArguments(final CommandContext context, final Executable executable, final Object... args) throws ProcessingException {
+    private boolean processArguments(final CommandContext context, final CommandAction action, final Object[] args) throws ProcessingException {
         assert context != null;
         assert args != null;
 
         CommandLineProcessor clp = new CommandLineProcessor();
-        clp.addBean(executable);
+        clp.addBean(action);
 
         // Attach some help context
         HelpSupport help = new HelpSupport();

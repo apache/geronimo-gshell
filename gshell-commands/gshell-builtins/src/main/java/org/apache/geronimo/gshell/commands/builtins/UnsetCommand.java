@@ -19,14 +19,17 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.util.List;
-
 import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Unset a variable or property.
@@ -35,8 +38,10 @@ import org.apache.geronimo.gshell.command.Variables;
  */
 @CommandComponent(id="gshell-builtins:unset", description="Unset a variable")
 public class UnsetCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     enum Mode
     {
         VARIABLE,
@@ -46,10 +51,15 @@ public class UnsetCommand
     @Option(name="-m", aliases={"--mode"}, description="Unset mode")
     private Mode mode = Mode.VARIABLE;
 
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(required=true, description="Variable name")
     private List<String> args;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        Variables variables = context.getVariables();
+
         for (String arg : args) {
             String namevalue = String.valueOf(arg);
 
@@ -59,12 +69,12 @@ public class UnsetCommand
                     break;
 
                 case VARIABLE:
-                    unsetVariable(namevalue);
+                    unsetVariable(variables, namevalue);
                     break;
             }
         }
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 
     private void ensureIsIdentifier(final String name) {
@@ -81,14 +91,12 @@ public class UnsetCommand
         System.getProperties().remove(name);
     }
 
-    private void unsetVariable(final String name) {
+    private void unsetVariable(final Variables vars, final String name) {
         log.info("Unsetting variable: {}", name);
 
         ensureIsIdentifier(name);
 
         // Command vars always has a parent, set only makes sence when setting in parent's scope
-        Variables vars = variables.parent();
-
-        vars.unset(name);
+        vars.parent().unset(name);
     }
 }

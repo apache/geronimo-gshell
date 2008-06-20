@@ -24,6 +24,9 @@ import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileUtil;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Copy files.
@@ -34,13 +37,16 @@ import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 public class CopyCommand
     extends VFSCommandSupport
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     @Argument(index=0, required=true, description="Source")
     private String sourceName;
 
     @Argument(index=1, required=true, description="Target")
     private String targetName;
-
-    protected Object doExecute() throws Exception {
+public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+    
         FileSystemManager fsm = getFileSystemManager();
         FileObject source = fsm.resolveFile(sourceName);
         FileObject target = fsm.resolveFile(targetName);
@@ -49,6 +55,6 @@ public class CopyCommand
         
         FileUtil.copyContent(source, target);
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }

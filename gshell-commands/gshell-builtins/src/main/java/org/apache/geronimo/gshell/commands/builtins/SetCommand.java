@@ -19,16 +19,20 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
 import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Set a variable or property.
@@ -37,8 +41,10 @@ import org.apache.geronimo.gshell.command.Variables;
  */
 @CommandComponent(id="gshell-builtins:set", description="Set a variable")
 public class SetCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     enum Mode
     {
         VARIABLE,
@@ -48,10 +54,16 @@ public class SetCommand
     @Option(name="-m", aliases={"--mode"}, description="Set mode")
     private Mode mode = Mode.VARIABLE;
 
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(description="Variable definition")
     private List<String> args;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        IO io = context.getIo();
+        Variables variables = context.getVariables();
+
         // No args... list all properties or variables
         if (args == null || args.size() == 0) {
             switch (mode) {
@@ -86,7 +98,7 @@ public class SetCommand
                 }
             }
 
-            return SUCCESS;
+            return Result.SUCCESS;
         }
 
         //
@@ -106,12 +118,12 @@ public class SetCommand
                     break;
 
                 case VARIABLE:
-                    setVariable(namevalue);
+                    setVariable(variables, namevalue);
                     break;
             }
         }
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 
     class NameValue
@@ -158,14 +170,14 @@ public class SetCommand
     private void setProperty(final String namevalue) {
         NameValue nv = parse(namevalue);
 
-        log.info("Setting system property: {}={}", nv.name, nv.value);
+        // log.info("Setting system property: {}={}", nv.name, nv.value);
 
         ensureIsIdentifier(nv.name);
 
         System.setProperty(nv.name, nv.value);
     }
 
-    private void setVariable(final String namevalue) {
+    private void setVariable(final Variables vars, final String namevalue) {
         NameValue nv = parse(namevalue);
 
         log.info("Setting variable: {}={}", nv.name, nv.value);
@@ -173,8 +185,6 @@ public class SetCommand
         ensureIsIdentifier(nv.name);
 
         // Command vars always has a parent, set only makes sence when setting in parent's scope
-        Variables vars = variables.parent();
-
-        vars.set(nv.name, nv.value);
+        vars.parent().set(nv.name, nv.value);
     }
 }

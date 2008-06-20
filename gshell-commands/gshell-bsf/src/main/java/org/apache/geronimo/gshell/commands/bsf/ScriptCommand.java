@@ -23,11 +23,15 @@ import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFManager;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URI;
@@ -41,8 +45,10 @@ import java.util.List;
  */
 @CommandComponent(id="gshell-bsf:script", description="Provides generic scripting language execution support")
 public class ScriptCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private String language;
 
     @Option(name="-l", aliases={"--language"}, description="Specify the scripting language")
@@ -62,10 +68,15 @@ public class ScriptCommand
     @Option(name="-e", aliases={"--expression"}, description="Evaluate the given expression")
     private String expression;
     
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(description="A file or URL to execute")
     private List<String> args;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        IO io = context.getIo();
+
         //
         // TODO: When given a file/url, try to figure out language from ext if language not given
         //       https://issues.apache.org/jira/browse/GSHELL-49
@@ -150,6 +161,6 @@ public class ScriptCommand
             runner.run();
         }
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }

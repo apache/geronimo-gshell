@@ -19,24 +19,21 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.io.IO;
-
 /**
- * Provides commands with the context of its execution.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface CommandContext
+public interface CommandAction
 {
-    Object[] getArguments();
-    
-    IO getIo();
+    Object execute(CommandContext context) throws Exception;
 
-    Variables getVariables();
-
-    CommandInfo getInfo();
-
-    // CommandModel getModel();
-    
-    // CommandContainer getContainer();
+    /**
+     * ???
+     */
+    enum Result
+    {
+        SUCCESS,
+        FAILURE
+    }
 }

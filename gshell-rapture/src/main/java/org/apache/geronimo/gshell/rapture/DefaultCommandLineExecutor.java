@@ -21,13 +21,15 @@ package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.DefaultVariables;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.util.Arguments;
-import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.commandline.CommandExecutionFailied;
+import org.apache.geronimo.gshell.commandline.CommandLine;
+import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.layout.LayoutManager;
@@ -35,12 +37,10 @@ import org.apache.geronimo.gshell.layout.NotFoundException;
 import org.apache.geronimo.gshell.model.layout.AliasNode;
 import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.Node;
-import org.apache.geronimo.gshell.shell.Environment;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
-import org.apache.geronimo.gshell.chronos.StopWatch;
-import org.apache.geronimo.gshell.commandline.CommandLine;
-import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
-import org.apache.geronimo.gshell.commandline.CommandExecutionFailied;
+import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.util.Arguments;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -252,6 +252,10 @@ public class DefaultCommandLineExecutor
 
             CommandInfo info;
 
+            public Object[] getArguments() {
+                return args;
+            }
+            
             public IO getIo() {
                 return io;
             }
@@ -306,7 +310,7 @@ public class DefaultCommandLineExecutor
 
         Object result;
         try {
-            result = container.execute(context, args);
+            result = container.execute(context);
 
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }

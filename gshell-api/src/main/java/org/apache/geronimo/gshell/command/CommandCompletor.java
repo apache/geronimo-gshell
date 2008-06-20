@@ -24,25 +24,7 @@ package org.apache.geronimo.gshell.command;
  *
  * @version $Rev$ $Date$
  */
-public interface Executable
+public interface CommandCompletor
 {
-    @Deprecated
-    Result SUCCESS = Result.SUCCESS;
-
-    @Deprecated
-    Result FAILURE = Result.FAILURE;
-
-    // TODO: Change this to ExecutionContext, and/or implement a lifecycle to inject the context, and leave Executable context free?
-    
-    Object execute(CommandContext context, Object... args) throws Exception;
-
-    //
-    // Result
-    //
-
-    enum Result
-    {
-        SUCCESS,
-        FAILURE
-    }
+    // TODO:
 }

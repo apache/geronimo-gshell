@@ -19,14 +19,18 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.PromptReader;
+import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -39,8 +43,10 @@ import java.util.List;
  */
 @CommandComponent(id="gshell-remote:rsh", description="Connect to a remote GShell server")
 public class RshCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     @Option(name="-b", aliases={"--bind"}, metaVar="URI", description="Bind local address to URI")
     private URI local;
 
@@ -62,7 +68,11 @@ public class RshCommand
     @Requirement
     private RshClient client;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        IO io = context.getIo();
+
         io.info("Connecting to: {}", remote);
 
         client.connect(remote, local);
@@ -91,7 +101,7 @@ public class RshCommand
 
         RemoteShellProxy shell = new RemoteShellProxy(client, io);
 
-        Object rv = SUCCESS;
+        Object rv = Result.SUCCESS;
 
         try {
             shell.run(command.toArray());

@@ -21,8 +21,12 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import jline.ConsoleReader;
 import org.apache.geronimo.gshell.ansi.ANSI;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 
@@ -33,19 +37,33 @@ import java.io.PrintWriter;
  */
 @CommandComponent(id="gshell-builtins:clear", description="Clear the terminal screen")
 public class ClearCommand
-    extends CommandSupport
+    implements CommandAction
 {
-    protected Object doExecute() throws Exception {
-        ConsoleReader reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/ null, io.getTerminal());
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
         
+        IO io = context.getIo();
+
+        // We can only clear the screen if ANSI is enabled, so complain and fail otherwise
         if (!ANSI.isEnabled()) {
-        	io.out.println("ANSI is not enabled.  The clear command is not functional");
+            io.error("ANSI is not enabled.  The clear command is not functional");
+            return Result.FAILURE;
         }
-        else {
-        	reader.clearScreen();
-        	return SUCCESS;
-        }
-        
-        return SUCCESS;
+
+        //
+        // FIXME: Need to have the framework provide a reader, which is initialized correctly?
+        //
+
+        ConsoleReader reader = new ConsoleReader(
+                io.inputStream,
+                new PrintWriter(io.outputStream, true),
+                null, // bindings
+                io.getTerminal());
+
+        reader.clearScreen();
+
+        return Result.SUCCESS;
     }
 }

@@ -19,13 +19,17 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
-import java.net.URI;
-
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
 
 /**
  * Command to start a remote shell server.
@@ -34,8 +38,10 @@ import org.apache.geronimo.gshell.command.CommandSupport;
  */
 @CommandComponent(id="gshell-remote:rsh-server", description="Start a GShell server")
 public class RshServerCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Option(name="-b", aliases={ "--background" }, description="Run in background")
     private boolean background;
 
@@ -45,8 +51,12 @@ public class RshServerCommand
     @Requirement
     private RshServer server;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
         server.bind(location);
+
+        IO io = context.getIo();
 
         io.info("Listening on: {}", location);
 
@@ -58,6 +68,6 @@ public class RshServerCommand
             server.close();
         }
         
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }

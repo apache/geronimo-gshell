@@ -19,14 +19,17 @@
 
 package org.apache.geronimo.gshell.commands.optional;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.util.Arguments;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Execute a Java standard application.
@@ -39,8 +42,10 @@ import org.apache.geronimo.gshell.util.Arguments;
  */
 @CommandComponent(id="gshell-optional:java", description="Execute a Java standard application")
 public class JavaCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Option(name="-m", aliases={"--method"}, metaVar="METHOD", description="Invoke a named method")
     private String methodName = "main";
 
@@ -50,7 +55,9 @@ public class JavaCommand
     @Argument(index=1, metaVar="ARG", description="Arguments to pass to the METHOD of CLASSNAME")
     private List<String> args;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+        
         boolean info = log.isInfoEnabled();
 
         Class type = Thread.currentThread().getContextClassLoader().loadClass(className);
@@ -73,6 +80,6 @@ public class JavaCommand
             log.info("Result: " + result);
         }
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }

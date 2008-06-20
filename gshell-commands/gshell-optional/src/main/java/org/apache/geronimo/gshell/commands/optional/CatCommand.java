@@ -19,22 +19,21 @@
 
 package org.apache.geronimo.gshell.commands.optional;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.io.IO;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Concatenate and print files and/or URLs.
@@ -43,15 +42,22 @@ import org.codehaus.plexus.util.StringUtils;
  */
 @CommandComponent(id="gshell-optional:cat", description="Concatenate and print files and/or URLs.")
 public class CatCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Option(name="-n", description="Number the output lines, starting at 1")
     private boolean displayLineNumbers;
 
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(description="File or URL", required=true)
     private List<String> args;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        IO io = context.getIo();
+
         //
         // Support "-" if length is one, and read from io.in
         // This will help test command pipelines.
@@ -86,7 +92,7 @@ public class CatCommand
             }
         }
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 
     private void cat(final BufferedReader reader, final IO io) throws IOException {

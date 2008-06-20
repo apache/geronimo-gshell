@@ -19,12 +19,16 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.util.List;
-
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * A simple command to <em>echo</em> all given arguments to the commands standard output.
@@ -33,15 +37,22 @@ import org.apache.geronimo.gshell.command.CommandSupport;
  */
 @CommandComponent(id="gshell-builtins:echo", description="Echo or print arguments to STDOUT")
 public class EchoCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     @Option(name="-n", description="Do not print the trailing newline character")
     private boolean trailingNewline = true;
 
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @Argument(description="Arguments")
     private List<String> args;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        IO io = context.getIo();
+
         if (args != null) {
             int c=0;
 
@@ -57,6 +68,6 @@ public class EchoCommand
             io.out.println();
         }
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }

@@ -20,9 +20,12 @@
 package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.notification.ExitNotification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Exit the current shell.
@@ -31,18 +34,19 @@ import org.apache.geronimo.gshell.notification.ExitNotification;
  */
 @CommandComponent(id="gshell-builtins:exit", description="Exit the shell")
 public class ExitCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Argument(description="System exit code")
     private int exitCode = 0;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
         log.info("Exiting w/code: {}", exitCode);
         
-        //
-        // DO NOT Call System.exit() !!!
-        //
-
+        // Do not call System.exit(), ask the shell to exit instead.
         throw new ExitNotification(exitCode);
     }
 }

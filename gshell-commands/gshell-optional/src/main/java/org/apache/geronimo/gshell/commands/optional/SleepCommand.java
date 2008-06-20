@@ -20,8 +20,11 @@
 package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Sleep... zzzZ
@@ -30,12 +33,16 @@ import org.apache.geronimo.gshell.command.CommandSupport;
  */
 @CommandComponent(id="gshell-optional:sleep", description="Sleep for a bit then wake up")
 public class SleepCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     @Argument(description="Time in milliseconds", required=true)
     private int time = -1;
-    
-    protected Object doExecute() throws Exception {
+
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
         log.info("Sleeping for " + time);
 
         try {
@@ -47,6 +54,6 @@ public class SleepCommand
 
         log.info("Awake now");
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }

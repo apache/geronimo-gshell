@@ -24,22 +24,12 @@ package org.apache.geronimo.gshell.command;
  * 
  * @version $Rev$ $Date$
  */
+@Deprecated
 public interface CommandContainer
 {
-    Executable getExecutable();
-    
-    // TODO: Change to ShellContext, let the container build its own CommandContext
+    Object execute(CommandContext context) throws Exception;
 
-    Object execute(CommandContext context, Object... args) throws Exception;
-
-    // TODO: Completor
-
-    // TODO: Documentor (for --help and `help <command>`) handling
-
-    //
-    // Locator
-    //
-    
+    @Deprecated
     interface Locator
     {
         CommandContainer locate(String id);

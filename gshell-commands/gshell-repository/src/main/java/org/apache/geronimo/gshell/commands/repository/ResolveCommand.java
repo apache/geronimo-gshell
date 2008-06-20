@@ -21,14 +21,18 @@ package org.apache.geronimo.gshell.commands.repository;
 
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Set;
@@ -40,8 +44,10 @@ import java.util.Set;
  */
 @CommandComponent(id="gshell-repository:resolve", description="Resolve repository artifacts")
 public class ResolveCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     @Requirement
     private ArtifactManager artifactManager;
 
@@ -67,7 +73,9 @@ public class ResolveCommand
     @Option(name="-T", aliases={"--transitive"}, description="Resolve transitive dependencies")
     private boolean transitive;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
         assert artifactManager != null;
 
         ArtifactFactory factory = artifactManager.getArtifactFactory();
@@ -75,6 +83,8 @@ public class ResolveCommand
         Artifact artifact = factory.createArtifact(groupId, artifactId, version, scope, type);
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+
+        IO io = context.getIo();
 
         //
         // TODO: Update the AM API to use this as originating when artifact == null and artifact dependencies != null
@@ -107,6 +117,6 @@ public class ResolveCommand
         // TODO: Do something with the result?
         //
 
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }

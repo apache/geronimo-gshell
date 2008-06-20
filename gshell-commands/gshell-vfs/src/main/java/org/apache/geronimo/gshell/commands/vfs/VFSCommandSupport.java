@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.commands.vfs;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.VFS;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.apache.geronimo.gshell.command.CommandAction;
 
 /**
  * Support for VFS commands.
@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.command.CommandSupport;
  * @version $Rev$ $Date$
  */
 public abstract class VFSCommandSupport
-    extends CommandSupport
+    implements CommandAction
 {
     private FileSystemManager fsManager;
 

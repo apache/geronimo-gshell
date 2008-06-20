@@ -19,20 +19,19 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
-import org.apache.geronimo.gshell.command.CommandSupport;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.codehaus.plexus.util.IOUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Read and execute commands from a file/url in the current shell environment.
@@ -41,15 +40,19 @@ import org.codehaus.plexus.util.IOUtil;
  */
 @CommandComponent(id="gshell-builtins:source", description="Load a file/url into the current shell")
 public class SourceCommand
-    extends CommandSupport
+    implements CommandAction
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Requirement
     private CommandLineExecutor executor;
 
     @Argument(required=true, description="Source file")
     private String source;
 
-    protected Object doExecute() throws Exception {
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
         URL url;
         
         try {
@@ -77,7 +80,7 @@ public class SourceCommand
             IOUtil.close(reader);
         }
         
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 
     private BufferedReader openReader(final Object source) throws IOException {

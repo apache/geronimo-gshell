@@ -19,8 +19,11 @@
 
 package org.apache.geronimo.gshell.commands.optional;
 
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.CommandSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //
 // HACK: This is a temporary to handle shells which need to keep around after running
@@ -34,15 +37,19 @@ import org.apache.geronimo.gshell.command.CommandSupport;
  */
 @CommandComponent(id="gshell-optional:wait", description="Wait, blocking execution... not nice")
 public class WaitCommand
-    extends CommandSupport
+    implements CommandAction
 {
-    protected Object doExecute() throws Exception {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
         log.info("Waiting...");
 
         synchronized (this) {
             wait();
         }
         
-        return SUCCESS;
+        return Result.SUCCESS;
     }
 }
