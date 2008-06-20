@@ -54,7 +54,8 @@ public interface Shell
      * Run the shell iteractivly.
      *
      * @param args  The initial commands to execute iteractivly.
-     * @throws Exception    Failed to execute commands.
+     *
+     * @throws Exception                        Failed to execute commands.
      * @throws UnsupportedOperationException    The shell does not support iteractive execution.
      */
     void run(Object... args) throws UnsupportedOperationException, Exception;

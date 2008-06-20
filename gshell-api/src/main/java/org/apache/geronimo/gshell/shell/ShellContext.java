@@ -29,7 +29,17 @@ import org.apache.geronimo.gshell.io.IO;
  */
 public interface ShellContext
 {
-    IO getIO();
+    /**
+     * Provides access to the input/output streams for the shell.
+     *
+     * @return  Shell input/output streams.
+     */
+    IO getIo();
 
+    /**
+     * Provides access to the variables for the shell.
+     *
+     * @return  Shell variables.
+     */
     Variables getVariables();
 }

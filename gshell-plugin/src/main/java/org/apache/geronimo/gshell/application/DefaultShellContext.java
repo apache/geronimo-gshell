@@ -50,7 +50,7 @@ public class DefaultShellContext
         this(io, new DefaultVariables());
     }
 
-    public IO getIO() {
+    public IO getIo() {
         return io;
     }
 

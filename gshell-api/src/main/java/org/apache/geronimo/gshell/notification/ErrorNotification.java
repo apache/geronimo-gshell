@@ -24,11 +24,9 @@ package org.apache.geronimo.gshell.notification;
  *
  * @version $Rev$ $Date$
  */
-public class ErrorNotification
+public final class ErrorNotification
     extends Notification
 {
-    ///CLOVER:OFF
-
     public ErrorNotification(final String msg) {
         super(msg);
     }

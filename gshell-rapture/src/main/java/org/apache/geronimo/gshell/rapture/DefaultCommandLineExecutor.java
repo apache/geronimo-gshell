@@ -138,7 +138,7 @@ public class DefaultCommandLineExecutor
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
-        return execute(String.valueOf(args[0]), Arguments.shift(args), env.getIO());
+        return execute(String.valueOf(args[0]), Arguments.shift(args), env.getIo());
     }
 
     public Object execute(final String path, final Object[] args) throws Exception {
@@ -147,7 +147,7 @@ public class DefaultCommandLineExecutor
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
-        return execute(path, args, env.getIO());
+        return execute(path, args, env.getIo());
     }
 
     public Object execute(final Object[][] commands) throws Exception {
@@ -158,17 +158,17 @@ public class DefaultCommandLineExecutor
         PipedOutputStream pos = null;
 
         for (int i = 0; i < ios.length; i++) {
-            InputStream is = (i == 0) ? env.getIO().inputStream : new PipedInputStream(pos);
+            InputStream is = (i == 0) ? env.getIo().inputStream : new PipedInputStream(pos);
             OutputStream os;
 
             if (i == ios.length - 1) {
-                os = env.getIO().outputStream;
+                os = env.getIo().outputStream;
             }
             else {
                 os = pos = new PipedOutputStream();
             }
 
-            ios[i] = new IO(is, new PrintStream(os), env.getIO().errorStream);
+            ios[i] = new IO(is, new PrintStream(os), env.getIo().errorStream);
         }
 
         Thread[] threads = new Thread[commands.length];

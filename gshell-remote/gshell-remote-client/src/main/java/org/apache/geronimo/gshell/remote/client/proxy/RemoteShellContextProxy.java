@@ -40,7 +40,7 @@ public class RemoteShellContextProxy
         this.client = client;
     }
 
-    public IO getIO() {
+    public IO getIo() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

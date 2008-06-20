@@ -24,11 +24,9 @@ package org.apache.geronimo.gshell.notification;
  *
  * @version $Rev$ $Date$
  */
-public class ExitNotification
+public final class ExitNotification
     extends Notification
 {
-    ///CLOVER:OFF
-
     public static final int DEFAULT_CODE = 0;
 
     public static final int ERROR_CODE = 1;

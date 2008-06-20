@@ -31,28 +31,28 @@ public interface CommandContext
     /**
      * Provides access to the arguments to the command.
      *
-     * @return The command arguments.
+     * @return The command arguments; never null.
      */
     Object[] getArguments();
 
     /**
      * The Input/Output context for the command.
      *
-     * @return Command Input/Output context.
+     * @return Command Input/Output context; never null.
      */
     IO getIo();
 
     /**
      * The variables for the command.
      *
-     * @return Command variables.
+     * @return Command variables; never null.
      */
     Variables getVariables();
 
     /**
      * Provides details about the runtime configuration of the command.
      *
-     * @return Command runtime information.
+     * @return Command runtime information; never null.
      */
     CommandInfo getInfo();
 }

@@ -30,8 +30,6 @@ package org.apache.geronimo.gshell.notification;
 public abstract class Notification
     extends Error
 {
-    ///CLOVER:OFF
-
     public Notification(final String msg, final Throwable cause) {
         super(msg, cause);
     }
