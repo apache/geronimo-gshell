@@ -30,7 +30,7 @@ public interface Command
 
     CommandAction getAction();
 
-    CommandDocumentor getDocumentor();
+    CommandDocumenter getDocumenter();
 
-    CommandCompletor getCompletor();
+    CommandCompleter getCompleter();
 }

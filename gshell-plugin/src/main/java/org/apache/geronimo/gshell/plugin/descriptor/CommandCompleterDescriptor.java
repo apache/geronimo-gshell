@@ -19,10 +19,8 @@
 
 package org.apache.geronimo.gshell.plugin.descriptor;
 
-import org.apache.geronimo.gshell.command.CommandDocumentor;
+import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.model.command.CommandModel;
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
@@ -30,19 +28,19 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
  *
  * @version $Rev$ $Date$
  */
-public class CommandDocumentorDescriptor
+public class CommandCompleterDescriptor
     extends ComponentDescriptorSupport
 {
     private final CommandModel model;
 
-    public CommandDocumentorDescriptor(final CommandModel model) {
+    public CommandCompleterDescriptor(final CommandModel model) {
         assert model != null;
 
         this.model = model;
 
-        setRole(CommandDocumentor.class);
+        setRole(CommandCompleter.class);
         setRoleHint(model.getId());
-        setImplementation("org.apache.geronimo.gshell.rapture.DefaultCommandDocumentor");
+        setImplementation("org.apache.geronimo.gshell.rapture.DefaultCommandCompleter");
         setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");

@@ -17,25 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.rapture;
-
-import org.apache.geronimo.gshell.command.CommandDocumentor;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.geronimo.gshell.command;
 
 /**
- * The default {@link CommandDocumentor} component.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandDocumentor.class)
-public class DefaultCommandDocumentor
-    implements CommandDocumentor
+public interface CommandCompleter // completer
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Configuration("") // Just to mark what this is used for, since we have to configure a default value
-    private String commandId;
+    // TODO:
 }
