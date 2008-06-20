@@ -114,13 +114,14 @@ public class DefaultCommand
 
         log.trace("Executing; context={}");
 
-        CommandAction action = getAction();
-
+        // Provide logging context for the command execution
         MDC.put("commandId", commandId);
 
         Object result;
 
         try {
+            CommandAction action = getAction();
+            
             // Process command line options/arguments, return if we have been asked to display --help
             if (processArguments(context, action, context.getArguments())) {
                 return CommandAction.Result.SUCCESS;

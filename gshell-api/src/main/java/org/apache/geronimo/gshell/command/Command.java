@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * ???
+ * Containment for an installed command and its related components.
  *
  * @version $Rev$ $Date$
  */

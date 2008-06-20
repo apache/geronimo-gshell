@@ -19,12 +19,40 @@
 
 package org.apache.geronimo.gshell.command;
 
+import java.io.PrintWriter;
+
 /**
- * ???
+ * Provides access to a commands documentation.
  *
  * @version $Rev$ $Date$
  */
 public interface CommandDocumenter
 {
-    // TODO:
+    /**
+     * Get the name of the command as it has been configured in the layout.
+     *
+     * @return The configured name of the command.
+     */
+    String getName();
+
+    /**
+     * Get the terse description of the command.
+     *
+     * @return The configured description of hte command.
+     */
+    String getDescription();
+
+    /**
+     * Render the command-line usage, as expected from <tt>--help</tt>.
+     *
+     * @param out   Write the usage to this writer.
+     */
+    void renderUsage(PrintWriter out);
+
+    /**
+     * Render the full command manual.
+     *
+     * @param out   Write the manual to this writer.
+     */
+    void renderManual(PrintWriter out);
 }

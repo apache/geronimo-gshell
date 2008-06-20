@@ -25,6 +25,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import jline.Completor;
 
 /**
  * The default {@link org.apache.geronimo.gshell.command.CommandCompleter} component.
@@ -37,6 +38,12 @@ public class DefaultCommandCompleter
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Configuration("") // Just to mark what this is used for, since we have to configure a default value
+    @Configuration("")
     private String commandId;
+
+    public Completor createCompletor() {
+        // TODO:
+
+        throw new Error();
+    }
 }

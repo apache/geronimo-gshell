@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * ???
+ * Provides the user-action for a command.
  *
  * @version $Rev$ $Date$
  */
@@ -29,11 +29,18 @@ public interface CommandAction
     Object execute(CommandContext context) throws Exception;
 
     /**
-     * ???
+     * Enumeration for the basic return types of a command execution.
      */
     enum Result
     {
+        /**
+         * The command execution was successful.
+         */
         SUCCESS,
+
+        /**
+         * The command exectuion failed.
+         */
         FAILURE
     }
 }

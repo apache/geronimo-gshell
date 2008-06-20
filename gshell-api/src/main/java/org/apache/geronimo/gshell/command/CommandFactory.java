@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * ???
+ * Provides access to {@link Command} instances.
  *
  * @version $Rev$ $Date$
  */

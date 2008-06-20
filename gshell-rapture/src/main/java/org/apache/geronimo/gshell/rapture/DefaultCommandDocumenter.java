@@ -25,6 +25,8 @@ import org.codehaus.plexus.component.annotations.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintWriter;
+
 /**
  * The default {@link org.apache.geronimo.gshell.command.CommandDocumenter} component.
  *
@@ -38,4 +40,24 @@ public class DefaultCommandDocumenter
 
     @Configuration("") // Just to mark what this is used for, since we have to configure a default value
     private String commandId;
+
+    public String getName() {
+        return null;
+    }
+
+    public String getDescription() {
+        return null;
+    }
+
+    public void renderUsage(final PrintWriter out) {
+        assert out != null;
+
+        // TODO:
+    }
+
+    public void renderManual(final PrintWriter out) {
+        assert out != null;
+
+        // TODO:
+    }
 }

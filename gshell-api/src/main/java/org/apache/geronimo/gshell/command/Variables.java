@@ -28,30 +28,96 @@ import java.util.Iterator;
  */
 public interface Variables
 {
+    /**
+     * Set a value of a variable.
+     *
+     * @param name
+     * @param value
+     * @throws ImmutableVariableException
+     */
     void set(String name, Object value) throws ImmutableVariableException;
 
+    /**
+     * Set a value of a variable, optional making the variable immutable.
+     *
+     * @param name
+     * @param value
+     * @param mutable
+     * @throws ImmutableVariableException
+     */
     void set(String name, Object value, boolean mutable) throws ImmutableVariableException;
 
+    /**
+     * Get the value of a variable.
+     *
+     * @param name
+     * @return
+     */
     Object get(String name);
 
+    /**
+     * Get the value of a variable, if not set using the provided default.
+     *
+     * @param name
+     * @param _default
+     * @return
+     */
     Object get(String name, Object _default);
 
+    /**
+     * Check if a variable is mutable.
+     *
+     * @param name
+     * @return
+     */
     boolean isMutable(String name);
 
+    /**
+     * Check if a variable is cloaked.  Cloaked variables exist when a variable of the same name
+     * has been set in the parent and that variable was not immutable.
+     *
+     * @param name
+     * @return
+     */
     boolean isCloaked(String name);
 
+    /**
+     * Unset a variable.
+     *
+     * @param name
+     * @throws ImmutableVariableException
+     */
     void unset(String name) throws ImmutableVariableException;
-    
+
+    /**
+     * Check for the existance of a variable.
+     *
+     * @param name
+     * @return
+     */
     boolean contains(String name);
-    
+
+    /**
+     * Get all variable names.
+     *
+     * @return
+     */
     Iterator<String> names();
 
+    /**
+     * Returns the parent variables container.
+     *
+     * @return
+     */
     Variables parent();
 
     //
     // Exceptions
     //
 
+    /**
+     * Throw to indicate that a variable change was attempted but the variable was not muable.
+     */
     class ImmutableVariableException
         extends RuntimeException
     {

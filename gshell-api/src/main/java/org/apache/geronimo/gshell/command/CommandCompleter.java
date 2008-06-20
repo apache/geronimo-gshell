@@ -19,12 +19,18 @@
 
 package org.apache.geronimo.gshell.command;
 
+import jline.Completor;
+
 /**
- * ???
+ * Provides completion support for a command.
  *
  * @version $Rev$ $Date$
  */
 public interface CommandCompleter
 {
-    // TODO:
+    //
+    // TODO: Not really sure this is what we want to do, but for now...
+    //
+    
+    Completor createCompletor();
 }

@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * A command exception.
+ * Thrown to indicate a command failure.  When thrown this implies an explicit return of {Result.FAILURE}.
  *
  * @version $Rev$ $Date$
  */

@@ -28,15 +28,31 @@ import org.apache.geronimo.gshell.io.IO;
  */
 public interface CommandContext
 {
+    /**
+     * Provides access to the arguments to the command.
+     *
+     * @return The command arguments.
+     */
     Object[] getArguments();
-    
+
+    /**
+     * The Input/Output context for the command.
+     *
+     * @return Command Input/Output context.
+     */
     IO getIo();
 
+    /**
+     * The variables for the command.
+     *
+     * @return Command variables.
+     */
     Variables getVariables();
 
+    /**
+     * Provides details about the runtime configuration of the command.
+     *
+     * @return Command runtime information.
+     */
     CommandInfo getInfo();
-
-    // CommandModel getModel();
-    
-    // CommandContainer getContainer();
 }

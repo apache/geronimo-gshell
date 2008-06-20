@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Details about the command.
+ * Details about the runtime configuraiton of a command.
  *
  * @version $Rev$ $Date$
  */
@@ -28,18 +28,22 @@ public interface CommandInfo
 {
     /**
      * Returns the <em>identifier</em> for the command.
+     *
+     * @return Command identifier.
      */
     String getId();
 
     /**
      * Returns the name of the command.
+     *
+     * @return Command name.
      */
     String getName();
 
     /**
      * Returns the alias used to invoke the command if any.
      *
-     * @return  The alias used to invoke the command; null if not aliased.
+     * @return The alias used to invoke the command; null if not aliased.
      */
     String getAlias();
 
@@ -49,6 +53,8 @@ public interface CommandInfo
 
     /**
      * Returns the full path of the command.
+     *
+     * @return Command path.
      */
     String getPath();
 }
