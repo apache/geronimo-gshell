@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.rapture;
 
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -49,6 +50,8 @@ public class DefaultCommandDocumenter
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private GShellPlexusContainer container;
+
+    private Renderer renderer = new Renderer();
 
     // Contextualizable
 
@@ -133,8 +136,8 @@ public class DefaultCommandDocumenter
         out.println();
 
         Printer printer = new Printer(clp);
-        printer.printUsage(out, name);
 
+        printer.printUsage(out, name);
         out.println();
     }
 
