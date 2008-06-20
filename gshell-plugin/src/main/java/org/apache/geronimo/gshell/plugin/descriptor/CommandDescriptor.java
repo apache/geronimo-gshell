@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.command.Command;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
- * ???
+ * Descriptor for a {@link Command} Plexus component.
  *
  * @version $Rev$ $Date$
  */

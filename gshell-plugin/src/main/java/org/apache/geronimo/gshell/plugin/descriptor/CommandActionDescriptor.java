@@ -23,13 +23,11 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.command.Parameter;
 import org.apache.geronimo.gshell.model.command.Requirement;
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
- * Descriptor for a GShell command action's plexus component.
+ * Descriptor for a {@link CommandAction} Plexus component.
  *
  * @version $Rev$ $Date$
  */

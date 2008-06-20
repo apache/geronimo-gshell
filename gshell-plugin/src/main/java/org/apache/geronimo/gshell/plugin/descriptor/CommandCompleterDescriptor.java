@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
- * Descriptor for a GShell command completer's plexus component.
+ * Descriptor for a {@link CommandCompleter} Plexus component.
  *
  * @version $Rev$ $Date$
  */
