@@ -158,6 +158,16 @@ public class DefaultCommand
         return result;
     }
 
+    /**
+     * Process command-line arguments for the action.
+     *
+     * @param context   The command context.
+     * @param action    The action being executed.
+     * @param args      The arguments to the action.
+     * @return          True if --help was detetected, else execute the action.
+     *
+     * @throws ProcessingException  A failure occured while processing the command-line.
+     */
     private boolean processArguments(final CommandContext context, final CommandAction action, final Object[] args) throws ProcessingException {
         assert context != null;
         assert args != null;
@@ -166,41 +176,29 @@ public class DefaultCommand
         clp.addBean(action);
 
         // Attach some help context
+        CommandDocumenter documenter = getDocumenter();
         HelpSupport help = new HelpSupport();
         clp.addBean(help);
+        clp.addBean(documenter);
 
         // Process the arguments
         clp.process(Arguments.toStringArray(args));
 
-        // Display help if option detected
+        // Render command-line usage
         if (help.displayHelp) {
-            help.display(context, clp);
+            documenter.renderUsage(context.getInfo(), context.getIo().out);
             return true;
         }
-
+        
         return false;
     }
 
-    private static class HelpSupport
+    /**
+     * Helper to inject <tt>--help<tt> support.  Package access to allow DefaultCommandDocumentor access.
+     */
+    static class HelpSupport
     {
         @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
         public boolean displayHelp;
-
-        protected void display(final CommandContext context, final CommandLineProcessor clp) {
-            assert context != null;
-            assert clp != null;
-
-            // Use the alias if we have one, else use the command name
-            CommandInfo info = context.getInfo();
-            String name = info.getAlias();
-            if (name == null) {
-                name = info.getName();
-            }
-
-            IO io = context.getIo();
-            Printer printer = new Printer(clp);
-            printer.printUsage(io.out, name);
-            io.out.println();
-        }
     }
 }

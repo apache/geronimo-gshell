@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= CommandFactory.class)
+@Component(role=CommandFactory.class)
 public class DefaultCommandFactory
     implements CommandFactory, Contextualizable
 {

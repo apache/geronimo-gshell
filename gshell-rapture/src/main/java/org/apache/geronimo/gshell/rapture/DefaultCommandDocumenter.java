@@ -19,45 +19,125 @@
 
 package org.apache.geronimo.gshell.rapture;
 
+import org.apache.geronimo.gshell.clp.CommandLineProcessor;
+import org.apache.geronimo.gshell.clp.Printer;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.command.annotation.CommandComponent;
+import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Configuration;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 
 /**
- * The default {@link org.apache.geronimo.gshell.command.CommandDocumenter} component.
+ * The default {@link CommandDocumenter} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role= CommandDocumenter.class)
+@Component(role=CommandDocumenter.class)
 public class DefaultCommandDocumenter
-    implements CommandDocumenter
+    implements CommandDocumenter, Contextualizable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Configuration("") // Just to mark what this is used for, since we have to configure a default value
-    private String commandId;
+    private GShellPlexusContainer container;
 
-    public String getName() {
-        return null;
+    // Contextualizable
+
+    public void contextualize(final Context context) throws ContextException {
+        assert context != null;
+
+        container = (GShellPlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
+        assert container != null;
+
+        log.debug("Container: {}", container);
     }
 
-    public String getDescription() {
-        return null;
+    // CommandDocumenter
+    
+    public String getName(final CommandInfo info) {
+        assert info != null;
+
+        // Use the alias if we have one, else use the command name
+        String name = info.getAlias();
+        if (name == null) {
+            name = info.getName();
+        }
+
+        return name;
     }
 
-    public void renderUsage(final PrintWriter out) {
+    public String getDescription(final CommandInfo info) {
+        assert info != null;
+
+        //
+        // HACK: This needs to chagne, doing this for now to make it work
+        //
+
+        CommandAction action = getAction(info);
+        CommandComponent cmd = action.getClass().getAnnotation(CommandComponent.class);
+        if (cmd == null) {
+            throw new IllegalStateException("Command description not found");
+        }
+
+        return cmd.description();
+    }
+
+    /**
+     * Get the action instance for the given command context.
+     */
+    private CommandAction getAction(final CommandInfo info) {
+        assert info != null;
+        assert container != null;
+
+        try {
+            return container.lookupComponent(CommandAction.class, info.getId());
+        }
+        catch (ComponentLookupException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void renderUsage(final CommandInfo info, final PrintWriter out) {
+        assert info != null;
         assert out != null;
 
-        // TODO:
+        CommandLineProcessor clp = new CommandLineProcessor();
+
+        // Attach our helper to inject --help
+        DefaultCommand.HelpSupport help = new DefaultCommand.HelpSupport();
+        clp.addBean(help);
+
+        // And then the beans options
+        CommandAction action = getAction(info);
+        clp.addBean(action);
+
+        // Fetch the details
+        String name = getName(info);
+        String desc = getDescription(info);
+
+        // Render the help
+        out.println(desc);
+        out.println();
+
+        Printer printer = new Printer(clp);
+        printer.printUsage(out, name);
+
+        out.println();
     }
 
-    public void renderManual(final PrintWriter out) {
+    public void renderManual(final CommandInfo info, final PrintWriter out) {
+        assert info != null;
         assert out != null;
 
-        // TODO:
+        // TODO: Render a more complete manual for the command, maybe using simple APT-like syntax.
     }
 }

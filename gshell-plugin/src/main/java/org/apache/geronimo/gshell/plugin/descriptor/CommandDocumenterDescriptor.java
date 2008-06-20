@@ -44,10 +44,6 @@ public class CommandDocumenterDescriptor
         setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");
-
-        XmlPlexusConfiguration config = new XmlPlexusConfiguration("configuration");
-        config.addChild(new XmlPlexusConfiguration("commandId", model.getId()));
-        setConfiguration(config);
     }
 
     public CommandModel getCommand() {

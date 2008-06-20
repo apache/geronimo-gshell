@@ -33,26 +33,30 @@ public interface CommandDocumenter
      *
      * @return The configured name of the command.
      */
-    String getName();
+    String getName(CommandInfo info);
 
     /**
      * Get the terse description of the command.
      *
      * @return The configured description of hte command.
      */
-    String getDescription();
+    String getDescription(CommandInfo info);
 
     /**
      * Render the command-line usage, as expected from <tt>--help</tt>.
      *
      * @param out   Write the usage to this writer.
      */
-    void renderUsage(PrintWriter out);
+    void renderUsage(CommandInfo info, PrintWriter out);
 
     /**
      * Render the full command manual.
      *
      * @param out   Write the manual to this writer.
      */
-    void renderManual(PrintWriter out);
+    void renderManual(CommandInfo info, PrintWriter out);
+
+    //
+    // TODO: Consider making this a factory, returning a CommandDocumentation for a CommandInfo
+    //
 }

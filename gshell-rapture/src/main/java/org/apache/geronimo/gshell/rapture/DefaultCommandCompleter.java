@@ -19,29 +19,28 @@
 
 package org.apache.geronimo.gshell.rapture;
 
+import jline.Completor;
 import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandInfo;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jline.Completor;
 
 /**
- * The default {@link org.apache.geronimo.gshell.command.CommandCompleter} component.
+ * The default {@link CommandCompleter} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role= CommandDocumenter.class)
+@Component(role=CommandDocumenter.class)
 public class DefaultCommandCompleter
     implements CommandCompleter
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Configuration("")
-    private String commandId;
+    public Completor createCompletor(final CommandInfo info) {
+        assert info != null;
 
-    public Completor createCompletor() {
         // TODO:
 
         throw new Error();

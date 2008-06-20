@@ -32,5 +32,5 @@ public interface CommandCompleter
     // TODO: Not really sure this is what we want to do, but for now...
     //
     
-    Completor createCompletor();
+    Completor createCompletor(CommandInfo info);
 }
