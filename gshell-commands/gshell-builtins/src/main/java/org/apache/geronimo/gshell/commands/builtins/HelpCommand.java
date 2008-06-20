@@ -23,11 +23,10 @@ import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandFactory;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
@@ -60,7 +59,7 @@ public class HelpCommand
     @Requirement
     private LayoutManager layoutManager;
 
-    @Argument(metaVar="COMMAND", description="Display help for COMMAND")
+    @Argument(metaVar="COMMAND", required=true, description="Display help for COMMAND")
     private String command;
 
     private Renderer renderer = new Renderer();
@@ -79,25 +78,8 @@ public class HelpCommand
         assert context != null;
 
         IO io = context.getIo();
-        io.out.println();
-
-        if (command == null) {
-            displayAvailableCommands(io);
-        }
-        else {
-            Command cmd = commandFactory.create(command);
-
-            if (cmd == null) {
-                io.out.println("Command " + Renderer.encode(command, Code.BOLD) + " not found.");
-                io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
-                return Result.FAILURE;
-            }
-
-            CommandDocumenter documenter = cmd.getDocumenter();
-            // documenter.renderManual(info, io.out);
-
-            io.error("FIXME: Manual rendering is still pending, sorry");
-        }
+        
+        displayAvailableCommands(io);
 
         return Result.SUCCESS;
     }

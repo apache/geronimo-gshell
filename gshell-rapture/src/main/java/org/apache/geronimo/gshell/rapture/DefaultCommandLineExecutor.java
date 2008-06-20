@@ -83,7 +83,7 @@ public class DefaultCommandLineExecutor
     @Requirement
     private CommandLineBuilder commandLineBuilder;
 
-    private ShellContext env;
+    private ShellContext shellContext;
 
     public DefaultCommandLineExecutor() {}
     
@@ -102,7 +102,7 @@ public class DefaultCommandLineExecutor
     public void initialize() throws InitializationException {
         assert applicationManager != null;
         
-        this.env = applicationManager.getContext().getEnvironment();
+        this.shellContext = applicationManager.getContext().getEnvironment();
     }
 
     public Object execute(final String line) throws Exception {
@@ -138,7 +138,7 @@ public class DefaultCommandLineExecutor
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
-        return execute(String.valueOf(args[0]), Arguments.shift(args), env.getIo());
+        return execute(String.valueOf(args[0]), Arguments.shift(args), shellContext.getIo());
     }
 
     public Object execute(final String path, final Object[] args) throws Exception {
@@ -147,7 +147,7 @@ public class DefaultCommandLineExecutor
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
-        return execute(path, args, env.getIo());
+        return execute(path, args, shellContext.getIo());
     }
 
     public Object execute(final Object[][] commands) throws Exception {
@@ -158,17 +158,17 @@ public class DefaultCommandLineExecutor
         PipedOutputStream pos = null;
 
         for (int i = 0; i < ios.length; i++) {
-            InputStream is = (i == 0) ? env.getIo().inputStream : new PipedInputStream(pos);
+            InputStream is = (i == 0) ? shellContext.getIo().inputStream : new PipedInputStream(pos);
             OutputStream os;
 
             if (i == ios.length - 1) {
-                os = env.getIo().outputStream;
+                os = shellContext.getIo().outputStream;
             }
             else {
                 os = pos = new PipedOutputStream();
             }
 
-            ios[i] = new IO(is, new PrintStream(os), env.getIo().errorStream);
+            ios[i] = new IO(is, new PrintStream(os), shellContext.getIo().errorStream);
         }
 
         Thread[] threads = new Thread[commands.length];
@@ -230,7 +230,7 @@ public class DefaultCommandLineExecutor
     protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
         log.debug("Executing");
 
-        final String searchPath = (String) env.getVariables().get(LayoutManager.COMMAND_PATH);
+        final String searchPath = (String) shellContext.getVariables().get(LayoutManager.COMMAND_PATH);
         log.debug("Search path: {}", searchPath);
 
         final Node node = layoutManager.findNode(path, searchPath);
@@ -250,7 +250,7 @@ public class DefaultCommandLineExecutor
         // Setup the command context and pass it to the command instance
         CommandContext context = new CommandContext() {
             // Command instances get their own namespace with defaults from the current
-            final Variables vars = new DefaultVariables(env.getVariables());
+            final Variables vars = new DefaultVariables(shellContext.getVariables());
 
             CommandInfo info;
 
@@ -268,36 +268,7 @@ public class DefaultCommandLineExecutor
 
             public CommandInfo getInfo() {
                 if (info == null) {
-                    info = new CommandInfo()
-                    {
-                        public String getId() {
-                            return id;
-                        }
-
-                        public String getName() {
-                            if (node instanceof AliasNode) {
-                                return ((AliasNode)node).getCommand();
-                            }
-
-                            return node.getName();
-                        }
-
-                        public String getAlias() {
-                            if (node instanceof AliasNode) {
-                                return node.getName();
-                            }
-
-                            return null;
-                        }
-
-                        public String getPath() {
-                            //
-                            // TODO:
-                            //
-                            
-                            return null;
-                        }
-                    };
+                    info = new DefaultCommandInfo(node);
                 }
 
                 return info;

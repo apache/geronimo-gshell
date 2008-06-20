@@ -45,6 +45,7 @@ public class CommandDescriptor
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");
 
+        // Need to pass the command ID to the container
         XmlPlexusConfiguration config = new XmlPlexusConfiguration("configuration");
         config.addChild(new XmlPlexusConfiguration("commandId", model.getId()));
         setConfiguration(config);
