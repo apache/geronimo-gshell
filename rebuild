@@ -1,0 +1,3 @@
+#!/bin/sh
+
+nuketarget && `dirname $0`/build "$@" 

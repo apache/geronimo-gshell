@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mvn "$@" -e && `dirname $0`/extract
+
