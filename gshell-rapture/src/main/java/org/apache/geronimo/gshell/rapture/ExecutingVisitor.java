@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,13 +47,13 @@ public class ExecutingVisitor
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Environment env;
+    private final ShellContext env;
     
     private final CommandLineExecutor executor;
 
     private final VariableInterpolator interp = new VariableInterpolator();
 
-    public ExecutingVisitor(final CommandLineExecutor executor, final Environment env) {
+    public ExecutingVisitor(final CommandLineExecutor executor, final ShellContext env) {
         assert executor != null;
         assert env != null;
 

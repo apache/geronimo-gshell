@@ -26,13 +26,39 @@ package org.apache.geronimo.gshell.command;
  */
 public interface Command
 {
+    /**
+     * Returns the configured identifier of the command.
+     *
+     * @return  The command identifier; never null;
+     */
     String getId();
 
+    /**
+     * Returns the action of the command.
+     *
+     * @return  The command action; never null;
+     */
     CommandAction getAction();
 
+    /**
+     * Returns the documenter for the command.
+     *
+     * @return  The command documenter; never null;
+     */
     CommandDocumenter getDocumenter();
 
+    /**
+     * Returns the completer for the command.
+     *
+     * @return  The command completer; never null;
+     */
     CommandCompleter getCompleter();
 
-    Object execute(CommandContext context) throws Exception;
+    /**
+     * Execute the command action.
+     *
+     * @param context   The execution context.
+     * @return          The result of the action execution.
+     */
+    CommandResult execute(CommandContext context);
 }

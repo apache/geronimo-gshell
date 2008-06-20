@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plugin.PluginCollector;
 import org.apache.geronimo.gshell.plugin.PluginDiscoverer;
 import org.apache.geronimo.gshell.settings.SettingsManager;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -124,7 +124,7 @@ public class DefaultApplicationManager
                 return config.getIo();
             }
 
-            public Environment getEnvironment() {
+            public ShellContext getEnvironment() {
                 return config.getEnvironment();
             }
 

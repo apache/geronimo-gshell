@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.application.DefaultEnvironment;
+import org.apache.geronimo.gshell.application.DefaultShellContext;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
@@ -58,7 +58,7 @@ public class OpenShellHandler
         // IOLookup.set(context.container, context.io);
 
         // Setup shell environemnt
-        context.env = new DefaultEnvironment(context.io);
+        context.env = new DefaultShellContext(context.io);
         // FIXME: Need to find out what to do here, w/o this lookup
         // EnvironmentLookup.set(context.container, context.env);
 

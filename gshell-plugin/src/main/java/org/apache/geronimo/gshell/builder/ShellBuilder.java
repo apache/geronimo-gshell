@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
 import org.apache.geronimo.gshell.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.settings.SettingsManager;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellFactory;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
@@ -120,12 +120,12 @@ public class ShellBuilder
         applicationConfig.setIo(io);
     }
 
-    public Environment getEnvironment() {
+    public ShellContext getEnvironment() {
         return applicationConfig.getEnvironment();
     }
 
-    public void setEnvironment(final Environment environment) {
-        applicationConfig.setEnvironment(environment);
+    public void setEnvironment(final ShellContext context) {
+        applicationConfig.setEnvironment(context);
     }
 
     public Settings getSettings() {

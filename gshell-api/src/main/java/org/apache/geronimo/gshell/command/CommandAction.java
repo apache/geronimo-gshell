@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.command;
 
+import org.apache.geronimo.gshell.notification.Notification;
+
 /**
  * Provides the user-action for a command.
  *
@@ -26,7 +28,16 @@ package org.apache.geronimo.gshell.command;
  */
 public interface CommandAction
 {
-    Object execute(CommandContext context) throws Exception;
+    /**
+     * Execute the command action.
+     *
+     * @param context   The execution context of the command.
+     * @return          The result of the command execution.
+     *
+     * @throws Exception    Command execution failed.
+     * @throws Notification Inform the shell of some non-exception exit state.
+     */
+    Object execute(CommandContext context) throws Notification, Exception;
 
     /**
      * Enumeration for the basic return types of a command execution.

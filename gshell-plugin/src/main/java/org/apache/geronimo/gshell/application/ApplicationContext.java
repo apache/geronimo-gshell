@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
  * Encapsulates the context for an application.
@@ -32,7 +32,7 @@ public interface ApplicationContext
 {
     IO getIo();
 
-    Environment getEnvironment();
+    ShellContext getEnvironment();
 
     Application getApplication();
     

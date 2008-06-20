@@ -19,16 +19,16 @@
 
 package org.apache.geronimo.gshell.remote.client.proxy;
 
-import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.client.RshClient;
-import org.apache.geronimo.gshell.shell.Environment;
-import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.whisper.stream.StreamFeeder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class RemoteShellProxy
 
     private boolean opened;
 
-    private RemoteEnvironmentProxy env;
+    private RemoteShellContextProxy context;
 
     private RemoteShellInfoProxy shellInfo;
 
@@ -74,7 +74,7 @@ public class RemoteShellProxy
         client.openShell();
 
         // Setup other proxies
-        env = new RemoteEnvironmentProxy(client);
+        context = new RemoteShellContextProxy(client);
         shellInfo = new RemoteShellInfoProxy(client);
         history = new RemoteHistoryProxy(client);
 
@@ -89,13 +89,13 @@ public class RemoteShellProxy
         return true;
     }
 
-    public Environment getEnvironment() {
+    public ShellContext getContext() {
         ensureOpened();
 
-        return env;
+        return context;
     }
 
-    public ShellInfo getShellInfo() {
+    public ShellInfo getInfo() {
         ensureOpened();
 
         return shellInfo;

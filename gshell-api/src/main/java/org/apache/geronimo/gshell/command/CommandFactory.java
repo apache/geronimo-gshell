@@ -26,5 +26,13 @@ package org.apache.geronimo.gshell.command;
  */
 public interface CommandFactory
 {
+    /**
+     * Create a command instance for the given identifier.
+     *
+     * @param id    The identifier of the command to create.
+     * @return      A new command instance; never null.
+     *
+     * @throws Exception    Failed to create command instance.
+     */
     Command create(String id) throws Exception;
 }

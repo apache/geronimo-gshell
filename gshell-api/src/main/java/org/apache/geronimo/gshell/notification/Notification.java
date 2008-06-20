@@ -22,6 +22,9 @@ package org.apache.geronimo.gshell.notification;
 /**
  * Thrown to indicate a notification state.
  *
+ * <p>
+ * Extending from Error to prevent need to declare throwable.
+ *
  * @version $Rev$ $Date$
  */
 public abstract class Notification

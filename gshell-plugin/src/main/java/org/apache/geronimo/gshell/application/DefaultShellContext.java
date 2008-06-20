@@ -22,21 +22,21 @@ package org.apache.geronimo.gshell.application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
- * Default {@link Environment} implementation.
+ * Default {@link org.apache.geronimo.gshell.shell.ShellContext} implementation.
  *
  * @version $Rev$ $Date$
  */
-public class DefaultEnvironment
-    implements Environment
+public class DefaultShellContext
+    implements ShellContext
 {
     private final IO io;
 
     private final Variables vars;
 
-    public DefaultEnvironment(final IO io, final Variables vars) {
+    public DefaultShellContext(final IO io, final Variables vars) {
         assert io != null;
         assert vars != null;
 
@@ -46,7 +46,7 @@ public class DefaultEnvironment
         vars.set("env", System.getenv(), false);
     }
 
-    public DefaultEnvironment(final IO io) {
+    public DefaultShellContext(final IO io) {
         this(io, new DefaultVariables());
     }
 

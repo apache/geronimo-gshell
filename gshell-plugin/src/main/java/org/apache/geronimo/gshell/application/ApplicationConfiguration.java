@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
  * Container for application configuration.
@@ -34,7 +34,7 @@ public class ApplicationConfiguration
 {
     private IO io;
 
-    private Environment environment;
+    private ShellContext context;
 
     private Application application;
 
@@ -53,20 +53,20 @@ public class ApplicationConfiguration
         this.io = io;
     }
 
-    private Environment createEnvironment() {
-        return new DefaultEnvironment(getIo());
+    private ShellContext createEnvironment() {
+        return new DefaultShellContext(getIo());
     }
 
-    public Environment getEnvironment() {
-        if (environment == null) {
-            environment = createEnvironment();
+    public ShellContext getEnvironment() {
+        if (context == null) {
+            context = createEnvironment();
         }
 
-        return environment;
+        return context;
     }
 
-    public void setEnvironment(final Environment environment) {
-        this.environment = environment;
+    public void setEnvironment(final ShellContext context) {
+        this.context = context;
     }
 
     public Application getApplication() {

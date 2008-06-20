@@ -20,11 +20,17 @@
 package org.apache.geronimo.gshell.shell;
 
 /**
- * ???
+ * Creates {@link Shell} instanes.
  *
  * @version $Rev$ $Date$
  */
 public interface ShellFactory
 {
+    /**
+     * Create a new shell instance.
+     *
+     * @return  A new shell instance.
+     * @throws Exception    Failed to create shell instance.
+     */
     Shell create() throws Exception;
 }

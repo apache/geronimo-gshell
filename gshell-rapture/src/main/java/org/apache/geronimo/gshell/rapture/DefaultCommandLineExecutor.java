@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.CommandFactory;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.commandline.CommandExecutionFailied;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
@@ -40,7 +41,7 @@ import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -82,7 +83,7 @@ public class DefaultCommandLineExecutor
     @Requirement
     private CommandLineBuilder commandLineBuilder;
 
-    private Environment env;
+    private ShellContext env;
 
     public DefaultCommandLineExecutor() {}
     
@@ -309,7 +310,7 @@ public class DefaultCommandLineExecutor
         // Hijack the system streams in the current thread's context
         SystemOutputHijacker.register(io.outputStream, io.errorStream);
 
-        Object result;
+        CommandResult result;
         try {
             result = command.execute(context);
 
@@ -326,7 +327,16 @@ public class DefaultCommandLineExecutor
             catch (Exception ignore) {}
         }
 
-        return result;
+        // Decode the command result
+        if (result.hasNotified()) {
+            throw result.getNotification();
+        }
+        else if (result.hasFailed()) {
+            throw result.getFailure();
+        }
+        else {
+            return result.getValue();
+        }
     }
 
     protected String findCommandId(final Node node) throws NotFoundException {

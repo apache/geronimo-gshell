@@ -23,13 +23,15 @@ import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.clp.ProcessingException;
-import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandCompleter;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.util.Arguments;
 import org.codehaus.plexus.PlexusConstants;
@@ -108,8 +110,8 @@ public class DefaultCommand
             throw new RuntimeException(e);
         }
     }
-
-    public Object execute(final CommandContext context) throws Exception {
+    
+    public CommandResult execute(final CommandContext context) {
         assert context != null;
 
         log.trace("Executing; context={}");
@@ -117,19 +119,37 @@ public class DefaultCommand
         // Provide logging context for the command execution
         MDC.put("commandId", commandId);
 
-        Object result;
+        CommandResult result;
 
         try {
             CommandAction action = getAction();
-            
+
             // Process command line options/arguments, return if we have been asked to display --help
-            if (processArguments(context, action, context.getArguments())) {
-                return CommandAction.Result.SUCCESS;
+            try {
+                if (processArguments(context, action, context.getArguments())) {
+                    return new CommandResult(CommandAction.Result.SUCCESS);
+                }
+            }
+            catch (ProcessingException e) {
+                new CommandResult(e);
             }
 
-            result = action.execute(context);
+            try {
+                final Object value = action.execute(context);
+                log.trace("Result: {}", value);
 
-            log.trace("Result: {}", result);
+                result = new CommandResult(value);
+            }
+            catch (final Notification n) {
+                log.trace("Notified: {}, n");
+
+                result = new CommandResult(n);
+            }
+            catch (final Throwable t) {
+                log.trace("Caught: {}", t);
+
+                result = new CommandResult(t);
+            }
         }
         finally {
             MDC.remove("commandId");

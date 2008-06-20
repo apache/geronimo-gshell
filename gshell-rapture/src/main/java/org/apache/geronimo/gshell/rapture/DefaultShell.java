@@ -32,7 +32,7 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
@@ -71,7 +71,7 @@ public class DefaultShell
     @Requirement
     private History history;
 
-    private Environment env;
+    private ShellContext shellContext;
 
     private IO io;
 
@@ -95,11 +95,11 @@ public class DefaultShell
         this.history = history;
     }
 
-    public Environment getEnvironment() {
-        return env;
+    public ShellContext getContext() {
+        return shellContext;
     }
 
-    public ShellInfo getShellInfo() {
+    public ShellInfo getInfo() {
         return shellInfo;
     }
 
@@ -113,7 +113,7 @@ public class DefaultShell
         // Dereference some bits from the applciation context
         ApplicationContext context = applicationManager.getContext();
         this.io = context.getIo();
-        this.env = context.getEnvironment();
+        this.shellContext = context.getEnvironment();
         this.branding = context.getApplication().getBranding();
         
         try {

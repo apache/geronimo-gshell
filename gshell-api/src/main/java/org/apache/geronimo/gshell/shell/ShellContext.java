@@ -17,34 +17,19 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client.proxy;
+package org.apache.geronimo.gshell.shell;
 
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.remote.client.RshClient;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
- * ???
+ * Provides the execution context of a {@link Shell}.
  *
  * @version $Rev$ $Date$
  */
-public class RemoteEnvironmentProxy
-    implements Environment
+public interface ShellContext
 {
-    private final RshClient client;
+    IO getIO();
 
-    public RemoteEnvironmentProxy(final RshClient client) {
-        assert client != null;
-
-        this.client = client;
-    }
-
-    public IO getIO() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Variables getVariables() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    Variables getVariables();
 }

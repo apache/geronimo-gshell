@@ -29,9 +29,24 @@ import java.net.InetAddress;
  */
 public interface ShellInfo
 {
+    /**
+     * Returns the home directory of the shell.
+     *
+     * @return  Shell home directory.
+     */
     File getHomeDir();
 
+    /**
+     * Returns the local IP address of the shell.
+     *
+     * @return  The local IP address of the shell.
+     */
     InetAddress getLocalHost();
 
+    /**
+     * Returns the name of the current user.
+     *
+     * @return  The current user name.
+     */
     String getUserName();
 }

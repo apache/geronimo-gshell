@@ -22,18 +22,40 @@ package org.apache.geronimo.gshell.shell;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 
 /**
- * This is the primary interface to executing commands.
+ * Provides access to execute commands.
  *
  * @version $Rev$ $Date$
  */
 public interface Shell
     extends CommandLineExecutor
 {
-    ShellInfo getShellInfo();
+    /**
+     * Get the runtime configuration details of the shell.
+     *
+     * @return The runtime configuration of the shell.
+     */
+    ShellInfo getInfo();
 
-    Environment getEnvironment();
+    /**
+     * Get the execution details of the shell.
+     *
+     * @return  The execution details of the shell.
+     */
+    ShellContext getContext();
 
+    /**
+     * Check if the shell can be run interactivly.
+     * 
+     * @return  True if the shell is interactive.
+     */
     boolean isInteractive();
-    
-    void run(Object... args) throws Exception;
+
+    /**
+     * Run the shell iteractivly.
+     *
+     * @param args  The initial commands to execute iteractivly.
+     * @throws Exception    Failed to execute commands.
+     * @throws UnsupportedOperationException    The shell does not support iteractive execution.
+     */
+    void run(Object... args) throws UnsupportedOperationException, Exception;
 }

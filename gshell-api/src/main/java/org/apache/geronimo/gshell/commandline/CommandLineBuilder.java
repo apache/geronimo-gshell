@@ -26,5 +26,13 @@ package org.apache.geronimo.gshell.commandline;
  */
 public interface CommandLineBuilder
 {
-    CommandLine create(final String commandLine) throws Exception;
+    /**
+     * Build a command-line from the given input string.
+     *
+     * @param input Command-line to parse.
+     * @return      Parsed command-line.
+     *
+     * @throws Exception    Failed to construct command-line.
+     */
+    CommandLine create(final String input) throws Exception;
 }

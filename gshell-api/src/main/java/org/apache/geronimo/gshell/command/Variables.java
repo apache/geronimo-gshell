@@ -33,6 +33,7 @@ public interface Variables
      *
      * @param name  The name of the variable to set.
      * @param value The value of the variable.
+     * 
      * @throws ImmutableVariableException   The variable is immutable.
      */
     void set(String name, Object value) throws ImmutableVariableException;
@@ -43,6 +44,7 @@ public interface Variables
      * @param name      The name of the variable to set.
      * @param value     The value of the variable.
      * @param mutable   False to make the variable immutable.
+     *
      * @throws ImmutableVariableException   The variable is immutable.
      */
     void set(String name, Object value, boolean mutable) throws ImmutableVariableException;

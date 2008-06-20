@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.remote.server;
 
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.remote.RemoteShell;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -47,17 +47,21 @@ public class DefaultRemoteShell
 
     // FIXME: Pull this from some manager's context
     @Requirement
-    private Environment env;
+    private ShellContext context;
 
     private boolean opened = true;
 
     public DefaultRemoteShell() {
     }
 
-    public DefaultRemoteShell(final ShellInfo shellInfo, final CommandLineExecutor executor, final Environment env) {
+    public DefaultRemoteShell(final ShellInfo shellInfo, final CommandLineExecutor executor, final ShellContext context) {
+        assert shellInfo != null;
+        assert executor != null;
+        assert context != null;
+
         this.shellInfo = shellInfo;
         this.executor = executor;
-        this.env = env;
+        this.context = context;
     }
     
     private void ensureOpened() {
@@ -80,13 +84,13 @@ public class DefaultRemoteShell
         return false;
     }
 
-    public Environment getEnvironment() {
+    public ShellContext getContext() {
         ensureOpened();
         
-        return env;
+        return context;
     }
 
-    public ShellInfo getShellInfo() {
+    public ShellInfo getInfo() {
         ensureOpened();
 
         return shellInfo;

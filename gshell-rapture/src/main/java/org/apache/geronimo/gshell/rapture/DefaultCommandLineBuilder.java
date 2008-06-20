@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
-import org.apache.geronimo.gshell.shell.Environment;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -100,7 +100,7 @@ public class DefaultCommandLineBuilder
             CommandLineExecutor executor = (CommandLineExecutor) container.lookup(CommandLineExecutor.class);
 
             assert applicationManager != null;
-            Environment env = applicationManager.getContext().getEnvironment();
+            ShellContext env = applicationManager.getContext().getEnvironment();
 
             final ExecutingVisitor visitor = new ExecutingVisitor(executor, env);
             final ASTCommandLine root = parse(commandLine);
