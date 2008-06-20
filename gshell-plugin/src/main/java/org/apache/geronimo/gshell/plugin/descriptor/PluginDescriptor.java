@@ -53,6 +53,8 @@ public class PluginDescriptor
         assert model != null;
 
         addComponentDescriptor(new CommandActionDescriptor(model));
+        addComponentDescriptor(new CommandDocumentorDescriptor(model));
+        addComponentDescriptor(new CommandCompletorDescriptor(model));
         addComponentDescriptor(new CommandContainerDescriptor(model));
     }
 
