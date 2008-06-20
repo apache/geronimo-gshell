@@ -41,6 +41,7 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * The default {@link Command} component.
@@ -115,20 +116,23 @@ public class DefaultCommand
 
         CommandAction action = getAction();
 
-        // TODO: Handle logging muck
-        // NOTE: For logging, just set the NDC/MDC and let the loggers name be whatever the command set it to be.
-        
-        // TODO: Bind context, io and variables
-        // NOTE: No, no no...
+        MDC.put("commandId", commandId);
 
-        // Process command line options/arguments, return if we have been asked to display --help
-        if (processArguments(context, action, context.getArguments())) {
-            return CommandAction.Result.SUCCESS;
+        Object result;
+
+        try {
+            // Process command line options/arguments, return if we have been asked to display --help
+            if (processArguments(context, action, context.getArguments())) {
+                return CommandAction.Result.SUCCESS;
+            }
+
+            result = action.execute(context);
+
+            log.trace("Result: {}", result);
         }
-
-        Object result = action.execute(context);
-
-        log.trace("Result: {}", result);
+        finally {
+            MDC.remove("commandId");
+        }
 
         return result;
     }
