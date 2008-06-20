@@ -20,41 +20,19 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Details about the runtime configuration of a command.
+ * Provides access to {@link CommandContainer} instances.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandInfo
+public interface CommandContainerFactory
 {
     /**
-     * Returns the <em>identifier</em> for the command.
+     * Create a command instance for the given identifier.
      *
-     * @return Command identifier.
-     */
-    String getId();
-
-    /**
-     * Returns the name of the command.
+     * @param id    The identifier of the command container to create.
+     * @return      A new command container instance; never null.
      *
-     * @return Command name.
+     * @throws Exception    Failed to create command container instance.
      */
-    String getName();
-
-    /**
-     * Returns the alias used to invoke the command if any.
-     *
-     * @return The alias used to invoke the command; null if not aliased.
-     */
-    String getAlias();
-
-    //
-    // TODO: Add alias path?  And/or expose layout node?
-    //
-
-    /**
-     * Returns the full path of the command.
-     *
-     * @return Command path.
-     */
-    String getPath();
+    CommandContainer create(String id) throws Exception;
 }

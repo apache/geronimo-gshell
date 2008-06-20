@@ -20,41 +20,26 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Details about the runtime configuration of a command.
+ * Thrown to indicate a command/path was not able to be resolved.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandInfo
+public class CommandCreationException
+    extends CommandException
 {
-    /**
-     * Returns the <em>identifier</em> for the command.
-     *
-     * @return Command identifier.
-     */
-    String getId();
+    public CommandCreationException(final String msg) {
+        super(msg);
+    }
 
-    /**
-     * Returns the name of the command.
-     *
-     * @return Command name.
-     */
-    String getName();
+    public CommandCreationException(final String msg, final Throwable cause) {
+        super(msg, cause);
+    }
 
-    /**
-     * Returns the alias used to invoke the command if any.
-     *
-     * @return The alias used to invoke the command; null if not aliased.
-     */
-    String getAlias();
+    public CommandCreationException(final Throwable cause) {
+        super(cause);
+    }
 
-    //
-    // TODO: Add alias path?  And/or expose layout node?
-    //
-
-    /**
-     * Returns the full path of the command.
-     *
-     * @return Command path.
-     */
-    String getPath();
+    public CommandCreationException() {
+        super();
+    }
 }

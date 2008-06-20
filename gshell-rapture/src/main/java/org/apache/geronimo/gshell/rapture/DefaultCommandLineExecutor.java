@@ -22,23 +22,18 @@ package org.apache.geronimo.gshell.rapture;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.chronos.StopWatch;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.CommandFactory;
-import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailied;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailied;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
-import org.apache.geronimo.gshell.layout.LayoutManager;
-import org.apache.geronimo.gshell.layout.NotFoundException;
-import org.apache.geronimo.gshell.model.layout.AliasNode;
-import org.apache.geronimo.gshell.model.layout.CommandNode;
-import org.apache.geronimo.gshell.model.layout.Node;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.shell.ShellContext;
@@ -75,10 +70,7 @@ public class DefaultCommandLineExecutor
     private ApplicationManager applicationManager;
 
     @Requirement
-    private LayoutManager layoutManager;
-
-    @Requirement
-    private CommandFactory commandFactory;
+    private CommandResolver commandResolver;
 
     @Requirement
     private CommandLineBuilder commandLineBuilder;
@@ -87,15 +79,11 @@ public class DefaultCommandLineExecutor
 
     public DefaultCommandLineExecutor() {}
     
-    public DefaultCommandLineExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandFactory commandFactory, final CommandLineBuilder commandLineBuilder) {
+    public DefaultCommandLineExecutor(final ApplicationManager applicationManager, final CommandLineBuilder commandLineBuilder) {
         assert applicationManager != null;
-        assert layoutManager != null;
-        assert commandFactory != null;
         assert commandLineBuilder != null;
 
         this.applicationManager = applicationManager;
-        this.layoutManager = layoutManager;
-        this.commandFactory = commandFactory;
         this.commandLineBuilder = commandLineBuilder;
     }
 
@@ -227,32 +215,20 @@ public class DefaultCommandLineExecutor
         return new Thread(run);
     }
 
+    //
+    // TODO: Let the CommandContext creation happen in the child, pass in the ShellContext here...
+    //
+
     protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
         log.debug("Executing");
 
-        final String searchPath = (String) shellContext.getVariables().get(LayoutManager.COMMAND_PATH);
-        log.debug("Search path: {}", searchPath);
-
-        final Node node = layoutManager.findNode(path, searchPath);
-        log.debug("Layout node: {}", node);
-
-        final String id = findCommandId(node);
-        log.debug("Command ID: {}", id);
-        
-        final Command command;
-        try {
-            command = commandFactory.create(id);
-        }
-        catch (Exception e) {
-            throw new NotFoundException(e.getMessage());
-        }
+        final Command command = commandResolver.resolve(shellContext, path);
 
         // Setup the command context and pass it to the command instance
-        CommandContext context = new CommandContext() {
+        CommandContext context = new CommandContext()
+        {
             // Command instances get their own namespace with defaults from the current
             final Variables vars = new DefaultVariables(shellContext.getVariables());
-
-            CommandInfo info;
 
             public Object[] getArguments() {
                 return args;
@@ -267,14 +243,14 @@ public class DefaultCommandLineExecutor
             }
 
             public CommandInfo getInfo() {
-                if (info == null) {
-                    info = new DefaultCommandInfo(node);
-                }
+                return command.getInfo();
+            }
 
-                return info;
+            public ShellContext getShellContext() {
+                return shellContext;
             }
         };
-
+        
         // Setup command timings
         StopWatch watch = new StopWatch(true);
 
@@ -308,24 +284,5 @@ public class DefaultCommandLineExecutor
         else {
             return result.getValue();
         }
-    }
-
-    protected String findCommandId(final Node node) throws NotFoundException {
-        assert node != null;
-
-        if (node instanceof AliasNode) {
-            AliasNode aliasNode = (AliasNode) node;
-            String targetPath = aliasNode.getCommand();
-            Node target = layoutManager.findNode(layoutManager.getLayout(), targetPath);
-
-            return findCommandId(target);
-        }
-        else if (node instanceof CommandNode) {
-            CommandNode commandNode = (CommandNode) node;
-
-            return commandNode.getId();
-        }
-
-        throw new NotFoundException("Unable to get command id for: " + node);
     }
 }

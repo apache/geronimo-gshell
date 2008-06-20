@@ -19,20 +19,23 @@
 
 package org.apache.geronimo.gshell.command;
 
+import org.apache.geronimo.gshell.shell.ShellContext;
+
 /**
- * Provides access to {@link Command} instances.
+ * Provides support to resolve a path-name to a command instance.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandFactory
+public interface CommandResolver
 {
     /**
-     * Create a command instance for the given identifier.
+     * Resolve the given path to a command instance.
      *
-     * @param id    The identifier of the command to create.
-     * @return      A new command instance; never null.
+     * @param context   The current shell context.
+     * @param path      The path of the command to resolve.
+     * @return          The resolved command instance; never null.
      *
-     * @throws Exception    Failed to create command instance.
+     * @throws CommandException     Failed to resolve command.
      */
-    Command create(String id) throws Exception;
+    Command resolve(ShellContext context, String path) throws CommandException;
 }

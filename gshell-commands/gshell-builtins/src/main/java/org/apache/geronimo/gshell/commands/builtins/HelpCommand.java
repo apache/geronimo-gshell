@@ -23,11 +23,11 @@ import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandContainerFactory;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandFactory;
-import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
@@ -36,6 +36,7 @@ import org.apache.geronimo.gshell.model.layout.AliasNode;
 import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Node;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,10 @@ public class HelpCommand
     private ApplicationManager applicationManager;
 
     @Requirement
-    private CommandFactory commandFactory;
+    private CommandResolver commandResolver;
+
+    @Requirement
+    private CommandContainerFactory commandContainerFactory;
 
     @Requirement
     private LayoutManager layoutManager;
@@ -67,26 +71,31 @@ public class HelpCommand
 
     public HelpCommand() {}
 
-    public HelpCommand(final CommandFactory commandFactory, final LayoutManager layoutManager) {
-        assert commandFactory != null;
+    public HelpCommand(final CommandResolver commandResolver, final LayoutManager layoutManager) {
+        assert commandResolver != null;
         assert layoutManager != null;
 
-        this.commandFactory = commandFactory;
+        this.commandResolver = commandResolver;
         this.layoutManager = layoutManager;
     }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        IO io = context.getIo();
-        
-        displayAvailableCommands(io);
+        if (command == null) {
+            displayAvailableCommands(context);
+        }
+        else {
+            displayCommandManual(command, context.getShellContext());
+        }
 
         return Result.SUCCESS;
     }
 
-    private void displayAvailableCommands(final IO io) throws Exception {
-        assert io != null;
+    private void displayAvailableCommands(final CommandContext context) throws Exception {
+        assert context != null;
+
+        IO io = context.getIo();
         String about = applicationManager.getContext().getApplication().getBranding().getAboutMessage();
 
         if (about != null) {
@@ -112,7 +121,7 @@ public class HelpCommand
                     CommandNode node = (CommandNode) child;
                     String name = StringUtils.rightPad(node.getName(), maxNameLen);
 
-                    Command command = commandFactory.create(node.getId());
+                    CommandContainer command = commandContainerFactory.create(node.getId());
 
                     // FIXME:
                     String desc = command.toString(); // command.getDescription();
@@ -170,5 +179,12 @@ public class HelpCommand
                 io.out.println();
             }
         }
+    }
+
+    private void displayCommandManual(final String command, final ShellContext context) {
+        assert command != null;
+        assert context != null;
+
+        // CommandContainer command = commandResolver.resolve(context, command);
     }
 }

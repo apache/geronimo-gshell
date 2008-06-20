@@ -106,6 +106,10 @@ public class DefaultCommandDocumenter
         }
     }
 
+    //
+    // TODO: Add some nice ANSI muck
+    //
+    
     public void renderUsage(final CommandInfo info, final PrintWriter out) {
         assert info != null;
         assert out != null;
@@ -113,7 +117,7 @@ public class DefaultCommandDocumenter
         CommandLineProcessor clp = new CommandLineProcessor();
 
         // Attach our helper to inject --help
-        DefaultCommand.HelpSupport help = new DefaultCommand.HelpSupport();
+        DefaultCommandContainer.HelpSupport help = new DefaultCommandContainer.HelpSupport();
         clp.addBean(help);
 
         // And then the beans options

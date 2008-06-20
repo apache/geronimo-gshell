@@ -21,16 +21,14 @@ package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.clp.ProcessingException;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandCompleter;
+import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
-import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -46,13 +44,13 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 /**
- * The default {@link Command} component.
+ * The default {@link CommandContainer} component.
  *
  * @version $Rev$ $Date$
  */
 @Component(role=Command.class)
-public class DefaultCommand
-    implements Command, Contextualizable
+public class DefaultCommandContainer
+    implements CommandContainer, Contextualizable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 

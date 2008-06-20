@@ -20,41 +20,45 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Details about the runtime configuration of a command.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface CommandInfo
+public interface CommandContainer
 {
     /**
-     * Returns the <em>identifier</em> for the command.
+     * Returns the configured identifier of the command.
      *
-     * @return Command identifier.
+     * @return  The command identifier; never null;
      */
     String getId();
+    
+    /**
+     * Returns the action of the command.
+     *
+     * @return  The command action; never null;
+     */
+    CommandAction getAction();
 
     /**
-     * Returns the name of the command.
+     * Returns the documenter for the command.
      *
-     * @return Command name.
+     * @return  The command documenter; never null;
      */
-    String getName();
+    CommandDocumenter getDocumenter();
 
     /**
-     * Returns the alias used to invoke the command if any.
+     * Returns the completer for the command.
      *
-     * @return The alias used to invoke the command; null if not aliased.
+     * @return  The command completer; never null;
      */
-    String getAlias();
-
-    //
-    // TODO: Add alias path?  And/or expose layout node?
-    //
+    CommandCompleter getCompleter();
 
     /**
-     * Returns the full path of the command.
+     * Execute the command action.
      *
-     * @return Command path.
+     * @param context   The execution context.
+     * @return          The result of the action execution.
      */
-    String getPath();
+    CommandResult execute(CommandContext context);
 }

@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.rapture;
 
+import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandContainerFactory;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
-import org.apache.geronimo.gshell.command.CommandFactory;
-import org.apache.geronimo.gshell.command.Command;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -33,13 +33,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Default implementation of a {@link CommandFactory} component.
+ * Default implementation of a {@link CommandContainerFactory} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandFactory.class)
+@Component(role= CommandContainerFactory.class)
 public class DefaultCommandFactory
-    implements CommandFactory, Contextualizable
+    implements CommandContainerFactory, Contextualizable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -54,20 +54,20 @@ public class DefaultCommandFactory
         log.debug("Container: {}", container);
     }
 
-    public Command create(final String id) throws Exception {
+    public CommandContainer create(final String id) throws Exception {
         assert id != null;
 
         log.debug("Locating container for ID: {}", id);
 
-        ComponentDescriptor descriptor = container.getComponentDescriptor(Command.class, id);
+        ComponentDescriptor descriptor = container.getComponentDescriptor(CommandContainer.class, id);
         if (descriptor == null) {
             // TODO: Throw typed exception
             throw new Exception("Command container not found for ID: " + id);
         }
 
-        Command command;
+        CommandContainer command;
         try {
-            command = container.lookupComponent(Command.class, id);
+            command = container.lookupComponent(CommandContainer.class, id);
         }
         catch (ComponentLookupException e) {
             // TODO: Throw typed exception
