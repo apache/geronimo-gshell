@@ -33,4 +33,6 @@ public interface Command
     CommandDocumenter getDocumenter();
 
     CommandCompleter getCompleter();
+
+    Object execute(CommandContext context) throws Exception;
 }

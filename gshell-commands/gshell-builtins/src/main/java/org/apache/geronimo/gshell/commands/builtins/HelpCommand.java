@@ -24,8 +24,9 @@ import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandFactory;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
@@ -53,7 +54,7 @@ public class HelpCommand
     private ApplicationManager applicationManager;
 
     @Requirement
-    private CommandContainer.Locator commandContainerLocator;
+    private CommandFactory commandFactory;
 
     @Requirement
     private LayoutManager layoutManager;
@@ -65,11 +66,11 @@ public class HelpCommand
 
     public HelpCommand() {}
 
-    public HelpCommand(final CommandContainer.Locator commandContainerLocator, final LayoutManager layoutManager) {
-        assert commandContainerLocator != null;
+    public HelpCommand(final CommandFactory commandFactory, final LayoutManager layoutManager) {
+        assert commandFactory != null;
         assert layoutManager != null;
 
-        this.commandContainerLocator = commandContainerLocator;
+        this.commandFactory = commandFactory;
         this.layoutManager = layoutManager;
     }
 
@@ -119,10 +120,10 @@ public class HelpCommand
                     CommandNode node = (CommandNode) child;
                     String name = StringUtils.rightPad(node.getName(), maxNameLen);
 
-                    CommandContainer container = commandContainerLocator.locate(node.getId());
+                    Command command = commandFactory.create(node.getId());
 
                     // FIXME:
-                    String desc = container.toString(); // command.getDescription();
+                    String desc = command.toString(); // command.getDescription();
 
                     io.out.print("  ");
                     io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));

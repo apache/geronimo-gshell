@@ -55,7 +55,7 @@ public class PluginDescriptor
         addComponentDescriptor(new CommandActionDescriptor(model));
         addComponentDescriptor(new CommandDocumenterDescriptor(model));
         addComponentDescriptor(new CommandCompleterDescriptor(model));
-        addComponentDescriptor(new CommandContainerDescriptor(model));
+        addComponentDescriptor(new CommandDescriptor(model));
     }
 
     public void addComponentDescriptor(final ComponentDescriptor descriptor) {

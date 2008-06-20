@@ -19,8 +19,9 @@
 
 package org.apache.geronimo.gshell.rapture;
 
-import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
+import org.apache.geronimo.gshell.command.CommandFactory;
+import org.apache.geronimo.gshell.command.Command;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -32,13 +33,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Default implementation of a {@link CommandContainer.Locator} component.
+ * Default implementation of a {@link CommandFactory} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandContainer.Locator.class)
-public class DefaultCommandContainerLocator
-    implements CommandContainer.Locator, Contextualizable
+@Component(role= CommandFactory.class)
+public class DefaultCommandFactory
+    implements CommandFactory, Contextualizable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -53,26 +54,26 @@ public class DefaultCommandContainerLocator
         log.debug("Container: {}", container);
     }
 
-    public CommandContainer locate(final String id) {
+    public Command create(final String id) throws Exception {
         assert id != null;
 
         log.debug("Locating container for ID: {}", id);
 
-        ComponentDescriptor descriptor = container.getComponentDescriptor(CommandContainer.class, id);
+        ComponentDescriptor descriptor = container.getComponentDescriptor(Command.class, id);
         if (descriptor == null) {
             // TODO: Throw typed exception
-            throw new RuntimeException("Command container not found for ID: " + id);
+            throw new Exception("Command container not found for ID: " + id);
         }
 
-        CommandContainer commandContainer;
+        Command command;
         try {
-            commandContainer = container.lookupComponent(CommandContainer.class, id);
+            command = container.lookupComponent(Command.class, id);
         }
         catch (ComponentLookupException e) {
             // TODO: Throw typed exception
-            throw new RuntimeException("Failed to access command container for ID: " + id, e);
+            throw new Exception("Failed to access command container for ID: " + id, e);
         }
 
-        return commandContainer;
+        return command;
     }
 }

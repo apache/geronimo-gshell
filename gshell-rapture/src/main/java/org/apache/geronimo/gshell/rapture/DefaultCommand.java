@@ -24,9 +24,11 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.clp.ProcessingException;
 import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.apache.geronimo.gshell.util.Arguments;
@@ -41,13 +43,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The default {@link CommandContainer} component.
+ * The default {@link Command} component.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CommandContainer.class)
-public class DefaultCommandContainer
-    implements CommandContainer, Contextualizable
+@Component(role=Command.class)
+public class DefaultCommand
+    implements Command, Contextualizable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -67,7 +69,13 @@ public class DefaultCommandContainer
         log.debug("Container: {}", container);
     }
 
-    private CommandAction getAction() {
+    // Command
+
+    public String getId() {
+        return commandId;
+    }
+
+    public CommandAction getAction() {
         assert container != null;
 
         try {
@@ -78,7 +86,27 @@ public class DefaultCommandContainer
         }
     }
 
-    // CommandContainer
+    public CommandDocumenter getDocumenter() {
+        assert container != null;
+
+        try {
+            return container.lookupComponent(CommandDocumenter.class, commandId);
+        }
+        catch (ComponentLookupException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public CommandCompleter getCompleter() {
+        assert container != null;
+
+        try {
+            return container.lookupComponent(CommandCompleter.class, commandId);
+        }
+        catch (ComponentLookupException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;

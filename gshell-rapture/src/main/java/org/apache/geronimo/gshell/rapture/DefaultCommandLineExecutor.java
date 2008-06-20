@@ -22,10 +22,11 @@ package org.apache.geronimo.gshell.rapture;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.chronos.StopWatch;
-import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandFactory;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.commandline.CommandExecutionFailied;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
@@ -76,7 +77,7 @@ public class DefaultCommandLineExecutor
     private LayoutManager layoutManager;
 
     @Requirement
-    private CommandContainer.Locator commandContainerLocator;
+    private CommandFactory commandFactory;
 
     @Requirement
     private CommandLineBuilder commandLineBuilder;
@@ -85,15 +86,15 @@ public class DefaultCommandLineExecutor
 
     public DefaultCommandLineExecutor() {}
     
-    public DefaultCommandLineExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandContainer.Locator commandContainerLocator, final CommandLineBuilder commandLineBuilder) {
+    public DefaultCommandLineExecutor(final ApplicationManager applicationManager, final LayoutManager layoutManager, final CommandFactory commandFactory, final CommandLineBuilder commandLineBuilder) {
         assert applicationManager != null;
         assert layoutManager != null;
-        assert commandContainerLocator != null;
+        assert commandFactory != null;
         assert commandLineBuilder != null;
 
         this.applicationManager = applicationManager;
         this.layoutManager = layoutManager;
-        this.commandContainerLocator = commandContainerLocator;
+        this.commandFactory = commandFactory;
         this.commandLineBuilder = commandLineBuilder;
     }
 
@@ -237,9 +238,9 @@ public class DefaultCommandLineExecutor
         final String id = findCommandId(node);
         log.debug("Command ID: {}", id);
         
-        final CommandContainer container;
+        final Command command;
         try {
-            container = commandContainerLocator.locate(id);
+            command = commandFactory.create(id);
         }
         catch (Exception e) {
             throw new NotFoundException(e.getMessage());
@@ -310,7 +311,7 @@ public class DefaultCommandLineExecutor
 
         Object result;
         try {
-            result = container.execute(context);
+            result = command.execute(context);
 
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }

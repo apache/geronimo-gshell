@@ -24,7 +24,7 @@ package org.apache.geronimo.gshell.command;
  *
  * @version $Rev$ $Date$
  */
-public interface CommandCompleter // completer
+public interface CommandCompleter
 {
     // TODO:
 }

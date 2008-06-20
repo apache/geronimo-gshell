@@ -24,7 +24,7 @@ package org.apache.geronimo.gshell.command;
  *
  * @version $Rev$ $Date$
  */
-public interface CommandDocumenter // documenter
+public interface CommandDocumenter
 {
     // TODO:
 }
