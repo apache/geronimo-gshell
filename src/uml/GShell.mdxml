@@ -661,6 +661,18 @@
 						</ownedParameter>
 					</ownedOperation>
 				</packagedElement>
+				<packagedElement xmi:type='uml:Interface' xmi:id='_15_1_640021c_1213984187477_707285_3085' name='CommandResolver' visibility='public'>
+					<ownedOperation xmi:type='uml:Operation' xmi:id='_15_1_640021c_1213984218308_613919_3120' name='resolve' visibility='public'>
+						<ownedParameter xmi:type='uml:Parameter' xmi:id='_15_1_640021c_1213984227802_93658_3122' visibility='public' direction='return' type='_15_1_640021c_1213180637361_354944_424'/>
+						<ownedParameter xmi:type='uml:Parameter' xmi:id='_15_1_640021c_1213984231579_805513_3123' name='id' visibility='public' direction='in'>
+							<type xmi:type='uml:PrimitiveType' href='http://schema.omg.org/spec/UML/2.0/uml.xml#String'>
+								<xmi:Extension extender='MagicDraw UML 15.1' extenderID='MagicDraw UML 15.1'>
+									<referenceExtension referentPath='UML Standard Profile::UML2 Metamodel::AuxiliaryConstructs::PrimitiveTypes::String' referentType='PrimitiveType'/>
+								</xmi:Extension>
+							</type>
+						</ownedParameter>
+					</ownedOperation>
+				</packagedElement>
 			</packagedElement>
 			<packagedElement xmi:type='uml:Package' xmi:id='_15_1_640021c_1213183808905_229558_1513' name='console' visibility='public'>
 				<packagedElement xmi:type='uml:Interface' xmi:id='_15_1_640021c_1213182988131_105968_1225' name='Console' visibility='public'/>
@@ -1337,6 +1349,18 @@
 		</packagedElement>
 		<packagedElement xmi:type='uml:Dependency' xmi:id='_15_1_640021c_1213977154043_530016_3069' visibility='public'>
 			<supplier xmi:idref='_15_1_640021c_1213181404400_206433_547'/>
+			<client xmi:idref='_15_1_640021c_1213975925710_671214_2752'/>
+		</packagedElement>
+		<packagedElement xmi:type='uml:Dependency' xmi:id='_15_1_640021c_1213984197227_928880_3105' name='creates' visibility='public'>
+			<supplier xmi:idref='_15_1_640021c_1213180637361_354944_424'/>
+			<client xmi:idref='_15_1_640021c_1213984187477_707285_3085'/>
+		</packagedElement>
+		<packagedElement xmi:type='uml:Dependency' xmi:id='_15_1_640021c_1213984266622_506098_3125' visibility='public'>
+			<supplier xmi:idref='_15_1_640021c_1213984187477_707285_3085'/>
+			<client xmi:idref='_15_1_640021c_1213182025685_988141_873'/>
+		</packagedElement>
+		<packagedElement xmi:type='uml:Dependency' xmi:id='_15_1_640021c_1213984336250_222473_3228' visibility='public'>
+			<supplier xmi:idref='_15_1_640021c_1213984187477_707285_3085'/>
 			<client xmi:idref='_15_1_640021c_1213975925710_671214_2752'/>
 		</packagedElement>
 	</uml:Model>
@@ -2475,7 +2499,7 @@ The implementing glue may create new instances each time, cache them, use protot
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
-					<active xmi:value='false'/>
+					<active xmi:value='true'/>
 					<mdOwnedViews>
 						<mdElement elementClass='DiagramFrame' xmi:id='_15_1_640021c_1213202307558_548186_860'>
 							<elementID xmi:idref='_15_1_640021c_1213202307554_862299_847'/>
@@ -2492,7 +2516,7 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='false'/>
 								</mdElement>
 							</properties>
-							<geometry>463, 226, 288, 125</geometry>
+							<geometry>251, 222, 288, 125</geometry>
 							<receptions>
 								<mdElement elementClass='Reception' xmi:id='_15_1_640021c_1213958669800_450410_2504'>
 									<elementID xmi:idref='_15_1_640021c_1213958667307_273321_2501'/>
@@ -2503,7 +2527,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327956_459502_3515'>
 							<elementID xmi:idref='_15_1_640021c_1213182347581_431001_933'/>
-							<geometry>85, 304, 103, 47</geometry>
+							<geometry>591, 407, 103, 47</geometry>
 						</mdElement>
 						<mdElement elementClass='Class' xmi:id='_15_1_640021c_1213202327956_322259_3525'>
 							<elementID xmi:idref='_15_1_640021c_1213182355654_933822_953'/>
@@ -2521,7 +2545,7 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='true'/>
 								</mdElement>
 							</properties>
-							<geometry>10, 142, 75, 24</geometry>
+							<geometry>695, 323, 75, 24</geometry>
 						</mdElement>
 						<mdElement elementClass='Class' xmi:id='_15_1_640021c_1213202327956_771719_3518'>
 							<elementID xmi:idref='_15_1_640021c_1213183005339_563000_1245'/>
@@ -2539,27 +2563,27 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='true'/>
 								</mdElement>
 							</properties>
-							<geometry>115, 128, 96, 38</geometry>
+							<geometry>569, 309, 96, 38</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327955_30531_3510'>
 							<elementID xmi:idref='_15_1_640021c_1213182025685_988141_873'/>
-							<geometry>273, 441, 146, 47</geometry>
+							<geometry>569, 544, 146, 47</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327956_518126_3516'>
 							<elementID xmi:idref='_15_1_640021c_1213182305788_683683_893'/>
-							<geometry>241, 135, 99, 31</geometry>
+							<geometry>947, 316, 99, 31</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327955_634140_3508'>
 							<elementID xmi:idref='_15_1_640021c_1213182312309_201363_913'/>
-							<geometry>296, 304, 137, 47</geometry>
+							<geometry>824, 407, 137, 47</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327956_743148_3530'>
 							<elementID xmi:idref='_15_1_640021c_1213181538079_867461_634'/>
-							<geometry>323, 578, 47, 31</geometry>
+							<geometry>197, 681, 47, 31</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327956_773955_3521'>
 							<elementID xmi:idref='_15_1_640021c_1213181558326_649547_655'/>
-							<geometry>647, 135, 89, 31</geometry>
+							<geometry>328, 131, 89, 31</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327956_874056_3528'>
 							<elementID xmi:idref='_15_1_640021c_1213181599494_517275_719'/>
@@ -2582,7 +2606,7 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='false'/>
 								</mdElement>
 							</properties>
-							<geometry>740, 34, 68, 34</geometry>
+							<geometry>1025, 30, 68, 34</geometry>
 						</mdElement>
 						<mdElement elementClass='Class' xmi:id='_15_1_640021c_1213202327956_604907_3523'>
 							<elementID xmi:idref='_15_1_640021c_1213181614982_729127_739'/>
@@ -2600,11 +2624,11 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='true'/>
 								</mdElement>
 							</properties>
-							<geometry>63, 450, 85, 38</geometry>
+							<geometry>10, 553, 85, 38</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213202327956_130805_3529'>
 							<elementID xmi:idref='_15_1_640021c_1213182988131_105968_1225'/>
-							<geometry>178, 457, 65, 31</geometry>
+							<geometry>125, 560, 65, 31</geometry>
 						</mdElement>
 						<mdElement elementClass='Class' xmi:id='_15_1_640021c_1213202327956_839226_3519'>
 							<elementID xmi:idref='_15_1_640021c_1213181659975_821407_802'/>
@@ -2622,7 +2646,7 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='true'/>
 								</mdElement>
 							</properties>
-							<geometry>243, 30, 94, 38</geometry>
+							<geometry>949, 124, 94, 38</geometry>
 						</mdElement>
 						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213203217189_64243_4721'>
 							<elementID xmi:idref='_15_1_640021c_1213203217181_698807_4720'/>
@@ -2637,38 +2661,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_874056_3528'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_743148_3530'/>
-							<geometry>791, 68; 791, 548; 365, 548; 365, 578; </geometry>
+							<geometry>1076, 64; 1076, 651; 239, 651; 239, 681; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203217189_472381_4722'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203217189_472381_4722'>
 									<visible xmi:value='false'/>
-									<geometry>779, 523, 24, 13</geometry>
+									<geometry>924, 638, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203217189_579539_4724'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>779, 524, 24, 12</geometry>
+									<geometry>924, 639, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203217190_238544_4726'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>779, 548, 24, 13</geometry>
+									<geometry>924, 663, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203217190_681274_4729'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>779, 561, 24, 12</geometry>
+									<geometry>924, 676, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203217190_132079_4731'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>779, 240, 24, 12</geometry>
+									<geometry>1064, 339, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203217190_159484_4733'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>511, 533, 24, 12</geometry>
+									<geometry>488, 636, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203217189_579539_4724'/>
@@ -2690,38 +2714,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327955_30531_3510'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_743148_3530'/>
-							<geometry>346, 488; 346, 578; </geometry>
+							<geometry>642, 591; 642, 621; 229, 621; 229, 681; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203219922_598711_4738'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203219922_598711_4738'>
 									<visible xmi:value='false'/>
-									<geometry>334, 520, 24, 13</geometry>
+									<geometry>409, 608, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203219922_598197_4740'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 521, 24, 12</geometry>
+									<geometry>409, 609, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203219922_74892_4742'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 545, 24, 13</geometry>
+									<geometry>409, 633, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203219922_33445_4745'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 558, 24, 12</geometry>
+									<geometry>409, 646, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203219922_197843_4747'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 491, 24, 12</geometry>
+									<geometry>560, 606, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203219922_140567_4749'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 545, 24, 12</geometry>
+									<geometry>258, 606, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203219922_598197_4740'/>
@@ -2743,38 +2767,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327955_634140_3508'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327955_30531_3510'/>
-							<geometry>364, 351; 364, 441; </geometry>
+							<geometry>892, 454; 892, 484; 671, 484; 671, 544; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203227627_471663_4755'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203227627_471663_4755'>
 									<visible xmi:value='false'/>
-									<geometry>352, 383, 24, 13</geometry>
+									<geometry>755, 471, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203227628_698725_4757'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>352, 384, 24, 12</geometry>
+									<geometry>755, 472, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203227628_598771_4759'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>352, 408, 24, 13</geometry>
+									<geometry>755, 496, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203227628_950803_4762'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>352, 421, 24, 12</geometry>
+									<geometry>755, 509, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203227628_472804_4764'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>352, 354, 24, 12</geometry>
+									<geometry>848, 469, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203227628_15843_4766'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>352, 408, 24, 12</geometry>
+									<geometry>662, 469, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203227628_698725_4757'/>
@@ -2796,38 +2820,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_518126_3516'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327955_634140_3508'/>
-							<geometry>315, 166; 315, 196; 330, 196; 330, 304; </geometry>
+							<geometry>971, 347; 971, 377; 927, 377; 927, 407; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203249657_848863_4771'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203249657_848863_4771'>
-									<geometry>312, 214, 37, 13</geometry>
+									<geometry>931, 364, 37, 13</geometry>
 									<text>creates</text>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203249657_401013_4773'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>318, 203, 24, 12</geometry>
+									<geometry>937, 353, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203249657_421230_4775'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>318, 239, 24, 13</geometry>
+									<geometry>937, 389, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203249657_883362_4778'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>318, 252, 24, 12</geometry>
+									<geometry>937, 402, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203249657_530021_4780'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>303, 181, 24, 12</geometry>
+									<geometry>959, 352, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203249657_784009_4782'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>318, 258, 24, 12</geometry>
+									<geometry>915, 371, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203249657_401013_4773'/>
@@ -2849,38 +2873,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_518126_3516'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327955_30531_3510'/>
-							<geometry>265, 166; 265, 381; 328, 381; 328, 441; </geometry>
+							<geometry>1021, 347; 1021, 514; 701, 514; 701, 544; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203253574_958318_4787'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203253574_958318_4787'>
 									<visible xmi:value='false'/>
-									<geometry>253, 322, 24, 13</geometry>
+									<geometry>918, 501, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203253574_684241_4789'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>253, 323, 24, 12</geometry>
+									<geometry>918, 502, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203253574_615507_4791'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>253, 347, 24, 13</geometry>
+									<geometry>918, 526, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203253574_753145_4794'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>253, 360, 24, 12</geometry>
+									<geometry>918, 539, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203253574_585857_4796'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>253, 218, 24, 12</geometry>
+									<geometry>1009, 435, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203253574_146745_4798'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>308, 366, 24, 12</geometry>
+									<geometry>763, 499, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203253574_684241_4789'/>
@@ -2902,38 +2926,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_130805_3529'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_743148_3530'/>
-							<geometry>211, 488; 211, 518; 337, 518; 337, 578; </geometry>
+							<geometry>157, 591; 157, 621; 211, 621; 211, 681; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203272678_209849_4803'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203272678_209849_4803'>
 									<visible xmi:value='false'/>
-									<geometry>277, 505, 24, 13</geometry>
+									<geometry>187, 608, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203272678_898541_4805'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>277, 506, 24, 12</geometry>
+									<geometry>187, 609, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203272678_971247_4807'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>277, 530, 24, 13</geometry>
+									<geometry>187, 633, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203272678_530793_4810'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>277, 543, 24, 12</geometry>
+									<geometry>187, 646, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203272678_857882_4812'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>212, 503, 24, 12</geometry>
+									<geometry>145, 604, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203272678_770115_4814'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>325, 519, 24, 12</geometry>
+									<geometry>199, 637, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203272678_898541_4805'/>
@@ -2955,38 +2979,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_459502_3515'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327955_30531_3510'/>
-							<geometry>137, 351; 137, 411; 291, 411; 291, 441; </geometry>
+							<geometry>642, 454; 642, 544; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203291107_288344_4819'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203291107_288344_4819'>
 									<visible xmi:value='false'/>
-									<geometry>187, 398, 24, 13</geometry>
+									<geometry>630, 486, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203291107_58106_4821'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>187, 399, 24, 12</geometry>
+									<geometry>630, 487, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203291107_940835_4823'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>187, 423, 24, 13</geometry>
+									<geometry>630, 511, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203291107_208438_4826'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>187, 436, 24, 12</geometry>
+									<geometry>630, 524, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203291107_534671_4828'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>125, 384, 24, 12</geometry>
+									<geometry>630, 457, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203291107_576450_4830'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>260, 396, 24, 12</geometry>
+									<geometry>630, 511, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203291107_58106_4821'/>
@@ -3008,38 +3032,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_322259_3525'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_459502_3515'/>
-							<geometry>47, 166; 47, 196; 111, 196; 111, 304; </geometry>
+							<geometry>732, 347; 732, 377; 668, 377; 668, 407; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203301676_703955_4835'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203301676_703955_4835'>
 									<visible xmi:value='false'/>
-									<geometry>99, 190, 24, 13</geometry>
+									<geometry>688, 364, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203301676_93050_4837'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>99, 191, 24, 12</geometry>
+									<geometry>688, 365, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203301676_194475_4839'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>99, 215, 24, 13</geometry>
+									<geometry>688, 389, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203301676_976612_4842'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>99, 228, 24, 12</geometry>
+									<geometry>688, 402, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203301676_244214_4844'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>45, 181, 24, 12</geometry>
+									<geometry>720, 356, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203301676_543337_4846'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>99, 248, 24, 12</geometry>
+									<geometry>656, 367, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203301676_93050_4837'/>
@@ -3061,38 +3085,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_771719_3518'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_459502_3515'/>
-							<geometry>163, 166; 163, 304; </geometry>
+							<geometry>617, 347; 617, 407; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203312850_799329_4851'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203312850_799329_4851'>
-									<geometry>147, 222, 33, 13</geometry>
+									<geometry>601, 364, 33, 13</geometry>
 									<text>throws</text>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203312850_870801_4853'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>151, 211, 24, 12</geometry>
+									<geometry>605, 353, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203312850_257307_4855'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>151, 247, 24, 13</geometry>
+									<geometry>605, 389, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203312850_826944_4858'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>151, 260, 24, 12</geometry>
+									<geometry>605, 402, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203312851_760618_4860'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>151, 178, 24, 12</geometry>
+									<geometry>605, 344, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203312851_553373_4862'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>151, 261, 24, 12</geometry>
+									<geometry>605, 380, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203312850_870801_4853'/>
@@ -3114,38 +3138,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_431333_3524'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327955_30531_3510'/>
-							<geometry>607, 351; 607, 411; 401, 411; 401, 441; </geometry>
+							<geometry>467, 347; 467, 484; 613, 484; 613, 544; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203521990_26759_4899'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203521990_26759_4899'>
-									<geometry>497, 398, 45, 13</geometry>
+									<geometry>479, 471, 45, 13</geometry>
 									<text>executes</text>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203521990_391011_4901'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>507, 387, 24, 12</geometry>
+									<geometry>489, 460, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203521990_52692_4903'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>507, 423, 24, 13</geometry>
+									<geometry>489, 496, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203521990_381950_4906'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>507, 436, 24, 12</geometry>
+									<geometry>489, 509, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203521990_596231_4908'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>595, 395, 24, 12</geometry>
+									<geometry>455, 400, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203521990_510427_4910'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>419, 396, 24, 12</geometry>
+									<geometry>592, 469, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203521990_391011_4901'/>
@@ -3167,38 +3191,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_773955_3521'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_743148_3530'/>
-							<geometry>714, 166; 714, 196; 781, 196; 781, 518; 355, 518; 355, 578; </geometry>
+							<geometry>350, 162; 350, 192; 220, 192; 220, 681; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203574246_764534_4915'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203574246_764534_4915'>
 									<visible xmi:value='false'/>
-									<geometry>736, 505, 24, 13</geometry>
+									<geometry>208, 343, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203574246_403052_4917'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>736, 506, 24, 12</geometry>
+									<geometry>208, 344, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203574246_595200_4919'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>736, 530, 24, 13</geometry>
+									<geometry>208, 368, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203574246_437003_4922'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>736, 543, 24, 12</geometry>
+									<geometry>208, 381, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203574246_81496_4924'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>769, 265, 24, 12</geometry>
+									<geometry>239, 177, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203574246_204722_4926'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>464, 503, 24, 12</geometry>
+									<geometry>208, 536, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203574246_403052_4917'/>
@@ -3220,38 +3244,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_874056_3528'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_773955_3521'/>
-							<geometry>757, 68; 757, 98; 721, 98; 721, 135; </geometry>
+							<geometry>1042, 64; 1042, 94; 402, 94; 402, 131; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203581870_628117_4931'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203581870_628117_4931'>
 									<visible xmi:value='false'/>
-									<geometry>724, 85, 24, 13</geometry>
+									<geometry>707, 81, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203581870_170691_4933'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>724, 86, 24, 12</geometry>
+									<geometry>707, 82, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203581870_437867_4935'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>724, 110, 24, 13</geometry>
+									<geometry>707, 106, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203581870_447643_4938'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>724, 123, 24, 12</geometry>
+									<geometry>707, 119, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203581870_849885_4940'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>745, 73, 24, 12</geometry>
+									<geometry>919, 79, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203581870_226712_4942'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>709, 99, 24, 12</geometry>
+									<geometry>495, 79, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203581870_170691_4933'/>
@@ -3273,38 +3297,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_773955_3521'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_431333_3524'/>
-							<geometry>669, 166; 669, 196; 607, 196; 607, 226; </geometry>
+							<geometry>395, 162; 395, 222; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203608149_745801_4963'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203608149_745801_4963'>
-									<geometry>626, 183, 24, 13</geometry>
+									<geometry>383, 179, 24, 13</geometry>
 									<text>uses</text>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203608149_743950_4965'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>626, 172, 24, 12</geometry>
+									<geometry>383, 168, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203608149_147017_4967'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>626, 208, 24, 13</geometry>
+									<geometry>383, 204, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203608149_471341_4970'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>626, 221, 24, 12</geometry>
+									<geometry>383, 217, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203608149_341468_4972'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>657, 175, 24, 12</geometry>
+									<geometry>383, 159, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203608149_534712_4974'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>595, 186, 24, 12</geometry>
+									<geometry>383, 195, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203608149_743950_4965'/>
@@ -3315,7 +3339,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213203641313_107106_5048'>
 							<elementID xmi:idref='_15_1_640021c_1213181381231_691996_507'/>
-							<geometry>674, 37, 36, 31</geometry>
+							<geometry>354, 33, 36, 31</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213203641313_553825_5049'>
 							<elementID xmi:idref='_15_1_640021c_1213181386344_882093_527'/>
@@ -3333,7 +3357,7 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='false'/>
 								</mdElement>
 							</properties>
-							<geometry>590, 34, 54, 34</geometry>
+							<geometry>270, 30, 54, 34</geometry>
 						</mdElement>
 						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213203653031_968404_5086'>
 							<elementID xmi:idref='_15_1_640021c_1213203653020_277963_5085'/>
@@ -3348,38 +3372,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213203641313_553825_5049'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_773955_3521'/>
-							<geometry>617, 51; 617, 98; 662, 98; 662, 135; </geometry>
+							<geometry>297, 47; 297, 94; 343, 94; 343, 131; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203653031_520224_5087'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203653031_520224_5087'>
 									<visible xmi:value='false'/>
-									<geometry>622, 85, 24, 13</geometry>
+									<geometry>303, 81, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203653031_874769_5089'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>622, 86, 24, 12</geometry>
+									<geometry>303, 82, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203653031_879230_5091'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>622, 110, 24, 13</geometry>
+									<geometry>303, 106, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203653031_29169_5094'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>622, 123, 24, 12</geometry>
+									<geometry>303, 119, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203653031_520363_5096'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>605, 61, 24, 12</geometry>
+									<geometry>285, 58, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203653031_472434_5098'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>650, 94, 24, 12</geometry>
+									<geometry>331, 90, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203653031_874769_5089'/>
@@ -3401,38 +3425,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213203641313_107106_5048'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_773955_3521'/>
-							<geometry>692, 68; 692, 135; </geometry>
+							<geometry>372, 64; 372, 131; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203655111_368624_5103'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203655111_368624_5103'>
 									<visible xmi:value='false'/>
-									<geometry>680, 88, 24, 13</geometry>
+									<geometry>360, 84, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203655111_565397_5105'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>680, 89, 24, 12</geometry>
+									<geometry>360, 85, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203655111_615681_5107'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>680, 113, 24, 13</geometry>
+									<geometry>360, 109, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203655111_513604_5110'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>680, 126, 24, 12</geometry>
+									<geometry>360, 122, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203655111_88944_5112'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>680, 66, 24, 12</geometry>
+									<geometry>360, 62, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203655111_536038_5114'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>680, 106, 24, 12</geometry>
+									<geometry>360, 102, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203655111_565397_5105'/>
@@ -3454,38 +3478,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_839226_3519'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_518126_3516'/>
-							<geometry>290, 68; 290, 135; </geometry>
+							<geometry>996, 162; 996, 316; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203761612_405994_5119'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203761612_405994_5119'>
-									<geometry>274, 88, 33, 13</geometry>
+									<geometry>980, 226, 33, 13</geometry>
 									<text>throws</text>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203761612_161381_5121'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>278, 77, 24, 12</geometry>
+									<geometry>984, 215, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203761612_53962_5123'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>278, 113, 24, 13</geometry>
+									<geometry>984, 251, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203761612_315356_5126'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>278, 126, 24, 12</geometry>
+									<geometry>984, 264, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203761612_432431_5128'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>278, 66, 24, 12</geometry>
+									<geometry>984, 177, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203761612_525104_5130'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>278, 106, 24, 12</geometry>
+									<geometry>984, 270, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203761612_161381_5121'/>
@@ -3507,38 +3531,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_604907_3523'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327956_743148_3530'/>
-							<geometry>106, 488; 106, 548; 327, 548; 327, 578; </geometry>
+							<geometry>52, 591; 52, 651; 201, 651; 201, 681; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213203770492_310271_5135'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203770492_310271_5135'>
-									<geometry>185, 535, 33, 13</geometry>
+									<geometry>95, 638, 33, 13</geometry>
 									<text>throws</text>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203770492_658926_5137'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>189, 524, 24, 12</geometry>
+									<geometry>99, 627, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213203770492_274095_5139'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>189, 560, 24, 13</geometry>
+									<geometry>99, 663, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203770492_918715_5142'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>189, 573, 24, 12</geometry>
+									<geometry>99, 676, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203770492_883857_5144'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>96, 533, 24, 12</geometry>
+									<geometry>40, 623, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213203770492_801834_5146'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>282, 533, 24, 12</geometry>
+									<geometry>171, 636, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213203770492_658926_5137'/>
@@ -3563,7 +3587,7 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='true'/>
 								</mdElement>
 							</properties>
-							<geometry>370, 142, 117, 24</geometry>
+							<geometry>800, 323, 117, 24</geometry>
 						</mdElement>
 						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213204189811_132161_5272'>
 							<elementID xmi:idref='_15_1_640021c_1213204189803_687009_5271'/>
@@ -3578,38 +3602,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213204180478_895100_5251'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327955_634140_3508'/>
-							<geometry>428, 166; 428, 196; 399, 196; 399, 304; </geometry>
+							<geometry>858, 347; 858, 407; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213204189811_653976_5273'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213204189811_653976_5273'>
 									<visible xmi:value='false'/>
-									<geometry>387, 207, 24, 13</geometry>
+									<geometry>846, 364, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213204189811_472757_5275'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>387, 208, 24, 12</geometry>
+									<geometry>846, 365, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213204189811_401006_5277'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>387, 232, 24, 13</geometry>
+									<geometry>846, 389, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213204189811_826313_5280'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>387, 245, 24, 12</geometry>
+									<geometry>846, 402, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213204189811_412542_5282'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>413, 181, 24, 12</geometry>
+									<geometry>846, 344, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213204189811_937037_5284'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>387, 255, 24, 12</geometry>
+									<geometry>846, 380, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213204189811_472757_5275'/>
@@ -3620,7 +3644,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213272836998_988408_1672'>
 							<elementID xmi:idref='_15_1_640021c_1213269656382_424404_1571'/>
-							<geometry>303, 649, 87, 47</geometry>
+							<geometry>177, 752, 87, 47</geometry>
 						</mdElement>
 						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213272847672_541516_1692'>
 							<elementID xmi:idref='_15_1_640021c_1213272847664_14753_1691'/>
@@ -3635,38 +3659,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_743148_3530'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213272836998_988408_1672'/>
-							<geometry>346, 609; 346, 649; </geometry>
+							<geometry>220, 712; 220, 752; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213272847672_910178_1693'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213272847672_910178_1693'>
 									<visible xmi:value='false'/>
-									<geometry>334, 616, 24, 13</geometry>
+									<geometry>208, 719, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213272847672_579119_1695'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 617, 24, 12</geometry>
+									<geometry>208, 720, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213272847672_706153_1697'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 641, 24, 13</geometry>
+									<geometry>208, 744, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213272847672_768827_1700'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 654, 24, 12</geometry>
+									<geometry>208, 757, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213272847672_620428_1702'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 602, 24, 12</geometry>
+									<geometry>208, 705, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213272847672_370631_1704'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>334, 626, 24, 12</geometry>
+									<geometry>208, 729, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213272847672_579119_1695'/>
@@ -3674,6 +3698,116 @@ The implementing glue may create new instances each time, cache them, use protot
 							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213272847672_768827_1700'/>
 							<linkConveyedAID xmi:idref='_15_1_640021c_1213272847672_620428_1702'/>
 							<linkConveyedBID xmi:idref='_15_1_640021c_1213272847672_370631_1704'/>
+						</mdElement>
+						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213984187478_729525_3086'>
+							<elementID xmi:idref='_15_1_640021c_1213984187477_707285_3085'/>
+							<geometry>251, 410, 172, 44</geometry>
+						</mdElement>
+						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213984197246_593329_3106'>
+							<elementID xmi:idref='_15_1_640021c_1213984197227_928880_3105'/>
+							<properties>
+								<mdElement elementClass='ChoiceProperty'>
+									<propertyID>LINK_LINE_STYLE</propertyID>
+									<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
+									<value>RECTILINEAR</value>
+									<choice xmi:value='RECTILINEAR^OBLIQUE^BEZIER'/>
+									<index xmi:value='0'/>
+								</mdElement>
+							</properties>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213202327956_431333_3524'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213984187478_729525_3086'/>
+							<geometry>323, 347; 323, 377; 337, 377; 337, 410; </geometry>
+							<linkNameID xmi:idref='_15_1_640021c_1213984197246_991218_3107'/>
+							<nameVisible xmi:value='true'/>
+							<mdOwnedViews>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984197246_991218_3107'>
+									<geometry>313, 364, 37, 13</geometry>
+									<text>creates</text>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984197246_248231_3109'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>319, 353, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213984197246_224101_3111'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>319, 389, 24, 13</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984197246_262620_3114'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>319, 402, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984197246_269250_3116'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>311, 347, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984197246_377019_3118'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>325, 379, 24, 12</geometry>
+								</mdElement>
+							</mdOwnedViews>
+							<linkConstraintID xmi:idref='_15_1_640021c_1213984197246_248231_3109'/>
+							<linkStereotypeID xmi:idref='_15_1_640021c_1213984197246_224101_3111'/>
+							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213984197246_262620_3114'/>
+							<linkConveyedAID xmi:idref='_15_1_640021c_1213984197246_269250_3116'/>
+							<linkConveyedBID xmi:idref='_15_1_640021c_1213984197246_377019_3118'/>
+						</mdElement>
+						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213984266631_823178_3126'>
+							<elementID xmi:idref='_15_1_640021c_1213984266622_506098_3125'/>
+							<properties>
+								<mdElement elementClass='ChoiceProperty'>
+									<propertyID>LINK_LINE_STYLE</propertyID>
+									<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
+									<value>RECTILINEAR</value>
+									<choice xmi:value='RECTILINEAR^OBLIQUE^BEZIER'/>
+									<index xmi:value='0'/>
+								</mdElement>
+							</properties>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213984187478_729525_3086'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213202327955_30531_3510'/>
+							<geometry>337, 454; 337, 514; 584, 514; 584, 544; </geometry>
+							<linkNameID xmi:idref='_15_1_640021c_1213984266631_774036_3127'/>
+							<nameVisible xmi:value='true'/>
+							<mdOwnedViews>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984266631_774036_3127'>
+									<visible xmi:value='false'/>
+									<geometry>433, 501, 24, 13</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984266631_382605_3129'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>433, 502, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213984266631_762746_3131'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>433, 526, 24, 13</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984266631_540818_3134'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>433, 539, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984266631_139783_3136'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>332, 499, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984266631_184434_3138'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>534, 499, 24, 12</geometry>
+								</mdElement>
+							</mdOwnedViews>
+							<linkConstraintID xmi:idref='_15_1_640021c_1213984266631_382605_3129'/>
+							<linkStereotypeID xmi:idref='_15_1_640021c_1213984266631_762746_3131'/>
+							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213984266631_540818_3134'/>
+							<linkConveyedAID xmi:idref='_15_1_640021c_1213984266631_139783_3136'/>
+							<linkConveyedBID xmi:idref='_15_1_640021c_1213984266631_184434_3138'/>
 						</mdElement>
 					</mdOwnedViews>
 				</mdElement>
@@ -8921,7 +9055,7 @@ The implementing glue may create new instances each time, cache them, use protot
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
-					<active xmi:value='true'/>
+					<active xmi:value='false'/>
 					<mdOwnedViews>
 						<mdElement elementClass='DiagramFrame' xmi:id='_15_1_640021c_1213975914935_916003_2744'>
 							<elementID xmi:idref='_15_1_640021c_1213975914932_881655_2731'/>
@@ -8944,7 +9078,7 @@ The implementing glue may create new instances each time, cache them, use protot
 									<value xmi:value='true'/>
 								</mdElement>
 							</properties>
-							<geometry>262, 375, 85, 24</geometry>
+							<geometry>259, 378, 85, 24</geometry>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213975940218_665630_2773'>
 							<elementID xmi:idref='_15_1_640021c_1213180578587_641176_364'/>
@@ -8971,7 +9105,7 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213975940218_665630_2773'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213975925712_87602_2753'/>
-							<geometry>176, 239; 176, 315; 287, 315; 287, 375; </geometry>
+							<geometry>176, 239; 176, 315; 284, 315; 284, 378; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213975954222_524548_2836'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
@@ -9002,7 +9136,7 @@ The implementing glue may create new instances each time, cache them, use protot
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975954222_616519_2847'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>275, 310, 24, 12</geometry>
+									<geometry>272, 313, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213975954222_434828_2838'/>
@@ -9010,276 +9144,6 @@ The implementing glue may create new instances each time, cache them, use protot
 							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213975954222_118317_2843'/>
 							<linkConveyedAID xmi:idref='_15_1_640021c_1213975954222_431350_2845'/>
 							<linkConveyedBID xmi:idref='_15_1_640021c_1213975954222_616519_2847'/>
-						</mdElement>
-						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213975980197_140391_2850'>
-							<elementID xmi:idref='_15_1_640021c_1213180648464_630720_444'/>
-							<properties>
-								<mdElement elementClass='BooleanProperty'>
-									<propertyID>SUPPRESS_CLASS_OPERATIONS</propertyID>
-									<propertyGroup>OPERATIONS</propertyGroup>
-									<propertyDescriptionID>SUPPRESS_CLASS_OPERATIONS_DESCRIPTION</propertyDescriptionID>
-									<value xmi:value='true'/>
-								</mdElement>
-							</properties>
-							<geometry>254, 235, 101, 50</geometry>
-						</mdElement>
-						<mdElement elementClass='Association' xmi:id='_15_1_640021c_1213975987436_260852_2876'>
-							<elementID xmi:idref='_15_1_640021c_1213975987415_342165_2871'/>
-							<linkFirstEndID xmi:idref='_15_1_640021c_1213975980197_140391_2850'/>
-							<linkSecondEndID xmi:idref='_15_1_640021c_1213975925712_87602_2753'/>
-							<geometry>304, 252; 304, 375; </geometry>
-							<linkNameID xmi:idref='_15_1_640021c_1213975987436_679870_2918'/>
-							<nameVisible xmi:value='true'/>
-							<mdOwnedViews>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_80025_2877'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>292, 301, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213975987436_585646_2879'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>292, 325, 24, 13</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_765137_2882'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>292, 338, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_285182_2884'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>292, 261, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_376863_2886'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>292, 335, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='Role' xmi:id='_15_1_640021c_1213975987416_727402_2875'>
-									<elementID xmi:idref='_15_1_640021c_1213975987415_809287_2872'/>
-									<geometry>299, 252, 10, 10</geometry>
-									<mdOwnedViews>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_155741_2888'>
-											<visible xmi:value='false'/>
-											<geometry>299, 252, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_13391_2890'>
-											<visible xmi:value='false'/>
-											<geometry>299, 252, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_474241_2892'>
-											<visible xmi:value='false'/>
-											<geometry>299, 252, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213975987436_848512_2894'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>299, 269, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_355855_2897'>
-											<visible xmi:value='false'/>
-											<geometry>299, 252, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_256350_2899'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>299, 252, 24, 13</geometry>
-										</mdElement>
-									</mdOwnedViews>
-									<roleNameID xmi:idref='_15_1_640021c_1213975987436_155741_2888'/>
-									<roleMultiplicityID xmi:idref='_15_1_640021c_1213975987436_13391_2890'/>
-									<roleConstraintsID xmi:idref='_15_1_640021c_1213975987436_474241_2892'/>
-									<roleStereotypeID xmi:idref='_15_1_640021c_1213975987436_848512_2894'/>
-									<roleTaggedValuesID xmi:idref='_15_1_640021c_1213975987436_355855_2897'/>
-									<rolePropertyStringID xmi:idref='_15_1_640021c_1213975987436_256350_2899'/>
-								</mdElement>
-								<mdElement elementClass='Role' xmi:id='_15_1_640021c_1213975987416_509289_2874'>
-									<elementID xmi:idref='_15_1_640021c_1213975987416_769599_2873'/>
-									<geometry>299, 365, 10, 10</geometry>
-									<mdOwnedViews>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_397331_2903'>
-											<visible xmi:value='false'/>
-											<geometry>299, 365, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_126383_2905'>
-											<visible xmi:value='false'/>
-											<geometry>299, 365, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_979386_2907'>
-											<visible xmi:value='false'/>
-											<geometry>299, 365, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213975987436_481623_2909'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>299, 382, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_783881_2912'>
-											<visible xmi:value='false'/>
-											<geometry>299, 365, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213975987436_17513_2914'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>299, 365, 24, 13</geometry>
-										</mdElement>
-									</mdOwnedViews>
-									<roleNameID xmi:idref='_15_1_640021c_1213975987436_397331_2903'/>
-									<roleMultiplicityID xmi:idref='_15_1_640021c_1213975987436_126383_2905'/>
-									<roleConstraintsID xmi:idref='_15_1_640021c_1213975987436_979386_2907'/>
-									<roleStereotypeID xmi:idref='_15_1_640021c_1213975987436_481623_2909'/>
-									<roleTaggedValuesID xmi:idref='_15_1_640021c_1213975987436_783881_2912'/>
-									<rolePropertyStringID xmi:idref='_15_1_640021c_1213975987436_17513_2914'/>
-								</mdElement>
-								<mdElement elementClass='AssociationTextBox' xmi:id='_15_1_640021c_1213975987436_679870_2918'>
-									<visible xmi:value='false'/>
-									<geometry>286, 300, 36, 13</geometry>
-									<reverseIcon xmi:value='true'/>
-								</mdElement>
-							</mdOwnedViews>
-							<linkConstraintID xmi:idref='_15_1_640021c_1213975987436_80025_2877'/>
-							<linkStereotypeID xmi:idref='_15_1_640021c_1213975987436_585646_2879'/>
-							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213975987436_765137_2882'/>
-							<linkConveyedAID xmi:idref='_15_1_640021c_1213975987436_285182_2884'/>
-							<linkConveyedBID xmi:idref='_15_1_640021c_1213975987436_376863_2886'/>
-							<associationFirstEndID xmi:idref='_15_1_640021c_1213975987416_727402_2875'/>
-							<associationSecondEndID xmi:idref='_15_1_640021c_1213975987416_509289_2874'/>
-						</mdElement>
-						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213976005964_124582_2921'>
-							<elementID xmi:idref='_15_1_640021c_1213182347581_431001_933'/>
-							<properties>
-								<mdElement elementClass='BooleanProperty'>
-									<propertyID>SUPPRESS_CLASS_OPERATIONS</propertyID>
-									<propertyGroup>OPERATIONS</propertyGroup>
-									<propertyDescriptionID>SUPPRESS_CLASS_OPERATIONS_DESCRIPTION</propertyDescriptionID>
-									<value xmi:value='true'/>
-								</mdElement>
-							</properties>
-							<geometry>10, 235, 88, 50</geometry>
-						</mdElement>
-						<mdElement elementClass='Association' xmi:id='_15_1_640021c_1213976009625_771441_2947'>
-							<elementID xmi:idref='_15_1_640021c_1213976009609_158679_2942'/>
-							<linkFirstEndID xmi:idref='_15_1_640021c_1213976005964_124582_2921'/>
-							<linkSecondEndID xmi:idref='_15_1_640021c_1213975925712_87602_2753'/>
-							<geometry>54, 252; 54, 345; 270, 345; 270, 375; </geometry>
-							<linkNameID xmi:idref='_15_1_640021c_1213976009625_471905_2989'/>
-							<nameVisible xmi:value='true'/>
-							<mdOwnedViews>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_588021_2948'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>118, 333, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213976009625_773534_2950'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>118, 357, 24, 13</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_246772_2953'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>118, 370, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_537808_2955'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>42, 304, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_163359_2957'>
-									<editable xmi:value='false'/>
-									<visible xmi:value='false'/>
-									<geometry>220, 330, 24, 12</geometry>
-								</mdElement>
-								<mdElement elementClass='Role' xmi:id='_15_1_640021c_1213976009610_909423_2946'>
-									<elementID xmi:idref='_15_1_640021c_1213976009609_539565_2943'/>
-									<geometry>49, 252, 10, 10</geometry>
-									<mdOwnedViews>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_896158_2959'>
-											<visible xmi:value='false'/>
-											<geometry>49, 252, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_452109_2961'>
-											<visible xmi:value='false'/>
-											<geometry>49, 252, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_476685_2963'>
-											<visible xmi:value='false'/>
-											<geometry>49, 252, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213976009625_995725_2965'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>49, 252, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_131789_2968'>
-											<visible xmi:value='false'/>
-											<geometry>49, 252, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_451593_2970'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>49, 252, 24, 13</geometry>
-										</mdElement>
-									</mdOwnedViews>
-									<roleNameID xmi:idref='_15_1_640021c_1213976009625_896158_2959'/>
-									<roleMultiplicityID xmi:idref='_15_1_640021c_1213976009625_452109_2961'/>
-									<roleConstraintsID xmi:idref='_15_1_640021c_1213976009625_476685_2963'/>
-									<roleStereotypeID xmi:idref='_15_1_640021c_1213976009625_995725_2965'/>
-									<roleTaggedValuesID xmi:idref='_15_1_640021c_1213976009625_131789_2968'/>
-									<rolePropertyStringID xmi:idref='_15_1_640021c_1213976009625_451593_2970'/>
-								</mdElement>
-								<mdElement elementClass='Role' xmi:id='_15_1_640021c_1213976009610_27745_2945'>
-									<elementID xmi:idref='_15_1_640021c_1213976009609_626743_2944'/>
-									<geometry>265, 365, 10, 10</geometry>
-									<mdOwnedViews>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_153800_2974'>
-											<visible xmi:value='false'/>
-											<geometry>265, 365, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_351106_2976'>
-											<visible xmi:value='false'/>
-											<geometry>265, 365, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_386307_2978'>
-											<visible xmi:value='false'/>
-											<geometry>265, 365, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213976009625_468289_2980'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>265, 382, 24, 13</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_456214_2983'>
-											<visible xmi:value='false'/>
-											<geometry>265, 365, 24, 12</geometry>
-										</mdElement>
-										<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213976009625_780660_2985'>
-											<editable xmi:value='false'/>
-											<visible xmi:value='false'/>
-											<geometry>265, 365, 24, 13</geometry>
-										</mdElement>
-									</mdOwnedViews>
-									<roleNameID xmi:idref='_15_1_640021c_1213976009625_153800_2974'/>
-									<roleMultiplicityID xmi:idref='_15_1_640021c_1213976009625_351106_2976'/>
-									<roleConstraintsID xmi:idref='_15_1_640021c_1213976009625_386307_2978'/>
-									<roleStereotypeID xmi:idref='_15_1_640021c_1213976009625_468289_2980'/>
-									<roleTaggedValuesID xmi:idref='_15_1_640021c_1213976009625_456214_2983'/>
-									<rolePropertyStringID xmi:idref='_15_1_640021c_1213976009625_780660_2985'/>
-								</mdElement>
-								<mdElement elementClass='AssociationTextBox' xmi:id='_15_1_640021c_1213976009625_471905_2989'>
-									<visible xmi:value='false'/>
-									<geometry>112, 332, 36, 13</geometry>
-									<reverseIcon xmi:value='true'/>
-								</mdElement>
-							</mdOwnedViews>
-							<linkConstraintID xmi:idref='_15_1_640021c_1213976009625_588021_2948'/>
-							<linkStereotypeID xmi:idref='_15_1_640021c_1213976009625_773534_2950'/>
-							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213976009625_246772_2953'/>
-							<linkConveyedAID xmi:idref='_15_1_640021c_1213976009625_537808_2955'/>
-							<linkConveyedBID xmi:idref='_15_1_640021c_1213976009625_163359_2957'/>
-							<associationFirstEndID xmi:idref='_15_1_640021c_1213976009610_909423_2946'/>
-							<associationSecondEndID xmi:idref='_15_1_640021c_1213976009610_27745_2945'/>
 						</mdElement>
 						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213977071070_836442_2996'>
 							<elementID xmi:idref='_15_1_640021c_1213180617825_991939_404'/>
@@ -9298,38 +9162,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213977071070_836442_2996'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213975925712_87602_2753'/>
-							<geometry>483, 285; 483, 315; 321, 315; 321, 375; </geometry>
+							<geometry>483, 285; 483, 315; 318, 315; 318, 378; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213977078479_148147_3017'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977078479_148147_3017'>
 									<visible xmi:value='false'/>
-									<geometry>375, 302, 24, 13</geometry>
+									<geometry>372, 302, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977078479_189826_3019'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>375, 303, 24, 12</geometry>
+									<geometry>372, 303, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213977078479_759815_3021'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>375, 327, 24, 13</geometry>
+									<geometry>372, 327, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977078479_566973_3024'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>375, 340, 24, 12</geometry>
+									<geometry>372, 340, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977078479_247746_3026'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>451, 300, 24, 12</geometry>
+									<geometry>450, 301, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977078479_730708_3028'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>309, 309, 24, 12</geometry>
+									<geometry>306, 311, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213977078479_189826_3019'/>
@@ -9408,38 +9272,38 @@ The implementing glue may create new instances each time, cache them, use protot
 							</properties>
 							<linkFirstEndID xmi:idref='_15_1_640021c_1213977126107_720228_3034'/>
 							<linkSecondEndID xmi:idref='_15_1_640021c_1213975925712_87602_2753'/>
-							<geometry>534, 113; 534, 143; 612, 143; 612, 345; 338, 345; 338, 375; </geometry>
+							<geometry>534, 113; 534, 143; 612, 143; 612, 345; 335, 345; 335, 378; </geometry>
 							<linkNameID xmi:idref='_15_1_640021c_1213977154053_487754_3071'/>
 							<nameVisible xmi:value='true'/>
 							<mdOwnedViews>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977154053_487754_3071'>
 									<visible xmi:value='false'/>
-									<geometry>600, 329, 24, 13</geometry>
+									<geometry>600, 332, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977154053_931271_3073'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>600, 330, 24, 12</geometry>
+									<geometry>600, 333, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213977154053_887616_3075'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>600, 354, 24, 13</geometry>
+									<geometry>582, 339, 24, 13</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977154053_185221_3078'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>600, 367, 24, 12</geometry>
+									<geometry>569, 339, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977154053_66939_3080'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>600, 142, 24, 12</geometry>
+									<geometry>600, 143, 24, 12</geometry>
 								</mdElement>
 								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213977154053_199716_3082'>
 									<editable xmi:value='false'/>
 									<visible xmi:value='false'/>
-									<geometry>419, 330, 24, 12</geometry>
+									<geometry>414, 330, 24, 12</geometry>
 								</mdElement>
 							</mdOwnedViews>
 							<linkConstraintID xmi:idref='_15_1_640021c_1213977154053_931271_3073'/>
@@ -9447,6 +9311,69 @@ The implementing glue may create new instances each time, cache them, use protot
 							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213977154053_185221_3078'/>
 							<linkConveyedAID xmi:idref='_15_1_640021c_1213977154053_66939_3080'/>
 							<linkConveyedBID xmi:idref='_15_1_640021c_1213977154053_199716_3082'/>
+						</mdElement>
+						<mdElement elementClass='Interface' xmi:id='_15_1_640021c_1213984311581_479794_3147'>
+							<elementID xmi:idref='_15_1_640021c_1213984187477_707285_3085'/>
+							<geometry>640, 514, 166, 44</geometry>
+						</mdElement>
+						<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984323555_683642_3182'>
+							<properties>
+								<mdElement elementClass='BooleanProperty'>
+									<propertyID>HTML_TEXT</propertyID>
+									<propertyDescriptionID>HTML_TEXT_DESCRIPTION</propertyDescriptionID>
+									<value xmi:value='true'/>
+								</mdElement>
+							</properties>
+							<geometry>560, 518, 60, 12</geometry>
+							<text>&lt;html&gt;
+&lt;body&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</text>
+						</mdElement>
+						<mdElement elementClass='Dependency' xmi:id='_15_1_640021c_1213984336264_254015_3229'>
+							<elementID xmi:idref='_15_1_640021c_1213984336250_222473_3228'/>
+							<linkFirstEndID xmi:idref='_15_1_640021c_1213984311581_479794_3147'/>
+							<linkSecondEndID xmi:idref='_15_1_640021c_1213975925712_87602_2753'/>
+							<geometry>659, 514; 336, 402; </geometry>
+							<linkNameID xmi:idref='_15_1_640021c_1213984336264_668745_3230'/>
+							<nameVisible xmi:value='true'/>
+							<mdOwnedViews>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984336264_668745_3230'>
+									<visible xmi:value='false'/>
+									<geometry>485, 445, 24, 13</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984336264_357473_3232'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>485, 446, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBoxWithIcon' xmi:id='_15_1_640021c_1213984336264_616140_3234'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>485, 470, 24, 13</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984336264_714019_3237'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>485, 483, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984336264_284946_3239'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>582, 476, 24, 12</geometry>
+								</mdElement>
+								<mdElement elementClass='TextBox' xmi:id='_15_1_640021c_1213984336264_282767_3241'>
+									<editable xmi:value='false'/>
+									<visible xmi:value='false'/>
+									<geometry>388, 409, 24, 12</geometry>
+								</mdElement>
+							</mdOwnedViews>
+							<linkConstraintID xmi:idref='_15_1_640021c_1213984336264_357473_3232'/>
+							<linkStereotypeID xmi:idref='_15_1_640021c_1213984336264_616140_3234'/>
+							<linkTaggedValuesID xmi:idref='_15_1_640021c_1213984336264_714019_3237'/>
+							<linkConveyedAID xmi:idref='_15_1_640021c_1213984336264_284946_3239'/>
+							<linkConveyedBID xmi:idref='_15_1_640021c_1213984336264_282767_3241'/>
 						</mdElement>
 					</mdOwnedViews>
 				</mdElement>
@@ -11082,7 +11009,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						<mdElement elementClass='StringProperty'>
 							<propertyID>DIAGRAMS_LAYOUT</propertyID>
 							<propertyDescriptionID>DIAGRAMS_LAYOUT_DESCRIPTION</propertyDescriptionID>
-							<value>0 0 0 14 0 0 0 1 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 39 0 37 0 35 0 39 0 31 0 34 0 39 0 33 0 32 0 5f 0 38 0 38 0 31 0 36 0 35 0 35 0 5f 0 32 0 37 0 33 0 31 0 0 0 1 0 0 0 cc 0 0 0 e2 0 0 0 6 0 0 0 7 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 38 0 30 0 36 0 34 0 39 0 31 0 31 0 30 0 39 0 5f 0 36 0 34 0 31 0 38 0 38 0 38 0 5f 0 31 0 36 0 35 0 35 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 30 0 32 0 33 0 31 0 39 0 38 0 36 0 5f 0 37 0 39 0 32 0 33 0 35 0 39 0 5f 0 32 0 35 0 35 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 34 0 33 0 37 0 35 0 31 0 33 0 31 0 5f 0 34 0 36 0 36 0 34 0 31 0 35 0 5f 0 35 0 32 0 39 0 38 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 39 0 36 0 35 0 34 0 36 0 31 0 30 0 31 0 5f 0 32 0 37 0 34 0 37 0 36 0 36 0 5f 0 33 0 38 0 31 0 39 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 39 0 35 0 38 0 32 0 34 0 37 0 39 0 5f 0 33 0 36 0 37 0 37 0 33 0 35 0 5f 0 31 0 35 0 33 0 32 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 39 0 37 0 35 0 39 0 31 0 34 0 39 0 33 0 32 0 5f 0 38 0 38 0 31 0 36 0 35 0 35 0 5f 0 32 0 37 0 33 0 31 </value>
+							<value>0 0 0 14 0 0 0 1 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 1 0 0 0 cc 0 0 0 e2 0 0 0 1 0 0 0 7 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 38 0 30 0 36 0 34 0 39 0 31 0 31 0 30 0 39 0 5f 0 36 0 34 0 31 0 38 0 38 0 38 0 5f 0 31 0 36 0 35 0 35 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 30 0 32 0 33 0 31 0 39 0 38 0 36 0 5f 0 37 0 39 0 32 0 33 0 35 0 39 0 5f 0 32 0 35 0 35 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 34 0 33 0 37 0 35 0 31 0 33 0 31 0 5f 0 34 0 36 0 36 0 34 0 31 0 35 0 5f 0 35 0 32 0 39 0 38 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 39 0 36 0 35 0 34 0 36 0 31 0 30 0 31 0 5f 0 32 0 37 0 34 0 37 0 36 0 36 0 5f 0 33 0 38 0 31 0 39 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 39 0 35 0 38 0 32 0 34 0 37 0 39 0 5f 0 33 0 36 0 37 0 37 0 33 0 35 0 5f 0 31 0 35 0 33 0 32 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 39 0 37 0 35 0 39 0 31 0 34 0 39 0 33 0 32 0 5f 0 38 0 38 0 31 0 36 0 35 0 35 0 5f 0 32 0 37 0 33 0 31 </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='StringProperty'>
@@ -11160,7 +11087,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						<mdElement elementClass='StringProperty'>
 							<propertyID>INFO_PROPERTY</propertyID>
 							<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-							<value>20 29 56 59 34 d 32 35 53 4d 98 ab b5 a7 ee c b0 6 da d9 1e 78 97 41 5a ab ab ed d3 fd 0 d7 f3 2e 89 a a4 4e e5 6 c6 20 71 c1 e9 15 5e a4 c5 db fc 4c aa 7e 36 67 15 41 3b c4 a8 36 10 fa 87 80 dc 7 2c </value>
+							<value>20 29 56 59 34 d 32 35 53 4d 98 be a6 ba ee c b0 6 da d9 1f 78 95 43 5a ab ab ed d3 f2 0 d7 f3 2e 89 a a4 4e e5 6 c6 20 71 c1 e9 15 5e a4 c5 db fc 4c aa 7e 36 67 15 41 3b c4 a8 36 10 fa 87 80 dc 7 2c </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='LIST_PROPERTY'>
