@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandFactory;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
@@ -74,28 +75,35 @@ public class HelpCommand
         this.layoutManager = layoutManager;
     }
 
-    // HACK:
-    private IO io;
-
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        // HACK:
-        io = context.getIo();
-
+        IO io = context.getIo();
         io.out.println();
 
         if (command == null) {
-            displayAvailableCommands();
+            displayAvailableCommands(io);
         }
         else {
-            displayCommandHelp(command);
+            Command cmd = commandFactory.create(command);
+
+            if (cmd == null) {
+                io.out.println("Command " + Renderer.encode(command, Code.BOLD) + " not found.");
+                io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
+                return Result.FAILURE;
+            }
+
+            CommandDocumenter documenter = cmd.getDocumenter();
+            // documenter.renderManual(info, io.out);
+
+            io.error("FIXME: Manual rendering is still pending, sorry");
         }
 
         return Result.SUCCESS;
     }
 
-    private void displayAvailableCommands() throws Exception {
+    private void displayAvailableCommands(final IO io) throws Exception {
+        assert io != null;
         String about = applicationManager.getContext().getApplication().getBranding().getAboutMessage();
 
         if (about != null) {
@@ -107,10 +115,11 @@ public class HelpCommand
 
         GroupNode group = layoutManager.getLayout();
 
-        displayGroupCommands(group);
+        displayGroupCommands(io, group);
     }
 
-    private void displayGroupCommands(final GroupNode group) throws Exception {
+    private void displayGroupCommands(final IO io, final GroupNode group) throws Exception {
+        assert io != null;
         int maxNameLen = 20; // FIXME: Figure this out dynamically
 
         // First display command/aliases nodes
@@ -174,32 +183,9 @@ public class HelpCommand
                 io.out.println(renderer.render(Renderer.encode(path, Code.BOLD)));
 
                 io.out.println();
-                displayGroupCommands(node);
+                displayGroupCommands(io, node);
                 io.out.println();
             }
         }
-    }
-
-    private void displayCommandHelp(final String path) throws Exception {
-        assert path != null;
-
-        // FIXME:
-
-        log.error("Unable to display command specific help for: {}", path);
-
-        /*
-        Command cmd = commandRegistry.lookup(path);
-
-        if (cmd == null) {
-            io.out.println("Command " + Renderer.encode(path, Code.BOLD) + " not found.");
-            io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
-        }
-        else {
-            io.out.println("Command " + Renderer.encode(path, Code.BOLD));
-            io.out.println("   " + cmd.getDescription());
-        }
-
-        io.out.println();
-        */
     }
 }
