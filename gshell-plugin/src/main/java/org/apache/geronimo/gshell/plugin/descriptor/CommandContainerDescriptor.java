@@ -20,12 +20,11 @@
 package org.apache.geronimo.gshell.plugin.descriptor;
 
 import org.apache.geronimo.gshell.model.command.CommandModel;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
- * Descriptor for a {@link Command} Plexus component.
+ * Descriptor for a {@link CommandContainer} Plexus component.
  *
  * @version $Rev$ $Date$
  */

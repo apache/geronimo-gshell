@@ -25,7 +25,10 @@ package org.apache.geronimo.gshell.command;
  * @version $Rev$ $Date$
  */
 public interface Command
-    extends CommandContainer
 {
+    CommandContainer getContainer();
+
     CommandInfo getInfo();
+
+    CommandResult execute(CommandContext context);
 }

@@ -185,16 +185,16 @@ public class HelpCommand
         }
     }
 
-    private void displayCommandManual(final String command, final ShellContext context) throws CommandException {
-        assert command != null;
+    private void displayCommandManual(final String path, final ShellContext context) throws CommandException {
+        assert path != null;
         assert context != null;
 
         IO io = context.getIo();
 
-        Command cmd = commandResolver.resolve(context, command);
+        Command command = commandResolver.resolve(context, path);
 
-        CommandDocumenter documenter = cmd.getDocumenter();
-        CommandInfo info = cmd.getInfo();
+        CommandDocumenter documenter = command.getContainer().getDocumenter();
+        CommandInfo info = command.getInfo();
 
         log.debug("Rendering help for command: {}", info.getName());
 

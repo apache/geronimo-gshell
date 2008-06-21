@@ -20,16 +20,13 @@
 package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContainerFactory;
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandResult;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.layout.NotFoundException;
 import org.apache.geronimo.gshell.model.layout.AliasNode;
@@ -90,9 +87,9 @@ public class DefaultCommandResolver
 
         assert containerFactory != null;
         
-        final CommandContainer command;
+        final CommandContainer container;
         try {
-            command = containerFactory.create(id);
+            container = containerFactory.create(id);
         }
         catch (Exception e) {
             throw new CommandNotFoundException(e);
@@ -105,26 +102,12 @@ public class DefaultCommandResolver
                 return new DefaultCommandInfo(node);
             }
 
-            // Proxy everything else...
-            
-            public String getId() {
-                return command.getId();
-            }
-
-            public CommandAction getAction() {
-                return command.getAction();
-            }
-
-            public CommandDocumenter getDocumenter() {
-                return command.getDocumenter();
-            }
-
-            public CommandCompleter getCompleter() {
-                return command.getCompleter();
+            public CommandContainer getContainer() {
+                return container;
             }
 
             public CommandResult execute(CommandContext context) {
-                return command.execute(context);
+                return container.execute(context);
             }
         };
     }

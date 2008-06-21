@@ -60,7 +60,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= CommandLineExecutor.class)
+@Component(role=CommandLineExecutor.class)
 public class DefaultCommandLineExecutor
     implements CommandLineExecutor, Initializable
 {

@@ -32,7 +32,7 @@ public interface CommandContainer
      * @return  The command identifier; never null;
      */
     String getId();
-    
+
     /**
      * Returns the action of the command.
      *
