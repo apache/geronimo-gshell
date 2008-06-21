@@ -30,74 +30,18 @@
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
+	<groupId>org.apache.geronimo.gshell.rapture</groupId>
     <artifactId>gshell-rapture</artifactId>
     <name>GShell Rapture</name>
+	<packaging>pom</packaging>
 
     <description>
         Provides the glue for using GShell with Plexus.
     </description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-clp</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-plexus</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-artifact</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-console</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-chronos</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-api</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-parser</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-application</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-layout</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-interpolation</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>commons-jexl</groupId>
-            <artifactId>commons-jexl</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl104-over-slf4j</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+	<modules>
+		<module>gshell-rapture-bootstrap</module>
+		<module>gshell-rapture-core</module>
+	</modules>
 
 </project>
