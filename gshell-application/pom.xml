@@ -30,11 +30,11 @@
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gshell-plugin</artifactId>
-    <name>GShell Plugin</name>
+    <artifactId>gshell-application</artifactId>
+    <name>GShell Application</name>
 
     <description>
-        Provides the GShell plugin mechanism.
+        Provides the GShell application framework.
     </description>
 
     <dependencies>

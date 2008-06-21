@@ -376,7 +376,7 @@
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>gshell-plugin</artifactId>
+                <artifactId>gshell-application</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
 
@@ -492,7 +492,7 @@
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
         <module>gshell-model</module>
-        <module>gshell-plugin</module>
+        <module>gshell-application</module>
         <module>gshell-parser</module>
         <module>gshell-layout</module>
         <module>gshell-rapture</module>

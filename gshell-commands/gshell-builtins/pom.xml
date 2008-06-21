@@ -45,7 +45,7 @@
         
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-plugin</artifactId>
+            <artifactId>gshell-application</artifactId>
         </dependency>
 
         <dependency>
