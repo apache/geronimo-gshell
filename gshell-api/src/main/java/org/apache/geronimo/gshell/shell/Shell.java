@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.shell;
 
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 
 /**
@@ -29,19 +30,14 @@ import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 public interface Shell
     extends CommandLineExecutor
 {
+    Variables getVariables();
+    
     /**
      * Get the runtime configuration details of the shell.
      *
      * @return The runtime configuration of the shell.
      */
     ShellInfo getInfo();
-
-    /**
-     * Get the execution details of the shell.
-     *
-     * @return  The execution details of the shell.
-     */
-    ShellContext getContext();
 
     /**
      * Check if the shell can be run interactivly.

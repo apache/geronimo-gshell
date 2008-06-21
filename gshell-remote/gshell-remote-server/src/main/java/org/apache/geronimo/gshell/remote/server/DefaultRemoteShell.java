@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.command.Variables;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
@@ -84,10 +85,10 @@ public class DefaultRemoteShell
         return false;
     }
 
-    public ShellContext getContext() {
+    public Variables getVariables() {
         ensureOpened();
         
-        return context;
+        return context.getVariables();
     }
 
     public ShellInfo getInfo() {

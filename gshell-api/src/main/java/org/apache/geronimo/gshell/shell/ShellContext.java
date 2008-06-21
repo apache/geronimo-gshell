@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.io.IO;
  *
  * @version $Rev$ $Date$
  */
+@Deprecated
 public interface ShellContext
 {
     /**

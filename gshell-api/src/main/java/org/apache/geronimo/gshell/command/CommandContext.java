@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
  * Provides commands with the context of its execution.
@@ -56,6 +55,4 @@ public interface CommandContext
      * @return Command runtime information; never null.
      */
     CommandInfo getInfo();
-
-    ShellContext getShellContext();
 }

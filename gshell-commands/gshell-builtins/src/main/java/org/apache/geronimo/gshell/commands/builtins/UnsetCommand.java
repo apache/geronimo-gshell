@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -77,24 +76,14 @@ public class UnsetCommand
         return Result.SUCCESS;
     }
 
-    private void ensureIsIdentifier(final String name) {
-        if (!DefaultVariables.isIdentifier(name)) {
-            throw new RuntimeException("Invalid identifer name: " + name);
-        }
-    }
-
     private void unsetProperty(final String name) {
         log.info("Unsetting system property: {}", name);
-
-        ensureIsIdentifier(name);
 
         System.getProperties().remove(name);
     }
 
     private void unsetVariable(final Variables vars, final String name) {
         log.info("Unsetting variable: {}", name);
-
-        ensureIsIdentifier(name);
 
         // Command vars always has a parent, set only makes sence when setting in parent's scope
         vars.parent().unset(name);

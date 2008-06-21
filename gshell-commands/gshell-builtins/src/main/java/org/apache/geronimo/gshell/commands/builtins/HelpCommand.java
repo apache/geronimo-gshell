@@ -23,15 +23,7 @@ import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerFactory;
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandResolver;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.CommandDocumenter;
-import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.command.*;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
@@ -40,7 +32,6 @@ import org.apache.geronimo.gshell.model.layout.AliasNode;
 import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Node;
-import org.apache.geronimo.gshell.shell.ShellContext;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +81,7 @@ public class HelpCommand
             displayAvailableCommands(context);
         }
         else {
-            displayCommandManual(command, context.getShellContext());
+            displayCommandManual(context.getIo(), command, context.getVariables());
         }
 
         return Result.SUCCESS;
@@ -185,13 +176,11 @@ public class HelpCommand
         }
     }
 
-    private void displayCommandManual(final String path, final ShellContext context) throws CommandException {
+    private void displayCommandManual(final IO io, final String path, final Variables variables) throws CommandException {
         assert path != null;
-        assert context != null;
+        assert variables != null;
 
-        IO io = context.getIo();
-
-        Command command = commandResolver.resolve(context, path);
+        Command command = commandResolver.resolve(variables, path);
 
         CommandDocumenter documenter = command.getContainer().getDocumenter();
         CommandInfo info = command.getInfo();

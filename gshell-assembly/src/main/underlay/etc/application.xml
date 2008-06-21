@@ -45,6 +45,7 @@
     </remoteRepositories>
 
     <dependencyGroups>
+        <!--
         <dependencyGroup>
             <groupId>org.apache.geronimo.gshell</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>
@@ -53,7 +54,8 @@
                 <artifactId>gshell-rapture</artifactId>
             </dependency>
         </dependencyGroup>
-
+        -->
+        
         <dependencyGroup>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>

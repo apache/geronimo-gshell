@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.cli;
 
 import org.apache.geronimo.gshell.notification.ExitNotification;
-import org.apache.geronimo.gshell.builder.ShellBuilder;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.application.ApplicationLocator;
@@ -31,7 +30,8 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
-import org.apache.geronimo.gshell.settings.SettingsLocator;
+import org.apache.geronimo.gshell.application.settings.SettingsLocator;
+import org.apache.geronimo.gshell.rapture.builder.ShellBuilder;
 import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.util.ArrayList;

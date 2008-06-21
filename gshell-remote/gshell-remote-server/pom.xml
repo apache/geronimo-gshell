@@ -60,7 +60,7 @@
         
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-plugin</artifactId>
+            <artifactId>gshell-rapture</artifactId>
         </dependency>
     </dependencies>
 

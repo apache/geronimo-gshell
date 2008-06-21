@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import org.apache.geronimo.gshell.application.DefaultVariables;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -161,18 +160,10 @@ public class SetCommand
         return nv;
     }
 
-    private void ensureIsIdentifier(final String name) {
-        if (!DefaultVariables.isIdentifier(name)) {
-            throw new RuntimeException("Invalid identifer name: " + name);
-        }
-    }
-
     private void setProperty(final String namevalue) {
         NameValue nv = parse(namevalue);
 
-        // log.info("Setting system property: {}={}", nv.name, nv.value);
-
-        ensureIsIdentifier(nv.name);
+        log.info("Setting system property: {}={}", nv.name, nv.value);
 
         System.setProperty(nv.name, nv.value);
     }
@@ -181,8 +172,6 @@ public class SetCommand
         NameValue nv = parse(namevalue);
 
         log.info("Setting variable: {}={}", nv.name, nv.value);
-
-        ensureIsIdentifier(nv.name);
 
         // Command vars always has a parent, set only makes sence when setting in parent's scope
         vars.parent().set(nv.name, nv.value);
