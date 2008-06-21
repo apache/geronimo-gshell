@@ -273,7 +273,7 @@ public class DefaultApplicationManager
             "gshell-model",
             "gshell-parser",
             "gshell-plexus",
-            "gshell-plugin",
+            "gshell-application",
             "gshell-rapture",
             "gshell-yarn",
             "jcl104-over-slf4j",
