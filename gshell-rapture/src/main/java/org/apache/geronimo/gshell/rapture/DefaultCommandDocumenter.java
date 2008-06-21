@@ -49,6 +49,7 @@ public class DefaultCommandDocumenter
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private GShellPlexusContainer container;
+
     // Contextualizable
 
     public void contextualize(final Context context) throws ContextException {
@@ -58,6 +59,24 @@ public class DefaultCommandDocumenter
         assert container != null;
 
         log.debug("Container: {}", container);
+    }
+
+    /**
+     * Get the action instance for the given command context.
+     *
+     * @param info  The command-info to previde an action for.
+     * @return      The command action for the given information.
+     */
+    private CommandAction getAction(final CommandInfo info) {
+        assert info != null;
+        assert container != null;
+
+        try {
+            return container.lookupComponent(CommandAction.class, info.getId());
+        }
+        catch (ComponentLookupException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // CommandDocumenter
@@ -82,30 +101,12 @@ public class DefaultCommandDocumenter
         //
 
         CommandAction action = getAction(info);
-        CommandComponent cmd = action.getClass().getAnnotation(CommandComponent.class);
-        if (cmd == null) {
+        CommandComponent annotation = action.getClass().getAnnotation(CommandComponent.class);
+        if (annotation == null) {
             throw new IllegalStateException("Command description not found");
         }
 
-        return cmd.description();
-    }
-
-    /**
-     * Get the action instance for the given command context.
-     *
-     * @param info  The command-info to previde an action for.
-     * @return      The command action for the given information.
-     */
-    private CommandAction getAction(final CommandInfo info) {
-        assert info != null;
-        assert container != null;
-
-        try {
-            return container.lookupComponent(CommandAction.class, info.getId());
-        }
-        catch (ComponentLookupException e) {
-            throw new RuntimeException(e);
-        }
+        return annotation.description();
     }
 
     //
