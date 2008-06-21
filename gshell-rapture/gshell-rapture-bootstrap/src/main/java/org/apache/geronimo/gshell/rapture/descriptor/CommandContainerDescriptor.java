@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.rapture.descriptor;
 
 import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.rapture.command.DefaultCommandContainer;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
@@ -41,7 +40,7 @@ public class CommandContainerDescriptor
 
         setRole(CommandContainer.class);
         setRoleHint(model.getId());
-        setImplementation(DefaultCommandContainer.class);
+        setImplementation("org.apache.geronimo.gshell.rapture.command.DefaultCommandContainer");
         setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");

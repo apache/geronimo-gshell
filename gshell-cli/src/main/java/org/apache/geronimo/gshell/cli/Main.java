@@ -31,7 +31,7 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.application.settings.SettingsLocator;
-import org.apache.geronimo.gshell.rapture.builder.ShellBuilder;
+import org.apache.geronimo.gshell.rapture.ShellBuilder;
 import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.util.ArrayList;

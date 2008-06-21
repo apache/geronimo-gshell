@@ -59,8 +59,8 @@
         </dependency>
         
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-rapture</artifactId>
+            <groupId>org.apache.geronimo.gshell.rapture</groupId>
+            <artifactId>gshell-rapture-core</artifactId>
         </dependency>
     </dependencies>
 

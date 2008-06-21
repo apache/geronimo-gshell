@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.rapture.command.DefaultVariables;
 
 /**
  * Default {@link org.apache.geronimo.gshell.shell.ShellContext} implementation.
@@ -48,7 +47,7 @@ public class DefaultShellContext
     }
 
     public DefaultShellContext(final IO io) {
-        this(io, new DefaultVariables());
+        this(io, new Variables());
     }
 
     public IO getIo() {

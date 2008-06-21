@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.rapture.descriptor;
 
 import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.model.command.CommandModel;
-import org.apache.geronimo.gshell.rapture.command.DefaultCommandCompleter;
 
 /**
  * Descriptor for a {@link CommandCompleter} Plexus component.
@@ -40,7 +39,7 @@ public class CommandCompleterDescriptor
 
         setRole(CommandCompleter.class);
         setRoleHint(model.getId());
-        setImplementation(DefaultCommandCompleter.class);
+        setImplementation("org.apache.geronimo.gshell.rapture.command.DefaultCommandCompleter");
         setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");

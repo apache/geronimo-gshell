@@ -19,103 +19,175 @@
 
 package org.apache.geronimo.gshell.command;
 
-import java.util.Iterator;
+import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+
+import java.util.*;
 
 /**
- * Provides command instances with nested namespace for storing context.
+ * Provides a nested-namespace for command variables.
  *
  * @version $Rev$ $Date$
  */
-public interface Variables
+public class Variables
 {
-    /**
-     * Set a value of a variable.
-     *
-     * @param name  The name of the variable to set.
-     * @param value The value of the variable.
-     * 
-     * @throws ImmutableVariableException   The variable is immutable.
-     */
-    void set(String name, Object value) throws ImmutableVariableException;
+    private final Map<String,Object> map;
 
-    /**
-     * Set a value of a variable, optional making the variable immutable.
-     *
-     * @param name      The name of the variable to set.
-     * @param value     The value of the variable.
-     * @param mutable   False to make the variable immutable.
-     *
-     * @throws ImmutableVariableException   The variable is immutable.
-     */
-    void set(String name, Object value, boolean mutable) throws ImmutableVariableException;
+    private final Variables parent;
 
-    /**
-     * Get the value of a variable.
-     *
-     * @param name  The name of the variable to get.
-     * @return      The value of the variable, or null if not set.
-     */
-    Object get(String name);
+    private final Set<String> immutables = new HashSet<String>();
 
-    /**
-     * Get the value of a variable, if not set using the provided default.
-     *
-     * @param name          The name of the variable to get.
-     * @param defaultValue  The default value of the variable to return if the variable was not set.
-     * @return              The value of the named variable or <tt>defaultValue</tt> if the variable was not set.
-     */
-    Object get(String name, Object defaultValue);
+    public Variables(final Map<String,Object> map, final Variables parent) {
+        assert map != null;
+        assert parent != null;
 
-    /**
-     * Check if a variable is mutable.
-     *
-     * @param name  The name of the variable to query mutable status.
-     * @return      True if the variable is mutable.
-     */
-    boolean isMutable(String name);
+        this.map = map;
+        this.parent = parent;
+    }
 
-    /**
-     * Check if a variable is cloaked.  Cloaked variables exist when a variable of the same name
-     * has been set in the parent and that variable was not immutable.
-     *
-     * @param name  The name of the variable to query cloaked status.
-     * @return      True if the variable is cloaked.
-     */
-    boolean isCloaked(String name);
+    public Variables(final Variables parent) {
+        assert parent != null;
 
-    /**
-     * Unset a variable.
-     *
-     * @param name  The name of the variable to unset.
-     * @throws ImmutableVariableException   The variable is immutable.
-     */
-    void unset(String name) throws ImmutableVariableException;
+        this.map = new HashMap<String,Object>();
+        this.parent = parent;
+    }
 
-    /**
-     * Check for the existance of a variable.
-     *
-     * @param name  The name of the variable to query existance of.
-     * @return      True if there is a variable of the given name.
-     */
-    boolean contains(String name);
+    public Variables(final Map<String,Object> map) {
+        assert map != null;
 
-    /**
-     * Get all variable names.
-     *
-     * @return  All variable names.
-     */
-    Iterator<String> names();
+        this.map = map;
+        this.parent = null;
+    }
 
-    /**
-     * Returns the parent variables container.
-     *
-     * @return  The parent variables container.
-     */
-    Variables parent();
+    public Variables() {
+        this(new HashMap<String,Object>());
+    }
 
-    //
-    // Exceptions
-    //
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+    
+    public void set(final String name, final Object value) {
+        set(name, value, true);
+    }
+
+    public void set(final String name, final Object value, boolean mutable) {
+        assert name != null;
+
+        ensureMutable(name);
+
+        map.put(name, value);
+
+        if (!mutable) {
+            immutables.add(name);
+        }
+    }
+
+    public Object get(final String name) {
+        assert name != null;
+
+        Object value = map.get(name);
+        if (value == null && parent != null) {
+            value = parent.get(name);
+        }
+
+        return value;
+    }
+
+    public Object get(final String name, final Object _default) {
+        Object value = get(name);
+        if (value == null) {
+            return _default;
+        }
+
+        return value;
+    }
+
+    public void unset(final String name) {
+        assert name != null;
+
+        ensureMutable(name);
+
+        map.remove(name);
+    }
+
+    public boolean contains(final String name) {
+        assert name != null;
+
+        return map.containsKey(name);
+    }
+
+    public boolean isMutable(final String name) {
+        assert name != null;
+
+        boolean mutable = true;
+
+        // First ask out parent if there is one, if they are immutable, then so are we
+        if (parent != null) {
+            mutable = parent.isMutable(name);
+        }
+
+        if (mutable) {
+            mutable = !immutables.contains(name);
+        }
+
+        return mutable;
+    }
+
+    private void ensureMutable(final String name) {
+        assert name != null;
+
+        if (!isMutable(name)) {
+            throw new ImmutableVariableException(name);
+        }
+    }
+
+    public boolean isCloaked(final String name) {
+        assert name != null;
+
+        int count = 0;
+
+        Variables vars = this;
+        while (vars != null && count < 2) {
+            if (vars.contains(name)) {
+                count++;
+            }
+
+            vars = vars.parent();
+        }
+
+        return count > 1;
+    }
+
+    public Iterator<String> names() {
+        // Chain to parent iterator if we have a parent
+        return new Iterator<String>() {
+            Iterator<String> iter = map.keySet().iterator();
+            boolean more = parent() != null;
+
+            public boolean hasNext() {
+                boolean next = iter.hasNext();
+                if (!next && more) {
+                    iter = parent().names();
+                    more = false;
+                    next = hasNext();
+                }
+
+                return next;
+            }
+
+            public String next() {
+                return iter.next();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    public Variables parent() {
+        return parent;
+    }
 
     /**
      * Throw to indicate that a variable change was attempted but the variable was not muable.
@@ -124,7 +196,7 @@ public interface Variables
         extends RuntimeException
     {
         ///CLOVER:OFF
-        
+
         public ImmutableVariableException(final String name) {
             super("Variable is immutable: " + name);
         }

@@ -31,7 +31,6 @@ import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.util.Arguments;
-import org.apache.geronimo.gshell.rapture.command.DefaultVariables;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -221,7 +220,7 @@ public class DefaultCommandLineExecutor
         CommandContext context = new CommandContext()
         {
             // Command instances get their own namespace with defaults from the current
-            final Variables vars = new DefaultVariables(variables);
+            final Variables vars = new Variables(variables);
 
             public Object[] getArguments() {
                 return args;

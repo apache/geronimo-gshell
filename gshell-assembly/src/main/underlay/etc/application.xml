@@ -45,17 +45,15 @@
     </remoteRepositories>
 
     <dependencyGroups>
-        <!--
         <dependencyGroup>
-            <groupId>org.apache.geronimo.gshell</groupId>
+            <groupId>org.apache.geronimo.gshell.rapture</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>
 
             <dependency>
-                <artifactId>gshell-rapture</artifactId>
+                <artifactId>gshell-rapture-core</artifactId>
             </dependency>
         </dependencyGroup>
-        -->
-        
+
         <dependencyGroup>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>

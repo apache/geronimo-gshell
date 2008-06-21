@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.rapture.descriptor;
 
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.model.command.CommandModel;
-import org.apache.geronimo.gshell.rapture.command.DefaultCommandDocumenter;
 
 /**
  * Descriptor for a {@link CommandDocumenter} Plexus component.
@@ -40,7 +39,7 @@ public class CommandDocumenterDescriptor
 
         setRole(CommandDocumenter.class);
         setRoleHint(model.getId());
-        setImplementation(DefaultCommandDocumenter.class);
+        setImplementation("org.apache.geronimo.gshell.rapture.command.DefaultCommandDocumenter");
         setVersion(model.getVersion());
         setIsolatedRealm(false);
         setInstantiationStrategy("singleton");

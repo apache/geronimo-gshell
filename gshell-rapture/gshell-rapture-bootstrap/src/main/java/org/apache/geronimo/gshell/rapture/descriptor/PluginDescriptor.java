@@ -23,6 +23,10 @@ import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.model.command.CommandModel;
 import org.apache.geronimo.gshell.model.plugin.Plugin;
+import org.apache.geronimo.gshell.rapture.descriptor.CommandActionDescriptor;
+import org.apache.geronimo.gshell.rapture.descriptor.CommandCompleterDescriptor;
+import org.apache.geronimo.gshell.rapture.descriptor.CommandContainerDescriptor;
+import org.apache.geronimo.gshell.rapture.descriptor.CommandDocumenterDescriptor;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.rapture.builder;
+package org.apache.geronimo.gshell.rapture;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
@@ -34,7 +34,6 @@ import org.apache.geronimo.gshell.application.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellFactory;
-import org.apache.geronimo.gshell.rapture.command.DefaultVariables;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.PlexusContainerException;
@@ -202,7 +201,7 @@ public class ShellBuilder
             applicationConfig.setIo(new IO());
         }
         if (applicationConfig.getVariables() == null) {
-            applicationConfig.setVariables(new DefaultVariables());
+            applicationConfig.setVariables(new Variables());
         }
 
         // Hijack the system output streams
