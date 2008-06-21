@@ -37,8 +37,8 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= CommandContainerFactory.class)
-public class DefaultCommandFactory
+@Component(role=CommandContainerFactory.class)
+public class DefaultCommandContainerFactory
     implements CommandContainerFactory, Contextualizable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
