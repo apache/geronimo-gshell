@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.util;
+package org.apache.geronimo.gshell.command;
 
 import junit.framework.TestCase;
+import org.apache.geronimo.gshell.command.Arguments;
 
 /**
  * Tests for the {@link Arguments} class.

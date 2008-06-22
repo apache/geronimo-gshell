@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.command.Variables;
 
 /**

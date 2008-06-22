@@ -30,6 +30,8 @@ import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 public interface Shell
     extends CommandLineExecutor
 {
+    // IO getIo(); ???
+    
     Variables getVariables();
     
     /**
@@ -54,5 +56,5 @@ public interface Shell
      * @throws Exception                        Failed to execute commands.
      * @throws UnsupportedOperationException    The shell does not support iteractive execution.
      */
-    void run(Object... args) throws UnsupportedOperationException, Exception;
+    void run(Object... args) throws Exception;
 }

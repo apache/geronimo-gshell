@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.remote.client.proxy;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.remote.client.RshClient;
-import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
  * ???
@@ -30,7 +29,7 @@ import org.apache.geronimo.gshell.shell.ShellContext;
  * @version $Rev$ $Date$
  */
 public class RemoteShellContextProxy
-    implements ShellContext
+    // implements ShellContext
 {
     private final RshClient client;
 

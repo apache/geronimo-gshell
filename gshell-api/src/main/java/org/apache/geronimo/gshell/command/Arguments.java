@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.util;
+package org.apache.geronimo.gshell.command;
 
 import java.lang.reflect.Array;
 import java.util.List;

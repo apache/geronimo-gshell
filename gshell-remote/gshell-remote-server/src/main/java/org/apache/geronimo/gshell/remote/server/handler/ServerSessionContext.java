@@ -28,7 +28,6 @@ import org.apache.geronimo.gshell.remote.jaas.Identity;
 import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
-import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 
 /**
@@ -64,7 +63,7 @@ public class ServerSessionContext
 
     public RemoteIO io;
 
-    public ShellContext env;
+    // public RemoteVariables variables;
 
     public RemoteShell shell;
 }

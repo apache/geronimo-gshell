@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.apache.geronimo.gshell.rapture.shell.DefaultShellContext;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.component.annotations.Component;
@@ -54,14 +53,10 @@ public class OpenShellHandler
 
         // Setup the I/O context (w/o auto-flushing)
         context.io = new RemoteIO(session);
-        // FIXME: Need to find out what to do here, w/o this lookup
-        // IOLookup.set(context.container, context.io);
 
-        // Setup shell environemnt
-        context.env = new DefaultShellContext(context.io);
-        // FIXME: Need to find out what to do here, w/o this lookup
-        // EnvironmentLookup.set(context.container, context.env);
-
+        // FIXME:
+        // context.variables =
+        
         // Create a new shell instance
         context.shell = (RemoteShell) context.container.lookup(RemoteShell.class);
 

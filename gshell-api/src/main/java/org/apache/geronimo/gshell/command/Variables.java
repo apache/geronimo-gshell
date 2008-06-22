@@ -21,12 +21,16 @@ package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides a nested-namespace for command variables.
  *
- * @version $Rev$ $Date$
+ * @version $Rev: 670220 $ $Date: 2008-06-21 23:24:57 +0700 (Sat, 21 Jun 2008) $
  */
 public class Variables
 {
@@ -192,7 +196,7 @@ public class Variables
     /**
      * Throw to indicate that a variable change was attempted but the variable was not muable.
      */
-    class ImmutableVariableException
+    public class ImmutableVariableException
         extends RuntimeException
     {
         ///CLOVER:OFF

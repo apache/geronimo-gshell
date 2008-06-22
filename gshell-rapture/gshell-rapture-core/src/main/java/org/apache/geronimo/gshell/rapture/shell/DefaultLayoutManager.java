@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role= LayoutManager.class)
+@Component(role=LayoutManager.class)
 public class DefaultLayoutManager
     implements LayoutManager
 {

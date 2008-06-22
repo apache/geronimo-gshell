@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
-import org.apache.geronimo.gshell.util.Arguments;
+import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

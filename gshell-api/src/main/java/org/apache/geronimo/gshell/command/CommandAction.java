@@ -34,8 +34,8 @@ public interface CommandAction
      * @param context   The execution context of the command.
      * @return          The result of the command execution.
      *
-     * @throws Exception    Command execution failed.
-     * @throws Notification Inform the shell of some non-exception exit state.
+     * @throws Notification     Inform the shell of some non-exception exit state.
+     * @throws Exception        Command execution failed.
      */
     Object execute(CommandContext context) throws Notification, Exception;
 
