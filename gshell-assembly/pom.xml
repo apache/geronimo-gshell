@@ -95,6 +95,16 @@
                     <finalName>gshell-${version}</finalName>
                 </configuration>
             </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ianal-maven-plugin</artifactId>
+                <configuration>
+                    <searchPaths>
+                        <searchPath>gshell-${version}</searchPath>
+                    </searchPaths>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
