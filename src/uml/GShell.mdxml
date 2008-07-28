@@ -6895,7 +6895,7 @@
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
-					<active xmi:value='true'/>
+					<active xmi:value='false'/>
 					<mdOwnedViews>
 						<mdElement elementClass='DiagramFrame' xmi:id='_15_1_640021c_1213975914935_916003_2744'>
 							<elementID xmi:idref='_15_1_640021c_1213975914932_881655_2731'/>
@@ -8505,7 +8505,7 @@ The implementing glue may create new instances each time, cache them, use protot
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
-					<active xmi:value='false'/>
+					<active xmi:value='true'/>
 					<mdOwnedViews>
 						<mdElement elementClass='DiagramFrame' xmi:id='_15_1_640021c_1214649157252_386983_2234'>
 							<elementID xmi:idref='_15_1_640021c_1214649157248_841645_2221'/>
@@ -11817,7 +11817,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						<mdElement elementClass='StringProperty'>
 							<propertyID>DIAGRAMS_LAYOUT</propertyID>
 							<propertyDescriptionID>DIAGRAMS_LAYOUT_DESCRIPTION</propertyDescriptionID>
-							<value>0 0 0 14 0 0 0 1 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 39 0 37 0 35 0 39 0 31 0 34 0 39 0 33 0 32 0 5f 0 38 0 38 0 31 0 36 0 35 0 35 0 5f 0 32 0 37 0 33 0 31 0 0 0 1 0 0 0 cc 0 0 0 e2 0 0 0 4 0 0 0 6 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 38 0 30 0 36 0 34 0 39 0 31 0 31 0 30 0 39 0 5f 0 36 0 34 0 31 0 38 0 38 0 38 0 5f 0 31 0 36 0 35 0 35 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 39 0 36 0 35 0 34 0 36 0 31 0 30 0 31 0 5f 0 32 0 37 0 34 0 37 0 36 0 36 0 5f 0 33 0 38 0 31 0 39 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 30 0 32 0 33 0 31 0 39 0 38 0 36 0 5f 0 37 0 39 0 32 0 33 0 35 0 39 0 5f 0 32 0 35 0 35 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 39 0 37 0 35 0 39 0 31 0 34 0 39 0 33 0 32 0 5f 0 38 0 38 0 31 0 36 0 35 0 35 0 5f 0 32 0 37 0 33 0 31 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 34 0 36 0 34 0 39 0 31 0 35 0 37 0 32 0 34 0 38 0 5f 0 38 0 34 0 31 0 36 0 34 0 35 0 5f 0 32 0 32 0 32 0 31 </value>
+							<value>0 0 0 14 0 0 0 1 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 34 0 36 0 34 0 39 0 31 0 35 0 37 0 32 0 34 0 38 0 5f 0 38 0 34 0 31 0 36 0 34 0 35 0 5f 0 32 0 32 0 32 0 31 0 0 0 1 0 0 0 cc 0 0 0 e2 0 0 0 5 0 0 0 6 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 38 0 30 0 36 0 34 0 39 0 31 0 31 0 30 0 39 0 5f 0 36 0 34 0 31 0 38 0 38 0 38 0 5f 0 31 0 36 0 35 0 35 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 39 0 36 0 35 0 34 0 36 0 31 0 30 0 31 0 5f 0 32 0 37 0 34 0 37 0 36 0 36 0 5f 0 33 0 38 0 31 0 39 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 32 0 30 0 32 0 33 0 30 0 37 0 35 0 35 0 34 0 5f 0 38 0 36 0 32 0 32 0 39 0 39 0 5f 0 38 0 34 0 37 0 0 0 26 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 31 0 38 0 30 0 32 0 33 0 31 0 39 0 38 0 36 0 5f 0 37 0 39 0 32 0 33 0 35 0 39 0 5f 0 32 0 35 0 35 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 33 0 39 0 37 0 35 0 39 0 31 0 34 0 39 0 33 0 32 0 5f 0 38 0 38 0 31 0 36 0 35 0 35 0 5f 0 32 0 37 0 33 0 31 0 0 0 27 0 5f 0 31 0 35 0 5f 0 31 0 5f 0 36 0 34 0 30 0 30 0 32 0 31 0 63 0 5f 0 31 0 32 0 31 0 34 0 36 0 34 0 39 0 31 0 35 0 37 0 32 0 34 0 38 0 5f 0 38 0 34 0 31 0 36 0 34 0 35 0 5f 0 32 0 32 0 32 0 31 </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='StringProperty'>
@@ -11895,7 +11895,7 @@ The implementing glue may create new instances each time, cache them, use protot
 						<mdElement elementClass='StringProperty'>
 							<propertyID>INFO_PROPERTY</propertyID>
 							<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-							<value>7 25 4d 29 1c 10 60 54 50 3f c2 12 6d ca e1 db 9a b4 ae a5 b5 de d4 7e f1 70 91 5e 94 82 75 67 2e d1 5f 50 2a 4c f9 e8 be e5 4f 4d 44 50 c4 e2 de 49 84 d6 64 d9 30 62 6e 42 2d b1 5e 12 87 d7 46 ec 1c cd fa </value>
+							<value>7 25 4d 29 1c 10 60 54 50 3f c2 12 79 d0 e1 db 9a b4 ae a5 b4 de d7 79 f1 71 97 5e 93 83 75 67 2e d1 5f 50 2a 4c f9 e8 be e5 4f 4d 44 50 c4 e2 de 49 84 d6 64 d9 30 62 6e 42 2d b1 5e 12 87 d7 46 ec 1c cd fa </value>
 							<multiline xmi:value='false'/>
 						</mdElement>
 						<mdElement elementClass='LIST_PROPERTY'>
