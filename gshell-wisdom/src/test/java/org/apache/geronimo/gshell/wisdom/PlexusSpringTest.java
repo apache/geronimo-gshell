@@ -19,22 +19,16 @@
 
 package org.apache.geronimo.gshell.wisdom;
 
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.codehaus.plexus.spring.PlexusInSpringTestCase;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class BasicSpringTest
-    extends AbstractDependencyInjectionSpringContextTests
+public class PlexusSpringTest
+    extends PlexusInSpringTestCase
 {
-    protected String[] getConfigLocations() {
-        return new String[] {
-            "classpath:" + getClass().getName().replace('.', '/') + "-context.xml"
-        };
-    }
-
     public void testSimple() throws Exception {
         System.out.println("Testing");
     }
