@@ -78,4 +78,34 @@ public class GShellArtifactMetadataSource
         
         return versions;
     }
+
+    public List<ArtifactVersion> retrieveAvailableVersionsFromDeploymentRepository(final Artifact artifact, final ArtifactRepository localRepository, final ArtifactRepository deploymentRepository1)
+        throws ArtifactMetadataRetrievalException
+    {
+        assert delegate != null;
+        assert repositoryManager != null;
+
+        log.trace("Retrieving available versions from deployment repo; artifact={}, local={}, deployment={}", new Object[] { artifact, localRepository, deploymentRepository1 });
+
+        List<ArtifactVersion> versions = delegate.retrieveAvailableVersionsFromDeploymentRepository(artifact, localRepository, deploymentRepository1);
+
+        log.trace("Available versions: {}", versions);
+
+        return versions;
+    }
+
+    public Artifact retrieveRelocatedArtifact(final Artifact artifact, final ArtifactRepository localRepository, final List<ArtifactRepository> remoteRepositories)
+        throws ArtifactMetadataRetrievalException
+    {
+        assert delegate != null;
+        assert repositoryManager != null;
+
+        log.trace("Retrieving relocated artirfat; artifact={}, local={}, remote={}", new Object[] { artifact, localRepository, remoteRepositories });
+
+        Artifact relocated = delegate.retrieveRelocatedArtifact(artifact, localRepository, repositoryManager.selectRemoteRepositories(remoteRepositories));
+
+        log.trace("Relocated artifact: {}", relocated);
+
+        return relocated;
+    }
 }

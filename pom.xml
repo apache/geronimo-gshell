@@ -40,7 +40,26 @@
     <description>
         GShell is a framework for building rich command-line applications.
     </description>
+    
+    <!--
+    FIXME:
+    
+    <url>http://geronimo.apache.org/maven-generated/${project.artifactId}/${project.version}</url>
 
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/${project.artifactId}/trunk</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/${project.artifactId}/trunk</developerConnection>
+        <url>http://svn.apache.org/viewvc/geronimo/${project.artifactId}/trunk</url>
+    </scm>
+    
+    <distributionManagement>
+        <site>
+            <id>geronimo-website</id>
+            <url>scp://people.apache.org/www/geronimo.apache.org/maven-generated/${project.artifactId}/${project.version}</url>
+        </site>
+    </distributionManagement>
+    -->
+    
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -134,19 +153,19 @@
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-utils</artifactId>
-                <version>1.5.4</version>
+                <version>1.5.5</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-interpolation</artifactId>
-                <version>1.0</version>
+                <version>1.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.maven.artifact</groupId>
                 <artifactId>maven-artifact</artifactId>
-                <version>3.0-SNAPSHOT</version>
+                <version>3.0-alpha-1</version>
             </dependency>
 
             <dependency>
