@@ -19,30 +19,15 @@
 
 package org.apache.geronimo.gshell.wisdom;
 
-import org.codehaus.plexus.spring.PlexusInSpringTestCase;
-import org.codehaus.plexus.spring.PlexusToSpringUtils;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class PlexusSpringTest
-    extends PlexusInSpringTestCase
+@Component(role=MyPlexusComponent.class)
+public class MyPlexusComponent
 {
-    public void testIdConvert() throws Exception {
-        System.out.println("ID: " + PlexusToSpringUtils.buildSpringId(MyPlexusComponent.class, "foo"));
-    }
-
-    public void testListBeans() throws Exception {
-        for (String name : applicationContext.getBeanDefinitionNames()) {
-            System.out.println(name);
-        }
-    }
-
-    public void testSpringBean() throws Exception {
-        MySpringComponent springComponent = (MySpringComponent) applicationContext.getBean("springComponent");
-        assertNotNull(springComponent);
-        assertNotNull(springComponent.getPlexusComponent());
-    }
+    // ???
 }
