@@ -546,19 +546,27 @@
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-maven-plugin</artifactId>
+                <configuration>
+                    <extractors>
+                        <classComponentDescriptorExtractor>
+                            <gleaner implementation="org.codehaus.plexus.cdc.gleaner.AnnotationComponentGleaner"/>
+                        </classComponentDescriptorExtractor>
+                    </extractors>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>process-classes</id>
                         <phase>process-classes</phase>
                         <goals>
                             <goal>descriptor</goal>
                         </goals>
-                        <configuration>
-                            <extractors>
-                                <classComponentDescriptorExtractor>
-                                    <gleaner implementation="org.codehaus.plexus.cdc.gleaner.AnnotationComponentGleaner"/>
-                                </classComponentDescriptorExtractor>
-                            </extractors>
-                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>process-test-classes</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>test-descriptor</goal>
+                        </goals>
                     </execution>
                 </executions>
                 <dependencies>
