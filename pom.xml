@@ -396,12 +396,6 @@
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>gshell-embeddable</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-cli</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
