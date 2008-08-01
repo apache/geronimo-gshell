@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Default implementation of the {@link org.apache.geronimo.gshell.application.ApplicationManager} component.
+ * Default implementation of the {@link ApplicationManager} component.
  *
  * @version $Rev$ $Date$
  */
@@ -76,6 +76,14 @@ public class ApplicationManagerImpl
 
     private GShellPlexusContainer container;
     */
+
+    public ApplicationManagerImpl(final ArtifactManager artifactManager, final SettingsManager settingsManager) {
+        assert artifactManager != null;
+        assert settingsManager != null;
+        
+        this.artifactManager = artifactManager;
+        this.settingsManager = settingsManager;
+    }
 
     private ApplicationContext applicationContext;
 

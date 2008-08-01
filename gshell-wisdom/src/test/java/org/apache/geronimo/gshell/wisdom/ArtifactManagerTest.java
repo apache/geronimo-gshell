@@ -21,17 +21,24 @@ package org.apache.geronimo.gshell.wisdom;
 
 import org.codehaus.plexus.spring.PlexusInSpringTestCase;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.application.settings.SettingsManager;
 
 /**
- * ???
+ * Basic tests to make sure we can inject the {@link ArtifactManager} which is a Plexus component.
  *
  * @version $Rev$ $Date$
  */
 public class ArtifactManagerTest
     extends PlexusInSpringTestCase
 {
-    public void testGetBean() throws Exception {
+    public void testDirect() throws Exception {
         ArtifactManager artifactManager = (ArtifactManager) applicationContext.getBean("artifactManager");
         assertNotNull(artifactManager);
     }
+
+    public void testAsDependency() throws Exception {
+        SettingsManager settingsManager = (SettingsManager) applicationContext.getBean("settingsManager");
+        assertNotNull(settingsManager);
+    }
+
 }

@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Default implementation of the {@link org.apache.geronimo.gshell.application.settings.SettingsManager} component.
+ * Default implementation of the {@link SettingsManager} component.
  *
  * @version $Rev$ $Date$
  */
@@ -43,6 +43,12 @@ public class SettingsManagerImpl
     private ArtifactManager artifactManager;
 
     private SettingsConfiguration settingsConfiguration;
+
+    public SettingsManagerImpl(final ArtifactManager artifactManager) {
+        assert artifactManager != null;
+        
+        this.artifactManager = artifactManager;
+    }
 
     public Settings getSettings() {
         if (settingsConfiguration == null) {
