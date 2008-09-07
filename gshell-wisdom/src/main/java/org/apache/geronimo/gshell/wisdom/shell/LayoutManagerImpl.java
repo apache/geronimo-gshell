@@ -27,6 +27,9 @@ import org.apache.geronimo.gshell.model.layout.Layout;
 import org.apache.geronimo.gshell.model.layout.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * The default implementation of the {@link LayoutManager} component.
@@ -38,17 +41,12 @@ public class LayoutManagerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private ApplicationManager applicationManager;
 
     private Layout layout;
 
     public LayoutManagerImpl() {}
-
-    public LayoutManagerImpl(final ApplicationManager applicationManager) {
-        assert applicationManager != null;
-
-        this.applicationManager = applicationManager;
-    }
 
     private Layout lookupLayout() {
         assert applicationManager != null;

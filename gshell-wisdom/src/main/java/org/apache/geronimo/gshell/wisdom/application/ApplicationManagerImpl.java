@@ -44,7 +44,9 @@ import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -66,24 +68,11 @@ public class ApplicationManagerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private ArtifactManager artifactManager;
 
+    @Autowired
     private SettingsManager settingsManager;
-
-    /*
-    FIXME:
-    private GShellPlexusContainer parentContainer;
-
-    private GShellPlexusContainer container;
-    */
-
-    public ApplicationManagerImpl(final ArtifactManager artifactManager, final SettingsManager settingsManager) {
-        assert artifactManager != null;
-        assert settingsManager != null;
-        
-        this.artifactManager = artifactManager;
-        this.settingsManager = settingsManager;
-    }
 
     private ApplicationContext applicationContext;
 
@@ -181,6 +170,7 @@ public class ApplicationManagerImpl
         }
     }
 
+    // ctx.registerShutdownHook();
     /*
     private GShellPlexusContainer createContainer(final Application application) throws Exception {
         assert application != null;

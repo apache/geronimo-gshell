@@ -20,11 +20,10 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import org.apache.geronimo.gshell.shell.ShellInfo;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,7 +35,7 @@ import java.net.UnknownHostException;
  * @version $Rev$ $Date$
  */
 public class ShellInfoImpl
-    implements ShellInfo, Initializable
+    implements ShellInfo
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -66,7 +65,8 @@ public class ShellInfoImpl
         return System.getProperty("user.name");
     }
 
-    public void initialize() throws InitializationException {
+    @PostConstruct
+    public void init() {
         homeDir = detectHomeDir();
 
         log.debug("Using home directory: {}", homeDir);
@@ -75,11 +75,11 @@ public class ShellInfoImpl
             localHost = InetAddress.getLocalHost();
         }
         catch (UnknownHostException e) {
-            throw new InitializationException("Unable to determine locahost", e);
+            throw new RuntimeException("Unable to determine locahost", e);
         }
     }
 
-    private File detectHomeDir() throws InitializationException {
+    private File detectHomeDir() {
         String homePath = System.getProperty("user.home");
 
         // And now lets resolve this sucker
@@ -89,12 +89,12 @@ public class ShellInfoImpl
             dir = new File(homePath).getCanonicalFile();
         }
         catch (IOException e) {
-            throw new InitializationException("Failed to resolve home directory: " + homePath, e);
+            throw new RuntimeException("Failed to resolve home directory: " + homePath, e);
         }
 
         // And some basic sanity too
         if (!dir.exists() || !dir.isDirectory()) {
-            throw new InitializationException("Home directory configured but is not a valid directory: " + dir);
+            throw new RuntimeException("Home directory configured but is not a valid directory: " + dir);
         }
 
         return dir;

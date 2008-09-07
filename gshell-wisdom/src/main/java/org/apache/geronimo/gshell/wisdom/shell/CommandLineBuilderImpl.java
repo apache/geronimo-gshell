@@ -20,19 +20,18 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
-import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -46,21 +45,12 @@ public class CommandLineBuilderImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private PlexusContainer container;
-
+    @Autowired
     private ApplicationManager applicationManager;
 
     private final CommandLineParser parser = new CommandLineParser();
 
     public CommandLineBuilderImpl() {}
-
-    public CommandLineBuilderImpl(final PlexusContainer container, final ApplicationManager applicationManager) {
-        assert container != null;
-        assert applicationManager != null;
-
-        this.container = container;
-        this.applicationManager = applicationManager;
-    }
 
     private ASTCommandLine parse(final String input) throws ParseException {
         assert input != null;
@@ -94,14 +84,14 @@ public class CommandLineBuilderImpl
         }
 
         try {
+            /*
+            FIXME:
             assert container != null;
             CommandLineExecutor executor = (CommandLineExecutor) container.lookup(CommandLineExecutor.class);
 
             assert applicationManager != null;
             Variables vars = applicationManager.getContext().getVariables();
 
-            /*
-            FIXME:
 
             final ExecutingVisitor visitor = new ExecutingVisitor(executor, vars);
             final ASTCommandLine root = parse(commandLine);

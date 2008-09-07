@@ -44,7 +44,7 @@
         
         <dependency>
             <groupId>org.codehaus.groovy.maven.runtime</groupId>
-            <artifactId>gmaven-runtime-default</artifactId>
+            <artifactId>gmaven-runtime-1.5</artifactId>
         </dependency>
         
         <dependency>

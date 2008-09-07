@@ -39,7 +39,9 @@ import org.apache.geronimo.gshell.notification.Notification;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
@@ -59,10 +61,13 @@ public class CommandLineExecutorImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private ApplicationManager applicationManager;
 
+    @Autowired
     private CommandResolver commandResolver;
 
+    @Autowired
     private CommandLineBuilder commandLineBuilder;
 
     private Variables variables;
@@ -71,15 +76,9 @@ public class CommandLineExecutorImpl
 
     public CommandLineExecutorImpl() {}
 
-    public CommandLineExecutorImpl(final ApplicationManager applicationManager, final CommandLineBuilder commandLineBuilder) {
-        assert applicationManager != null;
-        assert commandLineBuilder != null;
-
-        this.applicationManager = applicationManager;
-        this.commandLineBuilder = commandLineBuilder;
-    }
-
     /*
+    FIXME:
+    @PostConstruct
     public void initialize() throws InitializationException {
         assert applicationManager != null;
 

@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContainerFactory;
-import org.apache.geronimo.gshell.plexus.GShellPlexusContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +33,6 @@ public class CommandContainerFactoryImpl
     implements CommandContainerFactory
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private GShellPlexusContainer container;
 
     public CommandContainer create(final String id) throws Exception {
         assert id != null;

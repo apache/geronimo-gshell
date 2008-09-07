@@ -37,7 +37,9 @@ import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -53,12 +55,16 @@ public class ShellImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private ApplicationManager applicationManager;
 
+    @Autowired
     private ShellInfo shellInfo;
 
+    @Autowired
     private CommandLineExecutor executor;
 
+    @Autowired
     private History history;
 
     private Variables variables;
@@ -72,19 +78,7 @@ public class ShellImpl
     private ErrorHandler errorHandler;
 
     public ShellImpl() {}
-
-    public ShellImpl(final ApplicationManager applicationManager, final ShellInfo shellInfo, final CommandLineExecutor executor, final History history) {
-        assert applicationManager != null;
-        assert shellInfo != null;
-        assert executor != null;
-        assert history != null;
-
-        this.applicationManager = applicationManager;
-        this.shellInfo = shellInfo;
-        this.executor = executor;
-        this.history = history;
-    }
-
+    
     public Variables getVariables() {
         return variables;
     }

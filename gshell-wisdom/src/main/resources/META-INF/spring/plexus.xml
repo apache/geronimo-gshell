@@ -19,7 +19,7 @@
 -->
 
 <!-- $Rev$ $Date$ -->
-
+        
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
@@ -30,7 +30,8 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <context:annotation-config/>
-
-    <bean id="settingsManager" class="org.apache.geronimo.gshell.wisdom.application.SettingsManagerImpl"/>
+    
+    <bean id="artifactManager" class="org.apache.geronimo.gshell.artifact.DefaultArtifactManager">
+    </bean>
 
 </beans>

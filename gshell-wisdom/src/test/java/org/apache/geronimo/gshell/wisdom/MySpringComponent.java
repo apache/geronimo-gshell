@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * ???
  *
@@ -26,6 +28,7 @@ package org.apache.geronimo.gshell.wisdom;
  */
 public class MySpringComponent
 {
+    @Autowired
     private MyPlexusComponent plexusComponent;
 
     public void setPlexusComponent(final MyPlexusComponent plexusComponent) {

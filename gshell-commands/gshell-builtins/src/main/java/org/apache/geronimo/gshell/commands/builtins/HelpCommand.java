@@ -23,7 +23,14 @@ import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.*;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandException;
+import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.command.CommandResolver;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
@@ -52,9 +59,6 @@ public class HelpCommand
 
     @Requirement
     private CommandResolver commandResolver;
-
-    @Requirement
-    private CommandContainerFactory commandContainerFactory;
 
     @Requirement
     private LayoutManager layoutManager;
@@ -102,37 +106,38 @@ public class HelpCommand
 
         GroupNode group = layoutManager.getLayout();
 
-        displayGroupCommands(io, group);
+        displayGroupCommands(io, group, context.getVariables());
     }
 
-    private void displayGroupCommands(final IO io, final GroupNode group) throws Exception {
+    private void displayGroupCommands(final IO io, final GroupNode group, final Variables variables) throws Exception {
         assert io != null;
         int maxNameLen = 20; // FIXME: Figure this out dynamically
 
         // First display command/aliases nodes
         for (Node child : group.nodes()) {
+            log.debug("Render help tree for node: {}", child);
+            
             if (child instanceof CommandNode) {
-                try {
-                    CommandNode node = (CommandNode) child;
-                    String name = StringUtils.rightPad(node.getName(), maxNameLen);
+                String path = child.getPath();
 
-                    CommandContainer command = commandContainerFactory.create(node.getId());
+                log.debug("Resolving command for path: {}", path);
 
-                    // FIXME:
-                    String desc = command.toString(); // command.getDescription();
+                Command command = commandResolver.resolve(variables, path);
+                String name = StringUtils.rightPad(child.getName(), maxNameLen);
 
+                CommandDocumenter documenter = command.getContainer().getDocumenter();
+                CommandInfo info = command.getInfo();
+                String desc = documenter.getDescription(info);
+
+                io.out.print("  ");
+                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+
+                if (desc != null) {
                     io.out.print("  ");
-                    io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
-
-                    if (desc != null) {
-                        io.out.print("  ");
-                        io.out.println(desc);
-                    }
-                    else {
-                        io.out.println();
-                    }
-                } catch (/*NotRegistered*/Exception e) {
-                    // Ignore those exceptions (command will not be displayed)
+                    io.out.println(desc);
+                }
+                else {
+                    io.out.println();
                 }
             }
             else if (child instanceof AliasNode) {
@@ -170,7 +175,7 @@ public class HelpCommand
                 io.out.println(renderer.render(Renderer.encode(path, Code.BOLD)));
 
                 io.out.println();
-                displayGroupCommands(io, node);
+                displayGroupCommands(io, node, variables);
                 io.out.println();
             }
         }

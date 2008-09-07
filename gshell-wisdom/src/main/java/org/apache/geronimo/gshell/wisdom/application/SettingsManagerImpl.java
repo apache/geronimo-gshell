@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.model.settings.Settings;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Default implementation of the {@link SettingsManager} component.
@@ -40,15 +41,10 @@ public class SettingsManagerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private ArtifactManager artifactManager;
 
     private SettingsConfiguration settingsConfiguration;
-
-    public SettingsManagerImpl(final ArtifactManager artifactManager) {
-        assert artifactManager != null;
-        
-        this.artifactManager = artifactManager;
-    }
 
     public Settings getSettings() {
         if (settingsConfiguration == null) {
