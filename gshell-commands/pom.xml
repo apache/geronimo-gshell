@@ -63,7 +63,8 @@
         <module>gshell-bsf</module>
         <module>gshell-vfs</module>
     </modules>
-    
+
+    <!--
     <build>
         <plugins>
             <plugin>
@@ -79,5 +80,6 @@
             </plugin>
         </plugins>
     </build>
+    -->
 
 </project>
