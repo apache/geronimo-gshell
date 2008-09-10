@@ -44,8 +44,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-plexus</artifactId>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-component-annotations</artifactId>
         </dependency>
     </dependencies>
 

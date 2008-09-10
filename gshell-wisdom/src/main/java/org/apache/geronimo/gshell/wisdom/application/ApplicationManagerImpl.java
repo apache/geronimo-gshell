@@ -46,7 +46,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -170,7 +169,6 @@ public class ApplicationManagerImpl
         }
     }
 
-    // ctx.registerShutdownHook();
     /*
     private GShellPlexusContainer createContainer(final Application application) throws Exception {
         assert application != null;

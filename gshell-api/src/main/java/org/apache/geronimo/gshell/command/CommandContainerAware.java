@@ -17,19 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.plugin;
-
-import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
+package org.apache.geronimo.gshell.command;
 
 /**
- * Marshaller for {@link Plugin} models.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class PluginMarshaller
-    extends MarshallerSupport<Plugin>
+public interface CommandContainerAware
 {
-    public PluginMarshaller() {
-        super(Plugin.class);
-    }
+    void setCommandContainer(CommandContainer container);
 }

@@ -32,8 +32,12 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellFactory;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.codehaus.plexus.classworlds.ClassWorld;
+import org.springframework.beans.BeansException;
 
 /**
  * Builds {@link org.apache.geronimo.gshell.shell.Shell} instances.
@@ -45,16 +49,12 @@ public class ShellBuilder
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    /*
     private static final String DEFAULT_REALM_ID = "gshell";
 
-    private static final String DEFAULT_CONTAINER_NAME = "gshell";
-
-    private GShellPlexusContainer container;
+    private BeanContainer container;
 
     private ClassWorld classWorld;
-    */
-
+    
     private SettingsManager settingsManager;
 
     private SettingsConfiguration settingsConfig = new SettingsConfiguration();
@@ -67,34 +67,22 @@ public class ShellBuilder
 
     public ShellBuilder() {}
 
-    /*
-    private GShellPlexusContainer createContainer() throws PlexusContainerException {
-        ContainerConfiguration config = new DefaultContainerConfiguration();
-
-        config.setName(DEFAULT_CONTAINER_NAME);
-        config.setClassWorld(getClassWorld());
-
-        GShellPlexusContainer container = new GShellPlexusContainer(config);
-
-        // Install our logging muck
-        container.setLoggerManager(new Slf4jLoggingManager());
-
+    private BeanContainer createContainer() {
+        BeanContainer container = new BeanContainerImpl();
         return container;
     }
 
-    public GShellPlexusContainer getContainer() throws PlexusContainerException {
+    public BeanContainer getContainer() {
         if (container == null) {
             container = createContainer();
         }
         return container;
     }
 
-    public void setContainer(final GShellPlexusContainer container) {
+    public void setContainer(final BeanContainer container) {
         this.container = container;
     }
-    */
 
-    /*
     private ClassWorld createClassWorld() {
         return new ClassWorld(DEFAULT_REALM_ID, Thread.currentThread().getContextClassLoader());
     }
@@ -109,7 +97,6 @@ public class ShellBuilder
     public void setClassWorld(final ClassWorld classWorld) {
         this.classWorld = classWorld;
     }
-    */
 
     public IO getIo() {
         return applicationConfig.getIo();
@@ -135,11 +122,11 @@ public class ShellBuilder
         settingsConfig.setSettings(settings);
     }
 
-    private SettingsManager createSettingsManager() /*FIXME: throws ComponentLookupException */ {
-        return null; // FIXME: container.lookupComponent(SettingsManager.class);
+    private SettingsManager createSettingsManager() throws BeansException {
+        return getContainer().getBean(SettingsManager.class);
     }
 
-    public SettingsManager getSettingsManager() /*FIXME: throws ComponentLookupException*/ {
+    public SettingsManager getSettingsManager() throws BeansException {
         if (settingsManager == null) {
             settingsManager = createSettingsManager();
         }
@@ -158,11 +145,11 @@ public class ShellBuilder
         applicationConfig.setApplication(application);
     }
 
-    private ApplicationManager createApplicationManager() /*FIXME: throws ComponentLookupException*/ {
-        return null; // FIXME: container.lookupComponent(ApplicationManager.class);
+    private ApplicationManager createApplicationManager() throws BeansException {
+        return getContainer().getBean(ApplicationManager.class);
     }
 
-    public ApplicationManager getApplicationManager() /*FIXME: throws ComponentLookupException*/ {
+    public ApplicationManager getApplicationManager() throws BeansException {
         if (applicationManager == null) {
             applicationManager = createApplicationManager();
         }
@@ -173,11 +160,11 @@ public class ShellBuilder
         this.applicationManager = applicationManager;
     }
 
-    private ArtifactManager createArtifactManager() /*FIXME: throws PlexusContainerException, ComponentLookupException*/ {
-        return null; // FIXME: getContainer().lookupComponent(ArtifactManager.class);
+    private ArtifactManager createArtifactManager() throws BeansException {
+        return getContainer().getBean(ArtifactManager.class);
     }
 
-    public ArtifactManager getArtifactManager() /*FIXME: throws ComponentLookupException, PlexusContainerException*/ {
+    public ArtifactManager getArtifactManager() throws BeansException {
         if (artifactManager == null) {
             artifactManager = createArtifactManager();
         }
@@ -213,12 +200,9 @@ public class ShellBuilder
         SystemOutputHijacker.register(io.outputStream, io.errorStream);
 
         // Initialize the container
-        /*
-        FIXME:
         getContainer();
         log.debug("Container: {}", container);
-        */
-        
+
         //
         // TODO: Allow someway to configure a non-interactive monitor
         //

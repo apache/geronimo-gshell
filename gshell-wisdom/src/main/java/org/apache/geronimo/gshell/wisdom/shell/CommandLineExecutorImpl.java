@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
@@ -76,16 +77,13 @@ public class CommandLineExecutorImpl
 
     public CommandLineExecutorImpl() {}
 
-    /*
-    FIXME:
     @PostConstruct
-    public void initialize() throws InitializationException {
+    public void init() {
         assert applicationManager != null;
 
         this.variables = applicationManager.getContext().getVariables();
         this.io = applicationManager.getContext().getIo();
     }
-    */
 
     public Object execute(final String line) throws Exception {
         assert line != null;

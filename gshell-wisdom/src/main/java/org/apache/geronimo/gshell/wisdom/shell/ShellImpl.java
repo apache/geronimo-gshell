@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.wisdom.shell;
 import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.ApplicationContext;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -39,7 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -91,8 +92,8 @@ public class ShellImpl
         return true;
     }
 
-    /*
-    public void initialize() throws InitializationException {
+    @PostConstruct
+    public void init() {
         assert applicationManager != null;
 
         // Dereference some bits from the applciation context
@@ -105,10 +106,9 @@ public class ShellImpl
             loadProfileScripts();
         }
         catch (Exception e) {
-            throw new InitializationException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
-    */
 
     //
     // Command Execution (all delegates)

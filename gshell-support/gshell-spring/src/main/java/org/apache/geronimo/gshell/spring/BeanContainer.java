@@ -17,26 +17,20 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.application;
+package org.apache.geronimo.gshell.spring;
 
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.command.Variables;
+import org.springframework.beans.BeansException;
 
 /**
- * Encapsulates the context for an application.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface ApplicationContext
+public interface BeanContainer
 {
-    // TODO: Rename to Application
+    <T> T getBean(Class<T> type) throws BeansException;
 
-    IO getIo();
+    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
 
-    Variables getVariables();
-
-    // TODO: Rename to ApplicationModel
-    
-    Application getApplication();
+    // Create children
 }

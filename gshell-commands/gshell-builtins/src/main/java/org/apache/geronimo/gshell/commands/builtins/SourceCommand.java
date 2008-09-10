@@ -23,13 +23,16 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -44,7 +47,7 @@ public class SourceCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
+    // @Autowired
     private CommandLineExecutor executor;
 
     @Argument(required=true, description="Source file")

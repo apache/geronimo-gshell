@@ -34,6 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import javax.annotation.PostConstruct;
+
 /**
  * The default {@link CommandContainer} component.
  *
@@ -44,51 +46,67 @@ public class CommandContainerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    // private GShellPlexusContainer container;
+    private String id;
 
-    private String commandId;
+    private CommandAction action;
 
-    // Command
+    private CommandDocumenter documenter;
+
+    private CommandCompleter completer;
 
     public String getId() {
-        return commandId;
+        return id;
     }
 
-    private <T> T lookupComponent(final Class<T> role) {
-        /*
-        assert role != null;
-        assert container != null;
+    public void setId(final String id) {
+        assert id != null;
 
-        try {
-            return container.lookupComponent(role, commandId);
-        }
-        catch (ComponentLookupException e) {
-            throw new RuntimeException(e);
-        }
-        */
-
-        return null;
+        this.id = id;
     }
 
     public CommandAction getAction() {
-        return lookupComponent(CommandAction.class);
+        return action;
+    }
+
+    public void setAction(final CommandAction action) {
+        assert action != null;
+        
+        this.action = action;
     }
 
     public CommandDocumenter getDocumenter() {
-        return lookupComponent(CommandDocumenter.class);
+        return documenter;
+    }
+
+    public void setDocumenter(final CommandDocumenter documenter) {
+        // documenter could be null
+
+        this.documenter = documenter;
     }
 
     public CommandCompleter getCompleter() {
-        return lookupComponent(CommandCompleter.class);
+        return completer;
     }
 
+    public void setCompleter(final CommandCompleter completer) {
+        // completer could be null
+        
+        this.completer = completer;
+    }
+
+    @PostConstruct
+    public void init() {
+        // TODO: Validate properties
+        // TODO: Inject ourself into CommandContainerAware instances
+    }
+    
     public CommandResult execute(final CommandContext context) {
         assert context != null;
 
         log.trace("Executing; context={}");
 
         // Provide logging context for the command execution
-        MDC.put("commandId", commandId);
+        MDC.put("command-id", id);
 
         CommandResult result;
 
@@ -137,12 +155,16 @@ public class CommandContainerImpl
      * @param args      The arguments to the action.
      * @return          True if --help was detetected, else execute the action.
      *
-     * @throws org.apache.geronimo.gshell.clp.ProcessingException  A failure occured while processing the command-line.
+     * @throws ProcessingException  A failure occured while processing the command-line.
      */
     private boolean processArguments(final CommandContext context, final CommandAction action, final Object[] args) throws ProcessingException {
         assert context != null;
         assert args != null;
 
+        //
+        // TODO: Add preferences processor
+        //
+        
         CommandLineProcessor clp = new CommandLineProcessor();
         clp.addBean(action);
 

@@ -294,6 +294,111 @@
                 <artifactId>bsh</artifactId>
                 <version>2.0b4</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>2.5.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>2.5.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>2.5.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>2.5.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>2.5.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            
+            <!--
+            <dependency>
+                <groupId>org.springframework.osgi</groupId>
+                <artifactId>spring-osgi-core</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.osgi</groupId>
+                <artifactId>spring-osgi-extender</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.osgi</groupId>
+                <artifactId>spring-osgi-io</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.osgi</groupId>
+                <artifactId>spring-osgi-annotation</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.osgi</groupId>
+                <artifactId>spring-osgi-test</artifactId>
+                <version>1.1.0</version>
+                <scope>test</scope>
+            </dependency>
+            -->
+            
+            <dependency>
+                <groupId>org.jmock</groupId>
+                <artifactId>jmock-junit3</artifactId>
+                <version>2.5.1</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymock</artifactId>
+                <version>2.4</version>
+            </dependency>
             
             <!-- INTERNAL -->
             
@@ -333,9 +438,17 @@
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
 
+            <!--
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-plexus</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+            -->
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-spring</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
 
@@ -496,7 +609,9 @@
         <module>gshell-application</module>
         <module>gshell-parser</module>
         <module>gshell-layout</module>
+        <!--
         <module>gshell-rapture</module>
+        -->
         <module>gshell-wisdom</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>

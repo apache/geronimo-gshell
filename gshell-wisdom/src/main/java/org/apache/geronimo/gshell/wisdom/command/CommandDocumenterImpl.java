@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +39,6 @@ public class CommandDocumenterImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    // private GShellPlexusContainer container;
-
     /**
      * Get the action instance for the given command context.
      *
@@ -51,19 +48,9 @@ public class CommandDocumenterImpl
     private CommandAction getAction(final CommandInfo info) {
         assert info != null;
 
-        /*
-        FIXME:
-        assert container != null;
+        // TODO:
 
-        try {
-            return container.lookupComponent(CommandAction.class, info.getId());
-        }
-        catch (ComponentLookupException e) {
-            throw new RuntimeException(e);
-        }
-        */
-
-        return null;
+        throw new Error();
     }
 
     // CommandDocumenter
@@ -83,17 +70,9 @@ public class CommandDocumenterImpl
     public String getDescription(final CommandInfo info) {
         assert info != null;
 
-        //
-        // HACK: This needs to chagne, doing this for now to make it work
-        //
-
-        CommandAction action = getAction(info);
-        CommandComponent annotation = action.getClass().getAnnotation(CommandComponent.class);
-        if (annotation == null) {
-            throw new IllegalStateException("Command description not found");
-        }
-
-        return annotation.description();
+        // TODO:
+        
+        throw new Error();
     }
 
     //

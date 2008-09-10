@@ -20,6 +20,14 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.File;
 
 /**
  * Default implementation of the {@link jline.History} component.
@@ -27,7 +35,40 @@ import jline.History;
  * @version $Rev$ $Date$
  */
 public class HistoryImpl
-    // FIXME: extends FileHistory
+    extends History
 {
-    // Empty
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private ApplicationManager applicationManager;
+
+    public HistoryImpl() {}
+
+    @PostConstruct
+    public void init() {
+        assert applicationManager != null;
+
+        try {
+            setHistoryFile(applicationManager.getContext().getApplication().getBranding().getHistoryFile());
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failed to set history file", e);
+        }
+    }
+
+    public void setHistoryFile(final File file) throws IOException {
+        assert file != null;
+
+        File dir = file.getParentFile();
+
+        if (!dir.exists()) {
+            dir.mkdirs();
+
+            log.debug("Created base directory for history file: {}", dir);
+        }
+
+        log.debug("Using history file: {}", file);
+
+        super.setHistoryFile(file);
+    }
 }

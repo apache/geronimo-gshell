@@ -93,6 +93,10 @@
         </dependencyGroup>
     </dependencyGroups>
 
+    <!--
+    TODO: Need plugins
+    -->
+    
     <branding>
         <name>gshell</name>
     </branding>

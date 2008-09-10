@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -65,13 +64,10 @@ public class CommandLineBuilderImpl
         }
 
         // If debug is enabled, the log the parse tree
-        /*
-        FIXME:
         if (log.isDebugEnabled()) {
             LoggingVisitor logger = new LoggingVisitor(log);
             cl.jjtAccept(logger, null);
         }
-        */
 
         return cl;
     }

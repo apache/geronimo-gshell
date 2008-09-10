@@ -17,42 +17,38 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.command;
+package org.apache.geronimo.gshell.spring;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.Element;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
- * Describes a comand parameter.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("parameter")
-public class Parameter
-    extends Element
+public class BeanContainerAwareProcessor
+    implements BeanPostProcessor
 {
-    private String name;
+    private final BeanContainer container;
 
-    private String value;
+    public BeanContainerAwareProcessor(final BeanContainer container) {
+        assert container != null;
 
-    public Parameter(final String name, final String value) {
-        this.name = name;
-        this.value = value;
+        this.container = container;
     }
 
-    public String getName() {
-        return name;
+    public Object postProcessBeforeInitialization(final Object bean, final String beanName) throws BeansException {
+        assert bean != null;
+
+        if (bean instanceof BeanContainerAware) {
+            ((BeanContainerAware)bean).setBeanContainer(container);
+        }
+        
+        return bean;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(final String value) {
-        this.value = value;
+    public Object postProcessAfterInitialization(final Object bean, final String beanName) throws BeansException {
+        return bean;
     }
 }

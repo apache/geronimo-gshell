@@ -54,13 +54,13 @@ public class HelpCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
+    // @Autowired
     private ApplicationManager applicationManager;
 
-    @Requirement
+    // @Autowired
     private CommandResolver commandResolver;
 
-    @Requirement
+    // @Autowired
     private LayoutManager layoutManager;
 
     @Argument(metaVar="COMMAND", required=true, description="Display help for COMMAND")

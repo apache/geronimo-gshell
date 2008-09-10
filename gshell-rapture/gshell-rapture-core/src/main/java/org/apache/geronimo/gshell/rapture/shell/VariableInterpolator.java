@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 /**
  * Provides interpolation for shell variables using Jexl.

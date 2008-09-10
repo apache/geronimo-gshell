@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.url;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,20 +36,18 @@ import java.util.StringTokenizer;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=URLHandlerFactory.class, instantiationStrategy="singleton-keep-alive")
-public class DefaultURLHandlerFactory
-    implements URLHandlerFactory,Initializable
+public class URLHandlerFactoryImpl
+    implements URLHandlerFactory
 {
-    private static DefaultURLHandlerFactory SINGLETON;
+    private static URLHandlerFactoryImpl SINGLETON;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Factory factory = new Factory();
 
-    @Requirement(role=URLStreamHandler.class)
     private Map<String,URLStreamHandler> handlers;
 
-    public DefaultURLHandlerFactory() {
+    public URLHandlerFactoryImpl() {
         // Just sanity check that only one of these puppies gets constructed... ever
         synchronized (URLHandlerFactory.class) {
             if (SINGLETON != null) {
@@ -63,14 +57,22 @@ public class DefaultURLHandlerFactory
         }
     }
 
-    public void initialize() throws InitializationException {
+    public Map<String, URLStreamHandler> getHandlers() {
+        return handlers;
+    }
+
+    public void setHandlers(final Map<String, URLStreamHandler> handlers) {
+        this.handlers = handlers;
+    }
+
+    public void init() {
         try {
             URL.setURLStreamHandlerFactory(factory);
 
             log.debug("URL stream handler factory installed");
         }
         catch (Throwable t) {
-            throw new InitializationException("Failed to install URL stream handler factory", t);
+            throw new RuntimeException("Failed to install URL stream handler factory", t);
         }
 
         // Log the initial handlers which were injected
