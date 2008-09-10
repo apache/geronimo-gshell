@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell;
+package org.apache.geronimo.gshell.wisdom.builder;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
@@ -37,7 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GShell Wisdom {@link ShellBuilder}.
+ * GShell Wisdom("Spring") {@link ShellBuilder}.
  * 
  * @version $Rev$ $Date$
  */

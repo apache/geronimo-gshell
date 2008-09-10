@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell;
+package org.apache.geronimo.gshell.wisdom.builder;
 
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.Variables;

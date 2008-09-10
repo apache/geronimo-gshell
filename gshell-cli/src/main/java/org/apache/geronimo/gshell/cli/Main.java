@@ -31,9 +31,8 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.application.settings.SettingsLocator;
-import org.apache.geronimo.gshell.wisdom.ShellBuilder;
-import org.apache.geronimo.gshell.wisdom.shell.ShellBuilder;
-import org.apache.geronimo.gshell.wisdom.shell.ShellBuilderImpl;
+import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
+import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
 import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.util.ArrayList;
