@@ -33,7 +33,6 @@ import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.application.settings.SettingsLocator;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
-import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,16 +51,8 @@ public class Main
     //       picked up on the initial loading of Log4j
     //
 
-    private final ClassWorld classWorld;
-
     private final IO io = new IO();
 
-    public Main(final ClassWorld classWorld) {
-        assert classWorld != null;
-
-        this.classWorld = classWorld;
-    }
-    
     //
     // TODO: Add flag to capture output to log file
     //       https://issues.apache.org/jira/browse/GSHELL-47
@@ -263,13 +254,9 @@ public class Main
         System.exit(code);
     }
 
-    public static void main(final String[] args, final ClassWorld world) throws Exception {
-        Main main = new Main(world);
-        main.boot(args);
-    }
-
     public static void main(final String[] args) throws Exception {
-        main(args, new ClassWorld("gshell", Thread.currentThread().getContextClassLoader()));
+        Main main = new Main();
+        main.boot(args);
     }
 }
 
