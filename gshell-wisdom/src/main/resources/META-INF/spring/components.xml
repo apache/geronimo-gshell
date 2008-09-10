@@ -66,10 +66,5 @@
 
     <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl">
     </bean>
-
-    <!-- Plexus -->
-
-    <bean id="artifactManager" class="org.apache.geronimo.gshell.artifact.DefaultArtifactManager">
-    </bean>
     
 </beans>
