@@ -32,6 +32,8 @@ import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.application.settings.SettingsLocator;
 import org.apache.geronimo.gshell.wisdom.ShellBuilder;
+import org.apache.geronimo.gshell.wisdom.shell.ShellBuilder;
+import org.apache.geronimo.gshell.wisdom.shell.ShellBuilderImpl;
 import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.util.ArrayList;
@@ -203,7 +205,7 @@ public class Main
         });
 
         try {
-            ShellBuilder builder = new ShellBuilder();
+            ShellBuilder builder = new ShellBuilderImpl();
             builder.setClassLoader(getClass().getClassLoader());
             builder.setIo(io);
 

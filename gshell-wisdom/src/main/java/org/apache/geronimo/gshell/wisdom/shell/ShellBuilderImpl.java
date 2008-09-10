@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom;
+package org.apache.geronimo.gshell.wisdom.shell;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
@@ -31,19 +31,18 @@ import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.shell.Shell;
-import org.apache.geronimo.gshell.shell.ShellFactory;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Builds {@link org.apache.geronimo.gshell.shell.Shell} instances.
- *
+ * GShell Wisdom {@link ShellBuilder}.
+ * 
  * @version $Rev$ $Date$
  */
-public class ShellBuilder
-    implements ShellFactory
+public class ShellBuilderImpl
+    implements ShellBuilder
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -61,7 +60,7 @@ public class ShellBuilder
 
     private ArtifactManager artifactManager;
 
-    public ShellBuilder() {}
+    public ShellBuilderImpl() {}
 
     private BeanContainer createContainer() {
         return new BeanContainerImpl(getClassLoader());
