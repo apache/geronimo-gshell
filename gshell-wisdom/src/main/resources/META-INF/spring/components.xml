@@ -31,10 +31,6 @@
 
     <context:annotation-config/>
     
-    <!--
-    default-init-method="init", or use annos @PostConstruct @PreDestroy
-    -->
-
     <!-- Application -->
 
     <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl">
@@ -69,6 +65,11 @@
     </bean>
 
     <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl">
+    </bean>
+
+    <!-- Plexus -->
+
+    <bean id="artifactManager" class="org.apache.geronimo.gshell.artifact.DefaultArtifactManager">
     </bean>
     
 </beans>

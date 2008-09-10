@@ -25,7 +25,11 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -35,25 +39,40 @@ import org.codehaus.classworlds.ClassWorld;
 public class BeanContainerImpl
     implements BeanContainer
 {
+    private static final String REALM_ID = "gshell";
+
     private static final String[] CONFIG_LOCATIONS = {
         "classpath*:META-INF/spring/components.xml",
         "classpath*:META-INF/gshell/commands.xml"
     };
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private ClassPathXmlApplicationContext context;
 
     private ClassWorld classWorld;
+
+    private ClassRealm classRealm;
     
     public BeanContainerImpl(final ClassLoader classLoader) {
         assert classLoader != null;
 
+        // Setup classworlds
+        classWorld = new ClassWorld();
+        try {
+            classRealm = classWorld.newRealm(REALM_ID, classLoader);
+        } catch (DuplicateRealmException e) {
+            // Should never happen
+            throw new Error(e);
+        }
+
+        // Construct the container and add customizations
         context = new ClassPathXmlApplicationContext(CONFIG_LOCATIONS, false);
         context.registerShutdownHook();
+        context.setClassLoader(classRealm);
+        addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
-        addBeanPostProcessor(new BeanContainerAwareProcessor(BeanContainerImpl.this));
-
-        // TODO: Set classloader
-
+        // Refresh to load things up
         context.refresh();
     }
 

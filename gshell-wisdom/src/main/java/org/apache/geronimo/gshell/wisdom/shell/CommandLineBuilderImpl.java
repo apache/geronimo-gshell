@@ -22,10 +22,12 @@ package org.apache.geronimo.gshell.wisdom.shell;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
+import org.apache.geronimo.gshell.command.Variables;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +48,9 @@ public class CommandLineBuilderImpl
 
     @Autowired
     private ApplicationManager applicationManager;
+
+    @Autowired
+    private CommandLineExecutor executor;
 
     private final CommandLineParser parser = new CommandLineParser();
 
@@ -80,15 +85,10 @@ public class CommandLineBuilderImpl
         }
 
         try {
-            /*
-            FIXME:
-            assert container != null;
-            CommandLineExecutor executor = (CommandLineExecutor) container.lookup(CommandLineExecutor.class);
-
             assert applicationManager != null;
             Variables vars = applicationManager.getContext().getVariables();
 
-
+            assert executor != null;
             final ExecutingVisitor visitor = new ExecutingVisitor(executor, vars);
             final ASTCommandLine root = parse(commandLine);
 
@@ -97,9 +97,6 @@ public class CommandLineBuilderImpl
                     return root.jjtAccept(visitor, null);
                 }
             };
-            */
-
-            return null;
         }
         catch (Exception e) {
             throw new ErrorNotification(e);

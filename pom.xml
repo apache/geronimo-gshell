@@ -615,7 +615,9 @@
         <module>gshell-wisdom</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
+        <!--
         <module>gshell-remote</module>
+        -->
         <module>gshell-assembly</module>
     </modules>
     
@@ -650,6 +652,7 @@
             </plugins>
         </pluginManagement>
 
+        <!--
         <plugins>
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>
@@ -686,6 +689,7 @@
                 </dependencies>
             </plugin>
         </plugins>
+        -->
     </build>
 
     <profiles>
