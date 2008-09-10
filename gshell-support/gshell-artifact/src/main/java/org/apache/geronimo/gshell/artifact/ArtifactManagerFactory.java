@@ -46,11 +46,17 @@ public class ArtifactManagerFactory
     public void init() throws Exception {
         DefaultContainerConfiguration config = new DefaultContainerConfiguration();
 
-        ClassWorld classWorld = new ClassWorld();
-        config.setClassWorld(classWorld);
-
-        ClassRealm classRealm = classWorld.newRealm("gshell.artifact", getClass().getClassLoader());
-        config.setRealm(classRealm);
+        // When running under ClassWorlds already, then set the containers realm to the current realm
+        ClassLoader cl = getClass().getClassLoader();
+        if (cl instanceof ClassRealm) {
+            config.setRealm((ClassRealm)cl);
+        }
+        else {
+            // Else, when testing, setup a new realm
+            ClassWorld classWorld = new ClassWorld();
+            ClassRealm classRealm = classWorld.newRealm("testing", getClass().getClassLoader());
+            config.setRealm(classRealm);
+        }
 
         container = new DefaultPlexusContainer(config);
 
@@ -58,10 +64,6 @@ public class ArtifactManagerFactory
     }
     
     public Object getObject() throws Exception {
-        if (container == null) {
-            container = new DefaultPlexusContainer();
-        }
-
         Object target = container.lookup(ArtifactManager.class);
 
         log.debug("Using ArtifactManager: {}", target);

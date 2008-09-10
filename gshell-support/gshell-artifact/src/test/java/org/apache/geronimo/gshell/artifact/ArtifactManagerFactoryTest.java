@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
-
 /**
  * Unit tests for the {@link ArtifactManagerFactory} class.
  *
