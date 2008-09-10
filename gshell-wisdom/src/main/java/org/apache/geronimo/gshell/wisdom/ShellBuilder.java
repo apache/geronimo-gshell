@@ -36,7 +36,6 @@ import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 
 /**
  * Builds {@link org.apache.geronimo.gshell.shell.Shell} instances.
@@ -110,11 +109,11 @@ public class ShellBuilder
         settingsConfig.setSettings(settings);
     }
 
-    private SettingsManager createSettingsManager() throws BeansException {
+    private SettingsManager createSettingsManager() {
         return getContainer().getBean(SettingsManager.class);
     }
 
-    public SettingsManager getSettingsManager() throws BeansException {
+    public SettingsManager getSettingsManager() {
         if (settingsManager == null) {
             settingsManager = createSettingsManager();
         }
@@ -133,11 +132,11 @@ public class ShellBuilder
         applicationConfig.setApplication(application);
     }
 
-    private ApplicationManager createApplicationManager() throws BeansException {
+    private ApplicationManager createApplicationManager() {
         return getContainer().getBean(ApplicationManager.class);
     }
 
-    public ApplicationManager getApplicationManager() throws BeansException {
+    public ApplicationManager getApplicationManager() {
         if (applicationManager == null) {
             applicationManager = createApplicationManager();
         }
@@ -148,11 +147,11 @@ public class ShellBuilder
         this.applicationManager = applicationManager;
     }
 
-    private ArtifactManager createArtifactManager() throws BeansException {
+    private ArtifactManager createArtifactManager() {
         return getContainer().getBean(ArtifactManager.class);
     }
 
-    public ArtifactManager getArtifactManager() throws BeansException {
+    public ArtifactManager getArtifactManager() {
         if (artifactManager == null) {
             artifactManager = createArtifactManager();
         }
