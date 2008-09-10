@@ -22,6 +22,9 @@ package org.apache.geronimo.gshell.artifact;
 import org.springframework.beans.factory.FactoryBean;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.DefaultContainerConfiguration;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +44,15 @@ public class ArtifactManagerFactory
 
     @PostConstruct
     public void init() throws Exception {
-        container = new DefaultPlexusContainer();
+        DefaultContainerConfiguration config = new DefaultContainerConfiguration();
+
+        ClassWorld classWorld = new ClassWorld();
+        config.setClassWorld(classWorld);
+
+        ClassRealm classRealm = classWorld.newRealm("gshell.artifact", getClass().getClassLoader());
+        config.setRealm(classRealm);
+
+        container = new DefaultPlexusContainer(config);
 
         log.debug("Constructed Plexus container: {}", container);
     }
