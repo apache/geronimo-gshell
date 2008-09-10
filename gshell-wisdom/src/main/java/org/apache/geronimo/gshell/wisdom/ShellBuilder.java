@@ -76,6 +76,9 @@ public class ShellBuilder
     }
     
     public ClassLoader getClassLoader() {
+        if (classLoader == null) {
+            classLoader = Thread.currentThread().getContextClassLoader();
+        }
         return classLoader;
     }
 
