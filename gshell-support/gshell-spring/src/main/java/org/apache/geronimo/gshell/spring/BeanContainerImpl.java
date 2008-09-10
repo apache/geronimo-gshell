@@ -25,9 +25,10 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.codehaus.classworlds.ClassWorld;
 
 /**
- * ???
+ * Default {@link BeanContainer} implementation.
  *
  * @version $Rev$ $Date$
  */
@@ -41,7 +42,11 @@ public class BeanContainerImpl
 
     private ClassPathXmlApplicationContext context;
 
-    public BeanContainerImpl() {
+    private ClassWorld classWorld;
+    
+    public BeanContainerImpl(final ClassLoader classLoader) {
+        assert classLoader != null;
+
         context = new ClassPathXmlApplicationContext(CONFIG_LOCATIONS, false);
         context.registerShutdownHook();
 

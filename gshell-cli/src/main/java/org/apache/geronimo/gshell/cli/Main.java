@@ -31,6 +31,7 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.application.settings.SettingsLocator;
+import org.apache.geronimo.gshell.wisdom.ShellBuilder;
 import org.codehaus.plexus.classworlds.ClassWorld;
 
 import java.util.ArrayList;
@@ -44,8 +45,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Main
 {
-    ///CLOVER:OFF
-
     //
     // NOTE: Do not use logging from this class, as it is used to configure
     //       the logging level with System properties, which will only get
@@ -205,7 +204,7 @@ public class Main
 
         try {
             ShellBuilder builder = new ShellBuilder();
-            builder.setClassWorld(classWorld);
+            builder.setClassLoader(getClass().getClassLoader());
             builder.setIo(io);
 
             // Find our settings descriptor

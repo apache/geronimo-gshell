@@ -36,7 +36,6 @@ import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.codehaus.plexus.classworlds.ClassWorld;
 import org.springframework.beans.BeansException;
 
 /**
@@ -49,11 +48,9 @@ public class ShellBuilder
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private static final String DEFAULT_REALM_ID = "gshell";
-
     private BeanContainer container;
 
-    private ClassWorld classWorld;
+    private ClassLoader classLoader;
     
     private SettingsManager settingsManager;
 
@@ -68,34 +65,22 @@ public class ShellBuilder
     public ShellBuilder() {}
 
     private BeanContainer createContainer() {
-        BeanContainer container = new BeanContainerImpl();
-        return container;
+        return new BeanContainerImpl(getClassLoader());
     }
 
-    public BeanContainer getContainer() {
+    private BeanContainer getContainer() {
         if (container == null) {
             container = createContainer();
         }
         return container;
     }
-
-    public void setContainer(final BeanContainer container) {
-        this.container = container;
+    
+    public ClassLoader getClassLoader() {
+        return classLoader;
     }
 
-    private ClassWorld createClassWorld() {
-        return new ClassWorld(DEFAULT_REALM_ID, Thread.currentThread().getContextClassLoader());
-    }
-
-    public ClassWorld getClassWorld() {
-        if (classWorld == null) {
-            classWorld = createClassWorld();
-        }
-        return classWorld;
-    }
-
-    public void setClassWorld(final ClassWorld classWorld) {
-        this.classWorld = classWorld;
+    public void setClassLoader(final ClassLoader classLoader) {
+        this.classLoader = classLoader;
     }
 
     public IO getIo() {

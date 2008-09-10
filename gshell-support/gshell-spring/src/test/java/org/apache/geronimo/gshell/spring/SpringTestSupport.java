@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.spring;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 /**
- * ???
+ * Suport for Spring-based tests.
  *
  * @version $Rev$ $Date$
  */

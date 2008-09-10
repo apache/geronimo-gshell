@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.spring;
 import org.springframework.beans.BeansException;
 
 /**
- * ???
+ * An abstraction of a container of beans.
  *
  * @version $Rev$ $Date$
  */

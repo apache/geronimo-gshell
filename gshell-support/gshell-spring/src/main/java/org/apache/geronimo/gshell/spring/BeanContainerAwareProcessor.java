@@ -23,7 +23,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
- * ???
+ * Spring bean post-processor to handle injection of beans which are {@link BeanContainerAware}.
  *
  * @version $Rev$ $Date$
  */

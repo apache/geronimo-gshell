@@ -19,10 +19,8 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.springframework.beans.BeansException;
-
 /**
- * ???
+ * Allows beans to become aware of their {@link BeanContainer}.
  *
  * @version $Rev$ $Date$
  */
