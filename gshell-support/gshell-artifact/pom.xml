@@ -55,6 +55,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-spring</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-container-default</artifactId>
         </dependency>
@@ -84,5 +89,44 @@
             <artifactId>wagon-provider-api</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-maven-plugin</artifactId>
+                <configuration>
+                    <extractors>
+                        <classComponentDescriptorExtractor>
+                            <gleaner implementation="org.codehaus.plexus.cdc.gleaner.AnnotationComponentGleaner"/>
+                        </classComponentDescriptorExtractor>
+                    </extractors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>process-classes</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>process-test-classes</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>test-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-cdc-anno</artifactId>
+                        <version>1.0-alpha-1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
