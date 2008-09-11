@@ -24,11 +24,8 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerAware;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import java.io.PrintWriter;
 
 /**
@@ -40,45 +37,36 @@ public class CommandDocumenterImpl
     extends CommandContainerComponentSupport
     implements CommandDocumenter
 {
-    /**
-     * Get the action instance for the given command context.
-     *
-     * @param info  The command-info to previde an action for.
-     * @return      The command action for the given information.
-     */
-    private CommandAction getAction(final CommandInfo info) {
-        assert info != null;
+    //
+    // TODO: Need to provide i18n keys to lookup the values for name & description
+    //
+    
+    private String name;
 
-        // TODO:
+    private String description;
 
-        throw new Error("Not implemented");
-    }
-
-    // CommandDocumenter
-
-    public String getName(final CommandInfo info) {
-        assert info != null;
-
-        // Use the alias if we have one, else use the command name
-        String name = info.getAlias();
-        if (name == null) {
-            name = info.getName();
-        }
-
+    public String getName() {
         return name;
     }
 
-    public String getDescription(final CommandInfo info) {
-        assert info != null;
-
-        // TODO:
-        
-        throw new Error("Not implemented");
+    public void setName(final String name) {
+        this.name = name;
     }
 
-    //
-    // TODO: Add some nice ANSI muck
-    //
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    @PostConstruct
+    public void init() {
+        // TODO: Validate
+    }
+    
+    // CommandDocumenter
 
     public void renderUsage(final CommandInfo info, final PrintWriter out) {
         assert info != null;
@@ -91,12 +79,16 @@ public class CommandDocumenterImpl
         clp.addBean(help);
 
         // And then the beans options
-        CommandAction action = getAction(info);
+        CommandAction action = getContainer().getAction();
         clp.addBean(action);
 
         // Fetch the details
-        String name = getName(info);
-        String desc = getDescription(info);
+        String name = getName();
+        String desc = getDescription();
+
+        //
+        // TODO: Add some nice ANSI muck
+        //
 
         // Render the help
         out.println(desc);

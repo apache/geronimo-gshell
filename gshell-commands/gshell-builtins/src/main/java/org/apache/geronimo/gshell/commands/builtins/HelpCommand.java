@@ -124,8 +124,7 @@ public class HelpCommand
                 String name = StringUtils.rightPad(child.getName(), maxNameLen);
 
                 CommandDocumenter documenter = command.getContainer().getDocumenter();
-                CommandInfo info = command.getInfo();
-                String desc = documenter.getDescription(info);
+                String desc = documenter.getDescription();
 
                 io.out.print("  ");
                 io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
@@ -191,6 +190,5 @@ public class HelpCommand
         log.debug("Rendering help for command: {}", info.getName());
 
         documenter.renderManual(info, io.out);
-
     }
 }

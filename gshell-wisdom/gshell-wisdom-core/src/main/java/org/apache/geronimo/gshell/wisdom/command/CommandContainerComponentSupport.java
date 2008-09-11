@@ -34,11 +34,15 @@ public class CommandContainerComponentSupport
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    protected CommandContainer container;
+    private CommandContainer container;
 
     public void setCommandContainer(final CommandContainer container) {
         assert container != null;
 
         this.container = container;
+    }
+
+    protected CommandContainer getContainer() {
+        return container;
     }
 }

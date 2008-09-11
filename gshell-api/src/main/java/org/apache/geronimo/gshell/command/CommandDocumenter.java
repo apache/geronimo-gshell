@@ -29,18 +29,18 @@ import java.io.PrintWriter;
 public interface CommandDocumenter
 {
     /**
-     * Get the name of the command as it has been configured in the layout.
+     * Get the name of the command.
      *
      * @return The configured name of the command.
      */
-    String getName(CommandInfo info);
+    String getName();
 
     /**
      * Get the terse description of the command.
      *
-     * @return The configured description of hte command.
+     * @return The configured description of the command.
      */
-    String getDescription(CommandInfo info);
+    String getDescription();
 
     /**
      * Render the command-line usage, as expected from <tt>--help</tt>.
