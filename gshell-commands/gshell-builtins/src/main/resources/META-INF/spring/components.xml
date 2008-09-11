@@ -31,13 +31,11 @@
 
     <context:annotation-config/>
 
-    <!-- TODO: Need CommandContainerAware interface for all components -->
-
     <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
-        <property name="id" value="gshell-builtins:echo"/>
+        <property name="id" value="gshell-builtins:exit"/>
 
         <property name="action">
-            <bean class="org.apache.geronimo.gshell.commands.builtins.EchoCommand"/>
+            <bean class="org.apache.geronimo.gshell.commands.builtins.ExitCommand"/>
         </property>
 
         <property name="completer">
@@ -55,10 +53,31 @@
     </bean>
 
     <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
-        <property name="id" value="gshell-builtins:exit"/>
+        <property name="id" value="gshell-builtins:help"/>
 
         <property name="action">
-            <bean class="org.apache.geronimo.gshell.commands.builtins.ExitCommand"/>
+            <bean class="org.apache.geronimo.gshell.commands.builtins.HelpCommand"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl">
+                <!--
+                <property name="name" value="echo"/>
+                <property name="description" value="Blah, blah, blah"/>
+                -->
+            </bean>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
+        <property name="id" value="gshell-builtins:echo"/>
+
+        <property name="action">
+            <bean class="org.apache.geronimo.gshell.commands.builtins.EchoCommand"/>
         </property>
 
         <property name="completer">

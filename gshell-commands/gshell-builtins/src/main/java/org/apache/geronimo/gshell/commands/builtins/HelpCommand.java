@@ -42,6 +42,7 @@ import org.apache.geronimo.gshell.model.layout.Node;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Display help
@@ -54,13 +55,13 @@ public class HelpCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    // @Autowired
+    @Autowired
     private ApplicationManager applicationManager;
 
-    // @Autowired
+    @Autowired
     private CommandResolver commandResolver;
 
-    // @Autowired
+    @Autowired
     private LayoutManager layoutManager;
 
     @Argument(metaVar="COMMAND", required=true, description="Display help for COMMAND")
