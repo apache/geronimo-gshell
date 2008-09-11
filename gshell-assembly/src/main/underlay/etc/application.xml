@@ -46,11 +46,11 @@
 
     <dependencyGroups>
         <dependencyGroup>
-            <groupId>org.apache.geronimo.gshell</groupId>
+            <groupId>org.apache.geronimo.gshell.wisdom</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>
 
             <dependency>
-                <artifactId>gshell-wisdom</artifactId>
+                <artifactId>gshell-wisdom-core</artifactId>
             </dependency>
         </dependencyGroup>
 

@@ -246,7 +246,7 @@ public class ApplicationManagerImpl
             "gshell-io",
             "gshell-model",
             "gshell-spring",
-            "gshell-wisdom",
+            "gshell-wisdom-bootstrap",
             "gshell-yarn",
             "jcl104-over-slf4j",
             "jline",
