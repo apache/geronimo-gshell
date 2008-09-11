@@ -93,7 +93,7 @@ public class HelpCommand
         assert context != null;
 
         IO io = context.getIo();
-        String about = applicationManager.getContext().getApplication().getBranding().getAboutMessage();
+        String about = applicationManager.getContext().getModel().getBranding().getAboutMessage();
 
         if (about != null) {
             io.out.print(about);

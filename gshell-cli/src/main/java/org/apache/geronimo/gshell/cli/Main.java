@@ -22,13 +22,13 @@ package org.apache.geronimo.gshell.cli;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.ansi.ANSI;
-import org.apache.geronimo.gshell.application.ApplicationLocator;
+import org.apache.geronimo.gshell.application.ApplicationModelLocator;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.Application;
+import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.application.settings.SettingsModelLocator;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
@@ -204,8 +204,8 @@ public class Main
             builder.setSettingsModel(settingsModel);
 
             // Find our application descriptor
-            Application application = new ApplicationLocator().locate();
-            builder.setApplication(application);
+            ApplicationModel applicationModel = new ApplicationModelLocator().locate();
+            builder.setApplicationModel(applicationModel);
 
             //
             // HACK: --help and --version need access to the application's information, so we have to handle these options late
@@ -213,14 +213,14 @@ public class Main
             
             if (help|version) {
                 if (help) {
-                    io.out.println(application.getBranding().getProgramName() + " [options] <command> [args]");
+                    io.out.println(applicationModel.getBranding().getProgramName() + " [options] <command> [args]");
                     io.out.println();
 
                     Printer printer = new Printer(clp);
                     printer.printUsage(io.out);
                 }
                 else if (version) {
-                    io.out.println(application.getVersion());
+                    io.out.println(applicationModel.getVersion());
                 }
 
                 io.out.println();

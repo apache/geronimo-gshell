@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.Application;
+import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.command.Variables;
 
 /**
@@ -35,8 +35,6 @@ public interface ApplicationContext
     IO getIo();
 
     Variables getVariables();
-
-    // TODO: Rename to ApplicationModel
     
-    Application getApplication();
+    ApplicationModel getModel();
 }

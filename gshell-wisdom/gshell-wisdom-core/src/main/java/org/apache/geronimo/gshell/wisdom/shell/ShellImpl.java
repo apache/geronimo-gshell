@@ -104,7 +104,7 @@ public class ShellImpl
             ApplicationContext context = applicationManager.getContext();
             io = context.getIo();
             variables = context.getVariables();
-            branding = context.getApplication().getBranding();
+            branding = context.getModel().getBranding();
 
             try {
                 loadProfileScripts();

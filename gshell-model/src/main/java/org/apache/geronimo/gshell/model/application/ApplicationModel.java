@@ -36,7 +36,7 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 @XStreamAlias("application")
-public class Application
+public class ApplicationModel
     extends DescriptorSupport
 {
     private LocalRepository localRepository;

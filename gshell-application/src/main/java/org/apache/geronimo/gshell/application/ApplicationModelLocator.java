@@ -19,23 +19,23 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.model.application.ApplicationMarshaller;
+import org.apache.geronimo.gshell.model.application.ApplicationModel;
+import org.apache.geronimo.gshell.model.application.ApplicationModelMarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 
 /**
- * Locates {@link Application} instances.
+ * Locates {@link ApplicationModel} instances.
  *
  * @version $Rev$ $Date$
  */
-public class ApplicationLocator
+public class ApplicationModelLocator
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final ApplicationMarshaller marshaller = new ApplicationMarshaller();
+    private final ApplicationModelMarshaller marshaller = new ApplicationModelMarshaller();
 
     //
     // FIXME: Need to make this more robust, allow a file override/hint look in META-INF/gshell, etc.
@@ -45,12 +45,12 @@ public class ApplicationLocator
     // TODO: Use builder pattern to add additonal bits to help location
     //
     
-    public Application locate() throws Exception {
-        log.debug("Locating application descriptor");
+    public ApplicationModel locate() throws Exception {
+        log.debug("Locating application model descriptor");
 
         URL url = getClass().getClassLoader().getResource("application.xml");
 
-        log.debug("Application descriptor URL: {}", url);
+        log.debug("Application model descriptor URL: {}", url);
         
         return marshaller.unmarshal(url);
     }

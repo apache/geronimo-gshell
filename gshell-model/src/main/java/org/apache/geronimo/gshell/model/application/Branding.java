@@ -35,7 +35,7 @@ import java.util.Properties;
 public class Branding
     extends Element
 {
-    private transient Application parent;
+    private transient ApplicationModel parent;
 
     private Properties properties;
 
@@ -65,7 +65,7 @@ public class Branding
 
     private String goodbyeMessage;
 
-    public Application getParent() {
+    public ApplicationModel getParent() {
         if (parent == null) {
             throw new IllegalStateException("Not attached to parent");
         }
@@ -73,7 +73,7 @@ public class Branding
         return parent;
     }
 
-    public void setParent(final Application parent) {
+    public void setParent(final ApplicationModel parent) {
         this.parent = parent;
     }
 

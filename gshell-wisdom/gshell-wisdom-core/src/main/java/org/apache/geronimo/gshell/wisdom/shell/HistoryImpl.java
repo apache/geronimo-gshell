@@ -54,7 +54,7 @@ public class HistoryImpl
             assert applicationManager != null;
 
             try {
-                File file = applicationManager.getContext().getApplication().getBranding().getHistoryFile();
+                File file = applicationManager.getContext().getModel().getBranding().getHistoryFile();
 
                 log.debug("Application configured, setting history file: {}", file);
 

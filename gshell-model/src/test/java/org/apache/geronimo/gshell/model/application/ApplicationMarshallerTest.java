@@ -29,17 +29,17 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Test for the {@link ApplicationMarshaller} class.
+ * Test for the {@link ApplicationModelMarshaller} class.
  *
  * @version $Rev$ $Date$
  */
 public class ApplicationMarshallerTest
     extends TestCase
 {
-    private ApplicationMarshaller marshaller = new ApplicationMarshaller();
+    private ApplicationModelMarshaller marshaller = new ApplicationModelMarshaller();
     
     public void testMarshal1() throws Exception {
-        Application root = new Application();
+        ApplicationModel root = new ApplicationModel();
 
         root.setGroupId("app.test");
         root.setArtifactId("app-test");
@@ -84,7 +84,7 @@ public class ApplicationMarshallerTest
     public void testUnmarshal1_FromStream() throws Exception {
         InputStream input = getClass().getResourceAsStream("application1.xml");
 
-        Application root = marshaller.unmarshal(input);
+        ApplicationModel root = marshaller.unmarshal(input);
 
         root.dependencies(true);
         
@@ -94,7 +94,7 @@ public class ApplicationMarshallerTest
     public void testUnmarshal1_FromURL() throws Exception {
         URL url = getClass().getResource("application1.xml");
 
-        Application root = marshaller.unmarshal(url);
+        ApplicationModel root = marshaller.unmarshal(url);
 
         root.dependencies(true);
 

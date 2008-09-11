@@ -25,15 +25,15 @@ import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 
 /**
- * Marshaller for {@link Application} models.
+ * Marshaller for {@link ApplicationModel} models.
  *
  * @version $Rev$ $Date$
  */
-public class ApplicationMarshaller
-    extends MarshallerSupport<Application>
+public class ApplicationModelMarshaller
+    extends MarshallerSupport<ApplicationModel>
 {
-    public ApplicationMarshaller() {
-        super(Application.class);
+    public ApplicationModelMarshaller() {
+        super(ApplicationModel.class);
     }
 
     @Override

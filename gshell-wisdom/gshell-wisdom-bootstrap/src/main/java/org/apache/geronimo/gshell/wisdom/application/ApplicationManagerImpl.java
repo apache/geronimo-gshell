@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.Application;
+import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.common.Dependency;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
@@ -109,7 +109,7 @@ public class ApplicationManagerImpl
         interpolate(config);
 
         // Configure the application
-        configure(config.getApplication());
+        configure(config.getModel());
 
         // Create a new context
         applicationContext = new ApplicationContext() {
@@ -121,8 +121,8 @@ public class ApplicationManagerImpl
                 return config.getVariables();
             }
 
-            public Application getApplication() {
-                return config.getApplication();
+            public ApplicationModel getModel() {
+                return config.getModel();
             }
         };
 
@@ -134,8 +134,8 @@ public class ApplicationManagerImpl
     private void interpolate(final ApplicationConfiguration config) throws Exception {
     	assert config != null;
 
-        Application app = config.getApplication();
-        Interpolator<Application> interp = new InterpolatorSupport<Application>();
+        ApplicationModel model = config.getModel();
+        Interpolator<ApplicationModel> interp = new InterpolatorSupport<ApplicationModel>();
 
         // Add value sources to resolve muck
         interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
@@ -148,60 +148,60 @@ public class ApplicationManagerImpl
         }
 
         // Add application settings
-        interp.addValueSource(new PropertiesBasedValueSource(app.getProperties()));
+        interp.addValueSource(new PropertiesBasedValueSource(model.getProperties()));
 
-        app = interp.interpolate(app);
+        model = interp.interpolate(model);
 
         // Update the configuration with the new model
-        config.setApplication(app);
+        config.setModel(model);
     }
 
-    private void configure(final Application application) throws Exception {
-        assert application != null;
+    private void configure(final ApplicationModel applicationModel) throws Exception {
+        assert applicationModel != null;
 
-        log.debug("Application ID: {}", application.getId());
-        log.trace("Application descriptor: {}", application);
+        log.debug("Application ID: {}", applicationModel.getId());
+        log.trace("Application descriptor: {}", applicationModel);
 
         // Apply artifact manager configuration settings for application
-        configureArtifactManager(application);
+        configureArtifactManager(applicationModel);
 
         // Create the application container
-        applicationContainer = createContainer(application);
+        applicationContainer = createContainer(applicationModel);
     }
 
-    private void configureArtifactManager(final Application application) throws Exception {
-        assert application != null;
+    private void configureArtifactManager(final ApplicationModel applicationModel) throws Exception {
+        assert applicationModel != null;
         assert artifactManager != null;
 
         // Setup the local repository
-        LocalRepository localRepository = application.getLocalRepository();
+        LocalRepository localRepository = applicationModel.getLocalRepository();
 
         if (localRepository != null) {
             artifactManager.getRepositoryManager().setLocalRepository(localRepository.getDirectoryFile());
         }
 
         // Setup remote repositories
-        for (RemoteRepository repo : application.remoteRepositories()) {
+        for (RemoteRepository repo : applicationModel.remoteRepositories()) {
             artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
     }
 
-    private BeanContainer createContainer(final Application application) throws Exception {
-        assert application != null;
+    private BeanContainer createContainer(final ApplicationModel applicationModel) throws Exception {
+        assert applicationModel != null;
 
         log.debug("Creating application container");
 
-        List<URL> classPath = createClassPath(application);
+        List<URL> classPath = createClassPath(applicationModel);
 
-        BeanContainer child = container.createChild(application.getId(), classPath);
+        BeanContainer child = container.createChild(applicationModel.getId(), classPath);
 
         log.debug("Application container: {}", child);
 
         return child;
     }
 
-    private List<URL> createClassPath(final Application application) throws Exception {
-        assert application != null;
+    private List<URL> createClassPath(final ApplicationModel applicationModel) throws Exception {
+        assert applicationModel != null;
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 
@@ -261,7 +261,7 @@ public class ApplicationManagerImpl
         request.setFilter(filter);
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<Dependency> dependencies = application.dependencies(true); // include groups
+        List<Dependency> dependencies = applicationModel.dependencies(true); // include groups
 
         if (!dependencies.isEmpty()) {
             ArtifactFactory factory = artifactManager.getArtifactFactory();

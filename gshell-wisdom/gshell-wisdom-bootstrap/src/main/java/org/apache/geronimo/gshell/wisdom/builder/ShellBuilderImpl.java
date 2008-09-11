@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.artifact.monitor.ProgressSpinnerMonitor;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
-import org.apache.geronimo.gshell.model.application.Application;
+import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
@@ -123,12 +123,12 @@ public class ShellBuilderImpl
         this.settingsManager = settingsManager;
     }
 
-    public Application getApplication() {
-        return applicationConfig.getApplication();
+    public ApplicationModel getApplicationModel() {
+        return applicationConfig.getModel();
     }
 
-    public void setApplication(final Application application) {
-        applicationConfig.setApplication(application);
+    public void setApplicationModel(final ApplicationModel applicationModel) {
+        applicationConfig.setModel(applicationModel);
     }
 
     private ApplicationManager createApplicationManager() {

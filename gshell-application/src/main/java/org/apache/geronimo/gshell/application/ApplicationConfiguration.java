@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.application;
 import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.Application;
+import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.command.Variables;
 
 /**
@@ -36,7 +36,7 @@ public class ApplicationConfiguration
 
     private Variables variables;
 
-    private Application application;
+    private ApplicationModel model;
 
     public IO getIo() {
         return io;
@@ -54,17 +54,17 @@ public class ApplicationConfiguration
         this.variables = variables;
     }
 
-    public Application getApplication() {
-        return application;
+    public ApplicationModel getModel() {
+        return model;
     }
 
-    public void setApplication(final Application application) {
-        this.application = application;
+    public void setModel(final ApplicationModel model) {
+        this.model = model;
     }
 
     public void validate() {
-        if (application == null) {
-            throw new IllegalStateException("Missing application configuration");
+        if (model == null) {
+            throw new IllegalStateException("Missing application model");
         }    
     }
 
