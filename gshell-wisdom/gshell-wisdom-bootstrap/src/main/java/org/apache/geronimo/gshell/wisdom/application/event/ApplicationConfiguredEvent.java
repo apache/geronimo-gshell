@@ -22,14 +22,14 @@ package org.apache.geronimo.gshell.wisdom.application.event;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * ???
+ * Event fired once the application has been configured.
  *
  * @version $Rev$ $Date$
  */
 public class ApplicationConfiguredEvent
     extends ApplicationEvent
 {
-    public ApplicationConfiguredEvent(Object source) {
+    public ApplicationConfiguredEvent(final Object source) {
         super(source);
     }
 }
