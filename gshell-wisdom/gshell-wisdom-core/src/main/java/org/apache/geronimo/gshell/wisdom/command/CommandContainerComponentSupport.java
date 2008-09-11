@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Support for componets of a {@link CommandContainer}.
+ * Support for components of a {@link CommandContainer}.
  *
  * @version $Rev$ $Date$
  */
