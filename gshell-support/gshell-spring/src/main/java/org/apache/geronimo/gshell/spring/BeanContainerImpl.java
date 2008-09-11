@@ -24,12 +24,16 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.URL;
+import java.util.List;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -48,15 +52,19 @@ public class BeanContainerImpl
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private ClassPathXmlApplicationContext context;
+    private final BeanContainer parent;
 
-    private ClassWorld classWorld;
+    private final BeanContainerApplicationContext context;
 
-    private ClassRealm classRealm;
+    private final ClassWorld classWorld;
+
+    private final ClassRealm classRealm;
     
     public BeanContainerImpl(final ClassLoader classLoader) {
         assert classLoader != null;
 
+        parent = null;
+        
         // Setup classworlds
         classWorld = new ClassWorld();
         try {
@@ -67,13 +75,35 @@ public class BeanContainerImpl
         }
 
         // Construct the container and add customizations
-        context = new ClassPathXmlApplicationContext(CONFIG_LOCATIONS, false);
+        context = new BeanContainerApplicationContext(CONFIG_LOCATIONS);
         context.registerShutdownHook();
         context.setClassLoader(classRealm);
         addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
         // Refresh to load things up
         context.refresh();
+    }
+
+    private BeanContainerImpl(final BeanContainerImpl parent, final ClassRealm classRealm) {
+        assert parent != null;
+        assert classRealm != null;
+
+        this.parent = parent;
+        this.classWorld = classRealm.getWorld();
+        this.classRealm = classRealm;
+
+        // Construct the container and add customizations
+        context = new BeanContainerApplicationContext(CONFIG_LOCATIONS, parent.context);
+        context.registerShutdownHook();
+        context.setClassLoader(classRealm);
+        addBeanPostProcessor(new BeanContainerAwareProcessor(this));
+        
+        // Refresh to load things up
+        context.refresh();
+    }
+
+    public BeanContainer getParent() {
+        return parent;
     }
 
     private void addBeanPostProcessor(final BeanPostProcessor processor) {
@@ -107,5 +137,37 @@ public class BeanContainerImpl
         assert requiredType != null;
 
         return (T) context.getBean(name, requiredType);
+    }
+
+    public void publish(ApplicationEvent event) {
+        assert event != null;
+
+        log.debug("Publishing event: {} ({})", event, this);
+        
+        context.publishEvent(event);
+    }
+
+    public void addListener(ApplicationListener listener) {
+        assert listener != null;
+
+        log.debug("Adding listener: {} ({})", listener, this);
+
+        // addApplicationListener() only adds listeners before refresh(), so use addListener()
+        context.addListener(listener);
+    }
+
+    public BeanContainer createChild(final String id, final List<URL> classPath) throws DuplicateRealmException {
+        assert id != null;
+        assert classPath != null;
+
+        log.debug("Creating child bean container: " + id);
+        
+        ClassRealm childRealm = classRealm.createChildRealm(id);
+
+        for (URL url : classPath) {
+            childRealm.addURL(url);
+        }
+
+        return new BeanContainerImpl(this, childRealm);
     }
 }

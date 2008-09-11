@@ -20,30 +20,29 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationEvent;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.ApplicationListener;
-import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
-
-import java.net.URL;
-import java.util.List;
 
 /**
- * An abstraction of a container of beans.
+ * Custom Spring {@link org.springframework.context.ApplicationContext} for {@link BeanContainer} instances.
  *
  * @version $Rev$ $Date$
  */
-public interface BeanContainer
+public class BeanContainerApplicationContext
+    extends ClassPathXmlApplicationContext
 {
-    BeanContainer getParent();
-    
-    <T> T getBean(Class<T> type) throws BeansException;
+    public BeanContainerApplicationContext(final String[] configLocations) {
+        super(configLocations, false);
+    }
 
-    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
+    public BeanContainerApplicationContext(final String[] configLocations, BeanContainerApplicationContext parent) {
+        super(configLocations, false, parent);
+    }
 
-    void publish(ApplicationEvent event);
-
-    void addListener(ApplicationListener listener);
-
-    BeanContainer createChild(String id, List<URL> classPath) throws DuplicateRealmException;
+    @Override
+    public void addListener(final ApplicationListener listener) {
+        assert listener != null;
+        
+        super.addListener(listener);
+    }
 }
