@@ -51,11 +51,12 @@ public class CommandLineParserVisitorTest
 
         MockCommandLineVisitor v = new MockCommandLineVisitor();
 
-        Object result = cl.jjtAccept(v, null);
+        cl.jjtAccept(v, null); // ignore result
 
         assertNull(v.simpleNode);
         assertNotNull(v.commandLine);
         assertNotNull(v.expression);
+        assertNotNull(v.process);
         assertNotNull(v.quotedString);
         assertNotNull(v.opaqueString);
         assertNotNull(v.plainString);
@@ -113,6 +114,5 @@ public class CommandLineParserVisitorTest
 
             return node.childrenAccept(this, data);
         }
-
     }
 }

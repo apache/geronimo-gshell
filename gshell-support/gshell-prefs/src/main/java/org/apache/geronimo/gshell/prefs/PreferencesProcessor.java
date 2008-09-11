@@ -73,7 +73,7 @@ public class PreferencesProcessor
     // Processing
     //
 
-    public void process(final Preferences node) throws ProcessingException {
-        assert node != null;
+    public void process() throws ProcessingException {
+        // TODO:
     }
 }

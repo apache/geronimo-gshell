@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.CommandContainerRegistry;
 import org.apache.geronimo.gshell.command.CommandContainerAware;
 import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.prefs.PreferencesProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -144,8 +145,14 @@ public class CommandContainerImpl
                 if (processArguments(context, action, context.getArguments())) {
                     return new CommandResult(CommandAction.Result.SUCCESS);
                 }
+
+                /*
+                PreferencesProcessor pp = new PreferencesProcessor();
+                pp.addBean(action);
+                pp.process();
+                */
             }
-            catch (ProcessingException e) {
+            catch (Exception e) {
                 new CommandResult(e);
             }
 
@@ -183,15 +190,11 @@ public class CommandContainerImpl
      *
      * @throws ProcessingException  A failure occured while processing the command-line.
      */
-    private boolean processArguments(final CommandContext context, final CommandAction action, final Object[] args) throws ProcessingException {
+    private boolean processArguments(final CommandContext context, final CommandAction action, final Object[] args) throws Exception {
         assert context != null;
         assert action != null;
         assert args != null;
 
-        //
-        // TODO: Add preferences processor
-        //
-        
         CommandLineProcessor clp = new CommandLineProcessor();
         clp.addBean(action);
 
