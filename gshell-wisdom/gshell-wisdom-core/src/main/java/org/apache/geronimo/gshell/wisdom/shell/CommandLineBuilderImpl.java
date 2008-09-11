@@ -28,6 +28,8 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
+import org.apache.geronimo.gshell.parser.visitor.LoggingVisitor;
+import org.apache.geronimo.gshell.parser.visitor.ExecutingVisitor;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +51,9 @@ public class CommandLineBuilderImpl
     @Autowired
     private ApplicationManager applicationManager;
 
-    private final CommandLineParser parser = new CommandLineParser();
-
+    @Autowired
+    private CommandLineParser parser;
+    
     public CommandLineBuilderImpl() {}
 
     private ASTCommandLine parse(final String input) throws ParseException {
