@@ -26,6 +26,9 @@ import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.wisdom.application.event.SettingsConfiguredEvent;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version $Rev$ $Date$
  */
 public class SettingsManagerImpl
-    implements SettingsManager
+    implements SettingsManager, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -45,6 +48,14 @@ public class SettingsManagerImpl
     private ArtifactManager artifactManager;
 
     private SettingsConfiguration settingsConfiguration;
+
+    private BeanContainer container;
+
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
 
     public Settings getSettings() {
         if (settingsConfiguration == null) {
@@ -73,6 +84,10 @@ public class SettingsManagerImpl
         // TODO: Merge in some default settings or something?
 
         settingsConfiguration = config;
+
+        log.debug("Settings configured");
+
+        container.publish(new SettingsConfiguredEvent(this));
     }
 
     private void interpolate(final SettingsConfiguration config) throws Exception {

@@ -23,7 +23,12 @@ import jline.History;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ApplicationEvent;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -36,26 +41,47 @@ import java.io.File;
  */
 public class HistoryImpl
     extends History
+    implements BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private BeanContainer container;
 
     @Autowired
     private ApplicationManager applicationManager;
 
     public HistoryImpl() {}
 
-    @PostConstruct
-    public void init() {
-        assert applicationManager != null;
-
-        try {
-            setHistoryFile(applicationManager.getContext().getApplication().getBranding().getHistoryFile());
-        }
-        catch (IOException e) {
-            throw new RuntimeException("Failed to set history file", e);
-        }
+    public void setBeanContainer(BeanContainer container) {
+        assert container != null;
+        this.container = container;
     }
 
+    @PostConstruct
+    public void init() {
+        container.addListener(new ApplicationListener()
+        {
+            public void onApplicationEvent(final ApplicationEvent event) {
+                log.debug("Processing application event: {}", event);
+                
+                if (event instanceof ApplicationConfiguredEvent) {
+                    assert applicationManager != null;
+
+                    try {
+                        File file = applicationManager.getContext().getApplication().getBranding().getHistoryFile();
+
+                        log.debug("Application configured, setting history file: {}", file);
+
+                        setHistoryFile(file);
+                    }
+                    catch (IOException e) {
+                        throw new RuntimeException("Failed to set history file", e);
+                    }
+                }
+            }
+        });
+    }
+    
     public void setHistoryFile(final File file) throws IOException {
         assert file != null;
 

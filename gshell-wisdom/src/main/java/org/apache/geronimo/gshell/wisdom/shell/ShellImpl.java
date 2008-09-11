@@ -35,15 +35,21 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ApplicationEvent;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -52,7 +58,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version $Rev$ $Date$
  */
 public class ShellImpl
-    implements Shell
+    implements Shell, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -67,6 +73,8 @@ public class ShellImpl
 
     @Autowired
     private History history;
+
+    private BeanContainer container;
 
     private Variables variables;
 
@@ -92,24 +100,39 @@ public class ShellImpl
         return true;
     }
 
-    @PostConstruct
-    public void init() {
-        assert applicationManager != null;
+    public void setBeanContainer(BeanContainer container) {
+        assert container != null;
 
-        // Dereference some bits from the applciation context
-        ApplicationContext context = applicationManager.getContext();
-        this.io = context.getIo();
-        this.variables = context.getVariables();
-        this.branding = context.getApplication().getBranding();
-
-        try {
-            loadProfileScripts();
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        this.container = container;
     }
 
+    @PostConstruct
+    public void init() {
+        container.addListener(new ApplicationListener()
+        {
+            public void onApplicationEvent(final ApplicationEvent event) {
+                log.debug("Processing application event: {}", event);
+
+                if (event instanceof ApplicationConfiguredEvent) {
+                    assert applicationManager != null;
+
+                    // Dereference some bits from the applciation context
+                    ApplicationContext context = applicationManager.getContext();
+                    io = context.getIo();
+                    variables = context.getVariables();
+                    branding = context.getApplication().getBranding();
+
+                    try {
+                        loadProfileScripts();
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException(e.getMessage(), e);
+                    }
+                }
+            }
+        });
+    }
+    
     //
     // Command Execution (all delegates)
     //
@@ -138,6 +161,7 @@ public class ShellImpl
         assert args != null;
 
         log.debug("Starting interactive console; args: {}", args);
+
 
         assert branding != null;
         loadUserScript(branding.getInteractiveScriptName());

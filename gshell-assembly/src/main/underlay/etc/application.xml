@@ -46,11 +46,11 @@
 
     <dependencyGroups>
         <dependencyGroup>
-            <groupId>org.apache.geronimo.gshell.rapture</groupId>
+            <groupId>org.apache.geronimo.gshell</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>
 
             <dependency>
-                <artifactId>gshell-rapture-core</artifactId>
+                <artifactId>gshell-wisdom</artifactId>
             </dependency>
         </dependencyGroup>
 
@@ -62,6 +62,7 @@
                 <artifactId>gshell-builtins</artifactId>
             </dependency>
 
+            <!--
             <dependency>
                 <artifactId>gshell-optional</artifactId>
             </dependency>
@@ -77,8 +78,10 @@
             <dependency>
                 <artifactId>gshell-vfs</artifactId>
             </dependency>
+            -->
         </dependencyGroup>
 
+        <!--
         <dependencyGroup>
             <groupId>org.apache.geronimo.gshell.remote</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>
@@ -91,6 +94,7 @@
                 <artifactId>gshell-remote-server</artifactId>
             </dependency>
         </dependencyGroup>
+        -->
     </dependencyGroups>
 
     <!--

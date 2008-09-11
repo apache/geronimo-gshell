@@ -35,6 +35,9 @@ import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.model.settings.Settings;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -63,7 +66,7 @@ import java.util.Set;
  * @version $Rev$ $Date$
  */
 public class ApplicationManagerImpl
-    implements ApplicationManager
+    implements ApplicationManager, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -74,6 +77,16 @@ public class ApplicationManagerImpl
     private SettingsManager settingsManager;
 
     private ApplicationContext applicationContext;
+
+    private BeanContainer container;
+
+    private BeanContainer applicationContainer;
+
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+        
+        this.container = container;
+    }
 
     public ApplicationContext getContext() {
         if (applicationContext == null) {
@@ -111,6 +124,10 @@ public class ApplicationManagerImpl
                 return config.getApplication();
             }
         };
+
+        log.debug("Application configured");
+        
+        applicationContainer.publish(new ApplicationConfiguredEvent(this));
     }
 
     private void interpolate(final ApplicationConfiguration config) throws Exception {
@@ -148,8 +165,7 @@ public class ApplicationManagerImpl
         configureArtifactManager(application);
 
         // Create the application container
-        // FIXME:
-        // container = createContainer(application);
+        applicationContainer = createContainer(application);
     }
 
     private void configureArtifactManager(final Application application) throws Exception {
@@ -169,36 +185,19 @@ public class ApplicationManagerImpl
         }
     }
 
-    /*
-    private GShellPlexusContainer createContainer(final Application application) throws Exception {
+    private BeanContainer createContainer(final Application application) throws Exception {
         assert application != null;
 
         log.debug("Creating application container");
 
         List<URL> classPath = createClassPath(application);
 
-        ClassWorld world = new ClassWorld();
-        ClassRealm realm = world.newRealm("gshell.application[" + application.getId().replace(".", "/") + "]");
-        realm.setParentRealm(parentContainer.getContainerRealm());
-
-        for (URL url : classPath) {
-            realm.addURL(url);
-        }
-
-        ContainerConfiguration config = new DefaultContainerConfiguration();
-        config.setName(application.getId());
-        config.setClassWorld(world);
-        config.setRealm(realm);
-        config.addComponentDiscoverer(new PluginDiscoverer());
-        config.addComponentDiscoveryListener(new PluginCollector());
-
-        GShellPlexusContainer child = parentContainer.createChild(config);
+        BeanContainer child = container.createChild(application.getId(), classPath);
 
         log.debug("Application container: {}", child);
 
         return child;
     }
-    */
 
     private List<URL> createClassPath(final Application application) throws Exception {
         assert application != null;
@@ -246,8 +245,10 @@ public class ApplicationManagerImpl
             "gshell-i18n",
             "gshell-io",
             "gshell-model",
-            "gshell-plexus",
-            "gshell-rapture-bootstrap",
+            // "gshell-plexus",
+            // "gshell-rapture-bootstrap",
+            "gshell-spring",
+            "gshell-wisdom",
             "gshell-yarn",
             "jcl104-over-slf4j",
             "jline",
@@ -271,6 +272,11 @@ public class ApplicationManagerImpl
             "xbean-reflect",
             "xpp3_min",
             "xstream-",
+            "geronimo-annotation_1.0_spec",
+            "spring-core",
+            "spring-context",
+            "spring-beans",
+            "aopalliance",
         });
 
         if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
@@ -296,7 +302,7 @@ public class ApplicationManagerImpl
         // Make sure that we have a valid context
         getContext();
 
-        final Shell shell = null; // FIXME: container.lookupComponent(Shell.class);
+        final Shell shell = applicationContainer.getBean(Shell.class);
 
         log.debug("Created shell instance: {}", shell);
 

@@ -46,8 +46,10 @@
 
         <property name="documenter">
             <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl">
+                <!--
                 <property name="name" value="echo"/>
                 <property name="description" value="Blah, blah, blah"/>
+                -->
             </bean>
         </property>
     </bean>

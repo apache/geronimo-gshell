@@ -41,8 +41,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
-import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
@@ -70,20 +68,6 @@ public class CommandLineExecutorImpl
 
     @Autowired
     private CommandLineBuilder commandLineBuilder;
-
-    private Variables variables;
-
-    private IO io;
-
-    public CommandLineExecutorImpl() {}
-
-    @PostConstruct
-    public void init() {
-        assert applicationManager != null;
-
-        this.variables = applicationManager.getContext().getVariables();
-        this.io = applicationManager.getContext().getIo();
-    }
 
     public Object execute(final String line) throws Exception {
         assert line != null;
@@ -118,7 +102,7 @@ public class CommandLineExecutorImpl
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
-        return execute(String.valueOf(args[0]), Arguments.shift(args), io);
+        return execute(String.valueOf(args[0]), Arguments.shift(args), applicationManager.getContext().getIo());
     }
 
     public Object execute(final String path, final Object[] args) throws Exception {
@@ -127,7 +111,7 @@ public class CommandLineExecutorImpl
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
-        return execute(path, args, io);
+        return execute(path, args, applicationManager.getContext().getIo());
     }
 
     public Object execute(final Object[][] commands) throws Exception {
@@ -136,6 +120,8 @@ public class CommandLineExecutorImpl
         // Prepare IOs
         final IO[] ios = new IO[commands.length];
         PipedOutputStream pos = null;
+
+        IO io = applicationManager.getContext().getIo();
 
         for (int i = 0; i < ios.length; i++) {
             InputStream is = (i == 0) ? io.inputStream : new PipedInputStream(pos);
@@ -213,6 +199,8 @@ public class CommandLineExecutorImpl
 
     protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
         log.debug("Executing");
+
+        final Variables variables = applicationManager.getContext().getVariables();
 
         final Command command = commandResolver.resolve(variables, path);
 
