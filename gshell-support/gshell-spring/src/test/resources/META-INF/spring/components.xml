@@ -19,7 +19,7 @@
 -->
 
 <!-- $Rev$ $Date$ -->
-        
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
@@ -30,33 +30,5 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <context:annotation-config/>
-    
-    <!-- Application -->
-
-    <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl"/>
-
-    <bean id="settingsManager" class="org.apache.geronimo.gshell.wisdom.application.SettingsManagerImpl"/>
-    
-    <!-- Command -->
-
-    <bean id="commandContainerFactory" class="org.apache.geronimo.gshell.wisdom.command.CommandContainerFactoryImpl"/>
-
-    <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.command.CommandResolverImpl"/>
-
-    <!-- Shell -->
-
-    <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl"/>
-
-    <bean id="commandLineExecutor" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineExecutorImpl"/>
-
-    <bean id="history" class="org.apache.geronimo.gshell.wisdom.shell.HistoryImpl"/>
-
-    <bean id="layoutManager" class="org.apache.geronimo.gshell.wisdom.shell.LayoutManagerImpl"/>
-
-    <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl"/>
-
-    <!--
-    <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl" lazy-init="true"/>
-    -->
 
 </beans>

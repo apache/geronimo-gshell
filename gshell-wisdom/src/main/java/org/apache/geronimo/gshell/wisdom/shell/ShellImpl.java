@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationContext;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -36,20 +36,16 @@ import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -58,7 +54,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version $Rev$ $Date$
  */
 public class ShellImpl
-    implements Shell, BeanContainerAware
+    implements Shell, ApplicationListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -73,8 +69,6 @@ public class ShellImpl
 
     @Autowired
     private History history;
-
-    private BeanContainer container;
 
     private Variables variables;
 
@@ -100,37 +94,26 @@ public class ShellImpl
         return true;
     }
 
-    public void setBeanContainer(BeanContainer container) {
-        assert container != null;
 
-        this.container = container;
-    }
+    public void onApplicationEvent(final ApplicationEvent event) {
+        log.debug("Processing application event: {}", event);
 
-    @PostConstruct
-    public void init() {
-        container.addListener(new ApplicationListener()
-        {
-            public void onApplicationEvent(final ApplicationEvent event) {
-                log.debug("Processing application event: {}", event);
+        if (event instanceof ApplicationConfiguredEvent) {
+            assert applicationManager != null;
 
-                if (event instanceof ApplicationConfiguredEvent) {
-                    assert applicationManager != null;
+            // Dereference some bits from the applciation context
+            ApplicationContext context = applicationManager.getContext();
+            io = context.getIo();
+            variables = context.getVariables();
+            branding = context.getApplication().getBranding();
 
-                    // Dereference some bits from the applciation context
-                    ApplicationContext context = applicationManager.getContext();
-                    io = context.getIo();
-                    variables = context.getVariables();
-                    branding = context.getApplication().getBranding();
-
-                    try {
-                        loadProfileScripts();
-                    }
-                    catch (Exception e) {
-                        throw new RuntimeException(e.getMessage(), e);
-                    }
-                }
+            try {
+                loadProfileScripts();
             }
-        });
+            catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
     }
     
     //

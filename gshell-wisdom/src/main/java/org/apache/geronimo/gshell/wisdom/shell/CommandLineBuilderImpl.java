@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
@@ -27,22 +28,18 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
-import javax.annotation.PostConstruct;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Builds {@link CommandLine} instances ready for executing.
@@ -50,38 +47,41 @@ import java.io.IOException;
  * @version $Rev$ $Date$
  */
 public class CommandLineBuilderImpl
-    implements CommandLineBuilder, BeanContainerAware
+    implements CommandLineBuilder //, BeanContainerAware, ApplicationListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ApplicationManager applicationManager;
 
-    private BeanContainer container;
-
+    @Autowired
     private CommandLineExecutor executor;
+
+    // private BeanContainer container;
 
     private final CommandLineParser parser = new CommandLineParser();
 
     public CommandLineBuilderImpl() {}
 
+    /*
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
 
         this.container = container;
     }
 
-    @PostConstruct
-    public void init() {
-        container.addListener(new ApplicationListener()
-        {
-            public void onApplicationEvent(final ApplicationEvent event) {
-                if (event instanceof ApplicationConfiguredEvent) {
-                    executor = container.getBean(CommandLineExecutor.class);
-                }
-            }
-        });
+    //
+    // TODO: See if we can @Autowire this puppy, since it looks like spring can handle the cirtcular reference?
+    //
+    
+    public void onApplicationEvent(final ApplicationEvent event) {
+        log.debug("Processing application event: {}", event);
+        
+        if (event instanceof ApplicationConfiguredEvent) {
+            executor = container.getBean(CommandLineExecutor.class);
+        }
     }
+    */
 
     private ASTCommandLine parse(final String input) throws ParseException {
         assert input != null;

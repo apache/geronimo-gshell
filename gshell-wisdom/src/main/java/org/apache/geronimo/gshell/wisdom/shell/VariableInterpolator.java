@@ -37,6 +37,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.List;
 
+//
+// TODO: Move to gshell-interpolation
+//
+
 /**
  * Provides interpolation for shell variables using Jexl.
  *
