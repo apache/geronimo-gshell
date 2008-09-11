@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.CommandContainerRegistry;
+import org.apache.geronimo.gshell.command.CommandContainerAware;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,14 +102,27 @@ public class CommandContainerImpl
 
     @PostConstruct
     public void init() {
-        // TODO: Validate properties
-        
+        // Validate properties
         assert registry != null;
         assert id != null;
         assert action != null;
+        assert documenter != null;
+        assert completer != null;
 
-        // TODO: Inject ourself into CommandContainerAware instances
+        // Inject ourself into CommandContainerAware instances
+        Object[] children = {
+            action,
+            documenter,
+            completer,
+        };
 
+        for (Object child : children) {
+            if (child instanceof CommandContainerAware) {
+                ((CommandContainerAware)child).setCommandContainer(this);
+            }
+        }
+
+        // Register ourselves
         registry.register(this);
     }
     
