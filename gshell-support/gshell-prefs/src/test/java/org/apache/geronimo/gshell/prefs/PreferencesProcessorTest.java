@@ -54,7 +54,7 @@ public class PreferencesProcessorTest
     }
 
     public void test1() throws Exception {
-        pp.process(node);
+        pp.process();
 
         //
         // TODO:
