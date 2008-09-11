@@ -19,21 +19,21 @@
 
 package org.apache.geronimo.gshell.application.settings;
 
-import org.apache.geronimo.gshell.model.settings.Settings;
-import org.apache.geronimo.gshell.model.settings.SettingsMarshaller;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
+import org.apache.geronimo.gshell.model.settings.SettingsModelMarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Locates {@link Settings} instances.
+ * Locates {@link SettingsModel} instances.
  *
  * @version $Rev$ $Date$
  */
-public class SettingsLocator
+public class SettingsModelLocator
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final SettingsMarshaller marshaller = new SettingsMarshaller();
+    private final SettingsModelMarshaller marshaller = new SettingsModelMarshaller();
 
     //
     // FIXME: Need to make this more robust, allow a file override/hint look in META-INF/gshell, user.home, etc.
@@ -43,8 +43,8 @@ public class SettingsLocator
     // TODO: Use builder pattern to add additonal bits to help location
     //
 
-    public Settings locate() throws Exception {
-        log.debug("Locating settings descriptor");
+    public SettingsModel locate() throws Exception {
+        log.debug("Locating settings model descriptor");
 
         //
         // TODO: For now we just ignore user settings, but should try to locate a descriptor and unmarshal

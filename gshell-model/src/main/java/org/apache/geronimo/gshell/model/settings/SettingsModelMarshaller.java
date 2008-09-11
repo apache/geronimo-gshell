@@ -22,14 +22,14 @@ package org.apache.geronimo.gshell.model.settings;
 import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 
 /**
- * Marshaller for {@link Settings} models.
+ * Marshaller for {@link SettingsModel} models.
  *
  * @version $Rev$ $Date$
  */
-public class SettingsMarshaller
-    extends MarshallerSupport<Settings>
+public class SettingsModelMarshaller
+    extends MarshallerSupport<SettingsModel>
 {
-    public SettingsMarshaller() {
-        super(Settings.class);
+    public SettingsModelMarshaller() {
+        super(SettingsModel.class);
     }
 }

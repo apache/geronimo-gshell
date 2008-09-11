@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
-import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -142,9 +142,9 @@ public class ApplicationManagerImpl
 
         // User settings should override the applications
         assert settingsManager != null;
-        Settings settings = settingsManager.getSettings();
-        if (settings != null) {
-            interp.addValueSource(new PropertiesBasedValueSource(settings.getProperties()));
+        SettingsModel settingsModel = settingsManager.getModel();
+        if (settingsModel != null) {
+            interp.addValueSource(new PropertiesBasedValueSource(settingsModel.getProperties()));
         }
 
         // Add application settings

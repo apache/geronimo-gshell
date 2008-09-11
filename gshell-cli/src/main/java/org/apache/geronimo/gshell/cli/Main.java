@@ -29,8 +29,8 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.model.settings.Settings;
-import org.apache.geronimo.gshell.application.settings.SettingsLocator;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
+import org.apache.geronimo.gshell.application.settings.SettingsModelLocator;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
 
@@ -200,8 +200,8 @@ public class Main
             builder.setIo(io);
 
             // Find our settings descriptor
-            Settings settings = new SettingsLocator().locate();
-            builder.setSettings(settings);
+            SettingsModel settingsModel = new SettingsModelLocator().locate();
+            builder.setSettingsModel(settingsModel);
 
             // Find our application descriptor
             Application application = new ApplicationLocator().locate();

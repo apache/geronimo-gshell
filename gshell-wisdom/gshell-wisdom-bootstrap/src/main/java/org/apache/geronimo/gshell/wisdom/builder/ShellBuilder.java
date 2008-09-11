@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.shell.ShellFactory;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 
 /**
@@ -48,9 +48,9 @@ public interface ShellBuilder
 
     void setVariables(Variables variables);
 
-    Settings getSettings();
+    SettingsModel getSettingsModel();
 
-    void setSettings(Settings settings);
+    void setSettingsModel(SettingsModel settingsModel);
 
     SettingsManager getSettingsManager();
 

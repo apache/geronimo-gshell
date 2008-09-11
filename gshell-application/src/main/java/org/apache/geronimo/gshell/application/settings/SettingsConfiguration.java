@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.application.settings;
 
 import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
-import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
 
 /**
  * Container for settings configuration.
@@ -30,14 +30,14 @@ import org.apache.geronimo.gshell.model.settings.Settings;
  */
 public class SettingsConfiguration
 {
-    private Settings settings;
+    private SettingsModel model;
 
-    public Settings getSettings() {
-        return settings;
+    public SettingsModel getModel() {
+        return model;
     }
 
-    public void setSettings(final Settings settings) {
-        this.settings = settings;
+    public void setModel(final SettingsModel model) {
+        this.model = model;
     }
 
     public void validate() {

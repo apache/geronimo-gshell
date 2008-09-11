@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
-import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.wisdom.application.event.SettingsConfiguredEvent;
@@ -57,12 +57,12 @@ public class SettingsManagerImpl
         this.container = container;
     }
 
-    public Settings getSettings() {
+    public SettingsModel getModel() {
         if (settingsConfiguration == null) {
             throw new IllegalStateException("Not configured");
         }
 
-        return settingsConfiguration.getSettings();
+        return settingsConfiguration.getModel();
     }
 
     public void configure(final SettingsConfiguration config) throws Exception {
@@ -73,12 +73,12 @@ public class SettingsManagerImpl
         // Validate the configuration
         config.validate();
 
-        if (config.getSettings() != null) {
+        if (config.getModel() != null) {
 	        // Interpolate the model
 	        interpolate(config);
 
 	        // Configure settings
-            configure(config.getSettings());
+            configure(config.getModel());
         }
 
         // TODO: Merge in some default settings or something?
@@ -93,26 +93,26 @@ public class SettingsManagerImpl
     private void interpolate(final SettingsConfiguration config) throws Exception {
     	assert config != null;
 
-    	Settings settings = config.getSettings();
-        Interpolator<Settings> interp = new InterpolatorSupport<Settings>();
+    	SettingsModel model = config.getModel();
+        Interpolator<SettingsModel> interp = new InterpolatorSupport<SettingsModel>();
 
         // Add value sources to resolve muck
         interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
-        interp.addValueSource(new PropertiesBasedValueSource(settings.getProperties()));
+        interp.addValueSource(new PropertiesBasedValueSource(model.getProperties()));
 
-        settings = interp.interpolate(settings);
+        model = interp.interpolate(model);
 
         // Update the configuration with the new model
-        config.setSettings(settings);
+        config.setModel(model);
     }
 
-    private void configure(final Settings settings) throws Exception {
-        assert settings != null;
+    private void configure(final SettingsModel settingsModel) throws Exception {
+        assert settingsModel != null;
 
         // TODO: Add settings interpolation here
 
         // Setup remote repositories
-        for (RemoteRepository repo : settings.remoteRepositories()) {
+        for (RemoteRepository repo : settingsModel.remoteRepositories()) {
             artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
 

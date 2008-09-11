@@ -33,7 +33,7 @@ import java.util.Properties;
  * @version $Rev$ $Date$
  */
 @XStreamAlias("settings")
-public class Settings
+public class SettingsModel
     extends Model
 {
     private Properties properties;

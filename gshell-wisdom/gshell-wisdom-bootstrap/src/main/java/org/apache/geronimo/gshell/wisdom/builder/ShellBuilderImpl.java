@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.model.application.Application;
-import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
@@ -100,12 +100,12 @@ public class ShellBuilderImpl
         applicationConfig.setVariables(variables);
     }
 
-    public Settings getSettings() {
-        return settingsConfig.getSettings();
+    public SettingsModel getSettingsModel() {
+        return settingsConfig.getModel();
     }
 
-    public void setSettings(final Settings settings) {
-        settingsConfig.setSettings(settings);
+    public void setSettingsModel(final SettingsModel settingsModel) {
+        settingsConfig.setModel(settingsModel);
     }
 
     private SettingsManager createSettingsManager() {

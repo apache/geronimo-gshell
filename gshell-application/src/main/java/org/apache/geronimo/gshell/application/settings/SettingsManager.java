@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.application.settings;
 
-import org.apache.geronimo.gshell.model.settings.Settings;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
 
 /**
  * Provides the interface to manage settings.
@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.model.settings.Settings;
  */
 public interface SettingsManager
 {
-    Settings getSettings();
+    SettingsModel getModel();
 
     void configure(SettingsConfiguration config) throws Exception;
 }
