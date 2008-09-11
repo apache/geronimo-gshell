@@ -31,6 +31,7 @@ import org.springframework.context.ApplicationListener;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -104,7 +105,7 @@ public class BeanContainerImpl
             throw new NoSuchBeanDefinitionException(type, "No bean defined for type: " + type);
         }
         if (names.length > 1) {
-            throw new NoSuchBeanDefinitionException(type, "Duplicate bean defined for type: " + type);
+            throw new NoSuchBeanDefinitionException(type, "No unique bean defined for type: " + type + ", found matches: " + Arrays.asList(names));
         }
 
         return getBean(names[0], type);

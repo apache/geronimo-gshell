@@ -94,9 +94,8 @@ public class ShellImpl
         return true;
     }
 
-
     public void onApplicationEvent(final ApplicationEvent event) {
-        log.debug("Processing application event: {}", event);
+        assert event != null;
 
         if (event instanceof ApplicationConfiguredEvent) {
             assert applicationManager != null;
@@ -144,7 +143,6 @@ public class ShellImpl
         assert args != null;
 
         log.debug("Starting interactive console; args: {}", args);
-
 
         assert branding != null;
         loadUserScript(branding.getInteractiveScriptName());

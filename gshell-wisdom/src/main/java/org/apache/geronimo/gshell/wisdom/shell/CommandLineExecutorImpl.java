@@ -75,9 +75,9 @@ public class CommandLineExecutorImpl
         log.info("Executing (String): {}", line);
 
         try {
-            CommandLine cl = commandLineBuilder.create(line);
+            CommandLine commandLine = commandLineBuilder.create(line);
 
-            return cl.execute();
+            return commandLine.execute(this);
         }
         catch (ErrorNotification n) {
             // Decode the error notifiation

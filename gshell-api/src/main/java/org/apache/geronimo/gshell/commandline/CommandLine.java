@@ -32,9 +32,11 @@ public interface CommandLine
     /**
      * Execute the command-line.
      *
+     * @param executor  The command-line executor to handle execution of command-line elements.
+     * 
      * @return  The final result of the command-line.
      *
      * @throws Exception    Failed to execute command-line.
      */
-    Object execute() throws Exception;
+    Object execute(CommandLineExecutor executor) throws Exception;
 }

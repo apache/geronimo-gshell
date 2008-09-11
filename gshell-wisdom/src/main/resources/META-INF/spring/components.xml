@@ -55,8 +55,6 @@
 
     <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl"/>
 
-    <!--
-    <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl" lazy-init="true"/>
-    -->
+    <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl"/>
 
 </beans>

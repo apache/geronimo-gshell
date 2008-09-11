@@ -48,7 +48,7 @@ public class HistoryImpl
     public HistoryImpl() {}
 
     public void onApplicationEvent(final ApplicationEvent event) {
-        log.debug("Processing application event: {}", event);
+        assert event != null;
 
         if (event instanceof ApplicationConfiguredEvent) {
             assert applicationManager != null;
