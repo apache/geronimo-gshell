@@ -44,6 +44,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -203,39 +204,19 @@ public class ApplicationManagerImpl
         assert application != null;
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
-        request.setFilter(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
 
-        Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<Dependency> dependencies = application.dependencies(true); // include groups
+        AndArtifactFilter filter = new AndArtifactFilter();
 
-        if (!dependencies.isEmpty()) {
-            ArtifactFactory factory = artifactManager.getArtifactFactory();
+        filter.add(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
 
-            log.debug("Application dependencies:");
+        filter.add(new ExclusionSetFilter(new String[] {
+            //
+            // FIXME: Load this list from build-generated properties or something like that
+            //
 
-            for (Dependency dep : dependencies) {
-                Artifact artifact = factory.createArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), null, dep.getType());
-                assert artifact != null;
-
-                log.debug(" + {}", artifact);
-
-                artifacts.add(artifact);
-            }
-        }
-
-        request.setArtifactDependencies(artifacts);
-
-        ArtifactResolutionResult result = artifactManager.resolve(request);
-
-        List<URL> classPath = new LinkedList<URL>();
-        Set<Artifact> resolvedArtifacts = result.getArtifacts();
-
-        //
-        // FIXME: Load this list from build-generated properties or something like that
-        //
-
-        ExclusionSetFilter filter = new ExclusionSetFilter(new String[] {
+            "aopalliance",
             "aspectjrt",
+            "geronimo-annotation_1.0_spec",
             "gshell-ansi",
             "gshell-api",
             "gshell-artifact",
@@ -265,6 +246,9 @@ public class ApplicationManagerImpl
             "plexus-classworlds",
             "slf4j-api",
             "slf4j-log4j12",
+            "spring-core",
+            "spring-context",
+            "spring-beans",
             "wagon-file",
             "wagon-http-lightweight",
             "wagon-http-shared",
@@ -272,26 +256,46 @@ public class ApplicationManagerImpl
             "xbean-reflect",
             "xpp3_min",
             "xstream",
-            "geronimo-annotation_1.0_spec",
-            "spring-core",
-            "spring-context",
-            "spring-beans",
-            "aopalliance",
-        });
+        }));
+
+        request.setFilter(filter);
+
+        Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
+        List<Dependency> dependencies = application.dependencies(true); // include groups
+
+        if (!dependencies.isEmpty()) {
+            ArtifactFactory factory = artifactManager.getArtifactFactory();
+
+            log.debug("Application dependencies:");
+
+            for (Dependency dep : dependencies) {
+                Artifact artifact = factory.createArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), null, dep.getType());
+                assert artifact != null;
+
+                log.debug(" + {}", artifact);
+
+                artifacts.add(artifact);
+            }
+        }
+
+        request.setArtifactDependencies(artifacts);
+
+        ArtifactResolutionResult result = artifactManager.resolve(request);
+
+        List<URL> classPath = new LinkedList<URL>();
+        Set<Artifact> resolvedArtifacts = result.getArtifacts();
 
         if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
             log.debug("Application classpath:");
 
             for (Artifact artifact : resolvedArtifacts) {
-                if (filter.include(artifact)) {
-                    File file = artifact.getFile();
-                    assert file != null;
+                File file = artifact.getFile();
+                assert file != null;
 
-                    URL url = file.toURI().toURL();
-                    log.debug(" + {}", url);
+                URL url = file.toURI().toURL();
+                log.debug(" + {}", url);
 
-                    classPath.add(url);
-                }
+                classPath.add(url);
             }
         }
 
