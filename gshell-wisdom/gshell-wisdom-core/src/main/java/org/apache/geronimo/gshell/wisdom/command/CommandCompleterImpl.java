@@ -22,6 +22,8 @@ package org.apache.geronimo.gshell.wisdom.command;
 import jline.Completor;
 import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.command.CommandContainerAware;
+import org.apache.geronimo.gshell.command.CommandContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,15 +33,23 @@ import org.slf4j.LoggerFactory;
  * @version $Rev$ $Date$
  */
 public class CommandCompleterImpl
-    implements CommandCompleter
+    implements CommandCompleter, CommandContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private CommandContainer container;
+
+    public void setCommandContainer(final CommandContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
 
     public Completor createCompletor(final CommandInfo info) {
         assert info != null;
 
         // TODO:
 
-        throw new Error();
+        throw new Error("Not implemented");
     }
 }
