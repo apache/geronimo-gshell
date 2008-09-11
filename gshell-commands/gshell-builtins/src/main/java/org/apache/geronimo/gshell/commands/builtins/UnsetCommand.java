@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +34,6 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-builtins:unset", description="Unset a variable")
 public class UnsetCommand
     implements CommandAction
 {

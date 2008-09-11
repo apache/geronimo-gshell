@@ -31,8 +31,6 @@ import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.layout.LayoutManager;
 import org.apache.geronimo.gshell.model.layout.AliasNode;
@@ -49,7 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-builtins:help", description="Show command help")
 public class HelpCommand
     implements CommandAction
 {

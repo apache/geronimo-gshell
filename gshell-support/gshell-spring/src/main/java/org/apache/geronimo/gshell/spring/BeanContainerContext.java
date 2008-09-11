@@ -97,7 +97,7 @@ public class BeanContainerContext
 
         for (Resource resource : resources) {
             if (ownedResources.contains(resource)) {
-                log.debug("Filtered owned resource: {}", resource);
+                log.trace("Filtered owned resource: {}", resource);
             }
             else {
                 list.add(resource);

@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +34,6 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-builtins:echo", description="Echo or print arguments to STDOUT")
 public class EchoCommand
     implements CommandAction
 {

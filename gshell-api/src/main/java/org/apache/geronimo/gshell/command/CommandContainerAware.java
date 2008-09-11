@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * ???
+ * Marks a component as aware of it's {@link CommandContainer}.
  *
  * @version $Rev$ $Date$
  */

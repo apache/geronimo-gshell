@@ -32,10 +32,10 @@
     <context:annotation-config/>
 
     <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
-        <property name="id" value="gshell-builtins:exit"/>
+        <property name="id" value="gshell-builtins:clear"/>
 
         <property name="action">
-            <bean class="org.apache.geronimo.gshell.commands.builtins.ExitCommand"/>
+            <bean class="org.apache.geronimo.gshell.commands.builtins.ClearCommand"/>
         </property>
 
         <property name="completer">
@@ -43,33 +43,7 @@
         </property>
 
         <property name="documenter">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl">
-                <!--
-                <property name="name" value="echo"/>
-                <property name="description" value="Blah, blah, blah"/>
-                -->
-            </bean>
-        </property>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
-        <property name="id" value="gshell-builtins:help"/>
-
-        <property name="action">
-            <bean class="org.apache.geronimo.gshell.commands.builtins.HelpCommand"/>
-        </property>
-
-        <property name="completer">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
-        </property>
-
-        <property name="documenter">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl">
-                <!--
-                <property name="name" value="echo"/>
-                <property name="description" value="Blah, blah, blah"/>
-                -->
-            </bean>
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
         </property>
     </bean>
 
@@ -85,12 +59,87 @@
         </property>
 
         <property name="documenter">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl">
-                <!--
-                <property name="name" value="echo"/>
-                <property name="description" value="Blah, blah, blah"/>
-                -->
-            </bean>
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
+        <property name="id" value="gshell-builtins:exit"/>
+
+        <property name="action">
+            <bean class="org.apache.geronimo.gshell.commands.builtins.ExitCommand"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
+        <property name="id" value="gshell-builtins:help"/>
+
+        <property name="action">
+            <bean class="org.apache.geronimo.gshell.commands.builtins.HelpCommand"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
+        <property name="id" value="gshell-builtins:set"/>
+
+        <property name="action">
+            <bean class="org.apache.geronimo.gshell.commands.builtins.SetCommand"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
+        <property name="id" value="gshell-builtins:source"/>
+
+        <property name="action">
+            <bean class="org.apache.geronimo.gshell.commands.builtins.SourceCommand"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.CommandContainerImpl">
+        <property name="id" value="gshell-builtins:unset"/>
+
+        <property name="action">
+            <bean class="org.apache.geronimo.gshell.commands.builtins.UnsetCommand"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
         </property>
     </bean>
 

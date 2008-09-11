@@ -22,11 +22,12 @@ package org.apache.geronimo.gshell.commands.builtins;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,13 +42,13 @@ import java.net.URL;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-builtins:source", description="Load a file/url into the current shell")
 public class SourceCommand
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    // @Autowired
+    @Autowired
+    @Qualifier("default")
     private CommandLineExecutor executor;
 
     @Argument(required=true, description="Source file")

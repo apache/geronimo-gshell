@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.commands.builtins;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,6 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-builtins:exit", description="Exit the shell")
 public class ExitCommand
     implements CommandAction
 {
