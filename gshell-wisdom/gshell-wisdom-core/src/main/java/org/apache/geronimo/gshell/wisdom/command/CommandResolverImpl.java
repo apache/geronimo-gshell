@@ -35,6 +35,7 @@ import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.layout.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The default {@link CommandResolver} component.
@@ -46,19 +47,13 @@ public class CommandResolverImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private LayoutManager layoutManager;
 
+    @Autowired
     private CommandContainerFactory containerFactory;
 
     public CommandResolverImpl() {}
-
-    public CommandResolverImpl(final LayoutManager layoutManager, final CommandContainerFactory containerFactory) {
-        assert layoutManager != null;
-        assert containerFactory != null;
-
-        this.layoutManager = layoutManager;
-        this.containerFactory = containerFactory;
-    }
 
     public Command resolve(final Variables variables, final String path) throws CommandNotFoundException {
         assert variables != null;
