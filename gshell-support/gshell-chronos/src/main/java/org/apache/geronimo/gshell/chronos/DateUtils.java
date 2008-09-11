@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.chronos.util;
+package org.apache.geronimo.gshell.chronos;
 
 //
 // NOTE: Copied and massaged from commons-lang 2.3

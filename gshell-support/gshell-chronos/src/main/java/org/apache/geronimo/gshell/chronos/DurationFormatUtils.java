@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.chronos.util;
+package org.apache.geronimo.gshell.chronos;
 
 //
 // NOTE: Copied and massaged from commons-lang 2.3
@@ -30,7 +30,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import org.codehaus.plexus.util.StringUtils;
-import org.apache.geronimo.gshell.chronos.util.DateUtils;
+import org.apache.geronimo.gshell.chronos.DateUtils;
 
 /**
  * <p>Duration formatting utilities and constants. The following table describes the tokens
