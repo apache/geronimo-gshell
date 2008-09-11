@@ -448,13 +448,11 @@
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
 
-            <!--
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-plexus</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-            -->
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>

@@ -27,6 +27,7 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
 
 import javax.annotation.PostConstruct;
 
@@ -59,6 +60,8 @@ public class ArtifactManagerFactory
         }
 
         container = new DefaultPlexusContainer(config);
+
+        container.setLoggerManager(new Slf4jLoggingManager());
 
         log.debug("Constructed Plexus container: {}", container);
     }

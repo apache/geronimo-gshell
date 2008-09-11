@@ -49,9 +49,7 @@
         <module>gshell-io</module>
         <module>gshell-prefs</module>
         <module>gshell-spring</module>
-        <!--
         <module>gshell-plexus</module>
-        -->
         <module>gshell-interpolation</module>
         <module>gshell-url</module>
         <module>gshell-console</module>
