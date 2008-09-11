@@ -19,28 +19,26 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
-import jline.Completor;
-import org.apache.geronimo.gshell.command.CommandCompleter;
-import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.command.CommandContainerAware;
 import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandContainerAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The default {@link CommandCompleter} component.
+ * Support for componets of a {@link CommandContainer}.
  *
  * @version $Rev$ $Date$
  */
-public class CommandCompleterImpl
-    extends CommandContainerComponentSupport
-    implements CommandCompleter
+public class CommandContainerComponentSupport
+    implements CommandContainerAware
 {
-    public Completor createCompletor(final CommandInfo info) {
-        assert info != null;
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-        // TODO:
+    protected CommandContainer container;
 
-        throw new Error("Not implemented");
+    public void setCommandContainer(final CommandContainer container) {
+        assert container != null;
+
+        this.container = container;
     }
 }

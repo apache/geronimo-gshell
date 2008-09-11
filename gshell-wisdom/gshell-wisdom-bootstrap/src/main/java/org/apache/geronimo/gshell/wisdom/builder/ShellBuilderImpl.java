@@ -33,6 +33,7 @@ import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,8 +60,6 @@ public class ShellBuilderImpl
     private ApplicationConfiguration applicationConfig = new ApplicationConfiguration();
 
     private ArtifactManager artifactManager;
-
-    public ShellBuilderImpl() {}
 
     private BeanContainer createContainer() {
         return new BeanContainerImpl(getClassLoader());
@@ -168,6 +167,9 @@ public class ShellBuilderImpl
     public Shell create() throws Exception {
         log.debug("Building");
 
+        StopWatch watch = new StopWatch();
+        watch.start();
+        
         // Set some defaults
         if (applicationConfig.getIo() == null) {
             applicationConfig.setIo(new IO());
@@ -202,6 +204,10 @@ public class ShellBuilderImpl
         // Configure application
         getApplicationManager().configure(applicationConfig);
 
-        return getApplicationManager().create();
+        Shell shell = getApplicationManager().create();
+
+        log.debug("Created shell in {}", watch);
+
+        return shell;
     }
 }

@@ -25,9 +25,12 @@ import org.apache.geronimo.gshell.layout.NotFoundException;
 import org.apache.geronimo.gshell.model.layout.GroupNode;
 import org.apache.geronimo.gshell.model.layout.Layout;
 import org.apache.geronimo.gshell.model.layout.Node;
+import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
 /**
  * The default implementation of the {@link LayoutManager} component.
@@ -35,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version $Rev$ $Date$
  */
 public class LayoutManagerImpl
-    implements LayoutManager
+    implements LayoutManager, ApplicationListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -46,23 +49,21 @@ public class LayoutManagerImpl
 
     public LayoutManagerImpl() {}
 
-    private Layout lookupLayout() {
-        assert applicationManager != null;
+    public void onApplicationEvent(final ApplicationEvent event) {
+        assert event != null;
 
-        Layout layout = applicationManager.getApplication().getModel().getLayout();
+        if (event instanceof ApplicationConfiguredEvent) {
+            ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
 
-        if (layout == null) {
-            throw new IllegalStateException("Layout has not been configured for application");
+            layout = targetEvent.getApplication().getModel().getLayout();
+
+            log.debug("Using layout: {}", layout);
         }
-
-        return layout;
     }
 
     public Layout getLayout() {
         if (layout == null) {
-            layout = lookupLayout();
-
-            log.debug("Using layout: {}", layout);
+            throw new IllegalStateException("Layout not configured");
         }
 
         return layout;

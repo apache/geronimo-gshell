@@ -37,18 +37,9 @@ import java.io.PrintWriter;
  * @version $Rev$ $Date$
  */
 public class CommandDocumenterImpl
-    implements CommandDocumenter, CommandContainerAware
+    extends CommandContainerComponentSupport
+    implements CommandDocumenter
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private CommandContainer container;
-
-    public void setCommandContainer(final CommandContainer container) {
-        assert container != null;
-
-        this.container = container;
-    }
-
     /**
      * Get the action instance for the given command context.
      *
