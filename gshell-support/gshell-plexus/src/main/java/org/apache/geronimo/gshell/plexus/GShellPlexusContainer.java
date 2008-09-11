@@ -35,6 +35,7 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
  *
  * @version $Rev$ $Date$
  */
+@Deprecated
 public class GShellPlexusContainer
     extends DefaultPlexusContainer
 {
