@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell;
+package org.apache.geronimo.gshell.interpolation;
 
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
@@ -36,10 +36,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.List;
-
-//
-// TODO: Move to gshell-interpolation
-//
 
 /**
  * Provides interpolation for shell variables using Jexl.

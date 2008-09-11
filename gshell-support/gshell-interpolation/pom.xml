@@ -25,36 +25,38 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.support</groupId>
-    <artifactId>gshell-support</artifactId>
-    <name>GShell Support</name>
-    <packaging>pom</packaging>
+    <artifactId>gshell-interpolation</artifactId>
+    <name>GShell Support :: Interpolation</name>
     
     <description>
-        Support modules for GShell fluff.
+        Provides interpolation support.
     </description>
     
-    <modules>
-        <module>gshell-yarn</module>
-        <module>gshell-chronos</module>
-        <module>gshell-ansi</module>
-        <module>gshell-artifact</module>
-        <module>gshell-clp</module>
-        <module>gshell-i18n</module>
-        <module>gshell-io</module>
-        <module>gshell-prefs</module>
-        <module>gshell-spring</module>
-        <!--
-        <module>gshell-plexus</module>
-        -->
-        <module>gshell-interpolation</module>
-        <module>gshell-url</module>
-        <module>gshell-console</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-api</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-interpolation</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-jexl</groupId>
+            <artifactId>commons-jexl</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl104-over-slf4j</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

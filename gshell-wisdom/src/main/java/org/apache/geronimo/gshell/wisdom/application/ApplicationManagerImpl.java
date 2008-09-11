@@ -245,8 +245,6 @@ public class ApplicationManagerImpl
             "gshell-i18n",
             "gshell-io",
             "gshell-model",
-            // "gshell-plexus",
-            // "gshell-rapture-bootstrap",
             "gshell-spring",
             "gshell-wisdom",
             "gshell-yarn",
