@@ -31,19 +31,9 @@
 
     <context:annotation-config/>
     
-    <!-- Application -->
-
-    <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl"/>
-
-    <bean id="settingsManager" class="org.apache.geronimo.gshell.wisdom.application.SettingsManagerImpl"/>
-    
-    <!-- Command -->
-
     <bean id="commandContainerFactory" class="org.apache.geronimo.gshell.wisdom.command.CommandContainerFactoryImpl"/>
 
     <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.command.CommandResolverImpl"/>
-
-    <!-- Shell -->
 
     <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl"/>
 
