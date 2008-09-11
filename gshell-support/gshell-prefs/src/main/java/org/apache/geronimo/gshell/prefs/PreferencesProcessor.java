@@ -30,24 +30,23 @@ import java.util.prefs.Preferences;
  */
 public class PreferencesProcessor
 {
-    private final Object bean;
+    public PreferencesProcessor() {}
 
-    public PreferencesProcessor(final Object bean) throws IllegalAnnotationError {
-        assert bean != null;
-
-        this.bean = bean;
-
-        discoverDescriptors();
+    public PreferencesProcessor(final Object bean) {
+        addBean(bean);
     }
 
-    public Object getBean() {
-        return bean;
+    public void addBean(final Object bean) {
+        assert bean != null;
+
+        // TODO:
     }
 
     //
     // Discovery
     //
 
+    /*
     private void discoverDescriptors() {
         // Recursively process all the methods/fields.
         for (Class type=bean.getClass(); type!=null; type=type.getSuperclass()) {
@@ -68,7 +67,8 @@ public class PreferencesProcessor
             }
         }
     }
-
+    */
+    
     //
     // Processing
     //
