@@ -29,10 +29,12 @@ import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
+import org.apache.geronimo.gshell.command.CommandContainerRegistry;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
@@ -45,6 +47,9 @@ public class CommandContainerImpl
     implements CommandContainer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private CommandContainerRegistry registry;
 
     private String id;
 
@@ -79,7 +84,7 @@ public class CommandContainerImpl
     }
 
     public void setDocumenter(final CommandDocumenter documenter) {
-        // documenter could be null
+        assert documenter != null;
 
         this.documenter = documenter;
     }
@@ -89,7 +94,7 @@ public class CommandContainerImpl
     }
 
     public void setCompleter(final CommandCompleter completer) {
-        // completer could be null
+        assert completer != null;
         
         this.completer = completer;
     }
@@ -97,7 +102,14 @@ public class CommandContainerImpl
     @PostConstruct
     public void init() {
         // TODO: Validate properties
+        
+        assert registry != null;
+        assert id != null;
+        assert action != null;
+
         // TODO: Inject ourself into CommandContainerAware instances
+
+        registry.register(this);
     }
     
     public CommandResult execute(final CommandContext context) {
@@ -159,6 +171,7 @@ public class CommandContainerImpl
      */
     private boolean processArguments(final CommandContext context, final CommandAction action, final Object[] args) throws ProcessingException {
         assert context != null;
+        assert action != null;
         assert args != null;
 
         //
@@ -170,6 +183,8 @@ public class CommandContainerImpl
 
         // Attach some help context
         CommandDocumenter documenter = getDocumenter();
+        assert documenter != null;
+
         HelpSupport help = new HelpSupport();
         clp.addBean(help);
         clp.addBean(documenter);

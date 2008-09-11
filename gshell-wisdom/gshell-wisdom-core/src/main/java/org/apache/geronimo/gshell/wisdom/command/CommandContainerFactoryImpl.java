@@ -21,43 +21,50 @@ package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.command.CommandContainer;
 import org.apache.geronimo.gshell.command.CommandContainerFactory;
+import org.apache.geronimo.gshell.command.CommandContainerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
- * Default implementation of a {@link CommandContainerFactory} component.
+ * Default implementation of a {@link CommandContainerFactory} and {@link CommandContainerRegistry} components.
  *
  * @version $Rev$ $Date$
  */
 public class CommandContainerFactoryImpl
-    implements CommandContainerFactory
+    implements CommandContainerRegistry, CommandContainerFactory
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    // CommandContainerRegistry
+
+    private Map<String,CommandContainer> registrations = new HashMap<String,CommandContainer>();
+
+    public void register(final CommandContainer commandContainer) {
+        assert commandContainer != null;
+
+        String id = commandContainer.getId();
+
+        log.debug("Registering command container: {}", id);
+        
+        registrations.put(id, commandContainer);
+    }
+
+    // CommandContainerFactory
 
     public CommandContainer create(final String id) throws Exception {
         assert id != null;
 
         log.debug("Locating container for ID: {}", id);
 
-        /*
-        ComponentDescriptor descriptor = container.getComponentDescriptor(CommandContainer.class, id);
-        if (descriptor == null) {
-            // TODO: Throw typed exception
-            throw new Exception("Command container not found for ID: " + id);
+        CommandContainer commandContainer = registrations.get(id);
+
+        if (commandContainer == null) {
+            throw new RuntimeException("No command container registered for id: " + id);
         }
 
-        CommandContainer command;
-        try {
-            command = container.lookupComponent(CommandContainer.class, id);
-        }
-        catch (ComponentLookupException e) {
-            // TODO: Throw typed exception
-            throw new Exception("Failed to access command container for ID: " + id, e);
-        }
-
-        return command;
-        */
-
-        return null;
+        return commandContainer;
     }
 }
