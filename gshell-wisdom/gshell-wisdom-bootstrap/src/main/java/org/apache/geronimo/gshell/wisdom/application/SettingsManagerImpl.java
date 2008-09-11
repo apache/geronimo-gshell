@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.wisdom.application;
 
 import org.apache.geronimo.gshell.application.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
+import org.apache.geronimo.gshell.application.settings.Settings;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
@@ -49,6 +50,8 @@ public class SettingsManagerImpl
 
     private SettingsConfiguration settingsConfiguration;
 
+    private Settings settings;
+
     private BeanContainer container;
 
     public void setBeanContainer(final BeanContainer container) {
@@ -57,12 +60,12 @@ public class SettingsManagerImpl
         this.container = container;
     }
 
-    public SettingsModel getModel() {
-        if (settingsConfiguration == null) {
+    public Settings getSettings() {
+        if (settings == null) {
             throw new IllegalStateException("Not configured");
         }
 
-        return settingsConfiguration.getModel();
+        return settings;
     }
 
     public void configure(final SettingsConfiguration config) throws Exception {
@@ -84,6 +87,13 @@ public class SettingsManagerImpl
         // TODO: Merge in some default settings or something?
 
         settingsConfiguration = config;
+
+        settings = new Settings()
+        {
+            public SettingsModel getModel() {
+                return settingsConfiguration.getModel();
+            }
+        };
 
         log.debug("Settings configured");
 

@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.application;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
-import org.apache.geronimo.gshell.application.ApplicationContext;
+import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
@@ -38,6 +38,7 @@ import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
+import org.apache.geronimo.gshell.wisdom.application.event.ShellCreatedEvent;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -77,7 +78,7 @@ public class ApplicationManagerImpl
     @Autowired
     private SettingsManager settingsManager;
 
-    private ApplicationContext applicationContext;
+    private Application application;
 
     private BeanContainer container;
 
@@ -89,12 +90,12 @@ public class ApplicationManagerImpl
         this.container = container;
     }
 
-    public ApplicationContext getContext() {
-        if (applicationContext == null) {
+    public Application getApplication() {
+        if (application == null) {
             throw new IllegalStateException("Application has not been configured");
         }
 
-        return applicationContext;
+        return application;
     }
 
     public void configure(final ApplicationConfiguration config) throws Exception {
@@ -112,7 +113,7 @@ public class ApplicationManagerImpl
         configure(config.getModel());
 
         // Create a new context
-        applicationContext = new ApplicationContext() {
+        application = new Application() {
             public IO getIo() {
                 return config.getIo();
             }
@@ -142,7 +143,7 @@ public class ApplicationManagerImpl
 
         // User settings should override the applications
         assert settingsManager != null;
-        SettingsModel settingsModel = settingsManager.getModel();
+        SettingsModel settingsModel = settingsManager.getSettings().getModel();
         if (settingsModel != null) {
             interp.addValueSource(new PropertiesBasedValueSource(settingsModel.getProperties()));
         }
@@ -229,6 +230,7 @@ public class ApplicationManagerImpl
             "gshell-spring",
             "gshell-wisdom-bootstrap",
             "gshell-yarn",
+            "gshell-interpolation",
             "jcl104-over-slf4j",
             "jline",
             "log4j",
@@ -304,7 +306,7 @@ public class ApplicationManagerImpl
 
     public Shell create() throws Exception {
         // Make sure that we have a valid context
-        getContext();
+        getApplication();
 
         // Have to use named instance to prevent unique lookup problems due to shell also being a CommandLineExecutor instance
         final Shell shell = applicationContainer.getBean("shell", Shell.class);
@@ -349,6 +351,8 @@ public class ApplicationManagerImpl
 
         log.debug("Create shell proxy: {}", proxy);
 
+        applicationContainer.publish(new ShellCreatedEvent(proxy));
+        
         return proxy;
     }
 }

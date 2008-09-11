@@ -28,10 +28,8 @@ import org.apache.geronimo.gshell.command.Variables;
  *
  * @version $Rev$ $Date$
  */
-public interface ApplicationContext
+public interface Application
 {
-    // TODO: Rename to Application
-
     IO getIo();
 
     Variables getVariables();

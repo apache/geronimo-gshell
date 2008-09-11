@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.wisdom.application.event;
 
 import org.springframework.context.ApplicationEvent;
+import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.Application;
 
 /**
  * Event fired once the application has been configured.
@@ -29,7 +31,15 @@ import org.springframework.context.ApplicationEvent;
 public class ApplicationConfiguredEvent
     extends ApplicationEvent
 {
-    public ApplicationConfiguredEvent(final Object source) {
+    public ApplicationConfiguredEvent(final ApplicationManager source) {
         super(source);
+    }
+
+    public ApplicationManager getApplicationManager() {
+        return (ApplicationManager) getSource();
+    }
+
+    public Application getApplication() {
+        return getApplicationManager().getApplication();
     }
 }

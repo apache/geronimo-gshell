@@ -17,29 +17,16 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.application.event;
+package org.apache.geronimo.gshell.application.settings;
 
-import org.springframework.context.ApplicationEvent;
-import org.apache.geronimo.gshell.application.settings.SettingsManager;
-import org.apache.geronimo.gshell.application.settings.Settings;
+import org.apache.geronimo.gshell.model.settings.SettingsModel;
 
 /**
- * Event fired once settings have been configured.
+ * Encapsulates the context for user settings.
  *
  * @version $Rev$ $Date$
  */
-public class SettingsConfiguredEvent
-    extends ApplicationEvent
+public interface Settings
 {
-    public SettingsConfiguredEvent(final SettingsManager source) {
-        super(source);
-    }
-
-    public SettingsManager getSettingsManager() {
-        return (SettingsManager) getSource();
-    }
-
-    public Settings getSettings() {
-        return getSettingsManager().getSettings();
-    }
+    SettingsModel getModel();
 }

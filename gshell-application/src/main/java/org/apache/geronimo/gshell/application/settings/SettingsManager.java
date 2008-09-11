@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.model.settings.SettingsModel;
  */
 public interface SettingsManager
 {
-    SettingsModel getModel();
+    Settings getSettings();
 
     void configure(SettingsConfiguration config) throws Exception;
 }

@@ -83,7 +83,7 @@ public class CommandLineBuilderImpl
 
         try {
             assert applicationManager != null;
-            final Variables vars = applicationManager.getContext().getVariables();
+            final Variables vars = applicationManager.getApplication().getVariables();
             final ASTCommandLine root = parse(commandLine);
 
             return new CommandLine() {

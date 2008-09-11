@@ -102,7 +102,7 @@ public class CommandLineExecutorImpl
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
-        return execute(String.valueOf(args[0]), Arguments.shift(args), applicationManager.getContext().getIo());
+        return execute(String.valueOf(args[0]), Arguments.shift(args), applicationManager.getApplication().getIo());
     }
 
     public Object execute(final String path, final Object[] args) throws Exception {
@@ -111,7 +111,7 @@ public class CommandLineExecutorImpl
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
-        return execute(path, args, applicationManager.getContext().getIo());
+        return execute(path, args, applicationManager.getApplication().getIo());
     }
 
     public Object execute(final Object[][] commands) throws Exception {
@@ -121,7 +121,7 @@ public class CommandLineExecutorImpl
         final IO[] ios = new IO[commands.length];
         PipedOutputStream pos = null;
 
-        IO io = applicationManager.getContext().getIo();
+        IO io = applicationManager.getApplication().getIo();
 
         for (int i = 0; i < ios.length; i++) {
             InputStream is = (i == 0) ? io.inputStream : new PipedInputStream(pos);
@@ -200,7 +200,7 @@ public class CommandLineExecutorImpl
     protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
         log.debug("Executing");
 
-        final Variables variables = applicationManager.getContext().getVariables();
+        final Variables variables = applicationManager.getApplication().getVariables();
 
         final Command command = commandResolver.resolve(variables, path);
 

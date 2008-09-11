@@ -31,5 +31,5 @@ public interface ApplicationManager
 {
     void configure(ApplicationConfiguration config) throws Exception;
 
-    ApplicationContext getContext();
+    Application getApplication();
 }

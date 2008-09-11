@@ -21,8 +21,7 @@ package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.application.ApplicationContext;
-import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -57,9 +56,6 @@ public class ShellImpl
     implements Shell, ApplicationListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private ApplicationManager applicationManager;
 
     @Autowired
     private ShellInfo shellInfo;
@@ -98,10 +94,12 @@ public class ShellImpl
         assert event != null;
 
         if (event instanceof ApplicationConfiguredEvent) {
-            assert applicationManager != null;
+            ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
 
+            log.debug("Binding application io/variables/branding from context");
+            
             // Dereference some bits from the applciation context
-            ApplicationContext context = applicationManager.getContext();
+            Application context = targetEvent.getApplication();
             io = context.getIo();
             variables = context.getVariables();
             branding = context.getModel().getBranding();

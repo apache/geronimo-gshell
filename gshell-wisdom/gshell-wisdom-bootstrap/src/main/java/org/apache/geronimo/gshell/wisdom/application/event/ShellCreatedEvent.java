@@ -19,27 +19,22 @@
 
 package org.apache.geronimo.gshell.wisdom.application.event;
 
+import org.apache.geronimo.gshell.shell.Shell;
 import org.springframework.context.ApplicationEvent;
-import org.apache.geronimo.gshell.application.settings.SettingsManager;
-import org.apache.geronimo.gshell.application.settings.Settings;
 
 /**
- * Event fired once settings have been configured.
- *
+ * Event fired once the application has constructed a shell.
+ * 
  * @version $Rev$ $Date$
  */
-public class SettingsConfiguredEvent
+public class ShellCreatedEvent
     extends ApplicationEvent
 {
-    public SettingsConfiguredEvent(final SettingsManager source) {
+    public ShellCreatedEvent(final Shell source) {
         super(source);
     }
 
-    public SettingsManager getSettingsManager() {
-        return (SettingsManager) getSource();
-    }
-
-    public Settings getSettings() {
-        return getSettingsManager().getSettings();
+    public Shell getShell() {
+        return (Shell) getSource();
     }
 }
