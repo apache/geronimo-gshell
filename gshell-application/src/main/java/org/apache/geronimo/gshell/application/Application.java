@@ -30,6 +30,8 @@ import org.apache.geronimo.gshell.command.Variables;
  */
 public interface Application
 {
+    String getId();
+    
     IO getIo();
 
     Variables getVariables();

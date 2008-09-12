@@ -116,13 +116,13 @@ public class SettingsManagerImpl
         config.setModel(model);
     }
 
-    private void configure(final SettingsModel settingsModel) throws Exception {
-        assert settingsModel != null;
+    private void configure(final SettingsModel model) throws Exception {
+        assert model != null;
 
         // TODO: Add settings interpolation here
 
         // Setup remote repositories
-        for (RemoteRepository repo : settingsModel.remoteRepositories()) {
+        for (RemoteRepository repo : model.remoteRepositories()) {
             artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
 

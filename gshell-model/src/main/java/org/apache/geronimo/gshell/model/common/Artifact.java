@@ -80,4 +80,8 @@ public abstract class Artifact
     public void setVersion(final String version) {
         this.version = version;
     }
+
+    public String getId() {
+        return getGroupId() + ":" + getArtifactId() + ":" + getVersion() + ":" + getType();
+    }
 }

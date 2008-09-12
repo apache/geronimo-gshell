@@ -114,6 +114,10 @@ public class ApplicationManagerImpl
 
         // Create a new context
         application = new Application() {
+            public String getId() {
+                return config.getModel().getId();
+            }
+
             public IO getIo() {
                 return config.getIo();
             }
@@ -157,52 +161,52 @@ public class ApplicationManagerImpl
         config.setModel(model);
     }
 
-    private void configure(final ApplicationModel applicationModel) throws Exception {
-        assert applicationModel != null;
+    private void configure(final ApplicationModel model) throws Exception {
+        assert model != null;
 
-        log.debug("Application ID: {}", applicationModel.getId());
-        log.trace("Application descriptor: {}", applicationModel);
+        log.debug("Application ID: {}", model.getId());
+        log.trace("Application descriptor: {}", model);
 
         // Apply artifact manager configuration settings for application
-        configureArtifactManager(applicationModel);
+        configureArtifactManager(model);
 
         // Create the application container
-        applicationContainer = createContainer(applicationModel);
+        applicationContainer = createContainer(model);
     }
 
-    private void configureArtifactManager(final ApplicationModel applicationModel) throws Exception {
-        assert applicationModel != null;
+    private void configureArtifactManager(final ApplicationModel model) throws Exception {
+        assert model != null;
         assert artifactManager != null;
 
         // Setup the local repository
-        LocalRepository localRepository = applicationModel.getLocalRepository();
+        LocalRepository localRepository = model.getLocalRepository();
 
         if (localRepository != null) {
             artifactManager.getRepositoryManager().setLocalRepository(localRepository.getDirectoryFile());
         }
 
         // Setup remote repositories
-        for (RemoteRepository repo : applicationModel.getRemoteRepositories()) {
+        for (RemoteRepository repo : model.getRemoteRepositories()) {
             artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
     }
 
-    private BeanContainer createContainer(final ApplicationModel applicationModel) throws Exception {
-        assert applicationModel != null;
+    private BeanContainer createContainer(final ApplicationModel model) throws Exception {
+        assert model != null;
 
         log.debug("Creating application container");
 
-        List<URL> classPath = createClassPath(applicationModel);
+        List<URL> classPath = createClassPath(model);
 
-        BeanContainer child = container.createChild("application[" + applicationModel.getId() + "]", classPath);
+        BeanContainer child = container.createChild("gshell.application[" + model.getId() + "]", classPath);
 
         log.debug("Application container: {}", child);
 
         return child;
     }
 
-    private List<URL> createClassPath(final ApplicationModel applicationModel) throws Exception {
-        assert applicationModel != null;
+    private List<URL> createClassPath(final ApplicationModel model) throws Exception {
+        assert model != null;
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 
@@ -263,7 +267,7 @@ public class ApplicationManagerImpl
         request.setFilter(filter);
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<Dependency> dependencies = applicationModel.getDependencies(true); // include groups
+        List<Dependency> dependencies = model.getDependencies(true); // include groups
 
         if (!dependencies.isEmpty()) {
             ArtifactFactory factory = artifactManager.getArtifactFactory();
@@ -303,6 +307,10 @@ public class ApplicationManagerImpl
 
         return classPath;
     }
+
+    //
+    // ShellFactory
+    //
 
     public Shell create() throws Exception {
         // Make sure that we have a valid context

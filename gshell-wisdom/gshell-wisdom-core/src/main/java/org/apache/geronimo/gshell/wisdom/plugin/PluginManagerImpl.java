@@ -81,7 +81,7 @@ public class PluginManagerImpl
     private void loadPlugins(final Application application) {
         assert application != null;
 
-        log.debug("Loading plugins for application: {}", application.getModel().getId());
+        log.debug("Loading plugins for application: {}", application.getId());
 
         List<Plugin> plugins = application.getModel().getPlugins(true);
 
@@ -98,11 +98,11 @@ public class PluginManagerImpl
     private void loadPlugin(final Plugin plugin) throws Exception {
         assert plugin != null;
 
-        log.debug("Loading plugin: {}", plugin);
+        log.debug("Loading plugin: {}", plugin.getId());
 
         List<URL> classPath = createClassPath(plugin);
 
-        BeanContainer pluginContainer = container.createChild("plugin[" + plugin + "]", classPath);
+        BeanContainer pluginContainer = container.createChild("gshell.plugin[" + plugin.getId() + "]", classPath);
 
         pluginContainer.publish(new PluginLoadedEvent(this, plugin));
     }
