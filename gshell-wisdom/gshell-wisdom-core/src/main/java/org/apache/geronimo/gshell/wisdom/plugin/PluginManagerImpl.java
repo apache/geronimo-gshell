@@ -64,8 +64,6 @@ public class PluginManagerImpl
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
-
-        System.out.println("Setting bean container: " + container);
         
         this.container = container;
     }
