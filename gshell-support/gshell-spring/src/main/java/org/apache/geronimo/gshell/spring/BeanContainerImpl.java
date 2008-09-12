@@ -90,6 +90,9 @@ public class BeanContainerImpl
 
         // Refresh to load things up
         context.refresh();
+
+        // Start components
+        context.start();
     }
 
     public BeanContainer getParent() {
