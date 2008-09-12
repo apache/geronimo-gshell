@@ -17,19 +17,13 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.application;
-
-import org.apache.geronimo.gshell.shell.ShellFactory;
+package org.apache.geronimo.gshell.application.plugin;
 
 /**
- * Provides the interface to manage applications.
+ * Provides the interface to manage plugins.
  *
  * @version $Rev$ $Date$
  */
-public interface ApplicationManager
-    extends ShellFactory
+public interface PluginManager
 {
-    void configure(ApplicationConfiguration config) throws Exception;
-
-    Application getApplication();
 }

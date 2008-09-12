@@ -17,29 +17,30 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.common;
+package org.apache.geronimo.gshell.model.application;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.apache.geronimo.gshell.model.common.Artifact;
 
 /**
- * Dependency artifact configuration.
+ * Plugin artifact configuration.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("dependency")
-public class Dependency
+@XStreamAlias("plugin")
+public class Plugin
     extends Artifact
 {
     public static final String DEFAULT_TYPE = "jar";
 
-    private transient DependencyGroup dependencyGroup;
+    private transient PluginGroup pluginGroup;
 
-    public DependencyGroup getDependencyGroup() {
-        return dependencyGroup;
+    public PluginGroup getPluginGroup() {
+        return pluginGroup;
     }
 
-    public void setDependencyGroup(final DependencyGroup group) {
-        this.dependencyGroup = group;
+    public void setPluginGroup(final PluginGroup group) {
+        this.pluginGroup = group;
     }
 
     // Return configuration detals from the group if not directly configured
@@ -48,8 +49,8 @@ public class Dependency
     public String getGroupId() {
         String tmp = super.getGroupId();
 
-        if (tmp == null && dependencyGroup != null) {
-            tmp = dependencyGroup.getGroupId();
+        if (tmp == null && pluginGroup != null) {
+            tmp = pluginGroup.getGroupId();
         }
 
         return tmp;
@@ -59,8 +60,8 @@ public class Dependency
     public String getArtifactId() {
         String tmp = super.getArtifactId();
 
-        if (tmp == null && dependencyGroup != null) {
-            tmp = dependencyGroup.getArtifactId();
+        if (tmp == null && pluginGroup != null) {
+            tmp = pluginGroup.getArtifactId();
         }
 
         return tmp;
@@ -70,8 +71,8 @@ public class Dependency
     public String getClassifier() {
         String tmp = super.getClassifier();
 
-        if (tmp == null && dependencyGroup != null) {
-            tmp = dependencyGroup.getClassifier();
+        if (tmp == null && pluginGroup != null) {
+            tmp = pluginGroup.getClassifier();
         }
 
         return tmp;
@@ -81,8 +82,8 @@ public class Dependency
     public String getType() {
         String tmp = super.getType();
 
-        if (tmp == null && dependencyGroup != null) {
-            tmp = dependencyGroup.getType();
+        if (tmp == null && pluginGroup != null) {
+            tmp = pluginGroup.getType();
         }
 
         if (tmp == null) {
@@ -96,8 +97,8 @@ public class Dependency
     public String getVersion() {
         String tmp = super.getVersion();
 
-        if (tmp == null && dependencyGroup != null) {
-            tmp = dependencyGroup.getVersion();
+        if (tmp == null && pluginGroup != null) {
+            tmp = pluginGroup.getVersion();
         }
 
         return tmp;

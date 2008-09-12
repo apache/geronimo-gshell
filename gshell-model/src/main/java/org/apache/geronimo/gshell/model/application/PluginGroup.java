@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.common;
+package org.apache.geronimo.gshell.model.application;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -25,38 +25,40 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.geronimo.gshell.model.common.Artifact;
+
 /**
- * Groups dependency elements to allow artifact configuration to be shared.
+ * Groups plugin elements to allow artifact configuration to be shared.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("dependencyGroup")
-public class DependencyGroup
+@XStreamAlias("pluginGroup")
+public class PluginGroup
     extends Artifact
 {
     @XStreamImplicit
-    private List<Dependency> dependencies;
+    private List<Plugin> plugins;
 
-    public List<Dependency> getDependencies() {
-        if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
+    public List<Plugin> getPlugins() {
+        if (plugins == null) {
+            plugins = new ArrayList<Plugin>();
         }
 
-        return dependencies;
+        return plugins;
     }
-    
-    public void add(final Dependency dependency) {
-        assert dependency != null;
 
-        getDependencies().add(dependency);
+    public void add(final Plugin plugin) {
+        assert plugin != null;
+
+        getPlugins().add(plugin);
     }
 
     public int size() {
-        return getDependencies().size();
+        return getPlugins().size();
     }
-    
+
     public boolean isEmpty() {
-        return getDependencies().isEmpty();
+        return getPlugins().isEmpty();
     }
 
     /**
@@ -65,8 +67,8 @@ public class DependencyGroup
     @SuppressWarnings({"UnusedDeclaration"})
     private Object readResolve() {
         if (!isEmpty()) {
-            for (Dependency child : getDependencies()) {
-                child.setDependencyGroup(this);
+            for (Plugin child : getPlugins()) {
+                child.setPluginGroup(this);
             }
         }
 

@@ -28,6 +28,8 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <context:annotation-config/>
+
+    <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl"/>
     
     <bean id="commandContainerFactory" class="org.apache.geronimo.gshell.wisdom.command.CommandContainerFactoryImpl"/>
 

@@ -44,63 +44,43 @@
         -->
     </remoteRepositories>
 
-    <dependencyGroups>
-        <dependencyGroup>
+    <dependencies>
+        <dependency>
             <groupId>org.apache.geronimo.gshell.wisdom</groupId>
+            <artifactId>gshell-wisdom-core</artifactId>
             <version>1.0-alpha-2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
-            <dependency>
-                <artifactId>gshell-wisdom-core</artifactId>
-            </dependency>
-        </dependencyGroup>
-
-        <dependencyGroup>
+    <pluginGroups>
+        <pluginGroup>
             <groupId>org.apache.geronimo.gshell.commands</groupId>
             <version>1.0-alpha-2-SNAPSHOT</version>
 
-            <dependency>
+            <plugin>
                 <artifactId>gshell-builtins</artifactId>
-            </dependency>
+            </plugin>
 
             <!--
-            <dependency>
+            <plugin>
                 <artifactId>gshell-optional</artifactId>
-            </dependency>
+            </plugin>
 
-            <dependency>
+            <plugin>
                 <artifactId>gshell-repository</artifactId>
-            </dependency>
+            </plugin>
 
-            <dependency>
+            <plugin>
                 <artifactId>gshell-bsf</artifactId>
-            </dependency>
+            </plugin>
 
-            <dependency>
+            <plugin>
                 <artifactId>gshell-vfs</artifactId>
-            </dependency>
+            </plugin>
             -->
-        </dependencyGroup>
+        </pluginGroup>
+    </pluginGroups>
 
-        <!--
-        <dependencyGroup>
-            <groupId>org.apache.geronimo.gshell.remote</groupId>
-            <version>1.0-alpha-2-SNAPSHOT</version>
-
-            <dependency>
-                <artifactId>gshell-remote-client</artifactId>
-            </dependency>
-
-            <dependency>
-                <artifactId>gshell-remote-server</artifactId>
-            </dependency>
-        </dependencyGroup>
-        -->
-    </dependencyGroups>
-
-    <!--
-    TODO: Need plugins
-    -->
-    
     <branding>
         <name>gshell</name>
     </branding>

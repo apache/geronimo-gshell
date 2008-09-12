@@ -86,7 +86,7 @@ public class ApplicationMarshallerTest
 
         ApplicationModel root = marshaller.unmarshal(input);
 
-        root.dependencies(true);
+        root.getDependencies(true);
         
         System.out.println(root);
     }
@@ -96,7 +96,7 @@ public class ApplicationMarshallerTest
 
         ApplicationModel root = marshaller.unmarshal(url);
 
-        root.dependencies(true);
+        root.getDependencies(true);
 
         System.out.println(root);
     }

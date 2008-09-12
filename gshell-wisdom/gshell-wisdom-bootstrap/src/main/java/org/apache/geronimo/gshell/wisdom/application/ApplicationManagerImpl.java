@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
@@ -43,9 +43,9 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,13 +77,13 @@ public class ApplicationManagerImpl
 
     @Autowired
     private SettingsManager settingsManager;
-
-    private Application application;
-
+    
     private BeanContainer container;
 
     private BeanContainer applicationContainer;
 
+    private Application application;
+    
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
         
@@ -182,7 +182,7 @@ public class ApplicationManagerImpl
         }
 
         // Setup remote repositories
-        for (RemoteRepository repo : applicationModel.remoteRepositories()) {
+        for (RemoteRepository repo : applicationModel.getRemoteRepositories()) {
             artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());
         }
     }
@@ -194,7 +194,7 @@ public class ApplicationManagerImpl
 
         List<URL> classPath = createClassPath(applicationModel);
 
-        BeanContainer child = container.createChild(applicationModel.getId(), classPath);
+        BeanContainer child = container.createChild("application[" + applicationModel.getId() + "]", classPath);
 
         log.debug("Application container: {}", child);
 
@@ -263,7 +263,7 @@ public class ApplicationManagerImpl
         request.setFilter(filter);
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<Dependency> dependencies = applicationModel.dependencies(true); // include groups
+        List<Dependency> dependencies = applicationModel.getDependencies(true); // include groups
 
         if (!dependencies.isEmpty()) {
             ArtifactFactory factory = artifactManager.getArtifactFactory();

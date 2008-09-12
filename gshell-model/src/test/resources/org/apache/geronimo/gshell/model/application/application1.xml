@@ -42,13 +42,13 @@
     </remoteRepositories>
 
     <!--
-    <dependencies>
+    <getDependencies>
         <dependency>
             <groupId>a</groupId>
             <artifactId>b</artifactId>
             <version>c</version>
         </dependency>
-    </dependencies>
+    </getDependencies>
     -->
 
     <dependencyGroups>

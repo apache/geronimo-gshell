@@ -28,9 +28,9 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <context:annotation-config/>
-    
-    <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl"/>
 
     <bean id="settingsManager" class="org.apache.geronimo.gshell.wisdom.application.SettingsManagerImpl"/>
+
+    <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl"/>
 
 </beans>

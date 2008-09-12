@@ -25,6 +25,8 @@ import org.apache.geronimo.gshell.model.common.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.DescriptorSupport;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
+import org.apache.geronimo.gshell.model.application.Plugin;
+import org.apache.geronimo.gshell.model.application.PluginGroup;
 import org.apache.geronimo.gshell.model.layout.Layout;
 
 import java.util.ArrayList;
@@ -46,10 +48,16 @@ public class ApplicationModel
     private List<Dependency> dependencies;
 
     private List<DependencyGroup> dependencyGroups;
-    
+
+    private List<Plugin> plugins;
+
+    private List<PluginGroup> pluginGroups;
+
     private Branding branding;
 
     private Layout layout;
+
+    // LocalRepository
 
     public LocalRepository getLocalRepository() {
         return localRepository;
@@ -59,7 +67,9 @@ public class ApplicationModel
         this.localRepository = localRepository;
     }
 
-    public List<RemoteRepository> remoteRepositories() {
+    // RemoteRepository
+
+    public List<RemoteRepository> getRemoteRepositories() {
         if (remoteRepositories == null) {
             remoteRepositories = new ArrayList<RemoteRepository>();
         }
@@ -70,10 +80,12 @@ public class ApplicationModel
     public void add(final RemoteRepository repository) {
         assert repository != null;
 
-        remoteRepositories().add(repository);
+        getRemoteRepositories().add(repository);
     }
 
-    public List<DependencyGroup> dependencyGroups() {
+    // DependencyGroup
+
+    public List<DependencyGroup> getDependencyGroups() {
         if (dependencyGroups == null) {
             dependencyGroups = new ArrayList<DependencyGroup>();
         }
@@ -84,10 +96,12 @@ public class ApplicationModel
     public void add(final DependencyGroup group) {
         assert group != null;
 
-        dependencyGroups().add(group);
+        getDependencyGroups().add(group);
     }
 
-    public List<Dependency> dependencies() {
+    // Dependency
+
+    public List<Dependency> getDependencies() {
         if (dependencies == null) {
             dependencies = new ArrayList<Dependency>();
         }
@@ -95,17 +109,17 @@ public class ApplicationModel
         return dependencies;
     }
 
-    public List<Dependency> dependencies(boolean includeGroups) {
+    public List<Dependency> getDependencies(boolean includeGroups) {
         if (!includeGroups) {
-            return dependencies();
+            return getDependencies();
         }
 
         List<Dependency> list = new ArrayList<Dependency>();
 
-        list.addAll(dependencies());
+        list.addAll(getDependencies());
 
-        for (DependencyGroup group : dependencyGroups()) {
-            list.addAll(group.dependencies());
+        for (DependencyGroup group : getDependencyGroups()) {
+            list.addAll(group.getDependencies());
         }
 
         return list;
@@ -114,8 +128,58 @@ public class ApplicationModel
     public void add(final Dependency dependency) {
         assert dependency != null;
 
-        dependencies().add(dependency);
+        getDependencies().add(dependency);
     }
+
+    // PluginGroup
+
+    public List<PluginGroup> getPluginGroups() {
+        if (pluginGroups == null) {
+            pluginGroups = new ArrayList<PluginGroup>();
+        }
+
+        return pluginGroups;
+    }
+
+    public void add(final PluginGroup group) {
+        assert group != null;
+
+        getPluginGroups().add(group);
+    }
+
+    // Plugin
+
+    public List<Plugin> getPlugins() {
+        if (plugins == null) {
+            plugins = new ArrayList<Plugin>();
+        }
+
+        return plugins;
+    }
+
+    public List<Plugin> getPlugins(boolean includeGroups) {
+        if (!includeGroups) {
+            return getPlugins();
+        }
+
+        List<Plugin> list = new ArrayList<Plugin>();
+
+        list.addAll(getPlugins());
+
+        for (PluginGroup group : getPluginGroups()) {
+            list.addAll(group.getPlugins());
+        }
+
+        return list;
+    }
+
+    public void add(final Plugin plugin) {
+        assert plugin != null;
+
+        getPlugins().add(plugin);
+    }
+
+    // Branding
 
     public Branding getBranding() {
         if (branding == null) {
@@ -129,6 +193,8 @@ public class ApplicationModel
         this.branding = branding;
     }
 
+    // Layout
+    
     public Layout getLayout() {
         return layout;
     }

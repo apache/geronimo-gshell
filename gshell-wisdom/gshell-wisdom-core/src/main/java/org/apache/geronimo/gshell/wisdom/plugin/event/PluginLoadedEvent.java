@@ -17,19 +17,33 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.application;
+package org.apache.geronimo.gshell.wisdom.plugin.event;
 
-import org.apache.geronimo.gshell.shell.ShellFactory;
+import org.springframework.context.ApplicationEvent;
+import org.apache.geronimo.gshell.application.plugin.PluginManager;
+import org.apache.geronimo.gshell.model.application.Plugin;
 
 /**
- * Provides the interface to manage applications.
+ * Event fire once a plugin has been loaded.
  *
  * @version $Rev$ $Date$
  */
-public interface ApplicationManager
-    extends ShellFactory
+public class PluginLoadedEvent
+    extends ApplicationEvent
 {
-    void configure(ApplicationConfiguration config) throws Exception;
+    private Plugin plugin;
 
-    Application getApplication();
+    public PluginLoadedEvent(final PluginManager source, final Plugin plugin) {
+        super(source);
+
+        this.plugin = plugin;
+    }
+
+    public PluginManager getPluginManager() {
+        return (PluginManager)getSource();
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
+    }
 }

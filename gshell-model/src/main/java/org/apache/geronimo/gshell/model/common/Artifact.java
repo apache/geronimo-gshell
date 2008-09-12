@@ -22,11 +22,11 @@ package org.apache.geronimo.gshell.model.common;
 import org.apache.geronimo.gshell.model.Element;
 
 /**
- * Support for {@link Dependency} and {@link DependencyGroup} elements.
+ * Defines an artifact (groupId, artifactId, version, etc).
  *
  * @version $Rev$ $Date$
  */
-public abstract class DependencySupport
+public abstract class Artifact
     extends Element
 {
     private String groupId;
