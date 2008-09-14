@@ -61,6 +61,8 @@ public class CommandContainerImpl
 
     private CommandCompleter completer;
 
+    // TODO: MessageSource
+
     public String getId() {
         return id;
     }
@@ -107,9 +109,17 @@ public class CommandContainerImpl
         assert registry != null;
         assert id != null;
         assert action != null;
-        assert documenter != null;
-        assert completer != null;
 
+        // Create default components if not configured
+        if (documenter == null) {
+            setDocumenter(new CommandDocumenterImpl());
+        }
+        if (completer == null) {
+            setCompleter(new CommandCompleterImpl());
+        }
+
+        // TODO: Setup MessageSource
+        
         // Inject ourself into CommandContainerAware instances
         Object[] children = {
             action,
@@ -140,9 +150,10 @@ public class CommandContainerImpl
         try {
             CommandAction action = getAction();
 
-            // Process command line options/arguments, return if we have been asked to display --help
             try {
+                // Process command line options/arguments
                 if (processArguments(context, action, context.getArguments())) {
+                    // return if we have been asked to display --help
                     return new CommandResult(CommandAction.Result.SUCCESS);
                 }
 
