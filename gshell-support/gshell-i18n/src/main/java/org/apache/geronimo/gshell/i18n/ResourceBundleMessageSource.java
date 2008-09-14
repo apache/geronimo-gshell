@@ -87,20 +87,4 @@ public class ResourceBundleMessageSource
 
         return MessageFormat.format(pattern, args);
     }
-
-    //
-    // ResourceNotFoundException
-    //
-
-    public class ResourceNotFoundException
-        extends RuntimeException
-    {
-        public ResourceNotFoundException(final String code) {
-            //
-            // TODO: Include the resource bundle names
-            //
-            
-            super("Resource not found for code: " + code);
-        }
-    }
 }

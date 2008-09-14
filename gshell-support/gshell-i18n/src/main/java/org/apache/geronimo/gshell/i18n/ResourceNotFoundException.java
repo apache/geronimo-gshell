@@ -19,40 +19,15 @@
 
 package org.apache.geronimo.gshell.i18n;
 
-import junit.framework.TestCase;
-
 /**
- * Unit tests for the {@link ResourceBundleMessageSource} class.
+ * Thrown to indicate a required resource was not found.
  *
  * @version $Rev$ $Date$
  */
-public class ResourceBundleMessageSourceTest
-    extends TestCase
+public class ResourceNotFoundException
+    extends RuntimeException
 {
-    MessageSource messages;
-
-    protected void setUp() throws Exception {
-        messages = new ResourceBundleMessageSource(getClass());
-    }
-
-    public void testLoadAndGetMessage() {
-        String a = messages.getMessage("a");
-        assertEquals("1", a);
-
-        String b = messages.getMessage("b");
-        assertEquals("2", b);
-
-        String c = messages.getMessage("c");
-        assertEquals("3", c);
-
-        String f = messages.format("f", a, b, c);
-        assertEquals("1 2 3", f);
-    }
-
-    public void testMissingResource() throws Exception {
-        try {
-            messages.getMessage("no-such-code");
-        }
-        catch (ResourceNotFoundException expected) {}
+    public ResourceNotFoundException(final String code) {
+        super("Resource not found for code: " + code);
     }
 }
