@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.clp.handler.Handler;
 import org.apache.geronimo.gshell.clp.handler.Handlers;
 import org.apache.geronimo.gshell.clp.handler.Parameters;
@@ -58,7 +59,7 @@ public class CommandLineProcessor
 
         addBean(bean);
     }
-    
+
     public List<Handler> getOptionHandlers() {
         return Collections.unmodifiableList(optionHandlers);
     }

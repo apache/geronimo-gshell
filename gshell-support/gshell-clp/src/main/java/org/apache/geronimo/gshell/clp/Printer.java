@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.geronimo.gshell.clp.handler.Handler;
+import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.i18n.ResourceNotFoundException;
 
 /**
  * Helper to print formatted help and usage text.
@@ -38,10 +40,18 @@ public class Printer
 {
     private CommandLineProcessor processor;
 
+    private MessageSource messages;
+
     public Printer(final CommandLineProcessor processor) {
         assert processor != null;
         
         this.processor = processor;
+    }
+
+    public void setMessageSource(final MessageSource messages) {
+        assert messages != null;
+
+        this.messages = messages;
     }
 
     private String getMetaVariable(final Handler handler, final ResourceBundle bundle) {
@@ -110,6 +120,10 @@ public class Printer
                 return a.descriptor.toString().compareTo(b.descriptor.toString());
             }
         });
+
+        //
+        // TODO: i18n, pull for standard messages, not from command's messages
+        //
         
         if (name != null) {
         	String syntax = "syntax: " + name;
@@ -164,6 +178,26 @@ public class Printer
     	printUsage(writer, null, name);
     }
 
+    /**
+     * Get the description for the given descriptor, using any configured messages for i18n support.
+     */
+    private String getDescription(final Descriptor descriptor) {
+        assert descriptor != null;
+
+        String message = descriptor.description();
+
+        if (message != null && messages != null) {
+            try {
+                message = messages.getMessage(message);
+            }
+            catch (ResourceNotFoundException e) {
+                // Just use the code
+            }
+        }
+
+        return message;
+    }
+
     private void printHandler(final PrintWriter out, final Handler handler, final int len, final ResourceBundle bundle) {
         assert out != null;
         assert handler != null;
@@ -179,7 +213,7 @@ public class Printer
         int descriptionWidth = terminalWidth - len - prefixSeperatorWidth;
 
         // Only render if their is a discription, else its hidden
-        String desc = handler.descriptor.description();
+        String desc = getDescription(handler.descriptor);
         if (desc.length() == 0) {
             return;
         }
@@ -203,7 +237,7 @@ public class Printer
         // Render the description splitting it over multipule lines if its longer than column size
         while (desc != null && desc.length() > 0) {
             //
-            // TODO: Should relaly only split on words here...
+            // FIXME: Only split on words
             //
 
             int i = desc.indexOf('\n');

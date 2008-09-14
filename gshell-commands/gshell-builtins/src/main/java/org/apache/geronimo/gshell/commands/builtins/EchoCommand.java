@@ -39,11 +39,11 @@ public class EchoCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    @Option(name="-n", description="Do not print the trailing newline character")
+    @Option(name="-n", description="command.option.trailingNewline")
     private boolean trailingNewline = true;
 
     @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
-    @Argument(description="Arguments")
+    @Argument(description="command.argument.args")
     private List<String> args;
 
     public Object execute(final CommandContext context) throws Exception {

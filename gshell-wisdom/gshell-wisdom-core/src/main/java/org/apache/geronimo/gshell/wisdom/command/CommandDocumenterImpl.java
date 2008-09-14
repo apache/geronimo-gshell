@@ -45,7 +45,7 @@ public class CommandDocumenterImpl
 
     public String getName() {
         if (name == null) {
-            name = getMessage("command.name");
+            name = getContainer().getMessages().getMessage("command.name");
         }
         return name;
     }
@@ -56,7 +56,7 @@ public class CommandDocumenterImpl
 
     public String getDescription() {
         if (description == null) {
-            description = getMessage("command.description");
+            description = getContainer().getMessages().getMessage("command.description");
         }
         return description;
     }
@@ -67,22 +67,13 @@ public class CommandDocumenterImpl
 
     public String getManual() {
         if (manual == null) {
-            manual = getMessage("command.manual");
+            manual = getContainer().getMessages().getMessage("command.manual");
         }
         return manual;
     }
 
     public void setManual(final String manual) {
         this.manual = manual;
-    }
-
-    private String getMessage(final String code) {
-        assert code != null;
-
-        MessageSource messages = getContainer().getMessages();
-        assert messages != null;
-        
-        return messages.getMessage(code);
     }
 
     // CommandDocumenter
@@ -94,7 +85,7 @@ public class CommandDocumenterImpl
         log.debug("Rendering command usage");
         
         CommandLineProcessor clp = new CommandLineProcessor();
-
+        
         // Attach our helper to inject --help
         CommandContainerImpl.HelpSupport help = new CommandContainerImpl.HelpSupport();
         clp.addBean(help);
@@ -107,15 +98,12 @@ public class CommandDocumenterImpl
         String name = getName();
         String desc = getDescription();
 
-        //
-        // TODO: Add some nice ANSI muck
-        //
-
         // Render the help
         out.println(desc);
         out.println();
 
         Printer printer = new Printer(clp);
+        printer.setMessageSource(getContainer().getMessages());
         printer.printUsage(out, name);
         
         out.println();

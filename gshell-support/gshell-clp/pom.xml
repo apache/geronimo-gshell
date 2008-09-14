@@ -37,4 +37,11 @@
         Annotation-based command-line processing support.
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-i18n</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
