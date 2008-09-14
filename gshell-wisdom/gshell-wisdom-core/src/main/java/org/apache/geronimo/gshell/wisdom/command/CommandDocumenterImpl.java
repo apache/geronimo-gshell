@@ -41,6 +41,8 @@ public class CommandDocumenterImpl
 
     private String description;
 
+    private String manual;
+
     public String getName() {
         if (name == null) {
             name = getMessage("command.name");
@@ -61,6 +63,17 @@ public class CommandDocumenterImpl
 
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    public String getManual() {
+        if (manual == null) {
+            manual = getMessage("command.manual");
+        }
+        return manual;
+    }
+
+    public void setManual(final String manual) {
+        this.manual = manual;
     }
 
     private String getMessage(final String code) {
@@ -113,10 +126,13 @@ public class CommandDocumenterImpl
         assert out != null;
 
         log.debug("Rendering command manual");
-        
+
         out.println(info.getName());
         out.println();
-        
-        out.println("TODO: Full docs");
+
+        String manual = getManual();
+
+        out.println(manual);
+        out.println();
     }
 }
