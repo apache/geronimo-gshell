@@ -20,74 +20,43 @@
 package org.apache.geronimo.gshell.i18n;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.codehaus.plexus.util.StringUtils;
-
 /**
- * Message source backed up by one or more {@link ResourceBundle} instances for simple i18n support.
+ * Message source backed up by one or more {@link ResourceBundle} instances.
  *
  * @version $Rev$ $Date$
  */
 public class ResourceBundleMessageSource
     implements MessageSource
 {
-    private final String[] bundleNames;
+    private final List<ResourceBundle> bundles = new ArrayList<ResourceBundle>();
 
-    private ResourceBundle[] cachedBundles;
-
-    public ResourceBundleMessageSource(final String[] names) {
-        assert names != null;
-        assert names.length != 0;
-
-        this.bundleNames = names;
-    }
-
-    public ResourceBundleMessageSource(final String name) {
-        this(new String[] { name });
-    }
-
-    private static String[] classNames(final Class[] types) {
-        assert types != null;
-        assert types.length != 0;
-
-        String[] names = new String[types.length];
-
-        for (int i=0; i<types.length; i++) {
-            assert types[i] != null;
-
-            names[i] = types[i].getName();
-        }
-
-        return names;
-    }
+    private final Locale locale;
 
     public ResourceBundleMessageSource(final Class[] types) {
-        this(classNames(types));
+        assert types != null;
+
+        locale = Locale.getDefault();
+
+        for (Class type : types) {
+            loadBundle(type);
+        }
     }
 
     public ResourceBundleMessageSource(final Class type) {
-        this(new String[] { type.getName() });
+        this(new Class[] { type });
     }
 
-    private ResourceBundle[] createBundles() {
-        ResourceBundle[] bundles = new ResourceBundle[bundleNames.length];
+    private void loadBundle(final Class type) {
+        assert type != null;
 
-        for (int i=0; i<bundleNames.length; i++) {
-            assert bundleNames[i] != null;
-            
-            bundles[i] = ResourceBundle.getBundle(bundleNames[i]);
-        }
-
-        return bundles;
-    }
-
-    private ResourceBundle[] getBundles() {
-        if (cachedBundles == null) {
-            cachedBundles = createBundles();
-        }
-        return cachedBundles;
+        ResourceBundle bundle = ResourceBundle.getBundle(type.getName(), locale, type.getClassLoader());
+        bundles.add(bundle);
     }
 
     /**
@@ -96,7 +65,7 @@ public class ResourceBundleMessageSource
     public String getMessage(final String code) {
         assert code != null;
 
-        for (ResourceBundle bundle : getBundles()) {
+        for (ResourceBundle bundle : bundles) {
             try {
                 return bundle.getString(code);
             }
@@ -119,26 +88,19 @@ public class ResourceBundleMessageSource
         return MessageFormat.format(pattern, args);
     }
 
-    /**
-     * @see #getMessage(String)
-     */
-    public Object getProperty(final String name) {
-        return getMessage(name);
-    }
-
     //
     // ResourceNotFoundException
     //
-
-    private static String notFoundMessage(final String code, final String[] bundleNames) {
-        return "Resource not found for code: " + code + " in bundles: " + StringUtils.join(bundleNames, ", ");
-    }
 
     public class ResourceNotFoundException
         extends RuntimeException
     {
         public ResourceNotFoundException(final String code) {
-            super(notFoundMessage(code, bundleNames));
+            //
+            // TODO: Include the resource bundle names
+            //
+            
+            super("Resource not found for code: " + code);
         }
     }
 }
