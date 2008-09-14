@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.clp.handler.Handler;
 import org.apache.geronimo.gshell.clp.handler.Handlers;
 import org.apache.geronimo.gshell.clp.handler.Parameters;
@@ -139,7 +138,7 @@ public class CommandLineProcessor
     }
 
     private void addArgument(final Setter setter, final Argument argument) {
-        Handler handler = Handlers.create(new ArgumentDescriptor(argument, setter.isMultiValued()), setter);
+        Handler handler = Handlers.create(new ArgumentDescriptor(setter.getName(), argument, setter.isMultiValued()), setter);
     	int index = argument.index();
 
         // Make sure the argument will fit in the list
@@ -155,7 +154,7 @@ public class CommandLineProcessor
     }
 
     private void addOption(final Setter setter, final Option option) {
-        Handler handler = Handlers.create(new OptionDescriptor(option, setter.isMultiValued()), setter);
+        Handler handler = Handlers.create(new OptionDescriptor(setter.getName(), option, setter.isMultiValued()), setter);
         checkOptionNotInMap(option.name());
 
         for (String alias : option.aliases()) {
@@ -296,14 +295,14 @@ public class CommandLineProcessor
         // Ensure that all required option handlers are present, unless a processed option has overridden requirments
         if (!requireOverride) {
 	        for (Handler handler : optionHandlers) {
-	            if (handler.descriptor.required() && !present.contains(handler)) {
+	            if (handler.descriptor.isRequired() && !present.contains(handler)) {
 	                throw new ProcessingException(Messages.REQUIRED_OPTION_MISSING.format(handler.descriptor.toString()));
 	            }
 	        }
 
 	        // Ensure that all required argument handlers are present
 	        for (Handler handler : argumentHandlers) {
-	            if (handler.descriptor.required() && !present.contains(handler)) {
+	            if (handler.descriptor.isRequired() && !present.contains(handler)) {
 	                throw new ProcessingException(Messages.REQUIRED_ARGUMENT_MISSING.format(handler.descriptor.toString()));
 	            }
 	        }
@@ -339,14 +338,14 @@ public class CommandLineProcessor
 
         for (Handler handler : handlers) {
         	if (keyFilter.contains("--")) {
-        		for (String alias : ((OptionDescriptor)handler.descriptor).aliases()) {
+        		for (String alias : ((OptionDescriptor)handler.descriptor).getAliases()) {
         			if (alias.startsWith(keyFilter)) {
         				map.put(alias, handler);
         			}
         		}
         	} else {
-        		if (((OptionDescriptor)handler.descriptor).name().startsWith(keyFilter)) {
-                    map.put(((OptionDescriptor)handler.descriptor).name(), handler);
+        		if (((OptionDescriptor)handler.descriptor).getName().startsWith(keyFilter)) {
+                    map.put(((OptionDescriptor)handler.descriptor).getName(), handler);
                 }
         	}
         }
@@ -358,11 +357,11 @@ public class CommandLineProcessor
         for (Handler handler : optionHandlers) {
             OptionDescriptor option = (OptionDescriptor)handler.descriptor;
 
-            if (name.equals(option.name())) {
+            if (name.equals(option.getName())) {
                 return handler;
             }
 
-            for (String alias : option.aliases()) {
+            for (String alias : option.getAliases()) {
                 if (name.equals(alias)) {
                     return handler;
                 }

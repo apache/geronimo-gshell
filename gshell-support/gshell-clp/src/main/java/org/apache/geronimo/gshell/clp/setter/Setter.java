@@ -37,6 +37,8 @@ public interface Setter<T>
      */
     void set(T value) throws ProcessingException;
 
+    String getName();
+    
     /**
      * Gets the type of the underlying method/field.
      */

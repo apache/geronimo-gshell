@@ -41,6 +41,10 @@ public class FieldSetter
         this.field = field;
     }
 
+    public String getName() {
+        return field.getName();
+    }
+
     public Class getType() {
         return field.getType();
     }

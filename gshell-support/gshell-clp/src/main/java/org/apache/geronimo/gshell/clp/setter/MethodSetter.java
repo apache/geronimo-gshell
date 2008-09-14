@@ -49,6 +49,10 @@ public class MethodSetter
         }
     }
 
+    public String getName() {
+        return method.getName();
+    }
+
     public Class getType() {
         return method.getParameterTypes()[0];
     }

@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.apache.geronimo.gshell.clp.handler.Handler;
 import org.apache.geronimo.gshell.i18n.MessageSource;
@@ -54,11 +53,45 @@ public class Printer
         this.messages = messages;
     }
 
-    private String getMetaVariable(final Handler handler, final ResourceBundle bundle) {
+    /**
+     * Get the help text for the given descriptor, using any configured messages for i18n support.
+     */
+    private String getHelpText(final Descriptor descriptor) {
+        assert descriptor != null;
+
+        String message = descriptor.getDescription();
+
+        // If we have i18n messages for the command, then try to resolve the message further using the message as the code
+        if (messages != null) {
+            String code = message;
+
+            // If there is no code, then generate one
+            if (code == null) {
+                if (descriptor instanceof ArgumentDescriptor) {
+                    code = "argument." + descriptor.getId();
+                }
+                else {
+                    code = "option." + descriptor.getId();
+                }
+            }
+
+            // Resolve the text in the message source
+            try {
+                message = messages.getMessage(code);
+            }
+            catch (ResourceNotFoundException e) {
+                // Just use the code as the message
+            }
+        }
+
+        return message;
+    }
+
+    private String getMetaVariable(final Handler handler) {
         assert handler != null;
 
-        String token = handler.descriptor.metaVar();
-        if (token.length() == 0) {
+        String token = handler.descriptor.getMetaVar();
+        if (token == null) {
             token = handler.getDefaultMetaVariable();
         }
 
@@ -66,22 +99,14 @@ public class Printer
             return null;
         }
 
-        if (bundle != null) {
-            String localized = bundle.getString(token);
-
-            if (localized != null) {
-                token = localized;
-            }
-        }
-
         return token;
     }
 
-    private String getNameAndMeta(final Handler handler, final ResourceBundle bundle) {
+    private String getNameAndMeta(final Handler handler) {
         assert handler != null;
 
         String str = (handler.descriptor instanceof ArgumentDescriptor) ? "" : handler.descriptor.toString();
-    	String meta = getMetaVariable(handler, bundle);
+    	String meta = getMetaVariable(handler);
 
         if (meta != null) {
             if (str.length() > 0) {
@@ -93,17 +118,18 @@ public class Printer
         return str;
     }
 
-    private int getPrefixLen(final Handler handler, final ResourceBundle bundle) {
+    private int getPrefixLen(final Handler handler) {
         assert handler != null;
 
-        if (handler.descriptor.description().length() == 0) {
+        String helpText = getHelpText(handler.descriptor);
+        if (helpText == null) {
             return 0;
         }
 
-        return getNameAndMeta(handler, bundle).length();
+        return getNameAndMeta(handler).length();
     }
 
-    public void printUsage(final Writer writer, final ResourceBundle bundle, final String name) {
+    public void printUsage(final Writer writer, final String name) {
         assert writer != null;
 
         PrintWriter out = new PrintWriter(writer);
@@ -139,15 +165,14 @@ public class Printer
 
         // Compute the maximum length of the syntax column
         int len = 0;
-        
 
         for (Handler handler : optionHandlers) {
-            int curLen = getPrefixLen(handler, bundle);
+            int curLen = getPrefixLen(handler);
             len = Math.max(len, curLen);
         }
 
         for (Handler handler : argumentHandlers) {
-            int curLen = getPrefixLen(handler, bundle);
+            int curLen = getPrefixLen(handler);
             len = Math.max(len, curLen);
         }
 
@@ -156,7 +181,7 @@ public class Printer
         	out.println("arguments:");
         }
         for (Handler handler : argumentHandlers) {
-            printHandler(out, handler, len, bundle);
+            printHandler(out, handler, len);
         }
 
         if (!optionHandlers.isEmpty()) {
@@ -164,41 +189,17 @@ public class Printer
         	out.println("options:");
         }
         for (Handler handler : optionHandlers) {
-            printHandler(out, handler, len, bundle);
+            printHandler(out, handler, len);
         }
 
         out.flush();
     }
 
     public void printUsage(final Writer writer) {
-        printUsage(writer, null, null);
-    }
-    
-    public void printUsage(final Writer writer, final String name) {
-    	printUsage(writer, null, name);
+        printUsage(writer, null);
     }
 
-    /**
-     * Get the description for the given descriptor, using any configured messages for i18n support.
-     */
-    private String getDescription(final Descriptor descriptor) {
-        assert descriptor != null;
-
-        String message = descriptor.description();
-
-        if (message != null && messages != null) {
-            try {
-                message = messages.getMessage(message);
-            }
-            catch (ResourceNotFoundException e) {
-                // Just use the code
-            }
-        }
-
-        return message;
-    }
-
-    private void printHandler(final PrintWriter out, final Handler handler, final int len, final ResourceBundle bundle) {
+    private void printHandler(final PrintWriter out, final Handler handler, final int len) {
         assert out != null;
         assert handler != null;
 
@@ -212,14 +213,14 @@ public class Printer
         int prefixSeperatorWidth = prefix.length() + separator.length();
         int descriptionWidth = terminalWidth - len - prefixSeperatorWidth;
 
-        // Only render if their is a discription, else its hidden
-        String desc = getDescription(handler.descriptor);
-        if (desc.length() == 0) {
+        // Only render if there is help-text, else its hidden
+        String desc = getHelpText(handler.descriptor);
+        if (desc == null) {
             return;
         }
 
         // Render the prefix and syntax
-        String nameAndMeta = getNameAndMeta(handler, bundle);
+        String nameAndMeta = getNameAndMeta(handler);
         out.print(prefix);
         out.print(nameAndMeta);
 
@@ -228,11 +229,6 @@ public class Printer
             out.print(' ');
        	}
         out.print(separator);
-
-        // Localize the description if we can
-        if (bundle != null) {
-            desc = bundle.getString(desc);
-        }
 
         // Render the description splitting it over multipule lines if its longer than column size
         while (desc != null && desc.length() > 0) {

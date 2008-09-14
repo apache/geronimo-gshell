@@ -24,27 +24,22 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 /**
- * A simple command to <em>echo</em> all given arguments to the commands standard output.
+ * A simple command to print all arguments to the commands standard output.
  *
  * @version $Rev$ $Date$
  */
 public class EchoCommand
     implements CommandAction
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    @Option(name="-n", description="command.option.trailingNewline")
+    @Option(name="-n")
     private boolean trailingNewline = true;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
-    @Argument(description="command.argument.args")
-    private List<String> args;
+    @Argument()
+    private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;

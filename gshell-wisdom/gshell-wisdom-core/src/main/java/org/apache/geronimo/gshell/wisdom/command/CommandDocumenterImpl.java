@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandInfo;
 import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.i18n.PrefixingMessageSource;
 
 import java.io.PrintWriter;
 
@@ -103,7 +104,7 @@ public class CommandDocumenterImpl
         out.println();
 
         Printer printer = new Printer(clp);
-        printer.setMessageSource(getContainer().getMessages());
+        printer.setMessageSource(new PrefixingMessageSource(getContainer().getMessages(), "command."));
         printer.printUsage(out, name);
         
         out.println();

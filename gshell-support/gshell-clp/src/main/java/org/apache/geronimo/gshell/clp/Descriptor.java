@@ -28,6 +28,8 @@ import org.apache.geronimo.gshell.clp.handler.Handler;
  */
 public abstract class Descriptor
 {
+    private final String id;
+
     private final String description;
 
     private final String metaVar;
@@ -38,27 +40,48 @@ public abstract class Descriptor
 
     private final Class<? extends Handler> handler;
 
-    protected Descriptor(final String description, final String metaVar, final boolean required, final Class<? extends Handler> handler, final boolean multiValued) {
-        this.description = description;
-        this.metaVar = metaVar;
+    protected Descriptor(final String id, final String description, final String metaVar, final boolean required, final Class<? extends Handler> handler, final boolean multiValued) {
+        assert id != null;
+
+        this.id = id;
+
+        // Handle "" = null, since default values in annotations can be set to null
+        if (description != null && description.length() == 0) {
+            this.description = null;
+        }
+        else {
+            this.description = description;
+        }
+
+        if (metaVar != null && metaVar.length() == 0) {
+            this.metaVar = null;
+        }
+        else {
+            this.metaVar = metaVar;
+        }
+        
         this.required = required;
         this.handler = handler;
         this.multiValued = multiValued;
     }
 
-    public String description() {
+    public String getId() {
+        return id;
+    }
+
+    public String getDescription() {
         return description;
     }
 
-    public String metaVar() {
+    public String getMetaVar() {
         return metaVar;
     }
 
-    public boolean required() {
+    public boolean isRequired() {
         return required;
     }
 
-    public Class<? extends Handler> handler() {
+    public Class<? extends Handler> getHandler() {
         return handler;
     }
 

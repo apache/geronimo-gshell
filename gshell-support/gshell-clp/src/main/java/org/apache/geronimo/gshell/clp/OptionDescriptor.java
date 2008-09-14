@@ -31,24 +31,24 @@ public class OptionDescriptor
     
     private final String[] aliases;
 
-    private boolean argumentRequired;
+    private final boolean argumentRequired;
 
-    private boolean requireOverride;
+    private final boolean requireOverride;
 
-    public OptionDescriptor(final Option option, final boolean forceMultiValued) {
-        super(option.description(), option.metaVar(), option.required(), option.handler(), option.multiValued() || forceMultiValued);
+    public OptionDescriptor(final String id, final Option option, final boolean forceMultiValued) {
+        super(id, option.description(), option.metaVar(), option.required(), option.handler(), option.multiValued() || forceMultiValued);
     	
     	this.name = option.name();
     	this.aliases = option.aliases();
         this.argumentRequired = option.argumentRequired();
         this.requireOverride = option.requireOverride();
     }
-    
-    public String name() {
+
+    public String getName() {
     	return name;
     }
     
-    public String[] aliases() {
+    public String[] getAliases() {
     	return aliases;
     }
 
@@ -72,9 +72,9 @@ public class OptionDescriptor
                 str += alias;
             }
             
-            return name() + " (" + str + ")";
+            return getName() + " (" + str + ")";
     	}
         
-        return name();
+        return getName();
     }
 }

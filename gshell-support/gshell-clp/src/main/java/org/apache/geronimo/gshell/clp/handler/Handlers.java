@@ -68,7 +68,7 @@ public class Handlers
         assert setter != null;
 
         Constructor<? extends Handler> factory;
-        Class<? extends Handler> handlerType = desc.handler();
+        Class<? extends Handler> handlerType = desc.getHandler();
 
         if (handlerType == Handler.class) {
             Class valueType = setter.getType();

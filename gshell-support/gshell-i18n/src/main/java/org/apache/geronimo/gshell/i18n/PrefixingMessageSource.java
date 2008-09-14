@@ -17,27 +17,39 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.clp;
+package org.apache.geronimo.gshell.i18n;
 
 /**
- * Descriptor for {@link Argument} annotations.
+ * A message source which prefixes message codes.
  *
  * @version $Rev$ $Date$
  */
-public class ArgumentDescriptor
-    extends Descriptor
+public class PrefixingMessageSource
+    implements MessageSource
 {
-    public ArgumentDescriptor(final String id, final Argument argument, final boolean forceMultiValued) {
-        super(id, argument.description(), argument.metaVar(), argument.required(), argument.handler(), argument.multiValued() || forceMultiValued);
+    private final MessageSource messages;
+
+    private final String prefix;
+
+    public PrefixingMessageSource(final MessageSource messages, final String prefix) {
+        assert messages != null;
+        assert prefix != null;
+
+        this.messages = messages;
+        this.prefix = prefix;
     }
 
-    @Override
-    public String toString() {
-        String tmp = getMetaVar();
-        if (tmp != null && tmp.length() != 0) {
-            return tmp;
-        }
+    protected String createCode(final String code) {
+        assert code != null;
+        
+        return prefix + code;
+    }
 
-        return "ARG";
+    public String getMessage(final String code) {
+        return messages.getMessage(createCode(code));
+    }
+
+    public String format(final String code, final Object... args) {
+        return messages.format(createCode(code), args);
     }
 }
