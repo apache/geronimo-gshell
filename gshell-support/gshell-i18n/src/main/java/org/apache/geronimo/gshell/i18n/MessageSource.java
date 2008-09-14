@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.i18n;
 
 /**
- * ???
+ * Provides simple access to i18n messages.
  *
  * @version $Rev$ $Date$
  */
