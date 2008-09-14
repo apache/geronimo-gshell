@@ -25,35 +25,16 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.support</groupId>
-    <artifactId>gshell-support</artifactId>
-    <name>GShell Support</name>
-    <packaging>pom</packaging>
-    
+    <artifactId>gshell-event</artifactId>
+    <name>GShell Support :: Event</name>
+
     <description>
-        Support modules for GShell fluff.
+        Event support for GShell components.
     </description>
-    
-    <modules>
-        <module>gshell-yarn</module>
-        <module>gshell-chronos</module>
-        <module>gshell-ansi</module>
-        <module>gshell-artifact</module>
-        <module>gshell-clp</module>
-        <module>gshell-i18n</module>
-        <module>gshell-io</module>
-        <module>gshell-event</module>
-        <module>gshell-prefs</module>
-        <module>gshell-spring</module>
-        <module>gshell-plexus</module>
-        <module>gshell-interpolation</module>
-        <module>gshell-url</module>
-        <module>gshell-console</module>
-    </modules>
 
 </project>
