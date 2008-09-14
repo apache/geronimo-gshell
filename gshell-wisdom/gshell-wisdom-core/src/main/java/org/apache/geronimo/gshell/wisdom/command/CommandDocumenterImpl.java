@@ -106,8 +106,8 @@ public class CommandDocumenterImpl
         Printer printer = new Printer(clp);
         printer.setMessageSource(new PrefixingMessageSource(getContainer().getMessages(), "command."));
         printer.printUsage(out, name);
-        
-        out.println();
+
+        out.flush();
     }
 
     public void renderManual(final CommandInfo info, final PrintWriter out) {

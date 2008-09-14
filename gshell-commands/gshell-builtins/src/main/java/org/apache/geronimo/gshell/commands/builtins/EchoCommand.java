@@ -38,7 +38,7 @@ public class EchoCommand
     @Option(name="-n")
     private boolean trailingNewline = true;
 
-    @Argument()
+    @Argument
     private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {

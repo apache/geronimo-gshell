@@ -24,8 +24,6 @@ import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 
@@ -37,8 +35,6 @@ import java.io.PrintWriter;
 public class ClearCommand
     implements CommandAction
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         

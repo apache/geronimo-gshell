@@ -45,12 +45,11 @@ public class UnsetCommand
         PROPERTY
     }
 
-    @Option(name="-m", aliases={"--mode"}, description="Unset mode")
+    @Option(name="-m", aliases={"--mode"})
     private Mode mode = Mode.VARIABLE;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
-    @Argument(required=true, description="Variable name")
-    private List<String> args;
+    @Argument(required=true)
+    private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;

@@ -48,12 +48,11 @@ public class SetCommand
         PROPERTY
     }
 
-    @Option(name="-m", aliases={"--mode"}, description="Set mode")
+    @Option(name="-m", aliases={"--mode"})
     private Mode mode = Mode.VARIABLE;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
-    @Argument(description="Variable definition")
-    private List<String> args;
+    @Argument
+    private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;

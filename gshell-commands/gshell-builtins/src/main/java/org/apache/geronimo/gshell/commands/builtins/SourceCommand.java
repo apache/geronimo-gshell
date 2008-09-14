@@ -51,7 +51,7 @@ public class SourceCommand
     @Qualifier("default")
     private CommandLineExecutor executor;
 
-    @Argument(required=true, description="Source file")
+    @Argument(required=true)
     private String source;
 
     public Object execute(final CommandContext context) throws Exception {

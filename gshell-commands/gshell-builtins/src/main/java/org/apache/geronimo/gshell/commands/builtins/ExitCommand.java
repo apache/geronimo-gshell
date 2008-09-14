@@ -36,7 +36,7 @@ public class ExitCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Argument(description="System exit code")
+    @Argument
     private int exitCode = 0;
 
     public Object execute(final CommandContext context) throws Exception {

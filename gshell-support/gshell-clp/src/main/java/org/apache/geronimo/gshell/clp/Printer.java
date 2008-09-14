@@ -179,19 +179,24 @@ public class Printer
         // And then render the handler usage
         if (!argumentHandlers.isEmpty()) {
         	out.println("arguments:");
-        }
-        for (Handler handler : argumentHandlers) {
-            printHandler(out, handler, len);
+
+            for (Handler handler : argumentHandlers) {
+                printHandler(out, handler, len);
+            }
+
+            out.println();
         }
 
         if (!optionHandlers.isEmpty()) {
-        	out.println();
         	out.println("options:");
-        }
-        for (Handler handler : optionHandlers) {
-            printHandler(out, handler, len);
-        }
+            
+            for (Handler handler : optionHandlers) {
+                printHandler(out, handler, len);
+            }
 
+            out.println();
+        }
+        
         out.flush();
     }
 

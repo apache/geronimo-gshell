@@ -61,7 +61,7 @@ public class HelpCommand
     @Autowired
     private LayoutManager layoutManager;
 
-    @Argument(metaVar="COMMAND", required=true, description="Display help for COMMAND")
+    @Argument(metaVar="COMMAND", required=true)
     private String command;
 
     private Renderer renderer = new Renderer();
