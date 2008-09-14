@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.command;
 
+import org.apache.geronimo.gshell.i18n.MessageSource;
+
 /**
  * ???
  *
@@ -29,30 +31,37 @@ public interface CommandContainer
     /**
      * Returns the configured identifier of the command.
      *
-     * @return  The command identifier; never null;
+     * @return  The command identifier; never null.
      */
     String getId();
 
     /**
      * Returns the action of the command.
      *
-     * @return  The command action; never null;
+     * @return  The command action; never null.
      */
     CommandAction getAction();
 
     /**
      * Returns the documenter for the command.
      *
-     * @return  The command documenter; never null;
+     * @return  The command documenter; never null.
      */
     CommandDocumenter getDocumenter();
 
     /**
      * Returns the completer for the command.
      *
-     * @return  The command completer; never null;
+     * @return  The command completer; never null.
      */
     CommandCompleter getCompleter();
+
+    /**
+     * Returns the message source for the command.
+     *
+     * @return  The command message source; never null.
+     */
+    MessageSource getMessages();
 
     /**
      * Execute the command action.
