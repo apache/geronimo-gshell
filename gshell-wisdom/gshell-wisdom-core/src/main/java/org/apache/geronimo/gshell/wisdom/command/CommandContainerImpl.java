@@ -33,6 +33,8 @@ import org.apache.geronimo.gshell.command.CommandContainerRegistry;
 import org.apache.geronimo.gshell.command.CommandContainerAware;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.prefs.PreferencesProcessor;
+import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -61,7 +63,7 @@ public class CommandContainerImpl
 
     private CommandCompleter completer;
 
-    // TODO: MessageSource
+    private MessageSource messages;
 
     public String getId() {
         return id;
@@ -103,6 +105,16 @@ public class CommandContainerImpl
         this.completer = completer;
     }
 
+    public MessageSource getMessages() {
+        return messages;
+    }
+
+    public void setMessages(final MessageSource messages) {
+        assert messages != null;
+
+        this.messages = messages;
+    }
+
     @PostConstruct
     public void init() {
         // Validate properties
@@ -117,14 +129,16 @@ public class CommandContainerImpl
         if (completer == null) {
             setCompleter(new CommandCompleterImpl());
         }
-
-        // TODO: Setup MessageSource
+        if (messages == null) {
+            setMessages(new ResourceBundleMessageSource(action.getClass()));
+        }
         
         // Inject ourself into CommandContainerAware instances
         Object[] children = {
             action,
             documenter,
             completer,
+            messages,
         };
 
         for (Object child : children) {
@@ -164,11 +178,14 @@ public class CommandContainerImpl
                 */
             }
             catch (Exception e) {
-                new CommandResult(e);
+                return new CommandResult(e);
             }
 
             try {
-                final Object value = action.execute(context);
+                log.trace("Executing action: {}", action);
+
+                Object value = action.execute(context);
+
                 log.trace("Result: {}", value);
 
                 result = new CommandResult(value);
@@ -185,7 +202,7 @@ public class CommandContainerImpl
             }
         }
         finally {
-            MDC.remove("commandId");
+            MDC.remove("command-id");
         }
 
         return result;
@@ -206,22 +223,27 @@ public class CommandContainerImpl
         assert action != null;
         assert args != null;
 
+        if (log.isTraceEnabled()) {
+            log.trace("Processing arguments: {}", Arguments.toStringArray(args));
+        }
+
         CommandLineProcessor clp = new CommandLineProcessor();
         clp.addBean(action);
 
         // Attach some help context
         CommandDocumenter documenter = getDocumenter();
-        assert documenter != null;
+        clp.addBean(documenter);
 
         HelpSupport help = new HelpSupport();
         clp.addBean(help);
-        clp.addBean(documenter);
 
         // Process the arguments
         clp.process(Arguments.toStringArray(args));
 
         // Render command-line usage
         if (help.displayHelp) {
+            log.trace("Render command-line usage");
+            
             documenter.renderUsage(context.getInfo(), context.getIo().out);
             return true;
         }
@@ -230,7 +252,7 @@ public class CommandContainerImpl
     }
 
     /**
-     * Helper to inject <tt>--help<tt> support.  Package access to allow DefaultCommandDocumentor access.
+     * Helper to inject <tt>--help<tt> support.  Package access to allow CommandDocumentorImpl access.
      */
     static class HelpSupport
     {

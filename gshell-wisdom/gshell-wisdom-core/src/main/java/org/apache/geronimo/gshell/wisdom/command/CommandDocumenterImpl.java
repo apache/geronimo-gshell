@@ -24,8 +24,8 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandInfo;
+import org.apache.geronimo.gshell.i18n.MessageSource;
 
-import javax.annotation.PostConstruct;
 import java.io.PrintWriter;
 
 /**
@@ -37,15 +37,14 @@ public class CommandDocumenterImpl
     extends CommandContainerComponentSupport
     implements CommandDocumenter
 {
-    //
-    // TODO: Need to provide i18n keys to lookup the values for name & description
-    //
-    
     private String name;
 
     private String description;
 
     public String getName() {
+        if (name == null) {
+            name = getMessage("command.name");
+        }
         return name;
     }
 
@@ -54,6 +53,9 @@ public class CommandDocumenterImpl
     }
 
     public String getDescription() {
+        if (description == null) {
+            description = getMessage("command.description");
+        }
         return description;
     }
 
@@ -61,17 +63,23 @@ public class CommandDocumenterImpl
         this.description = description;
     }
 
-    @PostConstruct
-    public void init() {
-        // TODO: Validate
+    private String getMessage(final String code) {
+        assert code != null;
+
+        MessageSource messages = getContainer().getMessages();
+        assert messages != null;
+        
+        return messages.getMessage(code);
     }
-    
+
     // CommandDocumenter
 
     public void renderUsage(final CommandInfo info, final PrintWriter out) {
         assert info != null;
         assert out != null;
 
+        log.debug("Rendering command usage");
+        
         CommandLineProcessor clp = new CommandLineProcessor();
 
         // Attach our helper to inject --help
@@ -95,8 +103,8 @@ public class CommandDocumenterImpl
         out.println();
 
         Printer printer = new Printer(clp);
-
         printer.printUsage(out, name);
+        
         out.println();
     }
 
@@ -104,8 +112,11 @@ public class CommandDocumenterImpl
         assert info != null;
         assert out != null;
 
+        log.debug("Rendering command manual");
+        
         out.println(info.getName());
         out.println();
+        
         out.println("TODO: Full docs");
     }
 }
