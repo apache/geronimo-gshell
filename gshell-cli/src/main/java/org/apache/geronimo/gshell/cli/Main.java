@@ -19,22 +19,23 @@
 
 package org.apache.geronimo.gshell.cli;
 
-import org.apache.geronimo.gshell.notification.ExitNotification;
-import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.application.ApplicationModelLocator;
+import org.apache.geronimo.gshell.application.settings.SettingsModelLocator;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.clp.Printer;
+import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.settings.SettingsModel;
-import org.apache.geronimo.gshell.application.settings.SettingsModelLocator;
+import org.apache.geronimo.gshell.notification.ExitNotification;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,32 +54,34 @@ public class Main
 
     private final IO io = new IO();
 
+    private final MessageSource messages = new ResourceBundleMessageSource(this.getClass());
+    
     //
     // TODO: Add flag to capture output to log file
     //       https://issues.apache.org/jira/browse/GSHELL-47
     //
 
-    @Option(name="-h", aliases={"--help"}, requireOverride=true, description="Display this help message")
+    @Option(name="-h", aliases={"--help"}, requireOverride=true)
     private boolean help;
 
-    @Option(name="-V", aliases={"--version"}, requireOverride=true, description="Display program version")
+    @Option(name="-V", aliases={"--version"}, requireOverride=true)
     private boolean version;
 
-    @Option(name="-i", aliases={"--interactive"}, description="Run in interactive mode")
+    @Option(name="-i", aliases={"--interactive"})
     private boolean interactive = true;
 
     private void setConsoleLogLevel(final String level) {
         System.setProperty("gshell.log.console.level", level);
     }
 
-    @Option(name="-e", aliases={"--exception"}, description="Enable exception stack traces")
+    @Option(name="-e", aliases={"--exception"})
     private void setException(boolean flag) {
     	if (flag) {
     		System.setProperty("gshell.show.stacktrace","true");
     	}
     }
     
-    @Option(name="-d", aliases={"--debug"}, description="Enable DEBUG output")
+    @Option(name="-d", aliases={"--debug"})
     private void setDebug(boolean flag) {
         if (flag) {
             setConsoleLogLevel("DEBUG");
@@ -86,7 +89,7 @@ public class Main
         }
     }
 
-    @Option(name="-X", aliases={"--trace"}, description="Enable TRACE output")
+    @Option(name="-X", aliases={"--trace"})
     private void setTrace(boolean flag) {
         if (flag) {
             setConsoleLogLevel("TRACE");
@@ -94,7 +97,7 @@ public class Main
         }
     }
 
-    @Option(name="-v", aliases={"--verbose"}, description="Enable INFO output")
+    @Option(name="-v", aliases={"--verbose"})
     private void setVerbose(boolean flag) {
         if (flag) {
             setConsoleLogLevel("INFO");
@@ -102,7 +105,7 @@ public class Main
         }
     }                                                 
 
-    @Option(name="-q", aliases={"--quiet"}, description="Limit output to ERROR")
+    @Option(name="-q", aliases={"--quiet"})
     private void setQuiet(boolean flag) {
         if (flag) {
             setConsoleLogLevel("ERROR");
@@ -110,14 +113,13 @@ public class Main
         }
     }
 
-    @Option(name="-c", aliases={"--commands"}, description="Read commands from string")
+    @Option(name="-c", aliases={"--commands"}, metaVar="STRING")
     private String commands;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
-    @Argument(description="Command")
-    private List<String> commandArgs = new ArrayList<String>(0);
+    @Argument(metaVar="COMMAND")
+    private List<String> commandArgs = null;
 
-    @Option(name="-D", aliases={"--define"}, metaVar="NAME=VALUE", description="Define system properties")
+    @Option(name="-D", aliases={"--define"}, metaVar="NAME=VALUE")
     private void setSystemProperty(final String nameValue) {
         assert nameValue != null;
 
@@ -137,12 +139,12 @@ public class Main
         System.setProperty(name, value);
     }
 
-    @Option(name="-C", aliases={"--color"}, argumentRequired=true, description="Enable or disable use of ANSI colors")
+    @Option(name="-C", aliases={"--color"}, argumentRequired=true)
     private void enableAnsiColors(final boolean flag) {
         ANSI.setEnabled(flag);
     }
 
-    @Option(name="-T", aliases={"--terminal"}, metaVar="TYPE", argumentRequired=true, description="Specify the terminal TYPE to use")
+    @Option(name="-T", aliases={"--terminal"}, metaVar="TYPE", argumentRequired=true)
     private void setTerminalType(String type) {
         type = type.toLowerCase();
 
@@ -186,7 +188,7 @@ public class Main
 
                     if (!io.isSilent()) {
                         io.err.println();
-                        io.err.println("WARNING: Abnormal JVM shutdown detected");
+                        io.err.println(messages.getMessage("warning.abnormalShutdown"));
                     }
                 }
 
@@ -213,17 +215,18 @@ public class Main
             
             if (help|version) {
                 if (help) {
-                    io.out.println(applicationModel.getBranding().getProgramName() + " [options] <command> [args]");
+                    io.out.println(applicationModel.getBranding().getProgramName() + " [options] <command> [arguments]");
                     io.out.println();
 
                     Printer printer = new Printer(clp);
+                    printer.setMessageSource(messages);
                     printer.printUsage(io.out);
                 }
                 else if (version) {
                     io.out.println(applicationModel.getVersion());
+                    io.out.println();
                 }
 
-                io.out.println();
                 io.out.flush();
 
                 throw new ExitNotification();
@@ -233,7 +236,10 @@ public class Main
             Shell gshell = builder.create();
 
             // clp gives us a list, but we need an array
-            String[] _args = commandArgs.toArray(new String[commandArgs.size()]);
+            String[] _args = {};
+            if (commandArgs != null) {
+                commandArgs.toArray(new String[commandArgs.size()]);
+            }
 
             if (commands != null) {
                 gshell.execute(commands);
