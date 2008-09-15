@@ -19,10 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
-import org.apache.geronimo.gshell.application.plugin.PluginManager;
-import org.apache.geronimo.gshell.model.application.Plugin;
 import org.apache.geronimo.gshell.event.Event;
-import org.springframework.context.ApplicationEvent;
+import org.apache.geronimo.gshell.model.application.Plugin;
 
 /**
  * Event fired once a plugin has been loaded.
