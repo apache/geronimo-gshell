@@ -54,7 +54,7 @@ public class Main
 
     private final IO io = new IO();
 
-    private final MessageSource messages = new ResourceBundleMessageSource(this.getClass());
+    private final MessageSource messages = new ResourceBundleMessageSource(getClass());
     
     //
     // TODO: Add flag to capture output to log file
@@ -215,12 +215,9 @@ public class Main
             
             if (help|version) {
                 if (help) {
-                    io.out.println(applicationModel.getBranding().getProgramName() + " [options] <command> [arguments]");
-                    io.out.println();
-
                     Printer printer = new Printer(clp);
                     printer.setMessageSource(messages);
-                    printer.printUsage(io.out);
+                    printer.printUsage(io.out, applicationModel.getBranding().getProgramName());
                 }
                 else if (version) {
                     io.out.println(applicationModel.getVersion());
