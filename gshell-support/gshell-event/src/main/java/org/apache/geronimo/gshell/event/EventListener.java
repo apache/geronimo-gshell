@@ -26,5 +26,5 @@ package org.apache.geronimo.gshell.event;
  */
 public interface EventListener
 {
-    void onEvent(Event event);
+    void onEvent(Event event) throws Exception;
 }
