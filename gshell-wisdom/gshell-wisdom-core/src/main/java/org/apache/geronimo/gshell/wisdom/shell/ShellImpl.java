@@ -77,9 +77,17 @@ public class ShellImpl
     private ErrorHandler errorHandler;
 
     public ShellImpl() {}
-    
+
+    public IO getIo() {
+        return io;
+    }
+
     public Variables getVariables() {
         return variables;
+    }
+
+    public CommandLineExecutor getExecutor() {
+        return executor;
     }
 
     public ShellInfo getInfo() {
@@ -112,26 +120,6 @@ public class ShellImpl
             }
         }
     }
-    
-    //
-    // Command Execution (all delegates)
-    //
-
-    public Object execute(final String line) throws Exception {
-        return executor.execute(line);
-    }
-
-    public Object execute(final Object... args) throws Exception {
-        return executor.execute((Object[])args);
-    }
-
-    public Object execute(final String path, final Object[] args) throws Exception {
-        return executor.execute(path, args);
-    }
-
-    public Object execute(Object[][] commands) throws Exception {
-        return executor.execute(commands);
-    }
 
     //
     // Interactive Shell
@@ -155,7 +143,7 @@ public class ShellImpl
                 assert line != null;
 
                 try {
-                    Object result = ShellImpl.this.execute(line);
+                    Object result = getExecutor().execute(line);
 
                     lastResultHolder.set(result);
                 }
@@ -195,7 +183,7 @@ public class ShellImpl
 
         // Check if there are args, and run them and then enter interactive
         if (args.length != 0) {
-            execute(args);
+            getExecutor().execute(args);
         }
 
         // And then spin up the console and go for a jog
@@ -340,18 +328,13 @@ public class ShellImpl
     private void loadScript(final File file) throws Exception {
         assert file != null;
 
-        //
-        // FIXME: Don't use 'source 'for right now, the shell spins out of control from plexus component loading :-(
-        //
-        // execute("source", file.toURI().toURL());
-
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
         try {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                execute(line);
+                getExecutor().execute(line);
             }
         }
         finally {

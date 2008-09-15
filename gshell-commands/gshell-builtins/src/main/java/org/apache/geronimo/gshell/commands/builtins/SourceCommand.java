@@ -27,7 +27,6 @@ import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,7 +47,6 @@ public class SourceCommand
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    @Qualifier("default")
     private CommandLineExecutor executor;
 
     @Argument(required=true)

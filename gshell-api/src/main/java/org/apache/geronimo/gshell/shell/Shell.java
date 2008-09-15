@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.shell;
 
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
  * Provides access to execute commands.
@@ -28,11 +29,12 @@ import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
  * @version $Rev$ $Date$
  */
 public interface Shell
-    extends CommandLineExecutor
 {
-    // IO getIo(); ???
-    
+    IO getIo();
+
     Variables getVariables();
+
+    CommandLineExecutor getExecutor();
     
     /**
      * Get the runtime configuration details of the shell.

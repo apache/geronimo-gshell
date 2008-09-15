@@ -316,8 +316,7 @@ public class ApplicationManagerImpl
         // Make sure that we have a valid context
         getApplication();
 
-        // Have to use named instance to prevent unique lookup problems due to shell also being a CommandLineExecutor instance
-        final Shell shell = applicationContainer.getBean("shell", Shell.class);
+        final Shell shell = applicationContainer.getBean(Shell.class);
 
         log.debug("Created shell instance: {}", shell);
 

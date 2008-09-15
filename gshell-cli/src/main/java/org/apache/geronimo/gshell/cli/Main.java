@@ -239,13 +239,13 @@ public class Main
             }
 
             if (commands != null) {
-                gshell.execute(commands);
+                gshell.getExecutor().execute(commands);
             }
             else if (interactive) {
                 gshell.run(_args);
             }
             else {
-                gshell.execute(_args);
+                gshell.getExecutor().execute(_args);
             }
         }
         catch (ExitNotification n) {
