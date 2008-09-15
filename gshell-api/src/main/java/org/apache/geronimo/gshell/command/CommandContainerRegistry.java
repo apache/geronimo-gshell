@@ -26,5 +26,14 @@ package org.apache.geronimo.gshell.command;
  */
 public interface CommandContainerRegistry
 {
-    void register(CommandContainer commandContainer);
+    /**
+     * Registers a command-container.
+     *
+     * @param container     The command-container to register; must not be null.
+     */
+    void register(CommandContainer container);
+
+    //
+    // TODO: Expose registration details for help command support
+    //
 }

@@ -17,33 +17,29 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout;
+package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.geronimo.gshell.model.layout.Layout;
-import org.apache.geronimo.gshell.model.layout.Node;
+import org.springframework.context.ApplicationEvent;
+import org.apache.geronimo.gshell.application.settings.SettingsManager;
+import org.apache.geronimo.gshell.application.settings.Settings;
 
 /**
- * Provies the shell with a simple mechanism to organize commands.
+ * Event fired once settings have been configured.
  *
  * @version $Rev$ $Date$
  */
-public interface LayoutManager
+public class SettingsConfiguredEvent
+    extends ApplicationEvent
 {
-    String CURRENT_NODE = LayoutManager.class.getName() + ".currentNode";
+    public SettingsConfiguredEvent(final SettingsManager source) {
+        super(source);
+    }
 
-    String ROOT = "/";
+    public SettingsManager getSettingsManager() {
+        return (SettingsManager) getSource();
+    }
 
-    String FILE_SEPARATOR = "/";
-    
-    String COMMAND_PATH = "path";
-    
-    String SEARCH_PATH_SEPARATOR = ":";
-
-    Layout getLayout();
-    
-    Node findNode(String path) throws NotFoundException;
-    
-    Node findNode(String path, String searchPath) throws NotFoundException;
-
-    Node findNode(Node start, String path) throws NotFoundException;
+    public Settings getSettings() {
+        return getSettingsManager().getSettings();
+    }
 }

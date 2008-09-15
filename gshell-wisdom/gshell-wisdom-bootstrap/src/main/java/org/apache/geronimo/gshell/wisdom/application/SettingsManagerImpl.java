@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.wisdom.application.event.SettingsConfiguredEvent;
+import org.apache.geronimo.gshell.wisdom.application.SettingsConfiguredEvent;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

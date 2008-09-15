@@ -22,10 +22,12 @@ package org.apache.geronimo.gshell.wisdom.command;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandContainerAware;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
-import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.PrefixingMessageSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 
@@ -35,9 +37,12 @@ import java.io.PrintWriter;
  * @version $Rev$ $Date$
  */
 public class CommandDocumenterImpl
-    extends CommandContainerComponentSupport
-    implements CommandDocumenter
+    implements CommandDocumenter, CommandContainerAware
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private CommandContainer container;
+
     private String name;
 
     private String description;
@@ -77,10 +82,27 @@ public class CommandDocumenterImpl
         this.manual = manual;
     }
 
-    // CommandDocumenter
+    //
+    // CommandContainerAware
+    //
 
-    public void renderUsage(final CommandInfo info, final PrintWriter out) {
-        assert info != null;
+    public void setCommandContainer(final CommandContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
+
+    private CommandContainer getContainer() {
+        assert container != null;
+
+        return container;
+    }
+
+    //
+    // CommandDocumenter
+    //
+
+    public void renderUsage(final PrintWriter out) {
         assert out != null;
 
         log.debug("Rendering command usage");
@@ -95,28 +117,21 @@ public class CommandDocumenterImpl
         CommandAction action = getContainer().getAction();
         clp.addBean(action);
 
-        // Fetch the details
-        String name = getName();
-        String desc = getDescription();
-
         // Render the help
-        out.println(desc);
+        out.println(getDescription());
         out.println();
 
         Printer printer = new Printer(clp);
         printer.setMessageSource(new PrefixingMessageSource(getContainer().getMessages(), "command."));
-        printer.printUsage(out, name);
-
-        out.flush();
+        printer.printUsage(out, getName());
     }
 
-    public void renderManual(final CommandInfo info, final PrintWriter out) {
-        assert info != null;
+    public void renderManual(final PrintWriter out) {
         assert out != null;
 
         log.debug("Rendering command manual");
 
-        out.println(info.getName());
+        out.println(getName());
         out.println();
 
         String manual = getManual();

@@ -20,9 +20,10 @@
 package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
- * ???
+ * Provides facilites for a configured command instance.
  *
  * @version $Rev$ $Date$
  */
@@ -64,10 +65,12 @@ public interface CommandContainer
     MessageSource getMessages();
 
     /**
-     * Execute the command action.
-     *
-     * @param context   The execution context.
-     * @return          The result of the action execution.
+     * Executes the commands configured action.
+     * 
+     * @param args          The arguments to the command; must not be null.
+     * @param io            The I/O context for the command; must not be null.
+     * @param variables     The environment variables for the command; must not be null.
+     * @return              The command result; never null
      */
-    CommandResult execute(CommandContext context);
+    CommandResult execute(Object[] args, IO io, Variables variables);
 }

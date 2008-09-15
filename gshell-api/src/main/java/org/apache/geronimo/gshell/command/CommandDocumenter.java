@@ -54,12 +54,12 @@ public interface CommandDocumenter
      *
      * @param out   Write the usage to this writer.
      */
-    void renderUsage(CommandInfo info, PrintWriter out);
+    void renderUsage(PrintWriter out);
 
     /**
      * Render the full command manual.
      *
      * @param out   Write the manual to this writer.
      */
-    void renderManual(CommandInfo info, PrintWriter out);
+    void renderManual(PrintWriter out);
 }

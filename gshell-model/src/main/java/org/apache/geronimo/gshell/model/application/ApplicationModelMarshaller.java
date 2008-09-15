@@ -19,9 +19,6 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import com.thoughtworks.xstream.XStream;
-import org.apache.geronimo.gshell.model.layout.AliasNode;
-import org.apache.geronimo.gshell.model.layout.CommandNode;
 import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
 
 /**
@@ -34,13 +31,5 @@ public class ApplicationModelMarshaller
 {
     public ApplicationModelMarshaller() {
         super(ApplicationModel.class);
-    }
-
-    @Override
-    protected void configure(final XStream xs) {
-        super.configure(xs);
-
-        // Need to provide some additional configuration to tell XStream about the Layout's node sub-classes
-        configureAnnotations(xs, CommandNode.class, AliasNode.class);
     }
 }

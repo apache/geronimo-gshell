@@ -17,31 +17,23 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.layout;
+package org.apache.geronimo.gshell.command;
 
 /**
- * Thrown to indicate a layout-related problem.
+ * Resolves {@link CommandContainer} instances for a given path.
  *
  * @version $Rev$ $Date$
  */
-public class LayoutException
-    extends Exception
+public interface CommandContainerResolver
 {
-    ///CLOVER:OFF
-
-    public LayoutException(final String msg) {
-        super(msg);
-    }
-
-    public LayoutException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-    public LayoutException(final Throwable cause) {
-        super(cause);
-    }
-
-    public LayoutException() {
-        super();
-    }
+    /**
+     * Resolve the given path to a command container instance.
+     *
+     * @param variables     The current shell variables.
+     * @param path          The path of the command to resolve.
+     * @return              The resolved command container instance; never null.
+     *
+     * @throws CommandException     Failed to resolve command container.
+     */
+    CommandContainer resolve(Variables variables, String path) throws CommandException;
 }

@@ -25,9 +25,6 @@ import org.apache.geronimo.gshell.model.common.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.DescriptorSupport;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
-import org.apache.geronimo.gshell.model.application.Plugin;
-import org.apache.geronimo.gshell.model.application.PluginGroup;
-import org.apache.geronimo.gshell.model.layout.Layout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +51,6 @@ public class ApplicationModel
     private List<PluginGroup> pluginGroups;
 
     private Branding branding;
-
-    private Layout layout;
 
     // LocalRepository
 
@@ -192,17 +187,7 @@ public class ApplicationModel
     public void setBranding(final Branding branding) {
         this.branding = branding;
     }
-
-    // Layout
     
-    public Layout getLayout() {
-        return layout;
-    }
-
-    public void setLayout(final Layout layout) {
-        this.layout = layout;
-    }
-
     /**
      * Link children to their parent when deserializing.
      */

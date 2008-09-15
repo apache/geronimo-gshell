@@ -17,20 +17,28 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.layout;
+package org.apache.geronimo.gshell.wisdom.command;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.apache.geronimo.gshell.command.CommandContainer;
+import org.springframework.context.ApplicationEvent;
 
 /**
- * Layout configuration element.
- *
+ * Event fired once a command container has been registered.
+ * 
  * @version $Rev$ $Date$
  */
-@XStreamAlias("layout")
-public class Layout
-    extends GroupNode
+public class CommandContainerRegisteredEvent
+    extends ApplicationEvent
 {
-    public Layout() {
-        super(ROOT);
+    private CommandContainer container;
+
+    public CommandContainerRegisteredEvent(final CommandContainerManager source, final CommandContainer container) {
+        super(source);
+
+        this.container = container;
+    }
+
+    public CommandContainer getContainer() {
+        return container;
     }
 }

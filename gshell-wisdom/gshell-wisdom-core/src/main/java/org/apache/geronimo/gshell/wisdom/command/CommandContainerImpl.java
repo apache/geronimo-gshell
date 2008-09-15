@@ -21,20 +21,20 @@ package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.clp.ProcessingException;
 import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandContainerAware;
+import org.apache.geronimo.gshell.command.CommandContainerRegistry;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.command.CommandContainerRegistry;
-import org.apache.geronimo.gshell.command.CommandContainerAware;
-import org.apache.geronimo.gshell.notification.Notification;
-import org.apache.geronimo.gshell.prefs.PreferencesProcessor;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -151,8 +151,10 @@ public class CommandContainerImpl
         registry.register(this);
     }
     
-    public CommandResult execute(final CommandContext context) {
-        assert context != null;
+    public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
+        assert args != null;
+        assert io != null;
+        assert variables != null;
 
         log.trace("Executing; context={}");
 
@@ -164,23 +166,37 @@ public class CommandContainerImpl
         try {
             CommandAction action = getAction();
 
+            // Setup the command action
             try {
                 // Process command line options/arguments
-                if (processArguments(context, action, context.getArguments())) {
+                if (processArguments(io, action, args)) {
                     // return if we have been asked to display --help
                     return new CommandResult(CommandAction.Result.SUCCESS);
                 }
 
-                /*
-                PreferencesProcessor pp = new PreferencesProcessor();
-                pp.addBean(action);
-                pp.process();
-                */
+                // TODO: Add preferences processor
             }
             catch (Exception e) {
                 return new CommandResult(e);
             }
 
+            // Setup the command context
+            CommandContext context = new CommandContext()
+            {
+                public Object[] getArguments() {
+                    return args;
+                }
+
+                public IO getIo() {
+                    return io;
+                }
+
+                public Variables getVariables() {
+                    return variables;
+                }
+            };
+
+            // Execute the action
             try {
                 log.trace("Executing action: {}", action);
 
@@ -208,18 +224,8 @@ public class CommandContainerImpl
         return result;
     }
 
-    /**
-     * Process command-line arguments for the action.
-     *
-     * @param context   The command context.
-     * @param action    The action being executed.
-     * @param args      The arguments to the action.
-     * @return          True if --help was detetected, else execute the action.
-     *
-     * @throws ProcessingException  A failure occured while processing the command-line.
-     */
-    private boolean processArguments(final CommandContext context, final CommandAction action, final Object[] args) throws Exception {
-        assert context != null;
+    private boolean processArguments(final IO io, final CommandAction action, final Object[] args) throws Exception {
+        assert io != null;
         assert action != null;
         assert args != null;
 
@@ -244,7 +250,7 @@ public class CommandContainerImpl
         if (help.displayHelp) {
             log.trace("Render command-line usage");
             
-            documenter.renderUsage(context.getInfo(), context.getIo().out);
+            documenter.renderUsage(io.out);
             return true;
         }
 
@@ -256,6 +262,10 @@ public class CommandContainerImpl
      */
     static class HelpSupport
     {
+        //
+        // TODO: Need to get this description into an i18n message source
+        //
+        
         @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
         public boolean displayHelp;
     }

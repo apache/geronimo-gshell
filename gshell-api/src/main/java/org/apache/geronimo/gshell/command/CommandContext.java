@@ -48,11 +48,4 @@ public interface CommandContext
      * @return Command variables; never null.
      */
     Variables getVariables();
-
-    /**
-     * Provides details about the runtime configuration of the command.
-     *
-     * @return Command runtime information; never null.
-     */
-    CommandInfo getInfo();
 }

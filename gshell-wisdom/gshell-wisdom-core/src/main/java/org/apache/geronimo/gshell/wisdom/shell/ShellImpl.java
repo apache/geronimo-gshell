@@ -34,7 +34,7 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
-import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
+import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

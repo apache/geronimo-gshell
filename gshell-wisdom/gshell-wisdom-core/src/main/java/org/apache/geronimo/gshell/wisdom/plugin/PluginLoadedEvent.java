@@ -17,44 +17,33 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.wisdom.plugin;
+
+import org.apache.geronimo.gshell.application.plugin.PluginManager;
+import org.apache.geronimo.gshell.model.application.Plugin;
+import org.springframework.context.ApplicationEvent;
 
 /**
- * Details about the runtime configuration of a command.
+ * Event fired once a plugin has been loaded.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandInfo
+public class PluginLoadedEvent
+    extends ApplicationEvent
 {
-    /**
-     * Returns the <em>identifier</em> for the command.
-     *
-     * @return Command identifier.
-     */
-    String getId();
+    private Plugin plugin;
 
-    /**
-     * Returns the name of the command.
-     *
-     * @return Command name.
-     */
-    String getName();
+    public PluginLoadedEvent(final PluginManager source, final Plugin plugin) {
+        super(source);
 
-    /**
-     * Returns the alias used to invoke the command if any.
-     *
-     * @return The alias used to invoke the command; null if not aliased.
-     */
-    String getAlias();
+        this.plugin = plugin;
+    }
 
-    //
-    // TODO: Add alias path?  And/or expose layout node?
-    //
+    public PluginManager getPluginManager() {
+        return (PluginManager)getSource();
+    }
 
-    /**
-     * Returns the full path of the command.
-     *
-     * @return Command path.
-     */
-    String getPath();
+    public Plugin getPlugin() {
+        return plugin;
+    }
 }

@@ -32,8 +32,7 @@ public class CommandResult
 {
     private final Object value;
 
-    // TODO: Change this to Throwable, requires some interface updates
-    private final Exception failure;
+    private final Throwable failure;
 
     private final Notification notification;
 
@@ -84,7 +83,7 @@ public class CommandResult
      *
      * @return  The command failure cause; or null if there was no failure.
      */
-    public Exception getFailure() {
+    public Throwable getFailure() {
         return failure;
     }
 

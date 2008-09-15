@@ -22,10 +22,9 @@ package org.apache.geronimo.gshell.wisdom.shell;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Arguments;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.command.CommandResolver;
+import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.CommandContainerResolver;
+import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;
@@ -64,7 +63,7 @@ public class CommandLineExecutorImpl
     private ApplicationManager applicationManager;
 
     @Autowired
-    private CommandResolver commandResolver;
+    private CommandContainerResolver commandContainerResolver;
 
     @Autowired
     private CommandLineBuilder commandLineBuilder;
@@ -193,49 +192,25 @@ public class CommandLineExecutorImpl
         return new Thread(run);
     }
 
-    //
-    // TODO: Let the CommandContext creation happen in the child, pass in the ShellContext here...
-    //
-
     protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
         log.debug("Executing");
 
-        final Variables variables = applicationManager.getApplication().getVariables();
+        Variables variables = applicationManager.getApplication().getVariables();
 
-        final Command command = commandResolver.resolve(variables, path);
+        CommandContainer container = commandContainerResolver.resolve(variables, path);
 
-        // Setup the command context and pass it to the command instance
-        CommandContext context = new CommandContext()
-        {
-            // Command instances get their own namespace with defaults from the current
-            final Variables vars = new Variables(variables);
-
-            public Object[] getArguments() {
-                return args;
-            }
-
-            public IO getIo() {
-                return io;
-            }
-
-            public Variables getVariables() {
-                return vars;
-            }
-
-            public CommandInfo getInfo() {
-                return command.getInfo();
-            }
-        };
-
-        // Setup command timings
-        StopWatch watch = new StopWatch(true);
+        // Instances get their own namespace with defaults from the current
+        Variables vars = new Variables(variables);
 
         // Hijack the system streams in the current thread's context
         SystemOutputHijacker.register(io.outputStream, io.errorStream);
 
+        // Setup command timings
+        StopWatch watch = new StopWatch(true);
+        
         CommandResult result;
         try {
-            result = command.execute(context);
+            result = container.execute(args, io, vars);
 
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }
@@ -255,7 +230,8 @@ public class CommandLineExecutorImpl
             throw result.getNotification();
         }
         else if (result.hasFailed()) {
-            throw result.getFailure();
+            //noinspection ThrowableResultOfMethodCallIgnored
+            throw new CommandException(result.getFailure());
         }
         else {
             return result.getValue();

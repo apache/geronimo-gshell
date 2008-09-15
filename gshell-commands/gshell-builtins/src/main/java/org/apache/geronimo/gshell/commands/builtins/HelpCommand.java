@@ -19,25 +19,11 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandDocumenter;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.CommandInfo;
-import org.apache.geronimo.gshell.command.CommandResolver;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.layout.LayoutManager;
-import org.apache.geronimo.gshell.model.layout.AliasNode;
-import org.apache.geronimo.gshell.model.layout.CommandNode;
-import org.apache.geronimo.gshell.model.layout.GroupNode;
-import org.apache.geronimo.gshell.model.layout.Node;
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +41,6 @@ public class HelpCommand
     @Autowired
     private ApplicationManager applicationManager;
 
-    @Autowired
-    private CommandResolver commandResolver;
-
-    @Autowired
-    private LayoutManager layoutManager;
-
     @Argument(metaVar="COMMAND", required=true)
     private String command;
 
@@ -68,27 +48,24 @@ public class HelpCommand
 
     public HelpCommand() {}
 
-    public HelpCommand(final CommandResolver commandResolver, final LayoutManager layoutManager) {
-        assert commandResolver != null;
-        assert layoutManager != null;
-
-        this.commandResolver = commandResolver;
-        this.layoutManager = layoutManager;
-    }
-
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
+        /*
         if (command == null) {
             displayAvailableCommands(context);
         }
         else {
             displayCommandManual(context.getIo(), command, context.getVariables());
         }
+        */
 
+        if (true) throw new Error();
+        
         return Result.SUCCESS;
     }
 
+    /*
     private void displayAvailableCommands(final CommandContext context) throws Exception {
         assert context != null;
 
@@ -191,4 +168,5 @@ public class HelpCommand
 
         documenter.renderManual(info, io.out);
     }
+    */
 }

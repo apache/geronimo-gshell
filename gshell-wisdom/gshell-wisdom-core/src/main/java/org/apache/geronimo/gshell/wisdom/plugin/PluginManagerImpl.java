@@ -19,33 +19,32 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
-import org.apache.geronimo.gshell.wisdom.application.event.ApplicationConfiguredEvent;
-import org.apache.geronimo.gshell.wisdom.plugin.event.PluginLoadedEvent;
 import org.apache.geronimo.gshell.model.application.Plugin;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.slf4j.LoggerFactory;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.net.URL;
-import java.io.File;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Default implementation of the {@link PluginManager} component.

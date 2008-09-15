@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.model.application;
 
 /**
- * ???
+ * A custom branding class.
  *
  * @version $Rev$ $Date$
  */

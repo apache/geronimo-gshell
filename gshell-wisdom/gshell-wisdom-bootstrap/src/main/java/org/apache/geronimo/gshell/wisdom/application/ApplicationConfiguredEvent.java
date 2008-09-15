@@ -17,29 +17,29 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.wisdom.application;
+
+import org.springframework.context.ApplicationEvent;
+import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.Application;
 
 /**
- * Thrown to indicate a command/path was not able to be resolved.
+ * Event fired once the application has been configured.
  *
  * @version $Rev$ $Date$
  */
-public class CommandCreationException
-    extends CommandException
+public class ApplicationConfiguredEvent
+    extends ApplicationEvent
 {
-    public CommandCreationException(final String msg) {
-        super(msg);
+    public ApplicationConfiguredEvent(final ApplicationManager source) {
+        super(source);
     }
 
-    public CommandCreationException(final String msg, final Throwable cause) {
-        super(msg, cause);
+    public ApplicationManager getApplicationManager() {
+        return (ApplicationManager) getSource();
     }
 
-    public CommandCreationException(final Throwable cause) {
-        super(cause);
-    }
-
-    public CommandCreationException() {
-        super();
+    public Application getApplication() {
+        return getApplicationManager().getApplication();
     }
 }

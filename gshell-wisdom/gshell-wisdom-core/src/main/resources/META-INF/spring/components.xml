@@ -31,19 +31,18 @@
 
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl"/>
     
-    <bean id="commandContainerFactory" class="org.apache.geronimo.gshell.wisdom.command.CommandContainerFactoryImpl"/>
-
-    <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.command.CommandResolverImpl"/>
+    <bean id="commandContainerManager" class="org.apache.geronimo.gshell.wisdom.command.CommandContainerManager"/>
 
     <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl"/>
 
     <bean id="commandLineExecutor" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineExecutorImpl">
+        <!--
+        FIXME: See how we can refactor CommandLineExecutor and Shell to avoid the need for this qualifier.
+        -->
         <qualifier value="default"/>
     </bean>
 
     <bean id="history" class="org.apache.geronimo.gshell.wisdom.shell.HistoryImpl"/>
-
-    <bean id="layoutManager" class="org.apache.geronimo.gshell.wisdom.shell.LayoutManagerImpl"/>
 
     <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl"/>
 
