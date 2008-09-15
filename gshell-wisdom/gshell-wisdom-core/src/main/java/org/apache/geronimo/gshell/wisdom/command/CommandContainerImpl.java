@@ -194,6 +194,10 @@ public class CommandContainerImpl
                 public Variables getVariables() {
                     return variables;
                 }
+
+                public CommandContainer getContainer() {
+                    return CommandContainerImpl.this;
+                }
             };
 
             // Execute the action
