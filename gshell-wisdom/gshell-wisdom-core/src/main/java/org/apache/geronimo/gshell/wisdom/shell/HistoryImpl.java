@@ -20,12 +20,15 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
-import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.geronimo.gshell.event.EventManager;
+import org.apache.geronimo.gshell.event.EventListener;
+import org.apache.geronimo.gshell.event.Event;
+import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 
@@ -36,40 +39,44 @@ import java.io.IOException;
  */
 public class HistoryImpl
     extends History
-    implements ApplicationListener
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    public HistoryImpl() {}
+    @Autowired
+    private EventManager eventManager;
 
-    public void onApplicationEvent(final ApplicationEvent event) {
-        assert event != null;
+    @PostConstruct
+    public void init() {
+        eventManager.addListener(new EventListener() {
+            public void onEvent(Event event) throws Exception {
+                assert event != null;
 
-        if (event instanceof ApplicationConfiguredEvent) {
-            ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
+                if (event instanceof ApplicationConfiguredEvent) {
+                    ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
 
-            try {
-                File file = targetEvent.getApplication().getModel().getBranding().getHistoryFile();
+                    File file = targetEvent.getApplication().getModel().getBranding().getHistoryFile();
 
-                log.debug("Application configured, setting history file: {}", file);
+                    log.debug("Application configured, setting history file: {}", file);
 
-                setHistoryFile(file);
+                    setHistoryFile(file);
+                }
             }
-            catch (IOException e) {
-                throw new RuntimeException("Failed to set history file", e);
-            }
-        }
+        });
     }
-
+    
     public void setHistoryFile(final File file) throws IOException {
         assert file != null;
 
         File dir = file.getParentFile();
 
         if (!dir.exists()) {
-            dir.mkdirs();
-
-            log.debug("Created base directory for history file: {}", dir);
+            boolean result = dir.mkdirs();
+            if (!result) {
+                log.warn("Failed to create base directory for history file: {}", dir);
+            }
+            else {
+                log.debug("Created base directory for history file: {}", dir);
+            }
         }
 
         log.debug("Using history file: {}", file);

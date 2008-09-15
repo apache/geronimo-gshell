@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import org.springframework.context.ApplicationEvent;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.event.Event;
 
 /**
  * Event fired once the application has been configured.
@@ -29,17 +28,17 @@ import org.apache.geronimo.gshell.application.Application;
  * @version $Rev$ $Date$
  */
 public class ApplicationConfiguredEvent
-    extends ApplicationEvent
+    implements Event
 {
-    public ApplicationConfiguredEvent(final ApplicationManager source) {
-        super(source);
-    }
+    private final Application application;
+    
+    public ApplicationConfiguredEvent(final Application application) {
+        assert application != null;
 
-    public ApplicationManager getApplicationManager() {
-        return (ApplicationManager) getSource();
+        this.application = application;
     }
 
     public Application getApplication() {
-        return getApplicationManager().getApplication();
+        return application;
     }
 }

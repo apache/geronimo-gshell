@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import org.springframework.context.ApplicationEvent;
-import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.application.settings.Settings;
+import org.apache.geronimo.gshell.event.Event;
 
 /**
  * Event fired once settings have been configured.
@@ -29,17 +28,17 @@ import org.apache.geronimo.gshell.application.settings.Settings;
  * @version $Rev$ $Date$
  */
 public class SettingsConfiguredEvent
-    extends ApplicationEvent
+    implements Event
 {
-    public SettingsConfiguredEvent(final SettingsManager source) {
-        super(source);
-    }
+    private final Settings settings;
+    
+    public SettingsConfiguredEvent(final Settings settings) {
+        assert settings != null;
 
-    public SettingsManager getSettingsManager() {
-        return (SettingsManager) getSource();
+        this.settings = settings;
     }
 
     public Settings getSettings() {
-        return getSettingsManager().getSettings();
+        return settings;
     }
 }

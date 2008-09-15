@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.model.application.Plugin;
+import org.apache.geronimo.gshell.event.Event;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -29,18 +30,14 @@ import org.springframework.context.ApplicationEvent;
  * @version $Rev$ $Date$
  */
 public class PluginLoadedEvent
-    extends ApplicationEvent
+    implements Event
 {
-    private Plugin plugin;
+    private final Plugin plugin;
 
-    public PluginLoadedEvent(final PluginManager source, final Plugin plugin) {
-        super(source);
+    public PluginLoadedEvent(final Plugin plugin) {
+        assert plugin != null;
 
         this.plugin = plugin;
-    }
-
-    public PluginManager getPluginManager() {
-        return (PluginManager)getSource();
     }
 
     public Plugin getPlugin() {

@@ -26,12 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 
 import java.net.URL;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -86,6 +84,8 @@ public class BeanContainerImpl
         // Construct the container and add customizations
         context = new BeanContainerContext(classRealm, parent != null ? parent.context : null);
         context.registerShutdownHook();
+
+        // TODO: Configure this in components.xml ?
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
         // Refresh to load things up
@@ -120,23 +120,6 @@ public class BeanContainerImpl
         assert requiredType != null;
 
         return (T) context.getBean(name, requiredType);
-    }
-
-    public void publish(final ApplicationEvent event) {
-        assert event != null;
-
-        log.debug("Publishing event: {}", event);
-        
-        context.publishEvent(event);
-    }
-
-    public void addListener(final ApplicationListener listener) {
-        assert listener != null;
-
-        log.debug("Adding listener: {}", listener);
-
-        // addApplicationListener() only adds listeners before refresh(), so use addListener()
-        context.addListener(listener);
     }
 
     public BeanContainer createChild(final String id, final List<URL> classPath) throws DuplicateRealmException {

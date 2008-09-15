@@ -20,10 +20,8 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
+import org.springframework.beans.BeansException;
 
 import java.net.URL;
 import java.util.List;
@@ -40,10 +38,6 @@ public interface BeanContainer
     <T> T getBean(Class<T> type) throws BeansException;
 
     <T> T getBean(String name, Class<T> requiredType) throws BeansException;
-
-    void publish(ApplicationEvent event);
-
-    void addListener(ApplicationListener listener);
 
     BeanContainer createChild(String id, List<URL> classPath) throws DuplicateRealmException;
 }

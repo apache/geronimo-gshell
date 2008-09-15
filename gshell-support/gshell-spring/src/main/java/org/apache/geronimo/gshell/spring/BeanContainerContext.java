@@ -20,24 +20,23 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.context.ApplicationListener;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.FatalBeanException;
-import org.springframework.core.io.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.FatalBeanException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Custom Spring {@link org.springframework.context.ApplicationContext} for {@link BeanContainer} instances.
@@ -105,13 +104,6 @@ public class BeanContainerContext
         }
 
         return list.toArray(new Resource[list.size()]);
-    }
-
-    @Override
-    public void addListener(final ApplicationListener listener) {
-        assert listener != null;
-        
-        super.addListener(listener);
     }
 
     public void addBeanPostProcessor(final BeanPostProcessor processor) {

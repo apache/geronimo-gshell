@@ -29,8 +29,6 @@
 
     <context:annotation-config/>
 
-    <!--
     <bean id="eventManager" class="org.apache.geronimo.gshell.event.EventManagerImpl"/>
-    -->
-
+    
 </beans>

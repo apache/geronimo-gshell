@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -34,14 +33,17 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.event.EventManager;
+import org.apache.geronimo.gshell.event.EventListener;
+import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
+import org.apache.geronimo.gshell.application.Application;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -53,9 +55,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version $Rev$ $Date$
  */
 public class ShellImpl
-    implements Shell, ApplicationListener
+    implements Shell
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private EventManager eventManager;
 
     @Autowired
     private ShellInfo shellInfo;
@@ -75,8 +80,6 @@ public class ShellImpl
     private Prompter prompter;
 
     private ErrorHandler errorHandler;
-
-    public ShellImpl() {}
 
     public IO getIo() {
         return io;
@@ -98,29 +101,29 @@ public class ShellImpl
         return true;
     }
 
-    public void onApplicationEvent(final ApplicationEvent event) {
-        assert event != null;
+    @PostConstruct
+    public void init() {
+        eventManager.addListener(new EventListener() {
+            public void onEvent(Event event) throws Exception {
+                assert event != null;
 
-        if (event instanceof ApplicationConfiguredEvent) {
-            ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
+                if (event instanceof ApplicationConfiguredEvent) {
+                    ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
 
-            log.debug("Binding application io/variables/branding from context");
-            
-            // Dereference some bits from the applciation context
-            Application context = targetEvent.getApplication();
-            io = context.getIo();
-            variables = context.getVariables();
-            branding = context.getModel().getBranding();
+                    log.debug("Binding application io/variables/branding from context");
 
-            try {
-                loadProfileScripts();
+                    // Dereference some bits from the applciation context
+                    Application application = targetEvent.getApplication();
+                    io = application.getIo();
+                    variables = application.getVariables();
+                    branding = application.getModel().getBranding();
+
+                    loadProfileScripts();
+                }
             }
-            catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
+        });
     }
-
+    
     //
     // Interactive Shell
     //
@@ -320,6 +323,8 @@ public class ShellImpl
     private void loadProfileScripts() throws Exception {
         assert branding != null;
 
+        log.debug("Loading profile scripts");
+        
         // Load profile scripts if they exist
         loadSharedScript(branding.getProfileScriptName());
         loadUserScript(branding.getProfileScriptName());

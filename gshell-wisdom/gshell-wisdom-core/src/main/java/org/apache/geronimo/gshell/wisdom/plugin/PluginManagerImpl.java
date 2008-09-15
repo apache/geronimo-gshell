@@ -22,6 +22,10 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.event.EventPublisher;
+import org.apache.geronimo.gshell.event.EventManager;
+import org.apache.geronimo.gshell.event.EventListener;
+import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.model.application.Plugin;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -36,9 +40,8 @@ import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -52,12 +55,18 @@ import java.util.Set;
  * @version $Rev$ $Date$
  */
 public class PluginManagerImpl
-    implements PluginManager, BeanContainerAware, ApplicationListener
+    implements PluginManager, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ArtifactManager artifactManager;
+
+    @Autowired
+    private EventManager eventManager;
+
+    @Autowired
+    private EventPublisher eventPublisher;
 
     private BeanContainer container;
 
@@ -67,16 +76,21 @@ public class PluginManagerImpl
         this.container = container;
     }
 
-    public void onApplicationEvent(final ApplicationEvent event) {
-        assert event != null;
+    @PostConstruct
+    public void init() {
+        eventManager.addListener(new EventListener() {
+            public void onEvent(Event event) throws Exception {
+                assert event != null;
 
-        if (event instanceof ApplicationConfiguredEvent) {
-            ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
+                if (event instanceof ApplicationConfiguredEvent) {
+                    ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
 
-            loadPlugins(targetEvent.getApplication());
-        }
+                    loadPlugins(targetEvent.getApplication());
+                }
+            }
+        });
     }
-
+    
     private void loadPlugins(final Application application) {
         assert application != null;
 
@@ -103,7 +117,9 @@ public class PluginManagerImpl
 
         BeanContainer pluginContainer = container.createChild("gshell.plugin[" + plugin.getId() + "]", classPath);
 
-        pluginContainer.publish(new PluginLoadedEvent(this, plugin));
+        log.debug("Created plugin container: {}", pluginContainer);
+        
+        eventPublisher.publish(new PluginLoadedEvent(plugin));
     }
 
     private List<URL> createClassPath(final Plugin plugin) throws Exception {

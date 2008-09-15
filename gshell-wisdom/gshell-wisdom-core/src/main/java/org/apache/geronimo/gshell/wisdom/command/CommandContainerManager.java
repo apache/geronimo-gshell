@@ -26,10 +26,10 @@ import org.apache.geronimo.gshell.command.CommandContainerResolver;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.event.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,23 +40,14 @@ import java.util.Map;
  * @version $Rev$ $Date$
  */
 public class CommandContainerManager
-    implements BeanContainerAware, CommandContainerRegistry, CommandContainerFactory, CommandContainerResolver
+    implements CommandContainerRegistry, CommandContainerFactory, CommandContainerResolver
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private BeanContainer beanContainer;
-    
+    @Autowired
+    private EventPublisher eventPublisher;
+
     private Map<String,CommandContainer> registrations = new HashMap<String,CommandContainer>();
-
-    //
-    // BeanContainerAware
-    //
-    
-    public void setBeanContainer(final BeanContainer container) {
-        assert container != null;
-
-        this.beanContainer = container;
-    }
 
     //
     // CommandContainerRegistry
@@ -71,7 +62,7 @@ public class CommandContainerManager
         
         registrations.put(id, container);
 
-        beanContainer.publish(new CommandContainerRegisteredEvent(this, container));
+        eventPublisher.publish(new CommandContainerRegisteredEvent(container));
     }
 
     //

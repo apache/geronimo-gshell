@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.event;
 
 /**
- * ???
+ * Provides access to published events.
  *
  * @version $Rev$ $Date$
  */

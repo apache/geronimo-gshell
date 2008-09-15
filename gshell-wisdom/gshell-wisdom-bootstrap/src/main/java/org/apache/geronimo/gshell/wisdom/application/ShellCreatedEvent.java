@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
+import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.shell.Shell;
-import org.springframework.context.ApplicationEvent;
 
 /**
  * Event fired once the application has constructed a shell.
@@ -28,13 +28,17 @@ import org.springframework.context.ApplicationEvent;
  * @version $Rev$ $Date$
  */
 public class ShellCreatedEvent
-    extends ApplicationEvent
+    implements Event
 {
-    public ShellCreatedEvent(final Shell source) {
-        super(source);
+    private final Shell shell;
+    
+    public ShellCreatedEvent(final Shell shell) {
+        assert shell != null;
+
+        this.shell = shell;
     }
 
     public Shell getShell() {
-        return (Shell) getSource();
+        return shell;
     }
 }

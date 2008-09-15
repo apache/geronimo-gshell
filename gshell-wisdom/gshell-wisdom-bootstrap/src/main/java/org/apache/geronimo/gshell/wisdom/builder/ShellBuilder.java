@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell.wisdom.builder;
 
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.shell.ShellFactory;
-import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.settings.SettingsManager;
+import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.settings.SettingsModel;
-import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.shell.ShellFactory;
 
 /**
  * Builds {@link org.apache.geronimo.gshell.shell.Shell} instanes.

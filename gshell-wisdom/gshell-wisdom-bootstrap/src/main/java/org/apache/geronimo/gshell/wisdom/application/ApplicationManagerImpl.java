@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.common.Dependency;
@@ -37,8 +38,6 @@ import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
-import org.apache.geronimo.gshell.wisdom.application.ShellCreatedEvent;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -77,6 +76,9 @@ public class ApplicationManagerImpl
 
     @Autowired
     private SettingsManager settingsManager;
+
+    @Autowired
+    private EventPublisher eventPublisher;
     
     private BeanContainer container;
 
@@ -133,7 +135,7 @@ public class ApplicationManagerImpl
 
         log.debug("Application configured");
         
-        applicationContainer.publish(new ApplicationConfiguredEvent(this));
+        eventPublisher.publish(new ApplicationConfiguredEvent(application));
     }
 
     private void interpolate(final ApplicationConfiguration config) throws Exception {
@@ -358,7 +360,7 @@ public class ApplicationManagerImpl
 
         log.debug("Create shell proxy: {}", proxy);
 
-        applicationContainer.publish(new ShellCreatedEvent(proxy));
+        eventPublisher.publish(new ShellCreatedEvent(proxy));
         
         return proxy;
     }

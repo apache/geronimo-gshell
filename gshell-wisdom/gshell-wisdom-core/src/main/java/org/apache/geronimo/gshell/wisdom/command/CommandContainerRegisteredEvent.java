@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.command.CommandContainer;
-import org.springframework.context.ApplicationEvent;
+import org.apache.geronimo.gshell.event.Event;
 
 /**
  * Event fired once a command container has been registered.
@@ -28,12 +28,12 @@ import org.springframework.context.ApplicationEvent;
  * @version $Rev$ $Date$
  */
 public class CommandContainerRegisteredEvent
-    extends ApplicationEvent
+    implements Event
 {
-    private CommandContainer container;
+    private final CommandContainer container;
 
-    public CommandContainerRegisteredEvent(final CommandContainerManager source, final CommandContainer container) {
-        super(source);
+    public CommandContainerRegisteredEvent(final CommandContainer container) {
+        assert container != null;
 
         this.container = container;
     }

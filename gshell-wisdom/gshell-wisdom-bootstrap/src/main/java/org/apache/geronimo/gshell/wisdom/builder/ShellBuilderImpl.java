@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.application.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.artifact.monitor.ProgressSpinnerMonitor;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
@@ -33,7 +34,6 @@ import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
-import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

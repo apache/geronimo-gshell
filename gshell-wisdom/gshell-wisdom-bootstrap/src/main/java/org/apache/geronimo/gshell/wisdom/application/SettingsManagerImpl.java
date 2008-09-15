@@ -19,17 +19,15 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
+import org.apache.geronimo.gshell.application.settings.Settings;
 import org.apache.geronimo.gshell.application.settings.SettingsConfiguration;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
-import org.apache.geronimo.gshell.application.settings.Settings;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.model.settings.SettingsModel;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.wisdom.application.SettingsConfiguredEvent;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,24 +39,19 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version $Rev$ $Date$
  */
 public class SettingsManagerImpl
-    implements SettingsManager, BeanContainerAware
+    implements SettingsManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ArtifactManager artifactManager;
 
+    @Autowired
+    private EventPublisher eventPublisher;
+
     private SettingsConfiguration settingsConfiguration;
 
     private Settings settings;
-
-    private BeanContainer container;
-
-    public void setBeanContainer(final BeanContainer container) {
-        assert container != null;
-
-        this.container = container;
-    }
 
     public Settings getSettings() {
         if (settings == null) {
@@ -97,7 +90,7 @@ public class SettingsManagerImpl
 
         log.debug("Settings configured");
 
-        container.publish(new SettingsConfiguredEvent(this));
+        eventPublisher.publish(new SettingsConfiguredEvent(settings));
     }
 
     private void interpolate(final SettingsConfiguration config) throws Exception {

@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.event;
 
 /**
- * ???
+ * Marks a class as an event container.
  *
  * @version $Rev$ $Date$
  */
