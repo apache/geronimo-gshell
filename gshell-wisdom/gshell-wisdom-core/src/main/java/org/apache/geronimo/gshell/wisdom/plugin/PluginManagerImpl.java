@@ -93,7 +93,11 @@ public class PluginManagerImpl
             }
         });
     }
-    
+
+    public Set<org.apache.geronimo.gshell.application.plugin.Plugin> getPlugins() {
+        return plugins;
+    }
+
     private void loadPlugins(final Application application) {
         assert application != null;
 
@@ -111,7 +115,7 @@ public class PluginManagerImpl
         }
     }
 
-    private void loadPlugin(final Plugin artifact) throws Exception {
+    public void loadPlugin(final Plugin artifact) throws Exception {
         assert artifact != null;
 
         log.debug("Loading plugin: {}", artifact.getId());

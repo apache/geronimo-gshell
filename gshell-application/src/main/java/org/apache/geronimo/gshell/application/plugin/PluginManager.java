@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.application.plugin;
 
+import java.util.Set;
+
 /**
  * Provides the interface to manage plugins.
  *
@@ -26,4 +28,7 @@ package org.apache.geronimo.gshell.application.plugin;
  */
 public interface PluginManager
 {
+    Set<Plugin> getPlugins();
+
+    void loadPlugin(final org.apache.geronimo.gshell.model.application.Plugin artifact) throws Exception;
 }
