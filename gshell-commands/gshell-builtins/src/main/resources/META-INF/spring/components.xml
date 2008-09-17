@@ -40,7 +40,7 @@
         </property>
 
         <property name="messages">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSourceImpl"/>
         </property>
     </bean>
     -->
@@ -48,9 +48,13 @@
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl">
         <property name="id" value="gshell-bultins"/>
 
-        <!-- Plugin MetaData -->
-
-        <!-- Activation Rules -->
+        <property name="activationRules">
+            <list>
+                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
+                    <property name="bundleId" value="default"/>
+                </bean>
+            </list>
+        </property>
     </bean>
 
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.CommandBundle" lazy-init="true">
@@ -91,18 +95,18 @@
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
-                    <property name="id" value="gshell-builtins:set"/>
-
-                    <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.SetCommand"/>
-                    </property>
-                </bean>
-
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
                     <property name="id" value="gshell-builtins:source"/>
 
                     <property name="action">
                         <bean class="org.apache.geronimo.gshell.commands.builtins.SourceCommand"/>
+                    </property>
+                </bean>
+                
+                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                    <property name="id" value="gshell-builtins:set"/>
+
+                    <property name="action">
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.SetCommand"/>
                     </property>
                 </bean>
 

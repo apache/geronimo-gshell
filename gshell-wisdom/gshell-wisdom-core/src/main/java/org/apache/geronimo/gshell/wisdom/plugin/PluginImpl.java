@@ -24,11 +24,16 @@ import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
+import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationRule;
+import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;
+import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Default implementation of {@link Plugin}.
@@ -36,22 +41,13 @@ import java.util.Map;
  * @version $Rev$ $Date$
  */
 public class PluginImpl
-    implements Plugin, BeanContainerAware
+    implements Plugin
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandRegistry commandRegistry;
-
-    private BeanContainer container;
-
     private String id;
 
-    public void setBeanContainer(final BeanContainer container) {
-        assert container != null;
-
-        this.container = container;
-    }
+    private List<ActivationRule> activationRules;
 
     public String getId() {
         return id;
@@ -63,27 +59,63 @@ public class PluginImpl
         this.id = id;
     }
 
+    public List<ActivationRule> getActivationRules() {
+        return activationRules;
+    }
+
+    public void setActivationRules(final List<ActivationRule> activationRules) {
+        assert activationRules != null;
+
+        this.activationRules = activationRules;
+    }
+
     public void activate() {
-        log.debug("Activating");
+        if (activationRules == null) {
+            log.warn("No activation rules configured");
+            return;
+        }
 
-        //
-        // TODO: Create activate rules and execute them here.
-        //
+        ActivationContext context = new ActivationContext() {
+            private List<ActivationTask> tasks = new ArrayList<ActivationTask>();
+
+            public List<ActivationTask> getTasks() {
+                return tasks;
+            }
+
+            public void addTask(final ActivationTask task) {
+                tasks.add(task);
+            }
+        };
+
+        log.debug("Evaluating activation rules");
+
+        for (ActivationRule rule : activationRules) {
+            log.debug("Evaluating activation rule: {}", rule);
+
+            try {
+                rule.evaluate(context);
+            }
+            catch (Exception e) {
+                log.warn("Failed to evaluate activation rule: " + rule, e);
+            }
+        }
+
+        List<ActivationTask> tasks = context.getTasks();
+        if (tasks.isEmpty()) {
+            log.debug("No activation tasks configured in context");
+            return;
+        }
+
+        log.debug("Executing activation tasks");
         
-        assert container != null;
-        Map<String, CommandBundle> bundles = container.getBeans(CommandBundle.class);
-
-        log.debug("Discovered {} command bundles", bundles.size());
-
-        for (CommandBundle bundle : bundles.values()) {
-            log.debug("Processing command bundle: {}", bundle.getId());
-
-            if (!bundle.isEmpty()) {
-                log.debug("Discovered {} commands in bundle {}", bundle.size(), bundle.getId());
-
-                for (Command command : bundle.getCommands()) {
-                    commandRegistry.register(command);
-                }
+        for (ActivationTask task : tasks) {
+            log.debug("Executing activation task: {}", task);
+            
+            try {
+                task.execute();
+            }
+            catch (Exception e) {
+                log.warn("Failed to execute activation task: " + task, e);
             }
         }
     }

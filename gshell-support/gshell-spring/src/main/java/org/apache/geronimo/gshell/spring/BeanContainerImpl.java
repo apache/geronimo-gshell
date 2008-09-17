@@ -85,8 +85,6 @@ public class BeanContainerImpl
         // Construct the container and add customizations
         context = new BeanContainerContext(classRealm, parent != null ? parent.context : null);
         context.registerShutdownHook();
-
-        // TODO: Configure this in components.xml ?
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
         // Refresh to load things up
