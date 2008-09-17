@@ -29,6 +29,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class BeanContainerContext
         this(classLoader, null);
     }
 
-    public BeanContainerContext(final ClassLoader classLoader, BeanContainerContext parent) {
+    public BeanContainerContext(final ClassLoader classLoader, final BeanContainerContext parent) {
         super(parent);
         assert classLoader != null;
 
@@ -103,7 +104,15 @@ public class BeanContainerContext
             }
         }
 
-        return list.toArray(new Resource[list.size()]);
+        Resource[] filteredResources = list.toArray(new Resource[list.size()]);
+
+        // If we have a parent, then ask it to filter resources as well
+        ApplicationContext parent = getParent();
+        if (parent instanceof BeanContainerContext) {
+            filteredResources = ((BeanContainerContext)parent).filterOwnedResources(filteredResources);
+        }
+
+        return filteredResources;
     }
 
     public void addBeanPostProcessor(final BeanPostProcessor processor) {
