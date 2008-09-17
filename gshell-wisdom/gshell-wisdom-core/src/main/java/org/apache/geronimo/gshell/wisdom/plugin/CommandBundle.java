@@ -17,30 +17,48 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.application;
+package org.apache.geronimo.gshell.wisdom.plugin;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.Artifact;
+import org.apache.geronimo.gshell.command.CommandContainer;
+
+import java.util.List;
 
 /**
- * Plugin artifact configuration.
+ * A bundle of {@link CommandContainer} instances.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("plugin")
-public class Plugin
-    extends Artifact
+public class CommandBundle
 {
-    public static final String DEFAULT_TYPE = "jar";
+    private String id;
 
-    @Override
-    public String getType() {
-        String tmp = super.getType();
+    private List<CommandContainer> commands;
 
-        if (tmp == null) {
-            tmp = DEFAULT_TYPE;
-        }
+    public String getId() {
+        return id;
+    }
 
-        return tmp;
+    public void setId(final String id) {
+        assert id != null;
+        
+        this.id = id;
+    }
+
+    public List<CommandContainer> getCommands() {
+        return commands;
+    }
+
+    public void setCommands(final List<CommandContainer> commands) {
+        assert commands != null;
+
+        this.commands = commands;
+    }
+
+    public int size() {
+        return commands != null ? commands.size() : 0;
+    }
+    
+    public boolean isEmpty() {
+        return size() == 0;
     }
 }

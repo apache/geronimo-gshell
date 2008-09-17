@@ -17,30 +17,18 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.application;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.Artifact;
+package org.apache.geronimo.gshell.wisdom.plugin;
 
 /**
- * Plugin artifact configuration.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("plugin")
-public class Plugin
-    extends Artifact
+public interface Plugin
 {
-    public static final String DEFAULT_TYPE = "jar";
+    String getId();
 
-    @Override
-    public String getType() {
-        String tmp = super.getType();
-
-        if (tmp == null) {
-            tmp = DEFAULT_TYPE;
-        }
-
-        return tmp;
-    }
+    // TODO: Expose configured bundle names
+    
+    void activate();
 }

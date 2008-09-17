@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.common;
+package org.apache.geronimo.gshell.model.application;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -25,51 +25,29 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.geronimo.gshell.model.common.ArtifactGroup;
+
 /**
- * Groups dependency elements to allow artifact configuration to be shared.
+ * Groups {@link Dependency} elements to allow artifact configuration to be shared.
  *
  * @version $Rev$ $Date$
  */
 @XStreamAlias("dependencyGroup")
 public class DependencyGroup
-    extends Artifact
+    extends ArtifactGroup<Dependency>
 {
     @XStreamImplicit
     private List<Dependency> dependencies;
 
-    public List<Dependency> getDependencies() {
+    public List<Dependency> getArtifacts() {
         if (dependencies == null) {
             dependencies = new ArrayList<Dependency>();
         }
 
         return dependencies;
     }
-    
-    public void add(final Dependency dependency) {
-        assert dependency != null;
 
-        getDependencies().add(dependency);
-    }
-
-    public int size() {
-        return getDependencies().size();
-    }
-    
-    public boolean isEmpty() {
-        return getDependencies().isEmpty();
-    }
-
-    /**
-     * Link children to their parent group when deserializing.
-     */
-    @SuppressWarnings({"UnusedDeclaration"})
-    private Object readResolve() {
-        if (!isEmpty()) {
-            for (Dependency child : getDependencies()) {
-                child.setDependencyGroup(this);
-            }
-        }
-
-        return this;
+    public List<Dependency> getDependencies() {
+        return getArtifacts();
     }
 }

@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.model.application;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.model.common.Dependency;
-import org.apache.geronimo.gshell.model.common.DependencyGroup;
+import org.apache.geronimo.gshell.model.application.Dependency;
+import org.apache.geronimo.gshell.model.application.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
 import java.net.URL;

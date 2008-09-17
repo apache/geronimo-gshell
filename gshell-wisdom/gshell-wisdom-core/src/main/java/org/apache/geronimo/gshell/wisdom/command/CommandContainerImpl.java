@@ -23,22 +23,17 @@ import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerAware;
-import org.apache.geronimo.gshell.command.CommandContainerRegistry;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
@@ -48,107 +43,27 @@ import javax.annotation.PostConstruct;
  * @version $Rev$ $Date$
  */
 public class CommandContainerImpl
-    implements CommandContainer
+    extends CommandContainerSupport
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandContainerRegistry registry;
-
-    private String id;
-
-    private CommandAction action;
-
-    private CommandDocumenter documenter;
-
-    private CommandCompleter completer;
-
-    private MessageSource messages;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        assert id != null;
-
-        this.id = id;
-    }
-
-    public CommandAction getAction() {
-        return action;
-    }
-
-    public void setAction(final CommandAction action) {
-        assert action != null;
-        
-        this.action = action;
-    }
-
-    public CommandDocumenter getDocumenter() {
-        return documenter;
-    }
-
-    public void setDocumenter(final CommandDocumenter documenter) {
-        assert documenter != null;
-
-        this.documenter = documenter;
-    }
-
-    public CommandCompleter getCompleter() {
-        return completer;
-    }
-
-    public void setCompleter(final CommandCompleter completer) {
-        assert completer != null;
-        
-        this.completer = completer;
-    }
-
-    public MessageSource getMessages() {
-        return messages;
-    }
-
-    public void setMessages(final MessageSource messages) {
-        assert messages != null;
-
-        this.messages = messages;
-    }
-
     @PostConstruct
-    public void init() {
-        // Validate properties
-        assert registry != null;
-        assert id != null;
-        assert action != null;
-
+    private void init() {
+        //
+        // TODO: Should ask the container to auto-wire these folks, or ask for defalut versions from the container via factory?
+        //       or simply use a parent bean to configure them?
+        //
+        
         // Create default components if not configured
-        if (documenter == null) {
+        if (getDocumenter() == null) {
             setDocumenter(new CommandDocumenterImpl());
         }
-        if (completer == null) {
+        if (getCompleter() == null) {
             setCompleter(new CommandCompleterImpl());
         }
-        if (messages == null) {
-            setMessages(new ResourceBundleMessageSource(action.getClass()));
+        if (getMessages() == null) {
+            setMessages(new ResourceBundleMessageSource(getAction().getClass()));
         }
-        
-        // Inject ourself into CommandContainerAware instances
-        Object[] children = {
-            action,
-            documenter,
-            completer,
-            messages,
-        };
-
-        for (Object child : children) {
-            if (child instanceof CommandContainerAware) {
-                ((CommandContainerAware)child).setCommandContainer(this);
-            }
-        }
-
-        // Register ourselves
-        registry.register(this);
     }
     
     public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
@@ -156,10 +71,10 @@ public class CommandContainerImpl
         assert io != null;
         assert variables != null;
 
-        log.trace("Executing; context={}");
+        log.trace("Executing");
 
         // Provide logging context for the command execution
-        MDC.put("command-id", id);
+        MDC.put("command-id", getId());
 
         CommandResult result;
 

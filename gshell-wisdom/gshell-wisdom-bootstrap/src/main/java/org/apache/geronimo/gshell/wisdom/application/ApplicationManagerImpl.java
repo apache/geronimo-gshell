@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.model.common.Dependency;
+import org.apache.geronimo.gshell.model.application.Dependency;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;

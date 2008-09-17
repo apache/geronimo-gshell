@@ -102,7 +102,7 @@ public class ShellImpl
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         eventManager.addListener(new EventListener() {
             public void onEvent(Event event) throws Exception {
                 assert event != null;

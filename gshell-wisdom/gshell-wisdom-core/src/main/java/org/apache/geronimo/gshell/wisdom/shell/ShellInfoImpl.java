@@ -66,7 +66,7 @@ public class ShellInfoImpl
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         homeDir = detectHomeDir();
 
         log.debug("Using home directory: {}", homeDir);

@@ -22,10 +22,10 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
-import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.event.EventManager;
-import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.Event;
+import org.apache.geronimo.gshell.event.EventListener;
+import org.apache.geronimo.gshell.event.EventManager;
+import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.model.application.Plugin;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -77,7 +77,8 @@ public class PluginManagerImpl
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
+        assert eventManager != null;
         eventManager.addListener(new EventListener() {
             public void onEvent(Event event) throws Exception {
                 assert event != null;
@@ -118,6 +119,18 @@ public class PluginManagerImpl
         BeanContainer pluginContainer = container.createChild("gshell.plugin[" + plugin.getId() + "]", classPath);
 
         log.debug("Created plugin container: {}", pluginContainer);
+
+        // TODO: Refactor to avoid needing this FQCN
+        
+        org.apache.geronimo.gshell.wisdom.plugin.Plugin _plugin = pluginContainer.getBean(org.apache.geronimo.gshell.wisdom.plugin.Plugin.class);
+
+        // TODO: Track _plugin
+
+        log.debug("Activating plugin: {}", _plugin.getId());
+
+        _plugin.activate();
+
+        // TODO: Publish the _plugin
         
         eventPublisher.publish(new PluginLoadedEvent(plugin));
     }

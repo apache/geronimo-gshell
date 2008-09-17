@@ -19,69 +19,79 @@
 
 package org.apache.geronimo.gshell.model.common;
 
-import org.apache.geronimo.gshell.model.Element;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * Defines an artifact (groupId, artifactId, version, etc).
  *
  * @version $Rev$ $Date$
  */
-public abstract class Artifact
-    extends Element
+public class Artifact
+    extends ArtifactSupport
 {
-    private String groupId;
+    @XStreamOmitField
+    private ArtifactGroup artifactGroup;
 
-    private String artifactId;
+    public ArtifactGroup getArtifactGroup() {
+        return artifactGroup;
+    }
 
-    private String classifier;
+    public void setArtifactGroup(final ArtifactGroup artifactGroup) {
+        this.artifactGroup = artifactGroup;
+    }
 
-    private String type;
-
-    private String version;
-
-    // TODO: optional? Any other stuff?
-
+    @Override
     public String getGroupId() {
-        return groupId;
+        String tmp = super.getGroupId();
+
+        if (tmp == null && artifactGroup != null) {
+            tmp = artifactGroup.getGroupId();
+        }
+
+        return tmp;
     }
 
-    public void setGroupId(final String groupId) {
-        this.groupId = groupId;
-    }
-
+    @Override
     public String getArtifactId() {
-        return artifactId;
+        String tmp = super.getArtifactId();
+
+        if (tmp == null && artifactGroup != null) {
+            tmp = artifactGroup.getArtifactId();
+        }
+
+        return tmp;
     }
 
-    public void setArtifactId(final String artifactId) {
-        this.artifactId = artifactId;
-    }
-
+    @Override
     public String getClassifier() {
-        return classifier;
+        String tmp = super.getClassifier();
+
+        if (tmp == null && artifactGroup != null) {
+            tmp = artifactGroup.getClassifier();
+        }
+
+        return tmp;
     }
 
-    public void setClassifier(final String classifier) {
-        this.classifier = classifier;
-    }
-
+    @Override
     public String getType() {
-        return type;
+        String tmp = super.getType();
+
+        if (tmp == null && artifactGroup != null) {
+            tmp = artifactGroup.getType();
+        }
+
+        return tmp;
     }
 
-    public void setType(final String type) {
-        this.type = type;
-    }
-
+    @Override
     public String getVersion() {
-        return version;
-    }
+        String tmp = super.getVersion();
 
-    public void setVersion(final String version) {
-        this.version = version;
-    }
+        if (tmp == null && artifactGroup != null) {
+            tmp = artifactGroup.getVersion();
+        }
 
-    public String getId() {
-        return getGroupId() + ":" + getArtifactId() + ":" + getVersion() + ":" + getType();
+        return tmp;
     }
 }

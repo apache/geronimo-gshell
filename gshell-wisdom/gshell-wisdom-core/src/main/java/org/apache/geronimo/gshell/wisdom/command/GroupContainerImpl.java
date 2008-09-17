@@ -17,30 +17,32 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.application;
+package org.apache.geronimo.gshell.wisdom.command;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.Artifact;
+import org.apache.geronimo.gshell.command.CommandResult;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
 
 /**
- * Plugin artifact configuration.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("plugin")
-public class Plugin
-    extends Artifact
+public class GroupContainerImpl
+    extends CommandContainerSupport
 {
-    public static final String DEFAULT_TYPE = "jar";
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public String getType() {
-        String tmp = super.getType();
+    @PostConstruct
+    private void init() {
+        // TODO: setup action, documenter, completer, messages
+    }
 
-        if (tmp == null) {
-            tmp = DEFAULT_TYPE;
-        }
-
-        return tmp;
+    public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
+        return null;
     }
 }

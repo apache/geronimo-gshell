@@ -21,25 +21,24 @@ package org.apache.geronimo.gshell.model.application;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.apache.geronimo.gshell.model.common.ArtifactGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.geronimo.gshell.model.common.Artifact;
-
 /**
- * Groups plugin elements to allow artifact configuration to be shared.
+ * Groups {@link Plugin} elements to allow artifact configuration to be shared.
  *
  * @version $Rev$ $Date$
  */
 @XStreamAlias("pluginGroup")
 public class PluginGroup
-    extends Artifact
+    extends ArtifactGroup<Plugin>
 {
     @XStreamImplicit
     private List<Plugin> plugins;
 
-    public List<Plugin> getPlugins() {
+    public List<Plugin> getArtifacts() {
         if (plugins == null) {
             plugins = new ArrayList<Plugin>();
         }
@@ -47,31 +46,7 @@ public class PluginGroup
         return plugins;
     }
 
-    public void add(final Plugin plugin) {
-        assert plugin != null;
-
-        getPlugins().add(plugin);
-    }
-
-    public int size() {
-        return getPlugins().size();
-    }
-
-    public boolean isEmpty() {
-        return getPlugins().isEmpty();
-    }
-
-    /**
-     * Link children to their parent group when deserializing.
-     */
-    @SuppressWarnings({"UnusedDeclaration"})
-    private Object readResolve() {
-        if (!isEmpty()) {
-            for (Plugin child : getPlugins()) {
-                child.setPluginGroup(this);
-            }
-        }
-
-        return this;
+    public List<Plugin> getPlugins() {
+        return getArtifacts();
     }
 }

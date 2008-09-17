@@ -48,7 +48,7 @@ public class ArtifactManagerFactory
     //
 
     @PostConstruct
-    public void init() throws Exception {
+    private void init() throws Exception {
         DefaultContainerConfiguration config = new DefaultContainerConfiguration();
 
         // When running under ClassWorlds already, then set the containers realm to the current realm

@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.yarn.ToStringStyle;
  */
 public abstract class Element
 {
-    @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }

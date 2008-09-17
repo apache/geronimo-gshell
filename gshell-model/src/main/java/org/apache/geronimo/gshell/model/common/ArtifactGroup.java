@@ -17,30 +17,45 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.application;
+package org.apache.geronimo.gshell.model.common;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.common.Artifact;
+import java.util.List;
 
 /**
- * Plugin artifact configuration.
+ * Support for {@link Artifact} groups.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("plugin")
-public class Plugin
-    extends Artifact
+public abstract class ArtifactGroup<T extends Artifact>
+    extends ArtifactSupport
 {
-    public static final String DEFAULT_TYPE = "jar";
+    public abstract List<T> getArtifacts();
 
-    @Override
-    public String getType() {
-        String tmp = super.getType();
+    public void add(final T artifact) {
+        assert artifact != null;
 
-        if (tmp == null) {
-            tmp = DEFAULT_TYPE;
+        getArtifacts().add(artifact);
+    }
+
+    public int size() {
+        return getArtifacts().size();
+    }
+
+    public boolean isEmpty() {
+        return getArtifacts().isEmpty();
+    }
+
+    /**
+     * Link children to their parent group when deserializing.
+     */
+    @SuppressWarnings({"UnusedDeclaration"})
+    private Object readResolve() {
+        if (!isEmpty()) {
+            for (Artifact child : getArtifacts()) {
+                child.setArtifactGroup(this);
+            }
         }
 
-        return tmp;
+        return this;
     }
 }

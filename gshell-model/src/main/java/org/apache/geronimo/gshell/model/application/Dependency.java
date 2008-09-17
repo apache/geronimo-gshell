@@ -23,12 +23,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.Artifact;
 
 /**
- * Plugin artifact configuration.
+ * Dependency artifact configuration.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("plugin")
-public class Plugin
+@XStreamAlias("dependency")
+public class Dependency
     extends Artifact
 {
     public static final String DEFAULT_TYPE = "jar";
