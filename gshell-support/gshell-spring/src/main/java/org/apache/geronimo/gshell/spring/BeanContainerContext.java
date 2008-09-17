@@ -118,18 +118,4 @@ public class BeanContainerContext
             }
         });
     }
-
-    /*
-    @Override
-    protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
-		// Stop using the temporary ClassLoader for type matching.
-		beanFactory.setTempClassLoader(null);
-
-		// Allow for caching all bean definition metadata, not expecting further changes.
-		beanFactory.freezeConfiguration();
-
-		// Instantiate all remaining (non-lazy-init) singletons.
-		beanFactory.preInstantiateSingletons();
-	}
-    */
 }

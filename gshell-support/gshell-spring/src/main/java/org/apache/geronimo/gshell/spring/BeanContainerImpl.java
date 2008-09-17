@@ -30,6 +30,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -99,7 +100,7 @@ public class BeanContainerImpl
         return parent;
     }
 
-    public <T> T getBean(final Class<T> type) throws BeansException {
+    public <T> T getBean(final Class<T> type) {
         assert type != null;
 
         String[] names = context.getBeanNamesForType(type);
@@ -115,11 +116,24 @@ public class BeanContainerImpl
     }
 
     @SuppressWarnings({"unchecked"})
-    public <T> T getBean(final String name, final Class<T> requiredType) throws BeansException {
+    public <T> T getBean(final String name, final Class<T> requiredType) {
         assert name != null;
         assert requiredType != null;
 
         return (T) context.getBean(name, requiredType);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public <T> Map<String,T> getBeans(final Class<T> type) {
+        assert type != null;
+
+        return (Map<String,T>)context.getBeansOfType(type);
+    }
+
+    public String[] getBeanNames(final Class type) {
+        assert type != null;
+
+        return context.getBeanNamesForType(type);
     }
 
     public BeanContainer createChild(final String id, final List<URL> classPath) throws DuplicateRealmException {

@@ -62,7 +62,7 @@ public class BeanContainerAwareProcessorTest
         }
         
         @PostConstruct
-        public void init() {
+        private void init() {
             Assert.assertNotNull(container);
         }
     }

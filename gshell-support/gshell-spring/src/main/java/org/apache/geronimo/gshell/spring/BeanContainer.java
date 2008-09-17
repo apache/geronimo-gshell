@@ -21,10 +21,10 @@
 package org.apache.geronimo.gshell.spring;
 
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
-import org.springframework.beans.BeansException;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An abstraction of a container of beans.
@@ -35,9 +35,13 @@ public interface BeanContainer
 {
     BeanContainer getParent();
     
-    <T> T getBean(Class<T> type) throws BeansException;
+    <T> T getBean(Class<T> type);
 
-    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
+    <T> T getBean(String name, Class<T> requiredType);
+
+    <T> Map<String,T> getBeans(Class<T> type);
+
+    String[] getBeanNames(Class type);
 
     BeanContainer createChild(String id, List<URL> classPath) throws DuplicateRealmException;
 }
