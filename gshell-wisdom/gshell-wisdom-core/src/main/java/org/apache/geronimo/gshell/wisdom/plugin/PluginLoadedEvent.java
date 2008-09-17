@@ -20,7 +20,8 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.event.Event;
-import org.apache.geronimo.gshell.model.application.Plugin;
+import org.apache.geronimo.gshell.model.common.Artifact;
+import org.apache.geronimo.gshell.application.plugin.Plugin;
 
 /**
  * Event fired once a plugin has been loaded.
@@ -32,13 +33,20 @@ public class PluginLoadedEvent
 {
     private final Plugin plugin;
 
-    public PluginLoadedEvent(final Plugin plugin) {
+    private final Artifact artifact;
+
+    public PluginLoadedEvent(final Plugin plugin, final Artifact artifact) {
         assert plugin != null;
 
         this.plugin = plugin;
+        this.artifact = artifact;
     }
 
     public Plugin getPlugin() {
         return plugin;
+    }
+
+    public Artifact getArtifact() {
+        return artifact;
     }
 }

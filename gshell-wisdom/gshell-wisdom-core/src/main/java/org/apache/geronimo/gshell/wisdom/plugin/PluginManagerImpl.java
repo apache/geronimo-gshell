@@ -70,6 +70,8 @@ public class PluginManagerImpl
 
     private BeanContainer container;
 
+    private Set<org.apache.geronimo.gshell.application.plugin.Plugin> plugins = new LinkedHashSet<org.apache.geronimo.gshell.application.plugin.Plugin>();
+
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
         
@@ -97,42 +99,40 @@ public class PluginManagerImpl
 
         log.debug("Loading plugins for application: {}", application.getId());
 
-        List<Plugin> plugins = application.getModel().getPlugins(true);
+        List<Plugin> artifacts = application.getModel().getPlugins(true);
 
-        for (Plugin plugin : plugins) {
+        for (Plugin artifact : artifacts) {
             try {
-                loadPlugin(plugin);
+                loadPlugin(artifact);
             }
             catch (Exception e) {
-                log.error("Failed to load plugin: " + plugin, e);
+                log.error("Failed to load plugin: " + artifact, e);
             }
         }
     }
 
-    private void loadPlugin(final Plugin plugin) throws Exception {
-        assert plugin != null;
+    private void loadPlugin(final Plugin artifact) throws Exception {
+        assert artifact != null;
 
-        log.debug("Loading plugin: {}", plugin.getId());
+        log.debug("Loading plugin: {}", artifact.getId());
 
-        List<URL> classPath = createClassPath(plugin);
+        List<URL> classPath = createClassPath(artifact);
 
-        BeanContainer pluginContainer = container.createChild("gshell.plugin[" + plugin.getId() + "]", classPath);
+        BeanContainer pluginContainer = container.createChild("gshell.plugin[" + artifact.getId() + "]", classPath);
 
         log.debug("Created plugin container: {}", pluginContainer);
 
         // TODO: Refactor to avoid needing this FQCN
         
-        org.apache.geronimo.gshell.wisdom.plugin.Plugin _plugin = pluginContainer.getBean(org.apache.geronimo.gshell.wisdom.plugin.Plugin.class);
+        org.apache.geronimo.gshell.application.plugin.Plugin plugin = pluginContainer.getBean(org.apache.geronimo.gshell.application.plugin.Plugin.class);
 
-        // TODO: Track _plugin
+        plugins.add(plugin);
 
-        log.debug("Activating plugin: {}", _plugin.getId());
+        log.debug("Activating plugin: {}", plugin.getId());
 
-        _plugin.activate();
+        plugin.activate();
 
-        // TODO: Publish the _plugin
-        
-        eventPublisher.publish(new PluginLoadedEvent(plugin));
+        eventPublisher.publish(new PluginLoadedEvent(plugin, artifact));
     }
 
     private List<URL> createClassPath(final Plugin plugin) throws Exception {

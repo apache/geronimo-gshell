@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.plugin;
+package org.apache.geronimo.gshell.application.plugin;
 
 /**
  * ???
@@ -31,4 +31,6 @@ public interface Plugin
     // TODO: Expose configured bundle names
     
     void activate();
+
+    // TODO: deactivate(), activate/deactiavate bundle?
 }
