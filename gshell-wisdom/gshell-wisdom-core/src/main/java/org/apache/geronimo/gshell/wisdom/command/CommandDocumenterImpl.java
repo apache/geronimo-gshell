@@ -22,8 +22,8 @@ package org.apache.geronimo.gshell.wisdom.command;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerAware;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandAware;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.i18n.PrefixingMessageSource;
 import org.slf4j.Logger;
@@ -37,11 +37,11 @@ import java.io.PrintWriter;
  * @version $Rev$ $Date$
  */
 public class CommandDocumenterImpl
-    implements CommandDocumenter, CommandContainerAware
+    implements CommandDocumenter, CommandAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private CommandContainer container;
+    private Command command;
 
     private String name;
 
@@ -51,7 +51,7 @@ public class CommandDocumenterImpl
 
     public String getName() {
         if (name == null) {
-            name = getContainer().getMessages().getMessage("command.name");
+            name = getCommand().getMessages().getMessage("command.name");
         }
         return name;
     }
@@ -62,7 +62,7 @@ public class CommandDocumenterImpl
 
     public String getDescription() {
         if (description == null) {
-            description = getContainer().getMessages().getMessage("command.description");
+            description = getCommand().getMessages().getMessage("command.description");
         }
         return description;
     }
@@ -73,7 +73,7 @@ public class CommandDocumenterImpl
 
     public String getManual() {
         if (manual == null) {
-            manual = getContainer().getMessages().getMessage("command.manual");
+            manual = getCommand().getMessages().getMessage("command.manual");
         }
         return manual;
     }
@@ -83,19 +83,19 @@ public class CommandDocumenterImpl
     }
 
     //
-    // CommandContainerAware
+    // CommandAware
     //
 
-    public void setCommandContainer(final CommandContainer container) {
-        assert container != null;
+    public void setCommand(final Command command) {
+        assert command != null;
 
-        this.container = container;
+        this.command = command;
     }
 
-    private CommandContainer getContainer() {
-        assert container != null;
+    private Command getCommand() {
+        assert command != null;
 
-        return container;
+        return command;
     }
 
     //
@@ -110,11 +110,11 @@ public class CommandDocumenterImpl
         CommandLineProcessor clp = new CommandLineProcessor();
         
         // Attach our helper to inject --help
-        CommandContainerImpl.HelpSupport help = new CommandContainerImpl.HelpSupport();
+        CommandImpl.HelpSupport help = new CommandImpl.HelpSupport();
         clp.addBean(help);
 
         // And then the beans options
-        CommandAction action = getContainer().getAction();
+        CommandAction action = getCommand().getAction();
         clp.addBean(action);
 
         // Render the help
@@ -122,7 +122,7 @@ public class CommandDocumenterImpl
         out.println();
 
         Printer printer = new Printer(clp);
-        printer.setMessageSource(new PrefixingMessageSource(getContainer().getMessages(), "command."));
+        printer.setMessageSource(new PrefixingMessageSource(getCommand().getMessages(), "command."));
         printer.printUsage(out, getName());
     }
 

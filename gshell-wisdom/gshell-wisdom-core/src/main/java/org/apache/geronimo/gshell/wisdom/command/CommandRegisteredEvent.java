@@ -19,26 +19,26 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
-import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.event.Event;
 
 /**
- * Event fired once a command container has been registered.
+ * Event fired once a command has been registered.
  * 
  * @version $Rev$ $Date$
  */
-public class CommandContainerRegisteredEvent
+public class CommandRegisteredEvent
     implements Event
 {
-    private final CommandContainer container;
+    private final Command command;
 
-    public CommandContainerRegisteredEvent(final CommandContainer container) {
-        assert container != null;
+    public CommandRegisteredEvent(final Command command) {
+        assert command != null;
 
-        this.container = container;
+        this.command = command;
     }
 
-    public CommandContainer getContainer() {
-        return container;
+    public Command getCommand() {
+        return command;
     }
 }

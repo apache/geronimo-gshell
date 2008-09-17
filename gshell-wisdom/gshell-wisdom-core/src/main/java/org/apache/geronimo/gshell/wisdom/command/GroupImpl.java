@@ -17,14 +17,32 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.wisdom.command;
+
+import org.apache.geronimo.gshell.command.CommandResult;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
 
 /**
- * Marks a component as aware of it's {@link CommandContainer}.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface CommandContainerAware
+public class GroupImpl
+    extends CommandSupport
 {
-    void setCommandContainer(CommandContainer container);
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @PostConstruct
+    private void init() {
+        // TODO: setup action, documenter, completer, messages
+    }
+
+    public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
+        return null;
+    }
 }

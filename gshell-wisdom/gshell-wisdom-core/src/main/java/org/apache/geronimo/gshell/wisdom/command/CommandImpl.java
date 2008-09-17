@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
@@ -38,12 +38,12 @@ import org.slf4j.MDC;
 import javax.annotation.PostConstruct;
 
 /**
- * The default {@link CommandContainer} component.
+ * The default {@link Command} component.
  *
  * @version $Rev$ $Date$
  */
-public class CommandContainerImpl
-    extends CommandContainerSupport
+public class CommandImpl
+    extends CommandSupport
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -110,8 +110,8 @@ public class CommandContainerImpl
                     return variables;
                 }
 
-                public CommandContainer getContainer() {
-                    return CommandContainerImpl.this;
+                public Command getCommand() {
+                    return CommandImpl.this;
                 }
             };
 

@@ -50,9 +50,9 @@ public interface CommandContext
     Variables getVariables();
 
     /**
-     * Provides access to the command container.
+     * Provides access to the command.
      *
-     * @return  Command container; never null.
+     * @return  Command; never null.
      */
-    CommandContainer getContainer();
+    Command getCommand();
 }

@@ -20,18 +20,18 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Provides registration facilities for {@link CommandContainer} instances.
+ * Provides registration facilities for {@link Command} instances.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandContainerRegistry
+public interface CommandRegistry
 {
     /**
-     * Registers a command-container.
+     * Registers a command.
      *
-     * @param container     The command-container to register; must not be null.
+     * @param command   The command to register; must not be null.
      */
-    void register(CommandContainer container);
+    void register(Command command);
 
     //
     // TODO: Expose registration details for help command support

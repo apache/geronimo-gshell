@@ -20,19 +20,11 @@
 package org.apache.geronimo.gshell.command;
 
 /**
- * Provides access to {@link CommandContainer} instances.
+ * Marks a component as aware of it's {@link Command}.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandContainerFactory
+public interface CommandAware
 {
-    /**
-     * Create a command instance for the given identifier.
-     *
-     * @param id    The identifier of the command container to create.
-     * @return      A new command container instance; never null.
-     *
-     * @throws Exception    Failed to create command container instance.
-     */
-    CommandContainer create(String id) throws Exception;
+    void setCommand(Command command);
 }

@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.io.IO;
  *
  * @version $Rev$ $Date$
  */
-public interface CommandContainer
+public interface Command
 {
     /**
      * Returns the configured identifier of the command.

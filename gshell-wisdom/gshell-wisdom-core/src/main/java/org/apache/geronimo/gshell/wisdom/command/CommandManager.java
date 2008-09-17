@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerFactory;
-import org.apache.geronimo.gshell.command.CommandContainerRegistry;
-import org.apache.geronimo.gshell.command.CommandContainerResolver;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandFactory;
+import org.apache.geronimo.gshell.command.CommandRegistry;
+import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.Variables;
@@ -35,68 +35,68 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Provides management of {@link CommandContainer} instances.
+ * Provides management of {@link Command} instances.
  *
  * @version $Rev$ $Date$
  */
-public class CommandContainerManager
-    implements CommandContainerRegistry, CommandContainerFactory, CommandContainerResolver
+public class CommandManager
+    implements CommandRegistry, CommandFactory, CommandResolver
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private EventPublisher eventPublisher;
 
-    private Map<String,CommandContainer> registrations = new HashMap<String,CommandContainer>();
+    private Map<String, Command> registrations = new HashMap<String, Command>();
 
     //
-    // CommandContainerRegistry
+    // CommandRegistry
     //
 
-    public void register(final CommandContainer container) {
-        assert container != null;
+    public void register(final Command command) {
+        assert command != null;
 
-        String id = container.getId();
+        String id = command.getId();
 
-        log.debug("Registering command container: {}", id);
+        log.debug("Registering command: {}", id);
         
-        registrations.put(id, container);
+        registrations.put(id, command);
 
-        eventPublisher.publish(new CommandContainerRegisteredEvent(container));
+        eventPublisher.publish(new CommandRegisteredEvent(command));
     }
 
     //
-    // CommandContainerFactory
+    // CommandFactory
     //
 
-    public CommandContainer create(final String id) throws Exception {
+    public Command create(final String id) throws Exception {
         assert id != null;
 
-        log.debug("Locating container for ID: {}", id);
+        log.debug("Locating command for ID: {}", id);
 
-        CommandContainer container = registrations.get(id);
+        Command command = registrations.get(id);
 
-        if (container == null) {
-            throw new RuntimeException("No command container registered for id: " + id);
+        if (command == null) {
+            throw new RuntimeException("No command registered for id: " + id);
         }
 
-        return container;
+        return command;
     }
 
     //
-    // CommandContainerResolver
+    // CommandResolver
     //
 
-    public CommandContainer resolve(final Variables variables, final String path) throws CommandException {
+    public Command resolve(final Variables variables, final String path) throws CommandException {
         assert variables != null;
         assert path != null;
 
-        log.debug("Resolving container for path: {}", path);
+        log.debug("Resolving command for path: {}", path);
 
         // HACK: For now, there is no nested muck, just use the name
-        for (CommandContainer container : registrations.values()) {
-            if (path.equals(container.getDocumenter().getName())) {
-                return container;
+        for (Command command : registrations.values()) {
+            if (path.equals(command.getDocumenter().getName())) {
+                return command;
             }
         }
         

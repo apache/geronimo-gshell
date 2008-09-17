@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerRegistry;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Map;
 
 /**
- * ???
+ * Default implementation of {@link Plugin}.
  *
  * @version $Rev$ $Date$
  */
@@ -41,7 +41,7 @@ public class PluginImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private CommandContainerRegistry commandRegistry;
+    private CommandRegistry commandRegistry;
 
     private BeanContainer container;
 
@@ -81,7 +81,7 @@ public class PluginImpl
             if (!bundle.isEmpty()) {
                 log.debug("Discovered {} commands in bundle {}", bundle.size(), bundle.getId());
 
-                for (CommandContainer command : bundle.getCommands()) {
+                for (Command command : bundle.getCommands()) {
                     commandRegistry.register(command);
                 }
             }

@@ -17,23 +17,32 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.wisdom.command;
+
+import org.apache.geronimo.gshell.command.CommandResult;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
 
 /**
- * Resolves {@link CommandContainer} instances for a given path.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface CommandContainerResolver
+public class AliasImpl
+    extends CommandSupport
 {
-    /**
-     * Resolve the given path to a command container instance.
-     *
-     * @param variables     The current shell variables.
-     * @param path          The path of the command to resolve.
-     * @return              The resolved command container instance; never null.
-     *
-     * @throws CommandException     Failed to resolve command container.
-     */
-    CommandContainer resolve(Variables variables, String path) throws CommandException;
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @PostConstruct
+    private void init() {
+        // TODO: setup action, documenter, completer, messages
+    }
+
+    public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
+        return null;
+    }
 }

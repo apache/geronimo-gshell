@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
-import org.apache.geronimo.gshell.command.CommandContainer;
+import org.apache.geronimo.gshell.command.Command;
 
 import java.util.List;
 
 /**
- * A bundle of {@link CommandContainer} instances.
+ * A bundle of {@link Command} instances.
  *
  * @version $Rev$ $Date$
  */
@@ -32,7 +32,7 @@ public class CommandBundle
 {
     private String id;
 
-    private List<CommandContainer> commands;
+    private List<Command> commands;
 
     public String getId() {
         return id;
@@ -44,11 +44,11 @@ public class CommandBundle
         this.id = id;
     }
 
-    public List<CommandContainer> getCommands() {
+    public List<Command> getCommands() {
         return commands;
     }
 
-    public void setCommands(final List<CommandContainer> commands) {
+    public void setCommands(final List<Command> commands) {
         assert commands != null;
 
         this.commands = commands;

@@ -17,32 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.command;
-
-import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.io.IO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.PostConstruct;
+package org.apache.geronimo.gshell.command;
 
 /**
- * ???
+ * Provides access to {@link Command} instances.
  *
  * @version $Rev$ $Date$
  */
-public class AliasContainerImpl
-    extends CommandContainerSupport
+public interface CommandFactory
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @PostConstruct
-    private void init() {
-        // TODO: setup action, documenter, completer, messages
-    }
-
-    public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
-        return null;
-    }
+    /**
+     * Create a command instance for the given identifier.
+     *
+     * @param id    The identifier of the command to create.
+     * @return      A new command instance; never null.
+     *
+     * @throws Exception    Failed to create command instance.
+     */
+    Command create(String id) throws Exception;
 }

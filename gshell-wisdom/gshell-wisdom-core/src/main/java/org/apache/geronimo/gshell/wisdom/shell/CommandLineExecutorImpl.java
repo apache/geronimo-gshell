@@ -22,8 +22,8 @@ package org.apache.geronimo.gshell.wisdom.shell;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Arguments;
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerResolver;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
@@ -63,7 +63,7 @@ public class CommandLineExecutorImpl
     private ApplicationManager applicationManager;
 
     @Autowired
-    private CommandContainerResolver commandContainerResolver;
+    private CommandResolver commandResolver;
 
     @Autowired
     private CommandLineBuilder commandLineBuilder;
@@ -197,7 +197,7 @@ public class CommandLineExecutorImpl
 
         Variables variables = applicationManager.getApplication().getVariables();
 
-        CommandContainer container = commandContainerResolver.resolve(variables, path);
+        Command command = commandResolver.resolve(variables, path);
 
         // Instances get their own namespace with defaults from the current
         Variables vars = new Variables(variables);
@@ -210,7 +210,7 @@ public class CommandLineExecutorImpl
         
         CommandResult result;
         try {
-            result = container.execute(args, io, vars);
+            result = command.execute(args, io, vars);
 
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }

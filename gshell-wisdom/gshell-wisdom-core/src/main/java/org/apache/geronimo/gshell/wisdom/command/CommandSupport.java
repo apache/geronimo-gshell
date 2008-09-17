@@ -19,36 +19,22 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
-import org.apache.geronimo.gshell.clp.CommandLineProcessor;
-import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandCompleter;
-import org.apache.geronimo.gshell.command.CommandContainer;
-import org.apache.geronimo.gshell.command.CommandContainerAware;
-import org.apache.geronimo.gshell.command.CommandContainerRegistry;
-import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandAware;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
-import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
 
 /**
- * Provides support for {@link CommandContainer} implementations.
+ * Provides support for {@link Command} implementations.
  *
  * @version $Rev$ $Date$
  */
-public abstract class CommandContainerSupport
-    implements CommandContainer
+public abstract class CommandSupport
+    implements Command
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -79,7 +65,7 @@ public abstract class CommandContainerSupport
     public void setAction(final CommandAction action) {
         assert action != null;
 
-        handleCommandContainerAware(action);
+        handleCommandAware(action);
 
         this.action = action;
     }
@@ -91,7 +77,7 @@ public abstract class CommandContainerSupport
     public void setDocumenter(final CommandDocumenter documenter) {
         assert documenter != null;
 
-        handleCommandContainerAware(documenter);
+        handleCommandAware(documenter);
 
         this.documenter = documenter;
     }
@@ -103,7 +89,7 @@ public abstract class CommandContainerSupport
     public void setCompleter(final CommandCompleter completer) {
         assert completer != null;
 
-        handleCommandContainerAware(completer);
+        handleCommandAware(completer);
 
         this.completer = completer;
     }
@@ -115,16 +101,16 @@ public abstract class CommandContainerSupport
     public void setMessages(final MessageSource messages) {
         assert messages != null;
 
-        handleCommandContainerAware(messages);
+        handleCommandAware(messages);
 
         this.messages = messages;
     }
 
-    protected void handleCommandContainerAware(final Object target) {
+    protected void handleCommandAware(final Object target) {
         assert target != null;
 
-        if (target instanceof CommandContainerAware) {
-            ((CommandContainerAware)target).setCommandContainer(this);
+        if (target instanceof CommandAware) {
+            ((CommandAware)target).setCommand(this);
         }
     }
 }
