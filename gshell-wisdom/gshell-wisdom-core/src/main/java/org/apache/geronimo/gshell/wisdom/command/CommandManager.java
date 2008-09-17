@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandFactory;
 import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandException;
@@ -40,7 +39,7 @@ import java.util.Map;
  * @version $Rev$ $Date$
  */
 public class CommandManager
-    implements CommandRegistry, CommandFactory, CommandResolver
+    implements CommandRegistry, CommandResolver
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -63,24 +62,6 @@ public class CommandManager
         registrations.put(id, command);
 
         eventPublisher.publish(new CommandRegisteredEvent(command));
-    }
-
-    //
-    // CommandFactory
-    //
-
-    public Command create(final String id) throws Exception {
-        assert id != null;
-
-        log.debug("Locating command for ID: {}", id);
-
-        Command command = registrations.get(id);
-
-        if (command == null) {
-            throw new RuntimeException("No command registered for id: " + id);
-        }
-
-        return command;
     }
 
     //

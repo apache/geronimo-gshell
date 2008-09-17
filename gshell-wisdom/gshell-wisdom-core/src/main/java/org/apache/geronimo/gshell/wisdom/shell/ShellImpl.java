@@ -101,6 +101,7 @@ public class ShellImpl
         return true;
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
     private void init() {
         eventManager.addListener(new EventListener() {

@@ -65,6 +65,7 @@ public class ShellInfoImpl
         return System.getProperty("user.name");
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
     private void init() {
         homeDir = detectHomeDir();

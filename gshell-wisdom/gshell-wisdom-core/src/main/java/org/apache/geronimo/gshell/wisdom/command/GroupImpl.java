@@ -37,6 +37,7 @@ public class GroupImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
     private void init() {
         // TODO: setup action, documenter, completer, messages

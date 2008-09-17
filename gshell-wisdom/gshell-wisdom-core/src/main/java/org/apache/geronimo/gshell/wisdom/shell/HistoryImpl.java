@@ -45,6 +45,7 @@ public class HistoryImpl
     @Autowired
     private EventManager eventManager;
 
+    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
     private void init() {
         eventManager.addListener(new EventListener() {

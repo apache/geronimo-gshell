@@ -47,6 +47,7 @@ public class CommandImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
     private void init() {
         //
