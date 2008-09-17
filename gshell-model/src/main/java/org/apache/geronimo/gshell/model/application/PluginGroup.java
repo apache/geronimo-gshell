@@ -27,26 +27,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Groups {@link Plugin} elements to allow artifact configuration to be shared.
+ * Groups {@link PluginArtifact} elements to allow artifact configuration to be shared.
  *
  * @version $Rev$ $Date$
  */
 @XStreamAlias("pluginGroup")
 public class PluginGroup
-    extends ArtifactGroup<Plugin>
+    extends ArtifactGroup<PluginArtifact>
 {
     @XStreamImplicit
-    private List<Plugin> plugins;
+    private List<PluginArtifact> plugins;
 
-    public List<Plugin> getArtifacts() {
+    public List<PluginArtifact> getArtifacts() {
         if (plugins == null) {
-            plugins = new ArrayList<Plugin>();
+            plugins = new ArrayList<PluginArtifact>();
         }
 
         return plugins;
     }
 
-    public List<Plugin> getPlugins() {
+    public List<PluginArtifact> getPlugins() {
         return getArtifacts();
     }
 }

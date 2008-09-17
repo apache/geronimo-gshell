@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.model.application;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.model.application.Dependency;
+import org.apache.geronimo.gshell.model.application.DependencyArtifact;
 import org.apache.geronimo.gshell.model.application.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
@@ -55,7 +55,7 @@ public class ApplicationMarshallerTest
         sr1.setLocation("foo:bar");
         root.add(sr1);
 
-        Dependency d1 = new Dependency();
+        DependencyArtifact d1 = new DependencyArtifact();
         d1.setGroupId("a");
         d1.setArtifactId("b");
         d1.setVersion("c");
@@ -66,11 +66,11 @@ public class ApplicationMarshallerTest
         g1.setVersion("e");
         root.add(g1);
         
-        Dependency d2 = new Dependency();
+        DependencyArtifact d2 = new DependencyArtifact();
         d2.setArtifactId("f");
         g1.add(d2);
 
-        Dependency d3 = new Dependency();
+        DependencyArtifact d3 = new DependencyArtifact();
         d3.setArtifactId("g");
         d3.setClassifier("h");
         g1.add(d3);

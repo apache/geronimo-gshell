@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.model.application.Dependency;
+import org.apache.geronimo.gshell.model.application.DependencyArtifact;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
@@ -269,15 +269,15 @@ public class ApplicationManagerImpl
         request.setFilter(filter);
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<Dependency> dependencies = model.getDependencies(true); // include groups
+        List<DependencyArtifact> dependencies = model.getDependencies(true); // include groups
 
         if (!dependencies.isEmpty()) {
             ArtifactFactory factory = artifactManager.getArtifactFactory();
 
             log.debug("Application dependencies:");
 
-            for (Dependency dep : dependencies) {
-                Artifact artifact = factory.createArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), null, dep.getType());
+            for (DependencyArtifact dep : dependencies) {
+                Artifact artifact = factory.createArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), /*scope*/null, dep.getType());
                 assert artifact != null;
 
                 log.debug(" + {}", artifact);

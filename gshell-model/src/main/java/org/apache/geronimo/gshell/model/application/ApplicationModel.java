@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.model.application;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.apache.geronimo.gshell.model.application.Dependency;
+import org.apache.geronimo.gshell.model.application.DependencyArtifact;
 import org.apache.geronimo.gshell.model.application.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.DescriptorSupport;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
@@ -42,11 +42,11 @@ public class ApplicationModel
 
     private List<RemoteRepository> remoteRepositories;
 
-    private List<Dependency> dependencies;
+    private List<DependencyArtifact> dependencies;
 
     private List<DependencyGroup> dependencyGroups;
 
-    private List<Plugin> plugins;
+    private List<PluginArtifact> plugins;
 
     private List<PluginGroup> pluginGroups;
 
@@ -94,22 +94,22 @@ public class ApplicationModel
         getDependencyGroups().add(group);
     }
 
-    // Dependency
+    // DependencyArtifact
 
-    public List<Dependency> getDependencies() {
+    public List<DependencyArtifact> getDependencies() {
         if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
+            dependencies = new ArrayList<DependencyArtifact>();
         }
 
         return dependencies;
     }
 
-    public List<Dependency> getDependencies(boolean includeGroups) {
+    public List<DependencyArtifact> getDependencies(boolean includeGroups) {
         if (!includeGroups) {
             return getDependencies();
         }
 
-        List<Dependency> list = new ArrayList<Dependency>();
+        List<DependencyArtifact> list = new ArrayList<DependencyArtifact>();
 
         list.addAll(getDependencies());
 
@@ -120,7 +120,7 @@ public class ApplicationModel
         return list;
     }
 
-    public void add(final Dependency dependency) {
+    public void add(final DependencyArtifact dependency) {
         assert dependency != null;
 
         getDependencies().add(dependency);
@@ -142,22 +142,22 @@ public class ApplicationModel
         getPluginGroups().add(group);
     }
 
-    // Plugin
+    // PluginArtifact
 
-    public List<Plugin> getPlugins() {
+    public List<PluginArtifact> getPlugins() {
         if (plugins == null) {
-            plugins = new ArrayList<Plugin>();
+            plugins = new ArrayList<PluginArtifact>();
         }
 
         return plugins;
     }
 
-    public List<Plugin> getPlugins(boolean includeGroups) {
+    public List<PluginArtifact> getPlugins(boolean includeGroups) {
         if (!includeGroups) {
             return getPlugins();
         }
 
-        List<Plugin> list = new ArrayList<Plugin>();
+        List<PluginArtifact> list = new ArrayList<PluginArtifact>();
 
         list.addAll(getPlugins());
 
@@ -168,7 +168,7 @@ public class ApplicationModel
         return list;
     }
 
-    public void add(final Plugin plugin) {
+    public void add(final PluginArtifact plugin) {
         assert plugin != null;
 
         getPlugins().add(plugin);

@@ -21,12 +21,13 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
+import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.model.application.Plugin;
+import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
@@ -70,7 +71,7 @@ public class PluginManagerImpl
 
     private BeanContainer container;
 
-    private Set<org.apache.geronimo.gshell.application.plugin.Plugin> plugins = new LinkedHashSet<org.apache.geronimo.gshell.application.plugin.Plugin>();
+    private Set<Plugin> plugins = new LinkedHashSet<Plugin>();
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
@@ -78,6 +79,7 @@ public class PluginManagerImpl
         this.container = container;
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
     private void init() {
         assert eventManager != null;
@@ -94,7 +96,7 @@ public class PluginManagerImpl
         });
     }
 
-    public Set<org.apache.geronimo.gshell.application.plugin.Plugin> getPlugins() {
+    public Set<Plugin> getPlugins() {
         return plugins;
     }
 
@@ -103,9 +105,9 @@ public class PluginManagerImpl
 
         log.debug("Loading plugins for application: {}", application.getId());
 
-        List<Plugin> artifacts = application.getModel().getPlugins(true);
+        List<PluginArtifact> artifacts = application.getModel().getPlugins(true);
 
-        for (Plugin artifact : artifacts) {
+        for (PluginArtifact artifact : artifacts) {
             try {
                 loadPlugin(artifact);
             }
@@ -115,7 +117,7 @@ public class PluginManagerImpl
         }
     }
 
-    public void loadPlugin(final Plugin artifact) throws Exception {
+    public void loadPlugin(final PluginArtifact artifact) throws Exception {
         assert artifact != null;
 
         log.debug("Loading plugin: {}", artifact.getId());
@@ -125,10 +127,8 @@ public class PluginManagerImpl
         BeanContainer pluginContainer = container.createChild("gshell.plugin[" + artifact.getId() + "]", classPath);
 
         log.debug("Created plugin container: {}", pluginContainer);
-
-        // TODO: Refactor to avoid needing this FQCN
         
-        org.apache.geronimo.gshell.application.plugin.Plugin plugin = pluginContainer.getBean(org.apache.geronimo.gshell.application.plugin.Plugin.class);
+        Plugin plugin = pluginContainer.getBean(Plugin.class);
 
         plugins.add(plugin);
 
@@ -139,8 +139,8 @@ public class PluginManagerImpl
         eventPublisher.publish(new PluginLoadedEvent(plugin, artifact));
     }
 
-    private List<URL> createClassPath(final Plugin plugin) throws Exception {
-        assert plugin != null;
+    private List<URL> createClassPath(final PluginArtifact artifact) throws Exception {
+        assert artifact != null;
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 
@@ -178,7 +178,7 @@ public class PluginManagerImpl
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         ArtifactFactory factory = artifactManager.getArtifactFactory();
 
-        Artifact pluginArtifact = factory.createArtifact(plugin.getGroupId(), plugin.getArtifactId(), plugin.getVersion(), null, plugin.getType());
+        Artifact pluginArtifact = factory.createArtifact(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), /*scope*/null, artifact.getType());
         assert pluginArtifact != null;
 
         log.debug("Plugin artifact: {}", pluginArtifact);
@@ -195,8 +195,8 @@ public class PluginManagerImpl
         if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
             log.debug("Plugin classpath:");
 
-            for (Artifact artifact : resolvedArtifacts) {
-                File file = artifact.getFile();
+            for (Artifact a : resolvedArtifacts) {
+                File file = a.getFile();
                 assert file != null;
 
                 URL url = file.toURI().toURL();

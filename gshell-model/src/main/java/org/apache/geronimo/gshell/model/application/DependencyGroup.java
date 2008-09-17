@@ -28,26 +28,26 @@ import java.util.List;
 import org.apache.geronimo.gshell.model.common.ArtifactGroup;
 
 /**
- * Groups {@link Dependency} elements to allow artifact configuration to be shared.
+ * Groups {@link DependencyArtifact} elements to allow artifact configuration to be shared.
  *
  * @version $Rev$ $Date$
  */
 @XStreamAlias("dependencyGroup")
 public class DependencyGroup
-    extends ArtifactGroup<Dependency>
+    extends ArtifactGroup<DependencyArtifact>
 {
     @XStreamImplicit
-    private List<Dependency> dependencies;
+    private List<DependencyArtifact> dependencies;
 
-    public List<Dependency> getArtifacts() {
+    public List<DependencyArtifact> getArtifacts() {
         if (dependencies == null) {
-            dependencies = new ArrayList<Dependency>();
+            dependencies = new ArrayList<DependencyArtifact>();
         }
 
         return dependencies;
     }
 
-    public List<Dependency> getDependencies() {
+    public List<DependencyArtifact> getDependencies() {
         return getArtifacts();
     }
 }
