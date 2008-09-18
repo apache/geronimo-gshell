@@ -49,18 +49,6 @@
             <artifactId>gshell-cli</artifactId>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.rapture</groupId>
-            <artifactId>gshell-rapture-bootstrap</artifactId>
-        </dependency>
-        -->
-
-         <dependency>
-            <groupId>org.apache.geronimo.gshell.wisdom</groupId>
-            <artifactId>gshell-wisdom-bootstrap</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>

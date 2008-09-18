@@ -581,18 +581,6 @@
             </dependency>
             
             <dependency>
-                <groupId>org.apache.geronimo.gshell.rapture</groupId>
-                <artifactId>gshell-rapture-bootstrap</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.rapture</groupId>
-                <artifactId>gshell-rapture-core</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.geronimo.gshell.wisdom</groupId>
                 <artifactId>gshell-wisdom-bootstrap</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
