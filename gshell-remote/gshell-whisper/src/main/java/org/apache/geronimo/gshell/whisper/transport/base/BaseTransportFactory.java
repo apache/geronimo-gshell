@@ -25,8 +25,6 @@ import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.mina.common.IoHandler;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Support for {@link TransportFactory} implementations.
@@ -36,9 +34,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public abstract class BaseTransportFactory<T extends BaseTransport, TC extends Transport.Configuration, S extends BaseTransportServer, SC extends TransportServer.Configuration>
     implements TransportFactory
 {
-    @Requirement
-    protected PlexusContainer container;
-
     private final String scheme;
 
     protected BaseTransportFactory(final String scheme) {

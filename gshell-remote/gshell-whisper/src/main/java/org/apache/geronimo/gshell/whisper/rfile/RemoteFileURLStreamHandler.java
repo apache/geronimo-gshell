@@ -24,7 +24,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 
-import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +32,6 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=URLStreamHandler.class, hint="rfile", instantiationStrategy="singleton")
 public class RemoteFileURLStreamHandler
     extends URLStreamHandler
 {

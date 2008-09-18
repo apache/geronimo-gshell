@@ -21,14 +21,12 @@ package org.apache.geronimo.gshell.whisper.transport.vm;
 
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Produces in-VM transport instances.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TransportFactory.class, hint="vm")
 public class VmTransportFactory
     extends BaseTransportFactory
 {

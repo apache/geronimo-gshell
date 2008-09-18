@@ -21,30 +21,13 @@ package org.apache.geronimo.gshell.whisper.transport;
 
 import java.net.URI;
 
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-
 /**
  * Helper to locate a {@link TransportFactory} instance.
  *
  * @version $Rev$ $Date$
  */
-@Component(role = TransportFactoryLocator.class)
-public class DefaultTransportFactoryLocator<T extends TransportFactory> implements TransportFactoryLocator<T> {
-
-    @Requirement
-    private PlexusContainer container;
-
-    public PlexusContainer getContainer() {
-        return container;
-    }
-
-    public void setContainer(final PlexusContainer container) {
-        this.container = container;
-    }
-
+public class DefaultTransportFactoryLocator<T extends TransportFactory> implements TransportFactoryLocator<T>
+{
     public T locate(final URI location) throws InvalidLocationException, LookupException {
         assert location != null;
 

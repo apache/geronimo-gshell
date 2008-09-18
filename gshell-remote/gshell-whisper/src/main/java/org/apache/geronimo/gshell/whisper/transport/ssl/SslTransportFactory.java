@@ -21,14 +21,12 @@ package org.apache.geronimo.gshell.whisper.transport.ssl;
 
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Produces TCP+SSL transport instances.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TransportFactory.class, hint="ssl")
 public class SslTransportFactory
     extends TcpTransportFactory<SslTransport, SslTransportServer>
 {

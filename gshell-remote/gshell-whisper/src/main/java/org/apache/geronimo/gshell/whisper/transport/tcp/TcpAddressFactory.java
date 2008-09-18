@@ -24,14 +24,12 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 
 import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=AddressFactory.class, hint="tcp")
 public class TcpAddressFactory
     implements AddressFactory<InetSocketAddress>
 {

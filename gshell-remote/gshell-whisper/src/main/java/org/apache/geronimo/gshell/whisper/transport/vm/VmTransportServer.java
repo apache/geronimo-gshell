@@ -22,14 +22,12 @@ package org.apache.geronimo.gshell.whisper.transport.vm;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportServer;
 import org.apache.mina.transport.vmpipe.VmPipeAcceptor;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Provides in-VM server-side support.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TransportServer.class, hint="vm", instantiationStrategy="per-lookup")
 public class VmTransportServer
     extends BaseTransportServer
 {

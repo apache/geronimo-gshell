@@ -19,16 +19,13 @@
 
 package org.apache.geronimo.gshell.whisper.transport.tcp;
 
-import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Produces TCP transport instances.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TransportFactory.class, hint="tcp")
 public class TcpTransportFactory<T extends TcpTransport, S extends TcpTransportServer>
     extends BaseTransportFactory
 {

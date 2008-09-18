@@ -24,19 +24,15 @@ import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportServer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.SSLFilter;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Provides TCP+SSL server-side support.
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TransportServer.class, hint="ssl", instantiationStrategy="per-lookup")
 public class SslTransportServer
     extends TcpTransportServer
 {
-    @Requirement
     private SSLContextFactory contextFactory;
 
     public SslTransportServer() {

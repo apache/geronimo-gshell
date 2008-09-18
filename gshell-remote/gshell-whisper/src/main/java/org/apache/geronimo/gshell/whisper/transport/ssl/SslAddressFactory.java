@@ -19,16 +19,13 @@
 
 package org.apache.geronimo.gshell.whisper.transport.ssl;
 
-import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpAddressFactory;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=AddressFactory.class, hint="ssl")
 public class SslAddressFactory
     extends TcpAddressFactory
 {

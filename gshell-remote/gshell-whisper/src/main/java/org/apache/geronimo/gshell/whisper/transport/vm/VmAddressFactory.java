@@ -23,14 +23,12 @@ import java.net.URI;
 
 import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.mina.transport.vmpipe.VmPipeAddress;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=AddressFactory.class, hint="vm")
 public class VmAddressFactory
     implements AddressFactory<VmPipeAddress>
 {
