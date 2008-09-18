@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +34,6 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-optional:wait", description="Wait, blocking execution... not nice")
 public class WaitCommand
     implements CommandAction
 {

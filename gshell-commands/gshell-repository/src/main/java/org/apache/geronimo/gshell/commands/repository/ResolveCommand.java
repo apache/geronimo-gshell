@@ -23,8 +23,6 @@ import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -33,6 +31,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.Set;
@@ -42,35 +41,34 @@ import java.util.Set;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-repository:resolve", description="Resolve repository artifacts")
 public class ResolveCommand
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    @Requirement
+
+    @Autowired
     private ArtifactManager artifactManager;
 
     //
     // TODO: Consider using <g>:<a>:<v>:<s>:<t> notation instead of, or in addtion this?
     //
     
-    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, metaVar="GROUP-ID", required=true, description="Specify the groupId")
+    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, metaVar="GROUP-ID", required=true)
     private String groupId;
 
-    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, metaVar="ARTIFACT-ID", required=true, description="Specify the artifactId")
+    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, metaVar="ARTIFACT-ID", required=true)
     private String artifactId;
 
-    @Option(name="-v", aliases={"--version"}, argumentRequired=true, metaVar="VERSION", required=true, description="Specify the version")
+    @Option(name="-v", aliases={"--version"}, argumentRequired=true, metaVar="VERSION", required=true)
     private String version;
 
-    @Option(name="-t", aliases={"--type"}, argumentRequired=true, metaVar="TYPE", description="Specify the type")
+    @Option(name="-t", aliases={"--type"}, argumentRequired=true, metaVar="TYPE")
     private String type = "jar";
 
-    @Option(name="-s", aliases={"--scope"}, argumentRequired=true, metaVar="SCOPE", description="Specify the resolution scope")
+    @Option(name="-s", aliases={"--scope"}, argumentRequired=true, metaVar="SCOPE")
     private String scope;
 
-    @Option(name="-T", aliases={"--transitive"}, description="Resolve transitive dependencies")
+    @Option(name="-T", aliases={"--transitive"})
     private boolean transitive;
 
     public Object execute(final CommandContext context) throws Exception {

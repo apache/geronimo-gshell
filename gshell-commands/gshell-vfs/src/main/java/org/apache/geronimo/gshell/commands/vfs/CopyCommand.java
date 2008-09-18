@@ -23,7 +23,6 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileUtil;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,18 +32,18 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-vfs:copy", description="Copy files between VFS sources")
 public class CopyCommand
     extends VFSCommandSupport
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    @Argument(index=0, required=true, description="Source")
+    @Argument(index=0, required=true)
     private String sourceName;
 
-    @Argument(index=1, required=true, description="Target")
+    @Argument(index=1, required=true)
     private String targetName;
-public Object execute(final CommandContext context) throws Exception {
+
+    public Object execute(final CommandContext context) throws Exception {
         assert context != null;
     
         FileSystemManager fsm = getFileSystemManager();

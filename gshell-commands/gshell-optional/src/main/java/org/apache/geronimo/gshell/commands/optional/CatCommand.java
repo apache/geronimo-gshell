@@ -23,14 +23,17 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.io.IO;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -40,18 +43,16 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-optional:cat", description="Concatenate and print files and/or URLs.")
 public class CatCommand
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Option(name="-n", description="Number the output lines, starting at 1")
+    @Option(name="-n")
     private boolean displayLineNumbers;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
-    @Argument(description="File or URL", required=true)
-    private List<String> args;
+    @Argument(required=true)
+    private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
@@ -73,13 +74,13 @@ public class CatCommand
                 // First try a URL
                 try {
                     URL url = new URL(filename);
-                    log.info("Printing URL: " + url);
+                    log.info("Printing URL: {}", url);
                     reader = new BufferedReader(new InputStreamReader(url.openStream()));
                 }
                 catch (MalformedURLException ignore) {
                     // They try a file
                     File file = new File(filename);
-                    log.info("Printing file: " + file);
+                    log.info("Printing file: {}", file);
                     reader = new BufferedReader(new FileReader(file));
                 }
 

@@ -26,7 +26,6 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
@@ -43,7 +42,6 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-bsf:script", description="Provides generic scripting language execution support")
 public class ScriptCommand
     implements CommandAction
 {
@@ -51,7 +49,7 @@ public class ScriptCommand
 
     private String language;
 
-    @Option(name="-l", aliases={"--language"}, description="Specify the scripting language")
+    @Option(name="-l", aliases={"--language"})
     private void setLanguage(final String language) {
         assert language != null;
         
@@ -62,15 +60,14 @@ public class ScriptCommand
         this.language = language;
     }
 
-    @Option(name="-i", aliases={"--interactive"}, description="Run interactive mode")
+    @Option(name="-i", aliases={"--interactive"})
     private boolean interactive;
 
-    @Option(name="-e", aliases={"--expression"}, description="Evaluate the given expression")
+    @Option(name="-e", aliases={"--expression"})
     private String expression;
     
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
-    @Argument(description="A file or URL to execute")
-    private List<String> args;
+    @Argument
+    private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;

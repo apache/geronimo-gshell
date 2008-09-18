@@ -58,30 +58,10 @@
 
     <modules>
         <module>gshell-builtins</module>
-        <!--
         <module>gshell-optional</module>
         <module>gshell-repository</module>
         <module>gshell-bsf</module>
         <module>gshell-vfs</module>
-        -->
     </modules>
-
-    <!--
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.geronimo.gshell.buildsupport</groupId>
-                <artifactId>gshell-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    -->
 
 </project>

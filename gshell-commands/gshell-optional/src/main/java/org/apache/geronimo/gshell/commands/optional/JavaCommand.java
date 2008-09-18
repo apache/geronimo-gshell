@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Arguments;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,46 +39,35 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-optional:java", description="Execute a Java standard application")
 public class JavaCommand
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Option(name="-m", aliases={"--method"}, metaVar="METHOD", description="Invoke a named method")
+    @Option(name="-m", aliases={"--method"}, metaVar="METHOD")
     private String methodName = "main";
 
-    @Argument(index=0, metaVar="CLASSNAME", description="The name of the class to invoke", required=true)
+    @Argument(index=0, metaVar="CLASSNAME", required=true)
     private String className;
 
-    @Argument(index=1, metaVar="ARG", description="Arguments to pass to the METHOD of CLASSNAME")
+    @Argument(index=1, metaVar="ARG")
     private List<String> args;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         
-        boolean info = log.isInfoEnabled();
-
         Class type = Thread.currentThread().getContextClassLoader().loadClass(className);
-        if (info) {
-            log.info("Using type: " + type);
-        }
+        log.info("Using type: {}", type);
 
         Method method = type.getMethod(methodName, String[].class);
-        if (info) {
-            log.info("Using method: " + method);
-        }
+        log.info("Using method: {}", method);
 
-        if (info) {
-            log.info("Invoking w/arguments: " + Arguments.asString(args));
-        }
+        log.info("Invoking w/arguments: {}", Arguments.asString(args));
 
         Object result = method.invoke(null, args);
 
-        if (info) {
-            log.info("Result: " + result);
-        }
-
+        log.info("Result: {}", result);
+        
         return Result.SUCCESS;
     }
 }

@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.commands.optional;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.PumpStreamHandler;
 import org.slf4j.Logger;
@@ -35,7 +34,6 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-optional:exec", description="Execute system processes")
 public class ExecuteCommand
     implements CommandAction
 {
@@ -43,13 +41,17 @@ public class ExecuteCommand
 
     private ProcessBuilder builder;
 
-    @Argument(description="Argument", required=true)
+    @Argument(required=true)
     private List<String> args;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
         IO io = context.getIo();
+
+        //
+        // FIXME:
+        //
         
         assert builder != null;
 
