@@ -650,12 +650,6 @@
                 
                 <plugin>
                     <groupId>org.apache.geronimo.gshell.buildsupport</groupId>
-                    <artifactId>gshell-maven-plugin</artifactId>
-                    <version>1.0-alpha-2-SNAPSHOT</version>
-                </plugin>
-                
-                <plugin>
-                    <groupId>org.apache.geronimo.gshell.buildsupport</groupId>
                     <artifactId>javacc-maven-plugin</artifactId>
                     <version>1.0-alpha-2-SNAPSHOT</version>
                 </plugin>

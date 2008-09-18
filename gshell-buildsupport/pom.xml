@@ -69,9 +69,6 @@
     
     <modules>
         <module>javacc-maven-plugin</module>
-        <!--
-        <module>gshell-maven-plugin</module>
-        -->
     </modules>
     
     <build>
