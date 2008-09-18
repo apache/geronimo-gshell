@@ -53,6 +53,14 @@
                         <bean class="org.apache.geronimo.gshell.commands.admin.ListPluginsCommand"/>
                     </property>
                 </bean>
+
+                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                    <property name="id" value="gshell-admin:install-plugin"/>
+
+                    <property name="action">
+                        <bean class="org.apache.geronimo.gshell.commands.admin.InstallPluginCommand"/>
+                    </property>
+                </bean>
             </list>
         </property>
     </bean>
