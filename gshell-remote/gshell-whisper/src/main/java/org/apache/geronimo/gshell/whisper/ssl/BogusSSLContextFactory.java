@@ -39,10 +39,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactorySpi;
 import javax.net.ssl.X509TrustManager;
+import javax.annotation.PostConstruct;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +50,8 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=SSLContextFactory.class, hint="bogus")
 public class BogusSSLContextFactory
-    implements SSLContextFactory, Initializable
+    implements SSLContextFactory
 {
     private static final String PROTOCOL = "TLS";
 
@@ -94,7 +91,8 @@ public class BogusSSLContextFactory
 
     private SSLContext clientInstance;
 
-    public synchronized void initialize() throws InitializationException {
+    @PostConstruct
+    public synchronized void init() throws Exception {
         if (preload) {
             log.debug("Preloading SSLContext instances");
             
@@ -103,7 +101,7 @@ public class BogusSSLContextFactory
                 createClientContext();
             }
             catch (GeneralSecurityException e) {
-                throw new InitializationException("Failed to setup SSLContext instances", e);
+                throw new RuntimeException("Failed to setup SSLContext instances", e);
             }
         }
     }

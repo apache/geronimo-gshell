@@ -34,8 +34,6 @@ import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,20 +42,16 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshServer.class, instantiationStrategy="per-lookup")
 public class RshServer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
     private TimeoutManager timeoutManager;
 
-    @Requirement
     private TransportFactoryLocator locator;
 
     private TransportServer server;
 
-    @Requirement(role=ServerMessageHandler.class)
     private List<ServerMessageHandler> handlers;
 
     public RshServer() {

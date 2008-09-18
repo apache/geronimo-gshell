@@ -27,20 +27,18 @@ import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=TimeoutManager.class)
-public class DefaultTimeoutManager
-    implements TimeoutManager, Initializable
+public class TimeoutManagerImpl
+    implements TimeoutManager
 {
     private static final SessionAttributeBinder<ScheduledFuture> TIMEOUT = new SessionAttributeBinder<ScheduledFuture>(TimeoutManager.class, "timeout");
 
@@ -48,7 +46,8 @@ public class DefaultTimeoutManager
 
     private ScheduledThreadPoolExecutor scheduler;
 
-    public void initialize() throws InitializationException {
+    @PostConstruct
+    public void init() {
         ThreadFactory tf = new NamedThreadFactory(getClass());
         scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), tf);
     }

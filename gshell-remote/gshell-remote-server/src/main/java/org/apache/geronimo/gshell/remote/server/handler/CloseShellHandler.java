@@ -22,14 +22,12 @@ package org.apache.geronimo.gshell.remote.server.handler;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ServerMessageHandler.class, hint="close-shell")
 public class CloseShellHandler
     extends ServerMessageHandlerSupport<CloseShellMessage>
 {

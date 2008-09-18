@@ -23,8 +23,6 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,16 +31,13 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RemoteShell.class, instantiationStrategy="per-lookup")
 public class DefaultRemoteShell
     implements RemoteShell
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
     private ShellInfo shellInfo;
 
-    @Requirement
     private CommandLineExecutor executor;
 
     // FIXME: Pull this from some manager's context

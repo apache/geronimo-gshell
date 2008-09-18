@@ -25,23 +25,16 @@ import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ServerMessageHandler.class, hint="open-shell")
 public class OpenShellHandler
     extends ServerMessageHandlerSupport<OpenShellMessage>
 {
-    @Requirement
-    private PlexusContainer container;
-
     public OpenShellHandler() {
         super(OpenShellMessage.class);
     }

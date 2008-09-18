@@ -21,14 +21,12 @@ package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ServerMessageHandler.class, hint="echo")
 public class EchoHandler
     extends ServerMessageHandlerSupport<EchoMessage>
 {

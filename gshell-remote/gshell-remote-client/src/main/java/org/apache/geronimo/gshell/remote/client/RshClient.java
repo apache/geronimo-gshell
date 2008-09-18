@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginContext;
+import javax.annotation.PostConstruct;
 
 import org.apache.geronimo.gshell.remote.client.auth.RemoteLoginModule;
 import org.apache.geronimo.gshell.remote.client.handler.ClientMessageHandler;
@@ -46,10 +47,6 @@ import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,23 +55,18 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=RshClient.class, instantiationStrategy="per-lookup")
 public class RshClient
-    implements Initializable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Requirement
     private CryptoContext crypto;
     
-    @Requirement
     private TransportFactoryLocator locator;
 
     private Transport transport;
 
     private Session session;
 
-    @Requirement(role=ClientMessageHandler.class)
     private List<ClientMessageHandler> handlers;
 
     public RshClient() {
@@ -86,8 +78,9 @@ public class RshClient
         this.handlers = handlers;
     }
 
-    public void initialize() throws InitializationException {
-        new JaasConfigurationHelper("client.login.conf").initialize();
+    @PostConstruct
+    public void init() {
+        new JaasConfigurationHelper("client.login.conf").init();
     }
 
     public void connect(final URI remote, final URI local) throws Exception {

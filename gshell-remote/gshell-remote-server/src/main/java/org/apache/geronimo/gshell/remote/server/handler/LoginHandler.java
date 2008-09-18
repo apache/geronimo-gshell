@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.remote.server.handler;
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
+import javax.annotation.PostConstruct;
 
 import org.apache.geronimo.gshell.remote.jaas.Identity;
 import org.apache.geronimo.gshell.remote.jaas.JaasConfigurationHelper;
@@ -29,22 +30,15 @@ import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ServerMessageHandler.class, hint="login")
 public class LoginHandler
     extends ServerMessageHandlerSupport<LoginMessage>
-    implements Initializable
 {
-    @Requirement
     private TimeoutManager timeoutManager;
 
     private String defaultRealm = "BogusLogin";
@@ -63,8 +57,9 @@ public class LoginHandler
         this.defaultRealm = defaultRealm;
     }
 
-    public void initialize() throws InitializationException {
-        new JaasConfigurationHelper("server.login.conf").initialize();
+    @PostConstruct
+    public void init() {
+        new JaasConfigurationHelper("server.login.conf").init();
     }
 
     public void handle(final Session session, final ServerSessionContext context, final LoginMessage message) throws Exception {

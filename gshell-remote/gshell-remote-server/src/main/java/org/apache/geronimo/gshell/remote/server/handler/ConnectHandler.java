@@ -24,22 +24,17 @@ import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.server.RshServer;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=ServerMessageHandler.class, hint="connect")
 public class ConnectHandler
     extends ServerMessageHandlerSupport<ConnectMessage>
 {
-    @Requirement
     private CryptoContext crypto;
     
-    @Requirement
     private TimeoutManager timeoutManager;
     
     public ConnectHandler() {
