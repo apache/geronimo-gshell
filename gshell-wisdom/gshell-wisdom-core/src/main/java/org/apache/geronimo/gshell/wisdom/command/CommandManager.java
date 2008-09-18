@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandRegistration;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Provides management of {@link Command} instances.
@@ -46,22 +49,34 @@ public class CommandManager
     @Autowired
     private EventPublisher eventPublisher;
 
-    private Map<String, Command> registrations = new HashMap<String, Command>();
+    private List<CommandRegistration> registrations = new ArrayList<CommandRegistration>();
 
     //
     // CommandRegistry
     //
 
-    public void register(final Command command) {
+    public CommandRegistration register(final Command command) {
         assert command != null;
 
         String id = command.getId();
 
         log.debug("Registering command: {}", id);
-        
-        registrations.put(id, command);
 
-        eventPublisher.publish(new CommandRegisteredEvent(command));
+        CommandRegistration registration = new CommandRegistration() {
+            public Command getCommand() {
+                return command;
+            }
+        };
+
+        registrations.add(registration);
+
+        eventPublisher.publish(new CommandRegisteredEvent(registration));
+
+        return registration;
+    }
+
+    public List<CommandRegistration> getRegistrations() {
+        return registrations;
     }
 
     //
@@ -75,9 +90,9 @@ public class CommandManager
         log.debug("Resolving command for path: {}", path);
 
         // HACK: For now, there is no nested muck, just use the name
-        for (Command command : registrations.values()) {
-            if (path.equals(command.getDocumenter().getName())) {
-                return command;
+        for (CommandRegistration registration : registrations) {
+            if (path.equals(registration.getCommand().getDocumenter().getName())) {
+                return registration.getCommand();
             }
         }
         

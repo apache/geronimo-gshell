@@ -19,14 +19,25 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import org.apache.geronimo.gshell.ansi.Code;
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandRegistry;
+import org.apache.geronimo.gshell.command.CommandRegistration;
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.List;
 
 /**
- * Display help
+ * Display command help.
  *
  * @version $Rev$ $Date$
  */
@@ -35,12 +46,70 @@ public class HelpCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Argument(metaVar="COMMAND", required=true)
-    private String command;
+    @Autowired
+    private CommandRegistry commandRegistry;
+
+    @Argument(metaVar="COMMAND")
+    private String commandName;
+
+    private Renderer renderer = new Renderer();
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
 
-        throw new Error("Not implemented");
+        assert commandRegistry != null;
+        List<CommandRegistration> registrations = commandRegistry.getRegistrations();
+
+        if (commandName != null) {
+            log.debug("Displaying help manual for command: {}", commandName);
+
+            // FIXME: Should resolve the commandName/commandPath
+            
+            for (CommandRegistration registration : registrations) {
+                Command command = registration.getCommand();
+                CommandDocumenter doc = command.getDocumenter();
+
+                if (doc.getName().equals(commandName)) {
+                    doc.renderManual(io.out);
+                    
+                    return Result.SUCCESS;
+                }
+            }
+
+            io.out.println("Command " + Renderer.encode(commandName, Code.BOLD) + " not found.");
+            io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
+            
+            return Result.FAILURE;
+        }
+        else {
+            log.debug("Listing brief help for commands");
+
+            // FIXME: Figure this out dynamically
+            int maxNameLen = 20;
+
+            io.out.println("Available commands:");
+            
+            for (CommandRegistration registration : registrations) {
+                Command command = registration.getCommand();
+                CommandDocumenter doc = command.getDocumenter();
+
+                String name = StringUtils.rightPad(doc.getName(), maxNameLen);
+                String desc = doc.getDescription();
+
+                io.out.print("  ");
+                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+
+                if (desc != null) {
+                    io.out.print("  ");
+                    io.out.println(desc);
+                }
+                else {
+                    io.out.println();
+                }
+            }
+        }
+
+        return Result.SUCCESS;
     }
 }

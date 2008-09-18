@@ -65,6 +65,10 @@ public class ResolveCommand
     @Option(name="-t", aliases={"--type"}, argumentRequired=true, metaVar="TYPE")
     private String type = "jar";
 
+    //
+    // TODO: Add classifier
+    //
+
     @Option(name="-s", aliases={"--scope"}, argumentRequired=true, metaVar="SCOPE")
     private String scope;
 

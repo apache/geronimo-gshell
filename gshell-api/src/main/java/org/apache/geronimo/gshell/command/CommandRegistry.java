@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.command;
 
+import java.util.List;
+
 /**
  * Provides registration facilities for {@link Command} instances.
  *
@@ -26,14 +28,7 @@ package org.apache.geronimo.gshell.command;
  */
 public interface CommandRegistry
 {
-    /**
-     * Registers a command.
-     *
-     * @param command   The command to register; must not be null.
-     */
-    void register(Command command);
+    CommandRegistration register(Command command);
 
-    //
-    // TODO: Expose registration details for help command support
-    //
+    List<CommandRegistration> getRegistrations();
 }
