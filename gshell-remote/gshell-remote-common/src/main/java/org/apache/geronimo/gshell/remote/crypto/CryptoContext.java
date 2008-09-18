@@ -28,7 +28,6 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
-import org.codehaus.plexus.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +36,6 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@Component(role=CryptoContext.class)
 public class CryptoContext
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -46,10 +44,8 @@ public class CryptoContext
     // TODO: See if we should use DSA or RSA for this...
     //
     
-    // @Configuration
     private String transformation = "RSA";
 
-    // @Configuration
     private String provider;
 
     private final KeyPair keyPair;

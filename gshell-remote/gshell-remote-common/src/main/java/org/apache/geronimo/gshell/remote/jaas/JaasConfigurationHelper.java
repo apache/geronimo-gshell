@@ -21,26 +21,22 @@ package org.apache.geronimo.gshell.remote.jaas;
 
 import java.net.URL;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-@Component(role=JaasConfigurationHelper.class)
 public class JaasConfigurationHelper
-    implements Initializable
 {
     private static final String KEY = "java.security.auth.login.config";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    // @Configuration
     private String resourceName;
 
     public JaasConfigurationHelper(final String resourceName) {
@@ -48,8 +44,9 @@ public class JaasConfigurationHelper
     }
 
     public JaasConfigurationHelper() {}
-    
-    public void initialize() throws InitializationException {
+
+    @PostConstruct
+    public void init() {
         // Initialize the JAAS configuration
         String path = System.getProperty(KEY);
 
