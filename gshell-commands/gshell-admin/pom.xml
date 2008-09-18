@@ -25,44 +25,33 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.commands</groupId>
+        <artifactId>gshell-commands</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.commands</groupId>
-    <artifactId>gshell-commands</artifactId>
-    <name>GShell Commands</name>
-    <packaging>pom</packaging>
+    <artifactId>gshell-admin</artifactId>
+    <name>GShell Commands :: Admin</name>
     
     <description>
-        Collection of commands for GShell functionality.
+        GShell administrative commands.
     </description>
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-clp</artifactId>
+            <artifactId>gshell-spring</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-api</artifactId>
+            <artifactId>gshell-model</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-application</artifactId>
         </dependency>
     </dependencies>
-
-    <modules>
-        <module>gshell-builtins</module>
-        <module>gshell-admin</module>
-        <module>gshell-optional</module>
-        <module>gshell-repository</module>
-        <module>gshell-bsf</module>
-        <module>gshell-vfs</module>
-    </modules>
 
 </project>
