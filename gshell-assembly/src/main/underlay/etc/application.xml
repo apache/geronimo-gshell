@@ -61,6 +61,10 @@
                 <artifactId>gshell-builtins</artifactId>
             </plugin>
 
+            <plugin>
+                <artifactId>gshell-admin</artifactId>
+            </plugin>
+
             <!--
             <plugin>
                 <artifactId>gshell-optional</artifactId>
