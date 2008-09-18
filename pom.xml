@@ -628,9 +628,6 @@
         <module>gshell-model</module>
         <module>gshell-application</module>
         <module>gshell-parser</module>
-        <!--
-        <module>gshell-rapture</module>
-        -->
         <module>gshell-wisdom</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
