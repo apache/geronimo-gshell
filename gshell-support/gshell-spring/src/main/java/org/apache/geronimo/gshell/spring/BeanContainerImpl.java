@@ -163,7 +163,7 @@ public class BeanContainerImpl
 
         log.debug("Creating child container: {}", id);
 
-        ClassRealm childRealm = null;
+        ClassRealm childRealm;
         try {
             childRealm = classRealm.createChildRealm(id);
         }
