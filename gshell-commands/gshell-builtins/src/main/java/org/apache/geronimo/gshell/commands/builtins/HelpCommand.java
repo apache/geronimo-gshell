@@ -108,6 +108,8 @@ public class HelpCommand
                     io.out.println();
                 }
             }
+
+            io.out.println();
         }
 
         return Result.SUCCESS;
