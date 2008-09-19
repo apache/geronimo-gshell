@@ -95,6 +95,10 @@ public class BeanContainerImpl
         return parent;
     }
 
+    public ClassRealm getClassRealm() {
+        return classRealm;
+    }
+
     public void start() {
         log.debug("Starting");
 
