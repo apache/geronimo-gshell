@@ -49,6 +49,10 @@ public class PromptReader
         this.mask = mask;
     }
 
+    //
+    // TODO: Add a validator interface to simplify users trying to avoid null entry and such
+    //
+
     public String readLine(final String prompt) throws IOException {
         assert prompt != null;
 
