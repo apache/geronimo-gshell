@@ -34,6 +34,12 @@ import java.util.Map;
 public interface BeanContainer
 {
     BeanContainer getParent();
+
+    void start();
+
+    void stop();
+
+    void close();
     
     <T> T getBean(Class<T> type);
 
@@ -41,7 +47,11 @@ public interface BeanContainer
 
     <T> Map<String,T> getBeans(Class<T> type);
 
+    String[] getBeanNames();
+
     String[] getBeanNames(Class type);
 
-    BeanContainer createChild(String id, List<URL> classPath) throws DuplicateRealmException;
+    BeanContainer createChild(String id, List<URL> classPath);
+
+    BeanContainer createChild(String id);
 }

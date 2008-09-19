@@ -24,7 +24,7 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
+import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import java.net.URL;
@@ -89,13 +89,28 @@ public class BeanContainerImpl
 
         // Refresh to load things up
         context.refresh();
-
-        // Start components
-        context.start();
     }
 
     public BeanContainer getParent() {
         return parent;
+    }
+
+    public void start() {
+        log.debug("Starting");
+
+        context.start();
+    }
+
+    public void stop() {
+        log.debug("Stopping");
+
+        context.stop();
+    }
+
+    public void close() {
+        log.debug("Closing");
+        
+        context.close();
     }
 
     public <T> T getBean(final Class<T> type) {
@@ -128,24 +143,42 @@ public class BeanContainerImpl
         return (Map<String,T>)context.getBeansOfType(type);
     }
 
+    public String[] getBeanNames() {
+        return context.getBeanDefinitionNames();
+    }
+
     public String[] getBeanNames(final Class type) {
         assert type != null;
 
         return context.getBeanNamesForType(type);
     }
 
-    public BeanContainer createChild(final String id, final List<URL> classPath) throws DuplicateRealmException {
+    public BeanContainer createChild(final String id, final List<URL> classPath) {
         assert id != null;
-        assert classPath != null;
+        // classPath may be null
 
         log.debug("Creating child container: {}", id);
-        
-        ClassRealm childRealm = classRealm.createChildRealm(id);
 
-        for (URL url : classPath) {
-            childRealm.addURL(url);
+        ClassRealm childRealm = null;
+        try {
+            childRealm = classRealm.createChildRealm(id);
+        }
+        catch (DuplicateRealmException e) {
+            throw new FatalBeanException("Failed to create child container realm: " + id, e);
+        }
+
+        if (classPath != null) {
+            for (URL url : classPath) {
+                childRealm.addURL(url);
+            }
         }
 
         return new BeanContainerImpl(childRealm, this);
+    }
+
+    public BeanContainer createChild(final String id) {
+        assert id != null;
+
+        return createChild(id, null);
     }
 }
