@@ -174,6 +174,7 @@ public class ApplicationManagerImpl
 
         // Create the application container
         applicationContainer = createContainer(model);
+        applicationContainer.start();
     }
 
     private void configureArtifactManager(final ApplicationModel model) throws Exception {

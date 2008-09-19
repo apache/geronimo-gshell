@@ -125,7 +125,8 @@ public class PluginManagerImpl
         List<URL> classPath = createClassPath(artifact);
 
         BeanContainer pluginContainer = container.createChild("gshell.plugin[" + artifact.getId() + "]", classPath);
-
+        pluginContainer.start();
+        
         log.debug("Created plugin container: {}", pluginContainer);
         
         Plugin plugin = pluginContainer.getBean(Plugin.class);

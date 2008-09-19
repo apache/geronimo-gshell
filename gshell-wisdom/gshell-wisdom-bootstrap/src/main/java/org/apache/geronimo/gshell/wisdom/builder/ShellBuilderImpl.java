@@ -188,7 +188,9 @@ public class ShellBuilderImpl
         SystemOutputHijacker.register(io.outputStream, io.errorStream);
 
         // Initialize the container
-        getContainer();
+        BeanContainer container = getContainer();
+        container.start();
+        
         log.debug("Container: {}", container);
 
         //
