@@ -20,7 +20,7 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import java.net.URL;
 import java.util.List;
@@ -34,6 +34,8 @@ import java.util.Map;
 public interface BeanContainer
 {
     BeanContainer getParent();
+
+    ClassRealm getClassRealm();
 
     void start();
 
