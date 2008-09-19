@@ -42,14 +42,14 @@ public class RemoteShellInfoProxy
     }
 
     public File getHomeDir() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public InetAddress getLocalHost() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public String getUserName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 }

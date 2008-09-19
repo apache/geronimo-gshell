@@ -24,6 +24,8 @@ import java.net.URI;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.mina.common.IoHandler;
 
 /**
@@ -32,9 +34,11 @@ import org.apache.mina.common.IoHandler;
  * @version $Rev$ $Date$
  */
 public abstract class BaseTransportFactory<T extends BaseTransport, TC extends Transport.Configuration, S extends BaseTransportServer, SC extends TransportServer.Configuration>
-    implements TransportFactory
+    implements TransportFactory, BeanContainerAware
 {
     private final String scheme;
+
+    private BeanContainer container;
 
     protected BaseTransportFactory(final String scheme) {
         assert scheme != null;
@@ -46,20 +50,28 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
         return scheme;
     }
 
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
+
     //
     // Transport (Client) Connection
     //
+
+    @SuppressWarnings({"unchecked"})
+    protected T createTransport() {
+        return (T)container.getBean(scheme + "Transport", Transport.class);
+    }
 
     public T connect(final URI remote, final URI local, final TC config) throws Exception {
         assert remote != null;
         assert config != null;
         // local can be null
 
-        // noinspection unchecked
-        T transport = (T) container.lookup(Transport.class, scheme);
-
+        T transport = createTransport();
         transport.setConfiguration(config);
-
         transport.connect(remote, local);
 
         return transport;
@@ -70,11 +82,8 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
         assert handler != null;
         // local can be null
 
-        // noinspection unchecked
-        T transport = (T) container.lookup(Transport.class, scheme);
-
+        T transport = createTransport();
         transport.getConfiguration().setHandler(handler);
-
         transport.connect(remote, local);
 
         return transport;
@@ -94,15 +103,17 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
     // TransportServer Binding
     //
 
+    @SuppressWarnings({"unchecked"})
+    protected S createTransportServer() {
+        return (S)container.getBean(scheme + "TransportServer", TransportServer.class);
+    }
+
     public S bind(final URI location, final SC config) throws Exception {
         assert location != null;
         assert config != null;
 
-        // noinspection unchecked
-        S server = (S) container.lookup(TransportServer.class, scheme);
-
+        S server = createTransportServer();
         server.setConfiguration(config);
-
         server.bind(location);
 
         return server;
@@ -112,11 +123,8 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
         assert location != null;
         assert handler != null;
 
-        // noinspection unchecked
-        S server = (S) container.lookup(TransportServer.class, scheme);
-
+        S server = createTransportServer();
         server.getConfiguration().setHandler(handler);
-
         server.bind(location);
 
         return server;

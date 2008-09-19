@@ -49,6 +49,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides support for the client-side of the remote shell protocol.
@@ -59,22 +60,21 @@ public class RshClient
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private CryptoContext crypto;
-    
+
+    @Autowired
     private TransportFactoryLocator locator;
+
+    private List<ClientMessageHandler> handlers;
 
     private Transport transport;
 
     private Session session;
 
-    private List<ClientMessageHandler> handlers;
+    public RshClient(final List<ClientMessageHandler> handlers) {
+        assert handlers != null;
 
-    public RshClient() {
-    }
-
-    public RshClient(final CryptoContext crypto, final TransportFactoryLocator locator, final List<ClientMessageHandler> handlers) {
-        this.crypto = crypto;
-        this.locator = locator;
         this.handlers = handlers;
     }
 

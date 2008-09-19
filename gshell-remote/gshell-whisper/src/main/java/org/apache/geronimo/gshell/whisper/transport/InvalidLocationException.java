@@ -32,4 +32,8 @@ public class InvalidLocationException
     public InvalidLocationException(final URI location) {
         super("Invalid location: " + location);
     }
+
+    public InvalidLocationException(final URI location, final String message) {
+        super("Invalid location: " + location + "; " + message);
+    }
 }

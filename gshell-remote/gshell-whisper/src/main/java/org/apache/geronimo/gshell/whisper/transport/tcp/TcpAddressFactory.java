@@ -26,7 +26,7 @@ import java.net.URI;
 import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 
 /**
- * ???
+ * Produces TCP address instances.
  *
  * @version $Rev$ $Date$
  */

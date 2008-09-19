@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * ???
@@ -39,6 +40,7 @@ import org.apache.geronimo.gshell.whisper.transport.Session;
 public class LoginHandler
     extends ServerMessageHandlerSupport<LoginMessage>
 {
+    @Autowired
     private TimeoutManager timeoutManager;
 
     private String defaultRealm = "BogusLogin";
@@ -47,22 +49,16 @@ public class LoginHandler
         super(LoginMessage.class);
     }
 
-    public LoginHandler(final TimeoutManager timeoutManager) {
-        this();
-        this.timeoutManager = timeoutManager;
-    }
-
-    public LoginHandler(final TimeoutManager timeoutManager, final String defaultRealm) {
-        this(timeoutManager);
-        this.defaultRealm = defaultRealm;
-    }
-
     @PostConstruct
     public void init() {
         new JaasConfigurationHelper("server.login.conf").init();
     }
 
     public void handle(final Session session, final ServerSessionContext context, final LoginMessage message) throws Exception {
+        assert session != null;
+        assert context != null;
+        assert message != null;
+
         // Try to cancel the timeout task
         if (!timeoutManager.cancelTimeout(session)) {
             log.warn("Aborting login processing; timeout has triggered");

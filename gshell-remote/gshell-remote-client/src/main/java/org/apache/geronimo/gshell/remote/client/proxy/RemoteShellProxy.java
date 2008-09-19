@@ -27,9 +27,9 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.client.RshClient;
-import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.whisper.stream.StreamFeeder;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,36 +41,56 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version $Rev$ $Date$
  */
 public class RemoteShellProxy
-    implements RemoteShell, Shell
+    implements RemoteShell
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private RshClient client;
+    private final RshClient client;
 
-    private IO io;
+    private final CommandLineExecutor executor;
 
-    private StreamFeeder outputFeeder;
+    private final IO io;
+
+    private final StreamFeeder outputFeeder;
+
+    private final RemoteShellContextProxy context;
+
+    private final RemoteShellInfoProxy shellInfo;
+
+    private final RemoteHistoryProxy history;
 
     private boolean opened;
-
-    private RemoteShellContextProxy context;
-
-    private RemoteShellInfoProxy shellInfo;
-
-    private RemoteHistoryProxy history;
 
     public RemoteShellProxy(final RshClient client, final IO io) throws Exception {
         assert client != null;
         assert io != null;
 
         this.client = client;
+        this.executor = new CommandLineExecutor() {
+            public Object execute(String line) throws Exception {
+                return client.execute(line);
+            }
+
+            public Object execute(String command, Object[] args) throws Exception {
+                return client.execute(command, args);
+            }
+
+            public Object execute(Object... args) throws Exception {
+                return client.execute(args);
+            }
+
+            public Object execute(Object[][] commands) throws Exception {
+                return client.execute(commands);
+            }
+        };
+
         this.io = io;
 
         //
         // TODO: send over some client-side details, like the terminal features, etc, as well, verbosity too)
         //       If any problem or denial occurs, throw an exception, once created the proxy is considered valid.
         //
-        
+
         client.openShell();
 
         // Setup other proxies
@@ -85,6 +105,14 @@ public class RemoteShellProxy
         opened = true;
     }
 
+    public IO getIo() {
+        return io;
+    }
+
+    public CommandLineExecutor getExecutor() {
+        return executor;
+    }
+    
     public boolean isInteractive() {
         return true;
     }
@@ -126,34 +154,6 @@ public class RemoteShellProxy
     }
 
     //
-    // Command Execution
-    //
-
-    public Object execute(final String line) throws Exception {
-        ensureOpened();
-
-        return client.execute(line);
-    }
-
-    public Object execute(final Object... args) throws Exception {
-        ensureOpened();
-
-        return client.execute((Object[])args);
-    }
-
-    public Object execute(final String path, final Object[] args) throws Exception {
-        ensureOpened();
-
-        return client.execute(path, args);
-    }
-
-    public Object execute(Object[][] commands) throws Exception {
-        ensureOpened();
-
-        return client.execute(commands);
-    }
-
-    //
     // Interactive Shell
     //
 
@@ -181,7 +181,7 @@ public class RemoteShellProxy
                 assert line != null;
 
                 try {
-                    Object result = RemoteShellProxy.this.execute(line);
+                    Object result = getExecutor().execute(line);
 
                     lastResultHolder.set(result);
                 }
@@ -245,7 +245,7 @@ public class RemoteShellProxy
 
         // Check if there are args, and run them and then enter interactive
         if (args.length != 0) {
-            execute(args);
+            getExecutor().execute(args);
         }
 
         // And then spin up the console and go for a jog

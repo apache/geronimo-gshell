@@ -36,10 +36,15 @@ public class CloseShellHandler
     }
 
     public void handle(final Session session, final ServerSessionContext context, final CloseShellMessage message) throws Exception {
+        assert session != null;
+        assert context != null;
+        assert message != null;
+
         context.shell.close();
         context.shell = null;
 
-        context.container.disposeAllComponents();
+        context.container.stop();
+        context.container.close();
         context.container = null;
 
         //

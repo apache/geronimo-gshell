@@ -23,9 +23,11 @@ import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
-import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.codehaus.plexus.classworlds.ClassWorld;
+
+import java.util.UUID;
 
 /**
  * ???
@@ -34,15 +36,27 @@ import org.codehaus.plexus.classworlds.ClassWorld;
  */
 public class OpenShellHandler
     extends ServerMessageHandlerSupport<OpenShellMessage>
+    implements BeanContainerAware
 {
+    private BeanContainer container;
+
     public OpenShellHandler() {
         super(OpenShellMessage.class);
     }
 
+    public void setBeanContainer(final BeanContainer container) {
+        this.container = container;
+    }
+
     public void handle(final Session session, final ServerSessionContext context, final OpenShellMessage message) throws Exception {
+        assert session != null;
+        assert context != null;
+        assert message != null;
+
         // Create a new container which will be the parent for our remote shells
-        ClassWorld classWorld = container.getContainerRealm().getWorld();
-        context.container = RemoteShellContainer.create(classWorld);
+        String id = "gshell.remote-shell[" + UUID.randomUUID() + "]";
+        context.container = container.createChild(id);
+        context.container.start();
 
         // Setup the I/O context (w/o auto-flushing)
         context.io = new RemoteIO(session);
@@ -51,7 +65,7 @@ public class OpenShellHandler
         // context.variables =
         
         // Create a new shell instance
-        context.shell = (RemoteShell) context.container.lookup(RemoteShell.class);
+        context.shell = context.container.getBean(RemoteShell.class);
 
         //
         // TODO: Send a meaningful response

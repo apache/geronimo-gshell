@@ -36,6 +36,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides support for the server-side of the remote shell protocol.
@@ -46,22 +47,20 @@ public class RshServer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private TimeoutManager timeoutManager;
 
+    @Autowired
     private TransportFactoryLocator locator;
-
-    private TransportServer server;
 
     private List<ServerMessageHandler> handlers;
 
-    public RshServer() {
-    }
+    private TransportServer server;
 
-    public RshServer(final TimeoutManager timeoutManager, final TransportFactoryLocator locator, final List<ServerMessageHandler> handlers) {
-        this.timeoutManager = timeoutManager;
-        this.locator = locator;
+    public RshServer(final List<ServerMessageHandler> handlers) {
+        assert handlers != null;
+
         this.handlers = handlers;
-        
     }
 
     public void bind(final URI location) throws Exception {

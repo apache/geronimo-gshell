@@ -42,8 +42,8 @@
     <modules>
         <module>gshell-whisper</module>
         <module>gshell-remote-common</module>
-        <module>gshell-remote-server</module>
         <module>gshell-remote-client</module>
+        <module>gshell-remote-server</module>
     </modules>
 
 </project>

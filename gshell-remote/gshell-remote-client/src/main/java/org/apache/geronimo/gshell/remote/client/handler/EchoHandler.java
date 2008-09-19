@@ -35,6 +35,10 @@ public class EchoHandler
     }
 
     public void handle(final Session session, final ClientSessionContext context, final EchoMessage message) throws Exception {
+        assert session != null;
+        assert context != null;
+        assert message != null;
+        
         log.info("\n\nECHO: {}\n\n", message.getText());
     }
 }

@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.server.RshServer;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * ???
@@ -33,21 +34,21 @@ import org.apache.geronimo.gshell.whisper.transport.Session;
 public class ConnectHandler
     extends ServerMessageHandlerSupport<ConnectMessage>
 {
+    @Autowired
     private CryptoContext crypto;
-    
+
+    @Autowired
     private TimeoutManager timeoutManager;
     
     public ConnectHandler() {
         super(ConnectMessage.class);
     }
 
-    public ConnectHandler(final CryptoContext crypto, final TimeoutManager timeoutManager) {
-        this();
-        this.crypto = crypto;
-        this.timeoutManager = timeoutManager;
-    }
-
     public void handle(final Session session, final ServerSessionContext context, final ConnectMessage message) throws Exception {
+        assert session != null;
+        assert context != null;
+        assert message != null;
+
         // Try to cancel the timeout task
         if (!timeoutManager.cancelTimeout(session)) {
             log.warn("Aborting handshake processing; timeout has triggered");

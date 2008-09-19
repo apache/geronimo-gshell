@@ -36,6 +36,10 @@ public class ExecuteHandler
     }
 
     public void handle(final Session session, final ServerSessionContext context, final ExecuteMessage message) throws Exception {
+        assert session != null;
+        assert context != null;
+        assert message != null;
+
         // Need to make sure that the execuing thread has the right I/O and environment in context
         // FIXME: Need to find out what to do here, w/o this lookup
         // IOLookup.set(context.container, context.io);
@@ -45,7 +49,7 @@ public class ExecuteHandler
         ExecuteMessage.Result reply;
 
         try {
-            Object result = message.execute(context.shell);
+            Object result = message.execute(context.shell.getExecutor());
 
             log.debug("Result: {}", result);
 

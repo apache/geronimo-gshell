@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.whisper.transport.ssl;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpAddressFactory;
 
 /**
- * ???
+ * Produces TCP+SSL address instances.
  *
  * @version $Rev$ $Date$
  */

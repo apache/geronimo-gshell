@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.whisper.transport.vm;
 import java.net.URI;
 
 import org.apache.geronimo.gshell.whisper.transport.InvalidLocationException;
-import org.apache.geronimo.gshell.whisper.transport.LookupException;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory;

@@ -23,9 +23,9 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,24 +36,29 @@ import java.net.URI;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-remote:rsh-server", description="Start a GShell server")
 public class RshServerCommand
-    implements CommandAction
+    implements CommandAction, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Option(name="-b", aliases={ "--background" }, description="Run in background")
+    @Option(name="-b", aliases={ "--background"})
     private boolean background;
 
-    @Argument(metaVar="URI", required=true, description="Listen for connections on URI")
+    @Argument(metaVar="URI", required=true)
     private URI location;
 
-    @Requirement
-    private RshServer server;
+    private BeanContainer container;
+
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
+        RshServer server = container.getBean(RshServer.class);
         server.bind(location);
 
         IO io = context.getIo();

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.whisper.message;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * ???
+ * Provides {@link Message.ID} instances based on {@link Long} objects.
  *
  * @version $Rev$ $Date$
  */

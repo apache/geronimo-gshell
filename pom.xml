@@ -625,9 +625,7 @@
         <module>gshell-wisdom</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
-        <!--
         <module>gshell-remote</module>
-        -->
         <module>gshell-assembly</module>
     </modules>
     

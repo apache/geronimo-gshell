@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +46,7 @@ public class DefaultRemoteShell
 
     private boolean opened = true;
 
-    public DefaultRemoteShell() {
-    }
+    public DefaultRemoteShell() {}
 
     public DefaultRemoteShell(final ShellInfo shellInfo, final CommandLineExecutor executor/*, final ShellContext context*/) {
         assert shellInfo != null;
@@ -92,32 +92,12 @@ public class DefaultRemoteShell
         return shellInfo;
     }
 
-    //
-    // Command Execution (all delegates)
-    //
-
-    public Object execute(final String line) throws Exception {
-        ensureOpened();
-
-        return executor.execute(line);
+    public IO getIo() {
+        throw new UnsupportedOperationException();
     }
 
-    public Object execute(final Object... args) throws Exception {
-        ensureOpened();
-
-        return executor.execute((Object[])args);
-    }
-
-    public Object execute(final String path, final Object[] args) throws Exception {
-        ensureOpened();
-
-        return executor.execute(path, args);
-    }
-
-    public Object execute(final Object[][] commands) throws Exception {
-        ensureOpened();
-
-        return executor.execute(commands);
+    public CommandLineExecutor getExecutor() {
+        return executor;
     }
 
     public void run(final Object... args) throws Exception {

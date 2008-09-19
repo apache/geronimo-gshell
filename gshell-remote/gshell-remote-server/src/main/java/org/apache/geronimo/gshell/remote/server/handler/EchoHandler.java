@@ -35,6 +35,10 @@ public class EchoHandler
     }
 
     public void handle(final Session session, final ServerSessionContext context, final EchoMessage message) throws Exception {
+        assert session != null;
+        assert context != null;
+        assert message != null;
+
         EchoMessage reply = new EchoMessage(message.getText());
         reply.setCorrelationId(message.getId());
         session.send(reply);

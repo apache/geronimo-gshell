@@ -23,12 +23,12 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.annotation.CommandComponent;
-import org.apache.geronimo.gshell.command.annotation.Requirement;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.PromptReader;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,46 +41,48 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@CommandComponent(id="gshell-remote:rsh", description="Connect to a remote GShell server")
 public class RshCommand
-    implements CommandAction
+    implements CommandAction, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    @Option(name="-b", aliases={"--bind"}, metaVar="URI", description="Bind local address to URI")
+    @Option(name="-b", aliases={"--bind"}, metaVar="URI")
     private URI local;
 
-    @Option(name="-u", aliases={"--username"}, metaVar="USERNAME", description="Remote user name")
+    @Option(name="-u", aliases={"--username"}, metaVar="USERNAME")
     private String username;
 
-    @Option(name="-p", aliases={"--password"}, metaVar="PASSWORD", description="Remote user password")
+    @Option(name="-p", aliases={"--password"}, metaVar="PASSWORD")
     private String password;
     
-    @Argument(metaVar="URI", required=true, index=0, description="Connect to remote server at URI")
+    @Argument(metaVar="URI", required=true, index=0)
     private URI remote;
 
-    @Argument(metaVar="COMMAND", index=1, multiValued=true, description="Execute COMMAND in remote shell")
+    @Argument(metaVar="COMMAND", index=1, multiValued=true)
     private List<String> command = new ArrayList<String>();
 
-    @Requirement
-    private PromptReader prompter;
+    private BeanContainer container;
 
-    @Requirement
-    private RshClient client;
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+        this.container = container;
+    }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-
         IO io = context.getIo();
 
         io.info("Connecting to: {}", remote);
 
+        RshClient client = container.getBean(RshClient.class);
         client.connect(remote, local);
 
         io.info("Connected");
 
         // If the username/password was not configured via cli, then prompt the user for the values
         if (username == null || password == null) {
+            PromptReader prompter = new PromptReader(io);
+
             if (username == null) {
                 username = prompter.readLine("Username: ");
             }
@@ -90,7 +92,7 @@ public class RshCommand
             }
 
             //
-            // TODO: Handle null inputs...
+            // TODO: Handle null inputs... Maybe add this support to PromptReader, then after n tries throw an exception?
             //
         }
 

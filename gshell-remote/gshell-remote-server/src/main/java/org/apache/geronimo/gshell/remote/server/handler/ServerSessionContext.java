@@ -27,8 +27,8 @@ import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.jaas.Identity;
 import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
-import org.apache.geronimo.gshell.remote.server.RemoteShellContainer;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.spring.BeanContainer;
 
 /**
  * ???
@@ -59,7 +59,7 @@ public class ServerSessionContext
         return getUserPrincipal().getName();
     }
 
-    public RemoteShellContainer container;
+    public BeanContainer container;
 
     public RemoteIO io;
 

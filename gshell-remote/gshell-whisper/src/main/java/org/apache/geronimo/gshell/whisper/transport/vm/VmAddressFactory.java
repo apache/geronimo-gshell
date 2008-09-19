@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.mina.transport.vmpipe.VmPipeAddress;
 
 /**
- * ???
+ * Produces in-VM address instances.
  *
  * @version $Rev$ $Date$
  */

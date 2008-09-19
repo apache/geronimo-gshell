@@ -38,6 +38,9 @@ public abstract class ServerMessageHandlerSupport<T extends Message>
     }
 
     public void messageReceived(final IoSession session, final T message) throws Exception {
+        assert session != null;
+        assert message != null;
+        
         ServerSessionContext context = ServerSessionContext.BINDER.lookup(session);
 
         Session s = Session.BINDER.lookup(session);
