@@ -22,19 +22,13 @@ package org.apache.geronimo.gshell.remote.message;
 import java.security.PublicKey;
 
 /**
- * ???
+ * Message sent from client to server to initiate a remote-shell connection.
  *
  * @version $Rev$ $Date$
  */
 public class ConnectMessage
     extends RshMessage
 {
-    //
-    // FIXME: Need to customize serialization of this puppy... which means we need to become CryptoContextAware too
-    //
-    //        https://issues.apache.org/jira/browse/GSHELL-118
-    //
-
     private final PublicKey publicKey;
 
     public ConnectMessage(final PublicKey publicKey) {
@@ -45,6 +39,9 @@ public class ConnectMessage
         return publicKey;
     }
 
+    /**
+     * Message sent from server to client to complete a remote-shell connection.
+     */
     public static class Result
         extends ConnectMessage
     {
