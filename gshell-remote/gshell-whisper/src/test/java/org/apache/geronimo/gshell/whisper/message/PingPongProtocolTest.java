@@ -27,21 +27,26 @@ import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.geronimo.gshell.whisper.SpringTestSupport;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.apache.mina.handler.demux.MessageHandler;
-import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class PingPongProtocolTester
-    extends PlexusTestCase
+public class PingPongProtocolTest
+    extends SpringTestSupport
 {
     private static void log(Object msg) {
-        System.err.println(">>> [" + Thread.currentThread().getName() + "] " + msg);
+        System.out.println(">>> [" + Thread.currentThread().getName() + "] " + msg);
+    }
+
+    private static void sleep(int seconds) throws InterruptedException {
+        log("Sleeping for: " + seconds);
+        Thread.sleep(seconds * 1000);
     }
 
     public static class PingMessage
@@ -63,7 +68,7 @@ public class PingPongProtocolTester
         public void messageReceived(IoSession session, PingMessage message) throws Exception {
             log(message);
 
-            Thread.sleep(5 * 1000);
+            sleep(2);
 
             session.write(new PingMessage()).join();
         }
@@ -129,19 +134,30 @@ public class PingPongProtocolTester
     public static class PingPongClientHandler
         extends PingPongProtocolHandler
     {
-
+        // Empty
     }
 
     public static class PingPongServerHandler
         extends PingPongProtocolHandler
     {
+        // Empty
+    }
 
+    private TransportFactoryLocator locator;
+
+    private TransportFactoryLocator getLocator() {
+        TransportFactoryLocator locator = (TransportFactoryLocator) applicationContext.getBean("transportFactoryLocator");
+        assertNotNull(locator);
+
+        return locator;
+    }
+
+    protected void onSetUp() throws Exception {
+        locator = getLocator();
     }
 
     public void testPingPong() throws Exception {
         URI uri = new URI("vm://local:1");
-
-        TransportFactoryLocator locator = (TransportFactoryLocator) lookup(TransportFactoryLocator.class);
 
         log("Locator: " + locator);
 
@@ -159,11 +175,11 @@ public class PingPongProtocolTester
 
         Session session = client.getSession();
 
-        Thread.sleep(5 * 1000);
+        sleep(2);
 
         session.send(new PingMessage()).join();
         
-        Thread.sleep(30 * 1000);
+        sleep(10);
 
         client.close();
 

@@ -33,8 +33,6 @@
         <property name="factories">
             <set>
                 <ref bean="vmTransportFactory"/>
-                <ref bean="tcpTransportFactory"/>
-                <ref bean="sslTransportFactory"/>
             </set>
         </property>
     </bean>
@@ -46,21 +44,5 @@
     <bean id="vmTransport" class="org.apache.geronimo.gshell.whisper.transport.vm.VmTransport" scope="prototype"/>
 
     <bean id="vmTransportServer" class="org.apache.geronimo.gshell.whisper.transport.vm.VmTransportServer" scope="prototype"/>
-
-    <!-- tcp:// -->
-
-    <bean id="tcpTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory"/>
-
-    <bean id="tcpTransport" class="org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransport" scope="prototype"/>
-
-    <bean id="tcpTransportServer" class="org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportServer" scope="prototype"/>
-
-    <!-- ssl:// -->
-
-    <bean id="sslTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory"/>
-
-    <bean id="sslTransport" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransport" scope="prototype"/>
-
-    <bean id="TransportServer" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportServer" scope="prototype"/>
 
 </beans>

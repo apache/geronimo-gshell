@@ -24,8 +24,8 @@ import java.net.URI;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.geronimo.gshell.whisper.SpringTestSupport;
 import org.apache.mina.common.IoHandlerAdapter;
-import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * Tests for the {@link VmTransportFactory} class.
@@ -33,22 +33,23 @@ import org.codehaus.plexus.PlexusTestCase;
  * @version $Rev$ $Date$
  */
 public class VmTransportFactoryTest
-    extends PlexusTestCase
+    extends SpringTestSupport
 {
-    TransportFactory factory;
+    private TransportFactory factory;
 
-    URI uri;
+    private URI uri;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        TransportFactoryLocator locator = (TransportFactoryLocator) lookup(TransportFactoryLocator.class);
-
+    private TransportFactoryLocator getLocator() {
+        TransportFactoryLocator locator = (TransportFactoryLocator) applicationContext.getBean("transportFactoryLocator");
         assertNotNull(locator);
 
+        return locator;
+    }
+
+    protected void onSetUp() throws Exception {
         uri = new URI("vm://local:1");
 
-        factory = locator.locate(uri);
+        factory = getLocator().locate(uri);
 
         assertNotNull(factory);
     }

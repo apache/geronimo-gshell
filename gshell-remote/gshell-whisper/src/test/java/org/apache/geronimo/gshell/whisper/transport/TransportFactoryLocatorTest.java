@@ -24,7 +24,7 @@ import java.net.URI;
 import org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.vm.VmTransportFactory;
-import org.codehaus.plexus.PlexusTestCase;
+import org.apache.geronimo.gshell.whisper.SpringTestSupport;
 
 /**
  * Tests for the {@link TransportFactoryLocator} class.
@@ -32,15 +32,19 @@ import org.codehaus.plexus.PlexusTestCase;
  * @version $Rev$ $Date$
  */
 public class TransportFactoryLocatorTest
-    extends PlexusTestCase
+    extends SpringTestSupport
 {
-    TransportFactoryLocator locator;
+    private TransportFactoryLocator locator;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        locator = (TransportFactoryLocator) lookup(TransportFactoryLocator.class);
+    private TransportFactoryLocator getLocator() {
+        TransportFactoryLocator locator = (TransportFactoryLocator) applicationContext.getBean("transportFactoryLocator");
         assertNotNull(locator);
+
+        return locator;
+    }
+
+    protected void onSetUp() throws Exception {
+        locator = getLocator();
     }
 
     public void testLocate_vm() throws Exception {
@@ -80,7 +84,7 @@ public class TransportFactoryLocatorTest
             locator.locate(uri);
             fail();
         }
-        catch (LookupException expected) {}
+        catch (InvalidLocationException expected) {}
     }
 
     public void testLocate_badLocation() throws Exception {
