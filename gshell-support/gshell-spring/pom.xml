@@ -73,13 +73,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-        </dependency>
-        -->
         
         <dependency>
             <groupId>org.springframework</groupId>
@@ -97,14 +90,22 @@
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-classworlds</artifactId>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-spring</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        -->
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
