@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
 
 /**
- * Contains the user authentication details which the client will pass to the server after the
+ * Client to server message which contains the user authentication details which the client will pass to the server after the
  * authetication of the connection has been established.
  *
  * @version $Rev$ $Date$

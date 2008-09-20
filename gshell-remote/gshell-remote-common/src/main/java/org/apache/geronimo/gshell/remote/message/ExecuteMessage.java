@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 
 /**
- * Execute a command.  This supports all flavors of the {@link org.apache.geronimo.gshell.commandline.CommandLineExecutor} execution methods.
+ * Client to server message to execute a command.  This supports all flavors of the {@link CommandLineExecutor} execution methods.
  *
  * @version $Rev$ $Date$
  */
@@ -70,10 +70,9 @@ public class ExecuteMessage
         return flavor.execute(this, executor);
     }
 
-    //
-    // Flavor
-    //
-    
+    /**
+     * Enumeration of the flavors of execution supported by the {@link CommandLineExecutor}.
+     */
     private static enum Flavor
     {
         STRING,         // execute(String)
@@ -105,6 +104,9 @@ public class ExecuteMessage
         }
     }
 
+    /**
+     * Server to client message to pass a non-failure execution result.
+     */
     public static class Result
         extends RshMessage
     {
@@ -119,6 +121,9 @@ public class ExecuteMessage
         }
     }
 
+    /**
+     * Server to client message to pase a failure.
+     */
     public static class Fault
         extends Result
     {
@@ -131,6 +136,9 @@ public class ExecuteMessage
         }
     }
 
+    /**
+     * Serverto client message to pass a notification.
+     */
     public static class Notification
         extends Result
     {

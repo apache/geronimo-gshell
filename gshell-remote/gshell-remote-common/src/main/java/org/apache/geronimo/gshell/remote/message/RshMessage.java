@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.remote.message;
 import org.apache.geronimo.gshell.whisper.message.BaseMessage;
 
 /**
- * ???
+ * Base type for remote-shell related messages.
  *
  * @version $Rev$ $Date$
  */

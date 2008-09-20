@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.remote.message;
 
 /**
- * Close the remote shell instance.
- *
+ * Client to server message instructing the remote-shell to be closed.
+ * 
  * @version $Rev$ $Date$
  */
 public class CloseShellMessage

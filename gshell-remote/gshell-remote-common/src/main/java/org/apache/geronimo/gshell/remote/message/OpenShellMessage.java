@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.remote.message;
 
 /**
- * Open a remote shell instance.
- *
+ * Client to server message instructing a remote-shell to be opened.
+ * 
  * @version $Rev$ $Date$
  */
 public class OpenShellMessage
