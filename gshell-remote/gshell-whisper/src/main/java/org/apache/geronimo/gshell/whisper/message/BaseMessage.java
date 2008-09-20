@@ -61,7 +61,7 @@ public class BaseMessage
     }
 
     public void setCorrelationId(final ID id) {
-        assert cid != null;
+        assert id != null;
         
         this.cid = id;
     }
