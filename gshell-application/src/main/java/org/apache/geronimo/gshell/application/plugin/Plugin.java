@@ -32,5 +32,7 @@ public interface Plugin
     
     void activate();
 
+    // TODO: enable() disable() isEnabled()
+
     // TODO: deactivate(), activate/deactiavate bundle?
 }

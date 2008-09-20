@@ -44,6 +44,9 @@ public class CommandResult
 
     public CommandResult(final Object value) {
         this(value, null, null);
+
+        assert value != null;
+        assert !(value instanceof Throwable);
     }
 
     public CommandResult(final Throwable failure) {

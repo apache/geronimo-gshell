@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 
 /**
- * ???
+ * Default {@link TimeoutManager} implementation.
  *
  * @version $Rev$ $Date$
  */

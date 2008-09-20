@@ -47,6 +47,8 @@ public class CloseShellHandler
         context.container.close();
         context.container = null;
 
+        // context.io = null;
+
         //
         // TODO: Send a meaningful response
         //

@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
- * ???
+ * Provides task timeout support.
  *
  * @version $Rev$ $Date$
  */

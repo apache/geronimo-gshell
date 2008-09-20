@@ -55,6 +55,10 @@ public abstract class SpringTestSupport
         
 	    log.debug("Prepare applciation context");
 
+        //
+        // FIXME: Need to refactor the BeanContainerImpl muck to allow some of this to be shared
+        //
+        
         container = new BeanContainer() {
             public BeanContainer getParent() {
                 return null;

@@ -33,7 +33,7 @@ import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.apache.mina.handler.demux.MessageHandler;
 
 /**
- * ???
+ * Tests a simple PING -> PONG message protocol over the VM transport.
  *
  * @version $Rev$ $Date$
  */

@@ -26,38 +26,28 @@ import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides the server-side encapsulation of the basic shell bits to allow remote clients to invoke commands.
  *
  * @version $Rev$ $Date$
  */
-public class DefaultRemoteShell
+public class RemoteShellImpl
     implements RemoteShell
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private ShellInfo shellInfo;
 
+    @Autowired
     private CommandLineExecutor executor;
-
-    // FIXME: Pull this from some manager's context
-    // private ShellContext context;
 
     private boolean opened = true;
 
-    public DefaultRemoteShell() {}
+    public RemoteShellImpl() {}
 
-    public DefaultRemoteShell(final ShellInfo shellInfo, final CommandLineExecutor executor/*, final ShellContext context*/) {
-        assert shellInfo != null;
-        assert executor != null;
-        // assert context != null;
-
-        this.shellInfo = shellInfo;
-        this.executor = executor;
-        // this.context = context;
-    }
-    
     private void ensureOpened() {
         if (!opened) {
             throw new IllegalStateException("Not opened");
@@ -82,8 +72,6 @@ public class DefaultRemoteShell
         ensureOpened();
 
         throw new Error();
-
-        // return context.getVariables();
     }
 
     public ShellInfo getInfo() {
