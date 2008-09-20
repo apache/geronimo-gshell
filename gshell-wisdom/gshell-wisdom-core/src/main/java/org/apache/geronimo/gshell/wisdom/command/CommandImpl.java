@@ -31,6 +31,8 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -44,8 +46,17 @@ import javax.annotation.PostConstruct;
  */
 public class CommandImpl
     extends CommandSupport
+    implements BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private BeanContainer container;
+
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
 
     @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
@@ -76,6 +87,10 @@ public class CommandImpl
 
         // Provide logging context for the command execution
         MDC.put("command-id", getId());
+
+        // Set the TCL to the command bean containers realm
+        final ClassLoader prevCL = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(container.getClassRealm());
 
         CommandResult result;
 
@@ -138,6 +153,8 @@ public class CommandImpl
             }
         }
         finally {
+            Thread.currentThread().setContextClassLoader(prevCL);
+
             MDC.remove("command-id");
         }
 
