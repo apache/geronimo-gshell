@@ -61,6 +61,6 @@
 
     <bean id="sslTransport" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransport" scope="prototype"/>
 
-    <bean id="TransportServer" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportServer" scope="prototype"/>
+    <bean id="sslTransportServer" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportServer" scope="prototype"/>
 
 </beans>
