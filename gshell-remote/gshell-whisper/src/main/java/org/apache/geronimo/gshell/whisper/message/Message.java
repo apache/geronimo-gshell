@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.whisper.message;
 import java.io.Serializable;
 
 /**
- * ???
+ * Abstraction of a message.
  *
  * @version $Rev$ $Date$
  */
@@ -42,6 +42,9 @@ public interface Message
 
     long getSequence();
 
+    /**
+     * Abstraction of a message identifier.
+     */
     interface ID
         extends Serializable
     {

@@ -56,4 +56,6 @@ public interface BeanContainer
     BeanContainer createChild(String id, List<URL> classPath);
 
     BeanContainer createChild(String id);
+
+    // TODO: Add wire(Object obj)
 }

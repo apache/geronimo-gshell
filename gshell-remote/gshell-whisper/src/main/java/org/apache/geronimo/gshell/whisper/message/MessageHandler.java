@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.whisper.message;
 
 /**
- * ???
+ * Provides typed handling for messages.
  *
  * @version $Rev$ $Date$
  */
