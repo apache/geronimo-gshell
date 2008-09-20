@@ -57,5 +57,5 @@ public interface BeanContainer
 
     BeanContainer createChild(String id);
 
-    // TODO: Add wire(Object obj)
+    // Object configure(Object bean);
 }

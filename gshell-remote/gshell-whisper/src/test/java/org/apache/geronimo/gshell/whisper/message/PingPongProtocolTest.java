@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
-import org.apache.geronimo.gshell.whisper.SpringTestSupport;
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.apache.mina.handler.demux.MessageHandler;

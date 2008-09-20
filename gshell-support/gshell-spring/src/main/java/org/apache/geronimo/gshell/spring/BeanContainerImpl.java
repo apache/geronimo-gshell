@@ -22,15 +22,11 @@ package org.apache.geronimo.gshell.spring;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.FatalBeanException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -38,11 +34,9 @@ import java.util.Map;
  * @version $Rev$ $Date$
  */
 public class BeanContainerImpl
-    implements BeanContainer
+    extends BeanContainerSupport
 {
     private static final String REALM_ID = "gshell";
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private BeanContainer parent;
 
@@ -91,6 +85,10 @@ public class BeanContainerImpl
         context.refresh();
     }
 
+    protected ConfigurableApplicationContext getContext() {
+        return context;
+    }
+
     public BeanContainer getParent() {
         return parent;
     }
@@ -99,69 +97,19 @@ public class BeanContainerImpl
         return classRealm;
     }
 
-    public void start() {
-        log.debug("Starting");
-
-        context.start();
-    }
-
-    public void stop() {
-        log.debug("Stopping");
-
-        context.stop();
-    }
-
-    public void close() {
-        log.debug("Closing");
-        
-        context.close();
-    }
-
-    public <T> T getBean(final Class<T> type) {
-        assert type != null;
-
-        String[] names = context.getBeanNamesForType(type);
-
-        if (names.length == 0) {
-            throw new NoSuchBeanDefinitionException(type, "No bean defined for type: " + type);
-        }
-        if (names.length > 1) {
-            throw new NoSuchBeanDefinitionException(type, "No unique bean defined for type: " + type + ", found matches: " + Arrays.asList(names));
-        }
-
-        return getBean(names[0], type);
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public <T> T getBean(final String name, final Class<T> requiredType) {
-        assert name != null;
-        assert requiredType != null;
-
-        return (T) context.getBean(name, requiredType);
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public <T> Map<String,T> getBeans(final Class<T> type) {
-        assert type != null;
-
-        return (Map<String,T>)context.getBeansOfType(type);
-    }
-
-    public String[] getBeanNames() {
-        return context.getBeanDefinitionNames();
-    }
-
-    public String[] getBeanNames(final Class type) {
-        assert type != null;
-
-        return context.getBeanNamesForType(type);
-    }
-
     public BeanContainer createChild(final String id, final List<URL> classPath) {
         assert id != null;
         // classPath may be null
 
-        log.debug("Creating child container: {}", id);
+        if (log.isTraceEnabled()) {
+            log.trace("Creating child container: {}", id);
+            if (classPath != null) {
+                log.trace("Classpath:");
+                for (URL url : classPath) {
+                    log.trace("    {}", url);
+                }
+            }
+        }
 
         ClassRealm childRealm;
         try {
@@ -180,9 +128,13 @@ public class BeanContainerImpl
         return new BeanContainerImpl(childRealm, this);
     }
 
-    public BeanContainer createChild(final String id) {
-        assert id != null;
+    /*
+    public Object configure(final Object bean) {
+        assert bean != null;
 
-        return createChild(id, null);
+        context.getAutowireCapableBeanFactory().autowireBean(bean);
+
+        return bean;
     }
+    */
 }

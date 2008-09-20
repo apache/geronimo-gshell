@@ -72,6 +72,6 @@
         </constructor-arg>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.remote.server.RemoteShellImpl" scope="prototype"/>
+    <bean id="remoteShell" class="org.apache.geronimo.gshell.remote.server.RemoteShellImpl" scope="prototype"/>
 
 </beans>

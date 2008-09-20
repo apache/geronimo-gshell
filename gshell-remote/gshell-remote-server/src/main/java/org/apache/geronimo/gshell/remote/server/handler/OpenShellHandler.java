@@ -65,7 +65,7 @@ public class OpenShellHandler
         // context.variables =
         
         // Create a new shell instance
-        context.shell = context.container.getBean(RemoteShell.class);
+        context.shell = context.container.getBean("remoteShell", RemoteShell.class);
 
         //
         // TODO: Send a meaningful response
