@@ -26,6 +26,8 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAware;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.i18n.PrefixingMessageSource;
+import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +50,8 @@ public class CommandDocumenterImpl
     private String description;
 
     private String manual;
+
+    private Renderer renderer = new Renderer();
 
     public String getName() {
         if (name == null) {
@@ -131,12 +135,18 @@ public class CommandDocumenterImpl
 
         log.debug("Rendering command manual");
 
+        out.println(renderer.render(Renderer.encode("NAME", Code.BOLD)));
+        out.print("  ");
         out.println(getName());
         out.println();
 
-        String manual = getManual();
+        out.println(renderer.render(Renderer.encode("DESCRIPTION", Code.BOLD)));
+        out.print("  ");
+        out.println(getDescription());
+        out.println();
 
-        out.println(manual);
+        out.println(renderer.render(Renderer.encode("MANUAL", Code.BOLD)));
+        out.println(getManual());
         out.println();
     }
 }
