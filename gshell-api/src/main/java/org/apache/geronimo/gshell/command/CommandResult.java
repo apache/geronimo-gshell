@@ -36,7 +36,7 @@ public class CommandResult
 
     private final Notification notification;
 
-    private CommandResult(final Object value, final Exception failure, final Notification notification) {
+    private CommandResult(final Object value, final Throwable failure, final Notification notification) {
         this.value = value;
         this.failure = failure;
         this.notification = notification;
@@ -46,10 +46,11 @@ public class CommandResult
         this(value, null, null);
     }
 
-    public CommandResult(final Exception failure) {
+    public CommandResult(final Throwable failure) {
         this(null, failure, null);
 
         assert failure != null;
+        assert !(failure instanceof Notification);
     }
 
     public CommandResult(final Notification notification) {
