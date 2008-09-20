@@ -20,117 +20,24 @@
 package org.apache.geronimo.gshell.remote.crypto;
 
 import java.security.Key;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
-
-import javax.crypto.Cipher;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides an abstraction of the crypto bits which are required for some remote shell communications.
  *
  * @version $Rev$ $Date$
  */
-public class CryptoContext
+public interface CryptoContext
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    //
-    // TODO: See if we should use DSA or RSA for this...
-    //
-    
-    private String transformation = "RSA";
+    PublicKey getPublicKey();
 
-    private String provider;
+    PublicKey deserializePublicKey(byte[] bytes) throws Exception;
 
-    private final KeyPair keyPair;
+    byte[] encrypt(Key key, byte[] bytes) throws Exception;
 
-    public CryptoContext() throws Exception {
-        KeyPairGenerator keyGen = createKeyPairGenerator();
-        keyGen.initialize(1024);
-        
-        keyPair = keyGen.genKeyPair();
-    }
+    byte[] encrypt(byte[] bytes) throws Exception;
 
-    public CryptoContext(final String transformation, final String provider) throws Exception {
-        this();
-        this.transformation = transformation;
-        this.provider = provider;
-    }
+    byte[] decrypt(Key key, byte[] bytes) throws Exception;
 
-    public PublicKey getPublicKey() {
-        return keyPair.getPublic();
-    }
-
-    private byte[] codec(final int mode, final Key key, final byte[] bytes) throws Exception {
-        assert key != null;
-        assert bytes != null;
-
-        Cipher cipher = createCipher();
-        cipher.init(mode, key);
-
-        return cipher.doFinal(bytes);
-    }
-
-    public byte[] encrypt(final Key key, final byte[] bytes) throws Exception {
-        return codec(Cipher.ENCRYPT_MODE, key, bytes);
-    }
-
-    public byte[] encrypt(final byte[] bytes) throws Exception {
-        return encrypt(keyPair.getPublic(), bytes);
-    }
-
-    public byte[] decrypt(final Key key, final byte[] bytes) throws Exception {
-        return codec(Cipher.DECRYPT_MODE, key, bytes);
-    }
-
-    public byte[] decrypt(final byte[] bytes) throws Exception {
-        return decrypt(keyPair.getPrivate(), bytes);
-    }
-
-    public PublicKey deserializePublicKey(final byte[] bytes) throws Exception {
-        assert bytes != null;
-
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(bytes);
-
-        KeyFactory keyFactory = createKeyFactory();
-
-        return keyFactory.generatePublic(spec);
-    }
-    
-    //
-    // JCE Access
-    //
-
-    private KeyPairGenerator createKeyPairGenerator() throws Exception {
-        if (provider != null) {
-            return KeyPairGenerator.getInstance(transformation, provider);
-        }
-        else {
-            return KeyPairGenerator.getInstance(transformation);
-        }
-    }
-
-    private Cipher createCipher() throws Exception {
-        if (provider != null) {
-            return Cipher.getInstance(transformation, provider);
-        }
-        else {
-            return Cipher.getInstance(transformation);
-        }
-    }
-
-    private KeyFactory createKeyFactory() throws Exception {
-        if (provider != null) {
-            return KeyFactory.getInstance(transformation, provider);
-        }
-        else {
-            return KeyFactory.getInstance(transformation);
-        }
-    }
+    byte[] decrypt(byte[] bytes) throws Exception;
 }

@@ -29,6 +29,9 @@
 
     <context:annotation-config/>
 
-    <!-- TODO: -->
+    <bean id="cryptoContext" class="org.apache.geronimo.gshell.remote.crypto.CryptoContextImpl">
+        <property name="transformation" value="RSA"/>
+        <property name="provider" value="default"/>
+    </bean>
 
 </beans>
