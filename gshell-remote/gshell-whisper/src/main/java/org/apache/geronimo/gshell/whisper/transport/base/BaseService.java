@@ -19,15 +19,12 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import java.net.SocketAddress;
-
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.request.RequestResponseFilter;
 import org.apache.geronimo.gshell.whisper.stream.SessionStreamFilter;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportExceptionMonitor;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.geronimo.gshell.yarn.Yarn;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.ExceptionMonitor;
@@ -44,6 +41,8 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.SocketAddress;
 
 /**
  * Common bits for {@link Transport} and {@link TransportServer} implementations.
@@ -70,7 +69,7 @@ public abstract class BaseService<T extends IoService>
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 
     //

@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.application.settings;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.model.settings.SettingsModel;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 /**
  * Container for settings configuration.
@@ -45,6 +44,6 @@ public class SettingsConfiguration
     }
     
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 }

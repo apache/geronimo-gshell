@@ -19,8 +19,7 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.Yarn;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.ThreadModel;
 
@@ -54,7 +53,7 @@ public class BaseConfiguration
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 
     //

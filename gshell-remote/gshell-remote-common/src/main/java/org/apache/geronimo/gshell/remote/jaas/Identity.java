@@ -19,12 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.jaas;
 
-import java.util.UUID;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 import javax.security.auth.Subject;
-
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import java.util.UUID;
 
 /**
  * Provides a subject+uuid based identity.
@@ -53,6 +51,6 @@ public class Identity
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 }

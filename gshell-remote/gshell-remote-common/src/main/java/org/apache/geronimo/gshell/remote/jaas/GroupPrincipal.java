@@ -19,10 +19,9 @@
 
 package org.apache.geronimo.gshell.remote.jaas;
 
-import java.security.Principal;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import java.security.Principal;
 
 /**
  * Group-name principal.
@@ -58,6 +57,6 @@ public class GroupPrincipal
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 }

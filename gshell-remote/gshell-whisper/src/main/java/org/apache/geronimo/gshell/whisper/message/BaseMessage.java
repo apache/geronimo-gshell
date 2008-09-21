@@ -19,10 +19,9 @@
 
 package org.apache.geronimo.gshell.whisper.message;
 
-import java.util.concurrent.atomic.AtomicLong;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Support for {@link Message} implementations.
@@ -49,7 +48,7 @@ public class BaseMessage
     }
 
     public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).toString();
+        return Yarn.render(this);
     }
 
     public ID getId() {

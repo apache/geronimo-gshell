@@ -20,8 +20,7 @@
 package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.notification.Notification;
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 /**
  * Provides the result of a command execution.
@@ -92,7 +91,7 @@ public class CommandResult
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 
     /**

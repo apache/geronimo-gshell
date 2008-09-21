@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
-import java.io.Serializable;
-
 import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
+
+import java.io.Serializable;
 
 /**
  * Client to server message which contains the user authentication details which the client will pass to the server after the

@@ -19,19 +19,18 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import org.apache.geronimo.gshell.chronos.Duration;
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.request.Requestor;
 import org.apache.geronimo.gshell.whisper.stream.SessionInputStream;
 import org.apache.geronimo.gshell.whisper.stream.SessionOutputStream;
 import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.apache.geronimo.gshell.yarn.Yarn;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * ???
@@ -52,7 +51,7 @@ public class SessionAdapter
     }
     
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 
     public IoSession getSession() {

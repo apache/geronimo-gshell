@@ -20,13 +20,13 @@
 package org.apache.geronimo.gshell.yarn;
 
 /**
- * ???
+ * Renders objects as strings.
  *
  * @version $Rev$ $Date$
  */
 public class Yarn
 {
     public static String render(final Object target) {
-        return target.toString();
+        return ReflectionToStringBuilder.toString(target, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

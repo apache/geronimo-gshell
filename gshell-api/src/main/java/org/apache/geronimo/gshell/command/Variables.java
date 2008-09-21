@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,7 +67,7 @@ public class Variables
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return Yarn.render(this);
     }
     
     public void set(final String name, final Object value) {

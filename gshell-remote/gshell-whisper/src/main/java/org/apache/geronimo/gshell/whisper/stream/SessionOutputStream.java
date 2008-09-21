@@ -23,17 +23,16 @@ package org.apache.geronimo.gshell.whisper.stream;
 // NOTE: Snatched and massaged from Apache Mina
 //
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.yarn.Yarn;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * An {@link OutputStream} that forwards all write operations as {@link StreamMessage} messages.
@@ -62,7 +61,7 @@ public class SessionOutputStream
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 
     public void close() throws IOException {

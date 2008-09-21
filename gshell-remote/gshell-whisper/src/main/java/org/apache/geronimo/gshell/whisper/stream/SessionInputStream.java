@@ -23,16 +23,15 @@ package org.apache.geronimo.gshell.whisper.stream;
 // NOTE: Snatched and massaged from Apache Mina
 //
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.geronimo.gshell.io.NestedIOException;
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.yarn.Yarn;
 import org.apache.mina.common.ByteBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * An {@link InputStream} that buffers data read from {@link StreamMessage} messages.
@@ -63,7 +62,7 @@ public class SessionInputStream
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 
     public int available() {

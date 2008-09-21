@@ -19,11 +19,10 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 /**
  * Container for application configuration.
@@ -69,6 +68,6 @@ public class ApplicationConfiguration
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 }

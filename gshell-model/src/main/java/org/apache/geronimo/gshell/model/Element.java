@@ -19,8 +19,7 @@
 
 package org.apache.geronimo.gshell.model;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 /**
  * Base class for model elements.
@@ -30,6 +29,6 @@ import org.apache.geronimo.gshell.yarn.ToStringStyle;
 public abstract class Element
 {
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 }

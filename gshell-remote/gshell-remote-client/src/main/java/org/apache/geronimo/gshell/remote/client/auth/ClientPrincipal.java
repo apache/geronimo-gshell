@@ -19,11 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.client.auth;
 
+import org.apache.geronimo.gshell.yarn.Yarn;
+
 import java.io.Serializable;
 import java.security.Principal;
-
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 
 /**
  * ???
@@ -36,13 +35,13 @@ public class ClientPrincipal
     private static final long serialVersionUID = 1;
 
     private final String name;
-    
+
     private final Object identity;
 
     public ClientPrincipal(final String name, final Object identity) {
         assert name != null;
         assert identity != null;
-        
+
         this.name = name;
         this.identity = identity;
     }
@@ -56,6 +55,6 @@ public class ClientPrincipal
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 }

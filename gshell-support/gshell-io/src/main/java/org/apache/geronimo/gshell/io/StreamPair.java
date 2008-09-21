@@ -19,8 +19,7 @@
 
 package org.apache.geronimo.gshell.io;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 import java.io.PrintStream;
 
@@ -61,7 +60,7 @@ public class StreamPair
     }
 
     public String toString() {
-        return ReflectionToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Yarn.render(this);
     }
 
     public void flush() {
