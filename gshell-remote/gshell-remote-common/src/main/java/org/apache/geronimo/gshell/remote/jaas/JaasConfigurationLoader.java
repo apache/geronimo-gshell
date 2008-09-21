@@ -27,11 +27,11 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 
 /**
- * ???
+ * Component to configure JAAS.
  *
  * @version $Rev$ $Date$
  */
-public class JaasConfigurationHelper
+public class JaasConfigurationLoader
 {
     private static final String KEY = "java.security.auth.login.config";
 
@@ -39,14 +39,20 @@ public class JaasConfigurationHelper
 
     private String resourceName;
 
-    public JaasConfigurationHelper(final String resourceName) {
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public void setResourceName(final String resourceName) {
         this.resourceName = resourceName;
     }
 
-    public JaasConfigurationHelper() {}
-
     @PostConstruct
     public void init() {
+        if (resourceName == null) {
+            throw new IllegalStateException("Missing required property: resourceName");
+        }
+
         // Initialize the JAAS configuration
         String path = System.getProperty(KEY);
 

@@ -19,18 +19,16 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import javax.security.auth.Subject;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
-import javax.annotation.PostConstruct;
-
 import org.apache.geronimo.gshell.remote.jaas.Identity;
-import org.apache.geronimo.gshell.remote.jaas.JaasConfigurationHelper;
 import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.security.auth.Subject;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
 
 /**
  * Server handler for {@link LoginMessage} messages.
@@ -57,11 +55,6 @@ public class LoginHandler
         assert defaultRealm != null;
         
         this.defaultRealm = defaultRealm;
-    }
-
-    @PostConstruct
-    public void init() {
-        new JaasConfigurationHelper("server.login.conf").init();
     }
 
     public void handle(final Session session, final ServerSessionContext context, final LoginMessage message) throws Exception {

@@ -59,6 +59,10 @@
 
     <bean id="timeoutManager" class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl"/>
 
+    <bean id="jaasConfigurationLoader" class="org.apache.geronimo.gshell.remote.jaas.JaasConfigurationLoader">
+        <property name="resourceName" value="server.login.conf"/>
+    </bean>
+
     <bean id="rshServer" class="org.apache.geronimo.gshell.remote.server.RshServer" scope="prototype">
         <constructor-arg>
             <list>

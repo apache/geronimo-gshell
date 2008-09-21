@@ -19,20 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.util.List;
-
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.login.LoginContext;
-import javax.annotation.PostConstruct;
-
 import org.apache.geronimo.gshell.remote.client.auth.RemoteLoginModule;
 import org.apache.geronimo.gshell.remote.client.handler.ClientMessageHandler;
 import org.apache.geronimo.gshell.remote.client.handler.ClientSessionContext;
 import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
-import org.apache.geronimo.gshell.remote.jaas.JaasConfigurationHelper;
 import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
@@ -50,6 +40,13 @@ import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.login.LoginContext;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.util.List;
 
 /**
  * Provides support for the client-side of the remote shell protocol.
@@ -76,11 +73,6 @@ public class RshClient
         assert handlers != null;
 
         this.handlers = handlers;
-    }
-
-    @PostConstruct
-    public void init() {
-        new JaasConfigurationHelper("client.login.conf").init();
     }
 
     public void connect(final URI remote, final URI local) throws Exception {
