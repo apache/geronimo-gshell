@@ -74,7 +74,7 @@ public class ServerSessionContext
         container = null;
 
         io = null;
-        pk = null;
         identity = null;
+        pk = null;
     }
 }
