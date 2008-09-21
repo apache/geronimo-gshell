@@ -43,6 +43,12 @@ public class ServerSessionContext
 
     public Identity identity;
 
+    public BeanContainer container;
+
+    public RemoteIO io;
+
+    public RemoteShell shell;
+
     public Object getIdentityToken() {
         return identity.getToken();
     }
@@ -58,12 +64,6 @@ public class ServerSessionContext
     public String getUsername() {
         return getUserPrincipal().getName();
     }
-
-    public BeanContainer container;
-
-    public RemoteIO io;
-
-    public RemoteShell shell;
 
     public void close() {
         shell.close();

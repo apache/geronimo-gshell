@@ -68,6 +68,9 @@ public class LoginMessage
         return realm;
     }
 
+    /**
+     * Server to client message to indicate login success.
+     */
     public static class Success
         extends RshMessage
     {
@@ -82,6 +85,9 @@ public class LoginMessage
         }
     }
 
+    /**
+     * Server to client message to indicate login failure.
+     */
     public static class Failure
         extends RshMessage
     {

@@ -40,7 +40,7 @@ public class ConnectMessage
     }
 
     /**
-     * Message sent from server to client to complete a remote-shell connection.
+     * Sever to client message to complete a remote-shell connection.
      */
     public static class Result
         extends ConnectMessage
