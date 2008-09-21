@@ -55,9 +55,9 @@ public class ExecuteHandler
             reply = new ExecuteMessage.NotificationResult(n);
         }
         catch (Throwable t) {
-            log.debug("Fault: " + t);
+            log.debug("Failure: " + t);
 
-            reply = new ExecuteMessage.FaultResult(t);
+            reply = new ExecuteMessage.FailureResult(t);
         }
 
         reply.setCorrelationId(message.getId());

@@ -173,7 +173,7 @@ public abstract class BaseService<T extends IoService>
         log.debug("Configure: {}", chain);
 
         //
-        // HACK: For right now just add a few hard codded to test with
+        // HACK: For right now just add a few hard codded to test with, need to make all this spring configured
         //
 
         chain.addLast(SessionBindingFilter.class.getSimpleName(), new SessionBindingFilter());

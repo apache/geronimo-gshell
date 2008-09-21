@@ -186,11 +186,11 @@ public class RshClient
         }
 
         // Handle result faults
-        if (result instanceof ExecuteMessage.FaultResult) {
-            ExecuteMessage.FaultResult fault = (ExecuteMessage.FaultResult)result;
+        if (result instanceof ExecuteMessage.FailureResult) {
+            ExecuteMessage.FailureResult failure = (ExecuteMessage.FailureResult)result;
 
             //noinspection ThrowableResultOfMethodCallIgnored
-            throw new RemoteExecuteException(fault.getCause());
+            throw new RemoteExecuteException(failure.getCause());
         }
 
         Object rv = result.getResult();

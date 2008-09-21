@@ -63,7 +63,18 @@ public class ServerSessionContext
 
     public RemoteIO io;
 
-    // public RemoteVariables variables;
-
     public RemoteShell shell;
+
+    public void close() {
+        shell.close();
+        shell = null;
+
+        container.stop();
+        container.close();
+        container = null;
+
+        io = null;
+        pk = null;
+        identity = null;
+    }
 }

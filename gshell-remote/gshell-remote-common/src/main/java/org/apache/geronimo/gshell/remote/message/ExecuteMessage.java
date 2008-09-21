@@ -126,10 +126,10 @@ public class ExecuteMessage
     /**
      * Server to client message to pase a failure.
      */
-    public static class FaultResult
+    public static class FailureResult
         extends Result
     {
-        public FaultResult(final Throwable cause) {
+        public FailureResult(final Throwable cause) {
             super(cause);
         }
 

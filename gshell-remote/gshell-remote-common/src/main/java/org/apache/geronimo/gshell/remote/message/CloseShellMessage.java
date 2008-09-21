@@ -28,4 +28,13 @@ public class CloseShellMessage
     extends RshMessage
 {
     public CloseShellMessage() {}
+
+    /**
+     * Server to client message when remote-shell has been closed.
+     */
+    public static class Result
+        extends RshMessage
+    {
+        // Empty
+    }
 }

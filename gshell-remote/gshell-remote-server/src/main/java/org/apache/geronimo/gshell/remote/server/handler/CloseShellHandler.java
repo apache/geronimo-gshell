@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
-import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
@@ -40,20 +39,9 @@ public class CloseShellHandler
         assert context != null;
         assert message != null;
 
-        context.shell.close();
-        context.shell = null;
+        context.close();
 
-        context.container.stop();
-        context.container.close();
-        context.container = null;
-
-        // context.io = null;
-
-        //
-        // TODO: Send a meaningful response
-        //
-
-        EchoMessage reply = new EchoMessage("CLOSE SHELL SUCCESS");
+        CloseShellMessage.Result reply = new CloseShellMessage.Result();
         reply.setCorrelationId(message.getId());
         session.send(reply);
     }

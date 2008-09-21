@@ -28,4 +28,13 @@ public class OpenShellMessage
     extends RshMessage
 {
     public OpenShellMessage() {}
+
+    /**
+     * Server to client message when remote-shell has been opened.
+     */
+    public static class Result
+        extends RshMessage
+    {
+        // Empty
+    }
 }

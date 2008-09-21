@@ -61,17 +61,10 @@ public class OpenShellHandler
         // Setup the I/O context (w/o auto-flushing)
         context.io = new RemoteIO(session);
 
-        // FIXME:
-        // context.variables =
-        
         // Create a new shell instance
         context.shell = context.container.getBean("remoteShell", RemoteShell.class);
-
-        //
-        // TODO: Send a meaningful response
-        //
-
-        EchoMessage reply = new EchoMessage("OPEN SHELL SUCCESS");
+        
+        OpenShellMessage.Result reply = new OpenShellMessage.Result();
         reply.setCorrelationId(message.getId());
         session.send(reply);
     }
