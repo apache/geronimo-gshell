@@ -39,7 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * JAAS <em>bogus</em> login module.  Accepts any username/password as vaild unless its <tt>bogus</tt>.
  *
  * @version $Rev$ $Date$
  */
@@ -66,6 +66,8 @@ public class BogusLoginModule
     }
 
     public boolean login() throws LoginException {
+        log.trace("Login");
+
         // Process the username + password callbacks
         Callback[] callbacks = {
             new NameCallback("Username: "),
@@ -96,6 +98,8 @@ public class BogusLoginModule
     }
 
     public boolean commit() throws LoginException {
+        log.trace("Commiting");
+
         principals.add(new UserPrincipal(username));
 
         subject.getPrincipals().addAll(principals);
@@ -106,12 +110,16 @@ public class BogusLoginModule
     }
 
     public boolean abort() throws LoginException {
+        log.trace("Aborting");
+
         reset();
 
         return true;
     }
 
     public boolean logout() throws LoginException {
+        log.debug("Logout");
+
         subject.getPrincipals().removeAll(principals);
 
         principals.clear();
