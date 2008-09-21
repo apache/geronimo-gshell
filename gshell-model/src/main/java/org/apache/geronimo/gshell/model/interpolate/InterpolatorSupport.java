@@ -71,11 +71,6 @@ public class InterpolatorSupport<T extends Model>
 		
 		log.trace("Interpolating: {}", xml);
 		
-		// HACK: current snapshot can't handle null here
-		if (prefixPattern == null) {
-			prefixPattern = "";
-		}
-		
 		String result = interpolator.interpolate(xml, prefixPattern, recursionInterceptor);
 		
 		log.trace("Interpolated result: {}", result);
