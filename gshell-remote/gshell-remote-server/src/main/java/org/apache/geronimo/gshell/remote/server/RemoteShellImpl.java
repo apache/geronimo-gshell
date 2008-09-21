@@ -71,7 +71,7 @@ public class RemoteShellImpl
     public Variables getVariables() {
         ensureOpened();
 
-        throw new Error();
+        throw new UnsupportedOperationException();
     }
 
     public ShellInfo getInfo() {
@@ -81,14 +81,20 @@ public class RemoteShellImpl
     }
 
     public IO getIo() {
+        ensureOpened();
+
         throw new UnsupportedOperationException();
     }
 
     public CommandLineExecutor getExecutor() {
+        ensureOpened();
+
         return executor;
     }
 
     public void run(final Object... args) throws Exception {
+        ensureOpened();
+        
         throw new UnsupportedOperationException();
     }
 
