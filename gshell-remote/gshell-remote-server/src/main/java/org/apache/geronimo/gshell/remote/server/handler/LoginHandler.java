@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * ???
+ * Server handler for {@link LoginMessage} messages.
  *
  * @version $Rev$ $Date$
  */
@@ -47,6 +47,16 @@ public class LoginHandler
 
     public LoginHandler() {
         super(LoginMessage.class);
+    }
+
+    public String getDefaultRealm() {
+        return defaultRealm;
+    }
+
+    public void setDefaultRealm(final String defaultRealm) {
+        assert defaultRealm != null;
+        
+        this.defaultRealm = defaultRealm;
     }
 
     @PostConstruct

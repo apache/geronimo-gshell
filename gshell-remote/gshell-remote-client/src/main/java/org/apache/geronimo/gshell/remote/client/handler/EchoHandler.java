@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
- * ???
+ * Client handler for {@link EchoMessage} messages.
  *
  * @version $Rev$ $Date$
  */

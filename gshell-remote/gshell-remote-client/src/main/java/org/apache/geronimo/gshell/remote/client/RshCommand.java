@@ -103,14 +103,14 @@ public class RshCommand
 
         RemoteShellProxy shell = new RemoteShellProxy(client, io);
 
-        Object rv = Result.SUCCESS;
+        Object result = Result.SUCCESS;
 
         try {
             shell.run(command.toArray());
         }
         catch (ExitNotification n) {
             // Make sure that we catch this notification, so that our parent shell doesn't exit when the remote shell does
-            rv = n.code;
+            result = n.code;
         }
 
         shell.close();
@@ -121,6 +121,6 @@ public class RshCommand
 
         io.verbose("Disconnected");
 
-        return rv;
+        return result;
     }
 }

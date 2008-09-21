@@ -31,7 +31,7 @@ import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 
 /**
- * ???
+ * Container for server-side session state.
  *
  * @version $Rev$ $Date$
  */

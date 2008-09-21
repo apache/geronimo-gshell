@@ -57,16 +57,18 @@
         </property>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl"/>
+    <bean id="timeoutManager" class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl"/>
 
-    <bean class="org.apache.geronimo.gshell.remote.server.RshServer" scope="prototype">
+    <bean id="rshServer" class="org.apache.geronimo.gshell.remote.server.RshServer" scope="prototype">
         <constructor-arg>
             <list>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.CloseShellHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.ConnectHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.EchoHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.ExecuteHandler"/>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler"/>
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler">
+                    <property name="defaultRealm" value="BogusLogin"/>
+                </bean>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.OpenShellHandler"/>
             </list>
         </constructor-arg>

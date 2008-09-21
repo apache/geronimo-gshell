@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.commandline;
 
+import org.apache.geronimo.gshell.shell.ShellContext;
+
 /**
  * Provides the ability to execute commands.
  *
@@ -29,41 +31,45 @@ public interface CommandLineExecutor
     /**
      * Execute a command-line, parsing out valid recognized syntax.
      *
-     * @param line  Raw command-line to parse and execute.
-     * @return      Command execution result.
+     * @param context   The executing shell's context.
+     * @param line      Raw command-line to parse and execute.
+     * @return          Command execution result.
      *
      * @throws Exception    Command-line execution failed.
      */
-    Object execute(String line) throws Exception;
+    Object execute(ShellContext context, String line) throws Exception;
 
     /**
      * Execute command name/path with the given arguments.
      *
+     * @param context   The executing shell's context.
      * @param command   Name of the command/path to execute.
      * @param args      Command arguments.
      * @return          Command execution result.
      *
      * @throws Exception    Command-line execution failed.
      */
-    Object execute(String command, final Object[] args) throws Exception;
+    Object execute(ShellContext context, String command, Object[] args) throws Exception;
 
     /**
      * Execute a pre-processed command-line.
      *
-     * @param args  Command arguments, first argument is expected to be the command/path to execute.
-     * @return      Command execution result.
+     * @param context   The executing shell's context.
+     * @param args      Command arguments, first argument is expected to be the command/path to execute.
+     * @return          Command execution result.
      *
      * @throws Exception    Command-line execution failed.
      */
-    Object execute(Object... args) throws Exception;
+    Object execute(ShellContext context, Object... args) throws Exception;
 
     /**
      * Execute a piped-command-line.
      *
+     * @param context   The executing shell's context.
      * @param commands  Command arguments.
      * @return          Command execution result.
      *
      * @throws Exception    Command-line execution failed.
      */
-    Object execute(Object[][] commands) throws Exception;
+    Object execute(ShellContext context, Object[][] commands) throws Exception;
 }

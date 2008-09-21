@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
@@ -30,6 +28,7 @@ import org.apache.geronimo.gshell.parser.CommandLineParser;
 import org.apache.geronimo.gshell.parser.ParseException;
 import org.apache.geronimo.gshell.parser.visitor.ExecutingVisitor;
 import org.apache.geronimo.gshell.parser.visitor.LoggingVisitor;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +46,6 @@ public class CommandLineBuilderImpl
     implements CommandLineBuilder
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private ApplicationManager applicationManager;
 
     @Autowired
     private CommandLineParser parser;
@@ -77,27 +73,24 @@ public class CommandLineBuilderImpl
         return cl;
     }
 
-    protected Variables getVariables() {
-        assert applicationManager != null;
-        return applicationManager.getApplication().getVariables();
-    }
+    public CommandLine create(final String line) throws ParseException {
+        assert line != null;
 
-    public CommandLine create(final String commandLine) throws ParseException {
-        assert commandLine != null;
+        log.debug("Building command-line for: {}", line);
 
-        if (commandLine.trim().length() == 0) {
+        if (line.trim().length() == 0) {
             throw new IllegalArgumentException("Command line is empty");
         }
 
         try {
-            final Variables vars = getVariables();
-            final ASTCommandLine root = parse(commandLine);
+            final ASTCommandLine root = parse(line);
 
             return new CommandLine() {
-                public Object execute(final CommandLineExecutor executor) throws Exception {
+                public Object execute(final ShellContext context, final CommandLineExecutor executor) throws Exception {
+                    assert context != null;
                     assert executor != null;
 
-                    ExecutingVisitor visitor = new ExecutingVisitor(executor, vars);
+                    ExecutingVisitor visitor = new ExecutingVisitor(context, executor);
 
                     return root.jjtAccept(visitor, null);
                 }

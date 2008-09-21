@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.Command;
@@ -35,6 +34,7 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,15 +60,13 @@ public class CommandLineExecutorImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ApplicationManager applicationManager;
-
-    @Autowired
     private CommandResolver commandResolver;
 
     @Autowired
     private CommandLineBuilder commandLineBuilder;
 
-    public Object execute(final String line) throws Exception {
+    public Object execute(final ShellContext context, final String line) throws Exception {
+        assert context != null;
         assert line != null;
 
         log.info("Executing (String): {}", line);
@@ -76,7 +74,9 @@ public class CommandLineExecutorImpl
         try {
             CommandLine commandLine = commandLineBuilder.create(line);
 
-            return commandLine.execute(this);
+            log.trace("Command-line: {}", commandLine);
+            
+            return commandLine.execute(context, this);
         }
         catch (ErrorNotification n) {
             // Decode the error notifiation
@@ -95,42 +95,37 @@ public class CommandLineExecutorImpl
         }
     }
 
-    protected IO getIo() {
-        assert applicationManager != null;
-        return applicationManager.getApplication().getIo();
-    }
-
-    protected Variables getVariables() {
-        assert applicationManager != null;
-        return applicationManager.getApplication().getVariables();
-    }
-
-    public Object execute(final Object... args) throws Exception {
+    public Object execute(final ShellContext context, final Object... args) throws Exception {
+        assert context != null;
         assert args != null;
         assert args.length > 1;
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
-        return execute(String.valueOf(args[0]), Arguments.shift(args), getIo());
+        return doExecute(context, String.valueOf(args[0]), Arguments.shift(args));
     }
 
-    public Object execute(final String path, final Object[] args) throws Exception {
+    public Object execute(final ShellContext context, final String path, final Object[] args) throws Exception {
+        assert context != null;
         assert path != null;
         assert args != null;
 
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
-        return execute(path, args, getIo());
+        return doExecute(context, path, args);
     }
 
-    public Object execute(final Object[][] commands) throws Exception {
+    public Object execute(final ShellContext context, final Object[][] commands) throws Exception {
+        assert context != null;
         assert commands != null;
+
+        log.info("Executing (Object[][]): {}", Arguments.asString(commands));
 
         // Prepare IOs
         final IO[] ios = new IO[commands.length];
         PipedOutputStream pos = null;
 
-        IO io = getIo();
+        IO io = context.getIo();
 
         for (int i = 0; i < ios.length; i++) {
             InputStream is = (i == 0) ? io.inputStream : new PipedInputStream(pos);
@@ -156,10 +151,20 @@ public class CommandLineExecutorImpl
             threads[i] = createThread(new Runnable() {
                 public void run() {
                     try {
-                        Object o = execute(String.valueOf(commands[idx][0]), Arguments.shift(commands[idx]), ios[idx]);
+                        ShellContext pipedContext = new ShellContext() {
+                            public IO getIo() {
+                                return ios[idx];
+                            }
+
+                            public Variables getVariables() {
+                                return context.getVariables();
+                            }
+                        };
+
+                        Object obj = execute(pipedContext, String.valueOf(commands[idx][0]), Arguments.shift(commands[idx]));
 
                         if (idx == commands.length - 1) {
-                            ref.set(o);
+                            ref.set(obj);
                         }
                     }
                     catch (Throwable t) {
@@ -202,10 +207,13 @@ public class CommandLineExecutorImpl
         return new Thread(task);
     }
 
-    protected Object execute(final String path, final Object[] args, final IO io) throws Exception {
+    protected Object doExecute(final ShellContext context, final String path, final Object[] args) throws Exception {
+        assert context != null;
+
         log.debug("Executing");
 
-        Variables variables = getVariables();
+        IO io = context.getIo();
+        Variables variables = context.getVariables();
 
         Command command = commandResolver.resolve(variables, path);
 

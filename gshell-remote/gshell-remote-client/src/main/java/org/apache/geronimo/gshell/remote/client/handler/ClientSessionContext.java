@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.remote.client.auth.ClientPrincipal;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 
 /**
- * ???
+ * Container for client-side session state.
  *
  * @version $Rev$ $Date$
  */

@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.commandline;
 
+import org.apache.geronimo.gshell.shell.ShellContext;
+
 /**
  * A abstraction of an executable command-line.
  *
@@ -32,10 +34,11 @@ public interface CommandLine
     /**
      * Execute the command-line.
      *
+     * @param context   The executing shell's context.
      * @param executor  The command-line executor to handle execution of command-line elements.
      * @return          The final result of the command-line.
      *
      * @throws Exception    Failed to execute command-line.
      */
-    Object execute(CommandLineExecutor executor) throws Exception;
+    Object execute(ShellContext context, CommandLineExecutor executor) throws Exception;
 }

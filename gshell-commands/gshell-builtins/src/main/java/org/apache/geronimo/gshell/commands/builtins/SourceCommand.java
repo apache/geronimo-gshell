@@ -22,7 +22,10 @@ package org.apache.geronimo.gshell.commands.builtins;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.io.IO;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,8 +77,18 @@ public class SourceCommand
                 if (tmp.length() == 0 || tmp.startsWith("#")) {
                     continue;
                 }
-                
-                executor.execute(line);
+
+                ShellContext ctx = new ShellContext() {
+                    public IO getIo() {
+                        return context.getIo();
+                    }
+
+                    public Variables getVariables() {
+                        return context.getVariables();
+                    }
+                };
+
+                executor.execute(ctx, line);
             }
         }
         finally {

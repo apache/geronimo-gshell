@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.remote.message;
 
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.notification.Notification;
 
 /**
  * Client to server message to execute a command.  This supports all flavors of the {@link CommandLineExecutor} execution methods.
@@ -64,14 +66,14 @@ public class ExecuteMessage
         this(null, null, null, null);
     }
 
-    public Object execute(final CommandLineExecutor executor) throws Exception {
-        assert executor != null;
+    public Object execute(final Shell shell) throws Exception {
+        assert shell != null;
 
-        return flavor.execute(this, executor);
+        return flavor.execute(this, shell);
     }
 
     /**
-     * Enumeration of the flavors of execution supported by the {@link CommandLineExecutor}.
+     * Enumeration of the flavors of execution supported by a {@link Shell}.
      */
     private static enum Flavor
     {
@@ -81,22 +83,22 @@ public class ExecuteMessage
         COMMANDS,       // execute(Object[][])
         ;
 
-        public Object execute(final ExecuteMessage msg, final CommandLineExecutor executor) throws Exception {
+        public Object execute(final ExecuteMessage msg, final Shell shell) throws Exception {
             assert msg != null;
-            assert executor != null;
+            assert shell != null;
 
             switch (this) {
                 case STRING:
-                    return executor.execute((String)msg.args[0]);
+                    return shell.execute((String)msg.args[0]);
                 
                 case OBJECTS:
-                    return executor.execute(msg.args);
+                    return shell.execute(msg.args);
 
                 case STRING_OBJECTS:
-                    return executor.execute(msg.path, msg.args);
+                    return shell.execute(msg.path, msg.args);
 
                 case COMMANDS:
-                    return executor.execute(msg.cmds);
+                    return shell.execute(msg.cmds);
             }
 
             // This should never happen
@@ -124,30 +126,30 @@ public class ExecuteMessage
     /**
      * Server to client message to pase a failure.
      */
-    public static class Fault
+    public static class FaultResult
         extends Result
     {
-        public Fault(final Throwable cause) {
+        public FaultResult(final Throwable cause) {
             super(cause);
         }
 
         public Throwable getCause() {
-            return (Throwable) getResult();
+            return (Throwable)getResult();
         }
     }
 
     /**
      * Serverto client message to pass a notification.
      */
-    public static class Notification
+    public static class NotificationResult
         extends Result
     {
-        public Notification(final org.apache.geronimo.gshell.notification.Notification n) {
+        public NotificationResult(final Notification n) {
             super(n);
         }
 
-        public org.apache.geronimo.gshell.notification.Notification getNotification() {
-            return (org.apache.geronimo.gshell.notification.Notification) getResult();
+        public Notification getNotification() {
+            return (Notification)getResult();
         }
     }
 }

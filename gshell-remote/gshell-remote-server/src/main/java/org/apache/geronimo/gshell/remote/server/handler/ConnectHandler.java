@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * ???
+ * Server handler for {@link ConnectMessage} messages.
  *
  * @version $Rev$ $Date$
  */

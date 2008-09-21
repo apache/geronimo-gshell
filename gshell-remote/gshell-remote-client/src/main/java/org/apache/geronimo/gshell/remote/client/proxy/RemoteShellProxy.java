@@ -20,16 +20,16 @@
 package org.apache.geronimo.gshell.remote.client.proxy;
 
 import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.client.RshClient;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.whisper.stream.StreamFeeder;
-import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,13 +47,11 @@ public class RemoteShellProxy
 
     private final RshClient client;
 
-    private final CommandLineExecutor executor;
-
     private final IO io;
 
     private final StreamFeeder outputFeeder;
 
-    private final RemoteShellContextProxy context;
+    private final ShellContext context;
 
     private final RemoteShellInfoProxy shellInfo;
 
@@ -66,24 +64,6 @@ public class RemoteShellProxy
         assert io != null;
 
         this.client = client;
-        this.executor = new CommandLineExecutor() {
-            public Object execute(String line) throws Exception {
-                return client.execute(line);
-            }
-
-            public Object execute(String command, Object[] args) throws Exception {
-                return client.execute(command, args);
-            }
-
-            public Object execute(Object... args) throws Exception {
-                return client.execute(args);
-            }
-
-            public Object execute(Object[][] commands) throws Exception {
-                return client.execute(commands);
-            }
-        };
-
         this.io = io;
 
         //
@@ -94,7 +74,6 @@ public class RemoteShellProxy
         client.openShell();
 
         // Setup other proxies
-        context = new RemoteShellContextProxy(client);
         shellInfo = new RemoteShellInfoProxy(client);
         history = new RemoteHistoryProxy(client);
 
@@ -102,31 +81,17 @@ public class RemoteShellProxy
         outputFeeder = new StreamFeeder(client.getInputStream(), io.outputStream);
         outputFeeder.createThread().start();
 
+        context = new ShellContext() {
+            public IO getIo() {
+                return io;
+            }
+
+            public Variables getVariables() {
+                throw new UnsupportedOperationException();
+            }
+        };
+
         opened = true;
-    }
-
-    public IO getIo() {
-        return io;
-    }
-
-    public CommandLineExecutor getExecutor() {
-        return executor;
-    }
-    
-    public boolean isInteractive() {
-        return true;
-    }
-
-    public Variables getVariables() {
-        ensureOpened();
-
-        return context.getVariables();
-    }
-
-    public ShellInfo getInfo() {
-        ensureOpened();
-
-        return shellInfo;
     }
 
     private void ensureOpened() {
@@ -149,13 +114,49 @@ public class RemoteShellProxy
             outputFeeder.close();
         }
         catch (Exception ignore) {}
-        
+
         opened = false;
     }
 
-    //
-    // Interactive Shell
-    //
+    public ShellContext getContext() {
+        ensureOpened();
+
+        return context;
+    }
+
+    public ShellInfo getInfo() {
+        ensureOpened();
+
+        return shellInfo;
+    }
+
+    public Object execute(final String line) throws Exception {
+        ensureOpened();
+
+        return client.execute(line);
+    }
+
+    public Object execute(final String command, final Object[] args) throws Exception {
+        ensureOpened();
+
+        return client.execute(command, args);
+    }
+
+    public Object execute(final Object... args) throws Exception {
+        ensureOpened();
+
+        return client.execute(args);
+    }
+
+    public Object execute(final Object[][] commands) throws Exception {
+        ensureOpened();
+
+        return client.execute(commands);
+    }
+    
+    public boolean isInteractive() {
+        return true;
+    }
 
     public void run(final Object... args) throws Exception {
         assert args != null;
@@ -181,7 +182,7 @@ public class RemoteShellProxy
                 assert line != null;
 
                 try {
-                    Object result = getExecutor().execute(line);
+                    Object result = RemoteShellProxy.this.execute(line);
 
                     lastResultHolder.set(result);
                 }
@@ -245,7 +246,7 @@ public class RemoteShellProxy
 
         // Check if there are args, and run them and then enter interactive
         if (args.length != 0) {
-            getExecutor().execute(args);
+            execute(args);
         }
 
         // And then spin up the console and go for a jog

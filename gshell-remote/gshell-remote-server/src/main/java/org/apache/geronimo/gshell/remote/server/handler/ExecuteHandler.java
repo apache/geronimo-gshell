@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
- * ???
+ * Server handler for {@link ExecuteMessage} messages.
  *
  * @version $Rev$ $Date$
  */
@@ -40,16 +40,10 @@ public class ExecuteHandler
         assert context != null;
         assert message != null;
 
-        // Need to make sure that the execuing thread has the right I/O and environment in context
-        // FIXME: Need to find out what to do here, w/o this lookup
-        // IOLookup.set(context.container, context.io);
-        // FIXME: Need to find out what to do here, w/o this lookup
-        // EnvironmentLookup.set(context.container, context.env);
-
         ExecuteMessage.Result reply;
 
         try {
-            Object result = message.execute(context.shell.getExecutor());
+            Object result = message.execute(context.shell);
 
             log.debug("Result: {}", result);
 
@@ -58,12 +52,12 @@ public class ExecuteHandler
         catch (Notification n) {
             log.debug("Notification: " + n);
 
-            reply = new ExecuteMessage.Notification(n);
+            reply = new ExecuteMessage.NotificationResult(n);
         }
         catch (Throwable t) {
             log.debug("Fault: " + t);
 
-            reply = new ExecuteMessage.Fault(t);
+            reply = new ExecuteMessage.FaultResult(t);
         }
 
         reply.setCorrelationId(message.getId());

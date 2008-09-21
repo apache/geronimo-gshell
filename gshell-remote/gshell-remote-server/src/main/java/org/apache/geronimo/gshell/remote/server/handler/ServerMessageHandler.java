@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.whisper.message.MessageHandler;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
- * ???
+ * Support for typed server message handlers.
  *
  * @version $Rev$ $Date$
  */

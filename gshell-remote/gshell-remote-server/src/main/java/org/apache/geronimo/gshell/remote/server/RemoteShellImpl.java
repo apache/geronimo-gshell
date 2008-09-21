@@ -19,11 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.remote.RemoteShell;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellInfo;
-import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,14 +63,12 @@ public class RemoteShellImpl
         opened = false;
     }
 
-    public boolean isInteractive() {
-        return false;
-    }
-
-    public Variables getVariables() {
+    public ShellContext getContext() {
         ensureOpened();
 
-        throw new UnsupportedOperationException();
+        // FIXME:
+
+        return null;
     }
 
     public ShellInfo getInfo() {
@@ -80,21 +77,43 @@ public class RemoteShellImpl
         return shellInfo;
     }
 
-    public IO getIo() {
+    public Object execute(final String line) throws Exception {
         ensureOpened();
 
-        throw new UnsupportedOperationException();
+        // FIXME:
+
+        return null;
     }
 
-    public CommandLineExecutor getExecutor() {
+    public Object execute(final String command, final Object[] args) throws Exception {
         ensureOpened();
 
-        return executor;
+        // FIXME:
+
+        return null;
+    }
+
+    public Object execute(final Object... args) throws Exception {
+        ensureOpened();
+
+        // FIXME:
+
+        return null;
+    }
+
+    public Object execute(final Object[][] commands) throws Exception {
+        ensureOpened();
+
+        // FIXME:
+
+        return null;
+    }
+
+    public boolean isInteractive() {
+        return false;
     }
 
     public void run(final Object... args) throws Exception {
-        ensureOpened();
-        
         throw new UnsupportedOperationException();
     }
 

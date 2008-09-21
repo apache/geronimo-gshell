@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.mina.common.IoSession;
 
 /**
- * ???
+ * Support for {@link ClientMessageHandler} implementations.
  *
  * @version $Rev$ $Date$
  */

@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.whisper.transport.Session;
 import java.util.UUID;
 
 /**
- * ???
+ * Server handler for {@link OpenShellMessage} messages.
  *
  * @version $Rev$ $Date$
  */

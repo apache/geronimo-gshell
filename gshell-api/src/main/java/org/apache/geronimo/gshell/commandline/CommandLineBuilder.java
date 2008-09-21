@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.commandline;
 
+import org.apache.geronimo.gshell.shell.ShellContext;
+
 /**
  * Builds {@link CommandLine} instances ready for executing.
  *
@@ -29,8 +31,8 @@ public interface CommandLineBuilder
     /**
      * Build a command-line from the given input string.
      *
-     * @param input Command-line to parse.
-     * @return      Parsed command-line.
+     * @param input     Command-line to parse.
+     * @return          Parsed command-line.
      *
      * @throws Exception    Failed to construct command-line.
      */

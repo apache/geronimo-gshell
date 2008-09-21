@@ -187,16 +187,17 @@ public class RshClient
         ExecuteMessage.Result result = (ExecuteMessage.Result) session.request(msg);
 
         // Handle result notifications
-        if (result instanceof ExecuteMessage.Notification) {
-            ExecuteMessage.Notification n = (ExecuteMessage.Notification)result;
+        if (result instanceof ExecuteMessage.NotificationResult) {
+            ExecuteMessage.NotificationResult n = (ExecuteMessage.NotificationResult)result;
 
             throw n.getNotification();
         }
 
         // Handle result faults
-        if (result instanceof ExecuteMessage.Fault) {
-            ExecuteMessage.Fault fault = (ExecuteMessage.Fault)result;
+        if (result instanceof ExecuteMessage.FaultResult) {
+            ExecuteMessage.FaultResult fault = (ExecuteMessage.FaultResult)result;
 
+            //noinspection ThrowableResultOfMethodCallIgnored
             throw new RemoteExecuteException(fault.getCause());
         }
 

@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.shell;
 
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
-import org.apache.geronimo.gshell.io.IO;
-
 /**
  * Provides access to execute commands.
  *
@@ -30,19 +26,18 @@ import org.apache.geronimo.gshell.io.IO;
  */
 public interface Shell
 {
-    IO getIo();
+    ShellContext getContext();
 
-    Variables getVariables();
-
-    /**
-     * Get the runtime configuration details of the shell.
-     *
-     * @return The runtime configuration of the shell.
-     */
     ShellInfo getInfo();
 
-    CommandLineExecutor getExecutor();
+    Object execute(String line) throws Exception;
 
+    Object execute(String command, Object[] args) throws Exception;
+
+    Object execute(Object... args) throws Exception;
+
+    Object execute(Object[][] commands) throws Exception;
+    
     /**
      * Check if the shell can be run interactivly.
      * 

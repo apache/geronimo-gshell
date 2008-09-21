@@ -30,8 +30,8 @@ import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
 import org.apache.geronimo.gshell.command.Arguments;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.interpolation.VariableInterpolator;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,18 +48,18 @@ public class ExecutingVisitor
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Variables variables;
+    private final ShellContext context;
 
     private final CommandLineExecutor executor;
 
     private final VariableInterpolator interp = new VariableInterpolator();
 
-    public ExecutingVisitor(final CommandLineExecutor executor, final Variables variables) {
+    public ExecutingVisitor(final ShellContext context, final CommandLineExecutor executor) {
+        assert context != null;
         assert executor != null;
-        assert variables != null;
 
+        this.context = context;
         this.executor = executor;
-        this.variables = variables;
     }
 
     public Object visit(final SimpleNode node, final Object data) {
@@ -82,7 +82,12 @@ public class ExecutingVisitor
     public Object visit(final ASTExpression node, final Object data) {
         assert node != null;
 
+        //
+        // FIXME: Really shouldn't use Object[][] execute for everything, as it costs some thread creation
+        //
+        
         Object[][] commands = new Object[node.jjtGetNumChildren()][];
+
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             ASTProcess proc = (ASTProcess) node.jjtGetChild(i);
             List<Object> list = new ArrayList<Object>(proc.jjtGetNumChildren());
@@ -90,14 +95,17 @@ public class ExecutingVisitor
             commands[i] = list.toArray(new Object[list.size()]);
             assert list.size() >= 1;
         }
+
         try {
-            return executor.execute(commands);
+            return executor.execute(context, commands);
         }
         catch (Exception e) {
             String s = Arguments.asString(commands[0]);
+
             for (int i = 1; i < commands.length; i++) {
                 s += " | " + Arguments.asString(commands[i]);
             }
+
             throw new ErrorNotification("Shell execution failed; commands=" + s, e);
         }
     }
@@ -120,7 +128,7 @@ public class ExecutingVisitor
     public Object visit(final ASTQuotedString node, final Object data) {
         assert node != null;
 
-        String value = interp.interpolate(node.getValue(), variables);
+        String value = interp.interpolate(node.getValue(), context.getVariables());
 
         return appendString(value, data);
     }
@@ -128,7 +136,7 @@ public class ExecutingVisitor
     public Object visit(final ASTPlainString node, final Object data) {
         assert node != null;
 
-        String value = interp.interpolate(node.getValue(), variables);
+        String value = interp.interpolate(node.getValue(), context.getVariables());
 
         return appendString(value, data);
     }

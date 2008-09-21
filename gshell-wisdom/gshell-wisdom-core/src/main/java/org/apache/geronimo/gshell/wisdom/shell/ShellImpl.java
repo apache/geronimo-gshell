@@ -21,23 +21,24 @@ package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
 import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.event.Event;
+import org.apache.geronimo.gshell.event.EventListener;
+import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellInfo;
-import org.apache.geronimo.gshell.event.EventManager;
-import org.apache.geronimo.gshell.event.EventListener;
-import org.apache.geronimo.gshell.event.Event;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
-import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.command.Variables;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,9 +72,7 @@ public class ShellImpl
     @Autowired
     private History history;
 
-    private Variables variables;
-
-    private IO io;
+    private ShellContext context;
 
     private Branding branding;
 
@@ -81,16 +80,11 @@ public class ShellImpl
 
     private ErrorHandler errorHandler;
 
-    public IO getIo() {
-        return io;
-    }
-
-    public Variables getVariables() {
-        return variables;
-    }
-
-    public CommandLineExecutor getExecutor() {
-        return executor;
+    public ShellContext getContext() {
+        if (context == null) {
+            throw new IllegalStateException("Shell context has not been initialized");
+        }
+        return context;
     }
 
     public ShellInfo getInfo() {
@@ -114,9 +108,17 @@ public class ShellImpl
                     log.debug("Binding application io/variables/branding from context");
 
                     // Dereference some bits from the applciation context
-                    Application application = targetEvent.getApplication();
-                    io = application.getIo();
-                    variables = application.getVariables();
+                    final Application application = targetEvent.getApplication();
+                    context = new ShellContext() {
+                        public IO getIo() {
+                            return application.getIo();
+                        }
+
+                        public Variables getVariables() {
+                            return application.getVariables();
+                        }
+                    };
+                    
                     branding = application.getModel().getBranding();
 
                     loadProfileScripts();
@@ -124,10 +126,26 @@ public class ShellImpl
             }
         });
     }
-    
-    //
-    // Interactive Shell
-    //
+
+    public Object execute(final String line) throws Exception {
+        assert executor != null;
+        return executor.execute(getContext(), line);
+    }
+
+    public Object execute(final String command, final Object[] args) throws Exception {
+        assert executor != null;
+        return executor.execute(getContext(), command, args);
+    }
+
+    public Object execute(final Object... args) throws Exception {
+        assert executor != null;
+        return executor.execute(getContext(), args);
+    }
+
+    public Object execute(final Object[][] commands) throws Exception {
+        assert executor != null;
+        return executor.execute(getContext(), commands);
+    }
 
     public void run(final Object... args) throws Exception {
         assert args != null;
@@ -147,7 +165,7 @@ public class ShellImpl
                 assert line != null;
 
                 try {
-                    Object result = getExecutor().execute(line);
+                    Object result = ShellImpl.this.execute(line);
 
                     lastResultHolder.set(result);
                 }
@@ -160,6 +178,8 @@ public class ShellImpl
                 return Result.CONTINUE;
             }
         };
+
+        IO io = getContext().getIo();
 
         // Ya, bust out the sexy JLine console baby!
         JLineConsole console = new JLineConsole(executor, io);
@@ -187,7 +207,7 @@ public class ShellImpl
 
         // Check if there are args, and run them and then enter interactive
         if (args.length != 0) {
-            getExecutor().execute(args);
+            execute(args);
         }
 
         // And then spin up the console and go for a jog
@@ -272,6 +292,8 @@ public class ShellImpl
             cause = error.getCause();
         }
 
+        IO io = getContext().getIo();
+
         // Spit out the terse reason why we've failed
         io.err.print("@|bold,red ERROR| ");
         io.err.print(cause.getClass().getSimpleName());
@@ -340,7 +362,7 @@ public class ShellImpl
             String line;
 
             while ((line = reader.readLine()) != null) {
-                getExecutor().execute(line);
+                execute(line);
             }
         }
         finally {
