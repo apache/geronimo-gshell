@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.yarn;
 
 /**
- * ???
+ * Container for the default Yarn styles.
  *
  * @version $Rev$ $Date$
  */

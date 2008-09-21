@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 /**
- * ???
+ * Annotates objects with stying information which is interpreted by {@link Yarn} when rendering.
  *
  * @version $Rev$ $Date$
  */
