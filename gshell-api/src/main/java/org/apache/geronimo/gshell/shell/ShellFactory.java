@@ -29,7 +29,7 @@ public interface ShellFactory
     /**
      * Create a new shell instance.
      *
-     * @return  A new shell instance.
+     * @return A new shell instance; never null.
      * 
      * @throws Exception    Failed to create shell instance.
      */

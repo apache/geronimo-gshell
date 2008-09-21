@@ -34,14 +34,14 @@ public interface Shell
 
     Variables getVariables();
 
-    CommandLineExecutor getExecutor();
-    
     /**
      * Get the runtime configuration details of the shell.
      *
      * @return The runtime configuration of the shell.
      */
     ShellInfo getInfo();
+
+    CommandLineExecutor getExecutor();
 
     /**
      * Check if the shell can be run interactivly.
@@ -51,12 +51,12 @@ public interface Shell
     boolean isInteractive();
 
     /**
-     * Run the shell iteractivly.
+     * Run the shell interactivly.
      *
-     * @param args  The initial commands to execute iteractivly.
+     * @param args  The initial commands to execute interactivly.
      *
      * @throws Exception                        Failed to execute commands.
-     * @throws UnsupportedOperationException    The shell does not support iteractive execution.
+     * @throws UnsupportedOperationException    The shell does not support interactive execution.
      */
     void run(Object... args) throws Exception;
 }
