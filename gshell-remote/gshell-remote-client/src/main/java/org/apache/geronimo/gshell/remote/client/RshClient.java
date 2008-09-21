@@ -166,7 +166,7 @@ public class RshClient
         // TODO: Need some context from the response
         //
 
-        // log.debug("Response: {}", resp);
+        log.trace("Response: {}", resp);
     }
 
     public void closeShell() throws Exception {
@@ -177,8 +177,8 @@ public class RshClient
         //
         // TODO: Need some context from the response
         //
-        
-        // log.debug("Response: {}", resp);
+
+        log.trace("Response: {}", resp);
     }
 
     private Object doExecute(final ExecuteMessage msg) throws Exception {
