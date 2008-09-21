@@ -25,26 +25,36 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.remote</groupId>
+        <artifactId>gshell-remote</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
-    
-    <groupId>org.apache.geronimo.gshell.remote</groupId>
-    <artifactId>gshell-remote</artifactId>
-    <name>GShell Remote</name>
-    <packaging>pom</packaging>
+
+    <artifactId>gshell-whisper-rfile</artifactId>
+    <name>GShell Remote :: Whisper Remote File</name>
     
     <description>
-        Support for remote access in GShell.
+        Remote file URL muck for Whisper
     </description>
-    
-    <modules>
-        <module>gshell-whisper</module>
-        <module>gshell-whisper-rfile</module>
-        <module>gshell-remote-common</module>
-        <module>gshell-remote-client</module>
-        <module>gshell-remote-server</module>
-    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.remote</groupId>
+            <artifactId>gshell-whisper</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-spring</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>
