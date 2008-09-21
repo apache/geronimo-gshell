@@ -61,7 +61,7 @@ public class TransportFactoryLocatorImpl<T extends TransportFactory> implements 
         for (TransportFactory factory : factories) {
             String scheme = factory.getScheme();
 
-            log.debug("Mapping transport scheme {}", scheme);
+            log.debug("Mapping transport scheme: {}", scheme);
 
             factoryLookup.put(scheme, factory);
         }
