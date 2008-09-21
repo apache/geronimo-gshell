@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
 
 /**
- * ???
+ * Provides a subject+uuid based identity.
  *
  * @version $Rev$ $Date$
  */

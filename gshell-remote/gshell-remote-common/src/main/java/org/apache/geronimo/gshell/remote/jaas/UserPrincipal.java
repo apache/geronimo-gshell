@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
 import org.apache.geronimo.gshell.yarn.ToStringStyle;
 
 /**
- * ???
+ * User-name principal.
  *
  * @version $Rev$ $Date$
  */

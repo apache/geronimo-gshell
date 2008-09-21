@@ -61,7 +61,7 @@
         <property name="resourceName" value="client.login.conf"/>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.remote.client.RshClient" scope="prototype">
+    <bean class="org.apache.geronimo.gshell.remote.client.RshClient" scope="prototype" depends-on="jaasConfigurationLoader">
         <constructor-arg>
             <list>
                 <bean class="org.apache.geronimo.gshell.remote.client.handler.EchoHandler"/>

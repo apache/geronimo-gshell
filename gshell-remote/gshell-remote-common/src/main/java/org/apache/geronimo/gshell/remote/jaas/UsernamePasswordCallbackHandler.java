@@ -28,7 +28,7 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
 /**
- * ???
+ * JAAS username+password callback handler.
  *
  * @version $Rev$ $Date$
  */

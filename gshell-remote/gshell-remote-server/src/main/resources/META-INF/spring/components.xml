@@ -70,7 +70,7 @@
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.ConnectHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.EchoHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.ExecuteHandler"/>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler">
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler" depends-on="jaasConfigurationLoader">
                     <property name="defaultRealm" value="BogusLogin"/>
                 </bean>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.OpenShellHandler"/>
