@@ -102,18 +102,17 @@ public class CommandImpl
                 // Process command line options/arguments
                 if (processArguments(io, action, args)) {
                     // return if we have been asked to display --help
-                    return new CommandResult(CommandAction.Result.SUCCESS);
+                    return new CommandResult.ValueResult(CommandAction.Result.SUCCESS);
                 }
 
                 // TODO: Add preferences processor
             }
             catch (Exception e) {
-                return new CommandResult(e);
+                return new CommandResult.FailureResult(e);
             }
 
             // Setup the command context
-            CommandContext context = new CommandContext()
-            {
+            CommandContext context = new CommandContext() {
                 public Object[] getArguments() {
                     return args;
                 }
@@ -139,17 +138,17 @@ public class CommandImpl
 
                 log.trace("Result: {}", value);
 
-                result = new CommandResult(value);
+                result = new CommandResult.ValueResult(value);
             }
             catch (final Notification n) {
                 log.trace("Notified: {}, n");
 
-                result = new CommandResult(n);
+                result = new CommandResult.NotificationResult(n);
             }
             catch (final Throwable t) {
                 log.trace("Caught: {}", t);
 
-                result = new CommandResult(t);
+                result = new CommandResult.FailureResult(t);
             }
         }
         finally {

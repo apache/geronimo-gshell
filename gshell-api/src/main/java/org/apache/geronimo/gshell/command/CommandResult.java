@@ -42,26 +42,6 @@ public class CommandResult
         this.notification = notification;
     }
 
-    public CommandResult(final Object value) {
-        this(value, null, null);
-
-        assert value != null;
-        assert !(value instanceof Throwable);
-    }
-
-    public CommandResult(final Throwable failure) {
-        this(null, failure, null);
-
-        assert failure != null;
-        assert !(failure instanceof Notification);
-    }
-
-    public CommandResult(final Notification notification) {
-        this(null, null, notification);
-
-        assert notification != null;
-    }
-
     /**
      * The result value of a command execution.
      *
@@ -113,5 +93,38 @@ public class CommandResult
 
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
+    /**
+     * Command execution resulting in a normal value.
+     */
+    public static class ValueResult
+        extends CommandResult
+    {
+        public ValueResult(final Object value) {
+            super(value, null, null);
+        }
+    }
+
+    /**
+     * Command execution resulting in a failure.
+     */
+    public static class FailureResult
+        extends CommandResult
+    {
+        public FailureResult(final Throwable failure) {
+            super(null, failure, null);
+        }
+    }
+
+    /**
+     * Command execution resulting in a notification.
+     */
+    public static class NotificationResult
+        extends CommandResult
+    {
+        public NotificationResult(final Notification notification) {
+            super(null, null, notification);
+        }
     }
 }
