@@ -77,6 +77,11 @@ public class CommandLineBuilderImpl
         return cl;
     }
 
+    protected Variables getVariables() {
+        assert applicationManager != null;
+        return applicationManager.getApplication().getVariables();
+    }
+
     public CommandLine create(final String commandLine) throws ParseException {
         assert commandLine != null;
 
@@ -85,8 +90,7 @@ public class CommandLineBuilderImpl
         }
 
         try {
-            assert applicationManager != null;
-            final Variables vars = applicationManager.getApplication().getVariables();
+            final Variables vars = getVariables();
             final ASTCommandLine root = parse(commandLine);
 
             return new CommandLine() {
