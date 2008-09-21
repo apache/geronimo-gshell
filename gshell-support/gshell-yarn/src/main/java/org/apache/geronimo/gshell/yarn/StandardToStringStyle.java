@@ -38,7 +38,7 @@ package org.apache.geronimo.gshell.yarn;
  * @since 1.0
  * @version $Id$
  */
-public class StandardToStringStyle extends ToStringStyle {
+class StandardToStringStyle extends ToStringStyle {
 
     /**
      * Required for serialization support.

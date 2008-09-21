@@ -19,11 +19,10 @@
 
 package org.apache.geronimo.gshell.chronos;
 
+import org.apache.geronimo.gshell.yarn.Yarn;
+
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.geronimo.gshell.yarn.ToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 
 /**
  * A representaion of an immutable duration of time.
@@ -63,10 +62,7 @@ public class Duration
     }
     
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append(value)
-                .append(unit)
-                .toString();
+        return Yarn.render(this);
     }
 
     public boolean equals(final Object obj) {
