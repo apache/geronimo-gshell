@@ -19,18 +19,17 @@
 
 package org.apache.geronimo.gshell.whisper.request;
 
+import org.apache.geronimo.gshell.chronos.Duration;
+import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.geronimo.gshell.yarn.Yarn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.apache.geronimo.gshell.chronos.Duration;
-import org.apache.geronimo.gshell.yarn.ToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
-import org.apache.geronimo.gshell.whisper.message.Message;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Represents a request message.
@@ -86,11 +85,7 @@ public class RequestHandle
     }
 
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", getId())
-                .append("signaled", signaled)
-                .append("message", message)
-                .toString();
+        return Yarn.render(this);
     }
 
     public Message getMessage() {

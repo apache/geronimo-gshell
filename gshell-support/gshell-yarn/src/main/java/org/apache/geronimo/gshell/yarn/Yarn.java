@@ -27,6 +27,10 @@ package org.apache.geronimo.gshell.yarn;
 public class Yarn
 {
     public static String render(final Object target) {
+        //
+        // TODO: Implement YarnRenderer and cache for type
+        //
+
         return ReflectionToStringBuilder.toString(target, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

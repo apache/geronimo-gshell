@@ -34,4 +34,10 @@ import java.lang.annotation.Retention;
 public @interface YarnStyle
 {
     YarnStyles value() default YarnStyles.DEFAULT;
+
+    boolean omit() default false;
+
+    boolean include() default true;
+
+    // Renderer
 }

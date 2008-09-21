@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.whisper.request;
 
-import org.apache.geronimo.gshell.yarn.ToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
 import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 //
 // NOTE: Snatched and massaged from Apache Mina
@@ -67,11 +66,7 @@ public class ResponseHandle
     }
 
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", getId())
-                .append("responseTo", getRequest().getId())
-                .append("message", message)
-                .toString();
+        return Yarn.render(this);
     }
 
     public RequestHandle getRequest() {

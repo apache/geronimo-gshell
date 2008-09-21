@@ -19,6 +19,14 @@
 
 package org.apache.geronimo.gshell.whisper.request;
 
+import org.apache.geronimo.gshell.chronos.Duration;
+import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.yarn.Yarn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,15 +35,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.apache.geronimo.gshell.chronos.Duration;
-import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
-import org.apache.geronimo.gshell.yarn.ToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
-import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Manages request state on a per-session basis, handles timeouts and signalling responses.
@@ -323,10 +322,7 @@ public class RequestManager
         }
 
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                    .append("id", request.getId())
-                    .append("state", state)
-                    .toString();
+            return Yarn.render(this);
         }
     }
 

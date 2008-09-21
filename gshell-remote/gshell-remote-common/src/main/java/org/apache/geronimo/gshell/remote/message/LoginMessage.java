@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.remote.message;
 
-import org.apache.geronimo.gshell.yarn.ReflectionToStringBuilder;
-import org.apache.geronimo.gshell.yarn.ToStringStyle;
+import org.apache.geronimo.gshell.yarn.Yarn;
+import org.apache.geronimo.gshell.yarn.YarnStyle;
 
 import java.io.Serializable;
 
@@ -35,6 +35,7 @@ public class LoginMessage
 {
     private final String username;
 
+    @YarnStyle(omit=true)
     private final char[] password;
 
     private final String realm;
@@ -52,10 +53,9 @@ public class LoginMessage
     }
 
     public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .setExcludeFieldNames(new String[] { "password" }).toString();
+        return Yarn.render(this);
     }
-    
+
     public String getUsername() {
         return username;
     }
