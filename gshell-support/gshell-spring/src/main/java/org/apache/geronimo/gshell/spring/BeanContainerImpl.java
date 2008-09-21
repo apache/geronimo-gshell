@@ -38,38 +38,29 @@ public class BeanContainerImpl
 {
     private static final String REALM_ID = "gshell";
 
-    private BeanContainer parent;
+    private final BeanContainer parent;
 
-    private BeanContainerContext context;
+    private final BeanContainerContext context;
 
-    private ClassRealm classRealm;
-    
-    public BeanContainerImpl(final ClassLoader classLoader) {
-        assert classLoader != null;
+    private final ClassRealm classRealm;
 
-        ClassRealm realm;
+    private static ClassRealm createDefaultClassRealm(final ClassLoader cl) {
+        assert cl != null;
+
         try {
-            realm = new ClassWorld().newRealm(REALM_ID, classLoader);
+            return new ClassWorld().newRealm(REALM_ID, cl);
         }
         catch (DuplicateRealmException e) {
             // Should never happen
             throw new Error(e);
         }
-
-        configureContext(realm, null);
     }
 
-    /**
-     * Child container constructor.
-     */
+    public BeanContainerImpl(final ClassLoader cl) {
+        this(createDefaultClassRealm(cl), null);
+    }
+
     private BeanContainerImpl(final ClassRealm classRealm, final BeanContainerImpl parent) {
-        assert parent != null;
-        assert classRealm != null;
-
-        configureContext(classRealm, parent);
-    }
-
-    private void configureContext(final ClassRealm classRealm, final BeanContainerImpl parent) {
         assert classRealm != null;
         // parent may be null
 
@@ -78,6 +69,7 @@ public class BeanContainerImpl
 
         // Construct the container and add customizations
         context = new BeanContainerContext(classRealm, parent != null ? parent.context : null);
+        context.setDisplayName(classRealm.getId());
         context.registerShutdownHook();
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
