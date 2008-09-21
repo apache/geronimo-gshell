@@ -331,7 +331,7 @@ public class ApplicationManagerImpl
             //        the right approache at all :-(
             //
 
-            private final ApplicationSecurityManager securityManager = new ApplicationSecurityManager();
+            private final ApplicationSecurityManager sm = new ApplicationSecurityManager();
 
             public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
                 assert proxy != null;
@@ -342,8 +342,8 @@ public class ApplicationManagerImpl
                     return method.invoke(this, args);
                 }
 
-                SecurityManager previous = System.getSecurityManager();
-                System.setSecurityManager(securityManager);
+                final SecurityManager prevSM = System.getSecurityManager();
+                System.setSecurityManager(sm);
                 try {
                     return method.invoke(shell, args);
                 }
@@ -351,7 +351,7 @@ public class ApplicationManagerImpl
                     throw e.getTargetException();
                 }
                 finally {
-                    System.setSecurityManager(previous);
+                    System.setSecurityManager(prevSM);
                 }
             }
         };
