@@ -59,8 +59,14 @@
 
     <bean id="sslTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory"/>
 
-    <bean id="sslTransport" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransport" scope="prototype"/>
+    <bean id="sslContextFactory" class="org.apache.geronimo.gshell.whisper.ssl.BogusSSLContextFactory"/>
 
-    <bean id="sslTransportServer" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportServer" scope="prototype"/>
+    <bean id="sslTransport" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransport" scope="prototype">
+        <property name="sslContextFactory" ref="sslContextFactory"/>
+    </bean>
+
+    <bean id="sslTransportServer" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportServer" scope="prototype">
+        <property name="sslContextFactory" ref="sslContextFactory"/>
+    </bean>
 
 </beans>

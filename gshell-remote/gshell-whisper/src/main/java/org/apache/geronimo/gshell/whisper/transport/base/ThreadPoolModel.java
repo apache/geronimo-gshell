@@ -38,7 +38,6 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-@SuppressWarnings({"FieldCanBeLocal"})
 public class ThreadPoolModel
     implements ThreadModel
 {

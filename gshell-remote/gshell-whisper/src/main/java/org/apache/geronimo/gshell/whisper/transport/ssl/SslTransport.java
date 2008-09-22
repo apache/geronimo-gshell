@@ -33,15 +33,18 @@ import org.apache.mina.filter.SSLFilter;
 public class SslTransport
     extends TcpTransport
 {
-    private SSLContextFactory contextFactory;
+    private SSLContextFactory sslContextFactory;
 
     public SslTransport() {
         super(new SslAddressFactory());
     }
 
-    public SslTransport(final SSLContextFactory contextFactory) {
-        this();
-        this.contextFactory = contextFactory;
+    public SSLContextFactory getSslContextFactory() {
+        return sslContextFactory;
+    }
+
+    public void setSslContextFactory(final SSLContextFactory sslContextFactory) {
+        this.sslContextFactory = sslContextFactory;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class SslTransport
 
         super.configure(chain);
 
-        SSLFilter filter = new SSLFilter(contextFactory.createClientContext());
+        SSLFilter filter = new SSLFilter(sslContextFactory.createClientContext());
         filter.setUseClientMode(true);
 
         chain.addFirst(SSLFilter.class.getSimpleName(), filter);

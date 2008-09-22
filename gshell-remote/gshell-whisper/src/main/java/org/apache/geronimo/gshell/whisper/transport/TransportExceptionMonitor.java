@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Logging exception monitor.
  *
  * @version $Rev$ $Date$
  */

@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.whisper.transport;
 import java.net.URI;
 
 /**
- * ???
+ * Thrown to indicate an invalid transport location was configured.
  *
  * @version $Rev$ $Date$
  */

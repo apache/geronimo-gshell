@@ -33,7 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * ???
+ * Adapts a MINA IoSession to a Whipser transport Session.
  *
  * @version $Rev$ $Date$
  */

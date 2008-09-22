@@ -89,16 +89,6 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
         return transport;
     }
 
-    /*
-    public Transport connect(final URI remote, final URI local) throws Exception {
-        return connect(remote, local, (Transport.Configuration) null);
-    }
-
-    public Transport connect(final URI remote) throws Exception {
-        return connect(remote, null);
-    }
-    */
-
     //
     // TransportServer Binding
     //
@@ -129,10 +119,4 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
 
         return server;
     }
-
-    /*
-    public TransportServer bind(final URI location) throws Exception {
-        return bind(location, (TransportServer.Configuration) null);
-    }
-    */
 }

@@ -33,7 +33,7 @@ import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 public class TcpAddressFactory
     implements AddressFactory<InetSocketAddress>
 {
-    public InetSocketAddress create(URI location) throws Exception {
+    public InetSocketAddress create(final URI location) throws Exception {
         InetSocketAddress addr = null;
 
         if (location != null) {

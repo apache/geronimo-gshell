@@ -32,7 +32,7 @@ import org.apache.mina.transport.vmpipe.VmPipeAddress;
 public class VmAddressFactory
     implements AddressFactory<VmPipeAddress>
 {
-    public VmPipeAddress create(URI location) throws Exception {
+    public VmPipeAddress create(final URI location) throws Exception {
         VmPipeAddress addr = null;
 
         if (location != null) {

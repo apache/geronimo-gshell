@@ -30,7 +30,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 
 /**
- * ???
+ * Provides the session for a transport connection.
  *
  * @version $Rev$ $Date$
  */

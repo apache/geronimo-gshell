@@ -24,7 +24,7 @@ import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.ThreadModel;
 
 /**
- * ???
+ * Provides the base configuration for transport services.
  *
  * @version $Rev$ $Date$
  */

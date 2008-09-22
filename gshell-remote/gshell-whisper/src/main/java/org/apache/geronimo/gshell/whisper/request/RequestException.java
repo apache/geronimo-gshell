@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.whisper.request;
 import org.apache.geronimo.gshell.whisper.message.Message;
 
 /**
- * ???
+ * Thrown to indicate a request failure.
  *
  * @version $Rev$ $Date$
  */

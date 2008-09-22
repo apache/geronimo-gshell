@@ -23,7 +23,7 @@ import java.net.SocketAddress;
 import java.net.URI;
 
 /**
- * ???
+ * Factory for typed transport addresses.
  *
  * @version $Rev$ $Date$
  */
