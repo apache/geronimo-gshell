@@ -28,11 +28,13 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -54,6 +56,28 @@ public class StatelessCommand
         assert container != null;
 
         this.container = container;
+    }
+
+    // Expose some of our super-classes properties for spring configuration
+
+    @Override
+    public void setAction(final CommandAction action) {
+        super.setAction(action);
+    }
+
+    @Override
+    public void setDocumenter(final CommandDocumenter documenter) {
+        super.setDocumenter(documenter);
+    }
+
+    @Override
+    public void setCompleter(final CommandCompleter completer) {
+        super.setCompleter(completer);
+    }
+
+    @Override
+    public void setMessages(final MessageSource messages) {
+        super.setMessages(messages);
     }
 
     public CommandResult execute(final ShellContext context, final Object[] args) {

@@ -45,7 +45,9 @@ public abstract class CommandSupport
     private MessageSource messages;
 
     public String getId() {
-        assert id != null;
+        if (id == null) {
+            throw new IllegalStateException("Missing required property: id");
+        }
 
         return id;
     }
@@ -57,12 +59,14 @@ public abstract class CommandSupport
     }
 
     public CommandAction getAction() {
-        assert action != null;
+        if (action == null) {
+            throw new IllegalStateException("Missing required property: action");
+        }
 
         return action;
     }
 
-    public void setAction(final CommandAction action) {
+    protected void setAction(final CommandAction action) {
         assert action != null;
 
         handleCommandAware(action);
@@ -71,12 +75,14 @@ public abstract class CommandSupport
     }
 
     public CommandDocumenter getDocumenter() {
-        assert documenter != null;
+        if (documenter == null) {
+            throw new IllegalStateException("Missing required property: documenter");
+        }
 
         return documenter;
     }
 
-    public void setDocumenter(final CommandDocumenter documenter) {
+    protected void setDocumenter(final CommandDocumenter documenter) {
         assert documenter != null;
 
         handleCommandAware(documenter);
@@ -85,12 +91,14 @@ public abstract class CommandSupport
     }
 
     public CommandCompleter getCompleter() {
-        assert completer != null;
+        if (completer == null) {
+            throw new IllegalStateException("Missing required property: completer");
+        }
         
         return completer;
     }
 
-    public void setCompleter(final CommandCompleter completer) {
+    protected void setCompleter(final CommandCompleter completer) {
         assert completer != null;
 
         handleCommandAware(completer);
@@ -99,12 +107,14 @@ public abstract class CommandSupport
     }
 
     public MessageSource getMessages() {
-        assert messages != null;
+        if (messages == null) {
+            throw new IllegalStateException("Missing required property: messages");
+        }
 
         return messages;
     }
 
-    public void setMessages(final MessageSource messages) {
+    protected void setMessages(final MessageSource messages) {
         assert messages != null;
 
         handleCommandAware(messages);
