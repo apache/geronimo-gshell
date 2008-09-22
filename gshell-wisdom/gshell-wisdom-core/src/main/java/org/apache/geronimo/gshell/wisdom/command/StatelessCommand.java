@@ -32,16 +32,17 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 /**
- * The default {@link Command} component.
+ * Stateless {@link org.apache.geronimo.gshell.command.Command} component.
  *
  * @version $Rev$ $Date$
  */
-public class CommandImpl
+public class StatelessCommand
     extends CommandSupport
     implements BeanContainerAware
 {
@@ -55,10 +56,9 @@ public class CommandImpl
         this.container = container;
     }
 
-    public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
+    public CommandResult execute(final ShellContext context, final Object[] args) {
+        assert context != null;
         assert args != null;
-        assert io != null;
-        assert variables != null;
 
         log.trace("Executing");
 
@@ -72,6 +72,7 @@ public class CommandImpl
         CommandResult result;
 
         try {
+            final IO io = context.getIo();
             CommandAction action = getAction();
 
             // Setup the command action
@@ -89,7 +90,9 @@ public class CommandImpl
             }
 
             // Setup the command context
-            CommandContext context = new CommandContext() {
+            CommandContext ctx = new CommandContext() {
+                private final Variables variables = new Variables(context.getVariables());
+
                 public Object[] getArguments() {
                     return args;
                 }
@@ -103,7 +106,7 @@ public class CommandImpl
                 }
 
                 public Command getCommand() {
-                    return CommandImpl.this;
+                    return StatelessCommand.this;
                 }
             };
 
@@ -111,7 +114,7 @@ public class CommandImpl
             try {
                 log.trace("Executing action: {}", action);
 
-                Object value = action.execute(context);
+                Object value = action.execute(ctx);
 
                 log.trace("Result: {}", value);
 

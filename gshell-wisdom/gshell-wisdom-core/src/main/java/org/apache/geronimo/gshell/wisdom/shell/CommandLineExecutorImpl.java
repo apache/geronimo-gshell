@@ -212,15 +212,12 @@ public class CommandLineExecutorImpl
 
         log.debug("Executing");
 
-        IO io = context.getIo();
+        // Locate the command
         Variables variables = context.getVariables();
-
         Command command = commandResolver.resolve(variables, path);
 
-        // Instances get their own namespace with defaults from the current
-        Variables vars = new Variables(variables);
-
         // Hijack the system streams in the current thread's context
+        IO io = context.getIo();
         SystemOutputHijacker.register(io.outputStream, io.errorStream);
 
         // Setup command timings
@@ -228,7 +225,7 @@ public class CommandLineExecutorImpl
         
         CommandResult result;
         try {
-            result = command.execute(args, io, vars);
+            result = command.execute(context, args);
 
             log.debug("Command completed with result: {}, after: {}", result, watch);
         }

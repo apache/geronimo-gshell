@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
  * Provides facilites for a configured command instance.
@@ -66,11 +67,10 @@ public interface Command
 
     /**
      * Executes the commands configured action.
-     * 
-     * @param args          The arguments to the command; must not be null.
-     * @param io            The I/O context for the command; must not be null.
-     * @param variables     The environment variables for the command; must not be null.
-     * @return              The command result; never null
+     *
+     * @param context   The executing shell's context.
+     * @param args      The arguments to the command; must not be null.
+     * @return          The command result; never null
      */
-    CommandResult execute(Object[] args, IO io, Variables variables);
+    CommandResult execute(ShellContext context, Object[] args);
 }

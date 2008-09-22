@@ -20,15 +20,12 @@
 package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-
 /**
- * ???
+ * Group {@link org.apache.geronimo.gshell.command.Command} component.
  *
  * @version $Rev$ $Date$
  */
@@ -37,13 +34,12 @@ public class Group
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @SuppressWarnings({"UnusedDeclaration"})
-    @PostConstruct
-    private void init() {
-        // TODO: setup action, documenter, completer, messages
-    }
+    public CommandResult execute(final ShellContext context, final Object[] args) {
+        assert context != null;
+        assert args != null;
 
-    public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
-        return null;
+        log.debug("Executing");
+        
+        throw new Error("not implemented");
     }
 }
