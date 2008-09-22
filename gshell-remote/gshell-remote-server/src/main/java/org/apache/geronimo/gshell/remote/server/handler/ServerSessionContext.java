@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.command.Variables;
 
 /**
  * Container for server-side session state.
@@ -46,6 +47,8 @@ public class ServerSessionContext
     public BeanContainer container;
 
     public RemoteIO io;
+
+    public Variables variables;
 
     public RemoteShell shell;
 
@@ -74,6 +77,7 @@ public class ServerSessionContext
         container = null;
 
         io = null;
+        variables = null;
         identity = null;
         pk = null;
     }

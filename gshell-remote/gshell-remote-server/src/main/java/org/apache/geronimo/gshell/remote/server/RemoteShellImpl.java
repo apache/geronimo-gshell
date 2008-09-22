@@ -43,6 +43,8 @@ public class RemoteShellImpl
     @Autowired
     private CommandLineExecutor executor;
 
+    private ShellContext context;
+
     private boolean opened = true;
 
     public RemoteShellImpl() {}
@@ -66,9 +68,17 @@ public class RemoteShellImpl
     public ShellContext getContext() {
         ensureOpened();
 
-        // FIXME:
+        if (context == null) {
+            throw new IllegalStateException("Shell context has not been initialized");
+        }
+        return context;
+    }
 
-        return null;
+    // HACK: Allow context to be forced into the shell
+    public void setContext(final ShellContext context) {
+        assert context != null;
+
+        this.context = context;
     }
 
     public ShellInfo getInfo() {
@@ -78,35 +88,36 @@ public class RemoteShellImpl
     }
 
     public Object execute(final String line) throws Exception {
+        assert line != null;
+
         ensureOpened();
 
-        // FIXME:
-
-        return null;
+        return executor.execute(getContext(), line);
     }
 
     public Object execute(final String command, final Object[] args) throws Exception {
+        assert command != null;
+        assert args != null;
+
         ensureOpened();
 
-        // FIXME:
-
-        return null;
+        return executor.execute(getContext(), command, args);
     }
 
     public Object execute(final Object... args) throws Exception {
+        assert args != null;
+
         ensureOpened();
 
-        // FIXME:
-
-        return null;
+        return executor.execute(getContext(), args);
     }
 
     public Object execute(final Object[][] commands) throws Exception {
+        assert commands != null;
+
         ensureOpened();
 
-        // FIXME:
-
-        return null;
+        return executor.execute(getContext(), commands);
     }
 
     public boolean isInteractive() {
