@@ -46,7 +46,7 @@
 
         <property name="commands">
             <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-admin:list-plugins"/>
 
                     <property name="action">
@@ -54,7 +54,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-admin:install-plugin"/>
 
                     <property name="action">

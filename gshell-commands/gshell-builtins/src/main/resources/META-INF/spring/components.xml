@@ -29,22 +29,6 @@
 
     <context:annotation-config/>
 
-    <!--
-    <bean id="commandTemplate" abstract="true" class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
-        <property name="documenter">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
-        </property>
-
-        <property name="completer">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
-        </property>
-
-        <property name="messages">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSourceImpl"/>
-        </property>
-    </bean>
-    -->
-
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl">
         <property name="id" value="gshell-bultins"/>
 
@@ -62,7 +46,7 @@
 
         <property name="commands">
             <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-builtins:clear"/>
 
                     <property name="action">
@@ -70,7 +54,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-builtins:echo"/>
 
                     <property name="action">
@@ -78,7 +62,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-builtins:exit"/>
 
                     <property name="action">
@@ -86,7 +70,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-builtins:help"/>
 
                     <property name="action">
@@ -94,7 +78,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-builtins:source"/>
 
                     <property name="action">
@@ -102,7 +86,7 @@
                     </property>
                 </bean>
                 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-builtins:set"/>
 
                     <property name="action">
@@ -110,7 +94,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-builtins:unset"/>
 
                     <property name="action">

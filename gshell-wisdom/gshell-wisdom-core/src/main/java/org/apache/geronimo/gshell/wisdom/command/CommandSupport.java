@@ -49,6 +49,8 @@ public abstract class CommandSupport
     private MessageSource messages;
 
     public String getId() {
+        assert id != null;
+
         return id;
     }
 
@@ -59,6 +61,8 @@ public abstract class CommandSupport
     }
 
     public CommandAction getAction() {
+        assert action != null;
+
         return action;
     }
 
@@ -71,6 +75,8 @@ public abstract class CommandSupport
     }
 
     public CommandDocumenter getDocumenter() {
+        assert documenter != null;
+
         return documenter;
     }
 
@@ -83,6 +89,8 @@ public abstract class CommandSupport
     }
 
     public CommandCompleter getCompleter() {
+        assert completer != null;
+        
         return completer;
     }
 
@@ -95,6 +103,8 @@ public abstract class CommandSupport
     }
 
     public MessageSource getMessages() {
+        assert messages != null;
+
         return messages;
     }
 

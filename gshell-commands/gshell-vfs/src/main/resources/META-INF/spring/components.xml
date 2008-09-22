@@ -46,7 +46,7 @@
 
         <property name="commands">
             <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-vfs:copy"/>
 
                     <property name="action">

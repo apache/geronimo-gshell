@@ -46,7 +46,7 @@
 
         <property name="commands">
             <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-optional:cat"/>
 
                     <property name="action">
@@ -54,7 +54,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-optional:exec"/>
 
                     <property name="action">
@@ -62,7 +62,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-optional:java"/>
 
                     <property name="action">
@@ -70,7 +70,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-optional:sleep"/>
 
                     <property name="action">
@@ -78,7 +78,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.wisdom.command.CommandImpl">
+                <bean parent="commandTemplate">
                     <property name="id" value="gshell-optional:wait"/>
 
                     <property name="action">

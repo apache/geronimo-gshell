@@ -22,22 +22,19 @@ package org.apache.geronimo.gshell.wisdom.command;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.Arguments;
-import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
-import javax.annotation.PostConstruct;
 
 /**
  * The default {@link Command} component.
@@ -58,26 +55,6 @@ public class CommandImpl
         this.container = container;
     }
 
-    @SuppressWarnings({"UnusedDeclaration"})
-    @PostConstruct
-    private void init() {
-        //
-        // TODO: Should ask the container to auto-wire these folks, or ask for defalut versions from the container via factory?
-        //       or simply use a parent bean to configure them?
-        //
-        
-        // Create default components if not configured
-        if (getDocumenter() == null) {
-            setDocumenter(new CommandDocumenterImpl());
-        }
-        if (getCompleter() == null) {
-            setCompleter(new CommandCompleterImpl());
-        }
-        if (getMessages() == null) {
-            setMessages(new ResourceBundleMessageSource(getAction().getClass()));
-        }
-    }
-    
     public CommandResult execute(final Object[] args, final IO io, final Variables variables) {
         assert args != null;
         assert io != null;
