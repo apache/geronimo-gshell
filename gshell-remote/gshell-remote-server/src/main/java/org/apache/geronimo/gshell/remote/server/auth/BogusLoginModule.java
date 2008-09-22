@@ -57,8 +57,13 @@ public class BogusLoginModule
     private String username;
 
     public void initialize(final Subject subject, final CallbackHandler callbackHandler, final Map<String, ?> sharedState, final Map<String, ?> options) {
+        assert subject != null;
+        assert callbackHandler != null;
+
         this.subject = subject;
         this.callbackHandler = callbackHandler;
+        // ignoring sharedState
+        // ignoring options
     }
 
     private void reset() {

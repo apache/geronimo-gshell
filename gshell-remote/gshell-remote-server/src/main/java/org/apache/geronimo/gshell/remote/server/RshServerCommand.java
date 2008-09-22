@@ -24,8 +24,8 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +59,9 @@ public class RshServerCommand
         assert context != null;
 
         RshServer server = container.getBean(RshServer.class);
+
+        log.debug("Created server: {}", server);
+
         server.bind(location);
 
         IO io = context.getIo();
@@ -67,6 +70,8 @@ public class RshServerCommand
 
         if (!background) {
             synchronized (this) {
+                log.debug("Waiting for server to shutdown");
+                
                 wait();
             }
 

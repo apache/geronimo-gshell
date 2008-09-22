@@ -19,17 +19,16 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import java.security.PublicKey;
-
-import javax.security.auth.Subject;
-
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.jaas.Identity;
 import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
-import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+
+import javax.security.auth.Subject;
+import java.security.PublicKey;
 
 /**
  * Container for server-side session state.

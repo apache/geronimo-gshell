@@ -43,8 +43,6 @@ public class RemoteShellImpl
     @Autowired
     private CommandLineExecutor executor;
 
-    private ShellContext context;
-
     private boolean opened = true;
 
     public RemoteShellImpl() {}
@@ -68,19 +66,15 @@ public class RemoteShellImpl
     public ShellContext getContext() {
         ensureOpened();
 
+        ShellContext context = RemoteShellContextHolder.getContext();
+
         if (context == null) {
             throw new IllegalStateException("Shell context has not been initialized");
         }
+
         return context;
     }
-
-    // HACK: Allow context to be forced into the shell
-    public void setContext(final ShellContext context) {
-        assert context != null;
-
-        this.context = context;
-    }
-
+    
     public ShellInfo getInfo() {
         ensureOpened();
 

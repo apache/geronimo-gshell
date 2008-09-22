@@ -57,6 +57,8 @@ public class TimeoutManagerImpl
         assert timeout != null;
         assert task != null;
 
+        log.debug("Scheduling timeout; session: {}, duration: {}", session, timeout);
+
         ScheduledFuture tf = scheduler.schedule(task, timeout.value, timeout.unit);
 
         TIMEOUT.rebind(session.getSession(), tf);
@@ -66,6 +68,8 @@ public class TimeoutManagerImpl
 
     public boolean cancelTimeout(final Session session) {
         assert session != null;
+
+        log.debug("Canceling timeout; session: {}", session);
 
         ScheduledFuture tf = TIMEOUT.lookup(session.getSession());
 

@@ -19,16 +19,16 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
-import org.apache.geronimo.gshell.remote.server.RemoteShellImpl;
+import org.apache.geronimo.gshell.remote.server.RemoteShellContextHolder;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.command.Variables;
 
 import java.util.UUID;
 
@@ -61,16 +61,11 @@ public class OpenShellHandler
         context.container = container.createChild(id);
         context.container.start();
 
-        // Setup the I/O context (w/o auto-flushing)
+        // Setup the shell context and related components
         context.io = new RemoteIO(session);
-
         context.variables = new Variables();
 
-        // Create a new shell instance
-        context.shell = context.container.getBean("remoteShell", RemoteShell.class);
-
-        // HACK: Need to force the context into the shell
-        ((RemoteShellImpl)context.shell).setContext(new ShellContext() {
+        ShellContext shellContext = new ShellContext() {
             public IO getIo() {
                 return context.io;
             }
@@ -78,7 +73,17 @@ public class OpenShellHandler
             public Variables getVariables() {
                 return context.variables;
             }
-        });
+        };
+
+        RemoteShellContextHolder.setContext(shellContext);
+
+        try {
+            // Create a new shell instance
+            context.shell = context.container.getBean("remoteShell", RemoteShell.class);
+        }
+        finally {
+            RemoteShellContextHolder.clearContext();
+        }
 
         OpenShellMessage.Result reply = new OpenShellMessage.Result();
         reply.setCorrelationId(message.getId());

@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
-import java.net.URI;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.geronimo.gshell.remote.server.handler.ServerMessageHandler;
 import org.apache.geronimo.gshell.remote.server.handler.ServerSessionContext;
@@ -37,6 +33,10 @@ import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.net.URI;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides support for the server-side of the remote shell protocol.
