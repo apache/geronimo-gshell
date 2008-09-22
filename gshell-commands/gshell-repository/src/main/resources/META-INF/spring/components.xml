@@ -41,7 +41,7 @@
         </property>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.wisdom.plugin.CommandBundle" lazy-init="true">
+    <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
         <property name="id" value="default"/>
 
         <property name="commands">

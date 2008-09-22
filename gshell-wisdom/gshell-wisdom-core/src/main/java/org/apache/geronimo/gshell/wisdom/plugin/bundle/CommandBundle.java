@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.plugin;
+package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 
 import org.apache.geronimo.gshell.command.Command;
 
@@ -29,6 +29,7 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 public class CommandBundle
+    implements Bundle
 {
     private String id;
 
