@@ -29,6 +29,31 @@
 
     <context:annotation-config/>
 
+    <!--
+    <gshell:plugin name="gshell-bultins">
+        <gshell:command-bundle name="default">
+            <gshell:command name="help" type="stateful">
+                <gshell:action>
+                    <bean class="org.apache.geronimo.gshell.commands.builtins.HelpAction"/>
+                </gshell:action>
+            </gshell:command>
+
+            <gshell:command name="exit" action="org.apache.geronimo.gshell.commands.builtins.ExitAction"/> // default type is stateful
+
+            <gshell:command name="clear" type="stateless">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ClearAction"/>
+                <gshell:completer class="org.apache.geronimo.gshell.commands.builtins.ClearCompleter"/>
+            </gshell:command>
+        </gshell:command-bundle>
+
+        <gshell:activation>
+            <gshell:activation-rule class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
+                <property name="bundleId" value="default"/>
+            </gshell:activation-rule>
+        </gshell:activation>
+    </gshell:plugin>
+    -->
+
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl">
         <property name="id" value="gshell-bultins"/>
 
@@ -79,7 +104,7 @@
                 <bean parent="statefulCommandTemplate">
                     <property name="actionId" value="gshell-builtins:source"/>
                 </bean>
-                
+
                 <bean parent="statefulCommandTemplate">
                     <property name="actionId" value="gshell-builtins:set"/>
                 </bean>

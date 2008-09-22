@@ -33,7 +33,7 @@
 
     <xsd:annotation>
         <xsd:documentation><![CDATA[
-        Defines the configuration elements for GShell Wisdom application context support.
+            Defines the configuration elements for GShell Wisdom application context support.
         ]]></xsd:documentation>
     </xsd:annotation>
 
