@@ -19,15 +19,15 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
+import org.apache.geronimo.gshell.ansi.Code;
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Printer;
-import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandAware;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.i18n.PrefixingMessageSource;
-import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.ansi.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

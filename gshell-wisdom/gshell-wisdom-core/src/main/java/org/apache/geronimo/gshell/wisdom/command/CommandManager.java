@@ -20,21 +20,19 @@
 package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandRegistry;
-import org.apache.geronimo.gshell.command.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.CommandNotFoundException;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.CommandRegistration;
+import org.apache.geronimo.gshell.command.CommandRegistry;
+import org.apache.geronimo.gshell.command.CommandResolver;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides management of {@link Command} instances.

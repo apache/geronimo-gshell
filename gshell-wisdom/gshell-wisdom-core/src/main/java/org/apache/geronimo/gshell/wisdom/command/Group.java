@@ -32,7 +32,7 @@ import javax.annotation.PostConstruct;
  *
  * @version $Rev$ $Date$
  */
-public class AliasImpl
+public class Group
     extends CommandSupport
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

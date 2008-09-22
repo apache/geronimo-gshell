@@ -19,14 +19,12 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
-import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandAware;
+import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides support for {@link Command} implementations.
@@ -36,8 +34,6 @@ import org.slf4j.LoggerFactory;
 public abstract class CommandSupport
     implements Command
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-
     private String id;
 
     private CommandAction action;

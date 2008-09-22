@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.CommandBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 

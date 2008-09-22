@@ -20,13 +20,13 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
+import org.apache.geronimo.gshell.event.Event;
+import org.apache.geronimo.gshell.event.EventListener;
+import org.apache.geronimo.gshell.event.EventManager;
+import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.geronimo.gshell.event.EventManager;
-import org.apache.geronimo.gshell.event.EventListener;
-import org.apache.geronimo.gshell.event.Event;
-import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 
 import javax.annotation.PostConstruct;
 import java.io.File;

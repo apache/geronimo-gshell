@@ -19,21 +19,15 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
-import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
-import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;
+import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default implementation of {@link Plugin}.

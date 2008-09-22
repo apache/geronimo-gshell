@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.Application;
-import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
+import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
