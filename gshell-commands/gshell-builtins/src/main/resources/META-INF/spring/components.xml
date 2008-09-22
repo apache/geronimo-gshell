@@ -30,11 +30,13 @@
     <context:annotation-config/>
 
     <!--
-    <gshell:plugin name="gshell-bultins">
+    <gshell:plugin name="gshell-builtins">
         <gshell:command-bundle name="default">
             <gshell:command name="help" type="stateful">
                 <gshell:action>
-                    <bean class="org.apache.geronimo.gshell.commands.builtins.HelpAction"/>
+                    <bean class="org.apache.geronimo.gshell.commands.builtins.HelpAction">
+                        // property|constructor|etc (normal stuff in beans ns
+                    </bean>
                 </gshell:action>
             </gshell:command>
 
@@ -55,7 +57,7 @@
     -->
 
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl">
-        <property name="id" value="gshell-bultins"/>
+        <property name="id" value="gshell-builtins"/>
 
         <property name="activationRules">
             <list>
