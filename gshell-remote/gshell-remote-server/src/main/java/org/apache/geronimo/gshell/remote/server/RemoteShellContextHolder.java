@@ -31,7 +31,7 @@ public class RemoteShellContextHolder
     private static final InheritableThreadLocal<ShellContext> holder = new InheritableThreadLocal<ShellContext>();
 
     public static void clearContext() {
-        holder.set(null);
+        holder.remove();
     }
 
     public static void setContext(final ShellContext context) {
