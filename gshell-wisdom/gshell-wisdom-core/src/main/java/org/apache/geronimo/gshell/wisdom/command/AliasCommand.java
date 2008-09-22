@@ -25,11 +25,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Group {@link org.apache.geronimo.gshell.command.Command} component.
+ * Alias {@link org.apache.geronimo.gshell.command.Command} component.
  *
  * @version $Rev$ $Date$
  */
-public class Group
+public class AliasCommand
     extends CommandSupport
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -39,7 +39,7 @@ public class Group
         assert args != null;
 
         log.debug("Executing");
-        
+
         throw new Error("not implemented");
     }
 }
