@@ -196,17 +196,4 @@ public class StatelessCommand
 
         return false;
     }
-
-    /**
-     * Helper to inject <tt>--help<tt> support.  Package access to allow CommandDocumentorImpl access.
-     */
-    static class HelpSupport
-    {
-        //
-        // TODO: Need to get this description into an i18n message source
-        //
-        
-        @Option(name="-h", aliases={"--help"}, description="Display this help message", requireOverride=true)
-        public boolean displayHelp;
-    }
 }

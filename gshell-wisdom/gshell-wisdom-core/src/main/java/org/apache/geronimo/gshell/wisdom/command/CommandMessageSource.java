@@ -44,7 +44,12 @@ public class CommandMessageSource
     private MessageSource getMessages() {
         if (messages == null) {
             assert command != null;
-            messages = new ResourceBundleMessageSource(command.getAction().getClass());
+            messages = new ResourceBundleMessageSource(new Class[] {
+                command.getAction().getClass(),
+                
+                // HACK: Include messages for --help support
+                HelpSupport.class
+            });
         }
 
         return messages;

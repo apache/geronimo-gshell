@@ -114,7 +114,7 @@ public class CommandDocumenterImpl
         CommandLineProcessor clp = new CommandLineProcessor();
         
         // Attach our helper to inject --help
-        StatelessCommand.HelpSupport help = new StatelessCommand.HelpSupport();
+        HelpSupport help = new HelpSupport();
         clp.addBean(help);
 
         // And then the beans options
