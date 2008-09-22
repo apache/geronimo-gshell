@@ -41,17 +41,15 @@
         </property>
     </bean>
 
+    <bean name="gshell-remote-server:rsh-server" class="org.apache.geronimo.gshell.remote.server.RshServerCommand" scope="prototype"/>
+
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
         <property name="id" value="default"/>
 
         <property name="commands">
             <list>
-                <bean parent="commandTemplate">
-                    <property name="id" value="gshell-remote-server:rsh-server"/>
-
-                    <property name="action">
-                        <bean class="org.apache.geronimo.gshell.remote.server.RshServerCommand"/>
-                    </property>
+                <bean parent="statefulCommandTemplate">
+                    <property name="actionId" value="gshell-remote-server:rsh-server"/>
                 </bean>
             </list>
         </property>

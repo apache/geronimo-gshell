@@ -41,25 +41,21 @@
         </property>
     </bean>
 
+    <bean name="gshell-admin:list-plugins" class="org.apache.geronimo.gshell.commands.admin.ListPluginsAction" scope="prototype"/>
+
+    <bean name="gshell-admin:install-plugin" class="org.apache.geronimo.gshell.commands.admin.InstallPluginAction" scope="prototype"/>
+
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
         <property name="id" value="default"/>
 
         <property name="commands">
             <list>
-                <bean parent="commandTemplate">
-                    <property name="id" value="gshell-admin:list-plugins"/>
-
-                    <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.admin.ListPluginsAction"/>
-                    </property>
+                <bean parent="statefulCommandTemplate">
+                    <property name="actionId" value="gshell-admin:list-plugins"/>
                 </bean>
 
-                <bean parent="commandTemplate">
-                    <property name="id" value="gshell-admin:install-plugin"/>
-
-                    <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.admin.InstallPluginAction"/>
-                    </property>
+                <bean parent="statefulCommandTemplate">
+                    <property name="actionId" value="gshell-admin:install-plugin"/>
                 </bean>
             </list>
         </property>

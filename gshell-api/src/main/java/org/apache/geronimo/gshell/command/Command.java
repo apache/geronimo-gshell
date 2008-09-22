@@ -31,13 +31,6 @@ import org.apache.geronimo.gshell.shell.ShellContext;
 public interface Command
 {
     /**
-     * Returns the configured identifier of the command.
-     *
-     * @return  The command identifier; never null.
-     */
-    String getId();
-
-    /**
      * Returns the action of the command.
      *
      * @return  The command action; never null.

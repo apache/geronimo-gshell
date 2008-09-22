@@ -19,25 +19,24 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
+import org.apache.geronimo.gshell.clp.CommandLineProcessor;
+import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandAware;
 import org.apache.geronimo.gshell.command.CommandCompleter;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
-import org.apache.geronimo.gshell.clp.CommandLineProcessor;
+import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * Provides support for {@link Command} implementations.
@@ -49,8 +48,6 @@ public abstract class CommandSupport
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    private String id;
-
     private CommandAction action;
 
     private CommandDocumenter documenter;
@@ -58,20 +55,6 @@ public abstract class CommandSupport
     private CommandCompleter completer;
 
     private MessageSource messages;
-
-    public String getId() {
-        if (id == null) {
-            throw new IllegalStateException("Missing required property: id");
-        }
-
-        return id;
-    }
-
-    public void setId(final String id) {
-        assert id != null;
-
-        this.id = id;
-    }
 
     public CommandAction getAction() {
         if (action == null) {
@@ -179,9 +162,6 @@ public abstract class CommandSupport
 
         log.trace("Executing");
 
-        // Provide logging context for the command execution
-        MDC.put("command-id", getId());
-
         // Set the TCL to the command bean containers realm
         final ClassLoader prevCL = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(getContainer().getClassRealm());
@@ -250,8 +230,6 @@ public abstract class CommandSupport
         }
         finally {
             Thread.currentThread().setContextClassLoader(prevCL);
-
-            MDC.remove("command-id");
         }
 
         return result;

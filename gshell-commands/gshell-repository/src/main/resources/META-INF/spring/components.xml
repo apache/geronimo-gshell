@@ -41,17 +41,15 @@
         </property>
     </bean>
 
+    <bean name="gshell-repository:resolve" class="org.apache.geronimo.gshell.commands.repository.ResolveAction" scope="prototype"/>
+
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
         <property name="id" value="default"/>
 
         <property name="commands">
             <list>
-                <bean parent="commandTemplate">
-                    <property name="id" value="gshell-repository:resolve"/>
-
-                    <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.repository.ResolveAction"/>
-                    </property>
+                <bean parent="statefulCommandTemplate">
+                    <property name="actionId" value="gshell-repository:resolve"/>
                 </bean>
             </list>
         </property>

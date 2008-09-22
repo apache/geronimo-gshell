@@ -56,9 +56,7 @@ public class CommandManager
     public CommandRegistration register(final Command command) {
         assert command != null;
 
-        String id = command.getId();
-
-        log.debug("Registering command: {}", id);
+        log.debug("Registering command: {}", command);
 
         CommandRegistration registration = new CommandRegistration() {
             public Command getCommand() {

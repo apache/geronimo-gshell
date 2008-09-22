@@ -61,37 +61,30 @@
         <property name="commands">
             <list>
                 <bean parent="statelessCommandTemplate">
-                    <property name="id" value="gshell-builtins:clear"/>
                     <property name="action" ref="gshell-builtins:clear"/>
                 </bean>
 
                 <bean parent="statefulCommandTemplate">
-                    <property name="id" value="gshell-builtins:echo"/>
                     <property name="actionId" value="gshell-builtins:echo"/>
                 </bean>
 
                 <bean parent="statefulCommandTemplate">
-                    <property name="id" value="gshell-builtins:exit"/>
                     <property name="actionId" value="gshell-builtins:exit"/>
                 </bean>
 
                 <bean parent="statefulCommandTemplate">
-                    <property name="id" value="gshell-builtins:help"/>
                     <property name="actionId" value="gshell-builtins:help"/>
                 </bean>
 
                 <bean parent="statefulCommandTemplate">
-                    <property name="id" value="gshell-builtins:source"/>
                     <property name="actionId" value="gshell-builtins:source"/>
                 </bean>
                 
                 <bean parent="statefulCommandTemplate">
-                    <property name="id" value="gshell-builtins:set"/>
                     <property name="actionId" value="gshell-builtins:set"/>
                 </bean>
 
                 <bean parent="statefulCommandTemplate">
-                    <property name="id" value="gshell-builtins:unset"/>
                     <property name="actionId" value="gshell-builtins:unset"/>
                 </bean>
             </list>

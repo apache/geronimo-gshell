@@ -41,17 +41,15 @@
         </property>
     </bean>
 
+    <bean name="gshell-bsf:script" class="org.apache.geronimo.gshell.commands.bsf.ScriptAction" scope="prototype"/>
+
     <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
         <property name="id" value="default"/>
 
         <property name="commands">
             <list>
-                <bean parent="commandTemplate">
-                    <property name="id" value="gshell-bsf:script"/>
-
-                    <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.bsf.ScriptAction"/>
-                    </property>
+                <bean parent="statefulCommandTemplate">
+                    <property name="actionId" value="gshell-bsf:script"/>
                 </bean>
             </list>
         </property>
