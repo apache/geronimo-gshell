@@ -50,7 +50,7 @@
                     <property name="id" value="gshell-builtins:clear"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.ClearCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.ClearAction"/>
                     </property>
                 </bean>
 
@@ -58,7 +58,7 @@
                     <property name="id" value="gshell-builtins:echo"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.EchoCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.EchoAction"/>
                     </property>
                 </bean>
 
@@ -66,7 +66,7 @@
                     <property name="id" value="gshell-builtins:exit"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.ExitCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.ExitAction"/>
                     </property>
                 </bean>
 
@@ -74,7 +74,7 @@
                     <property name="id" value="gshell-builtins:help"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.HelpCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.HelpAction"/>
                     </property>
                 </bean>
 
@@ -82,7 +82,7 @@
                     <property name="id" value="gshell-builtins:source"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.SourceCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.SourceAction"/>
                     </property>
                 </bean>
                 
@@ -90,7 +90,7 @@
                     <property name="id" value="gshell-builtins:set"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.SetCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.SetAction"/>
                     </property>
                 </bean>
 
@@ -98,7 +98,7 @@
                     <property name="id" value="gshell-builtins:unset"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.builtins.UnsetCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.builtins.UnsetAction"/>
                     </property>
                 </bean>
             </list>

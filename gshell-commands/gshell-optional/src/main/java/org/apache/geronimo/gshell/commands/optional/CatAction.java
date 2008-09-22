@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-public class CatCommand
+public class CatAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

@@ -50,7 +50,7 @@
                     <property name="id" value="gshell-bsf:script"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.bsf.ScriptCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.bsf.ScriptAction"/>
                     </property>
                 </bean>
             </list>

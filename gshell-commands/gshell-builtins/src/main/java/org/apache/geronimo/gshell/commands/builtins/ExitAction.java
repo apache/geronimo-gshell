@@ -20,47 +20,31 @@
 package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.io.IO;
-
-import java.util.List;
+import org.apache.geronimo.gshell.notification.ExitNotification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * A simple command to print all arguments to the commands standard output.
+ * Exit the current shell.
  *
  * @version $Rev$ $Date$
  */
-public class EchoCommand
+public class ExitAction
     implements CommandAction
 {
-    @Option(name="-n")
-    private boolean trailingNewline = true;
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Argument
-    private List<String> args = null;
+    @Argument(metaVar="CODE")
+    private int exitCode = 0;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        IO io = context.getIo();
-
-        if (args != null) {
-            int c=0;
-
-            for (String arg : args) {
-                io.out.print(arg);
-                if (++c + 1 < args.size()) {
-                    io.out.print(" ");
-                }
-            }
-        }
-
-        if (trailingNewline) {
-            io.out.println();
-        }
-
-        return Result.SUCCESS;
+        log.info("Exiting w/code: {}", exitCode);
+        
+        // Do not call System.exit(), ask the shell to exit instead.
+        throw new ExitNotification(exitCode);
     }
 }

@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-public class ScriptCommand
+public class ScriptAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

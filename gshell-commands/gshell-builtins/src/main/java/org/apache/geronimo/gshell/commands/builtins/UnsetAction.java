@@ -17,41 +17,72 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.optional;
+package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
- * Sleep... zzzZ
+ * Unset a variable or property.
  *
  * @version $Rev$ $Date$
  */
-public class SleepCommand
+public class UnsetAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
+
+    enum Mode
+    {
+        VARIABLE,
+        PROPERTY
+    }
+
+    @Option(name="-m", aliases={"--mode"})
+    private Mode mode = Mode.VARIABLE;
+
     @Argument(required=true)
-    private int time = -1;
+    private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        log.info("Sleeping for {}", time);
+        Variables variables = context.getVariables();
 
-        try {
-            Thread.sleep(time);
-        }
-        catch (InterruptedException ignore) {
-            log.debug("Sleep was interrupted... :-(");
-        }
+        for (String arg : args) {
+            String namevalue = String.valueOf(arg);
 
-        log.info("Awake now");
+            switch (mode) {
+                case PROPERTY:
+                    unsetProperty(namevalue);
+                    break;
+
+                case VARIABLE:
+                    unsetVariable(variables, namevalue);
+                    break;
+            }
+        }
 
         return Result.SUCCESS;
+    }
+
+    private void unsetProperty(final String name) {
+        log.info("Unsetting system property: {}", name);
+
+        System.getProperties().remove(name);
+    }
+
+    private void unsetVariable(final Variables vars, final String name) {
+        log.info("Unsetting variable: {}", name);
+
+        // Command vars always has a parent, set only makes sence when setting in parent's scope
+        vars.parent().unset(name);
     }
 }

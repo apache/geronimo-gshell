@@ -44,7 +44,7 @@ import java.net.URL;
  *
  * @version $Rev$ $Date$
  */
-public class SourceCommand
+public class SourceAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

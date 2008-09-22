@@ -17,33 +17,37 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.optional;
 
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileSystemManager;
-import org.apache.commons.vfs.VFS;
 import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+//
+// HACK: This is a temporary to handle shells which need to keep around after running
+//       commands that return.  Need to have better jobs support to get rid of this.
+//
 
 /**
- * Support for VFS commands.
+ * Wait... just blocks command execution.
  *
  * @version $Rev$ $Date$
  */
-public abstract class VFSCommandSupport
+public class WaitAction
     implements CommandAction
 {
-    private FileSystemManager fsManager;
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    protected FileSystemManager getFileSystemManager() {
-        if (fsManager == null) {
-            try {
-                fsManager = VFS.getManager();
-            }
-            catch (FileSystemException e) {
-                throw new RuntimeException(e);
-            }
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
+
+        log.info("Waiting...");
+
+        synchronized (this) {
+            wait();
         }
-
-        return fsManager;
+        
+        return Result.SUCCESS;
     }
 }

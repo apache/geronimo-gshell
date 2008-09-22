@@ -32,7 +32,7 @@ import java.io.PrintWriter;
  *
  * @version $Rev$ $Date$
  */
-public class ClearCommand
+public class ClearAction
     implements CommandAction
 {
     public Object execute(final CommandContext context) throws Exception {

@@ -50,7 +50,7 @@
                     <property name="id" value="gshell-optional:cat"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.optional.CatCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.optional.CatAction"/>
                     </property>
                 </bean>
 
@@ -58,7 +58,7 @@
                     <property name="id" value="gshell-optional:exec"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.optional.ExecuteCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.optional.ExecuteAction"/>
                     </property>
                 </bean>
 
@@ -66,7 +66,7 @@
                     <property name="id" value="gshell-optional:java"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.optional.JavaCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.optional.JavaAction"/>
                     </property>
                 </bean>
 
@@ -74,7 +74,7 @@
                     <property name="id" value="gshell-optional:sleep"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.optional.SleepCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.optional.SleepAction"/>
                     </property>
                 </bean>
 
@@ -82,7 +82,7 @@
                     <property name="id" value="gshell-optional:wait"/>
 
                     <property name="action">
-                        <bean class="org.apache.geronimo.gshell.commands.optional.WaitCommand"/>
+                        <bean class="org.apache.geronimo.gshell.commands.optional.WaitAction"/>
                     </property>
                 </bean>
             </list>

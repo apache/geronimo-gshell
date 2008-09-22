@@ -37,7 +37,7 @@ import java.util.Properties;
  *
  * @version $Rev$ $Date$
  */
-public class SetCommand
+public class SetAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

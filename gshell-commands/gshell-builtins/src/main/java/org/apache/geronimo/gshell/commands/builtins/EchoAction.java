@@ -17,37 +17,50 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.optional;
+package org.apache.geronimo.gshell.commands.builtins;
 
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.io.IO;
 
-//
-// HACK: This is a temporary to handle shells which need to keep around after running
-//       commands that return.  Need to have better jobs support to get rid of this.
-//
+import java.util.List;
 
 /**
- * Wait... just blocks command execution.
+ * A simple command to print all arguments to the commands standard output.
  *
  * @version $Rev$ $Date$
  */
-public class WaitCommand
+public class EchoAction
     implements CommandAction
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    @Option(name="-n")
+    private boolean trailingNewline = true;
+
+    @Argument
+    private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        log.info("Waiting...");
+        IO io = context.getIo();
 
-        synchronized (this) {
-            wait();
+        if (args != null) {
+            int c=0;
+
+            for (String arg : args) {
+                io.out.print(arg);
+                if (++c + 1 < args.size()) {
+                    io.out.print(" ");
+                }
+            }
         }
-        
+
+        if (trailingNewline) {
+            io.out.println();
+        }
+
         return Result.SUCCESS;
     }
 }

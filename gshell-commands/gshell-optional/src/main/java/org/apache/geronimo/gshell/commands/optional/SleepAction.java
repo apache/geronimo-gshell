@@ -22,56 +22,36 @@ package org.apache.geronimo.gshell.commands.optional;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.io.PumpStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 /**
- * Execute system processes.
+ * Sleep... zzzZ
  *
  * @version $Rev$ $Date$
  */
-public class ExecuteCommand
+public class SleepAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private ProcessBuilder builder;
-
+    
     @Argument(required=true)
-    private List<String> args;
+    private int time = -1;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        IO io = context.getIo();
+        log.info("Sleeping for {}", time);
 
-        //
-        // FIXME: Seems we are missing the builder here... oops
-        //
-        
-        assert builder != null;
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException ignore) {
+            log.debug("Sleep was interrupted... :-(");
+        }
 
-        log.info("Executing: {}", builder.command());
+        log.info("Awake now");
 
-        Process p = builder.start();
-
-        PumpStreamHandler handler = new PumpStreamHandler(io.inputStream, io.outputStream, io.errorStream);
-        handler.attach(p);
-        handler.start();
-
-        log.debug("Waiting for process to exit...");
-
-        int status = p.waitFor();
-
-        
-        log.info("Process exited w/status: {}", status);
-
-        handler.stop();
-
-        return status;
+        return Result.SUCCESS;
     }
 }

@@ -41,7 +41,7 @@ import java.util.Set;
  *
  * @version $Rev$ $Date$
  */
-public class ResolveCommand
+public class ResolveAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

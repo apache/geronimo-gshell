@@ -17,57 +17,63 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.optional;
+package org.apache.geronimo.gshell.commands.vfs;
 
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemManager;
+import org.apache.commons.vfs.FileUtil;
+import org.apache.commons.vfs.VFS;
+import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.clp.Option;
-import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.Arguments;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 /**
- * Execute a Java standard application.
- *
- * <p>By default looks for static main(String[]) to execute, but
- * you can specify a different static method that takes a String[]
- * to execute instead.
+ * Copy files.
  *
  * @version $Rev$ $Date$
  */
-public class JavaCommand
+public class CopyAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+    
+    @Argument(index=0, required=true)
+    private String sourceName;
 
-    @Option(name="-m", aliases={"--method"}, metaVar="METHOD")
-    private String methodName = "main";
-
-    @Argument(index=0, metaVar="CLASSNAME", required=true)
-    private String className;
-
-    @Argument(index=1, metaVar="ARG")
-    private List<String> args;
+    @Argument(index=1, required=true)
+    private String targetName;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+    
+        FileSystemManager fsm = getFileSystemManager();
+        FileObject source = fsm.resolveFile(sourceName);
+        FileObject target = fsm.resolveFile(targetName);
+
+        log.info("Copying {} -> {}", source, target);
         
-        Class type = Thread.currentThread().getContextClassLoader().loadClass(className);
-        log.info("Using type: {}", type);
+        FileUtil.copyContent(source, target);
 
-        Method method = type.getMethod(methodName, String[].class);
-        log.info("Using method: {}", method);
-
-        log.info("Invoking w/arguments: {}", Arguments.asString(args));
-
-        Object result = method.invoke(null, args);
-
-        log.info("Result: {}", result);
-        
         return Result.SUCCESS;
+    }
+
+    // TODO: Move this to a bean factory and inject
+
+    private FileSystemManager fsManager;
+
+    protected FileSystemManager getFileSystemManager() {
+        if (fsManager == null) {
+            try {
+                fsManager = VFS.getManager();
+            }
+            catch (FileSystemException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return fsManager;
     }
 }

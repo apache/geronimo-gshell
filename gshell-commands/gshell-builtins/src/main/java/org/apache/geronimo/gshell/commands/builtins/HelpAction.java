@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-public class HelpCommand
+public class HelpAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

@@ -19,23 +19,22 @@
 
 package org.apache.geronimo.gshell.commands.admin;
 
+import org.apache.geronimo.gshell.application.plugin.PluginManager;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.application.plugin.PluginManager;
-import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
-
 /**
- * List installed GShell plugins.
+ * Install a GShell plugin.
  *
  * @version $Rev$ $Date$
  */
-public class ListPluginsCommand
+public class InstallPluginAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -43,19 +42,34 @@ public class ListPluginsCommand
     @Autowired
     private PluginManager pluginManager;
 
+    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, metaVar="GROUP-ID", required=true)
+    private String groupId;
+
+    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, metaVar="ARTIFACT-ID", required=true)
+    private String artifactId;
+
+    @Option(name="-v", aliases={"--version"}, argumentRequired=true, metaVar="VERSION", required=true)
+    private String version;
+    
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
-        assert pluginManager != null;
-        Set<Plugin> plugins = pluginManager.getPlugins();
+        PluginArtifact artifact = new PluginArtifact();
+        artifact.setGroupId(groupId);
+        artifact.setArtifactId(artifactId);
+        artifact.setVersion(version);
 
-        io.out.println("Installed plugins:");
-
-        for (Plugin plugin : plugins) {
-            io.out.println("    " + plugin.getId());
-        }
+        io.out.println("Loading plugin: " + artifact.getId());
         
-        return Result.SUCCESS;
+        assert pluginManager != null;
+        try {
+            pluginManager.loadPlugin(artifact);
+            return Result.SUCCESS;
+        }
+        catch (Exception e) {
+            log.error("Failed to load plugin", e);
+            return Result.FAILURE;
+        }
     }
 }

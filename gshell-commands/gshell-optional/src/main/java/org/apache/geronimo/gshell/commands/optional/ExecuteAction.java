@@ -17,72 +17,61 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.builtins;
+package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.io.PumpStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 /**
- * Unset a variable or property.
+ * Execute system processes.
  *
  * @version $Rev$ $Date$
  */
-public class UnsetCommand
+public class ExecuteAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    enum Mode
-    {
-        VARIABLE,
-        PROPERTY
-    }
-
-    @Option(name="-m", aliases={"--mode"})
-    private Mode mode = Mode.VARIABLE;
+    private ProcessBuilder builder;
 
     @Argument(required=true)
-    private List<String> args = null;
+    private List<String> args;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        Variables variables = context.getVariables();
+        IO io = context.getIo();
 
-        for (String arg : args) {
-            String namevalue = String.valueOf(arg);
+        //
+        // FIXME: Seems we are missing the builder here... oops
+        //
+        
+        assert builder != null;
 
-            switch (mode) {
-                case PROPERTY:
-                    unsetProperty(namevalue);
-                    break;
+        log.info("Executing: {}", builder.command());
 
-                case VARIABLE:
-                    unsetVariable(variables, namevalue);
-                    break;
-            }
-        }
+        Process p = builder.start();
 
-        return Result.SUCCESS;
-    }
+        PumpStreamHandler handler = new PumpStreamHandler(io.inputStream, io.outputStream, io.errorStream);
+        handler.attach(p);
+        handler.start();
 
-    private void unsetProperty(final String name) {
-        log.info("Unsetting system property: {}", name);
+        log.debug("Waiting for process to exit...");
 
-        System.getProperties().remove(name);
-    }
+        int status = p.waitFor();
 
-    private void unsetVariable(final Variables vars, final String name) {
-        log.info("Unsetting variable: {}", name);
+        
+        log.info("Process exited w/status: {}", status);
 
-        // Command vars always has a parent, set only makes sence when setting in parent's scope
-        vars.parent().unset(name);
+        handler.stop();
+
+        return status;
     }
 }
