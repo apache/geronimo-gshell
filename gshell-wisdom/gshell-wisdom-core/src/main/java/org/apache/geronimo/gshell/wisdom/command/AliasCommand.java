@@ -32,8 +32,7 @@ import org.slf4j.LoggerFactory;
 public class AliasCommand
     extends CommandSupport
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
+    @Override
     public CommandResult execute(final ShellContext context, final Object[] args) {
         assert context != null;
         assert args != null;

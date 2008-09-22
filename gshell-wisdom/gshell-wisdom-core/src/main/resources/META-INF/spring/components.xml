@@ -57,4 +57,32 @@
         </property>
     </bean>
 
+    <bean id="statelessCommandTemplate" class="org.apache.geronimo.gshell.wisdom.command.StatelessCommand" abstract="true">
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="messages">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>
+        </property>
+    </bean>
+
+    <bean id="statefulCommandTemplate" class="org.apache.geronimo.gshell.wisdom.command.StatefulCommand" abstract="true">
+        <property name="documenter">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+        </property>
+
+        <property name="completer">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+        </property>
+
+        <property name="messages">
+            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>
+        </property>
+    </bean>
+
 </beans>
