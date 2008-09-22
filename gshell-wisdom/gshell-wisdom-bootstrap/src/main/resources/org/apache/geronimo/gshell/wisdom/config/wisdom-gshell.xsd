@@ -20,8 +20,6 @@
 
 <!-- $Rev$ $Date$ -->
 
-<?xml version="1.0" encoding="UTF-8"?>
-
 <xsd:schema xmlns="http://gshell.org/schema/wisdom/gshell"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:beans="http://www.springframework.org/schema/beans"
