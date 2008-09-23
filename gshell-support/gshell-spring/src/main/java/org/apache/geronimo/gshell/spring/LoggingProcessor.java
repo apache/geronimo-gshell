@@ -40,7 +40,6 @@ import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.ChildBeanDefinition;
 import org.springframework.beans.factory.support.LookupOverride;
-import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.MethodOverride;
 import org.springframework.beans.factory.support.MethodOverrides;
 import org.springframework.beans.factory.support.ReplaceOverride;
@@ -66,7 +65,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,15 +82,13 @@ public class LoggingProcessor
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    protected boolean prettyPrint = true;
+    private boolean prettyPrint = true;
 
-    protected int indentSize = DEFAULT_INDENT_SIZE;
+    private int indentSize = DEFAULT_INDENT_SIZE;
 
-    protected boolean generateSchemaBasedContext = false;
+    private boolean sortBeansByName = false;
 
-    protected boolean sortBeansByName = false;
-
-    protected MetadataElementDescriptionCreator metadataElementDescriptionCreator = MetadataElementDescriptionCreator.DUMMY;
+    private MetadataElementDescriptionCreator metadataElementDescriptionCreator = MetadataElementDescriptionCreator.DUMMY;
 
     public LoggingProcessor() {}
 
@@ -108,7 +104,7 @@ public class LoggingProcessor
         }
     }
 
-    public String render(final ConfigurableListableBeanFactory beanFactory) throws IOException, TransformerException {
+    public String render(final ConfigurableListableBeanFactory beanFactory) throws Exception {
         StringWriter writer = new StringWriter();
 
         Document document = generateBeanFactoryDump(beanFactory);
@@ -122,7 +118,7 @@ public class LoggingProcessor
     /**
      * Writes document to provided writer.
      */
-    protected void writeDocument(final Document document, final Writer writer) throws TransformerException, IOException {
+    private void writeDocument(final Document document, final Writer writer) throws TransformerException, IOException {
         assert document != null;
         assert writer != null;
 
@@ -136,11 +132,6 @@ public class LoggingProcessor
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(document);
         StreamResult result = new StreamResult(writer);
-        if (generateSchemaBasedContext) {
-            transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "beans");
-            transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,
-                    "http://www.springframework.org/dtd/spring-beans-2.0.dtd");
-        }
 
         if (prettyPrint) {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -154,15 +145,16 @@ public class LoggingProcessor
     /**
      * Creates DOM document that contains declaration of given bean factory.
      */
-    protected Document generateBeanFactoryDump(ConfigurableListableBeanFactory beanFactory) {
+    private Document generateBeanFactoryDump(final ConfigurableListableBeanFactory beanFactory) throws ParserConfigurationException {
+        assert beanFactory != null;
+
         Document result = createDocument();
-        if (result != null) {
-            ElementBuilder builder = new ElementBuilder(result);
-            generateRoot(beanFactory, builder);
-            generateBeanAliases(beanFactory, builder);
-            generateBeanDefinitions(beanFactory, builder);
-        }
+        ElementBuilder builder = new ElementBuilder(result);
+        generateRoot(builder);
+        generateBeanAliases(beanFactory, builder);
+        generateBeanDefinitions(beanFactory, builder);
         result.getDocumentElement().normalize();
+
         return result;
     }
 
@@ -170,7 +162,7 @@ public class LoggingProcessor
      * Generates declaration for given bean definition. Declaration includes generic
      * attributes, constructor argruments, properties and lookup methods.
      */
-    protected void processBeanDefinition(String beanName, BeanDefinition beanDefinition, ElementBuilder builder, boolean inHolder) {
+    private void processBeanDefinition(final String beanName, final BeanDefinition beanDefinition, final ElementBuilder builder, final boolean inHolder) {
         generateBeanDefinitionAttributes(beanDefinition, builder, beanName, inHolder);
         generateConstructorArguments(beanDefinition, builder);
         generateProperties(beanDefinition, builder);
@@ -181,118 +173,21 @@ public class LoggingProcessor
     /**
      * Generates declarations for properties of given bean definition.
      */
-    protected void generateProperties(BeanDefinition beanDefinition, ElementBuilder builder) {
+    private void generateProperties(final BeanDefinition beanDefinition, final ElementBuilder builder) {
         MutablePropertyValues properties = beanDefinition.getPropertyValues();
+
+        @SuppressWarnings({"unchecked"})
         List<PropertyValue> list = properties.getPropertyValueList();
 
-        if (generateSchemaBasedContext) {
-            for (PropertyValue property : list) {
-                PropertyType type = getPropertyType(property);
-
-                switch (type) {
-                    case STRING: {
-                        generatePropertyAsAttribute(beanDefinition, builder, property, false);
-                        break;
-                    }
-                    case ORDINARY: {
-                        generatePropertyAsAttribute(beanDefinition, builder, property, true);
-                        break;
-                    }
-                    case REFERENCE: {
-                        generateRefAsAttribute(beanDefinition, builder, property);
-                        break;
-                    }
-                    default: {
-                        generatePropertyElement(beanDefinition, builder, property);
-                    }
-                }
-            }
+        for (PropertyValue property : list) {
+            generatePropertyElement(beanDefinition, builder, property);
         }
-        else {
-            for (PropertyValue property : list) {
-                generatePropertyElement(beanDefinition, builder, property);
-            }
-        }
-    }
-
-    /**
-     * Utility enum that simplifies generation of attributes using p: namespace
-     */
-    private enum PropertyType {
-        STRING,
-        ORDINARY,
-        REFERENCE,
-        OTHER
-    }
-
-    /**
-     * Generates property value declaration using p: namespace declaration.
-     */
-    protected void generatePropertyAsAttribute(BeanDefinition beanDefinition, ElementBuilder builder, PropertyValue propertyValue, boolean typedString) {
-        String propertyName = propertyValue.getName();
-        String value;
-
-        if (typedString) {
-            TypedStringValue typedStringValue = (TypedStringValue) propertyValue.getValue();
-            value = typedStringValue.getValue();
-        }
-        else {
-            value = (String) propertyValue.getValue();
-        }
-
-        StringBuilder tmp = new StringBuilder();
-        tmp.append("p:").append(propertyName);
-        String attributeName = tmp.toString();
-        builder.addAttribute(attributeName, value);
-    }
-
-    /**
-     * Generates reference to bean via attribute in p: namespace.
-     */
-    protected void generateRefAsAttribute(BeanDefinition beanDefinition, ElementBuilder builder, PropertyValue property) {
-        String propertyName = property.getName();
-        RuntimeBeanReference runtimeBeanReference = (RuntimeBeanReference) property.getValue();
-        StringBuilder tmp = new StringBuilder();
-        tmp.append("p:").append(propertyName).append("-ref");
-        String attributeName = tmp.toString();
-        String beanName = runtimeBeanReference.getBeanName();
-        builder.addAttribute(attributeName, beanName);
-    }
-
-    /**
-     * Inspects value of attribute to determine whether one could be declared
-     * via p: namespace.
-     */
-    protected PropertyType getPropertyType(PropertyValue property) {
-        PropertyType result = PropertyType.OTHER;
-        Object value = property.getValue();
-
-        if (value instanceof String) {
-            result = PropertyType.STRING;
-        }
-        else if (value instanceof RuntimeBeanReference) {
-            result = PropertyType.REFERENCE;
-        }
-        else if (value instanceof TypedStringValue) {
-            TypedStringValue typedStringValue = (TypedStringValue) value;
-            String type = typedStringValue.getTargetTypeName();
-
-            if (type == null) {
-                String typedValue = typedStringValue.getValue();
-
-                if (typedValue != null) {
-                    result = PropertyType.ORDINARY;
-                }
-            }
-        }
-        return result;
-
     }
 
     /**
      * Generates declaration of single property elemnet.
      */
-    protected void generatePropertyElement(BeanDefinition beanDefinition, ElementBuilder builder, PropertyValue property) {
+    private void generatePropertyElement(final BeanDefinition beanDefinition, final ElementBuilder builder, final PropertyValue property) {
         builder.addChild(PROPERTY_ELEMENT);
         String propertyName = property.getName();
         builder.addAttribute(BeanDefinitionParserDelegate.NAME_ATTRIBUTE, propertyName);
@@ -314,9 +209,8 @@ public class LoggingProcessor
     /**
      * Generates generic attributes associated with bean definition (like id, clas, scope etc).
      */
-    protected void generateBeanDefinitionAttributes(BeanDefinition beanDefinition, ElementBuilder elementBuilder, String beanName, boolean inHolder) {
+    private void generateBeanDefinitionAttributes(final BeanDefinition beanDefinition, final ElementBuilder elementBuilder, final String beanName, final boolean inHolder) {
         String beanClassName = beanDefinition.getBeanClassName();
-        boolean isSingleton = beanDefinition.isSingleton();
         boolean isAbstract = beanDefinition.isAbstract();
         boolean isLazyInit = beanDefinition.isLazyInit();
 
@@ -326,7 +220,7 @@ public class LoggingProcessor
         if (!inHolder) {
             if (beanName != null) {
                 if (!beanName.equals(beanClassName)) {
-                    if (isBeanNameApplicableForID(beanName, beanDefinition)) {
+                    if (isBeanNameApplicableForID(beanName)) {
                         builder.addAttribute(ID_ATTRIBUTE, beanName);
                     }
                     else {
@@ -428,7 +322,7 @@ public class LoggingProcessor
      * one could be used in "id" attribute (or otherwise "name" attribute
      * is more acceptable).
      */
-    protected boolean isBeanNameApplicableForID(String beanName, BeanDefinition beanDefinition) {
+    private boolean isBeanNameApplicableForID(final String beanName) {
         // simple check for chars not applicable for identifiers
         // potentially, more strict check should be used there
         return (beanName.indexOf('#') != -1) && (beanName.indexOf('.') != -1);
@@ -438,47 +332,30 @@ public class LoggingProcessor
     /**
      * Generates root element of context.
      */
-    protected void generateRoot(ConfigurableListableBeanFactory beanFactory, ElementBuilder builder) {
+    private void generateRoot(final ElementBuilder builder) {
+        assert builder != null;
+
         builder.createRoot("beans");
-
-        if (generateSchemaBasedContext) {
-            builder.addAttribute("xmlns", "http://www.springframework.org/schema/beans");
-            Element root = builder.getCurrent();
-            root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            root.setAttribute("xmlns:p", "http://www.springframework.org/schema/p");
-            root.setAttribute("xsi:schemaLocation", "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd");
-        }
-
-        // TODO - check whether params of context there should be generated
-        // it seems that we can't restore defaults for context... Anyway,
-        // they will be specified on particular beans
     }
 
     /**
      * Utility that creates DOM document.
      */
-    protected Document createDocument() {
-        Document document = null;
-
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            document = documentBuilder.newDocument();
-        }
-        catch (ParserConfigurationException e) {
-            log.error("Unable to create document", e);
-        }
-
-        return document;
+    private Document createDocument() throws ParserConfigurationException {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        return documentBuilder.newDocument();
     }
 
     /**
      * Generates lookup methods for given bean definition.
      */
-    protected void generateLookupMethods(BeanDefinition beanDefinition, ElementBuilder builder) {
+    private void generateLookupMethods(final BeanDefinition beanDefinition, final ElementBuilder builder) {
         if (beanDefinition instanceof AbstractBeanDefinition) {
             AbstractBeanDefinition def = (AbstractBeanDefinition) beanDefinition;
             MethodOverrides overrides = def.getMethodOverrides();
+
+            @SuppressWarnings({"unchecked"})
             Set<MethodOverride> overridesSet = overrides.getOverrides();
 
             for (MethodOverride override : overridesSet) {
@@ -490,7 +367,7 @@ public class LoggingProcessor
     /**
      * Generates methods overrides (lookup or replace).
      */
-    protected void generateMethodOverride(MethodOverride override, ElementBuilder builder) {
+    private void generateMethodOverride(final MethodOverride override, final ElementBuilder builder) {
         if (override instanceof LookupOverride) {
             LookupOverride lookupOverride = (LookupOverride) override;
             builder.addChild(LOOKUP_METHOD_ELEMENT);
@@ -518,11 +395,12 @@ public class LoggingProcessor
     /**
      * Generates constructor arguments for given bean definition.
      */
-    protected void generateConstructorArguments(BeanDefinition beanDefinition, ElementBuilder builder) {
-        ConstructorArgumentValues constructorArguments = beanDefinition.getConstructorArgumentValues();
+    private void generateConstructorArguments(final BeanDefinition beanDefinition, final ElementBuilder builder) {
+        ConstructorArgumentValues args = beanDefinition.getConstructorArgumentValues();
 
-        if (constructorArguments != null) {
-            List<ConstructorArgumentValues.ValueHolder> genericArguments = constructorArguments.getGenericArgumentValues();
+        if (args != null) {
+            @SuppressWarnings({"unchecked"})
+            List<ConstructorArgumentValues.ValueHolder> genericArguments = args.getGenericArgumentValues();
 
             if (genericArguments.size() > 0) {
                 for (ConstructorArgumentValues.ValueHolder holder : genericArguments) {
@@ -530,13 +408,14 @@ public class LoggingProcessor
                 }
             }
 
-            Map<Integer, ConstructorArgumentValues.ValueHolder> indexedArguments = constructorArguments.getIndexedArgumentValues();
+            @SuppressWarnings({"unchecked"})
+            Map<Integer, ConstructorArgumentValues.ValueHolder> indexedArguments = args.getIndexedArgumentValues();
 
             if (indexedArguments.size() > 0) {
                 for (Map.Entry<Integer, ConstructorArgumentValues.ValueHolder> entry : indexedArguments.entrySet()) {
                     Integer index = entry.getKey();
                     ConstructorArgumentValues.ValueHolder holder = entry.getValue();
-                    generateConstructorArgument(index.intValue(), holder, builder);
+                    generateConstructorArgument(index, holder, builder);
                 }
             }
         }
@@ -545,7 +424,7 @@ public class LoggingProcessor
     /**
      * Generates declaration of constructor-arg elemnet.
      */
-    protected void generateConstructorArgument(int i, ConstructorArgumentValues.ValueHolder holder, ElementBuilder builder) {
+    private void generateConstructorArgument(final int i, final ConstructorArgumentValues.ValueHolder holder, final ElementBuilder builder) {
         builder.addChild(CONSTRUCTOR_ARG_ELEMENT);
 
         if (i >= 0) {
@@ -566,7 +445,7 @@ public class LoggingProcessor
      * Generates declaration for given value (obtained either from particular
      * property, constructor or element of list, map, set or reference.
      */
-    protected void processValue(Object value, ElementBuilder builder, boolean fullFormForReference, boolean inMap) {
+    private void processValue(final Object value, final ElementBuilder builder, final boolean fullFormForReference, final boolean inMap) {
         // well, I know that's ugly... but didn't find other way to resolve that
         if (value instanceof BeanDefinition) {
             processBeanDefinition(null, (BeanDefinition) value, builder, true);
@@ -655,7 +534,7 @@ public class LoggingProcessor
      * Generates declaration for RuntimeBeanReference (one usually occur as
      * result of "ref" element or reference property.
      */
-    protected void processRuntimeBeanReference(Object value, ElementBuilder builder, boolean fullFormForReference, boolean inMap) {
+    private void processRuntimeBeanReference(final Object value, final ElementBuilder builder, final boolean fullFormForReference, final boolean inMap) {
         RuntimeBeanReference ref = (RuntimeBeanReference) value;
         String beanName = ref.getBeanName();
 
@@ -677,17 +556,16 @@ public class LoggingProcessor
     /**
      * Generates declaration for given map.
      */
-    protected void processMap(Map sourceMap, ElementBuilder builder) {
-        builder.addChild(MAP_ELEMENT);
-        Map map = sourceMap;
-        Set keySet = map.keySet();
-        Iterator iter = keySet.iterator();
+    private void processMap(final Map map, final ElementBuilder builder) {
+        assert map != null;
+        assert builder != null;
 
-        while (iter.hasNext()) {
-            Object key = iter.next();
+        builder.addChild(MAP_ELEMENT);
+
+        for (Object key : map.keySet()) {
             Object value = map.get(key);
             builder.addChild(ENTRY_ELEMENT);
-            String keyValue = null;
+            String keyValue;
 
             if (key instanceof String) {
                 keyValue = (String) key;
@@ -718,7 +596,7 @@ public class LoggingProcessor
     /**
      * Generates declaration for given set.
      */
-    protected void processSet(Set set, ElementBuilder builder) {
+    private void processSet(final Set set, final ElementBuilder builder) {
         builder.addChild(SET_ELEMENT);
 
         for (Object value : set) {
@@ -731,8 +609,7 @@ public class LoggingProcessor
     /**
      * Generates declaration for given list.
      */
-    protected void processList(List sourceList, ElementBuilder builder) {
-        ManagedList list = (ManagedList) sourceList;
+    private void processList(final List list, final ElementBuilder builder) {
         builder.addChild(LIST_ELEMENT);
 
         for (Object value : list) {
@@ -745,31 +622,32 @@ public class LoggingProcessor
     /**
      * Method generates declarations for top-level bean declaration in given context.
      */
-    protected void generateBeanDefinitions(ConfigurableListableBeanFactory beanFactory, ElementBuilder builder) {
-        String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+    private void generateBeanDefinitions(final ConfigurableListableBeanFactory beanFactory, final ElementBuilder builder) {
+        String[] names = beanFactory.getBeanDefinitionNames();
 
         if (sortBeansByName) {
-            Arrays.sort(beanDefinitionNames);
+            Arrays.sort(names);
         }
 
-        for (String beanDefinitionName : beanDefinitionNames) {
-            BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanDefinitionName);
-            processBeanDefinition(beanDefinitionName, beanDefinition, builder, false);
+        for (String name : names) {
+            BeanDefinition definition = beanFactory.getBeanDefinition(name);
+            processBeanDefinition(name, definition, builder, false);
         }
     }
 
     /**
      * Method generates all aliases for given factory.
      */
-    protected void generateBeanAliases(ConfigurableListableBeanFactory beanFactory, ElementBuilder builder) {
-        String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+    private void generateBeanAliases(final ConfigurableListableBeanFactory beanFactory, final ElementBuilder builder) {
+        String[] names = beanFactory.getBeanDefinitionNames();
 
-        for (String beanName : beanDefinitionNames) {
-            String[] aliases = beanFactory.getAliases(beanName);
+        for (String name : names) {
+            String[] aliases = beanFactory.getAliases(name);
+
             if (aliases.length > 0) {// first element is name of bean
                 // here will be also returned aliases from parent context, probably we need to filter them...
                 for (String alias : aliases) {
-                    generateAlias(builder, beanName, alias);
+                    generateAlias(builder, name, alias);
                 }
             }
         }
@@ -778,7 +656,7 @@ public class LoggingProcessor
     /**
      * Method that generates declaration of bean' attribute.
      */
-    protected void generateAlias(ElementBuilder builder, String beanName, String alias) {
+    private void generateAlias(final ElementBuilder builder, final String beanName, final String alias) {
         builder.addChild(DefaultBeanDefinitionDocumentReader.ALIAS_ELEMENT);
         builder.addAttribute(DefaultBeanDefinitionDocumentReader.NAME_ATTRIBUTE, beanName);
         builder.addAttribute(DefaultBeanDefinitionDocumentReader.ALIAS_ATTRIBUTE, alias);
@@ -789,7 +667,7 @@ public class LoggingProcessor
      * Internal utility that converts internal value of dependency check setting
      * to string value of appropriate attribute.
      */
-    protected String getDependencyCheck(int dependencyCheck) {
+    private String getDependencyCheck(final int dependencyCheck) {
         String result = null;
 
         switch (dependencyCheck) {
@@ -818,7 +696,7 @@ public class LoggingProcessor
      * Internal utility to transfer internal value of autowire mode to
      * string value used in corresponding attribute.
      */
-    protected String getAutowireModeString(int value) {
+    private String getAutowireModeString(final int value) {
         String result = null;
 
         switch (value) {
@@ -847,63 +725,64 @@ public class LoggingProcessor
         return result;
     }
 
-    public MetadataElementDescriptionCreator getMetadataElementDescriptionCreator() {
-        return metadataElementDescriptionCreator;
-    }
-
     /**
      * Utility class that simplifies creation of DOM tree
      */
     public class ElementBuilder
     {
         // document used by build tree
-        protected Document document = null;
+        private Document document = null;
 
         // root of the tree
-        protected Element rootElement = null;
+        private Element rootElement = null;
 
         // stack of elements from root to current element
-        protected Stack<Element> stack = new Stack<Element>();
+        private Stack<Element> stack = new Stack<Element>();
 
-        public ElementBuilder(Document aDocument) {
-            document = aDocument;
+        public ElementBuilder(final Document document) {
+            this.document = document;
         }
 
-        public ElementBuilder createRoot(String elementName) {
-            doCreateRootElement( elementName);
+        public ElementBuilder createRoot(final String elementName) {
+            doCreateRootElement(elementName);
             return this;
         }
 
-        protected Element doCreateRootElement(String elementName) {
+        private Element doCreateRootElement(final String elementName) {
             rootElement = document.createElement(elementName);
             document.appendChild(rootElement);
             stack.push(rootElement);
+
             return rootElement;
         }
 
-        public ElementBuilder addAttribute(String attributeName, String value) {
+        public ElementBuilder addAttribute(final String attributeName, final String value) {
             Element elm = stack.peek();
             elm.setAttribute(attributeName, value);
+
             return this;
         }
 
-        public ElementBuilder addPCData(String pcData) {
+        public ElementBuilder addPCData(final String pcData) {
             Element elm = stack.peek();
             Node cdata = document.createCDATASection(pcData);
             elm.appendChild(cdata);
+
             return this;
         }
 
-        public ElementBuilder addChild(String elementName) {
+        public ElementBuilder addChild(final String elementName) {
             doAddChild(elementName);
+
             return this;
         }
 
-        protected Element doAddChild(String elementName) {
+        private Element doAddChild(final String elementName) {
             Element currentElement = stack.peek();
             Element result = document.createElement(elementName);
             currentElement.appendChild(result);
             stack.push(result);
+
             return result;
         }
 
@@ -913,6 +792,7 @@ public class LoggingProcessor
 
         public ElementBuilder up() {
             stack.pop();
+
             return this;
         }
 
@@ -951,11 +831,11 @@ public class LoggingProcessor
          * Default do-nothing implementation.
          */
         static MetadataElementDescriptionCreator DUMMY = new MetadataElementDescriptionCreator() {
-            public String getBeanDefinitionDescription(String beanName, BeanDefinition beanDefinition) {
+            public String getBeanDefinitionDescription(final String beanName, final BeanDefinition beanDefinition) {
                 return null;
             }
 
-            public String getPropertyValueBeanDefinitionDescription(BeanDefinition beanDefinition, PropertyValue property) {
+            public String getPropertyValueBeanDefinitionDescription(final BeanDefinition beanDefinition, final PropertyValue property) {
                 return null;
             }
         };

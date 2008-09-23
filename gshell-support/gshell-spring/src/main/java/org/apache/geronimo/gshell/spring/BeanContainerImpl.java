@@ -76,6 +76,11 @@ public class BeanContainerImpl
         context.addBeanFactoryPostProcessor(new LoggingProcessor());
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
+        // TODO: Add these <context:annotation-config/> processors
+        // CommonAnnotationBeanPostProcessor
+        // AutowiredAnnotationBeanPostProcessor
+        // RequiredAnnotationBeanPostProcessor
+
         // Refresh to load things up
         context.refresh();
     }
