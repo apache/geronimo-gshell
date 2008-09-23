@@ -48,12 +48,14 @@ public class ListPluginsAction
         IO io = context.getIo();
 
         assert pluginManager != null;
+        log.debug("Plugin manager: {}", pluginManager);
+
         Set<Plugin> plugins = pluginManager.getPlugins();
 
-        io.out.println("Installed plugins:");
+        io.info("Found {} plugins:", plugins.size());
 
         for (Plugin plugin : plugins) {
-            io.out.println("    " + plugin.getId());
+            io.info("    {}", plugin.getId());
         }
         
         return Result.SUCCESS;

@@ -46,19 +46,19 @@ public class RshCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    @Option(name="-b", aliases={"--bind"}, token ="URI")
+    @Option(name="-b", aliases={"--bind"}, token="URI")
     private URI local;
 
-    @Option(name="-u", aliases={"--username"}, token ="USERNAME")
+    @Option(name="-u", aliases={"--username"}, token="USERNAME")
     private String username;
 
-    @Option(name="-p", aliases={"--password"}, token ="PASSWORD")
+    @Option(name="-p", aliases={"--password"}, token="PASSWORD")
     private String password;
     
-    @Argument(token ="URI", required=true, index=0)
+    @Argument(token="URI", required=true, index=0)
     private URI remote;
 
-    @Argument(token ="COMMAND", index=1, multiValued=true)
+    @Argument(token="COMMAND", index=1, multiValued=true)
     private List<String> command = new ArrayList<String>();
 
     private BeanContainer container;

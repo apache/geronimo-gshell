@@ -49,7 +49,7 @@ public class HelpAction
     @Autowired
     private CommandRegistry commandRegistry;
 
-    @Argument(token ="COMMAND")
+    @Argument(token="COMMAND")
     private String commandName;
 
     private Renderer renderer = new Renderer();

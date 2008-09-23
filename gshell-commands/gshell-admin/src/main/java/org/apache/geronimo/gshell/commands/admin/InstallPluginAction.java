@@ -42,13 +42,13 @@ public class InstallPluginAction
     @Autowired
     private PluginManager pluginManager;
 
-    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, token ="GROUP-ID", required=true)
+    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, required=true)
     private String groupId;
 
-    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, token ="ARTIFACT-ID", required=true)
+    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, required=true)
     private String artifactId;
 
-    @Option(name="-v", aliases={"--version"}, argumentRequired=true, token ="VERSION", required=true)
+    @Option(name="-v", aliases={"--version"}, argumentRequired=true, required=true)
     private String version;
     
     public Object execute(final CommandContext context) throws Exception {
@@ -60,16 +60,20 @@ public class InstallPluginAction
         artifact.setArtifactId(artifactId);
         artifact.setVersion(version);
 
-        io.out.println("Loading plugin: " + artifact.getId());
+        io.info("Loading plugin: {}", artifact.getId());
         
         assert pluginManager != null;
+        log.debug("Plugin manager: {}", pluginManager);
+
         try {
             pluginManager.loadPlugin(artifact);
+
             return Result.SUCCESS;
         }
         catch (Exception e) {
             log.error("Failed to load plugin", e);
-            return Result.FAILURE;
         }
+
+        return Result.FAILURE;
     }
 }

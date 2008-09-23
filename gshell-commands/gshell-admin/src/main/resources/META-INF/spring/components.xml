@@ -50,8 +50,8 @@
 
         <property name="commands">
             <list>
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-admin:list-plugins"/>
+                <bean parent="statelessCommandTemplate">
+                    <property name="action" ref="gshell-admin:list-plugins"/>
                 </bean>
 
                 <bean parent="statefulCommandTemplate">

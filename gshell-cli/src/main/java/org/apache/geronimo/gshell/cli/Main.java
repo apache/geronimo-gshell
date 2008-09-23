@@ -113,13 +113,13 @@ public class Main
         }
     }
 
-    @Option(name="-c", aliases={"--commands"}, token ="STRING")
+    @Option(name="-c", aliases={"--commands"}, token="STRING")
     private String commands;
 
-    @Argument(token ="COMMAND")
+    @Argument(token="COMMAND")
     private List<String> commandArgs = null;
 
-    @Option(name="-D", aliases={"--define"}, token ="NAME=VALUE")
+    @Option(name="-D", aliases={"--define"}, token="NAME=VALUE")
     private void setSystemProperty(final String nameValue) {
         assert nameValue != null;
 
@@ -144,7 +144,7 @@ public class Main
         ANSI.setEnabled(flag);
     }
 
-    @Option(name="-T", aliases={"--terminal"}, token ="TYPE", argumentRequired=true)
+    @Option(name="-T", aliases={"--terminal"}, token="TYPE", argumentRequired=true)
     private void setTerminalType(String type) {
         type = type.toLowerCase();
 

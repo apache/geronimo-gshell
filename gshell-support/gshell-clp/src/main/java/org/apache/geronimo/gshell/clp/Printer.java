@@ -97,13 +97,34 @@ public class Printer
     private String getToken(final Handler handler) {
         assert handler != null;
 
-        String token = handler.descriptor.getToken();
-        if (token == null) {
-            token = handler.getDefaultToken();
+        Descriptor descriptor = handler.descriptor;
+        String token = descriptor.getToken();
+
+        // If we have i18n messages for the command, then try to resolve the token further
+        if (messages != null) {
+            String code = token;
+
+            // If there is no coded, then generate one
+            if (code == null) {
+                if (descriptor instanceof ArgumentDescriptor) {
+                    code = "argument." + descriptor.getId() + ".token";
+                }
+                else {
+                    code = "option." + descriptor.getId() + ".token";
+                }
+            }
+
+            // Resolve the text in the message source
+            try {
+                token = messages.getMessage(code);
+            }
+            catch (ResourceNotFoundException e) {
+                // Just use the code as the message
+            }
         }
 
         if (token == null) {
-            return null;
+            token = handler.getDefaultToken();
         }
 
         return token;
