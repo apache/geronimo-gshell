@@ -41,7 +41,7 @@ public @interface Option
 
     String description() default "";
 
-    String metaVar() default "";
+    String token() default "";
 
     boolean required() default false;
 

@@ -53,23 +53,23 @@ public class ResolveAction
     // TODO: Consider using <g>:<a>:<v>:<s>:<t> notation instead of, or in addtion this?
     //
     
-    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, metaVar="GROUP-ID", required=true)
+    @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, token ="GROUP-ID", required=true)
     private String groupId;
 
-    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, metaVar="ARTIFACT-ID", required=true)
+    @Option(name="-a", aliases={"--artifactId"}, argumentRequired=true, token ="ARTIFACT-ID", required=true)
     private String artifactId;
 
-    @Option(name="-v", aliases={"--version"}, argumentRequired=true, metaVar="VERSION", required=true)
+    @Option(name="-v", aliases={"--version"}, argumentRequired=true, token ="VERSION", required=true)
     private String version;
 
-    @Option(name="-t", aliases={"--type"}, argumentRequired=true, metaVar="TYPE")
+    @Option(name="-t", aliases={"--type"}, argumentRequired=true, token ="TYPE")
     private String type = "jar";
 
     //
     // TODO: Add classifier
     //
 
-    @Option(name="-s", aliases={"--scope"}, argumentRequired=true, metaVar="SCOPE")
+    @Option(name="-s", aliases={"--scope"}, argumentRequired=true, token ="SCOPE")
     private String scope;
 
     @Option(name="-T", aliases={"--transitive"})

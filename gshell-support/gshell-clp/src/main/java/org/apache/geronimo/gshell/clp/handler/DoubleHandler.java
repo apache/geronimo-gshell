@@ -47,7 +47,7 @@ public class DoubleHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "N";
     }
 }

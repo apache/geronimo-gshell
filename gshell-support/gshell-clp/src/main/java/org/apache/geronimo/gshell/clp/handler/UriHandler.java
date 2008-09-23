@@ -55,7 +55,7 @@ public class UriHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "URI";
     }
 }

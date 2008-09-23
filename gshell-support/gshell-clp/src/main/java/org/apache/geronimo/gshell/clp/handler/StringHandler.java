@@ -46,7 +46,7 @@ public class StringHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "VAL";
     }
 }

@@ -32,7 +32,7 @@ public abstract class Descriptor
 
     private final String description;
 
-    private final String metaVar;
+    private final String token;
 
     private final boolean required;
 
@@ -40,7 +40,7 @@ public abstract class Descriptor
 
     private final Class<? extends Handler> handler;
 
-    protected Descriptor(final String id, final String description, final String metaVar, final boolean required, final Class<? extends Handler> handler, final boolean multiValued) {
+    protected Descriptor(final String id, final String description, final String token, final boolean required, final Class<? extends Handler> handler, final boolean multiValued) {
         assert id != null;
 
         this.id = id;
@@ -53,11 +53,11 @@ public abstract class Descriptor
             this.description = description;
         }
 
-        if (metaVar != null && metaVar.length() == 0) {
-            this.metaVar = null;
+        if (token != null && token.length() == 0) {
+            this.token = null;
         }
         else {
-            this.metaVar = metaVar;
+            this.token = token;
         }
         
         this.required = required;
@@ -73,8 +73,8 @@ public abstract class Descriptor
         return description;
     }
 
-    public String getMetaVar() {
-        return metaVar;
+    public String getToken() {
+        return token;
     }
 
     public boolean isRequired() {

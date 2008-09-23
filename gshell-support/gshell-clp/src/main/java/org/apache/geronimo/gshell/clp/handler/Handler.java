@@ -46,5 +46,5 @@ public abstract class Handler<T>
 
     public abstract int handle(Parameters params) throws ProcessingException;
 
-    public abstract String getDefaultMetaVariable();
+    public abstract String getDefaultToken();
 }

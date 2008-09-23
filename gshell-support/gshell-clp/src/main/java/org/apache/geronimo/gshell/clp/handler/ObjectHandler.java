@@ -49,7 +49,7 @@ public class ObjectHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "VAL";
     }
 }

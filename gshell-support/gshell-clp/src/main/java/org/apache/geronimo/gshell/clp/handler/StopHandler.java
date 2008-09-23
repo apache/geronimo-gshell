@@ -42,7 +42,7 @@ public class StopHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "ARGUMENTS";
     }
 }

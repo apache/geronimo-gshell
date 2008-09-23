@@ -47,7 +47,7 @@ public class IntegerHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "N";
     }
 }

@@ -44,13 +44,13 @@ public class JavaAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Option(name="-m", aliases={"--method"}, metaVar="METHOD")
+    @Option(name="-m", aliases={"--method"}, token ="METHOD")
     private String methodName = "main";
 
-    @Argument(index=0, metaVar="CLASSNAME", required=true)
+    @Argument(index=0, token ="CLASSNAME", required=true)
     private String className;
 
-    @Argument(index=1, metaVar="ARG")
+    @Argument(index=1, token ="ARG")
     private List<String> args;
 
     public Object execute(final CommandContext context) throws Exception {

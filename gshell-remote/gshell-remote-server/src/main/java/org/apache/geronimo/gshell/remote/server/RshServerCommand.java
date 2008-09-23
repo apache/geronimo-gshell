@@ -44,7 +44,7 @@ public class RshServerCommand
     @Option(name="-b", aliases={ "--background"})
     private boolean background;
 
-    @Argument(metaVar="URI", required=true)
+    @Argument(token ="URI", required=true)
     private URI location;
 
     private BeanContainer container;

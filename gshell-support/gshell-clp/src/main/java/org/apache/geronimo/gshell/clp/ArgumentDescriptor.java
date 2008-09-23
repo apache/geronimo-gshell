@@ -28,12 +28,12 @@ public class ArgumentDescriptor
     extends Descriptor
 {
     public ArgumentDescriptor(final String id, final Argument argument, final boolean forceMultiValued) {
-        super(id, argument.description(), argument.metaVar(), argument.required(), argument.handler(), argument.multiValued() || forceMultiValued);
+        super(id, argument.description(), argument.token(), argument.required(), argument.handler(), argument.multiValued() || forceMultiValued);
     }
 
     @Override
     public String toString() {
-        String tmp = getMetaVar();
+        String tmp = getToken();
         if (tmp != null && tmp.length() != 0) {
             return tmp;
         }

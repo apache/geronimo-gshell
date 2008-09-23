@@ -73,7 +73,7 @@ public class BooleanHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return null;
     }
 }

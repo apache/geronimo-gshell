@@ -36,7 +36,7 @@ public class ExitAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Argument(metaVar="CODE")
+    @Argument(token ="CODE")
     private int exitCode = 0;
 
     public Object execute(final CommandContext context) throws Exception {

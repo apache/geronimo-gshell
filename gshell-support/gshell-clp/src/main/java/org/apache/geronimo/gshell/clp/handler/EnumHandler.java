@@ -65,7 +65,7 @@ public class EnumHandler<T extends Enum<T>>
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
     	StringBuffer buff = new StringBuffer();
     	buff.append("[");
 

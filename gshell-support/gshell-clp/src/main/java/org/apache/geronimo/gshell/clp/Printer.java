@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.geronimo.gshell.clp.handler.Handler;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceNotFoundException;
+import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 
 /**
  * Helper to print formatted help and usage text.
@@ -38,6 +39,12 @@ import org.apache.geronimo.gshell.i18n.ResourceNotFoundException;
 public class Printer
 {
     private CommandLineProcessor processor;
+
+    //
+    // TODO: Combine these into 1 dynamic MS
+    //
+
+    private MessageSource printerMessages = new ResourceBundleMessageSource(Printer.class);
 
     private MessageSource messages;
 
@@ -87,12 +94,12 @@ public class Printer
         return message;
     }
 
-    private String getMetaVariable(final Handler handler) {
+    private String getToken(final Handler handler) {
         assert handler != null;
 
-        String token = handler.descriptor.getMetaVar();
+        String token = handler.descriptor.getToken();
         if (token == null) {
-            token = handler.getDefaultMetaVariable();
+            token = handler.getDefaultToken();
         }
 
         if (token == null) {
@@ -102,17 +109,17 @@ public class Printer
         return token;
     }
 
-    private String getNameAndMeta(final Handler handler) {
+    private String getNameAndToken(final Handler handler) {
         assert handler != null;
 
         String str = (handler.descriptor instanceof ArgumentDescriptor) ? "" : handler.descriptor.toString();
-    	String meta = getMetaVariable(handler);
+    	String token = getToken(handler);
 
-        if (meta != null) {
+        if (token != null) {
             if (str.length() > 0) {
                 str += " ";
             }
-            str += meta;
+            str += token;
     	}
         
         return str;
@@ -126,7 +133,7 @@ public class Printer
             return 0;
         }
 
-        return getNameAndMeta(handler).length();
+        return getNameAndToken(handler).length();
     }
 
     public void printUsage(final Writer writer, final String name) {
@@ -147,17 +154,13 @@ public class Printer
             }
         });
 
-        //
-        // TODO: i18n, pull for standard messages, not from command's messages
-        //
-        
         if (name != null) {
-        	String syntax = "syntax: " + name;
-        	if (!optionHandlers.isEmpty()) {
-        		syntax += " [options]";
+        	String syntax = printerMessages.format("syntax", name);
+            if (!optionHandlers.isEmpty()) {
+                syntax = printerMessages.format("syntax.hasOptions", syntax);
         	}
         	if (!argumentHandlers.isEmpty()) {
-        		syntax += " [arguments]";
+                syntax = printerMessages.format("syntax.hasArguments", syntax);
         	}
         	out.println(syntax);
         	out.println();
@@ -178,7 +181,7 @@ public class Printer
 
         // And then render the handler usage
         if (!argumentHandlers.isEmpty()) {
-        	out.println("arguments:");
+        	out.println(printerMessages.getMessage("arguments.header"));
 
             for (Handler handler : argumentHandlers) {
                 printHandler(out, handler, len);
@@ -188,7 +191,7 @@ public class Printer
         }
 
         if (!optionHandlers.isEmpty()) {
-        	out.println("options:");
+            out.println(printerMessages.getMessage("options.header"));
             
             for (Handler handler : optionHandlers) {
                 printHandler(out, handler, len);
@@ -225,12 +228,12 @@ public class Printer
         }
 
         // Render the prefix and syntax
-        String nameAndMeta = getNameAndMeta(handler);
+        String nameAndToken = getNameAndToken(handler);
         out.print(prefix);
-        out.print(nameAndMeta);
+        out.print(nameAndToken);
 
         // Render the seperator
-        for (int i = nameAndMeta.length(); i < len; ++i) {
+        for (int i = nameAndToken.length(); i < len; ++i) {
             out.print(' ');
        	}
         out.print(separator);

@@ -48,7 +48,7 @@ public class FileHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "FILE";
     }
 }

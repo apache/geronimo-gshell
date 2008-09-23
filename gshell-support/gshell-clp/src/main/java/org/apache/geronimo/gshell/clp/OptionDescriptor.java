@@ -36,7 +36,7 @@ public class OptionDescriptor
     private final boolean requireOverride;
 
     public OptionDescriptor(final String id, final Option option, final boolean forceMultiValued) {
-        super(id, option.description(), option.metaVar(), option.required(), option.handler(), option.multiValued() || forceMultiValued);
+        super(id, option.description(), option.token(), option.required(), option.handler(), option.multiValued() || forceMultiValued);
     	
     	this.name = option.name();
     	this.aliases = option.aliases();

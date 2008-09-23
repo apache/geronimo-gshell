@@ -47,7 +47,7 @@ public class LongHandler
     }
 
     @Override
-    public String getDefaultMetaVariable() {
+    public String getDefaultToken() {
         return "N";
     }
 }
