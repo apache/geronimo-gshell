@@ -19,25 +19,18 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.springframework.beans.factory.xml.ParserContext;
-import org.springframework.beans.factory.xml.BeanDefinitionParser;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.w3c.dom.Element;
+import org.springframework.beans.factory.xml.NamespaceHandler;
+import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 /**
- * Parser for the &lt;gshell:command-bundle/&gt; element.
+ * {@link NamespaceHandler} for the 'gshell' namespace.
  *
  * @version $Rev$ $Date$
  */
-public class CommandBundleBeanDefinitionParser
-    implements BeanDefinitionParser
+public class GShellNamespaceHandler
+    extends NamespaceHandlerSupport
 {
-    public BeanDefinition parse(final Element element, final ParserContext parserContext) {
-        assert element != null;
-        assert parserContext != null;
-
-        // TODO:
-
-        return null;
+    public void init() {
+        registerBeanDefinitionParser("plugin", new PluginParser());
     }
 }
