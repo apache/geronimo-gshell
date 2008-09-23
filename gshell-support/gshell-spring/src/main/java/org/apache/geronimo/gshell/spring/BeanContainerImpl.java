@@ -76,7 +76,7 @@ public class BeanContainerImpl
         context.addBeanFactoryPostProcessor(new LoggingProcessor());
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
-        // TODO: Add these <context:annotation-config/> processors
+        // TODO: Add these <context:annotation-config/> processors, avoid context needing to configure this, we always want to use annos
         // CommonAnnotationBeanPostProcessor
         // AutowiredAnnotationBeanPostProcessor
         // RequiredAnnotationBeanPostProcessor
