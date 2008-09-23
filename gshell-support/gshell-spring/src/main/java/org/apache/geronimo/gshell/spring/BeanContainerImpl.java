@@ -71,6 +71,9 @@ public class BeanContainerImpl
         context = new BeanContainerContext(classRealm, parent != null ? parent.context : null);
         context.setDisplayName(classRealm.getId());
         context.registerShutdownHook();
+
+        // Attach some processors
+        context.addBeanFactoryPostProcessor(new LoggingProcessor());
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
         // Refresh to load things up
