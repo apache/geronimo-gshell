@@ -28,11 +28,11 @@
         attributeFormDefault="unqualified">
 
     <xsd:import namespace="http://www.springframework.org/schema/beans"/>
-
+    
     <xsd:annotation>
-        <xsd:documentation><![CDATA[
+        <xsd:documentation>
             Defines the configuration elements for GShell Wisdom application context support.
-        ]]></xsd:documentation>
+        </xsd:documentation>
     </xsd:annotation>
 
     <xsd:element name="plugin">
@@ -74,7 +74,7 @@
                 <xsd:element ref="action" minOccurs="0" maxOccurs="1"/>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
-            <xsd:attribute name="type" type="xsd:string" use="optional" default="stateful">
+            <xsd:attribute name="type" use="optional" default="stateful">
                 <xsd:annotation>
                     <xsd:documentation>
                         The command type.
@@ -98,9 +98,9 @@
                     Defines a command action.
                 </xsd:documentation>
             </xsd:annotation>
-            <!--
-            TODO: Allow nested beans:bean
-            -->
+            <xsd:sequence>
+                <xsd:element ref="beans:bean" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
             <xsd:attribute name="class" type="xsd:string" use="optional"/>
         </xsd:complexType>
     </xsd:element>
