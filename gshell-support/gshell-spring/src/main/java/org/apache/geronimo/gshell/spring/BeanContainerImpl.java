@@ -23,7 +23,10 @@ import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.springframework.beans.FatalBeanException;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
 
 import java.net.URL;
 import java.util.List;
@@ -72,14 +75,12 @@ public class BeanContainerImpl
         context.setDisplayName(classRealm.getId());
         context.registerShutdownHook();
 
-        // Attach some processors
+        // Attach processors
+        context.addBeanPostProcessor(new CommonAnnotationBeanPostProcessor());
+        context.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
+        context.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
         context.addBeanFactoryPostProcessor(new LoggingProcessor());
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
-
-        // TODO: Add these <context:annotation-config/> processors, avoid context needing to configure this, we always want to use annos
-        // CommonAnnotationBeanPostProcessor
-        // AutowiredAnnotationBeanPostProcessor
-        // RequiredAnnotationBeanPostProcessor
 
         // Refresh to load things up
         context.refresh();

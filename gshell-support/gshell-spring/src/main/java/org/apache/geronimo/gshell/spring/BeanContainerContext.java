@@ -28,6 +28,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -123,6 +124,10 @@ public class BeanContainerContext
             public void postProcessBeanFactory(final ConfigurableListableBeanFactory beanFactory) throws BeansException {
                 assert beanFactory != null;
 
+                if (processor instanceof BeanFactoryAware) {
+                    ((BeanFactoryAware)processor).setBeanFactory(beanFactory);
+                }
+                
                 beanFactory.addBeanPostProcessor(processor);
             }
         });
