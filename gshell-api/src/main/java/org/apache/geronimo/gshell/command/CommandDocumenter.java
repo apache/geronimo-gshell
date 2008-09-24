@@ -42,6 +42,10 @@ public interface CommandDocumenter
      */
     String getDescription();
 
+    //
+    // TODO: Add long & short description?
+    //
+
     /**
      * Get the verbose documentation manual for the command.
      *
