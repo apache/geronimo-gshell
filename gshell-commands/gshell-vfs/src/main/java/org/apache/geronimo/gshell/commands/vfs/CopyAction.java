@@ -22,13 +22,12 @@ package org.apache.geronimo.gshell.commands.vfs;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileUtil;
-import org.apache.commons.vfs.VFS;
-import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Copy files.
@@ -39,7 +38,10 @@ public class CopyAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
+
+    @Autowired
+    private FileSystemManager fsm;
+
     @Argument(index=0, required=true)
     private String sourceName;
 
@@ -48,8 +50,7 @@ public class CopyAction
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-    
-        FileSystemManager fsm = getFileSystemManager();
+
         FileObject source = fsm.resolveFile(sourceName);
         FileObject target = fsm.resolveFile(targetName);
 
@@ -58,22 +59,5 @@ public class CopyAction
         FileUtil.copyContent(source, target);
 
         return Result.SUCCESS;
-    }
-
-    // TODO: Move this to a bean factory and inject
-
-    private FileSystemManager fsManager;
-
-    protected FileSystemManager getFileSystemManager() {
-        if (fsManager == null) {
-            try {
-                fsManager = VFS.getManager();
-            }
-            catch (FileSystemException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return fsManager;
     }
 }

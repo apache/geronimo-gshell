@@ -42,6 +42,11 @@
             <groupId>commons-vfs</groupId>
             <artifactId>commons-vfs</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-spring</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

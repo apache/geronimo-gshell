@@ -35,4 +35,6 @@
         </gshell:command-bundle>
     </gshell:plugin>
 
+    <bean id="fileSystemManager" class="org.apache.geronimo.gshell.commands.vfs.FileSystemManagerFactoryBean"/>
+
 </beans>
