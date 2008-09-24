@@ -23,99 +23,44 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gshell="http://gshell.org/schema/wisdom-gshell"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
 
     <context:annotation-config/>
 
-    <!--
     <gshell:plugin name="gshell-builtins">
         <gshell:command-bundle name="default">
-            <gshell:command name="help" type="stateful">
-                <gshell:action>
-                    <bean class="org.apache.geronimo.gshell.commands.builtins.HelpAction">
-                        // property|constructor|etc (normal stuff in beans ns
-                    </bean>
-                </gshell:action>
+            <gshell:command name="help">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.HelpAction"/>
             </gshell:command>
 
-            <gshell:command name="exit" action="org.apache.geronimo.gshell.commands.builtins.ExitAction"/> // default type is stateful
+            <gshell:command name="exit">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ExitAction"/>
+            </gshell:command>
+
+            <gshell:command name="echo">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.EchoAction"/>
+            </gshell:command>
 
             <gshell:command name="clear" type="stateless">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ClearAction"/>
-                <gshell:completer class="org.apache.geronimo.gshell.commands.builtins.ClearCompleter"/>
+            </gshell:command>
+
+            <gshell:command name="source">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SourceAction"/>
+            </gshell:command>
+
+            <gshell:command name="set">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SetAction"/>
+            </gshell:command>
+
+            <gshell:command name="unset">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnsetAction"/>
             </gshell:command>
         </gshell:command-bundle>
-
-        <gshell:activation>
-            <gshell:activation-rule class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
-                <property name="bundleId" value="default"/>
-            </gshell:activation-rule>
-        </gshell:activation>
     </gshell:plugin>
-    -->
-
-    <bean class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl">
-        <property name="id" value="gshell-builtins"/>
-
-        <property name="activationRules">
-            <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
-                    <property name="bundleId" value="default"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-
-    <bean name="gshell-builtins:help" class="org.apache.geronimo.gshell.commands.builtins.HelpAction" scope="prototype"/>
-
-    <bean name="gshell-builtins:exit" class="org.apache.geronimo.gshell.commands.builtins.ExitAction" scope="prototype"/>
-
-    <bean name="gshell-builtins:echo" class="org.apache.geronimo.gshell.commands.builtins.EchoAction" scope="prototype"/>
-
-    <bean name="gshell-builtins:clear" class="org.apache.geronimo.gshell.commands.builtins.ClearAction" scope="prototype"/>
-
-    <bean name="gshell-builtins:source" class="org.apache.geronimo.gshell.commands.builtins.SourceAction" scope="prototype"/>
-
-    <bean name="gshell-builtins:set" class="org.apache.geronimo.gshell.commands.builtins.SetAction" scope="prototype"/>
-
-    <bean name="gshell-builtins:unset" class="org.apache.geronimo.gshell.commands.builtins.UnsetAction" scope="prototype"/>
-
-    <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
-        <property name="id" value="default"/>
-
-        <property name="commands">
-            <list>
-                <bean parent="statelessCommandTemplate">
-                    <property name="action" ref="gshell-builtins:clear"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-builtins:echo"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-builtins:exit"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-builtins:help"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-builtins:source"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-builtins:set"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-builtins:unset"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
 
 </beans>

@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.config;
 
 import org.apache.geronimo.gshell.wisdom.plugin.PluginImpl;
+import org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,6 +187,16 @@ public class PluginParser
             for (BeanDefinitionHolder holder : bundles) {
                 // TODO: Handle registration of the bundles?
             }
+
+            //
+            // HACK: For now hard-code a single activation rule
+            //
+
+            BeanDefinitionBuilder rule = BeanDefinitionBuilder.rootBeanDefinition(DefaultCommandBundleActivationRule.class);
+            rule.addPropertyValue("bundleId", "default");
+            ManagedList rules = new ManagedList();
+            rules.add(rule.getBeanDefinition());
+            plugin.addPropertyValue("activationRules", rules);
 
             return plugin;
         }

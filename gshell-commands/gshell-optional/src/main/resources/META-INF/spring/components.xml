@@ -23,60 +23,36 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gshell="http://gshell.org/schema/wisdom-gshell"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
 
     <context:annotation-config/>
 
-    <bean class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl">
-        <property name="id" value="gshell-optional"/>
+    <gshell:plugin name="gshell-optional">
+        <gshell:command-bundle name="default">
+            <gshell:command name="cat">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.CatAction"/>
+            </gshell:command>
 
-        <property name="activationRules">
-            <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
-                    <property name="bundleId" value="default"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
+            <gshell:command name="exec">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.ExecuteAction"/>
+            </gshell:command>
 
-    <bean name="gshell-optional:cat" class="org.apache.geronimo.gshell.commands.optional.CatAction" scope="prototype"/>
+            <gshell:command name="java">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.JavaAction"/>
+            </gshell:command>
 
-    <bean name="gshell-optional:exec" class="org.apache.geronimo.gshell.commands.optional.ExecuteAction" scope="prototype"/>
+            <gshell:command name="sleep">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.SleepAction"/>
+            </gshell:command>
 
-    <bean name="gshell-optional:java" class="org.apache.geronimo.gshell.commands.optional.JavaAction" scope="prototype"/>
-
-    <bean name="gshell-optional:sleep" class="org.apache.geronimo.gshell.commands.optional.SleepAction" scope="prototype"/>
-
-    <bean name="gshell-optional:wait" class="org.apache.geronimo.gshell.commands.optional.WaitAction" scope="prototype"/>
-
-    <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
-        <property name="id" value="default"/>
-
-        <property name="commands">
-            <list>
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-optional:cat"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-optional:exec"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-optional:java"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-optional:sleep"/>
-                </bean>
-
-                <bean parent="statelessCommandTemplate">
-                    <property name="action" ref="gshell-optional:wait"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
+            <gshell:command name="wait">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.WaitAction"/>
+            </gshell:command>
+        </gshell:command-bundle>
+    </gshell:plugin>
 
 </beans>

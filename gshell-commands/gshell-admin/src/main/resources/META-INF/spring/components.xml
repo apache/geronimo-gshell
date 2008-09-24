@@ -23,42 +23,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gshell="http://gshell.org/schema/wisdom-gshell"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
 
     <context:annotation-config/>
 
-    <bean class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl">
-        <property name="id" value="gshell-admin"/>
+    <gshell:plugin name="gshell-admin">
+        <gshell:command-bundle name="default">
+            <gshell:command name="list-plugins" type="stateless">
+                <gshell:action class="org.apache.geronimo.gshell.commands.admin.ListPluginsAction"/>
+            </gshell:command>
 
-        <property name="activationRules">
-            <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
-                    <property name="bundleId" value="default"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-
-    <bean name="gshell-admin:list-plugins" class="org.apache.geronimo.gshell.commands.admin.ListPluginsAction" scope="prototype"/>
-
-    <bean name="gshell-admin:install-plugin" class="org.apache.geronimo.gshell.commands.admin.InstallPluginAction" scope="prototype"/>
-
-    <bean class="org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle" lazy-init="true">
-        <property name="id" value="default"/>
-
-        <property name="commands">
-            <list>
-                <bean parent="statelessCommandTemplate">
-                    <property name="action" ref="gshell-admin:list-plugins"/>
-                </bean>
-
-                <bean parent="statefulCommandTemplate">
-                    <property name="actionId" value="gshell-admin:install-plugin"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
+            <gshell:command name="install-plugin">
+                <gshell:action class="org.apache.geronimo.gshell.commands.admin.InstallPluginAction"/>
+            </gshell:command>
+        </gshell:command-bundle>
+    </gshell:plugin>
 
 </beans>
