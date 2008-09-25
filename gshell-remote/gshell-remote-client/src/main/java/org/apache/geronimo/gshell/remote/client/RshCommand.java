@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.client.proxy.RemoteShellProxy;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,7 @@ public class RshCommand
     private URI remote;
 
     @Argument(index=1, multiValued=true)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = null;
 
     private BeanContainer container;
 
@@ -71,8 +72,9 @@ public class RshCommand
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
+        MessageSource messages = context.getCommand().getMessages();
 
-        io.info("Connecting to: {}", remote);
+        io.info(messages.format("info.connecting", remote));
 
         RshClient client = container.getBean(RshClient.class);
 
@@ -80,18 +82,18 @@ public class RshCommand
         
         client.connect(remote, local);
 
-        io.info("Connected");
+        io.info(messages.getMessage("info.connected"));
 
         // If the username/password was not configured via cli, then prompt the user for the values
         if (username == null || password == null) {
             PromptReader prompter = new PromptReader(io);
 
             if (username == null) {
-                username = prompter.readLine("Username: ");
+                username = prompter.readLine(messages.getMessage("prompt.username") + ": ");
             }
 
             if (password == null) {
-                password = prompter.readPassword("Password: ");
+                password = prompter.readPassword(messages.getMessage("prompt.password") + ": ");
             }
 
             //
@@ -109,6 +111,10 @@ public class RshCommand
         Object result = Result.SUCCESS;
 
         try {
+            if (command == null) {
+                command = new ArrayList<String>();
+            }
+            
             shell.run(command.toArray());
         }
         catch (ExitNotification n) {
@@ -118,11 +124,11 @@ public class RshCommand
 
         shell.close();
         
-        io.verbose("Disconnecting");
+        io.verbose(messages.getMessage("verbose.disconnecting"));
 
         client.close();
 
-        io.verbose("Disconnected");
+        io.verbose(messages.getMessage("verbose.disconnected"));
 
         return result;
     }

@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,8 @@ public class RshServerCommand
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
+        MessageSource messages = context.getCommand().getMessages();
 
         RshServer server = container.getBean(RshServer.class);
 
@@ -64,9 +67,7 @@ public class RshServerCommand
 
         server.bind(location);
 
-        IO io = context.getIo();
-
-        io.info("Listening on: {}", location);
+        io.info(messages.format("info.listening", location));
 
         if (!background) {
             synchronized (this) {
