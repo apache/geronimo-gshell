@@ -39,6 +39,8 @@
 
     <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl"/>
 
+    <bean id="aliasManager" class="org.apache.geronimo.gshell.wisdom.alias.AliasManagerImpl"/>
+
     <bean id="statelessCommandTemplate" class="org.apache.geronimo.gshell.wisdom.command.StatelessCommand" abstract="true">
         <property name="documenter">
             <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>

@@ -24,8 +24,10 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.alias.AliasManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Define an alias.
@@ -36,6 +38,9 @@ public class AliasAction
     implements CommandAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private AliasManager aliasManager;
 
     @Argument(index=0)
     private String name;

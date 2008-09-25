@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
+import org.apache.geronimo.gshell.wisdom.alias.AliasCommand;
 import org.apache.geronimo.gshell.wisdom.plugin.PluginImpl;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;

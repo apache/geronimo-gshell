@@ -17,39 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.builtins;
+package org.apache.geronimo.gshell.wisdom.alias;
 
-import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandResult;
+import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
 import org.apache.geronimo.gshell.alias.AliasManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Undefine an alias.
+ * Implementation of the {@link AliasManager} component.
  *
  * @version $Rev$ $Date$
  */
-public class UnaliasAction
-    implements CommandAction
+public class AliasManagerImpl
+    implements AliasManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private AliasManager aliasManager;
-    
-    @Argument(index=0, required=true)
-    private String name;
-
-    public Object execute(final CommandContext context) throws Exception {
-        assert context != null;
-
-        log.debug("Undefining alias: {}", name);
-
-        // TODO:
-
-        return Result.SUCCESS;
-    }
+    // TODO:
 }

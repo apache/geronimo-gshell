@@ -17,12 +17,11 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.command;
+package org.apache.geronimo.gshell.wisdom.alias;
 
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
 
 /**
  * Alias {@link org.apache.geronimo.gshell.command.Command} component.
