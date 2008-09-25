@@ -49,8 +49,6 @@ public class CommandDocumenterImpl
 
     private String description;
 
-    private String manual;
-
     private Renderer renderer = new Renderer();
 
     public String getName() {
@@ -75,15 +73,8 @@ public class CommandDocumenterImpl
         this.description = description;
     }
 
-    public String getManual() {
-        if (manual == null) {
-            manual = getCommand().getMessages().getMessage("command.manual");
-        }
-        return manual;
-    }
-
-    public void setManual(final String manual) {
-        this.manual = manual;
+    private String getManual() {
+        return getCommand().getMessages().getMessage("command.manual");
     }
 
     //

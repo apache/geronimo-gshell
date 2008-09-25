@@ -47,13 +47,6 @@ public interface CommandDocumenter
     //
 
     /**
-     * Get the verbose documentation manual for the command.
-     *
-     * @return  The manual of the command.
-     */
-    String getManual();
-
-    /**
      * Render the command-line usage, as expected from <tt>--help</tt>.
      *
      * @param out   Write the usage to this writer.
