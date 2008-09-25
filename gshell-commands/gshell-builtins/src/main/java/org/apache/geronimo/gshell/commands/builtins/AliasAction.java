@@ -62,7 +62,7 @@ public class AliasAction
             Collection<Alias> aliases = aliasManager.getAliases();
             
             if (aliases.isEmpty()) {
-                io.verbose("No aliases have been defined");
+                io.info("No aliases have been defined");
             }
             else {
                 io.info("Defined aliases:");

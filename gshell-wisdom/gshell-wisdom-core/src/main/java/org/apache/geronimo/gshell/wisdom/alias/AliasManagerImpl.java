@@ -22,7 +22,11 @@ package org.apache.geronimo.gshell.wisdom.alias;
 import org.apache.geronimo.gshell.alias.Alias;
 import org.apache.geronimo.gshell.alias.AliasManager;
 import org.apache.geronimo.gshell.command.CommandRegistry;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.event.EventPublisher;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +42,7 @@ import java.util.Map;
  * @version $Rev$ $Date$
  */
 public class AliasManagerImpl
-    implements AliasManager
+    implements AliasManager, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -48,7 +52,18 @@ public class AliasManagerImpl
     @Autowired
     private EventPublisher eventPublisher;
 
+    @Autowired
+    private CommandLineExecutor executor;
+
+    private BeanContainer container;
+
     private Map<String,Alias> aliases = new LinkedHashMap<String,Alias>();
+
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
 
     public Collection<Alias> getAliases() {
         return Collections.unmodifiableCollection(aliases.values());
@@ -65,7 +80,13 @@ public class AliasManagerImpl
 
         log.debug("Defining alias: {} -> {}", name, target);
 
-        final AliasCommand command = new AliasCommand(name, target);
+        final AliasCommand command = new AliasCommand(name, target, executor);
+
+        //
+        // FIXME: Have to inject the container because we are not wiring ^^^, and because its support muck needs some crap
+        //        probably need to use a prototype here
+        //
+        command.setBeanContainer(container);
 
         Alias alias = new Alias() {
             public String getName() {
@@ -76,12 +97,14 @@ public class AliasManagerImpl
                 return target;
             }
 
-            // TODO: Track the command
+            public Command getCommand() {
+                return command;
+            }
         };
 
         aliases.put(name, alias);
 
-        // TODO: Register AliasCommand
+        commandRegistry.register(command);
 
         eventPublisher.publish(new AliasDefinedEvent(alias));
 

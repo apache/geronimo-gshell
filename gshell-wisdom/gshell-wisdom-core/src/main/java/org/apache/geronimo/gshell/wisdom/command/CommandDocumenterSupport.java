@@ -45,8 +45,6 @@ public abstract class CommandDocumenterSupport
 
     private Command command;
 
-    private Renderer renderer = new Renderer();
-
     protected abstract String getManual();
     
     //
@@ -98,6 +96,8 @@ public abstract class CommandDocumenterSupport
 
         log.debug("Rendering command manual");
 
+        Renderer renderer = new Renderer();
+        
         out.println(renderer.render(Renderer.encode("NAME", Code.BOLD)));
         out.print("  ");
         out.println(getName());

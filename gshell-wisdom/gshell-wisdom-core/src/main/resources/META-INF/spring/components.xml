@@ -47,7 +47,7 @@
         </property>
 
         <property name="completer">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+            <bean class="org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter"/>
         </property>
 
         <property name="messages">
@@ -61,7 +61,7 @@
         </property>
 
         <property name="completer">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+            <bean class="org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter"/>
         </property>
 
         <property name="messages">

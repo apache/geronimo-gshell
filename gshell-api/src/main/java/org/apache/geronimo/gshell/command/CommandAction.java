@@ -37,7 +37,7 @@ public interface CommandAction
      * @throws Notification     Inform the shell of some non-exception exit state.
      * @throws Exception        Command execution failed.
      */
-    Object execute(CommandContext context) throws Notification, Exception;
+    Object execute(CommandContext context) throws Exception;
 
     /**
      * Enumeration for the basic return types of a command execution.

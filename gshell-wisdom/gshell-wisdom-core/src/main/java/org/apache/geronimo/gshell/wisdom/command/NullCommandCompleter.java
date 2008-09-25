@@ -21,22 +21,18 @@ package org.apache.geronimo.gshell.wisdom.command;
 
 import jline.Completor;
 import org.apache.geronimo.gshell.command.CommandCompleter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * The default {@link CommandCompleter} component.
+ * A <em>null</em> {@link CommandCompleter}.
  *
  * @version $Rev$ $Date$
  */
-public class CommandCompleterImpl
+public class NullCommandCompleter
     implements CommandCompleter
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
     public Completor createCompletor() {
-        // TODO:
+        // Nothing
 
-        throw new Error("Not implemented");
+        return null;
     }
 }

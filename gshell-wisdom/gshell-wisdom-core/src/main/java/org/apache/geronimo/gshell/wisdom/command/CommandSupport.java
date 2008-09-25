@@ -162,6 +162,10 @@ public abstract class CommandSupport
 
         log.trace("Executing");
 
+        //
+        // FIXME: This TCL stuff is not needed for alias execution, so consider splitting thigns up a wee bit more
+        //
+        
         // Set the TCL to the command bean containers realm
         final ClassLoader prevCL = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(getContainer().getClassRealm());

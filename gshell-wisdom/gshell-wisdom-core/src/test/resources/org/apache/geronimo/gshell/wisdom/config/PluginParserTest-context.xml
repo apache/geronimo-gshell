@@ -50,7 +50,7 @@
             <gshell:command name="e">
                 <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
                 <gshell:documenter class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
-                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter"/>
                 <gshell:message-source class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>
             </gshell:command>
 
