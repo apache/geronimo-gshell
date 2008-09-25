@@ -56,6 +56,20 @@
             <gshell:command name="unset">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnsetAction"/>
             </gshell:command>
+
+            <!--
+            <gshell:command name="alias">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.AliasAction"/>
+            </gshell:command>
+
+            <gshell:command name="unalias">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnaliasAction"/>
+            </gshell:command>
+            -->
+            
+            <gshell:command name="history">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.HistoryAction"/>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
