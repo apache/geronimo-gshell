@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.wisdom.alias;
 import org.apache.geronimo.gshell.alias.Alias;
 import org.apache.geronimo.gshell.alias.AliasManager;
 import org.apache.geronimo.gshell.command.CommandRegistry;
+import org.apache.geronimo.gshell.event.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class AliasManagerImpl
 
     @Autowired
     private CommandRegistry commandRegistry;
+
+    @Autowired
+    private EventPublisher eventPublisher;
 
     private Map<String,Alias> aliases = new LinkedHashMap<String,Alias>();
 
@@ -75,7 +79,7 @@ public class AliasManagerImpl
 
         // TODO: Register AliasCommand
 
-        // TODO: Fire event?
+        eventPublisher.publish(new AliasDefinedEvent(alias));
 
         return alias;
     }
@@ -92,7 +96,7 @@ public class AliasManagerImpl
         else {
             // TODO: Unregister AliasCommand
 
-            // TODO: Fire event?
+            eventPublisher.publish(new AliasUndefinedEvent(alias));
         }
     }
 }
