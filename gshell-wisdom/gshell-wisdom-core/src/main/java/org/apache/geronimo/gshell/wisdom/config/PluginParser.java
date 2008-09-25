@@ -224,7 +224,7 @@ public class PluginParser
                 BeanDefinitionBuilder bundle = parseCommandBundle(child);
 
                 // Generate id and register the bean
-                AbstractBeanDefinition def = bundle.getBeanDefinition();
+                BeanDefinition def = bundle.getBeanDefinition();
                 String id = resolveId(child, def);
                 BeanDefinitionHolder holder = register(def, id);
 
