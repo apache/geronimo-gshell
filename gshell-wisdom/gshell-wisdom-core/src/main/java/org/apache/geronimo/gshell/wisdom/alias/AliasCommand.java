@@ -19,8 +19,13 @@
 
 package org.apache.geronimo.gshell.wisdom.alias;
 
-import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.shell.ShellContext;
+import jline.Completor;
+import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandCompleter;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.wisdom.command.CommandDocumenterSupport;
 import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
 
 /**
@@ -41,15 +46,54 @@ public class AliasCommand
 
         this.name = name;
         this.target = target;
+
+        setAction(new AliasCommandAction());
+        setDocumenter(new AliasCommandDocumenter());
+        setCompleter(new AliasCommandCompleter());
+        setMessages(new AliasCommandMessageSource());
     }
-    
-    @Override
-    public CommandResult execute(final ShellContext context, final Object[] args) {
-        assert context != null;
-        assert args != null;
 
-        log.debug("Executing");
+    private class AliasCommandAction
+        implements CommandAction
+    {
+        public Object execute(final CommandContext context) throws Notification, Exception {
+            return null;
+        }
+    }
 
-        throw new Error("not implemented");
+    private class AliasCommandDocumenter
+        extends CommandDocumenterSupport
+    {
+        public String getName() {
+            return null;
+        }
+
+        public String getDescription() {
+            return null;
+        }
+
+        protected String getManual() {
+            return null;
+        }
+    }
+
+    private class AliasCommandCompleter
+        implements CommandCompleter
+    {
+        public Completor createCompletor() {
+            return null;
+        }
+    }
+
+    private class AliasCommandMessageSource
+        implements MessageSource
+    {
+        public String getMessage(final String code) {
+            return null;
+        }
+
+        public String format(final String code, final Object... args) {
+            return null;
+        }
     }
 }
