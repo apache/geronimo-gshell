@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Display command help.
@@ -54,68 +54,83 @@ public class HelpAction
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-        IO io = context.getIo();
-
-        assert commandRegistry != null;
-        List<CommandRegistration> registrations = commandRegistry.getRegistrations();
 
         if (commandName != null) {
-            log.debug("Displaying help manual for command: {}", commandName);
-
-            // FIXME: Should resolve the commandName/commandPath
-            
-            for (CommandRegistration registration : registrations) {
-                Command command = registration.getCommand();
-                CommandDocumenter doc = command.getDocumenter();
-
-                if (doc.getName().equals(commandName)) {
-                    doc.renderManual(io.out);
-                    
-                    return Result.SUCCESS;
-                }
-            }
-
-            io.out.print("Command ");
-            io.out.print(Renderer.encode(commandName, Code.BOLD));
-            io.out.println(" not found.");
-
-            io.out.print("Try ");
-            io.out.print(Renderer.encode("help", Code.BOLD));
-            io.out.println(" for a list of available commands.");
-
-            io.out.println();
-
-            return Result.FAILURE;
+            return displayCommandManual(context);
         }
-        else {
-            log.debug("Listing brief help for commands");
 
-            // FIXME: Figure this out dynamically
-            int maxNameLen = 20;
+        return displayAvailableCommands(context);
+    }
 
-            io.out.println("Available commands:");
-            
-            for (CommandRegistration registration : registrations) {
-                Command command = registration.getCommand();
-                CommandDocumenter doc = command.getDocumenter();
+    private Object displayCommandManual(final CommandContext context) {
+        assert context != null;
+        IO io = context.getIo();
 
-                String name = StringUtils.rightPad(doc.getName(), maxNameLen);
-                String desc = doc.getDescription();
+        log.debug("Displaying help manual for command: {}", commandName);
 
+        // FIXME: Should resolve the commandName/commandPath
+
+        assert commandRegistry != null;
+        Collection<CommandRegistration> registrations = commandRegistry.getRegistrations();
+
+        for (CommandRegistration registration : registrations) {
+            Command command = registration.getCommand();
+            CommandDocumenter doc = command.getDocumenter();
+
+            if (doc.getName().equals(commandName)) {
+                doc.renderManual(io.out);
+
+                return Result.SUCCESS;
+            }
+        }
+
+        io.out.print("Command ");
+        io.out.print(Renderer.encode(commandName, Code.BOLD));
+        io.out.println(" not found.");
+
+        io.out.print("Try ");
+        io.out.print(Renderer.encode("help", Code.BOLD));
+        io.out.println(" for a list of available commands.");
+
+        io.out.println();
+
+        return Result.FAILURE;
+    }
+
+    private Object displayAvailableCommands(final CommandContext context) {
+        assert context != null;
+        IO io = context.getIo();
+
+        log.debug("Listing brief help for commands");
+
+        // FIXME: Figure this out dynamically
+        int maxNameLen = 20;
+
+        assert commandRegistry != null;
+        Collection<CommandRegistration> registrations = commandRegistry.getRegistrations();
+
+        io.out.println("Available commands:");
+
+        for (CommandRegistration registration : registrations) {
+            Command command = registration.getCommand();
+            CommandDocumenter doc = command.getDocumenter();
+
+            String name = StringUtils.rightPad(doc.getName(), maxNameLen);
+            String desc = doc.getDescription();
+
+            io.out.print("  ");
+            io.out.print(Renderer.encode(name, Code.BOLD));
+
+            if (desc != null) {
                 io.out.print("  ");
-                io.out.print(Renderer.encode(name, Code.BOLD));
-
-                if (desc != null) {
-                    io.out.print("  ");
-                    io.out.println(desc);
-                }
-                else {
-                    io.out.println();
-                }
+                io.out.println(desc);
             }
-
-            io.out.println();
+            else {
+                io.out.println();
+            }
         }
+
+        io.out.println();
 
         return Result.SUCCESS;
     }

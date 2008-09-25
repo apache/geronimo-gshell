@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.command;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Provides registration facilities for {@link Command} instances.
@@ -30,5 +30,5 @@ public interface CommandRegistry
 {
     CommandRegistration register(Command command);
 
-    List<CommandRegistration> getRegistrations();
+    Collection<CommandRegistration> getRegistrations();
 }

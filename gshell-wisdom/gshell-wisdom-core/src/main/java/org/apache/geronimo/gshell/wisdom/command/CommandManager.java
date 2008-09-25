@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,8 +73,8 @@ public class CommandManager
         return registration;
     }
 
-    public List<CommandRegistration> getRegistrations() {
-        return registrations;
+    public Collection<CommandRegistration> getRegistrations() {
+        return Collections.unmodifiableCollection(registrations);
     }
 
     //
