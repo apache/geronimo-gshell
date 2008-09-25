@@ -209,7 +209,7 @@ public class PluginParser
         private BeanDefinitionBuilder parsePlugin(final Element element) {
             assert element != null;
 
-            log.info("Parse plugin; element: {}", element);
+            log.trace("Parse plugin; element: {}", element);
 
             BeanDefinitionBuilder plugin = BeanDefinitionBuilder.rootBeanDefinition(PluginImpl.class);
             plugin.addPropertyValue("id", element.getAttribute("name"));
@@ -224,7 +224,7 @@ public class PluginParser
         private List<BeanDefinitionHolder> parseCommandBundles(final Element element) {
             assert element != null;
 
-            log.info("Parse command bundles; element: {}", element);
+            log.trace("Parse command bundles; element: {}", element);
 
             List<Element> children = getChildElements(element, "command-bundle");
             List<BeanDefinitionHolder> holders = new ArrayList<BeanDefinitionHolder>();
@@ -247,7 +247,7 @@ public class PluginParser
         private BeanDefinitionBuilder parseCommandBundle(final Element element) {
             assert element != null;
 
-            log.info("Parse command bundle; element; {}", element);
+            log.trace("Parse command bundle; element; {}", element);
 
             BeanDefinitionBuilder bundle = BeanDefinitionBuilder.rootBeanDefinition(CommandBundle.class);
             bundle.addPropertyValue("id", element.getAttribute("name"));
@@ -271,7 +271,7 @@ public class PluginParser
         private List parseCommands(final Element element) {
             assert element != null;
 
-            log.info("Parse commands; element; {}", element);
+            log.trace("Parse commands; element; {}", element);
 
             List<Element> children = getChildElements(element, "command");
             ManagedList defs = new ManagedList();
@@ -289,7 +289,7 @@ public class PluginParser
         private BeanDefinitionBuilder parseCommand(final Element element) {
             assert element != null;
 
-            log.info("Parse command; element; {}", element);
+            log.trace("Parse command; element; {}", element);
 
             CommandType type = CommandType.parse(element.getAttribute("type"));
             BeanDefinitionBuilder command = BeanDefinitionBuilder.childBeanDefinition(type.getTemplateName());
@@ -335,7 +335,7 @@ public class PluginParser
         private BeanDefinitionHolder parseCommandAction(final Element element) {
             assert element != null;
 
-            log.info("Parse command action; element; {}", element);
+            log.trace("Parse command action; element; {}", element);
 
             // Construct the action
             BeanDefinition action = parseBeanDefinitionElement(element).getBeanDefinition();
@@ -355,7 +355,7 @@ public class PluginParser
         private List parseAliases(final Element element) {
             assert element != null;
 
-            log.info("Parse aliases; element; {}", element);
+            log.trace("Parse aliases; element; {}", element);
 
             List<Element> children = getChildElements(element, "alias");
             ManagedList defs = new ManagedList();
@@ -373,7 +373,7 @@ public class PluginParser
         private BeanDefinitionBuilder parseAlias(final Element element) {
             assert element != null;
 
-            log.info("Parse alias; element; {}", element);
+            log.trace("Parse alias; element; {}", element);
 
             BeanDefinitionBuilder alias = BeanDefinitionBuilder.rootBeanDefinition(AliasCommand.class);
             alias.addConstructorArgValue(element.getAttribute("name"));
