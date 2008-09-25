@@ -22,17 +22,17 @@ package org.apache.geronimo.gshell.commands.builtins;
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandRegistry;
-import org.apache.geronimo.gshell.command.CommandRegistration;
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandRegistration;
+import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.apache.geronimo.gshell.io.IO;
+import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.util.List;
 
@@ -49,10 +49,8 @@ public class HelpAction
     @Autowired
     private CommandRegistry commandRegistry;
 
-    @Argument(token="COMMAND")
+    @Argument
     private String commandName;
-
-    private Renderer renderer = new Renderer();
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
@@ -77,9 +75,16 @@ public class HelpAction
                 }
             }
 
-            io.out.println("Command " + Renderer.encode(commandName, Code.BOLD) + " not found.");
-            io.out.println("Try " + Renderer.encode("help", Code.BOLD) + " for a list of available commands.");
-            
+            io.out.print("Command ");
+            io.out.print(Renderer.encode(commandName, Code.BOLD));
+            io.out.println(" not found.");
+
+            io.out.print("Try ");
+            io.out.print(Renderer.encode("help", Code.BOLD));
+            io.out.println(" for a list of available commands.");
+
+            io.out.println();
+
             return Result.FAILURE;
         }
         else {
@@ -98,7 +103,7 @@ public class HelpAction
                 String desc = doc.getDescription();
 
                 io.out.print("  ");
-                io.out.print(renderer.render(Renderer.encode(name, Code.BOLD)));
+                io.out.print(Renderer.encode(name, Code.BOLD));
 
                 if (desc != null) {
                     io.out.print("  ");
