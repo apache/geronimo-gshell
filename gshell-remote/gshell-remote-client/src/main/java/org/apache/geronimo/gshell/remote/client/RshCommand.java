@@ -46,19 +46,19 @@ public class RshCommand
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    @Option(name="-b", aliases={"--bind"}, token="URI")
+    @Option(name="-b", aliases={"--bind"})
     private URI local;
 
-    @Option(name="-u", aliases={"--username"}, token="USERNAME")
+    @Option(name="-u", aliases={"--username"})
     private String username;
 
-    @Option(name="-p", aliases={"--password"}, token="PASSWORD")
+    @Option(name="-p", aliases={"--password"})
     private String password;
     
-    @Argument(token="URI", required=true, index=0)
+    @Argument(required=true, index=0)
     private URI remote;
 
-    @Argument(token="COMMAND", index=1, multiValued=true)
+    @Argument(index=1, multiValued=true)
     private List<String> command = new ArrayList<String>();
 
     private BeanContainer container;
@@ -75,6 +75,9 @@ public class RshCommand
         io.info("Connecting to: {}", remote);
 
         RshClient client = container.getBean(RshClient.class);
+
+        log.debug("Created client: {}", client);
+        
         client.connect(remote, local);
 
         io.info("Connected");
