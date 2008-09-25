@@ -28,7 +28,7 @@
         attributeFormDefault="unqualified">
 
     <xsd:import namespace="http://www.springframework.org/schema/beans"/>
-    
+
     <xsd:annotation>
         <xsd:documentation>
             Defines the configuration elements for GShell Wisdom application context support.
@@ -102,12 +102,12 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:group ref="beans:beanElements"/>
-					<xsd:attributeGroup ref="beans:beanAttributes"/>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:group ref="beans:beanElements"/>
+                    <xsd:attributeGroup ref="beans:beanAttributes"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
     </xsd:element>
 
     <xsd:element name="documenter">
@@ -118,12 +118,12 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:group ref="beans:beanElements"/>
-					<xsd:attributeGroup ref="beans:beanAttributes"/>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:group ref="beans:beanElements"/>
+                    <xsd:attributeGroup ref="beans:beanAttributes"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
     </xsd:element>
 
     <xsd:element name="completer">
@@ -134,12 +134,12 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:group ref="beans:beanElements"/>
-					<xsd:attributeGroup ref="beans:beanAttributes"/>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:group ref="beans:beanElements"/>
+                    <xsd:attributeGroup ref="beans:beanAttributes"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
     </xsd:element>
 
     <xsd:element name="message-source">
@@ -150,12 +150,12 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:group ref="beans:beanElements"/>
-					<xsd:attributeGroup ref="beans:beanAttributes"/>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:group ref="beans:beanElements"/>
+                    <xsd:attributeGroup ref="beans:beanAttributes"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
     </xsd:element>
 
     <xsd:element name="alias">
