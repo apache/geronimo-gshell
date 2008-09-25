@@ -58,6 +58,7 @@
             </xsd:annotation>
             <xsd:sequence>
                 <xsd:element ref="command" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element ref="alias" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
         </xsd:complexType>
@@ -71,7 +72,10 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:sequence>
-                <xsd:element ref="action" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="action" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="documenter" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="completer" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="message-source" minOccurs="0" maxOccurs="1"/>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
             <xsd:attribute name="type" use="optional" default="stateful">
@@ -87,7 +91,6 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:attribute>
-            <xsd:attribute name="action" type="xsd:string" use="optional"/>
         </xsd:complexType>
     </xsd:element>
 
@@ -98,10 +101,72 @@
                     Defines a command action.
                 </xsd:documentation>
             </xsd:annotation>
-            <xsd:sequence>
-                <xsd:element ref="beans:bean" minOccurs="0" maxOccurs="1"/>
-            </xsd:sequence>
-            <xsd:attribute name="class" type="xsd:string" use="optional"/>
+            <xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:group ref="beans:beanElements"/>
+					<xsd:attributeGroup ref="beans:beanAttributes"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="documenter">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation>
+                    Defines a command documenter.
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:group ref="beans:beanElements"/>
+					<xsd:attributeGroup ref="beans:beanAttributes"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="completer">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation>
+                    Defines a command completer.
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:group ref="beans:beanElements"/>
+					<xsd:attributeGroup ref="beans:beanAttributes"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="message-source">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation>
+                    Defines a command message source.
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:group ref="beans:beanElements"/>
+					<xsd:attributeGroup ref="beans:beanAttributes"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="alias">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation>
+                    Defines an alias.
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="target" type="xsd:string" use="required"/>
         </xsd:complexType>
     </xsd:element>
 

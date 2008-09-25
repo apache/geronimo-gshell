@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
+import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
 import org.apache.geronimo.gshell.wisdom.plugin.PluginImpl;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
@@ -35,7 +36,6 @@ import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -177,6 +177,10 @@ public class PluginParser
             return register(holder);
         }
 
+        //
+        // <gshell:plugin>
+        //
+
         public BeanDefinitionBuilder buildPlugin(final Element element) {
             assert element != null;
 
@@ -195,6 +199,7 @@ public class PluginParser
             BeanDefinitionBuilder rule = BeanDefinitionBuilder.rootBeanDefinition(DefaultCommandBundleActivationRule.class);
             rule.addPropertyValue("bundleId", "default");
             ManagedList rules = new ManagedList();
+            // noinspection unchecked
             rules.add(rule.getBeanDefinition());
             plugin.addPropertyValue("activationRules", rules);
 
@@ -211,6 +216,10 @@ public class PluginParser
 
             return plugin;
         }
+
+        //
+        // <gshell:command-bundle>
+        //
 
         private List<BeanDefinitionHolder> parseCommandBundles(final Element element) {
             assert element != null;
@@ -245,10 +254,19 @@ public class PluginParser
             bundle.setLazyInit(true);
 
             List commands = parseCommands(element);
+            List aliases = parseAliases(element);
+
+            // noinspection unchecked
+            commands.addAll(aliases);
+
             bundle.addPropertyValue("commands", commands);
             
             return bundle;
         }
+
+        //
+        // <gshell:command>
+        //
 
         private List parseCommands(final Element element) {
             assert element != null;
@@ -279,58 +297,49 @@ public class PluginParser
             // TODO: Currently name is pulled from the documentor, need to change that
             // command.addPropertyValue("name", element.getAttribute("name"));
 
-            BeanDefinitionHolder action = parseCommandAction(element);
+            Element child;
 
-            // Wire up the action based on the type
+            // Required children elements
+
+            child = getChildElement(element, "action");
+            BeanDefinitionHolder action = parseCommandAction(child);
             type.wire(command, action);
+
+            // Optional children elements
+
+            child = getChildElement(element, "documenter");
+            if (child != null) {
+                BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
+                command.addPropertyValue("documenter", holder.getBeanDefinition());
+            }
+
+            child = getChildElement(element, "completer");
+            if (child != null) {
+                BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
+                command.addPropertyValue("completer", holder.getBeanDefinition());
+            }
+
+            child = getChildElement(element, "message-source");
+            if (child != null) {
+                BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
+                command.addPropertyValue("messages", holder.getBeanDefinition());
+            }
 
             return command;
         }
+
+        //
+        // <gshell:action>
+        //
 
         private BeanDefinitionHolder parseCommandAction(final Element element) {
             assert element != null;
 
             log.info("Parse command action; element; {}", element);
 
-            Attr actionAttr = element.getAttributeNode("action");
-            Element actionElement = getChildElement(element, "action");
-
-            // Validate that we only have one action
-            if (actionAttr != null && actionElement != null) {
-                throw new RuntimeException("Must specify only one action attribute or action element");
-            }
-            if (actionAttr == null && actionElement == null) {
-                throw new RuntimeException("Missing action attribute or action element");
-            }
-
             // Construct the action
-            BeanDefinition action;
-
-            if (actionAttr != null) {
-                action = BeanDefinitionBuilder.rootBeanDefinition(actionAttr.getValue()).getBeanDefinition();
-            }
-            else {
-                // TODO: Can probably just treat the "action" element as a "bean" element?
-                
-                Attr classAttr = actionElement.getAttributeNode("class");
-                Element beanElement = getChildElement(actionElement, "bean");
-
-                // Validate we only have one configuration for the action
-                if (classAttr != null && beanElement != null) {
-                    throw new RuntimeException("Must specify only one class attribute or bean element");
-                }
-                if (classAttr == null && beanElement == null) {
-                    throw new RuntimeException("Missing action class attribute or action bean element");
-                }
-
-                if (classAttr != null) {
-                    action = BeanDefinitionBuilder.rootBeanDefinition(classAttr.getValue()).getBeanDefinition();
-                }
-                else {
-                    action = parseBeanDefinitionElement(beanElement).getBeanDefinition();
-                }
-            }
-
+            BeanDefinition action = parseBeanDefinitionElement(element).getBeanDefinition();
+            
             // All actions are configured as prototypes
             action.setScope("prototype");
 
@@ -338,5 +347,40 @@ public class PluginParser
             String id = resolveId(element, action);
             return register(action, id);
         }
+
+        //
+        // <gshell:alias>
+        //
+
+        private List parseAliases(final Element element) {
+            assert element != null;
+
+            log.info("Parse aliases; element; {}", element);
+
+            List<Element> children = getChildElements(element, "alias");
+            ManagedList defs = new ManagedList();
+
+            for (Element child : children) {
+                BeanDefinitionBuilder command = parseAlias(child);
+
+                // noinspection unchecked
+                defs.add(command.getBeanDefinition());
+            }
+
+            return defs;
+        }
+
+        private BeanDefinitionBuilder parseAlias(final Element element) {
+            assert element != null;
+
+            log.info("Parse alias; element; {}", element);
+
+            BeanDefinitionBuilder alias = BeanDefinitionBuilder.rootBeanDefinition(AliasCommand.class);
+            alias.addConstructorArgValue(element.getAttribute("name"));
+            alias.addConstructorArgValue(element.getAttribute("target"));
+
+            return alias;
+        }
+
     }
 }

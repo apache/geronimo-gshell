@@ -32,6 +32,18 @@ import org.slf4j.LoggerFactory;
 public class AliasCommand
     extends CommandSupport
 {
+    private String name;
+
+    private String target;
+
+    public AliasCommand(final String name, final String target) {
+        assert name != null;
+        assert target != null;
+
+        this.name = name;
+        this.target = target;
+    }
+
     @Override
     public CommandResult execute(final ShellContext context, final Object[] args) {
         assert context != null;

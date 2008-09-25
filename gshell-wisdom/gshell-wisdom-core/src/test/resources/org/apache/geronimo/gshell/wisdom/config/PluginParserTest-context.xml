@@ -29,23 +29,32 @@
 
     <gshell:plugin name="test-plugin">
         <gshell:command-bundle name="test">
-            <gshell:command name="a" action="org.apache.geronimo.gshell.commands.SomeAction"/>
+            <gshell:command name="a">
+                <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
+            </gshell:command>
 
-            <gshell:command name="b" type="stateless" action="org.apache.geronimo.gshell.commands.SomeAction"/>
+            <gshell:command name="b" type="stateless">
+                <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
+            </gshell:command>
 
-            <gshell:command name="c" type="stateful" action="org.apache.geronimo.gshell.commands.SomeAction"/>
-
+            <gshell:command name="c" type="stateful">
+                <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
+            </gshell:command>
+            
             <gshell:command name="d">
-                <gshell:action>
-                    <bean class="org.apache.geronimo.gshell.wisdom.config.DummyAction">
-                        <property name="text" value="b"/>
-                    </bean>
+                <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction">
+                    <property name="text" value="b"/>
                 </gshell:action>
             </gshell:command>
 
             <gshell:command name="e">
                 <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
+                <gshell:documenter class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.CommandCompleterImpl"/>
+                <gshell:message-source class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>
             </gshell:command>
+
+            <gshell:alias name="foo" target="bar"/>
         </gshell:command-bundle>
     </gshell:plugin>
 
