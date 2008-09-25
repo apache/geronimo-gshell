@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.alias.AliasManager;
+import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +46,16 @@ public class UnaliasAction
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
 
         log.debug("Undefining alias: {}", name);
 
-        // TODO:
+        if (!aliasManager.isAliasDefined(name)) {
+            io.error("No alias defined with name: {}", name);
+            return Result.FAILURE;
+        }
+
+        aliasManager.undefineAlias(name);
 
         return Result.SUCCESS;
     }

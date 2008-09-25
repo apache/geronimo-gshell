@@ -19,11 +19,20 @@
 
 package org.apache.geronimo.gshell.alias;
 
+import java.util.Collection;
+
 /**
- * ???
+ * Component to manage {@link Alias} instances.
  *
  * @version $Rev$ $Date$
  */
 public interface AliasManager
 {
+    Collection<Alias> getAliases();
+
+    boolean isAliasDefined(String name);
+
+    Alias defineAlias(String name, String target);
+
+    void undefineAlias(String name);
 }

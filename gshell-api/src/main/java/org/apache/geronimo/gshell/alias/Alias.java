@@ -26,4 +26,11 @@ package org.apache.geronimo.gshell.alias;
  */
 public interface Alias
 {
+    String getName();
+
+    String getTarget();
+
+    // Command getCommand()
+
+    // boolean isMasking()
 }

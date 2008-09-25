@@ -288,6 +288,8 @@ public class IO
     //
     // Output Helpers
     //
+    // TODO: Hook up a MessageSource to make it even easier to handle i18n via these helpers
+    //
 
     public void debug(final String msg) {
         if (isDebug()) {

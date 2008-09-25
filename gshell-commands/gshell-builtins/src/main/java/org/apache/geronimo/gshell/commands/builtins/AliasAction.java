@@ -19,15 +19,18 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import org.apache.geronimo.gshell.alias.Alias;
+import org.apache.geronimo.gshell.alias.AliasManager;
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.apache.geronimo.gshell.alias.AliasManager;
+import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
 
 /**
  * Define an alias.
@@ -55,8 +58,19 @@ public class AliasAction
 
         if (name == null) {
             log.debug("Listing defined aliases");
+
+            Collection<Alias> aliases = aliasManager.getAliases();
             
-            // TODO: List aliases
+            if (aliases.isEmpty()) {
+                io.verbose("No aliases have been defined");
+            }
+            else {
+                io.info("Defined aliases:");
+
+                for (Alias alias : aliases) {
+                    io.info("  {}='{}'", alias.getName(), alias.getTarget());
+                }
+            }
         }
         else if (target == null) {
             io.error("Missing argument: {}", messages.getMessage("command.argument.target.token"));
@@ -65,7 +79,9 @@ public class AliasAction
         else {
             log.debug("Defining alias: {} -> {}", name, target);
 
-            // TODO: Define alias
+            Alias alias = aliasManager.defineAlias(name, target);
+
+            log.debug("Alias: {}", alias);
         }
 
         return Result.SUCCESS;

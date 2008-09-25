@@ -19,15 +19,20 @@
 
 package org.apache.geronimo.gshell.wisdom.alias;
 
-import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
+import org.apache.geronimo.gshell.alias.Alias;
 import org.apache.geronimo.gshell.alias.AliasManager;
+import org.apache.geronimo.gshell.command.CommandRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * Implementation of the {@link AliasManager} component.
+ * {@link AliasManager} component.
  *
  * @version $Rev$ $Date$
  */
@@ -36,5 +41,58 @@ public class AliasManagerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    // TODO:
+    @Autowired
+    private CommandRegistry commandRegistry;
+
+    private Map<String,Alias> aliases = new LinkedHashMap<String,Alias>();
+
+    public Collection<Alias> getAliases() {
+        return Collections.unmodifiableCollection(aliases.values());
+    }
+
+    public boolean isAliasDefined(final String name) {
+        assert name != null;
+
+        return aliases.containsKey(name);
+    }
+
+    public Alias defineAlias(final String name, final String target) {
+        assert name != null;
+
+        log.debug("Defining alias: {} -> {}", name, target);
+
+        Alias alias = new Alias() {
+            public String getName() {
+                return name;
+            }
+
+            public String getTarget() {
+                return target;
+            }
+        };
+
+        aliases.put(name, alias);
+
+        // TODO: Register AliasCommand
+
+        // TODO: Fire event?
+
+        return alias;
+    }
+
+    public void undefineAlias(final String name) {
+        assert name != null;
+
+        log.debug("Undefining alias: {}", name);
+
+        Alias alias = aliases.remove(name);
+        if (alias == null) {
+            log.debug("No alias defined; ignoring");
+        }
+        else {
+            // TODO: Unregister AliasCommand
+
+            // TODO: Fire event?
+        }
+    }
 }
