@@ -376,8 +376,8 @@ public class PluginParser
             log.trace("Parse alias; element; {}", element);
 
             BeanDefinitionBuilder alias = BeanDefinitionBuilder.rootBeanDefinition(AliasCommand.class);
-            alias.addPropertyValue("name", element.getAttribute("name"));
-            alias.addPropertyValue("target", element.getAttribute("target"));
+            alias.addConstructorArgValue(element.getAttribute("name"));
+            alias.addConstructorArgValue(element.getAttribute("target"));
 
             return alias;
         }

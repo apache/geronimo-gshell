@@ -35,26 +35,14 @@ public class AliasCommand
 
     private String target;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
+    public AliasCommand(final String name, final String target) {
         assert name != null;
+        assert target != null;
 
         this.name = name;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(final String target) {
-        assert target != null;
-        
         this.target = target;
     }
-
+    
     @Override
     public CommandResult execute(final ShellContext context, final Object[] args) {
         assert context != null;

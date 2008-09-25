@@ -65,6 +65,8 @@ public class AliasManagerImpl
 
         log.debug("Defining alias: {} -> {}", name, target);
 
+        final AliasCommand command = new AliasCommand(name, target);
+
         Alias alias = new Alias() {
             public String getName() {
                 return name;
@@ -73,6 +75,8 @@ public class AliasManagerImpl
             public String getTarget() {
                 return target;
             }
+
+            // TODO: Track the command
         };
 
         aliases.put(name, alias);
