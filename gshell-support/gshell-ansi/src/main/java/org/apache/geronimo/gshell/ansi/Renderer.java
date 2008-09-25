@@ -118,7 +118,7 @@ public class Renderer
         return text != null && text.indexOf(BEGIN_TOKEN) >= 0;
     }
 
-    public static String encode(final String text, final int code) {
+    public static String encode(final Object text, final int code) {
         return new StringBuffer(BEGIN_TOKEN).
                 append(Code.name(code)).
                 append(CODE_TEXT_SEPARATOR).
