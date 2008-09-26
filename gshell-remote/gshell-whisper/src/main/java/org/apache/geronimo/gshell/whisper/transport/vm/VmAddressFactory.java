@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.whisper.transport.vm;
 
-import java.net.URI;
-
 import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.mina.transport.vmpipe.VmPipeAddress;
+
+import java.net.URI;
 
 /**
  * Produces in-VM address instances.

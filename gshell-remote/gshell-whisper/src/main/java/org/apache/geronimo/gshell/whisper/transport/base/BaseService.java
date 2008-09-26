@@ -179,6 +179,10 @@ public abstract class BaseService<T extends IoService>
 
         chain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 
+        //
+        // FIXME: Need to create a custom LoggingFilter which logs things as debug and trace, not info, PITA
+        //
+        
         chain.addLast(LoggingFilter.class.getSimpleName(), new LoggingFilter());
 
         chain.addLast(SessionStreamFilter.class.getSimpleName(), new SessionStreamFilter());

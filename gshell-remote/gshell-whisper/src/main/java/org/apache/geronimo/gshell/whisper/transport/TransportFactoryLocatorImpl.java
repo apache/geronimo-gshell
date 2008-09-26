@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
 
 /**
  * Helper to locate a {@link TransportFactory} instance.

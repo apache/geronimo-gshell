@@ -19,12 +19,11 @@
 
 package org.apache.geronimo.gshell.whisper.transport.tcp;
 
-import java.util.concurrent.Executors;
-
-import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.base.AddressFactory;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransport;
 import org.apache.mina.transport.socket.nio.SocketConnector;
+
+import java.util.concurrent.Executors;
 
 /**
  * Provides TCP client-side support.
@@ -45,15 +44,5 @@ public class TcpTransport
     @Override
     protected SocketConnector createConnector() throws Exception {
         return new SocketConnector(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
-    }
-
-    protected Transport.Configuration createConfiguration() {
-        return new Configuration();
-    }
-
-    public static class Configuration
-        extends BaseTransportConfiguration
-    {
-        // TODO:
     }
 }

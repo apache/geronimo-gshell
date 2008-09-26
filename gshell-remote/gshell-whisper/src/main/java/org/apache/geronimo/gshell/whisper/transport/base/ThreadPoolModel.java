@@ -19,19 +19,19 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
 import org.apache.mina.common.IoFilterChain;
 import org.apache.mina.common.ThreadModel;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A custom {@link ThreadModel} to get some more control over the pool configuration as well as how threads are constructed.

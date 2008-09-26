@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import java.net.SocketAddress;
-import java.net.URI;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.ThreadModel;
+
+import java.net.SocketAddress;
+import java.net.URI;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Support for {@link TransportServer} implementations.
@@ -53,16 +53,18 @@ public abstract class BaseTransportServer<T extends IoAcceptor>
     // Configuration
     //
 
-    protected static class BaseTransportServerConfiguration
+    public static class BaseTransportServerConfiguration
         extends BaseConfiguration
         implements TransportServer.Configuration
     {
-        // TODO:
+        public BaseTransportServerConfiguration() {}
     }
 
     private Configuration config;
 
-    protected abstract Configuration createConfiguration();
+    protected Configuration createConfiguration() {
+        return new BaseTransportServerConfiguration();    
+    }
 
     public synchronized Configuration getConfiguration() {
         if (config == null) {

@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
-import java.net.URI;
-
 import org.apache.mina.common.IoHandler;
+
+import java.net.URI;
 
 //
 // FIXME: This won't compile under Java 6 due to the T. and S. bits (trying to select from a type variable)

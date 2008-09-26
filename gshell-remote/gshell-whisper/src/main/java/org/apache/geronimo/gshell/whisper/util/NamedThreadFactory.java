@@ -19,6 +19,9 @@
 
 package org.apache.geronimo.gshell.whisper.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -31,6 +34,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class NamedThreadFactory
     implements ThreadFactory
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private final String baseName;
 
     private final ThreadGroup group;
@@ -76,18 +81,20 @@ public class NamedThreadFactory
     public Thread newThread(final Runnable task) {
         assert task != null;
 
-        Thread t = new Thread(group, task, createName());
-        
-        configure(t);
+        Thread thread = new Thread(group, task, createName());
 
-        return t;
+        log.trace("Created new thread: {}", thread);
+
+        configure(thread);
+
+        return thread;
     }
 
     protected String createName() {
         return baseName + "-" + counter.getAndIncrement();
     }
 
-    protected void configure(final Thread t) {
-        t.setDaemon(true);
+    protected void configure(final Thread thread) {
+        thread.setDaemon(true);
     }
 }

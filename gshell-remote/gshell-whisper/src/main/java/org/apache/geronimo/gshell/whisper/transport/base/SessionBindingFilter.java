@@ -40,7 +40,7 @@ public class SessionBindingFilter
     public void sessionCreated(final NextFilter nextFilter, final IoSession session) throws Exception {
         Session s = Session.BINDER.bind(session, new SessionAdapter(session));
 
-        log.debug("Bound: {}", s);
+        log.trace("Bound: {}", s);
 
         nextFilter.sessionCreated(session);
     }
@@ -49,7 +49,7 @@ public class SessionBindingFilter
     public void sessionClosed(final NextFilter nextFilter, final IoSession session) throws Exception {
         Session s = Session.BINDER.unbind(session);
 
-        log.debug("Unbound: {}", s);
+        log.trace("Unbound: {}", s);
 
         nextFilter.sessionClosed(session);
     }

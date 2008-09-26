@@ -24,6 +24,7 @@ import java.net.URI;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
+import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportServer;
 import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.mina.common.IoHandlerAdapter;
 
@@ -55,7 +56,7 @@ public class VmTransportFactoryTest
     }
 
     public void testBindWithConfig() throws Exception {
-        VmTransportServer.Configuration config = new VmTransportServer.Configuration();
+        VmTransportServer.Configuration config = new BaseTransportServer.BaseTransportServerConfiguration();
         config.setHandler(new IoHandlerAdapter());
 
         TransportServer server = factory.bind(uri, config);

@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell.whisper.transport.base;
 
-import java.net.URI;
-
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.mina.common.IoHandler;
+
+import java.net.URI;
 
 /**
  * Support for {@link TransportFactory} implementations.

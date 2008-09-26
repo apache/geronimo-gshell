@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.whisper.transport.ssl;
 
 import org.apache.geronimo.gshell.whisper.ssl.SSLContextFactory;
-import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransport;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.SSLFilter;
@@ -57,15 +56,5 @@ public class SslTransport
         filter.setUseClientMode(true);
 
         chain.addFirst(SSLFilter.class.getSimpleName(), filter);
-    }
-
-    protected Transport.Configuration createConfiguration() {
-        return new Configuration();
-    }
-
-    public static class Configuration
-        extends BaseTransportConfiguration
-    {
-        // TODO:
     }
 }

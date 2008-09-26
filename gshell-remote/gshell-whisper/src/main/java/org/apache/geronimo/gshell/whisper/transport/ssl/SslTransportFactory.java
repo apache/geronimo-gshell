@@ -20,8 +20,6 @@
 package org.apache.geronimo.gshell.whisper.transport.ssl;
 
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
-import org.apache.geronimo.gshell.whisper.transport.base.BaseTransport;
-import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportServer;
 
 /**
  * Produces TCP+SSL transport instances.

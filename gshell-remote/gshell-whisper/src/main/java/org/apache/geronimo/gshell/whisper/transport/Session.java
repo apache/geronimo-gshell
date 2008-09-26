@@ -19,15 +19,15 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
+import org.apache.geronimo.gshell.chronos.Duration;
+import org.apache.geronimo.gshell.whisper.message.Message;
+import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.mina.common.IoSession;
+import org.apache.mina.common.WriteFuture;
+
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.apache.geronimo.gshell.whisper.message.Message;
-import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
-import org.apache.geronimo.gshell.chronos.Duration;
-import org.apache.mina.common.IoSession;
-import org.apache.mina.common.WriteFuture;
 
 /**
  * Provides the session for a transport connection.

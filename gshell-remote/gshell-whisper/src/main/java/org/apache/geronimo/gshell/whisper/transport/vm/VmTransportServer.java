@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.whisper.transport.vm;
 
-import org.apache.geronimo.gshell.whisper.transport.TransportServer;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportServer;
 import org.apache.mina.transport.vmpipe.VmPipeAcceptor;
 
@@ -38,15 +37,5 @@ public class VmTransportServer
     @Override
     protected VmPipeAcceptor createAcceptor() throws Exception {
         return new VmPipeAcceptor();
-    }
-
-    protected TransportServer.Configuration createConfiguration() {
-        return new Configuration();
-    }
-
-    public static class Configuration
-        extends BaseTransportServerConfiguration
-    {
-        // TODO:
     }
 }

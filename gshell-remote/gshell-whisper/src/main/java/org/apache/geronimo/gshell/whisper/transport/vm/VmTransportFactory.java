@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.whisper.transport.vm;
 
-import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportFactory;
 
 /**
