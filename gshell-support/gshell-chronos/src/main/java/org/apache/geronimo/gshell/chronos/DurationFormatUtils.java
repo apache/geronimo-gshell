@@ -23,14 +23,13 @@ package org.apache.geronimo.gshell.chronos;
 // NOTE: Copied and massaged from commons-lang 2.3
 //
 
+import org.codehaus.plexus.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
-import org.codehaus.plexus.util.StringUtils;
-import org.apache.geronimo.gshell.chronos.DateUtils;
 
 /**
  * <p>Duration formatting utilities and constants. The following table describes the tokens
