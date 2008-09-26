@@ -26,9 +26,10 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
-import org.apache.geronimo.gshell.registry.CommandRegistration;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.NoSuchCommandException;
+import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,58 +69,61 @@ public class HelpAction
 
         log.debug("Displaying help manual for command: {}", commandName);
 
-        // FIXME: Should resolve the commandName/commandPath
+        try {
+            assert commandRegistry != null;
+            Command command = commandRegistry.getCommand(commandName);
 
-        assert commandRegistry != null;
-        Collection<CommandRegistration> registrations = commandRegistry.getRegistrations();
+            assert command != null;
+            command.getDocumenter().renderManual(io.out);
 
-        for (CommandRegistration registration : registrations) {
-            Command command = registration.getCommand();
-            CommandDocumenter doc = command.getDocumenter();
-
-            if (doc.getName().equals(commandName)) {
-                doc.renderManual(io.out);
-
-                return Result.SUCCESS;
-            }
+            return Result.SUCCESS;
         }
+        catch (NoSuchCommandException e) {
+            //
+            // FIXME: When the commandName is really an alias, show the alias details here instead of complaining
+            //
+            
+            io.out.print("Command ");
+            io.out.print(Renderer.encode(commandName, Code.BOLD));
+            io.out.println(" not found.");
 
-        io.out.print("Command ");
-        io.out.print(Renderer.encode(commandName, Code.BOLD));
-        io.out.println(" not found.");
+            io.out.print("Try ");
+            io.out.print(Renderer.encode("help", Code.BOLD));
+            io.out.println(" for a list of available commands.");
 
-        io.out.print("Try ");
-        io.out.print(Renderer.encode("help", Code.BOLD));
-        io.out.println(" for a list of available commands.");
+            io.out.println();
 
-        io.out.println();
-
-        return Result.FAILURE;
+            return Result.FAILURE;
+        }
     }
 
-    private Object displayAvailableCommands(final CommandContext context) {
+    private Object displayAvailableCommands(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
         log.debug("Listing brief help for commands");
 
-        // FIXME: Figure this out dynamically
-        int maxNameLen = 20;
-
         assert commandRegistry != null;
-        Collection<CommandRegistration> registrations = commandRegistry.getRegistrations();
+        Collection<String> names = commandRegistry.getCommandNames();
+
+        // Determine the maximun name length
+        int maxNameLen = 0;
+        for (String name : names) {
+            if (name.length() > maxNameLen) {
+                maxNameLen = name.length();
+            }
+        }
 
         io.out.println("Available commands:");
+        for (String name : names) {
+            Command command = commandRegistry.getCommand(name);
+            CommandDocumenter documenter = command.getDocumenter();
 
-        for (CommandRegistration registration : registrations) {
-            Command command = registration.getCommand();
-            CommandDocumenter doc = command.getDocumenter();
-
-            String name = StringUtils.rightPad(doc.getName(), maxNameLen);
-            String desc = doc.getDescription();
+            String formattedName = StringUtils.rightPad(name, maxNameLen);
+            String desc = documenter.getDescription();
 
             io.out.print("  ");
-            io.out.print(Renderer.encode(name, Code.BOLD));
+            io.out.print(Renderer.encode(formattedName, Code.BOLD));
 
             if (desc != null) {
                 io.out.print("  ");

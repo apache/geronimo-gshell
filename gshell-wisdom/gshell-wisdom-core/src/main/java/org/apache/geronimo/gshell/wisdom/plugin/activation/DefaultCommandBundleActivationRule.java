@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
@@ -43,9 +44,22 @@ public class DefaultCommandBundleActivationRule
     @Autowired
     private CommandRegistry commandRegistry;
 
+    @Autowired
+    private AliasRegistry aliasRegistry;
+
     private BeanContainer container;
 
-    private String bundleId;
+    private String bundleName;
+
+    public String getBundleName() {
+        return bundleName;
+    }
+
+    public void setBundleName(final String bundleName) {
+        assert bundleName != null;
+        
+        this.bundleName = bundleName;
+    }
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
@@ -53,12 +67,24 @@ public class DefaultCommandBundleActivationRule
         this.container = container;
     }
 
-    public String getBundleId() {
-        return bundleId;
-    }
+    private CommandBundle getBundle() {
+        assert container != null;
+        Map<String, CommandBundle> bundles = container.getBeans(CommandBundle.class);
 
-    public void setBundleId(final String bundleId) {
-        this.bundleId = bundleId;
+        assert bundleName != null;
+        CommandBundle bundle = null;
+        for (CommandBundle b : bundles.values()) {
+            if (b.getName().equals(bundleName)) {
+                bundle = b;
+                break;
+            }
+        }
+
+        if (bundle == null) {
+            throw new RuntimeException("No bundle found with name: " + bundleName);
+        }
+
+        return bundle;
     }
 
     public void evaluate(final ActivationContext context) throws Exception {
@@ -67,30 +93,20 @@ public class DefaultCommandBundleActivationRule
         if (context.getTasks().isEmpty()) {
             ActivationTask task = new ActivationTask() {
                 public void execute() throws Exception {
-                    assert container != null;
-                    Map<String, CommandBundle> bundles = container.getBeans(CommandBundle.class);
+                    CommandBundle bundle = getBundle();
+                    
+                    log.debug("Processing command bundle: {}", bundle);
 
-                    assert bundleId != null;
-                    CommandBundle bundle = null;
-                    for (CommandBundle b : bundles.values()) {
-                        if (b.getId().equals(bundleId)) {
-                            bundle = b;
-                            break;
-                        }
+                    Map<String,Command> commands = bundle.getCommands();
+
+                    for (String name : commands.keySet()) {
+                        commandRegistry.registerCommand(name, commands.get(name));
                     }
 
-                    if (bundle == null) {
-                        throw new Exception("No bundle found with id: " + bundleId);
-                    }
+                    Map<String,String> aliases = bundle.getAliases();
 
-                    log.debug("Processing command bundle: {}", bundle.getId());
-
-                    if (!bundle.isEmpty()) {
-                        log.debug("Discovered {} commands in bundle {}", bundle.size(), bundle.getId());
-
-                        for (Command command : bundle.getCommands()) {
-                            commandRegistry.register(command);
-                        }
+                    for (String name : aliases.keySet()) {
+                        aliasRegistry.registerAlias(name, aliases.get(name));
                     }
                 }
             };

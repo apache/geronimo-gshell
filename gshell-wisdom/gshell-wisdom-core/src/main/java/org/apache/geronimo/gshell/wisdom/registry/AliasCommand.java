@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.alias;
+package org.apache.geronimo.gshell.wisdom.registry;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -50,14 +50,14 @@ public class AliasCommand
 
     private String name;
 
-    private String target;
+    private String alias;
 
-    public AliasCommand(final String name, final String target) {
+    public AliasCommand(final String name, final String alias) {
         assert name != null;
-        assert target != null;
+        assert alias != null;
 
         this.name = name;
-        this.target = target;
+        this.alias = alias;
 
         setAction(new AliasCommandAction());
         setDocumenter(new AliasCommandDocumenter());
@@ -65,8 +65,8 @@ public class AliasCommand
         setMessages(new AliasCommandMessageSource());
     }
 
-    public AliasCommand(final String name, final String target, final CommandLineExecutor executor) {
-        this(name, target);
+    public AliasCommand(final String name, final String alias, final CommandLineExecutor executor) {
+        this(name, alias);
 
         assert executor != null;
 
@@ -103,16 +103,19 @@ public class AliasCommand
             };
 
             StringBuilder buff = new StringBuilder();
-            buff.append(target);
+            buff.append(alias);
 
             // If we have args to append, then do it
             if (appendArgs != null && !appendArgs.isEmpty()) {
                 buff.append(" ");
-                
+
+                // Append args quoted as they have already been processed by the parser
                 Iterator iter = appendArgs.iterator();
                 while (iter.hasNext()) {
-                    // Append args quoted as they have already been processed by the parser
+                    //
                     // HACK: Using double quote instead of single quote for now as the parser's handling of single quote is broken
+                    //
+
                     buff.append('"').append(iter.next()).append('"');
                     if (iter.hasNext()) {
                         buff.append(" ");
@@ -120,7 +123,7 @@ public class AliasCommand
                 }
             }
 
-            log.debug("Executing alias target: {}", buff);
+            log.debug("Executing alias: {}", buff);
 
             Object result = executor.execute(shellContext, buff.toString());
 
@@ -141,7 +144,7 @@ public class AliasCommand
         }
 
         public String getDescription() {
-            return getMessages().format(COMMAND_DESCRIPTION, target);
+            return getMessages().format(COMMAND_DESCRIPTION, alias);
         }
     }
 

@@ -22,8 +22,6 @@ package org.apache.geronimo.gshell.wisdom.registry;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Group {@link org.apache.geronimo.gshell.command.Command} component.

@@ -26,7 +26,7 @@ package org.apache.geronimo.gshell.wisdom.plugin.bundle;
  */
 public interface Bundle
 {
-    String getId();
+    String getName();
 
     // TODO: start/stop enable/disable close/destroy
 }

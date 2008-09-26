@@ -22,8 +22,9 @@ package org.apache.geronimo.gshell.commands.builtins;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.alias.AliasManager;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.registry.AliasRegistry;
+import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,24 +40,26 @@ public class UnaliasAction
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private AliasManager aliasManager;
+    private AliasRegistry aliasRegistry;
     
     @Argument(index=0, required=true)
     private String name;
 
-    public Object execute(final CommandContext context) throws Exception {
+    public Object execute(final CommandContext context) {
         assert context != null;
         IO io = context.getIo();
 
         log.debug("Undefining alias: {}", name);
 
-        if (!aliasManager.isAliasDefined(name)) {
-            io.error("No alias defined with name: {}", name);
+        try {
+            aliasRegistry.removeAlias(name);
+
+            return Result.SUCCESS;
+        }
+        catch (NoSuchAliasException e) {
+            io.error("No alias defined: {}", name);
+
             return Result.FAILURE;
         }
-
-        aliasManager.undefineAlias(name);
-
-        return Result.SUCCESS;
     }
 }

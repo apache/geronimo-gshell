@@ -17,20 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.alias;
+package org.apache.geronimo.gshell.wisdom.registry;
+
+import org.apache.geronimo.gshell.event.Event;
 
 /**
- * ???
+ * Event fired once a command has been removed.
  *
  * @version $Rev$ $Date$
  */
-public interface Alias
+public class CommandRemovedEvent
+    implements Event
 {
-    String getName();
+    private final String name;
 
-    String getTarget();
+    public CommandRemovedEvent(final String name) {
+        assert name != null;
 
-    // Command getCommand()
+        this.name = name;
+    }
 
-    // boolean isMasking()
+    public String getName() {
+        return name;
+    }
 }

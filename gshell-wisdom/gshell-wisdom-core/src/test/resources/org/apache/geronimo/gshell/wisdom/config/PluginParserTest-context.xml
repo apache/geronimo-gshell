@@ -70,14 +70,28 @@
                 <gshell:message-source class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>
             </gshell:command>
 
-            <gshell:alias name="foo" target="bar"/>
+            <gshell:alias name="foo" alias="bar"/>
 
-            <gshell:alias name="bar" target="foo">
+            <gshell:alias name="bar" alias="foo">
                 <description>
                     This is a test alias.
                 </description>
             </gshell:alias>
         </gshell:command-bundle>
     </gshell:plugin>
+
+    <!--
+    Need to define the pluginTemplate bean here, since plugin's are top-level and spring tries to validate it.
+    -->
+    
+    <bean id="pluginTemplate" class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl" abstract="true">
+        <property name="activationRules">
+            <list>
+                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
+                    <property name="bundleName" value="default"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
 </beans>

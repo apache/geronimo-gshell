@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * Resolves {@link org.apache.geronimo.gshell.command.Command} instances for a given path.
+ * Resolves {@link Command} instances for a given path.
  *
  * @version $Rev$ $Date$
  */
@@ -37,7 +37,7 @@ public interface CommandResolver
      * @param path          The path of the command to resolve.
      * @return              The resolved command instance; never null.
      *
-     * @throws org.apache.geronimo.gshell.command.CommandException     Failed to resolve command.
+     * @throws CommandException     Failed to resolve command.
      */
     Command resolve(Variables variables, String path) throws CommandException;
 }

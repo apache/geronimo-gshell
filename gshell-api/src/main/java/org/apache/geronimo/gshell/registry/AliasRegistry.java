@@ -17,28 +17,24 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.alias;
+package org.apache.geronimo.gshell.registry;
 
-import org.apache.geronimo.gshell.alias.Alias;
-import org.apache.geronimo.gshell.event.Event;
+import java.util.Collection;
 
 /**
- * Event fired once an alias has been undefined.
+ * Registry for command aliases.
  *
  * @version $Rev$ $Date$
  */
-public class AliasUndefinedEvent
-    implements Event
+public interface AliasRegistry
 {
-    private final Alias alias;
+    void registerAlias(String name, String alias);
 
-    public AliasUndefinedEvent(final Alias alias) {
-        assert alias != null;
+    void removeAlias(String name) throws NoSuchAliasException;
 
-        this.alias = alias;
-    }
+    String getAlias(String name) throws NoSuchAliasException;
+    
+    boolean containsAlias(String name);
 
-    public Alias getAlias() {
-        return alias;
-    }
+    Collection<String> getAliasNames();
 }

@@ -17,22 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.alias;
+package org.apache.geronimo.gshell.wisdom.registry;
 
-import java.util.Collection;
+import org.apache.geronimo.gshell.event.Event;
 
 /**
- * Component to manage {@link Alias} instances.
+ * Event fired once an alias has been removed.
  *
  * @version $Rev$ $Date$
  */
-public interface AliasManager
+public class AliasRemovedEvent
+    implements Event
 {
-    Collection<Alias> getAliases();
+    private final String name;
 
-    boolean isAliasDefined(String name);
+    public AliasRemovedEvent(final String name) {
+        assert name != null;
 
-    Alias defineAlias(String name, String target);
+        this.name = name;
+    }
 
-    void undefineAlias(String name);
+    public String getName() {
+        return name;
+    }
 }

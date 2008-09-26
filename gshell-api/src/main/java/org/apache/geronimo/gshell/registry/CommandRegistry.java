@@ -24,17 +24,19 @@ import org.apache.geronimo.gshell.command.Command;
 import java.util.Collection;
 
 /**
- * Provides registration facilities for {@link org.apache.geronimo.gshell.command.Command} instances.
+ * Registry for commands.
  *
  * @version $Rev$ $Date$
  */
 public interface CommandRegistry
 {
-    CommandRegistration register(Command command);
+    void registerCommand(String name, Command command) throws DuplicateCommandException;
 
-    // boolean isRegistered(String name);
+    void removeCommand(String name) throws NoSuchCommandException;
 
-    // void unregister(String name);
+    Command getCommand(String name) throws NoSuchCommandException;
 
-    Collection<CommandRegistration> getRegistrations();
+    boolean containsCommand(String name);
+
+    Collection<String> getCommandNames();
 }

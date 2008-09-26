@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 
 import org.apache.geronimo.gshell.command.Command;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * A bundle of {@link Command} instances.
@@ -31,35 +31,39 @@ import java.util.List;
 public class CommandBundle
     implements Bundle
 {
-    private String id;
+    private String name;
 
-    private List<Command> commands;
+    private Map<String,Command> commands;
 
-    public String getId() {
-        return id;
+    private Map<String,String> aliases;
+
+    public CommandBundle(final String name) {
+        assert name != null;
+
+        this.name = name;
     }
 
-    public void setId(final String id) {
-        assert id != null;
-        
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
-    public List<Command> getCommands() {
+    public Map<String, Command> getCommands() {
         return commands;
     }
 
-    public void setCommands(final List<Command> commands) {
+    public void setCommands(final Map<String, Command> commands) {
         assert commands != null;
-
+        
         this.commands = commands;
     }
 
-    public int size() {
-        return commands != null ? commands.size() : 0;
+    public Map<String, String> getAliases() {
+        return aliases;
     }
-    
-    public boolean isEmpty() {
-        return size() == 0;
+
+    public void setAliases(final Map<String, String> aliases) {
+        assert aliases != null;
+
+        this.aliases = aliases;
     }
 }

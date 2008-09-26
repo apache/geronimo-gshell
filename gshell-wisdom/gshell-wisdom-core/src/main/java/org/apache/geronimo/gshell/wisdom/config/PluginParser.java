@@ -19,9 +19,6 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.apache.geronimo.gshell.wisdom.alias.AliasCommand;
-import org.apache.geronimo.gshell.wisdom.plugin.PluginImpl;
-import org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +27,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.ManagedList;
+import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -39,7 +36,9 @@ import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Parser for the &lt;gshell:plugin/&gt; element.
@@ -52,7 +51,9 @@ public class PluginParser
     private static final String ID = "id";
 
     private static final String DESCRIPTION = "description";
-    
+
+    private static final String PLUGIN_TEMPLATE = "pluginTemplate";
+
     private static final String ACTION = "action";
 
     private static final String ACTION_ID = "actionId";
@@ -80,8 +81,8 @@ public class PluginParser
     private static final String PROTOTYPE = "prototype";
 
     private static final String ALIAS = "alias";
-
-    private static final String TARGET = "target";
+    
+    private static final String ALIASES = "aliases";
 
     @Override
     protected boolean shouldGenerateId() {
@@ -239,22 +240,13 @@ public class PluginParser
 
             BeanDefinitionBuilder plugin = parsePlugin(element);
 
-            List<BeanDefinitionHolder> bundles = parseCommandBundles(element);
+            /*List<BeanDefinitionHolder> bundles =*/ parseCommandBundles(element);
 
+            /*
             for (BeanDefinitionHolder holder : bundles) {
                 // TODO: Handle registration of the bundles?
             }
-
-            //
-            // HACK: For now hard-code a single activation rule
-            //
-
-            BeanDefinitionBuilder rule = BeanDefinitionBuilder.rootBeanDefinition(DefaultCommandBundleActivationRule.class);
-            rule.addPropertyValue("bundleId", "default");
-            ManagedList rules = new ManagedList();
-            // noinspection unchecked
-            rules.add(rule.getBeanDefinition());
-            plugin.addPropertyValue("activationRules", rules);
+            */
 
             return plugin;
         }
@@ -264,7 +256,7 @@ public class PluginParser
 
             log.trace("Parse plugin; element: {}", element);
 
-            BeanDefinitionBuilder plugin = BeanDefinitionBuilder.rootBeanDefinition(PluginImpl.class);
+            BeanDefinitionBuilder plugin = BeanDefinitionBuilder.childBeanDefinition(PLUGIN_TEMPLATE);
             plugin.addPropertyValue(ID, element.getAttribute(NAME));
 
             parseAndApplyDescription(element, plugin);
@@ -291,8 +283,6 @@ public class PluginParser
                 BeanDefinition def = bundle.getBeanDefinition();
                 String id = resolveId(child, def);
                 BeanDefinitionHolder holder = register(def, id);
-
-                // noinspection unchecked
                 holders.add(holder);
             }
 
@@ -305,17 +295,24 @@ public class PluginParser
             log.trace("Parse command bundle; element; {}", element);
 
             BeanDefinitionBuilder bundle = BeanDefinitionBuilder.rootBeanDefinition(CommandBundle.class);
-            bundle.addPropertyValue(ID, element.getAttribute(NAME));
+            bundle.addConstructorArgValue(element.getAttribute(NAME));
             bundle.setLazyInit(true);
             parseAndApplyDescription(element, bundle);
 
-            List commands = parseCommands(element);
-            List aliases = parseAliases(element);
+            //
+            // NOTE: Seems we have to use ManagedMap to inject things properly.
+            //       But they are not generic, so so limit their usage here.
+            //
 
+            ManagedMap commands = new ManagedMap();
             // noinspection unchecked
-            commands.addAll(aliases);
-
+            commands.putAll(parseCommands(element));
             bundle.addPropertyValue(COMMANDS, commands);
+
+            ManagedMap aliases = new ManagedMap();
+            // noinspection unchecked
+            aliases.putAll(parseAliases(element));
+            bundle.addPropertyValue(ALIASES, aliases);
 
             return bundle;
         }
@@ -324,22 +321,22 @@ public class PluginParser
         // <gshell:command>
         //
 
-        private List parseCommands(final Element element) {
+        private Map<String,BeanDefinition> parseCommands(final Element element) {
             assert element != null;
 
             log.trace("Parse commands; element; {}", element);
 
+            Map<String,BeanDefinition> commands = new LinkedHashMap<String,BeanDefinition>();
+
             List<Element> children = getChildElements(element, COMMAND);
-            ManagedList defs = new ManagedList();
 
             for (Element child : children) {
+                String name = child.getAttribute(NAME);
                 BeanDefinitionBuilder command = parseCommand(child);
-
-                // noinspection unchecked
-                defs.add(command.getBeanDefinition());
+                commands.put(name, command.getBeanDefinition());
             }
 
-            return defs;
+            return commands;
         }
 
         private BeanDefinitionBuilder parseCommand(final Element element) {
@@ -350,9 +347,6 @@ public class PluginParser
             CommandType type = CommandType.parse(element.getAttribute(TYPE));
             BeanDefinitionBuilder command = BeanDefinitionBuilder.childBeanDefinition(type.getTemplateName());
             parseAndApplyDescription(element, command);
-
-            // TODO: Currently name is pulled from the documentor, need to change that
-            // command.addPropertyValue("name", element.getAttribute("name"));
 
             Element child;
 
@@ -409,37 +403,23 @@ public class PluginParser
         // <gshell:alias>
         //
 
-        private List parseAliases(final Element element) {
+        private Map<String,String> parseAliases(final Element element) {
             assert element != null;
 
             log.trace("Parse aliases; element; {}", element);
 
+            Map<String,String> aliases = new LinkedHashMap<String,String>();
+
             List<Element> children = getChildElements(element, ALIAS);
-            ManagedList defs = new ManagedList();
 
             for (Element child : children) {
-                BeanDefinitionBuilder command = parseAlias(child);
+                String name = child.getAttribute(NAME);
+                String alias = child.getAttribute(ALIAS);
 
-                // noinspection unchecked
-                defs.add(command.getBeanDefinition());
+                aliases.put(name, alias);
             }
 
-            return defs;
+            return aliases;
         }
-
-        private BeanDefinitionBuilder parseAlias(final Element element) {
-            assert element != null;
-
-            log.trace("Parse alias; element; {}", element);
-
-            BeanDefinitionBuilder alias = BeanDefinitionBuilder.rootBeanDefinition(AliasCommand.class);
-            alias.addConstructorArgValue(element.getAttribute(NAME));
-            alias.addConstructorArgValue(element.getAttribute(TARGET));
-
-            parseAndApplyDescription(element, alias);
-
-            return alias;
-        }
-
     }
 }

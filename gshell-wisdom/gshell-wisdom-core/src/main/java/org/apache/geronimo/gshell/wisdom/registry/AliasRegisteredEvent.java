@@ -19,34 +19,33 @@
 
 package org.apache.geronimo.gshell.wisdom.registry;
 
-import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.event.Event;
 
 /**
- * Event fired once a command has been registered.
- * 
+ * Event fired once an alias has been registered.
+ *
  * @version $Rev$ $Date$
  */
-public class CommandRegisteredEvent
+public class AliasRegisteredEvent
     implements Event
 {
     private final String name;
 
-    private final Command command;
+    private final String alias;
 
-    public CommandRegisteredEvent(final String name, final Command command) {
+    public AliasRegisteredEvent(final String name, final String alias) {
         assert name != null;
-        assert command != null;
+        assert alias != null;
 
         this.name = name;
-        this.command =  command;
+        this.alias = alias;
     }
 
     public String getName() {
         return name;
     }
 
-    public Command getCommand() {
-        return command;
+    public String getAlias() {
+        return alias;
     }
 }

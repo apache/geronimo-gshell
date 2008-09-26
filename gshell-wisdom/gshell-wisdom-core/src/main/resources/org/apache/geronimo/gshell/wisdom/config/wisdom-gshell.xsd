@@ -210,14 +210,14 @@
         <xsd:complexType>
             <xsd:annotation>
                 <xsd:documentation>
-                    Defines an alias.
+                    Defines a command alias.
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:sequence>
                 <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
-            <xsd:attribute name="target" type="xsd:string" use="required"/>
+            <xsd:attribute name="alias" type="xsd:string" use="required"/>
         </xsd:complexType>
     </xsd:element>
 

@@ -22,26 +22,26 @@ package org.apache.geronimo.gshell.registry;
 import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * Thrown to indicate a command/path was not able to be resolved.
+ * Thrown to indicate that a requested named-alias was not found.
  *
  * @version $Rev$ $Date$
  */
-public class CommandNotFoundException
+public class NoSuchAliasException
     extends CommandException
 {
-    public CommandNotFoundException(final String msg) {
+    public NoSuchAliasException(final String msg) {
         super(msg);
     }
 
-    public CommandNotFoundException(final String msg, final Throwable cause) {
+    public NoSuchAliasException(final String msg, final Throwable cause) {
         super(msg, cause);
     }
 
-    public CommandNotFoundException(final Throwable cause) {
+    public NoSuchAliasException(final Throwable cause) {
         super(cause);
     }
 
-    public CommandNotFoundException() {
+    public NoSuchAliasException() {
         super();
     }
 }

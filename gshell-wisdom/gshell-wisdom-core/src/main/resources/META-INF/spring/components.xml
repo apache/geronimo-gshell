@@ -26,9 +26,13 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl"/>
-    
-    <bean id="commandManager" class="org.apache.geronimo.gshell.wisdom.registry.CommandManager"/>
 
+    <bean id="aliasRegistry" class="org.apache.geronimo.gshell.wisdom.registry.AliasRegistryImpl"/>
+
+    <bean id="commandRegistry" class="org.apache.geronimo.gshell.wisdom.registry.CommandRegistryImpl"/>
+
+    <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.registry.CommandResolverImpl"/>
+    
     <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl"/>
 
     <bean id="commandLineExecutor" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineExecutorImpl"/>
@@ -39,7 +43,15 @@
 
     <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl"/>
 
-    <bean id="aliasManager" class="org.apache.geronimo.gshell.wisdom.alias.AliasManagerImpl"/>
+    <bean id="pluginTemplate" class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl" abstract="true">
+        <property name="activationRules">
+            <list>
+                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
+                    <property name="bundleName" value="default"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
     <bean id="statelessCommandTemplate" class="org.apache.geronimo.gshell.wisdom.command.StatelessCommand" abstract="true">
         <property name="documenter">

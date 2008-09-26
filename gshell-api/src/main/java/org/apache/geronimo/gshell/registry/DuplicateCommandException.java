@@ -19,14 +19,29 @@
 
 package org.apache.geronimo.gshell.registry;
 
-import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * ???
+ * Thrown to indicate a duplicate command registration attempt has failed.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandRegistration
+public class DuplicateCommandException
+    extends CommandException
 {
-    Command getCommand();
+    public DuplicateCommandException(final String msg) {
+        super(msg);
+    }
+
+    public DuplicateCommandException(final String msg, final Throwable cause) {
+        super(msg, cause);
+    }
+
+    public DuplicateCommandException(final Throwable cause) {
+        super(cause);
+    }
+
+    public DuplicateCommandException() {
+        super();
+    }
 }

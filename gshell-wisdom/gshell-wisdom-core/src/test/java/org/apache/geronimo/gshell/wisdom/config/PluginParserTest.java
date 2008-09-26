@@ -30,6 +30,15 @@ import org.apache.geronimo.gshell.spring.SpringTestSupport;
 public class PluginParserTest
     extends SpringTestSupport
 {
+    /*
+    protected String[] getConfigLocations() {
+        return new String[] {
+            "classpath:META-INF/spring/components.xml",
+            "classpath:" + getClass().getName().replace('.', '/') + "-context.xml"
+        };
+    }
+    */
+    
     public void testParser() throws Exception {
         LoggingProcessor processor = new LoggingProcessor();
         String xml = processor.render(applicationContext.getBeanFactory());

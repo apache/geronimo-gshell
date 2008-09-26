@@ -17,28 +17,31 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.alias;
+package org.apache.geronimo.gshell.registry;
 
-import org.apache.geronimo.gshell.alias.Alias;
-import org.apache.geronimo.gshell.event.Event;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * Event fired once an alias has been defined.
+ * Thrown to indicate that a requested named-command was not found.
  *
  * @version $Rev$ $Date$
  */
-public class AliasDefinedEvent
-    implements Event
+public class NoSuchCommandException
+    extends CommandException
 {
-    private final Alias alias;
-
-    public AliasDefinedEvent(final Alias alias) {
-        assert alias != null;
-
-        this.alias = alias;
+    public NoSuchCommandException(final String msg) {
+        super(msg);
     }
 
-    public Alias getAlias() {
-        return alias;
+    public NoSuchCommandException(final String msg, final Throwable cause) {
+        super(msg, cause);
+    }
+
+    public NoSuchCommandException(final Throwable cause) {
+        super(cause);
+    }
+
+    public NoSuchCommandException() {
+        super();
     }
 }
