@@ -100,7 +100,7 @@ public class SessionOutputStream
     private synchronized void write(final ByteBuffer buff) throws IOException {
         ensureOpened();
 
-        log.debug("Writing {} bytes", buff.remaining());
+        log.trace("Writing {} bytes", buff.remaining());
 
         WriteFuture wf = session.write(new StreamMessage(buff));
 

@@ -168,7 +168,7 @@ public class SessionInputStream
 
             ByteBuffer src = msg.getBuffer();
 
-            log.debug("Writing {} bytes", src.remaining());
+            log.trace("Writing {} bytes", src.remaining());
 
             if (buff.hasRemaining()) {
                 buff.compact();

@@ -36,7 +36,6 @@ import org.apache.mina.common.IoServiceListener;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.common.ThreadModel;
-import org.apache.mina.filter.LoggingFilter;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.slf4j.Logger;
@@ -179,10 +178,6 @@ public abstract class BaseService<T extends IoService>
 
         chain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 
-        //
-        // FIXME: Need to create a custom LoggingFilter which logs things as debug and trace, not info, PITA
-        //
-        
         chain.addLast(LoggingFilter.class.getSimpleName(), new LoggingFilter());
 
         chain.addLast(SessionStreamFilter.class.getSimpleName(), new SessionStreamFilter());
