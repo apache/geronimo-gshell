@@ -34,7 +34,7 @@ import org.apache.geronimo.gshell.shell.ShellContext;
 public class StatefulCommand
     extends CommandSupport
 {
-    private InheritableThreadLocal<CommandAction> actionHolder = new InheritableThreadLocal<CommandAction>();
+    private final ThreadLocal<CommandAction> actionHolder = new ThreadLocal<CommandAction>();
 
     private String actionId;
 
@@ -74,7 +74,7 @@ public class StatefulCommand
     private synchronized CommandAction createAction() {
         String id = getActionId();
 
-        log.debug("Creating action for ID: {}", id);
+        log.trace("Creating action for ID: {}", id);
 
         return getContainer().getBean(id, CommandAction.class);
     }
@@ -82,7 +82,7 @@ public class StatefulCommand
     private synchronized void clearAction() {
         actionHolder.remove();
 
-        log.debug("Action cleared");
+        log.trace("Action cleared");
     }
 
     @Override

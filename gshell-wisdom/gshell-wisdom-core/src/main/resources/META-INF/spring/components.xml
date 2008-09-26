@@ -43,7 +43,7 @@
 
     <bean id="statelessCommandTemplate" class="org.apache.geronimo.gshell.wisdom.command.StatelessCommand" abstract="true">
         <property name="documenter">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+            <bean class="org.apache.geronimo.gshell.wisdom.command.MessageSourceCommandDocumenter"/>
         </property>
 
         <property name="completer">
@@ -57,7 +57,7 @@
 
     <bean id="statefulCommandTemplate" class="org.apache.geronimo.gshell.wisdom.command.StatefulCommand" abstract="true">
         <property name="documenter">
-            <bean class="org.apache.geronimo.gshell.wisdom.command.CommandDocumenterImpl"/>
+            <bean class="org.apache.geronimo.gshell.wisdom.command.MessageSourceCommandDocumenter"/>
         </property>
 
         <property name="completer">

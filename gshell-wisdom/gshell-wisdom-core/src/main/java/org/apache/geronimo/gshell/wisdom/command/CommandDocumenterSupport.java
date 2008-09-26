@@ -45,8 +45,6 @@ public abstract class CommandDocumenterSupport
 
     private Command command;
 
-    protected abstract String getManual();
-    
     //
     // CommandAware
     //
@@ -70,7 +68,7 @@ public abstract class CommandDocumenterSupport
     public void renderUsage(final PrintWriter out) {
         assert out != null;
 
-        log.debug("Rendering command usage");
+        log.trace("Rendering command usage");
 
         CommandLineProcessor clp = new CommandLineProcessor();
 
@@ -91,10 +89,12 @@ public abstract class CommandDocumenterSupport
         printer.printUsage(out, getName());
     }
 
+    protected abstract String getManual();
+    
     public void renderManual(final PrintWriter out) {
         assert out != null;
 
-        log.debug("Rendering command manual");
+        log.trace("Rendering command manual");
 
         Renderer renderer = new Renderer();
         

@@ -73,10 +73,6 @@ public class AliasCommand
         public Object execute(final CommandContext context) throws Exception {
             assert context != null;
 
-            //
-            // TODO: Take the args in the context, append them to target and execute the command via a shell, for now ignore args
-            //
-
             ShellContext shellContext = new ShellContext() {
                 public IO getIo() {
                     return context.getIo();
@@ -87,9 +83,29 @@ public class AliasCommand
                 }
             };
 
-            log.debug("Executing alias target: {}", target);
+            StringBuilder buff = new StringBuilder();
+            buff.append(target);
 
-            Object result = executor.execute(shellContext, target);
+            //
+            // FIXME: For this to work correctly, need to follow stateful command pattern
+            //        and construct this action, or override more muck in CommandSupport
+            //
+
+            // Append arguments from the context to the line to execute quoted
+            Object[] args = context.getArguments();
+            for (int i=0; i<args.length; i++) {
+                buff.append("'");
+                buff.append(args[i]);
+                buff.append("'");
+                if (i+1 < args.length) {
+                    buff.append(" ");
+                }
+            }
+            
+            String line = buff.toString();
+            log.debug("Executing alias target: {}", line);
+
+            Object result = executor.execute(shellContext, line);
 
             log.debug("Alias result: {}", result);
 

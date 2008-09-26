@@ -30,5 +30,9 @@ public interface CommandRegistry
 {
     CommandRegistration register(Command command);
 
+    // boolean isRegistered(String name);
+
+    // void unregister(String name);
+
     Collection<CommandRegistration> getRegistrations();
 }

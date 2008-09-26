@@ -20,42 +20,37 @@
 package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.i18n.MessageSource;
 
 /**
- * {@link CommandDocumenter} component.
+ * {@link MessageSource} {@link CommandDocumenter} component.
  *
  * @version $Rev$ $Date$
  */
-public class CommandDocumenterImpl
+public class MessageSourceCommandDocumenter
     extends CommandDocumenterSupport
 {
-    private String name;
+    private static final String COMMAND_NAME = "command.name";
 
-    private String description;
+    private static final String COMMAND_DESCRIPTION = "command.description";
 
-    public String getName() {
-        if (name == null) {
-            name = getCommand().getMessages().getMessage("command.name");
-        }
-        return name;
+    private static final String COMMAND_MANUAL = "command.manual";
+
+    protected MessageSource getMessages() {
+        MessageSource messages = getCommand().getMessages();
+        assert messages != null;
+        return messages;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public String getName() {
+        return getMessages().getMessage(COMMAND_NAME);
     }
 
     public String getDescription() {
-        if (description == null) {
-            description = getCommand().getMessages().getMessage("command.description");
-        }
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
+        return getMessages().getMessage(COMMAND_DESCRIPTION);
     }
 
     protected String getManual() {
-        return getCommand().getMessages().getMessage("command.manual");
+        return getMessages().getMessage(COMMAND_MANUAL);
     }
 }
