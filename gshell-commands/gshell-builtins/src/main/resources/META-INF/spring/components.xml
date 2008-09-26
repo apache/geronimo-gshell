@@ -37,9 +37,13 @@
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ExitAction"/>
             </gshell:command>
 
+            <gshell:alias name="quit" alias="exit"/>
+
             <gshell:command name="echo">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.EchoAction"/>
             </gshell:command>
+
+            <gshell:alias name="print" alias="echo"/>
 
             <gshell:command name="clear" type="stateless">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ClearAction"/>
@@ -48,6 +52,8 @@
             <gshell:command name="source">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SourceAction"/>
             </gshell:command>
+
+            <gshell:alias name="." alias="source"/>
 
             <gshell:command name="set">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SetAction"/>

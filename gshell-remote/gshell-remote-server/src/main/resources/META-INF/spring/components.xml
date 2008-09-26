@@ -32,6 +32,8 @@
             <gshell:command name="rsh-server">
                 <gshell:action class="org.apache.geronimo.gshell.remote.server.RshServerCommand"/>
             </gshell:command>
+
+            <gshell:alias name="rshd" alias="rsh-server"/>
         </gshell:command-bundle>
     </gshell:plugin>
 

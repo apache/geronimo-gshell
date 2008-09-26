@@ -59,8 +59,10 @@
             </xsd:annotation>
             <xsd:sequence>
                 <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
-                <xsd:element ref="command" minOccurs="0" maxOccurs="unbounded"/>
-                <xsd:element ref="alias" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element ref="command"/>
+					<xsd:element ref="alias"/>
+				</xsd:choice>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
         </xsd:complexType>
@@ -75,6 +77,11 @@
             </xsd:annotation>
             <xsd:sequence>
                 <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
+                <!--
+                NOTE: Not using an xsd:choice here, as I can't seem to figure out how to get it to properly
+                      validate the min/max of the containted elements.  W/o the xsd:choice the validation
+                      works, though have to define elements in order :-(
+                -->
                 <xsd:element ref="action" minOccurs="1" maxOccurs="1"/>
                 <xsd:element ref="documenter" minOccurs="0" maxOccurs="1"/>
                 <xsd:element ref="completer" minOccurs="0" maxOccurs="1"/>

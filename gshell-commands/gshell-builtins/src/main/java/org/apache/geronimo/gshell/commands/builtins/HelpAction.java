@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
+import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,9 @@ public class HelpAction
 
     @Autowired
     private CommandRegistry commandRegistry;
+
+    @Autowired
+    private AliasRegistry aliasRegistry;
 
     @Argument
     private String commandName;
@@ -79,21 +83,31 @@ public class HelpAction
             return Result.SUCCESS;
         }
         catch (NoSuchCommandException e) {
-            //
-            // FIXME: When the commandName is really an alias, show the alias details here instead of complaining
-            //
-            
-            io.out.print("Command ");
-            io.out.print(Renderer.encode(commandName, Code.BOLD));
-            io.out.println(" not found.");
+            try {
+                assert aliasRegistry != null;
+                String alias = aliasRegistry.getAlias(commandName);
+                
+                io.out.print("Command ");
+                io.out.print(Renderer.encode(commandName, Code.BOLD));
+                io.out.print(" is an alias to: ");
+                io.out.println(Renderer.encode(alias, Code.BOLD));
+                io.out.println();
 
-            io.out.print("Try ");
-            io.out.print(Renderer.encode("help", Code.BOLD));
-            io.out.println(" for a list of available commands.");
+                return Result.SUCCESS;
+            }
+            catch (NoSuchAliasException e1) {
+                io.out.print("Command ");
+                io.out.print(Renderer.encode(commandName, Code.BOLD));
+                io.out.println(" not found.");
 
-            io.out.println();
+                io.out.print("Try ");
+                io.out.print(Renderer.encode("help", Code.BOLD));
+                io.out.println(" for a list of available commands.");
 
-            return Result.FAILURE;
+                io.out.println();
+
+                return Result.FAILURE;
+            }
         }
     }
 
