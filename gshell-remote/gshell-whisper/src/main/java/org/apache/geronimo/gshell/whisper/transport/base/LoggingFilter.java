@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 public class LoggingFilter
     extends IoFilterAdapter
 {
-    private static final SessionAttributeBinder<Logger> LOGGER_BINDER = new SessionAttributeBinder<Logger>(LoggingFilter.class, "logger");
+    private static final SessionAttributeBinder<Logger> LOGGER = new SessionAttributeBinder<Logger>(LoggingFilter.class, "logger");
 
-    private static final SessionAttributeBinder<String> PREFIX_BINDER = new SessionAttributeBinder<String>(LoggingFilter.class, "prefix");
+    private static final SessionAttributeBinder<String> PREFIX = new SessionAttributeBinder<String>(LoggingFilter.class, "prefix");
 
     private Logger getLogger(final IoSession session) {
         assert session != null;
@@ -44,30 +44,59 @@ public class LoggingFilter
         Logger logger;
 
         try {
-            logger = LOGGER_BINDER.lookup(session);
+            logger = LOGGER.lookup(session);
         }
         catch (SessionAttributeBinder.NotBoundException e) {
             logger = LoggerFactory.getLogger(session.getHandler().getClass());
 
-            if (!PREFIX_BINDER.isBound(session)) {
+            if (!PREFIX.isBound(session)) {
                 String prefix = "[" + session.getRemoteAddress() + "]";
-                PREFIX_BINDER.bind(session, prefix);
+                PREFIX.bind(session, prefix);
             }
 
-            LOGGER_BINDER.bind(session, logger);
+            LOGGER.bind(session, logger);
         }
 
         return logger;
+    }
+
+    private void debug(final IoSession session, final String message) {
+        assert session != null;
+        assert message != null;
+
+        Logger log = getLogger(session);
+        if (log.isDebugEnabled()) {
+            log.debug("{} {}", PREFIX.lookup(session), message);
+        }
+    }
+
+    private void trace(final IoSession session, final String message, final Object detail) {
+        assert session != null;
+        assert message != null;
+        assert detail != null;
+
+        Logger log = getLogger(session);
+        if (log.isTraceEnabled()) {
+            log.trace("{} {}: {}", new Object[] { PREFIX.lookup(session), message, detail });
+        }
+    }
+
+    private void warn(final IoSession session, final String message, final Throwable cause) {
+        assert session != null;
+        assert message != null;
+        assert cause != null;
+
+        Logger log = getLogger(session);
+        if (log.isWarnEnabled()) {
+            log.warn(PREFIX.lookup(session) + " " + message + ": " + cause, cause);
+        }
     }
 
     public void sessionCreated(final NextFilter nextFilter, final IoSession session) {
         assert nextFilter != null;
         assert session != null;
 
-        Logger log = getLogger(session);
-        if (log.isDebugEnabled()) {
-            log.debug("{} {}", PREFIX_BINDER.lookup(session), "CREATED");
-        }
+        debug(session, "CREATED");
 
         nextFilter.sessionCreated(session);
     }
@@ -76,10 +105,7 @@ public class LoggingFilter
         assert nextFilter != null;
         assert session != null;
 
-        Logger log = getLogger(session);
-        if (log.isDebugEnabled()) {
-            log.debug("{} {}", PREFIX_BINDER.lookup(session), "OPENED");
-        }
+        debug(session, "OPENED");
 
         nextFilter.sessionOpened(session);
     }
@@ -88,10 +114,7 @@ public class LoggingFilter
         assert nextFilter != null;
         assert session != null;
 
-        Logger log = getLogger(session);
-        if (log.isDebugEnabled()) {
-            log.debug("{} {}", PREFIX_BINDER.lookup(session), "CLOSED");
-        }
+        debug(session, "CLOSED");
 
         nextFilter.sessionClosed(session);
     }
@@ -101,10 +124,7 @@ public class LoggingFilter
         assert session != null;
         assert status != null;
 
-        Logger log = getLogger(session);
-        if (log.isTraceEnabled()) {
-            log.trace("{} {}: {}", new Object[] { PREFIX_BINDER.lookup(session), "IDLE", status });
-        }
+        trace(session, "IDLE", status);
 
         nextFilter.sessionIdle(session, status);
     }
@@ -114,10 +134,7 @@ public class LoggingFilter
         assert session != null;
         assert cause != null;
 
-        Logger log = getLogger(session);
-        if (log.isWarnEnabled()) {
-            log.warn(PREFIX_BINDER.lookup(session) + " EXCEPTION: " + cause, cause);
-        }
+        warn(session, "EXCEPTION", cause);
 
         nextFilter.exceptionCaught(session, cause);
     }
@@ -127,10 +144,7 @@ public class LoggingFilter
         assert session != null;
         assert message != null;
 
-        Logger log = getLogger(session);
-        if (log.isTraceEnabled()) {
-            log.trace("{} {}: {}", new Object[] { PREFIX_BINDER.lookup(session), "RECEIVED", message });
-        }
+        trace(session, "RECEIVED", message);
 
         nextFilter.messageReceived(session, message);
     }
@@ -140,10 +154,7 @@ public class LoggingFilter
         assert session != null;
         assert message != null;
 
-        Logger log = getLogger(session);
-        if (log.isTraceEnabled()) {
-            log.trace("{} {}: {}", new Object[] { PREFIX_BINDER.lookup(session), "SENT", message });
-        }
+        trace(session, "SENT", message);
 
         nextFilter.messageSent(session, message);
     }
@@ -153,10 +164,7 @@ public class LoggingFilter
         assert session != null;
         assert writeRequest != null;
 
-        Logger log = getLogger(session);
-        if (log.isTraceEnabled()) {
-            log.trace("{} {}: {}", new Object[] { PREFIX_BINDER.lookup(session), "WRITE", writeRequest });
-        }
+        trace(session, "WRITE", writeRequest);
 
         nextFilter.filterWrite(session, writeRequest);
     }
@@ -165,10 +173,7 @@ public class LoggingFilter
         assert nextFilter != null;
         assert session != null;
 
-        Logger log = getLogger(session);
-        if (log.isDebugEnabled()) {
-            log.debug("{} {}", PREFIX_BINDER.lookup(session), "CLOSE");
-        }
+        debug(session, "CLOSE");
 
         nextFilter.filterClose(session);
     }
