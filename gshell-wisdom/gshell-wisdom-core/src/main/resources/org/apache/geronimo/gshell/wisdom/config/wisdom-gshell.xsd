@@ -43,6 +43,7 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:sequence>
+                <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
                 <xsd:element ref="command-bundle" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
@@ -57,6 +58,7 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:sequence>
+                <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
                 <xsd:element ref="command" minOccurs="0" maxOccurs="unbounded"/>
                 <xsd:element ref="alias" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
@@ -72,6 +74,7 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:sequence>
+                <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
                 <xsd:element ref="action" minOccurs="1" maxOccurs="1"/>
                 <xsd:element ref="documenter" minOccurs="0" maxOccurs="1"/>
                 <xsd:element ref="completer" minOccurs="0" maxOccurs="1"/>
@@ -210,6 +213,9 @@
                     Defines an alias.
                 </xsd:documentation>
             </xsd:annotation>
+            <xsd:sequence>
+                <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
             <xsd:attribute name="target" type="xsd:string" use="required"/>
         </xsd:complexType>
