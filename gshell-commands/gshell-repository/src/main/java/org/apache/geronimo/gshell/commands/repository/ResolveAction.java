@@ -65,9 +65,8 @@ public class ResolveAction
     @Option(name="-t", aliases={"--type"}, argumentRequired=true)
     private String type = "jar";
 
-    //
-    // TODO: Add classifier
-    //
+    @Option(name="-c", aliases={"--classifier"}, argumentRequired=true)
+    private String classifier;
 
     @Option(name="-s", aliases={"--scope"}, argumentRequired=true)
     private String scope;
@@ -79,10 +78,20 @@ public class ResolveAction
         assert context != null;
 
         assert artifactManager != null;
-
         ArtifactFactory factory = artifactManager.getArtifactFactory();
 
-        Artifact artifact = factory.createArtifact(groupId, artifactId, version, scope, type);
+        log.debug("Using factory: {}", factory);
+        Artifact artifact;
+
+        if (classifier != null) {
+            artifact = factory.createArtifactWithClassifier(groupId, artifactId, version, type, classifier);
+            artifact.setScope(scope);
+        }
+        else {
+            artifact = factory.createArtifact(groupId, artifactId, version, scope, type);
+        }
+
+        log.debug("Created artifact: {}", artifact);
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 
