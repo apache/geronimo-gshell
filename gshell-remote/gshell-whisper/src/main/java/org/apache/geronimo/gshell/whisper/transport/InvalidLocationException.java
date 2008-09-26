@@ -29,6 +29,8 @@ import java.net.URI;
 public class InvalidLocationException
     extends TransportException
 {
+    private static final long serialVersionUID = 1;
+    
     public InvalidLocationException(final URI location) {
         super("Invalid location: " + location);
     }
