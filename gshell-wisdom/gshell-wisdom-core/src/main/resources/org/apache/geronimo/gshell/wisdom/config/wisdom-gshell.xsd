@@ -94,6 +94,63 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:attributeGroup name="commandComponentAttributes">
+        <xsd:annotation>
+            <xsd:documentation>
+                Defines the valid attributes for command components.  This is based on beans:beanAttributes,
+                stripping off the bits which are not valid in the command component context.
+            </xsd:documentation>
+        </xsd:annotation>
+		<xsd:attribute name="name" type="xsd:string"/>
+		<xsd:attribute name="class" type="xsd:string"/>
+		<xsd:attribute name="parent" type="xsd:string"/>
+		<xsd:attribute name="autowire" default="default">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="default"/>
+					<xsd:enumeration value="no"/>
+					<xsd:enumeration value="byName"/>
+					<xsd:enumeration value="byType"/>
+					<xsd:enumeration value="constructor"/>
+					<xsd:enumeration value="autodetect"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="dependency-check" default="default">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="default"/>
+					<xsd:enumeration value="none"/>
+					<xsd:enumeration value="simple"/>
+					<xsd:enumeration value="objects"/>
+					<xsd:enumeration value="all"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="depends-on" type="xsd:string"/>
+		<xsd:attribute name="autowire-candidate" default="default" type="beans:defaultable-boolean"/>
+		<xsd:attribute name="primary" type="xsd:boolean"/>
+		<xsd:attribute name="init-method" type="xsd:string"/>
+		<xsd:attribute name="destroy-method" type="xsd:string"/>
+		<xsd:attribute name="factory-method" type="xsd:string"/>
+		<xsd:attribute name="factory-bean" type="xsd:string"/>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:attributeGroup>
+
+    <xsd:complexType name="commandComponent" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Support for command component elements, which are all basically just beans.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="beans:identifiedType">
+                <xsd:group ref="beans:beanElements"/>
+                <xsd:attributeGroup ref="commandComponentAttributes"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
     <xsd:element name="action">
         <xsd:complexType>
             <xsd:annotation>
@@ -102,10 +159,7 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:group ref="beans:beanElements"/>
-                    <xsd:attributeGroup ref="beans:beanAttributes"/>
-                </xsd:extension>
+                <xsd:extension base="commandComponent"/>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:element>
@@ -118,10 +172,7 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:group ref="beans:beanElements"/>
-                    <xsd:attributeGroup ref="beans:beanAttributes"/>
-                </xsd:extension>
+                <xsd:extension base="commandComponent"/>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:element>
@@ -134,10 +185,7 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:group ref="beans:beanElements"/>
-                    <xsd:attributeGroup ref="beans:beanAttributes"/>
-                </xsd:extension>
+                <xsd:extension base="commandComponent"/>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:element>
@@ -150,10 +198,7 @@
                 </xsd:documentation>
             </xsd:annotation>
             <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:group ref="beans:beanElements"/>
-                    <xsd:attributeGroup ref="beans:beanAttributes"/>
-                </xsd:extension>
+                <xsd:extension base="commandComponent"/>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:element>

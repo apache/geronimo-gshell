@@ -49,6 +49,38 @@ import java.util.List;
 public class PluginParser
     extends AbstractBeanDefinitionParser
 {
+    private static final String ID = "id";
+    
+    private static final String ACTION = "action";
+
+    private static final String ACTION_ID = "actionId";
+
+    private static final String COMMAND_TEMPLATE_SUFFIX = "CommandTemplate";
+
+    private static final String COMMAND_BUNDLE = "command-bundle";
+
+    private static final String NAME = "name";
+
+    private static final String COMMANDS = "commands";
+
+    private static final String COMMAND = "command";
+
+    private static final String TYPE = "type";
+
+    private static final String DOCUMENTER = "documenter";
+
+    private static final String COMPLETER = "completer";
+
+    private static final String MESSAGE_SOURCE = "message-source";
+
+    private static final String MESSAGES = "messages";
+
+    private static final String PROTOTYPE = "prototype";
+
+    private static final String ALIAS = "alias";
+
+    private static final String TARGET = "target";
+
     @Override
     protected boolean shouldGenerateId() {
 		return true;
@@ -83,7 +115,7 @@ public class PluginParser
         }
 
         public String getTemplateName() {
-            return name().toLowerCase() + "CommandTemplate";
+            return name().toLowerCase() + COMMAND_TEMPLATE_SUFFIX;
         }
 
         public void wire(final BeanDefinitionBuilder command, final BeanDefinitionHolder action) {
@@ -92,11 +124,11 @@ public class PluginParser
 
             switch (this) {
                 case STATELESS:
-                    command.addPropertyReference("action", action.getBeanName());
+                    command.addPropertyReference(ACTION, action.getBeanName());
                     break;
 
                 case STATEFUL:
-                    command.addPropertyValue("actionId", action.getBeanName());
+                    command.addPropertyValue(ACTION_ID, action.getBeanName());
                     break;
             }
         }
@@ -212,7 +244,7 @@ public class PluginParser
             log.trace("Parse plugin; element: {}", element);
 
             BeanDefinitionBuilder plugin = BeanDefinitionBuilder.rootBeanDefinition(PluginImpl.class);
-            plugin.addPropertyValue("id", element.getAttribute("name"));
+            plugin.addPropertyValue(ID, element.getAttribute(NAME));
 
             return plugin;
         }
@@ -226,7 +258,7 @@ public class PluginParser
 
             log.trace("Parse command bundles; element: {}", element);
 
-            List<Element> children = getChildElements(element, "command-bundle");
+            List<Element> children = getChildElements(element, COMMAND_BUNDLE);
             List<BeanDefinitionHolder> holders = new ArrayList<BeanDefinitionHolder>();
 
             for (Element child : children) {
@@ -250,7 +282,7 @@ public class PluginParser
             log.trace("Parse command bundle; element; {}", element);
 
             BeanDefinitionBuilder bundle = BeanDefinitionBuilder.rootBeanDefinition(CommandBundle.class);
-            bundle.addPropertyValue("id", element.getAttribute("name"));
+            bundle.addPropertyValue(ID, element.getAttribute(NAME));
             bundle.setLazyInit(true);
 
             List commands = parseCommands(element);
@@ -259,7 +291,7 @@ public class PluginParser
             // noinspection unchecked
             commands.addAll(aliases);
 
-            bundle.addPropertyValue("commands", commands);
+            bundle.addPropertyValue(COMMANDS, commands);
             
             return bundle;
         }
@@ -273,7 +305,7 @@ public class PluginParser
 
             log.trace("Parse commands; element; {}", element);
 
-            List<Element> children = getChildElements(element, "command");
+            List<Element> children = getChildElements(element, COMMAND);
             ManagedList defs = new ManagedList();
 
             for (Element child : children) {
@@ -291,7 +323,7 @@ public class PluginParser
 
             log.trace("Parse command; element; {}", element);
 
-            CommandType type = CommandType.parse(element.getAttribute("type"));
+            CommandType type = CommandType.parse(element.getAttribute(TYPE));
             BeanDefinitionBuilder command = BeanDefinitionBuilder.childBeanDefinition(type.getTemplateName());
 
             // TODO: Currently name is pulled from the documentor, need to change that
@@ -301,28 +333,28 @@ public class PluginParser
 
             // Required children elements
 
-            child = getChildElement(element, "action");
+            child = getChildElement(element, ACTION);
             BeanDefinitionHolder action = parseCommandAction(child);
             type.wire(command, action);
 
             // Optional children elements
 
-            child = getChildElement(element, "documenter");
+            child = getChildElement(element, DOCUMENTER);
             if (child != null) {
                 BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
-                command.addPropertyValue("documenter", holder.getBeanDefinition());
+                command.addPropertyValue(DOCUMENTER, holder.getBeanDefinition());
             }
 
-            child = getChildElement(element, "completer");
+            child = getChildElement(element, COMPLETER);
             if (child != null) {
                 BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
-                command.addPropertyValue("completer", holder.getBeanDefinition());
+                command.addPropertyValue(COMPLETER, holder.getBeanDefinition());
             }
 
-            child = getChildElement(element, "message-source");
+            child = getChildElement(element, MESSAGE_SOURCE);
             if (child != null) {
                 BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
-                command.addPropertyValue("messages", holder.getBeanDefinition());
+                command.addPropertyValue(MESSAGES, holder.getBeanDefinition());
             }
 
             return command;
@@ -341,7 +373,7 @@ public class PluginParser
             BeanDefinition action = parseBeanDefinitionElement(element).getBeanDefinition();
             
             // All actions are configured as prototypes
-            action.setScope("prototype");
+            action.setScope(PROTOTYPE);
 
             // Generate id and register the bean
             String id = resolveId(element, action);
@@ -357,7 +389,7 @@ public class PluginParser
 
             log.trace("Parse aliases; element; {}", element);
 
-            List<Element> children = getChildElements(element, "alias");
+            List<Element> children = getChildElements(element, ALIAS);
             ManagedList defs = new ManagedList();
 
             for (Element child : children) {
@@ -376,8 +408,8 @@ public class PluginParser
             log.trace("Parse alias; element; {}", element);
 
             BeanDefinitionBuilder alias = BeanDefinitionBuilder.rootBeanDefinition(AliasCommand.class);
-            alias.addConstructorArgValue(element.getAttribute("name"));
-            alias.addConstructorArgValue(element.getAttribute("target"));
+            alias.addConstructorArgValue(element.getAttribute(NAME));
+            alias.addConstructorArgValue(element.getAttribute(TARGET));
 
             return alias;
         }
