@@ -33,7 +33,7 @@ import java.net.URI;
  *
  * @version $Rev$ $Date$
  */
-public abstract class BaseTransportFactory<T extends BaseTransport, TC extends Transport.Configuration, S extends BaseTransportServer, SC extends TransportServer.Configuration>
+public abstract class BaseTransportFactory<T extends BaseTransport, S extends BaseTransportServer>
     implements TransportFactory, BeanContainerAware
 {
     private final String scheme;
@@ -65,7 +65,7 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
         return (T)container.getBean(scheme + "Transport", Transport.class);
     }
 
-    public T connect(final URI remote, final URI local, final TC config) throws Exception {
+    public T connect(final URI remote, final URI local, final BaseConfiguration config) throws Exception {
         assert remote != null;
         assert config != null;
         // local can be null
@@ -98,7 +98,7 @@ public abstract class BaseTransportFactory<T extends BaseTransport, TC extends T
         return (S)container.getBean(scheme + "TransportServer", TransportServer.class);
     }
 
-    public S bind(final URI location, final SC config) throws Exception {
+    public S bind(final URI location, final BaseConfiguration config) throws Exception {
         assert location != null;
         assert config != null;
 

@@ -49,44 +49,6 @@ public abstract class BaseTransportServer<T extends IoAcceptor>
         super(addressFactory);
     }
 
-    //
-    // Configuration
-    //
-
-    public static class BaseTransportServerConfiguration
-        extends BaseConfiguration
-        implements TransportServer.Configuration
-    {
-        public BaseTransportServerConfiguration() {}
-    }
-
-    private Configuration config;
-
-    protected Configuration createConfiguration() {
-        return new BaseTransportServerConfiguration();    
-    }
-
-    public synchronized Configuration getConfiguration() {
-        if (config == null) {
-            config = createConfiguration();
-        }
-
-        return config;
-    }
-
-    public synchronized void setConfiguration(final Configuration config) {
-        assert config != null;
-        
-        this.config = config;
-
-        log.debug("Using configuration: {}", config);
-    }
-
-    @Override
-    protected synchronized BaseConfiguration getBaseConfiguration() {
-        return (BaseConfiguration) getConfiguration();
-    }
-
     @Override
     protected synchronized ThreadModel createThreadModel() throws Exception {
         return new ThreadPoolModel(getClass(), INSTANCE_COUNTER);

@@ -48,7 +48,7 @@ import java.net.SocketAddress;
  *
  * @version $Rev$ $Date$
  */
-public abstract class BaseService<T extends IoService>
+public abstract class BaseService
 {
     static {
         // Setup our exception monitor
@@ -75,12 +75,34 @@ public abstract class BaseService<T extends IoService>
     // Configuration
     //
 
-    protected abstract BaseConfiguration getBaseConfiguration();
+    private BaseConfiguration config;
+
+    protected BaseConfiguration createConfiguration() {
+        return new BaseConfiguration();
+    }
+
+    public synchronized BaseConfiguration getConfiguration() {
+        if (config == null) {
+            config = createConfiguration();
+
+            log.debug("Created configuration: {}", config);
+        }
+
+        return config;
+    }
+
+    public synchronized void setConfiguration(final BaseConfiguration config) {
+        assert config != null;
+
+        this.config = config;
+
+        log.debug("Using configuration: {}", config);
+    }
 
     private IoHandler handler;
 
     protected synchronized IoHandler createHandler() throws Exception {
-        return getBaseConfiguration().getHandler();
+        return getConfiguration().getHandler();
     }
 
     protected synchronized IoHandler getHandler() throws Exception {

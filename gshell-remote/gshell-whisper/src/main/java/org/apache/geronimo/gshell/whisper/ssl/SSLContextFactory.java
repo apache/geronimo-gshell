@@ -23,9 +23,8 @@
 
 package org.apache.geronimo.gshell.whisper.ssl;
 
-import java.security.GeneralSecurityException;
-
 import javax.net.ssl.SSLContext;
+import java.security.GeneralSecurityException;
 
 /**
  * Provides an abstraction of client and server {@link SSLContext} creation.

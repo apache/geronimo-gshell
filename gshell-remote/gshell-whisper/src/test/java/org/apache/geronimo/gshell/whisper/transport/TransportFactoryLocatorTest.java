@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
-import java.net.URI;
-
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.vm.VmTransportFactory;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
+
+import java.net.URI;
 
 /**
  * Tests for the {@link TransportFactoryLocator} class.

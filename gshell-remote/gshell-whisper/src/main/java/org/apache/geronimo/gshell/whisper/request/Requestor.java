@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.whisper.request;
 
-import java.util.concurrent.TimeUnit;
-
 import org.apache.geronimo.gshell.chronos.Duration;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.transport.Session;
@@ -29,6 +27,8 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides support to send a request and receive it's response.

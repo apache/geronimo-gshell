@@ -19,14 +19,14 @@
 
 package org.apache.geronimo.gshell.whisper.transport.vm;
 
-import java.net.URI;
-
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
-import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportServer;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
+import org.apache.geronimo.gshell.whisper.transport.base.BaseConfiguration;
 import org.apache.mina.common.IoHandlerAdapter;
+
+import java.net.URI;
 
 /**
  * Tests for the {@link VmTransportFactory} class.
@@ -56,7 +56,7 @@ public class VmTransportFactoryTest
     }
 
     public void testBindWithConfig() throws Exception {
-        VmTransportServer.Configuration config = new BaseTransportServer.BaseTransportServerConfiguration();
+        BaseConfiguration config = new BaseConfiguration();
         config.setHandler(new IoHandlerAdapter());
 
         TransportServer server = factory.bind(uri, config);

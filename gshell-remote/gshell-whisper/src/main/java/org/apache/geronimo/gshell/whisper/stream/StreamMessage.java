@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell.whisper.stream;
 
+import org.apache.geronimo.gshell.whisper.message.BaseMessage;
+import org.apache.mina.common.ByteBuffer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-
-import org.apache.geronimo.gshell.whisper.message.BaseMessage;
-import org.apache.mina.common.ByteBuffer;
 
 /**
  * Write a buffer to a stream.

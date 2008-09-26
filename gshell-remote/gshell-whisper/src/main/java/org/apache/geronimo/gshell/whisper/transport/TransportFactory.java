@@ -19,28 +19,25 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
+import org.apache.geronimo.gshell.whisper.transport.base.BaseConfiguration;
 import org.apache.mina.common.IoHandler;
 
 import java.net.URI;
-
-//
-// FIXME: This won't compile under Java 6 due to the T. and S. bits (trying to select from a type variable)
-//
 
 /**
  * Factory for producing client and server transport implementations.
  *
  * @version $Rev$ $Date$
  */
-public interface TransportFactory<T extends Transport, TC extends T.Configuration, S extends TransportServer, SC extends S.Configuration>
+public interface TransportFactory<T extends Transport, S extends TransportServer>
 {
     String getScheme();
     
-    T connect(URI remote, URI local, TC config) throws Exception;
+    T connect(URI remote, URI local, BaseConfiguration config) throws Exception;
 
     T connect(URI remote, URI local, IoHandler handler) throws Exception;
     
-    S bind(URI location, SC config) throws Exception;
+    S bind(URI location, BaseConfiguration config) throws Exception;
 
     S bind(URI location, IoHandler handler) throws Exception;
 }

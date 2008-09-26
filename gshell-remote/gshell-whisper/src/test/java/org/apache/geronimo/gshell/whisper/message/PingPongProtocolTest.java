@@ -19,18 +19,18 @@
 
 package org.apache.geronimo.gshell.whisper.message;
 
-import java.net.URI;
-import java.util.Map;
-
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.apache.geronimo.gshell.whisper.transport.Transport;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactory;
 import org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocator;
 import org.apache.geronimo.gshell.whisper.transport.TransportServer;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.apache.mina.handler.demux.MessageHandler;
+
+import java.net.URI;
+import java.util.Map;
 
 /**
  * Tests a simple PING -> PONG message protocol over the VM transport.

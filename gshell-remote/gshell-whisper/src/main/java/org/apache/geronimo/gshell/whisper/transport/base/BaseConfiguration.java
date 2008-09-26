@@ -34,8 +34,6 @@ public class BaseConfiguration
 
     private ThreadModel threadModel;
 
-    protected BaseConfiguration() {}
-
     public void setHandler(final IoHandler handler) {
         this.handler = handler;
     }
@@ -55,8 +53,4 @@ public class BaseConfiguration
     public String toString() {
         return Yarn.render(this);
     }
-
-    //
-    // TODO: Add a list of filters to tack on
-    //
 }
