@@ -86,9 +86,9 @@ public class StatefulCommand
     }
 
     @Override
-    public CommandResult execute(final ShellContext context, final Object[] args) {
+    protected CommandResult executeAction(final ShellContext context, final Object[] args) {
         try {
-            return super.execute(context, args);
+            return super.executeAction(context, args);
         }
         finally {
             clearAction();

@@ -30,11 +30,11 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
 public class MessageSourceCommandDocumenter
     extends CommandDocumenterSupport
 {
-    private static final String COMMAND_NAME = "command.name";
+    public static final String COMMAND_NAME = "command.name";
 
-    private static final String COMMAND_DESCRIPTION = "command.description";
+    public static final String COMMAND_DESCRIPTION = "command.description";
 
-    private static final String COMMAND_MANUAL = "command.manual";
+    public static final String COMMAND_MANUAL = "command.manual";
 
     protected MessageSource getMessages() {
         MessageSource messages = getCommand().getMessages();

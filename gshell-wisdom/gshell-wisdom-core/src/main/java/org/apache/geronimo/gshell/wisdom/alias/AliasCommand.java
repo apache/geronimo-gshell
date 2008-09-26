@@ -19,17 +19,23 @@
 
 package org.apache.geronimo.gshell.wisdom.alias;
 
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.apache.geronimo.gshell.wisdom.command.CommandDocumenterSupport;
-import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
-import org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
-import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
+import org.apache.geronimo.gshell.wisdom.command.HelpSupport;
+import org.apache.geronimo.gshell.wisdom.command.MessageSourceCommandDocumenter;
+import org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Alias {@link org.apache.geronimo.gshell.command.Command} component.
@@ -66,10 +72,23 @@ public class AliasCommand
 
         this.executor = executor;
     }
-    
+
+    @Override
+    protected void prepareAction(final ShellContext context, final Object[] args) {
+        // HACK: Reset state for proper appendArgs muck
+        setAction(new AliasCommandAction());
+        super.prepareAction(context, args);
+    }
+
+    /**
+     * Action to handle invocation of the alias target + additional arguments.
+     */
     private class AliasCommandAction
         implements CommandAction
-    {
+    {    
+        @Argument
+        private List<String> appendArgs = null;
+
         public Object execute(final CommandContext context) throws Exception {
             assert context != null;
 
@@ -86,26 +105,24 @@ public class AliasCommand
             StringBuilder buff = new StringBuilder();
             buff.append(target);
 
-            //
-            // FIXME: For this to work correctly, need to follow stateful command pattern
-            //        and construct this action, or override more muck in CommandSupport
-            //
-
-            // Append arguments from the context to the line to execute quoted
-            Object[] args = context.getArguments();
-            for (int i=0; i<args.length; i++) {
-                buff.append("'");
-                buff.append(args[i]);
-                buff.append("'");
-                if (i+1 < args.length) {
-                    buff.append(" ");
+            // If we have args to append, then do it
+            if (appendArgs != null && !appendArgs.isEmpty()) {
+                buff.append(" ");
+                
+                Iterator iter = appendArgs.iterator();
+                while (iter.hasNext()) {
+                    // Append args quoted as they have already been processed by the parser
+                    // HACK: Using double quote instead of single quote for now as the parser's handling of single quote is broken
+                    buff.append('"').append(iter.next()).append('"');
+                    if (iter.hasNext()) {
+                        buff.append(" ");
+                    }
                 }
             }
-            
-            String line = buff.toString();
-            log.debug("Executing alias target: {}", line);
 
-            Object result = executor.execute(shellContext, line);
+            log.debug("Executing alias target: {}", buff);
+
+            Object result = executor.execute(shellContext, buff.toString());
 
             log.debug("Alias result: {}", result);
 
@@ -113,39 +130,35 @@ public class AliasCommand
         }
     }
 
-    //
-    // TODO: May be able to stuff all of these into messages, since they are mostly the same for everything
-    //
-    
+    /**
+     * Alias command documenter.
+     */
     private class AliasCommandDocumenter
-        extends CommandDocumenterSupport
+        extends MessageSourceCommandDocumenter
     {
         public String getName() {
             return name;
         }
 
         public String getDescription() {
-            return "Alias to: " + target;
-        }
-
-        protected String getManual() {
-            return "TODO: general alias manual";
+            return getMessages().format(COMMAND_DESCRIPTION, target);
         }
     }
 
-    //
-    // NOTE: This is still needed for syntax rendering and such
-    //
-
+    /**
+     * Alias message source.
+     */
     private class AliasCommandMessageSource
         implements MessageSource
     {
+        private final MessageSource messages = new ResourceBundleMessageSource(new Class[] { AliasCommand.class, HelpSupport.class });
+
         public String getMessage(final String code) {
-            return null;
+            return messages.getMessage(code);
         }
 
         public String format(final String code, final Object... args) {
-            return null;
+            return messages.format(code, args);
         }
     }
 }

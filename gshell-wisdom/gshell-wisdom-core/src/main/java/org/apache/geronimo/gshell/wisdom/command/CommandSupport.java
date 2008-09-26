@@ -162,75 +162,21 @@ public abstract class CommandSupport
 
         log.trace("Executing");
 
-        //
-        // FIXME: This TCL stuff is not needed for alias execution, so consider splitting thigns up a wee bit more
-        //
-        
         // Set the TCL to the command bean containers realm
         final ClassLoader prevCL = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(getContainer().getClassRealm());
-
+        
         CommandResult result;
 
         try {
-            final IO io = context.getIo();
-            CommandAction action = getAction();
+            // First prepare the action
+            prepareAction(context, args);
 
-            // Setup the command action
-            try {
-                // Process command line options/arguments
-                if (processArguments(io, action, args)) {
-                    // return if we have been asked to display --help
-                    return new CommandResult.ValueResult(CommandAction.Result.SUCCESS);
-                }
-
-                // TODO: Add preferences processor
-            }
-            catch (Exception e) {
-                return new CommandResult.FailureResult(e);
-            }
-
-            // Setup the command context
-            CommandContext ctx = new CommandContext() {
-                private final Variables variables = new Variables(context.getVariables());
-
-                public Object[] getArguments() {
-                    return args;
-                }
-
-                public IO getIo() {
-                    return io;
-                }
-
-                public Variables getVariables() {
-                    return variables;
-                }
-
-                public Command getCommand() {
-                    return CommandSupport.this;
-                }
-            };
-
-            // Execute the action
-            try {
-                log.trace("Executing action: {}", action);
-
-                Object value = action.execute(ctx);
-
-                log.trace("Result: {}", value);
-
-                result = new CommandResult.ValueResult(value);
-            }
-            catch (final Notification n) {
-                log.trace("Notified: {}, n");
-
-                result = new CommandResult.NotificationResult(n);
-            }
-            catch (final Throwable t) {
-                log.trace("Caught: {}", t);
-
-                result = new CommandResult.FailureResult(t);
-            }
+            // Then execute it
+            result = executeAction(context, args);
+        }
+        catch (AbortExecutionNotification n) {
+            result = n.result;
         }
         finally {
             Thread.currentThread().setContextClassLoader(prevCL);
@@ -239,7 +185,44 @@ public abstract class CommandSupport
         return result;
     }
 
-    private boolean processArguments(final IO io, final CommandAction action, final Object[] args) throws Exception {
+    protected class AbortExecutionNotification
+        extends Notification
+    {
+        public final CommandResult result;
+
+        public AbortExecutionNotification(final CommandResult result) {
+            assert result != null;
+
+            this.result = result;
+        }
+    }
+
+    protected void prepareAction(final ShellContext context, final Object[] args) {
+        assert context != null;
+        assert args != null;
+
+        log.trace("Preparing action");
+
+        IO io = context.getIo();
+        CommandAction action = getAction();
+
+        // Setup the command action
+        try {
+            // Process command line options/arguments
+            if (processArguments(io, action, args)) {
+                // Abort if we have been asked to display --help
+                throw new AbortExecutionNotification(new CommandResult.ValueResult(CommandAction.Result.SUCCESS));
+            }
+
+            // TODO: Add preferences processor
+        }
+        catch (Exception e) {
+            // Abort if preparation caused a failure
+            throw new AbortExecutionNotification(new CommandResult.FailureResult(e));
+        }
+    }
+
+    protected boolean processArguments(final IO io, final CommandAction action, final Object[] args) throws Exception {
         assert io != null;
         assert action != null;
         assert args != null;
@@ -270,5 +253,57 @@ public abstract class CommandSupport
         }
 
         return false;
+    }
+
+    protected CommandResult executeAction(final ShellContext context, final Object[] args) {
+        assert context != null;
+        assert args != null;
+
+        log.trace("Executing action");
+
+        // Setup the command context
+        CommandContext ctx = new CommandContext() {
+            private final Variables variables = new Variables(context.getVariables());
+
+            public Object[] getArguments() {
+                return args;
+            }
+
+            public IO getIo() {
+                return context.getIo();
+            }
+
+            public Variables getVariables() {
+                return variables;
+            }
+
+            public Command getCommand() {
+                return CommandSupport.this;
+            }
+        };
+
+        CommandResult result;
+
+        try {
+            log.trace("Executing action: {}", action);
+
+            Object value = action.execute(ctx);
+
+            log.trace("Result: {}", value);
+
+            result = new CommandResult.ValueResult(value);
+        }
+        catch (final Notification n) {
+            log.trace("Notified: {}, n");
+
+            result = new CommandResult.NotificationResult(n);
+        }
+        catch (final Throwable t) {
+            log.trace("Caught: {}", t);
+
+            result = new CommandResult.FailureResult(t);
+        }
+
+        return result;
     }
 }

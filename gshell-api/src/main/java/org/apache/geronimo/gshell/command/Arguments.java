@@ -86,22 +86,4 @@ public class Arguments
 
         return strings;
     }
-
-    public static String asQuotedString(final Object[] args, final String quoteToken) {
-        assert args != null;
-        assert quoteToken != null;
-
-        StringBuilder buff = new StringBuilder();
-
-        for (int i=0; i<args.length; i++) {
-            buff.append(quoteToken);
-            buff.append(args[i]);
-            buff.append(quoteToken);
-            if (i+1 < args.length) {
-                buff.append(" ");
-            }
-        }
-
-        return buff.toString();
-    }
 }
