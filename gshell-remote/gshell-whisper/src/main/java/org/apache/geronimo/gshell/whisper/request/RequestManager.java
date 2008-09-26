@@ -114,7 +114,7 @@ public class RequestManager
 
             registrations.put(id, reg);
 
-            log.debug("Registered: {}", reg);
+            log.trace("Registered: {}", reg);
         }
         finally {
             lock.unlock();
@@ -146,7 +146,7 @@ public class RequestManager
 
             reg.deactivate();
 
-            log.debug("Deregistered: {}", reg);
+            log.trace("Deregistered: {}", reg);
 
             return reg.request;
         }
@@ -165,11 +165,11 @@ public class RequestManager
             
             reg.activate();
 
-            log.debug("Activated: {}", reg);
+            log.trace("Activated: {}", reg);
         }
         catch (NotRegisteredException e) {
             // Sometimes we receive responses to requests faster than we can register them
-            log.debug("Ignoring activation; request not registered: {}", id);
+            log.trace("Ignoring activation; request not registered: {}", id);
         }
         finally {
             lock.unlock();
@@ -186,10 +186,10 @@ public class RequestManager
 
             reg.deactivate();
 
-            log.debug("Deactivated: {}", reg);
+            log.trace("Deactivated: {}", reg);
         }
         catch (NotRegisteredException e) {
-            log.debug("Ignoring deactivation; request not registered: {}", id);
+            log.trace("Ignoring deactivation; request not registered: {}", id);
         }
         finally {
             lock.unlock();
@@ -206,13 +206,13 @@ public class RequestManager
 
             reg.timeout();
 
-            log.debug("Timed out: {}", reg);
+            log.trace("Timed out: {}", reg);
         }
         catch (NotRegisteredException e) {
-            log.debug("Ignoring timeout; request not registered: {}", id);
+            log.trace("Ignoring timeout; request not registered: {}", id);
         }
         catch (TimeoutAbortedException e) {
-            log.debug("Timeout aborted: " + e.getMessage());
+            log.trace("Timeout aborted: " + e.getMessage());
         }
         finally {
             lock.unlock();
@@ -267,7 +267,7 @@ public class RequestManager
 
         public void activate() {
             if (state != RegistrationState.PENDING) {
-                log.debug("Can not activate, state is not PENDING, found: {}", state);
+                log.trace("Can not activate, state is not PENDING, found: {}", state);
             }
             else {
                 Runnable task = new Runnable() {
@@ -278,7 +278,7 @@ public class RequestManager
 
                 Duration timeout = request.getTimeout();
 
-                log.debug("Scheduling timeout to trigger in: {}", timeout);
+                log.trace("Scheduling timeout to trigger in: {}", timeout);
 
                 timeoutFuture = scheduler.schedule(task, timeout.getValue(), timeout.getUnit());
 
@@ -288,7 +288,7 @@ public class RequestManager
 
         public void deactivate() {
             if (state != RegistrationState.ACTIVE) {
-                log.debug("Can not deactivate; state is not ACTIVE, found: {}", state);
+                log.trace("Can not deactivate; state is not ACTIVE, found: {}", state);
             }
             else if (timeoutFuture.cancel(false)) {
                 timeoutFuture = null;
@@ -302,7 +302,7 @@ public class RequestManager
 
         public void timeout() {
             if (state != RegistrationState.ACTIVE) {
-                log.debug("Can not timeout; state is not ACTIVE, found: {}", state);
+                log.trace("Can not timeout; state is not ACTIVE, found: {}", state);
             }
             else {
                 Message.ID id = request.getId();

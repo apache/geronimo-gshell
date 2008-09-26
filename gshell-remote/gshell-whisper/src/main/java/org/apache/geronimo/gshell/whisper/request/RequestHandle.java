@@ -107,7 +107,7 @@ public class RequestHandle
     public ResponseHandle awaitResponse() throws RequestTimeoutException, InterruptedException {
         chechEndOfResponses();
 
-        log.debug("Waiting for response");
+        log.trace("Waiting for response");
 
         ResponseHandle resp = decodeResponse(responses.take());
 
@@ -119,7 +119,7 @@ public class RequestHandle
     public ResponseHandle awaitResponse(final long timeout, final TimeUnit unit) throws RequestTimeoutException, InterruptedException {
         chechEndOfResponses();
 
-        log.debug("Polling for response");
+        log.trace("Polling for response");
 
         ResponseHandle resp = decodeResponse(responses.poll(timeout, unit));
 
@@ -178,10 +178,10 @@ public class RequestHandle
 
         try {
             if (log.isTraceEnabled()) {
-                log.debug("Signal response: {}", response);
+                log.trace("Signal response: {}", response);
             }
             else {
-                log.debug("Signal response: {}", response.getRequest().getId());
+                log.trace("Signal response: {}", response.getRequest().getId());
             }
 
             queueResponse(response);
@@ -199,7 +199,7 @@ public class RequestHandle
         lock.lock();
 
         try {
-            log.debug("Timeout");
+            log.trace("Timeout");
 
             queueResponse(RequestTimeoutException.class);
 
