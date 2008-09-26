@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandRegistry;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;

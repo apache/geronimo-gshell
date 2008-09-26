@@ -17,23 +17,29 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.wisdom.registry;
+
+import org.apache.geronimo.gshell.command.CommandResult;
+import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Resolves {@link Command} instances for a given path.
+ * Group {@link org.apache.geronimo.gshell.command.Command} component.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandResolver
+public class GroupCommand
+    extends CommandSupport
 {
-    /**
-     * Resolve the given path to a command instance.
-     *
-     * @param variables     The current shell variables.
-     * @param path          The path of the command to resolve.
-     * @return              The resolved command instance; never null.
-     *
-     * @throws CommandException     Failed to resolve command.
-     */
-    Command resolve(Variables variables, String path) throws CommandException;
+    @Override
+    public CommandResult execute(final ShellContext context, final Object[] args) {
+        assert context != null;
+        assert args != null;
+
+        log.debug("Executing");
+        
+        throw new Error("not implemented");
+    }
 }

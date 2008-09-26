@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.command;
+package org.apache.geronimo.gshell.wisdom.registry;
 
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.CommandNotFoundException;
-import org.apache.geronimo.gshell.command.CommandRegistration;
-import org.apache.geronimo.gshell.command.CommandRegistry;
-import org.apache.geronimo.gshell.command.CommandResolver;
+import org.apache.geronimo.gshell.registry.CommandNotFoundException;
+import org.apache.geronimo.gshell.registry.CommandRegistration;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.slf4j.Logger;

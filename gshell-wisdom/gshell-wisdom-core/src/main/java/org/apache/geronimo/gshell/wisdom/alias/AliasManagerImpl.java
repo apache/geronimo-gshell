@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.wisdom.alias;
 
 import org.apache.geronimo.gshell.alias.Alias;
 import org.apache.geronimo.gshell.alias.AliasManager;
-import org.apache.geronimo.gshell.command.CommandRegistry;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;

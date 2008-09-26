@@ -17,28 +17,16 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.command;
+package org.apache.geronimo.gshell.registry;
 
-import org.apache.geronimo.gshell.command.CommandResult;
-import org.apache.geronimo.gshell.shell.ShellContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.command.Command;
 
 /**
- * Group {@link org.apache.geronimo.gshell.command.Command} component.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class GroupCommand
-    extends CommandSupport
+public interface CommandRegistration
 {
-    @Override
-    public CommandResult execute(final ShellContext context, final Object[] args) {
-        assert context != null;
-        assert args != null;
-
-        log.debug("Executing");
-        
-        throw new Error("not implemented");
-    }
+    Command getCommand();
 }

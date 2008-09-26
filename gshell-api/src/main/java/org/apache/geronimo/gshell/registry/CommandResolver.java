@@ -17,29 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.registry;
+
+import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * Thrown to indicate a command/path was not able to be resolved.
+ * Resolves {@link org.apache.geronimo.gshell.command.Command} instances for a given path.
  *
  * @version $Rev$ $Date$
  */
-public class CommandNotFoundException
-    extends CommandException
+public interface CommandResolver
 {
-    public CommandNotFoundException(final String msg) {
-        super(msg);
-    }
-
-    public CommandNotFoundException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-    public CommandNotFoundException(final Throwable cause) {
-        super(cause);
-    }
-
-    public CommandNotFoundException() {
-        super();
-    }
+    /**
+     * Resolve the given path to a command instance.
+     *
+     * @param variables     The current shell variables.
+     * @param path          The path of the command to resolve.
+     * @return              The resolved command instance; never null.
+     *
+     * @throws org.apache.geronimo.gshell.command.CommandException     Failed to resolve command.
+     */
+    Command resolve(Variables variables, String path) throws CommandException;
 }

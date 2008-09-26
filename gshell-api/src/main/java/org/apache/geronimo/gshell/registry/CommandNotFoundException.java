@@ -17,22 +17,31 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.registry;
 
-import java.util.Collection;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * Provides registration facilities for {@link Command} instances.
+ * Thrown to indicate a command/path was not able to be resolved.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandRegistry
+public class CommandNotFoundException
+    extends CommandException
 {
-    CommandRegistration register(Command command);
+    public CommandNotFoundException(final String msg) {
+        super(msg);
+    }
 
-    // boolean isRegistered(String name);
+    public CommandNotFoundException(final String msg, final Throwable cause) {
+        super(msg, cause);
+    }
 
-    // void unregister(String name);
+    public CommandNotFoundException(final Throwable cause) {
+        super(cause);
+    }
 
-    Collection<CommandRegistration> getRegistrations();
+    public CommandNotFoundException() {
+        super();
+    }
 }

@@ -27,7 +27,7 @@
 
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl"/>
     
-    <bean id="commandManager" class="org.apache.geronimo.gshell.wisdom.command.CommandManager"/>
+    <bean id="commandManager" class="org.apache.geronimo.gshell.wisdom.registry.CommandManager"/>
 
     <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl"/>
 

@@ -23,7 +23,7 @@ import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.CommandResolver;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;

@@ -17,14 +17,28 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.wisdom.registry;
+
+import org.apache.geronimo.gshell.registry.CommandRegistration;
+import org.apache.geronimo.gshell.event.Event;
 
 /**
- * ???
- *
+ * Event fired once a command has been registered.
+ * 
  * @version $Rev$ $Date$
  */
-public interface CommandRegistration
+public class CommandRegisteredEvent
+    implements Event
 {
-    Command getCommand();
+    private final CommandRegistration registration;
+
+    public CommandRegisteredEvent(final CommandRegistration registration) {
+        assert registration != null;
+
+        this.registration = registration;
+    }
+
+    public CommandRegistration getRegistration() {
+        return registration;
+    }
 }
