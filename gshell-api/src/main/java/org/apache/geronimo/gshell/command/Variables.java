@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * Provides a nested-namespace for command variables.
  *
- * @version $Rev: 670220 $ $Date: 2008-06-21 23:24:57 +0700 (Sat, 21 Jun 2008) $
+ * @version $Rev$ $Date$
  */
 public class Variables
 {

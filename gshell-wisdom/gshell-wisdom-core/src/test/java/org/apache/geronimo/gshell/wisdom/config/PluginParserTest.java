@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.spring.SpringTestSupport;
 /**
  * Unit tests for the {@link LoggingProcessor} class.
  *
- * @version $Rev: 698145 $ $Date: 2008-09-23 18:39:31 +0700 (Tue, 23 Sep 2008) $
+ * @version $Rev$ $Date$
  */
 public class PluginParserTest
     extends SpringTestSupport
