@@ -43,10 +43,6 @@ public class ArtifactManagerFactory
 
     private PlexusContainer container;
 
-    //
-    // FIXME: Seems like we get multipule instances of this puppy created, when we only need one
-    //
-
     @PostConstruct
     private void init() throws Exception {
         DefaultContainerConfiguration config = new DefaultContainerConfiguration();
