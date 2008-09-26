@@ -384,10 +384,6 @@ public class LoggingProcessor
             String beanName = replaceOverride.getMethodReplacerBeanName();
             builder.addAttribute(NAME_ATTRIBUTE, methodName);
             builder.addAttribute(REPLACER_ATTRIBUTE, beanName);
-
-            // TMP - so far it's not possible to obtain information about replacers....
-            // probably we need to use reflection based hack to obtain list of arg type
-            // identifiers
             builder.up();
         }
     }
