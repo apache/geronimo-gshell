@@ -26,8 +26,7 @@ import java.net.URI;
  *
  * @version $Rev$ $Date$
  */
-public interface TransportFactoryLocator<T extends TransportFactory> {
-
+public interface TransportFactoryLocator<T extends TransportFactory>
+{
     T locate(URI location) throws TransportException;
-
 }

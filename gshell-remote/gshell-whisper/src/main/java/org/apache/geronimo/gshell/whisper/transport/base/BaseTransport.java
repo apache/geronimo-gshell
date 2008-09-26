@@ -186,20 +186,4 @@ public abstract class BaseTransport<T extends IoConnector>
     public Session getSession() {
         return session;
     }
-
-    //
-    // Listeners
-    //
-
-    public void addListener(final Listener listener) {
-        assert listener != null;
-
-        throw new UnsupportedOperationException();
-    }
-
-    public void removeListener(final Listener listener) {
-        assert listener != null;
-
-        throw new UnsupportedOperationException();
-    }
 }

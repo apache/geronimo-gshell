@@ -33,7 +33,8 @@ import java.util.HashMap;
  *
  * @version $Rev$ $Date$
  */
-public class TransportFactoryLocatorImpl<T extends TransportFactory> implements TransportFactoryLocator<T>
+public class TransportFactoryLocatorImpl<T extends TransportFactory>
+    implements TransportFactoryLocator<T>
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 

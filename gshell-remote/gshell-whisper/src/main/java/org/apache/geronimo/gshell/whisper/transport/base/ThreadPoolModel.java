@@ -67,7 +67,11 @@ public class ThreadPoolModel
                 tf,
                 new ThreadPoolExecutor.AbortPolicy());
 
+        log.trace("Thread pool: {}", threadPool);
+
         filter = new ExecutorFilter(threadPool);
+
+        log.trace("Filter: {}", filter);
     }
 
     public ThreadPoolModel(final Class type, final Object suffix) {
@@ -83,6 +87,8 @@ public class ThreadPoolModel
     }
 
     public void shutdown() {
+        log.trace("Shutdown");
+        
         threadPool.shutdown();
     }
 

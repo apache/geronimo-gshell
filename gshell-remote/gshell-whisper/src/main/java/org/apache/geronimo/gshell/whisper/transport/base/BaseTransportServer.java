@@ -136,20 +136,4 @@ public abstract class BaseTransportServer<T extends IoAcceptor>
             super.close();
         }
     }
-
-    //
-    // Listeners
-    //
-
-    public void addListener(final Listener listener) {
-        assert listener != null;
-
-        throw new UnsupportedOperationException();
-    }
-
-    public void removeListener(final Listener listener) {
-        assert listener != null;
-
-        throw new UnsupportedOperationException();
-    }
 }

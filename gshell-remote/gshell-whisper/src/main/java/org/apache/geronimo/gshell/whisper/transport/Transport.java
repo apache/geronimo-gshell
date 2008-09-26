@@ -46,22 +46,6 @@ public interface Transport<T extends IoConnector>
     void close();
 
     //
-    // Listeners
-    //
-
-    void addListener(Listener listener);
-
-    void removeListener(Listener listener);
-
-    interface Listener
-        extends EventListener
-    {
-        //
-        // TODO:
-        //
-    }
-    
-    //
     // Configuration
     //
 

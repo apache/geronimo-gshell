@@ -42,22 +42,6 @@ public interface TransportServer<T extends IoAcceptor>
     void close();
 
     //
-    // Listeners
-    //
-
-    void addListener(Listener listener);
-
-    void removeListener(Listener listener);
-
-    interface Listener
-        extends EventListener
-    {
-        //
-        // TODO:
-        //
-    }
-
-    //
     // Configuration
     //
 
