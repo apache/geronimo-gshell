@@ -28,8 +28,20 @@
             http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
 
     <gshell:plugin name="test-plugin">
+        <description>
+            This is a test plugin.
+        </description>
+        
         <gshell:command-bundle name="test">
+            <description>
+                This is a test bundle.
+            </description>
+
             <gshell:command name="a">
+                <description>
+                    This is a test command.
+                </description>
+
                 <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
             </gshell:command>
 
@@ -43,6 +55,10 @@
             
             <gshell:command name="d">
                 <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction">
+                    <description>
+                        This is a test action.
+                    </description>
+                    
                     <property name="text" value="b"/>
                 </gshell:action>
             </gshell:command>
@@ -55,6 +71,12 @@
             </gshell:command>
 
             <gshell:alias name="foo" target="bar"/>
+
+            <gshell:alias name="bar" target="foo">
+                <description>
+                    This is a test alias.
+                </description>
+            </gshell:alias>
         </gshell:command-bundle>
     </gshell:plugin>
 

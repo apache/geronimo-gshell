@@ -50,6 +50,8 @@ public class PluginParser
     extends AbstractBeanDefinitionParser
 {
     private static final String ID = "id";
+
+    private static final String DESCRIPTION = "description";
     
     private static final String ACTION = "action";
 
@@ -194,6 +196,25 @@ public class PluginParser
             return parser.parseBeanDefinitionElement(element);
         }
 
+        private void parseAndApplyDescription(final Element element, final BeanDefinition def) {
+            assert element != null;
+            assert def != null;
+
+            Element desc = getChildElement(element, DESCRIPTION);
+            if (desc != null) {
+                if (def instanceof AbstractBeanDefinition) {
+                    ((AbstractBeanDefinition)def).setDescription(desc.getTextContent());
+                }
+            }
+        }
+
+        private void parseAndApplyDescription(final Element element, final BeanDefinitionBuilder builder) {
+            assert element != null;
+            assert builder != null;
+
+            parseAndApplyDescription(element, builder.getRawBeanDefinition());
+        }
+        
         private BeanDefinitionHolder register(final BeanDefinitionHolder holder) {
             assert holder != null;
 
@@ -246,6 +267,8 @@ public class PluginParser
             BeanDefinitionBuilder plugin = BeanDefinitionBuilder.rootBeanDefinition(PluginImpl.class);
             plugin.addPropertyValue(ID, element.getAttribute(NAME));
 
+            parseAndApplyDescription(element, plugin);
+
             return plugin;
         }
 
@@ -284,6 +307,7 @@ public class PluginParser
             BeanDefinitionBuilder bundle = BeanDefinitionBuilder.rootBeanDefinition(CommandBundle.class);
             bundle.addPropertyValue(ID, element.getAttribute(NAME));
             bundle.setLazyInit(true);
+            parseAndApplyDescription(element, bundle);
 
             List commands = parseCommands(element);
             List aliases = parseAliases(element);
@@ -292,7 +316,7 @@ public class PluginParser
             commands.addAll(aliases);
 
             bundle.addPropertyValue(COMMANDS, commands);
-            
+
             return bundle;
         }
 
@@ -325,6 +349,7 @@ public class PluginParser
 
             CommandType type = CommandType.parse(element.getAttribute(TYPE));
             BeanDefinitionBuilder command = BeanDefinitionBuilder.childBeanDefinition(type.getTemplateName());
+            parseAndApplyDescription(element, command);
 
             // TODO: Currently name is pulled from the documentor, need to change that
             // command.addPropertyValue("name", element.getAttribute("name"));
@@ -410,6 +435,8 @@ public class PluginParser
             BeanDefinitionBuilder alias = BeanDefinitionBuilder.rootBeanDefinition(AliasCommand.class);
             alias.addConstructorArgValue(element.getAttribute(NAME));
             alias.addConstructorArgValue(element.getAttribute(TARGET));
+
+            parseAndApplyDescription(element, alias);
 
             return alias;
         }
