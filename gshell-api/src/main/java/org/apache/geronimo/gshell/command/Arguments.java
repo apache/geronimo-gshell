@@ -48,7 +48,7 @@ public class Arguments
     public static String asString(final Object[] args) {
         assert args != null;
 
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         for (int i=0; i<args.length; i++ ) {
             buff.append(args[i]);
@@ -63,7 +63,7 @@ public class Arguments
     public static String asString(final List args) {
         assert args != null;
 
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         for (int i=0; i<args.size(); i++ ) {
             buff.append(args.get(i));
@@ -85,5 +85,23 @@ public class Arguments
         }
 
         return strings;
+    }
+
+    public static String asQuotedString(final Object[] args, final String quoteToken) {
+        assert args != null;
+        assert quoteToken != null;
+
+        StringBuilder buff = new StringBuilder();
+
+        for (int i=0; i<args.length; i++) {
+            buff.append(quoteToken);
+            buff.append(args[i]);
+            buff.append(quoteToken);
+            if (i+1 < args.length) {
+                buff.append(" ");
+            }
+        }
+
+        return buff.toString();
     }
 }
