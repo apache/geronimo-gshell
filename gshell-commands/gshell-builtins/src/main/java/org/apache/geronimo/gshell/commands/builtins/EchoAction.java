@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * A simple command to print all arguments to the commands standard output.
@@ -43,15 +44,14 @@ public class EchoAction
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-
         IO io = context.getIo();
 
-        if (args != null) {
-            int c=0;
-
-            for (String arg : args) {
-                io.out.print(arg);
-                if (++c + 1 < args.size()) {
+        if (args != null && !args.isEmpty()) {
+            Iterator iter = args.iterator();
+            
+            while (iter.hasNext()) {
+                io.out.print(iter.next());
+                if (iter.hasNext()) {
                     io.out.print(" ");
                 }
             }
