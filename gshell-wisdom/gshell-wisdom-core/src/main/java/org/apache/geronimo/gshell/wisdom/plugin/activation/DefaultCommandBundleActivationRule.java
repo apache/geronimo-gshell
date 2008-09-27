@@ -19,15 +19,11 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
@@ -40,12 +36,6 @@ public class DefaultCommandBundleActivationRule
     implements ActivationRule, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private CommandRegistry commandRegistry;
-
-    @Autowired
-    private AliasRegistry aliasRegistry;
 
     private BeanContainer container;
 
@@ -97,17 +87,7 @@ public class DefaultCommandBundleActivationRule
                     
                     log.debug("Processing command bundle: {}", bundle);
 
-                    Map<String,Command> commands = bundle.getCommands();
-
-                    for (String name : commands.keySet()) {
-                        commandRegistry.registerCommand(name, commands.get(name));
-                    }
-
-                    Map<String,String> aliases = bundle.getAliases();
-
-                    for (String name : aliases.keySet()) {
-                        aliasRegistry.registerAlias(name, aliases.get(name));
-                    }
+                    bundle.enable();
                 }
             };
 

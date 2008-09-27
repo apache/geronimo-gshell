@@ -20,6 +20,11 @@
 package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.AliasRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -31,6 +36,16 @@ import java.util.Map;
 public class CommandBundle
     implements Bundle
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private CommandRegistry commandRegistry;
+
+    @Autowired
+    private AliasRegistry aliasRegistry;
+
+    private boolean enabled = false;
+
     private String name;
 
     private Map<String,Command> commands;
@@ -65,5 +80,45 @@ public class CommandBundle
         assert aliases != null;
 
         this.aliases = aliases;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void enable() throws Exception {
+        if (enabled) {
+            throw new IllegalStateException("Already enabled");
+        }
+
+        log.debug("Enabling");
+
+        for (String name : commands.keySet()) {
+            commandRegistry.registerCommand(name, commands.get(name));
+        }
+
+        for (String name : aliases.keySet()) {
+            aliasRegistry.registerAlias(name, aliases.get(name));
+        }
+
+        enabled = true;
+    }
+
+    public void disable() throws Exception {
+        if (!enabled) {
+            throw new IllegalStateException("Not enabled");
+        }
+
+        log.debug("Disabling");
+        
+        for (String name : commands.keySet()) {
+            commandRegistry.removeCommand(name);
+        }
+
+        for (String name : aliases.keySet()) {
+            aliasRegistry.removeAlias(name);
+        }
+
+        enabled = false;
     }
 }

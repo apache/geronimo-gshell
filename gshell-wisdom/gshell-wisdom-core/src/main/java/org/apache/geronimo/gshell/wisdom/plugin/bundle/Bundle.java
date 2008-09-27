@@ -28,5 +28,9 @@ public interface Bundle
 {
     String getName();
 
-    // TODO: start/stop enable/disable close/destroy
+    boolean isEnabled();
+
+    void enable() throws Exception;
+
+    void disable() throws Exception;
 }

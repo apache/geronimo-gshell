@@ -184,6 +184,10 @@ public class ShellImpl
         // Ya, bust out the sexy JLine console baby!
         JLineConsole console = new JLineConsole(executor, io);
 
+        //
+        // TODO: Hook up completer bits here
+        //
+        
         // Setup the prompt
         console.setPrompter(getPrompter());
 
