@@ -70,13 +70,67 @@ public class RshAction
         this.container = container;
     }
 
+    /**
+     * Helper to validate that prompted username or password is not null or empty.
+     */
+    private class UsernamePasswordValidator
+        implements PromptReader.Validator
+    {
+        private String type;
+
+        private int count = 0;
+
+        private int max = 3;
+
+        public UsernamePasswordValidator(final String type) {
+            assert type != null;
+
+            this.type = type;
+        }
+
+        public boolean isValid(final String value) {
+            count++;
+
+            if (value != null && value.trim().length() > 0) {
+                return true;
+            }
+
+            if (count >= max) {
+                throw new RuntimeException("Too many attempts; failed to prompt user for " + type + " after " + max + " tries");
+            }
+
+            return false;
+        }
+    }
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
         MessageSource messages = context.getCommand().getMessages();
 
+        // If the username/password was not configured via cli, then prompt the user for the values
+        if (username == null || password == null) {
+            PromptReader prompter = new PromptReader(io);
+            String text;
+
+            if (username == null) {
+                text = messages.getMessage("prompt.username");
+                username = prompter.readLine(text + ": ", new UsernamePasswordValidator(text));
+            }
+            assert username != null;
+            assert username.length() != 0;
+
+            if (password == null) {
+                text = messages.getMessage("prompt.password");
+                password = prompter.readLine(text + ": ", new UsernamePasswordValidator(text));
+            }
+            assert password != null;
+            assert password.length() != 0;
+        }
+        
         io.info(messages.format("info.connecting", remote));
 
+        // Create the client from prototype
         RshClient client = container.getBean(RshClient.class);
 
         log.debug("Created client: {}", client);
@@ -84,23 +138,6 @@ public class RshAction
         client.connect(remote, local);
 
         io.info(messages.getMessage("info.connected"));
-
-        // If the username/password was not configured via cli, then prompt the user for the values
-        if (username == null || password == null) {
-            PromptReader prompter = new PromptReader(io);
-
-            if (username == null) {
-                username = prompter.readLine(messages.getMessage("prompt.username") + ": ");
-            }
-
-            if (password == null) {
-                password = prompter.readPassword(messages.getMessage("prompt.password") + ": ");
-            }
-
-            //
-            // TODO: Handle null inputs... Maybe add this support to PromptReader, then after n tries throw an exception?
-            //
-        }
 
         client.login(username, password);
 
