@@ -29,6 +29,10 @@
 
     <gshell:plugin name="gshell-builtins">
         <gshell:command-bundle name="default">
+            <gshell:command name="about">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.AboutAction"/>
+            </gshell:command>
+
             <gshell:command name="help">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.HelpAction"/>
             </gshell:command>
