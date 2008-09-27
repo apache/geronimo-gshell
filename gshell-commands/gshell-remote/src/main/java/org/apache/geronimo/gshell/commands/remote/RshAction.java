@@ -116,16 +116,16 @@ public class RshAction
             if (username == null) {
                 text = messages.getMessage("prompt.username");
                 username = prompter.readLine(text + ": ", new UsernamePasswordValidator(text));
+                assert username != null;
+                assert username.length() != 0;
             }
-            assert username != null;
-            assert username.length() != 0;
 
             if (password == null) {
                 text = messages.getMessage("prompt.password");
                 password = prompter.readLine(text + ": ", new UsernamePasswordValidator(text));
+                assert password != null;
+                assert password.length() != 0;
             }
-            assert password != null;
-            assert password.length() != 0;
         }
         
         io.info(messages.format("info.connecting", remote));
