@@ -27,6 +27,8 @@ package org.apache.geronimo.gshell.notification;
 public final class ErrorNotification
     extends Notification
 {
+    private static final long serialVersionUID = 1;
+
     public ErrorNotification(final String msg) {
         super(msg);
     }

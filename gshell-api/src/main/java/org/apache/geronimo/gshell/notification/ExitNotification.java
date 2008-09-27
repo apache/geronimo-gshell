@@ -27,6 +27,8 @@ package org.apache.geronimo.gshell.notification;
 public final class ExitNotification
     extends Notification
 {
+    private static final long serialVersionUID = 1;
+
     public static final int DEFAULT_CODE = 0;
 
     public static final int ERROR_CODE = 1;

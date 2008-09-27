@@ -27,6 +27,8 @@ package org.apache.geronimo.gshell.command;
 public class CommandException
     extends Exception
 {
+    private static final long serialVersionUID = 1;
+
     public CommandException(final String msg) {
         super(msg);
     }

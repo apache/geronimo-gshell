@@ -27,6 +27,8 @@ package org.apache.geronimo.gshell.commandline;
 public class CommandLineExecutionFailied
     extends Exception
 {
+    private static final long serialVersionUID = 1;
+
     public CommandLineExecutionFailied(final Throwable cause) {
         super(cause);
     }

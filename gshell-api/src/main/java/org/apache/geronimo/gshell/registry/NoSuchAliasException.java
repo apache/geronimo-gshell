@@ -29,19 +29,9 @@ import org.apache.geronimo.gshell.command.CommandException;
 public class NoSuchAliasException
     extends CommandException
 {
+    private static final long serialVersionUID = 1;
+
     public NoSuchAliasException(final String msg) {
         super(msg);
-    }
-
-    public NoSuchAliasException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-    public NoSuchAliasException(final Throwable cause) {
-        super(cause);
-    }
-
-    public NoSuchAliasException() {
-        super();
     }
 }

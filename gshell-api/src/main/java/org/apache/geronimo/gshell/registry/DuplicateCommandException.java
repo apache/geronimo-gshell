@@ -29,19 +29,9 @@ import org.apache.geronimo.gshell.command.CommandException;
 public class DuplicateCommandException
     extends CommandException
 {
+    private static final long serialVersionUID = 1;
+
     public DuplicateCommandException(final String msg) {
         super(msg);
-    }
-
-    public DuplicateCommandException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-    public DuplicateCommandException(final Throwable cause) {
-        super(cause);
-    }
-
-    public DuplicateCommandException() {
-        super();
     }
 }
