@@ -35,6 +35,21 @@
 
             <gshell:command name="help">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.HelpAction"/>
+                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
+                    <property name="completers">
+                        <list>
+                            <bean class="org.apache.geronimo.gshell.console.completer.AggregateCompleter">
+                                <constructor-arg>
+                                    <list>
+                                        <ref bean="aliasNameCompleter"/>
+                                        <ref bean="commandNameCompleter"/>
+                                    </list>
+                                </constructor-arg>
+                            </bean>
+                            <null/>
+                        </list>
+                    </property>
+                </gshell:completer>
             </gshell:command>
 
             <gshell:command name="exit">
@@ -55,6 +70,14 @@
 
             <gshell:command name="source">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SourceAction"/>
+                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
+                    <property name="completers">
+                        <list>
+                            <bean class="jline.FileNameCompletor"/>
+                            <null/>
+                        </list>
+                    </property>
+                </gshell:completer>
             </gshell:command>
 
             <gshell:alias name="." alias="source"/>
@@ -73,10 +96,14 @@
 
             <gshell:command name="unalias">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnaliasAction"/>
-                <!--
-                FIXME: Need to resolve some binding issues...
-                <gshell:completer class="org.apache.geronimo.gshell.commands.builtins.UnaliasAction$Completer"/>
-                -->
+                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
+                    <property name="completers">
+                        <list>
+                            <ref bean="aliasNameCompleter"/>
+                            <null/>
+                        </list>
+                    </property>
+                </gshell:completer>
             </gshell:command>
             
             <gshell:command name="history">

@@ -19,21 +19,15 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandCompleter;
-import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import jline.Completor;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Undefine an alias.
@@ -66,24 +60,6 @@ public class UnaliasAction
             io.error("No alias defined: {}", name);
 
             return Result.FAILURE;
-        }
-    }
-
-    public static class Completer
-        implements CommandCompleter
-    {
-        // TODO: The AliasesCompleter class is not in scope, so have to inject it manually me thinks, or use qualifiers?
-        // @Autowired
-        // private AliasesCompleter aliasesCompleter;
-
-        public Collection<Completor> createCompletors() {
-            List<Completor> completers = new ArrayList<Completor>(2);
-
-            // TODO: Hook up a *wired* AliasesCompleter instance
-            // completers.add(aliasesCompleter)
-            completers.add(null);
-
-            return completers;
         }
     }
 }

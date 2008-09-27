@@ -30,7 +30,7 @@ import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.console.completer.MuxCompleter;
+import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
@@ -201,8 +201,8 @@ public class ShellImpl
 
         // Attach completers if there are any
         if (completers != null) {
-            // Have to use mux here to get the completion list to update properly
-            console.addCompleter(new MuxCompleter(completers));
+            // Have to use aggregate here to get the completion list to update properly
+            console.addCompleter(new AggregateCompleter(completers));
         }
 
         // Unless the user wants us to shut up, then display a nice welcome banner

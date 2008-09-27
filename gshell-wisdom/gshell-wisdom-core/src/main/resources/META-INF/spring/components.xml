@@ -41,17 +41,17 @@
 
     <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl"/>
 
-    <bean id="commandNameCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandNameCompleter" scope="prototype"/>
+    <bean id="commandNameCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandNameCompleter"/>
 
-    <bean id="commandsCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandsCompleter" scope="prototype"/>
+    <bean id="aliasNameCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.AliasNameCompleter"/>
 
-    <bean id="aliasesCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.AliasesCompleter" scope="prototype"/>
+    <bean id="commandsCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandsCompleter"/>
 
     <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl">
         <property name="completers">
             <list>
                 <ref bean="commandsCompleter"/>
-                <ref bean="aliasesCompleter"/>
+                <ref bean="aliasNameCompleter"/>
             </list>
         </property>
     </bean>

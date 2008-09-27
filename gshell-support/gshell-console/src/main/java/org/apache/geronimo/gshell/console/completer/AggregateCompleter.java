@@ -31,14 +31,14 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-public class MuxCompleter
+public class AggregateCompleter
     implements Completor
 {
     private final List<Completor> completers = new ArrayList<Completor>();
 
-    public MuxCompleter() {}
+    public AggregateCompleter() {}
 
-    public MuxCompleter(final Collection<Completor> completers) {
+    public AggregateCompleter(final Collection<Completor> completers) {
         assert completers != null;
 
         getCompleters().addAll(completers);

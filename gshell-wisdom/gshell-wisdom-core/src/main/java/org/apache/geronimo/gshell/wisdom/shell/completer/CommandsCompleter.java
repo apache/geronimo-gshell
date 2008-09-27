@@ -23,7 +23,7 @@ import jline.ArgumentCompletor;
 import jline.Completor;
 import jline.NullCompletor;
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.console.completer.MuxCompleter;
+import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.console.completer.StringsCompleter;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
@@ -60,7 +60,7 @@ public class CommandsCompleter
 
     private final Map<String,Completor> completors = new HashMap<String,Completor>();
 
-    private final MuxCompleter delegate = new MuxCompleter();
+    private final AggregateCompleter delegate = new AggregateCompleter();
 
     @PostConstruct
     public void init() throws Exception {

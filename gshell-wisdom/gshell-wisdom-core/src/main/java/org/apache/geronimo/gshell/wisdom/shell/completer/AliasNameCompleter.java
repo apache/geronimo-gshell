@@ -41,7 +41,7 @@ import jline.Completor;
  *
  * @version $Rev$ $Date$
  */
-public class AliasesCompleter
+public class AliasNameCompleter
     implements Completor
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
