@@ -148,6 +148,10 @@ public class Main
     private void setTerminalType(String type) {
         type = type.toLowerCase();
 
+        //
+        // FIXME: Provide an abstraction over the jline term stuff and its warts, and/or fork it and re-implement it to not be so broken
+        //
+
         if ("unix".equals(type)) {
             type = "jline.UnixTerminal";
         }
@@ -159,6 +163,7 @@ public class Main
             
             //
             // HACK: Disable ANSI, for some reason UnsupportedTerminal reports ANSI as enabled, when it shouldn't
+            //       as a temporary solution, could provide a Terminal instance which can delegate and fix warts like this
             //
             ANSI.setEnabled(false);
         }

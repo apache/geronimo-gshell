@@ -19,7 +19,9 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
+import jline.Completor;
 import jline.History;
+import jline.MultiCompletor;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
@@ -48,6 +50,7 @@ import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -72,6 +75,8 @@ public class ShellImpl
     @Autowired
     private History history;
 
+    private List<Completor> completors;
+
     private ShellContext context;
 
     private Branding branding;
@@ -79,6 +84,12 @@ public class ShellImpl
     private Prompter prompter;
 
     private ErrorHandler errorHandler;
+
+    public void setCompletors(final List<Completor> completors) {
+        assert completors != null;
+
+        this.completors = completors;
+    }
 
     public ShellContext getContext() {
         if (context == null) {
@@ -181,21 +192,17 @@ public class ShellImpl
 
         IO io = getContext().getIo();
 
-        // Ya, bust out the sexy JLine console baby!
+        // Setup the console runner
         JLineConsole console = new JLineConsole(executor, io);
-
-        //
-        // TODO: Hook up completer bits here
-        //
-        
-        // Setup the prompt
         console.setPrompter(getPrompter());
-
-        // Delegate errors for display and then continue
         console.setErrorHandler(getErrorHandler());
-
-        // Hook up a nice history file (we gotta hold on to the history object at some point so the 'history' command can get to it)
         console.setHistory(history);
+
+        // Attach completors if there are any
+        if (completors != null) {
+            // Have to use MultiCompletor here to get the completion list to update properly
+            console.addCompleter(new MultiCompletor(completors));
+        }
 
         // Unless the user wants us to shut up, then display a nice welcome banner
         if (!io.isQuiet()) {

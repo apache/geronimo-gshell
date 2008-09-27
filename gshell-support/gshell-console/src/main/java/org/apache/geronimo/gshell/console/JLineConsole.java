@@ -21,6 +21,8 @@ package org.apache.geronimo.gshell.console;
 
 import jline.ConsoleReader;
 import jline.History;
+import jline.Completor;
+import jline.CandidateListCompletionHandler;
 import org.apache.geronimo.gshell.io.IO;
 
 import java.io.IOException;
@@ -41,24 +43,28 @@ public class JLineConsole
 
         assert io != null;
 
+        // TODO: Expose bindings
+        
         reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, io.getTerminal());
         reader.setUsePagination(true);
-
-        // TODO: Install completion handler
+        reader.setCompletionHandler(new CandidateListCompletionHandler());
     }
 
-    public void run() {
-        // TODO: Update/install/whatever the completion handler
-        
-        // And then actually run
-        super.run();
+    public void addCompleter(final Completor completer) {
+        assert completer != null;
+
+        reader.addCompletor(completer);
     }
 
     public void setHistory(final History history) {
+        assert history != null;
+
         reader.setHistory(history);
     }
 
     protected String readLine(final String prompt) throws IOException {
+        // prompt may be null
+        
         return reader.readLine(prompt);
     }
 }
