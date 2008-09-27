@@ -49,25 +49,91 @@ public class PromptReader
         this.mask = mask;
     }
 
-    //
-    // TODO: Add a validator interface to simplify users trying to avoid null entry and such
-    //
+    public String readLine(final String prompt, final Validator validator) throws IOException {
+        assert prompt != null;
+        // validator may be null
+
+        String value;
+
+        while (true) {
+            value = reader.readLine(prompt);
+
+            if (validator == null) {
+                break;
+            }
+            else if (validator.isValid(value)) {
+                break;
+            }
+        }
+
+        return value;
+    }
 
     public String readLine(final String prompt) throws IOException {
-        assert prompt != null;
+        return readLine(prompt, null);
+    }
 
-        return reader.readLine(prompt);
+    public String readLine(final String prompt, final char mask, final Validator validator) throws IOException {
+        assert prompt != null;
+        // validator may be null
+
+        String value;
+
+        while (true) {
+            value = reader.readLine(prompt, mask);
+
+            if (validator == null) {
+                break;
+            }
+            else if (validator.isValid(value)) {
+                break;
+            }
+        }
+
+        return value;
     }
 
     public String readLine(final String prompt, final char mask) throws IOException {
-        assert prompt != null;
+        return readLine(prompt, mask, null);
+    }
 
-        return reader.readLine(prompt, mask);
+    public String readPassword(final String prompt, final Validator validator) throws IOException {
+        assert prompt != null;
+        // validator may be null
+
+        String value;
+
+        while (true) {
+            value = reader.readLine(prompt, mask);
+
+            if (validator == null) {
+                break;
+            }
+            else if (validator.isValid(value)) {
+                break;
+            }
+        }
+
+        return value;
     }
 
     public String readPassword(final String prompt) throws IOException {
-        assert prompt != null;
-        
-        return reader.readLine(prompt, mask);
+        return readPassword(prompt, null);
+    }
+
+    //
+    // Validator
+    //
+
+    /**
+     * Allows caller to customize the validation behavior when prompting.
+     */
+    public static interface Validator
+    {
+        /**
+         * Determin if the given value is valid.  If the value is not valid then
+         * we will prompt the user again.
+         */
+        boolean isValid(String value);
     }
 }
