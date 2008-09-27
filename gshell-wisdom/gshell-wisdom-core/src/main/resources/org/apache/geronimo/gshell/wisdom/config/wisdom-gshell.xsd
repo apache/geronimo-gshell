@@ -111,7 +111,6 @@
                 stripping off the bits which are not valid in the command component context.
             </xsd:documentation>
         </xsd:annotation>
-		<xsd:attribute name="name" type="xsd:string"/>
 		<xsd:attribute name="class" type="xsd:string"/>
 		<xsd:attribute name="parent" type="xsd:string"/>
 		<xsd:attribute name="autowire" default="default">
