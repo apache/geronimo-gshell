@@ -46,7 +46,7 @@
     <bean id="pluginTemplate" class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl" abstract="true">
         <property name="activationRules">
             <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
+                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultBundleActivationRule">
                     <property name="bundleName" value="default"/>
                 </bean>
             </list>

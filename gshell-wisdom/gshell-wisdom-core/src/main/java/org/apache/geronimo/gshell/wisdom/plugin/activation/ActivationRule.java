@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
 /**
- * ???
+ * An activation rule.  Rules optionally add tasks to the context to perform some action.
  *
  * @version $Rev$ $Date$
  */

@@ -20,14 +20,21 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.plugin.Plugin;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationTask;
+import org.apache.geronimo.gshell.wisdom.plugin.bundle.Bundle;
+import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
+import org.apache.geronimo.gshell.wisdom.plugin.bundle.NoSuchBundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of {@link Plugin}.
@@ -35,23 +42,99 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 public class PluginImpl
-    implements Plugin
+    implements Plugin, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private String id;
+    private final String name;
+
+    private boolean enabled = false;
+
+    private List<String> bundleNames;
 
     private List<ActivationRule> activationRules;
 
-    public String getId() {
-        return id;
+    private BeanContainer container;
+
+    public PluginImpl(final String name) {
+        assert name != null;
+
+        this.name = name;
     }
 
-    public void setId(final String id) {
-        assert id != null;
-        
-        this.id = id;
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+
+        this.container = container;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getBundleNames() {
+        List<String> list = bundleNames;
+
+        if (bundleNames == null) {
+            list = Collections.emptyList();
+        }
+
+        return Collections.unmodifiableList(list);
+    }
+
+    public void setBundleNames(final List<String> bundleNames) {
+        assert bundleNames != null;
+        this.bundleNames = bundleNames;
+    }
+
+    public Bundle getBundle(final String name) throws NoSuchBundleException {
+        assert container != null;
+        Map<String, CommandBundle> bundles = container.getBeans(CommandBundle.class);
+
+        CommandBundle bundle = null;
+        for (CommandBundle b : bundles.values()) {
+            if (b.getName().equals(name)) {
+                bundle = b;
+                break;
+            }
+        }
+
+        if (bundle == null) {
+            throw new NoSuchBundleException(name);
+        }
+
+        return bundle;
+    }
+
+    /*
+    public synchronized boolean isEnabled() {
+        return enabled;
+    }
+
+    public synchronized void enable() throws Exception {
+        if (enabled) {
+            throw new IllegalStateException("Plugin already enabled: " + name);
+        }
+
+        log.debug("Enabling plugin: {}", name);
+
+        // TODO:
+
+        enabled = true;
+    }
+
+    public synchronized void disable() throws Exception {
+        if (!enabled) {
+            throw new IllegalStateException("Plugin not enabled: " + name);
+        }
+
+        log.debug("Disabling bundle: {}", name);
+
+        // TODO:
+
+        enabled = false;
+    }
+    */
 
     public List<ActivationRule> getActivationRules() {
         return activationRules;
@@ -71,6 +154,10 @@ public class PluginImpl
 
         ActivationContext context = new ActivationContext() {
             private List<ActivationTask> tasks = new ArrayList<ActivationTask>();
+
+            public Plugin getPlugin() {
+                return PluginImpl.this;
+            }
 
             public List<ActivationTask> getTasks() {
                 return tasks;

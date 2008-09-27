@@ -55,7 +55,7 @@ public class ListPluginsAction
         io.info("Found {} plugins:", plugins.size());
 
         for (Plugin plugin : plugins) {
-            io.info("    {}", plugin.getId());
+            io.info("    {}", plugin.getName());
         }
         
         return Result.SUCCESS;

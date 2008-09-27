@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.config;
 
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
+import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedMap;
+import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -48,7 +50,7 @@ import java.util.Map;
 public class PluginParser
     extends AbstractBeanDefinitionParser
 {
-    private static final String ID = "id";
+    private static final String ID = ID_ATTRIBUTE;
 
     private static final String DESCRIPTION = "description";
 
@@ -240,13 +242,13 @@ public class PluginParser
 
             BeanDefinitionBuilder plugin = parsePlugin(element);
 
-            /*List<BeanDefinitionHolder> bundles =*/ parseCommandBundles(element);
+            Map<String,BeanDefinitionHolder> bundles = parseCommandBundles(element);
 
-            /*
-            for (BeanDefinitionHolder holder : bundles) {
-                // TODO: Handle registration of the bundles?
-            }
-            */
+            ManagedList bundleNames = new ManagedList();
+            // noinspection unchecked
+            bundleNames.addAll(bundles.keySet());
+
+            plugin.addPropertyValue("bundleNames", bundleNames);
 
             return plugin;
         }
@@ -257,7 +259,16 @@ public class PluginParser
             log.trace("Parse plugin; element: {}", element);
 
             BeanDefinitionBuilder plugin = BeanDefinitionBuilder.childBeanDefinition(PLUGIN_TEMPLATE);
-            plugin.addPropertyValue(ID, element.getAttribute(NAME));
+
+            String name = element.getAttribute(NAME);
+            plugin.addConstructorArgValue(name);
+
+            //
+            // FIXME: Give the Plugin bean a more meaningful ID, need to stop using AbstractBeanDefinitionParser to do this.
+            //
+
+            // String id = Plugin.class.getName() + "#" + name;
+            // plugin.addPropertyValue(ID, id);
 
             parseAndApplyDescription(element, plugin);
 
@@ -268,25 +279,27 @@ public class PluginParser
         // <gshell:command-bundle>
         //
 
-        private List<BeanDefinitionHolder> parseCommandBundles(final Element element) {
+        private Map<String,BeanDefinitionHolder> parseCommandBundles(final Element element) {
             assert element != null;
 
             log.trace("Parse command bundles; element: {}", element);
 
+            Map<String,BeanDefinitionHolder> bundles = new LinkedHashMap<String,BeanDefinitionHolder>();
             List<Element> children = getChildElements(element, COMMAND_BUNDLE);
-            List<BeanDefinitionHolder> holders = new ArrayList<BeanDefinitionHolder>();
 
             for (Element child : children) {
+                String name = child.getAttribute(NAME);
                 BeanDefinitionBuilder bundle = parseCommandBundle(child);
 
                 // Generate id and register the bean
                 BeanDefinition def = bundle.getBeanDefinition();
                 String id = resolveId(child, def);
                 BeanDefinitionHolder holder = register(def, id);
-                holders.add(holder);
+
+                bundles.put(name, holder);
             }
 
-            return holders;
+            return bundles;
         }
 
         private BeanDefinitionBuilder parseCommandBundle(final Element element) {

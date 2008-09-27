@@ -32,7 +32,7 @@
             This is a test plugin.
         </description>
         
-        <gshell:command-bundle name="test">
+        <gshell:command-bundle name="default">
             <description>
                 This is a test bundle.
             </description>
@@ -96,6 +96,22 @@
                 </description>
             </gshell:alias>
         </gshell:command-bundle>
+
+        <gshell:command-bundle name="test">
+            <description>
+                This is a test bundle.
+            </description>
+
+            <gshell:alias name="1" alias="2"/>
+
+            <gshell:command name="a">
+                <description>
+                    This is a test command.
+                </description>
+
+                <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
+            </gshell:command>
+        </gshell:command-bundle>
     </gshell:plugin>
 
     <!--
@@ -105,7 +121,7 @@
     <bean id="pluginTemplate" class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl" abstract="true">
         <property name="activationRules">
             <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultCommandBundleActivationRule">
+                <bean class="org.apache.geronimo.gshell.wisdom.plugin.activation.DefaultBundleActivationRule">
                     <property name="bundleName" value="default"/>
                 </bean>
             </list>

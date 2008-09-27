@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
 /**
- * ???
+ * An activation task, which is the basic unit of operation for "active" bits.
  *
  * @version $Rev$ $Date$
  */

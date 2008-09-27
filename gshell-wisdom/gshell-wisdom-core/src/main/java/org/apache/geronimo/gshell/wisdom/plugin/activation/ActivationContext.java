@@ -19,15 +19,19 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
+import org.apache.geronimo.gshell.application.plugin.Plugin;
+
 import java.util.List;
 
 /**
- * ???
+ * Provides the context for activation rule processing.
  *
  * @version $Rev$ $Date$
  */
 public interface ActivationContext
 {
+    Plugin getPlugin();
+    
     List<ActivationTask> getTasks();
 
     void addTask(ActivationTask task);

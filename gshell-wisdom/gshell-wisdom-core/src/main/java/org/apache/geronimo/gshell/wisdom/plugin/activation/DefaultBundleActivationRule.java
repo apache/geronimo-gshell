@@ -17,24 +17,21 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.application.plugin;
+package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
 /**
- * Plugin.
+ * Activation rule which will enable a named-bundle only if no other activation rules have added tasks.
  *
  * @version $Rev$ $Date$
  */
-public interface Plugin
+public class DefaultBundleActivationRule
+    extends BundleActivationRule
 {
-    String getName();
+    public void evaluate(final ActivationContext context) throws Exception {
+        assert context != null;
 
-    /*
-    boolean isEnabled();
-
-    void enable() throws Exception;
-
-    void disable() throws Exception;
-    */
-    
-    void activate();
+        if (context.getTasks().isEmpty()) {
+            super.evaluate(context);
+        }
+    }
 }

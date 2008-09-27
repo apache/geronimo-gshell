@@ -133,7 +133,7 @@ public class PluginManagerImpl
 
         plugins.add(plugin);
 
-        log.debug("Activating plugin: {}", plugin.getId());
+        log.debug("Activating plugin: {}", plugin.getName());
 
         plugin.activate();
 
