@@ -22,20 +22,8 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:gshell="http://gshell.org/schema/wisdom-gshell"
        xsi:schemaLocation="
-            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
-
-    <gshell:plugin name="gshell-remote-server">
-        <gshell:command-bundle name="default">
-            <gshell:command name="rsh-server">
-                <gshell:action class="org.apache.geronimo.gshell.remote.server.RshServerCommand"/>
-            </gshell:command>
-
-            <gshell:alias name="rshd" alias="rsh-server"/>
-        </gshell:command-bundle>
-    </gshell:plugin>
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="timeoutManager" class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl"/>
 

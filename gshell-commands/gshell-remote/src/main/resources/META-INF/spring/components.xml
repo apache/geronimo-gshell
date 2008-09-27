@@ -22,19 +22,23 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:gshell="http://gshell.org/schema/wisdom-gshell"
        xsi:schemaLocation="
-            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
 
-    <bean id="jaasConfigurationLoader" class="org.apache.geronimo.gshell.remote.jaas.JaasConfigurationLoader">
-        <property name="resourceName" value="client.login.conf"/>
-    </bean>
+    <gshell:plugin name="gshell-remote">
+        <gshell:command-bundle name="default">
+            <gshell:command name="rsh">
+                <gshell:action class="org.apache.geronimo.gshell.commands.remote.RshAction"/>
+            </gshell:command>
 
-    <bean class="org.apache.geronimo.gshell.remote.client.RshClient" scope="prototype" depends-on="jaasConfigurationLoader">
-        <constructor-arg>
-            <list>
-                <bean class="org.apache.geronimo.gshell.remote.client.handler.EchoHandler"/>
-            </list>
-        </constructor-arg>
-    </bean>
+            <gshell:command name="rsh-server">
+                <gshell:action class="org.apache.geronimo.gshell.commands.remote.RshServerAction"/>
+            </gshell:command>
+
+            <gshell:alias name="rshd" alias="rsh-server"/>
+        </gshell:command-bundle>
+    </gshell:plugin>
 
 </beans>

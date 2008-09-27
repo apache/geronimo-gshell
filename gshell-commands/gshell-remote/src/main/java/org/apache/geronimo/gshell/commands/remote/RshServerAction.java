@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.commands.remote;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
@@ -27,17 +27,18 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.remote.server.RshServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
 /**
- * Command to start a remote shell server.
+ * Start a remote shell server.
  *
  * @version $Rev$ $Date$
  */
-public class RshServerCommand
+public class RshServerAction
     implements CommandAction, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

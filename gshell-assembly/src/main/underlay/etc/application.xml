@@ -66,6 +66,10 @@
                 <artifactId>gshell-admin</artifactId>
             </plugin>
 
+            <plugin>
+                <artifactId>gshell-remote</artifactId>
+            </plugin>
+
             <!--
             <plugin>
                 <artifactId>gshell-optional</artifactId>
@@ -83,19 +87,6 @@
                 <artifactId>gshell-vfs</artifactId>
             </plugin>
             -->
-        </pluginGroup>
-        
-        <pluginGroup>
-            <groupId>org.apache.geronimo.gshell.remote</groupId>
-            <version>1.0-alpha-2-SNAPSHOT</version>
-
-            <plugin>
-                <artifactId>gshell-remote-client</artifactId>
-            </plugin>
-            
-            <plugin>
-                <artifactId>gshell-remote-server</artifactId>
-            </plugin>
         </pluginGroup>
     </pluginGroups>
 
