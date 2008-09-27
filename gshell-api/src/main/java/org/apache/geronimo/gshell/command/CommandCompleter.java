@@ -21,6 +21,8 @@ package org.apache.geronimo.gshell.command;
 
 import jline.Completor;
 
+import java.util.Collection;
+
 /**
  * Provides completion support for a command.
  *
@@ -28,9 +30,5 @@ import jline.Completor;
  */
 public interface CommandCompleter
 {
-    //
-    // FIXME: Use Completer here from gshell-console instead
-    //
-
-    Completor createCompletor();
+    Collection<Completor> createCompletors();
 }

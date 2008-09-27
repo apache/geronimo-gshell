@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.console.completer;
 
+import jline.Completor;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -30,19 +32,19 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 public class MuxCompleter
-    implements Completer
+    implements Completor
 {
-    private final List<Completer> completers = new ArrayList<Completer>();
+    private final List<Completor> completers = new ArrayList<Completor>();
 
     public MuxCompleter() {}
 
-    public MuxCompleter(final Collection<Completer> completers) {
+    public MuxCompleter(final Collection<Completor> completers) {
         assert completers != null;
 
         getCompleters().addAll(completers);
     }
 
-    public Collection<Completer> getCompleters() {
+    public Collection<Completor> getCompleters() {
         return completers;
     }
 
@@ -54,7 +56,7 @@ public class MuxCompleter
 
         // Run each completer, saving its completion results
         int max = -1;
-        for (Completer completer : completers) {
+        for (Completor completer : completers) {
             Completion completion = new Completion(candidates);
             completion.complete(completer, buffer, cursor);
 
@@ -88,7 +90,7 @@ public class MuxCompleter
             this.candidates = new LinkedList<String>(candidates);
         }
 
-        public void complete(final Completer completer, final String buffer, final int cursor) {
+        public void complete(final Completor completer, final String buffer, final int cursor) {
             assert completer != null;
 
             this.cursor = completer.complete(buffer, cursor, candidates);

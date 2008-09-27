@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
+import jline.Completor;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.application.Application;
@@ -29,7 +30,6 @@ import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.JLineConsole;
-import org.apache.geronimo.gshell.console.completer.Completer;
 import org.apache.geronimo.gshell.console.completer.MuxCompleter;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
@@ -76,7 +76,7 @@ public class ShellImpl
     @Autowired
     private History history;
 
-    private List<Completer> completers;
+    private List<Completor> completers;
 
     private ShellContext context;
 
@@ -86,7 +86,7 @@ public class ShellImpl
 
     private ErrorHandler errorHandler;
 
-    public void setCompleters(final List<Completer> completers) {
+    public void setCompleters(final List<Completor> completers) {
         assert completers != null;
 
         this.completers = completers;
@@ -268,7 +268,7 @@ public class ShellImpl
                 buff.append(hostName);
                 buff.append(":");
                 buff.append(Renderer.encode(appName, Code.BOLD));
-                buff.append(">");
+                buff.append("> ");
 
                 return renderer.render(buff.toString());
             }

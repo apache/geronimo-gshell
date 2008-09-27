@@ -73,6 +73,10 @@
 
             <gshell:command name="unalias">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnaliasAction"/>
+                <!--
+                FIXME: Need to resolve some binding issues...
+                <gshell:completer class="org.apache.geronimo.gshell.commands.builtins.UnaliasAction$Completer"/>
+                -->
             </gshell:command>
             
             <gshell:command name="history">

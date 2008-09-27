@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.wisdom.shell.completer;
 
-import org.apache.geronimo.gshell.console.completer.Completer;
 import org.apache.geronimo.gshell.console.completer.StringsCompleter;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
@@ -35,13 +34,15 @@ import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 
+import jline.Completor;
+
 /**
- * {@link Completer} for alias names.
+ * {@link Completor} for alias names.
  *
  * @version $Rev$ $Date$
  */
-public class AliasNameCompleter
-    implements Completer
+public class AliasesCompleter
+    implements Completor
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 

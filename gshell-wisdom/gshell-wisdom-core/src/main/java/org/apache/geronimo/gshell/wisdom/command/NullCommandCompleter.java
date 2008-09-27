@@ -22,6 +22,8 @@ package org.apache.geronimo.gshell.wisdom.command;
 import jline.Completor;
 import org.apache.geronimo.gshell.command.CommandCompleter;
 
+import java.util.Collection;
+
 /**
  * A <em>null</em> {@link CommandCompleter}.
  *
@@ -30,9 +32,7 @@ import org.apache.geronimo.gshell.command.CommandCompleter;
 public class NullCommandCompleter
     implements CommandCompleter
 {
-    public Completor createCompletor() {
-        // Nothing
-
+    public Collection<Completor> createCompletors() {
         return null;
     }
 }

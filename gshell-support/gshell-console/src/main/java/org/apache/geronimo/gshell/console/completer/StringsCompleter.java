@@ -19,10 +19,13 @@
 
 package org.apache.geronimo.gshell.console.completer;
 
+import jline.Completor;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Arrays;
 
 /**
  * Completer for a set of strings.
@@ -30,7 +33,7 @@ import java.util.TreeSet;
  * @version $Rev$ $Date$
  */
 public class StringsCompleter
-    implements Completer
+    implements Completor
 {
     private final SortedSet<String> strings = new TreeSet<String>();
 
@@ -40,6 +43,10 @@ public class StringsCompleter
         assert strings != null;
 
         getStrings().addAll(strings);
+    }
+
+    public StringsCompleter(final String[] strings) {
+        this(Arrays.asList(strings));
     }
 
     public Collection<String> getStrings() {
