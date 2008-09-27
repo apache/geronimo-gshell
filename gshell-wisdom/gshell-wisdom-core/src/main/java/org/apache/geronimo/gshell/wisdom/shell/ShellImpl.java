@@ -24,6 +24,7 @@ import jline.Completor;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -40,7 +41,6 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
@@ -65,10 +65,10 @@ public class ShellImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private EventManager eventManager;
+    private ApplicationManager applicationManager;
 
     @Autowired
-    private ShellInfo shellInfo;
+    private EventManager eventManager;
 
     @Autowired
     private CommandLineExecutor executor;
@@ -97,10 +97,6 @@ public class ShellImpl
             throw new IllegalStateException("Shell context has not been initialized");
         }
         return context;
-    }
-
-    public ShellInfo getInfo() {
-        return shellInfo;
     }
 
     public boolean isInteractive() {
@@ -253,21 +249,16 @@ public class ShellImpl
             Renderer renderer = new Renderer();
 
             public String prompt() {
-                assert shellInfo != null;
-
-                // FIXME: Need to use some sort of format based on branding, for now hardcode this
-                String userName = shellInfo.getUserName();
-                String hostName = shellInfo.getLocalHost().getHostName();
-
-                // FIXME: Get this from Branding/Application
-                String appName = "gshell";
-
+                assert applicationManager != null;
+                Application app = applicationManager.getApplication();
+                Branding branding = app.getModel().getBranding();
+                
                 StringBuilder buff = new StringBuilder();
-                buff.append(Renderer.encode(userName, Code.BOLD));
+                buff.append(Renderer.encode(app.getUserName(), Code.BOLD));
                 buff.append("@");
-                buff.append(hostName);
+                buff.append(app.getLocalHost().getHostName());
                 buff.append(":");
-                buff.append(Renderer.encode(appName, Code.BOLD));
+                buff.append(Renderer.encode(branding.getName(), Code.BOLD));
                 buff.append("> ");
 
                 return renderer.render(buff.toString());

@@ -17,33 +17,60 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell;
+package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.geronimo.gshell.shell.ShellInfo;
+import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.ApplicationConfiguration;
+import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * Provides some runtime information about the shell.
+ * Event fired once the application has constructed a shell.
  *
  * @version $Rev$ $Date$
  */
-public class ShellInfoImpl
-    implements ShellInfo
+public class ApplicationImpl
+    implements Application
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private final ApplicationConfiguration config;
 
     private InetAddress localHost;
 
     private File homeDir;
 
-    public ShellInfoImpl() {}
+    public ApplicationImpl(final ApplicationConfiguration config) throws Exception {
+        assert config != null;
+
+        this.config = config;
+        this.homeDir = detectHomeDir();
+        this.localHost = InetAddress.getLocalHost();
+    }
+
+    public String getId() {
+        return config.getModel().getId();
+    }
+
+    public IO getIo() {
+        return config.getIo();
+    }
+
+    public Variables getVariables() {
+        return config.getVariables();
+    }
+
+    public ApplicationModel getModel() {
+        return config.getModel();
+    }
 
     public File getHomeDir() {
         if (homeDir == null) {
@@ -63,21 +90,6 @@ public class ShellInfoImpl
 
     public String getUserName() {
         return System.getProperty("user.name");
-    }
-
-    @SuppressWarnings({"UnusedDeclaration"})
-    @PostConstruct
-    private void init() {
-        homeDir = detectHomeDir();
-
-        log.debug("Using home directory: {}", homeDir);
-
-        try {
-            localHost = InetAddress.getLocalHost();
-        }
-        catch (UnknownHostException e) {
-            throw new RuntimeException("Unable to determine locahost", e);
-        }
     }
 
     private File detectHomeDir() {

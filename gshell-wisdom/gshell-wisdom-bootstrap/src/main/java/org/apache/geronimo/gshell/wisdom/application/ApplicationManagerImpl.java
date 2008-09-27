@@ -115,23 +115,7 @@ public class ApplicationManagerImpl
         configure(config.getModel());
 
         // Create a new context
-        application = new Application() {
-            public String getId() {
-                return config.getModel().getId();
-            }
-
-            public IO getIo() {
-                return config.getIo();
-            }
-
-            public Variables getVariables() {
-                return config.getVariables();
-            }
-
-            public ApplicationModel getModel() {
-                return config.getModel();
-            }
-        };
+        application = new ApplicationImpl(config);
 
         log.debug("Application configured");
         

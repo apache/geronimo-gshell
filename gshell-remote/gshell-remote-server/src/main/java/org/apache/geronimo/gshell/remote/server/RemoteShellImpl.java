@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.remote.server;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,6 @@ public class RemoteShellImpl
     implements RemoteShell
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private ShellInfo shellInfo;
 
     @Autowired
     private CommandLineExecutor executor;
@@ -73,12 +69,6 @@ public class RemoteShellImpl
         }
 
         return context;
-    }
-    
-    public ShellInfo getInfo() {
-        ensureOpened();
-
-        return shellInfo;
     }
 
     public Object execute(final String line) throws Exception {

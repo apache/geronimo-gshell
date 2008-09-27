@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.client.RshClient;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.shell.ShellInfo;
 import org.apache.geronimo.gshell.whisper.stream.StreamFeeder;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
@@ -53,8 +52,6 @@ public class RemoteShellProxy
 
     private final ShellContext context;
 
-    private final RemoteShellInfoProxy shellInfo;
-
     private final RemoteHistoryProxy history;
 
     private boolean opened;
@@ -74,7 +71,6 @@ public class RemoteShellProxy
         client.openShell();
 
         // Setup other proxies
-        shellInfo = new RemoteShellInfoProxy(client);
         history = new RemoteHistoryProxy(client);
 
         // Copy the client's input stream to our outputstream so users see command output
@@ -122,12 +118,6 @@ public class RemoteShellProxy
         ensureOpened();
 
         return context;
-    }
-
-    public ShellInfo getInfo() {
-        ensureOpened();
-
-        return shellInfo;
     }
 
     public Object execute(final String line) throws Exception {

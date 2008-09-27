@@ -23,6 +23,9 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.command.Variables;
 
+import java.io.File;
+import java.net.InetAddress;
+
 /**
  * Encapsulates the context for an application.
  *
@@ -37,4 +40,25 @@ public interface Application
     Variables getVariables();
     
     ApplicationModel getModel();
+
+    /**
+     * Returns the home directory of the shell.
+     *
+     * @return  Shell home directory; never null;
+     */
+    File getHomeDir();
+
+    /**
+     * Returns the local IP address of the shell.
+     *
+     * @return  The local IP address of the shell; never null;
+     */
+    InetAddress getLocalHost();
+
+    /**
+     * Returns the name of the current user.
+     *
+     * @return  The current user name; never null;
+     */
+    String getUserName();
 }

@@ -39,8 +39,6 @@
 
     <bean id="history" class="org.apache.geronimo.gshell.wisdom.shell.HistoryImpl"/>
 
-    <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl"/>
-
     <bean id="commandNameCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandNameCompleter"/>
 
     <bean id="aliasNameCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.AliasNameCompleter"/>

@@ -28,8 +28,6 @@ public interface Shell
 {
     ShellContext getContext();
 
-    ShellInfo getInfo();
-
     Object execute(String line) throws Exception;
 
     Object execute(String command, Object[] args) throws Exception;
