@@ -104,6 +104,30 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:group name="commandComponentElements">
+        <xsd:annotation>
+            <xsd:documentation>
+                Defines the valid elements for command components.  This is based on beans:beanElements,
+                stripping off the bits which are not valid in the command component context.
+            </xsd:documentation>
+        </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="beans:description" minOccurs="0"/>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="beans:meta"/>
+				<xsd:element ref="beans:constructor-arg"/>
+				<xsd:element ref="beans:property"/>
+				<xsd:element ref="beans:qualifier"/>
+				<xsd:element ref="beans:lookup-method"/>
+				<xsd:element ref="beans:replaced-method"/>
+				<!--
+				NOTE: This seems to cause schema validation problems... not really sure why
+				<xsd:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+				-->
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:group>
+
     <xsd:attributeGroup name="commandComponentAttributes">
         <xsd:annotation>
             <xsd:documentation>
@@ -152,12 +176,8 @@
                 Support for command component elements, which are all basically just beans.
             </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="beans:identifiedType">
-                <xsd:group ref="beans:beanElements"/>
-                <xsd:attributeGroup ref="commandComponentAttributes"/>
-            </xsd:extension>
-        </xsd:complexContent>
+        <xsd:group ref="commandComponentElements"/>
+        <xsd:attributeGroup ref="commandComponentAttributes"/>
     </xsd:complexType>
     
     <xsd:element name="action">
