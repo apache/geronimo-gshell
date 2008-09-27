@@ -24,6 +24,7 @@
 
     <groupId>org.apache.geronimo.gshell</groupId>
     <artifactId>gshell</artifactId>
+    <name>Apache GShell</name>
     <version>1.0-alpha-2-SNAPSHOT</version>
 
     <localRepository>
