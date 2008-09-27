@@ -20,11 +20,9 @@
 package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -34,32 +32,20 @@ import java.util.Map;
  * @version $Rev$ $Date$
  */
 public class CommandBundle
-    implements Bundle
+    extends BundleSupport
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private CommandRegistry commandRegistry;
 
     @Autowired
     private AliasRegistry aliasRegistry;
 
-    private boolean enabled = false;
-
-    private String name;
-
     private Map<String,Command> commands;
 
     private Map<String,String> aliases;
 
     public CommandBundle(final String name) {
-        assert name != null;
-
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+        super(name);
     }
 
     public Map<String, Command> getCommands() {
@@ -82,43 +68,27 @@ public class CommandBundle
         this.aliases = aliases;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void enable() throws Exception {
-        if (enabled) {
-            throw new IllegalStateException("Already enabled");
-        }
-
-        log.debug("Enabling");
-
+    protected void doEnable() throws Exception {
+        assert commandRegistry != null;
         for (String name : commands.keySet()) {
             commandRegistry.registerCommand(name, commands.get(name));
         }
 
+        assert aliasRegistry != null;
         for (String name : aliases.keySet()) {
             aliasRegistry.registerAlias(name, aliases.get(name));
         }
-
-        enabled = true;
     }
 
-    public void disable() throws Exception {
-        if (!enabled) {
-            throw new IllegalStateException("Not enabled");
-        }
-
-        log.debug("Disabling");
-        
+    protected void doDisable() throws Exception {
+        assert commandRegistry != null;
         for (String name : commands.keySet()) {
             commandRegistry.removeCommand(name);
         }
 
+        assert aliasRegistry != null;
         for (String name : aliases.keySet()) {
             aliasRegistry.removeAlias(name);
         }
-
-        enabled = false;
     }
 }
