@@ -257,16 +257,9 @@ public class Main
         System.exit(code);
     }
 
-    public static void main(final String[] args) {
-        try {
-            Main main = new Main();
-            main.boot(args);
-        }
-        catch (Throwable t) {
-            // Avoid ugly/confusing classworlds muck when an exception occurs which is not handled
-            t.printStackTrace(System.err);
-            System.err.flush();
-        }
+    public static void main(final String[] args) throws Exception {
+        Main main = new Main();
+        main.boot(args);
     }
 }
 

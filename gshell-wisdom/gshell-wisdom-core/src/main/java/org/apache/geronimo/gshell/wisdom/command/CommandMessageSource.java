@@ -41,6 +41,11 @@ public class CommandMessageSource
         this.command = command;
     }
 
+    //
+    // FIXME: See if we can use more gshell: ns glue to automatically configure this message source to *NOT* require the Action instance,
+    //        only use the class-name, that should speed up help rendering a lot.
+    //
+    
     private MessageSource getMessages() {
         if (messages == null) {
             assert command != null;
