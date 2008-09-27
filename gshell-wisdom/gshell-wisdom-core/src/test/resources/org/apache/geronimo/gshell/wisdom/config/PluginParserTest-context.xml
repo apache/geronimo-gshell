@@ -49,6 +49,8 @@
 
             <gshell:alias name="foo" alias="bar"/>
 
+            <gshell:link name="ick" target="poo"/>
+            
             <gshell:command name="b" type="stateless">
                 <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
             </gshell:command>

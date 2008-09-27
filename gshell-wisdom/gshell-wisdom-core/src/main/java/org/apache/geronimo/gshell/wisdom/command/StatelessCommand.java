@@ -32,7 +32,6 @@ import org.apache.geronimo.gshell.spring.BeanContainerAware;
  */
 public class StatelessCommand
     extends CommandSupport
-    implements BeanContainerAware
 {
     // Expose some of our super-classes properties for spring configuration
 

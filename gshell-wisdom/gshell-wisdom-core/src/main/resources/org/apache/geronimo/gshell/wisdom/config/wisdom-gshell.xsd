@@ -62,6 +62,7 @@
                 <xsd:choice minOccurs="0" maxOccurs="unbounded">
 					<xsd:element ref="command"/>
 					<xsd:element ref="alias"/>
+                    <xsd:element ref="link"/>
 				</xsd:choice>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
@@ -101,6 +102,21 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="link">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation>
+                    Defines a link command.
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:sequence>
+                <xsd:element ref="beans:description" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="target" type="xsd:string" use="required"/>
         </xsd:complexType>
     </xsd:element>
 

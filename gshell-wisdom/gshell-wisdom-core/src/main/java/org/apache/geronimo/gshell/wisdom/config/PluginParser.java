@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.config;
 
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
+import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +86,10 @@ public class PluginParser
     private static final String ALIAS = "alias";
     
     private static final String ALIASES = "aliases";
+
+    private static final String LINK = "link";
+
+    private static final String TARGET = "target";
 
     @Override
     protected boolean shouldGenerateId() {
@@ -320,6 +325,8 @@ public class PluginParser
             ManagedMap commands = new ManagedMap();
             // noinspection unchecked
             commands.putAll(parseCommands(element));
+            // noinspection unchecked
+            commands.putAll(parseLinks(element));
             bundle.addPropertyValue(COMMANDS, commands);
 
             ManagedMap aliases = new ManagedMap();
@@ -410,6 +417,30 @@ public class PluginParser
             // Generate id and register the bean
             String id = resolveId(element, action);
             return register(action, id);
+        }
+
+        //
+        // <gshell:link>
+        //
+
+        private Map<String,BeanDefinition> parseLinks(final Element element) {
+            assert element != null;
+
+            log.trace("Parse links; element; {}", element);
+
+            Map<String,BeanDefinition> links = new LinkedHashMap<String,BeanDefinition>();
+
+            List<Element> children = getChildElements(element, LINK);
+
+            for (Element child : children) {
+                BeanDefinitionBuilder link = BeanDefinitionBuilder.rootBeanDefinition(LinkCommand.class);
+                link.addConstructorArgValue(child.getAttribute(TARGET));
+
+                String name = child.getAttribute(NAME);
+                links.put(name, link.getBeanDefinition());
+            }
+
+            return links;
         }
 
         //
