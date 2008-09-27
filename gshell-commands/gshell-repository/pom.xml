@@ -34,7 +34,7 @@
     <name>GShell Commands :: Repository</name>
     
     <description>
-        Provides commands to opperate on the repository.
+        Provides commands to operate on a Maven repository.
     </description>
 
     <dependencies>
