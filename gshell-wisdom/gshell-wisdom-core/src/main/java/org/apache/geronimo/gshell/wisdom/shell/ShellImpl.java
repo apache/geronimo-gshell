@@ -19,10 +19,9 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import jline.Completor;
 import jline.History;
-import jline.MultiCompletor;
 import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
@@ -30,6 +29,8 @@ import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.JLineConsole;
+import org.apache.geronimo.gshell.console.completer.Completer;
+import org.apache.geronimo.gshell.console.completer.MuxCompleter;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
@@ -75,7 +76,7 @@ public class ShellImpl
     @Autowired
     private History history;
 
-    private List<Completor> completors;
+    private List<Completer> completers;
 
     private ShellContext context;
 
@@ -85,10 +86,10 @@ public class ShellImpl
 
     private ErrorHandler errorHandler;
 
-    public void setCompletors(final List<Completor> completors) {
-        assert completors != null;
+    public void setCompleters(final List<Completer> completers) {
+        assert completers != null;
 
-        this.completors = completors;
+        this.completers = completers;
     }
 
     public ShellContext getContext() {
@@ -198,10 +199,10 @@ public class ShellImpl
         console.setErrorHandler(getErrorHandler());
         console.setHistory(history);
 
-        // Attach completors if there are any
-        if (completors != null) {
-            // Have to use MultiCompletor here to get the completion list to update properly
-            console.addCompleter(new MultiCompletor(completors));
+        // Attach completers if there are any
+        if (completers != null) {
+            // Have to use mux here to get the completion list to update properly
+            console.addCompleter(new MuxCompleter(completers));
         }
 
         // Unless the user wants us to shut up, then display a nice welcome banner
@@ -254,15 +255,22 @@ public class ShellImpl
             public String prompt() {
                 assert shellInfo != null;
 
+                // FIXME: Need to use some sort of format based on branding, for now hardcode this
                 String userName = shellInfo.getUserName();
                 String hostName = shellInfo.getLocalHost().getHostName();
 
-                //
-                // HACK: There is no path... yet ;-)
-                //
-                String path = "/";
+                // FIXME: Get this from Branding/Application
+                String appName = "gshell";
 
-                return renderer.render("@|bold " + userName + "|@" + hostName + ":@|bold " + path + "|> ");
+                StringBuilder buff = new StringBuilder();
+                buff.append(Renderer.encode(userName, Code.BOLD));
+                buff.append("@");
+                buff.append(hostName);
+                buff.append(":");
+                buff.append(Renderer.encode(appName, Code.BOLD));
+                buff.append(">");
+
+                return renderer.render(buff.toString());
             }
         };
     }

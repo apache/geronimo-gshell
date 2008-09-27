@@ -42,13 +42,10 @@
     <bean id="shellInfo" class="org.apache.geronimo.gshell.wisdom.shell.ShellInfoImpl"/>
 
     <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl">
-        <property name="completors">
+        <property name="completers">
             <list>
-                <bean class="org.apache.geronimo.gshell.wisdom.shell.completor.CommandNameCompletor"/>
-                <bean class="org.apache.geronimo.gshell.wisdom.shell.completor.AliasNameCompletor"/>
-                <!--
-                TODO: Need to hook up support for Command-specific completors.
-                -->
+                <bean class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandNameCompleter"/>
+                <bean class="org.apache.geronimo.gshell.wisdom.shell.completer.AliasNameCompleter"/>
             </list>
         </property>
     </bean>

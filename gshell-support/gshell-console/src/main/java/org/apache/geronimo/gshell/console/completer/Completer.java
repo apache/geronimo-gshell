@@ -17,20 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.command;
+package org.apache.geronimo.gshell.console.completer;
 
 import jline.Completor;
 
 /**
- * Provides completion support for a command.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface CommandCompleter
+public interface Completer
+    extends Completor
 {
-    //
-    // FIXME: Use Completer here from gshell-console instead
-    //
-
-    Completor createCompletor();
+    // int complete(String buffer, int cursor, List<String> candidates);
 }

@@ -17,10 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell.completor;
+package org.apache.geronimo.gshell.wisdom.shell.completer;
 
-import jline.Completor;
-import jline.SimpleCompletor;
+import org.apache.geronimo.gshell.console.completer.Completer;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
@@ -34,16 +33,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
- * {@link Completor} for command names.
+ * {@link Completer} for commands.
  *
  * @version $Rev$ $Date$
  */
-public class CommandNameCompletor
-    implements Completor
+public class CommandsCompleter
+    implements Completer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -53,35 +50,31 @@ public class CommandNameCompletor
     @Autowired
     private CommandRegistry commandRegistry;
 
-    private final SimpleCompletor delegate = new SimpleCompletor(new String[0]);
-
-    private final SortedSet<String> candidates = new TreeSet<String>();
-
     @PostConstruct
     public void init() {
         log.debug("Initializing");
 
         // Populate the initial list of command names
         Collection<String> names = commandRegistry.getCommandNames();
-        candidates.addAll(names);
-        delegate.setCandidates(candidates);
+        // TODO:
 
         // Register for updates to command registrations
         eventManager.addListener(new EventListener() {
             public void onEvent(final Event event) throws Exception {
                 if (event instanceof CommandRegisteredEvent) {
                     CommandRegisteredEvent targetEvent = (CommandRegisteredEvent)event;
-                    candidates.add(targetEvent.getName());
+                    // TODO:
                 }
                 else if (event instanceof CommandRemovedEvent) {
                     CommandRemovedEvent targetEvent = (CommandRemovedEvent)event;
-                    candidates.remove(targetEvent.getName());
+                    // TODO:
                 }
             }
         });
     }
 
     public int complete(final String buffer, final int cursor, final List candidates) {
-        return delegate.complete(buffer, cursor, candidates);
+        // TODO:
+        return -1;
     }
 }
