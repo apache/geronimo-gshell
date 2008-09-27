@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell.completer;
+package org.apache.geronimo.gshell.wisdom.completer;
 
 import jline.Completor;
 import org.apache.geronimo.gshell.application.Application;

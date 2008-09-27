@@ -39,11 +39,11 @@
 
     <bean id="history" class="org.apache.geronimo.gshell.wisdom.shell.HistoryImpl"/>
 
-    <bean id="commandNameCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandNameCompleter"/>
+    <bean id="commandNameCompleter" class="org.apache.geronimo.gshell.wisdom.completer.CommandNameCompleter"/>
 
-    <bean id="aliasNameCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.AliasNameCompleter"/>
+    <bean id="aliasNameCompleter" class="org.apache.geronimo.gshell.wisdom.completer.AliasNameCompleter"/>
 
-    <bean id="commandsCompleter" class="org.apache.geronimo.gshell.wisdom.shell.completer.CommandsCompleter"/>
+    <bean id="commandsCompleter" class="org.apache.geronimo.gshell.wisdom.completer.CommandsCompleter"/>
 
     <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl">
         <property name="completers">

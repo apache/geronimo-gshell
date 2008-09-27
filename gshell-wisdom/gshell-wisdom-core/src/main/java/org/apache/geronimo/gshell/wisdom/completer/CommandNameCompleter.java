@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell.completer;
+package org.apache.geronimo.gshell.wisdom.completer;
 
 import org.apache.geronimo.gshell.console.completer.StringsCompleter;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
-import org.apache.geronimo.gshell.registry.AliasRegistry;
-import org.apache.geronimo.gshell.wisdom.registry.AliasRegisteredEvent;
-import org.apache.geronimo.gshell.wisdom.registry.AliasRemovedEvent;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
+import org.apache.geronimo.gshell.wisdom.registry.CommandRemovedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +37,13 @@ import java.util.List;
 import jline.Completor;
 
 /**
- * {@link Completor} for alias names.
+ * {@link Completor} for command names.
+ *
+ * Keeps up to date automatically by handling command-related events.
  *
  * @version $Rev$ $Date$
  */
-public class AliasNameCompleter
+public class CommandNameCompleter
     implements Completor
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -50,7 +52,7 @@ public class AliasNameCompleter
     private EventManager eventManager;
 
     @Autowired
-    private AliasRegistry aliasRegistry;
+    private CommandRegistry commandRegistry;
 
     private final StringsCompleter delegate = new StringsCompleter();
 
@@ -58,19 +60,19 @@ public class AliasNameCompleter
     public void init() {
         log.debug("Initializing");
 
-        // Populate the initial list of alias names
-        Collection<String> names = aliasRegistry.getAliasNames();
+        // Populate the initial list of command names
+        Collection<String> names = commandRegistry.getCommandNames();
         delegate.getStrings().addAll(names);
 
-        // Register for updates to alias registrations
+        // Register for updates to command registrations
         eventManager.addListener(new EventListener() {
             public void onEvent(final Event event) throws Exception {
-                if (event instanceof AliasRegisteredEvent) {
-                    AliasRegisteredEvent targetEvent = (AliasRegisteredEvent)event;
+                if (event instanceof CommandRegisteredEvent) {
+                    CommandRegisteredEvent targetEvent = (CommandRegisteredEvent)event;
                     delegate.getStrings().add(targetEvent.getName());
                 }
-                else if (event instanceof AliasRemovedEvent) {
-                    AliasRemovedEvent targetEvent = (AliasRemovedEvent)event;
+                else if (event instanceof CommandRemovedEvent) {
+                    CommandRemovedEvent targetEvent = (CommandRemovedEvent)event;
                     delegate.getStrings().remove(targetEvent.getName());
                 }
             }

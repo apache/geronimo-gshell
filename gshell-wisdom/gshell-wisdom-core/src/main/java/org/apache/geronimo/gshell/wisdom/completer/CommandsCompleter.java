@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.shell.completer;
+package org.apache.geronimo.gshell.wisdom.completer;
 
 import jline.ArgumentCompletor;
 import jline.Completor;
@@ -44,6 +44,8 @@ import java.util.Map;
 
 /**
  * {@link Completor} for commands, including support for command-specific sub-completion.
+ * 
+ * Keeps up to date automatically by handling command-related events.
  *
  * @version $Rev$ $Date$
  */

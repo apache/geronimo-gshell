@@ -91,7 +91,7 @@
                 <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
                     <property name="completers">
                         <list>
-                            <bean class="org.apache.geronimo.gshell.wisdom.shell.completer.VariableNameCompleter"/>
+                            <bean class="org.apache.geronimo.gshell.wisdom.completer.VariableNameCompleter"/>
                             <null/>
                         </list>
                     </property>
