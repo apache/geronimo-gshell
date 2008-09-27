@@ -32,7 +32,6 @@ import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
 import org.apache.geronimo.gshell.wisdom.command.HelpSupport;
 import org.apache.geronimo.gshell.wisdom.command.MessageSourceCommandDocumenter;
 import org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
 import java.util.List;
@@ -45,32 +44,26 @@ import java.util.List;
 public class AliasCommand
     extends CommandSupport
 {
-    @Autowired
-    private CommandLineExecutor executor;
+    // @Autowired
+    private final CommandLineExecutor executor;
 
-    private String name;
+    private final String name;
 
-    private String alias;
+    private final String alias;
 
-    public AliasCommand(final String name, final String alias) {
+    public AliasCommand(final String name, final String alias, final CommandLineExecutor executor) {
         assert name != null;
         assert alias != null;
+        assert executor != null;
 
         this.name = name;
         this.alias = alias;
+        this.executor = executor;
 
         setAction(new AliasCommandAction());
         setDocumenter(new AliasCommandDocumenter());
         setCompleter(new NullCommandCompleter());
         setMessages(new AliasCommandMessageSource());
-    }
-
-    public AliasCommand(final String name, final String alias, final CommandLineExecutor executor) {
-        this(name, alias);
-
-        assert executor != null;
-
-        this.executor = executor;
     }
 
     @Override
