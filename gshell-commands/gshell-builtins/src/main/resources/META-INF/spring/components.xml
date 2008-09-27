@@ -88,6 +88,14 @@
 
             <gshell:command name="unset">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnsetAction"/>
+                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
+                    <property name="completers">
+                        <list>
+                            <bean class="org.apache.geronimo.gshell.wisdom.shell.completer.VariableNameCompleter"/>
+                            <null/>
+                        </list>
+                    </property>
+                </gshell:completer>
             </gshell:command>
 
             <gshell:command name="alias">
