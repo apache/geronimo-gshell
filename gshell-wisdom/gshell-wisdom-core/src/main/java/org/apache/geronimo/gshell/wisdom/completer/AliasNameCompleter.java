@@ -58,8 +58,6 @@ public class AliasNameCompleter
 
     @PostConstruct
     public void init() {
-        log.debug("Initializing");
-
         // Populate the initial list of alias names
         Collection<String> names = aliasRegistry.getAliasNames();
         delegate.getStrings().addAll(names);

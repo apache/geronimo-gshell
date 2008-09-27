@@ -66,8 +66,6 @@ public class CommandsCompleter
 
     @PostConstruct
     public void init() throws Exception {
-        log.debug("Initializing");
-
         // Populate the initial list of completers from the currently registered commands
         Collection<String> names = commandRegistry.getCommandNames();
         for (String name : names) {

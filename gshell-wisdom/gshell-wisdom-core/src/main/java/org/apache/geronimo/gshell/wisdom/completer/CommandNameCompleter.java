@@ -58,8 +58,6 @@ public class CommandNameCompleter
 
     @PostConstruct
     public void init() {
-        log.debug("Initializing");
-
         // Populate the initial list of command names
         Collection<String> names = commandRegistry.getCommandNames();
         delegate.getStrings().addAll(names);
