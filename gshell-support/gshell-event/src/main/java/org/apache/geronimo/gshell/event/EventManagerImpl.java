@@ -72,7 +72,7 @@ public class EventManagerImpl
     public void publish(final Event event) {
         assert event != null;
 
-        log.debug("Publishing event: {}", event);
+        log.trace("Publishing event: {}", event);
 
         EventListener[] targets;
         
