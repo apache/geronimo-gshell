@@ -435,7 +435,7 @@ public class PluginParser
         private BeanDefinitionBuilder parseCommandCompleters(final Element element) {
             assert element != null;
 
-            BeanDefinitionBuilder command = BeanDefinitionBuilder.rootBeanDefinition(ConfigurableCommandCompleter.class);
+            BeanDefinitionBuilder completer = BeanDefinitionBuilder.rootBeanDefinition(ConfigurableCommandCompleter.class);
 
             ManagedList completers = new ManagedList();
 
@@ -449,7 +449,7 @@ public class PluginParser
                 }
                 else if (DomUtils.nodeNameEquals(child, REF)) {
                     BeanDefinitionParserDelegate parser = createBeanDefinitionParserDelegate(child);
-                    RuntimeBeanReference ref = (RuntimeBeanReference) parser.parsePropertySubElement(child, command.getRawBeanDefinition());
+                    RuntimeBeanReference ref = (RuntimeBeanReference) parser.parsePropertySubElement(child, completer.getRawBeanDefinition());
                     // noinspection unchecked
                     completers.add(ref);
                 }
@@ -459,9 +459,9 @@ public class PluginParser
                 }
             }
 
-            command.addPropertyValue(COMPLETERS, completers);
+            completer.addConstructorArgValue(completers);
 
-            return command;
+            return completer;
         }
 
         //
