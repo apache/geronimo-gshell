@@ -43,6 +43,10 @@ public class DefaultArtifactManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    //
+    // TODO: Look at implementing this with mercury
+    //
+
     @Requirement
     private ArtifactFactory artifactFactory;
 

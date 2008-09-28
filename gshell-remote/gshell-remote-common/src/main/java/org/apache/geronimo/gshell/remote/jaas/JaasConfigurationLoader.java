@@ -35,6 +35,10 @@ import java.net.URL;
 public class JaasConfigurationLoader
     implements BeanClassLoaderAware
 {
+    //
+    // TODO: Look at using JSecurity or spring-security to handle auth and such?
+    //
+
     private static final String KEY = "java.security.auth.login.config";
 
     private final Logger log = LoggerFactory.getLogger(getClass());

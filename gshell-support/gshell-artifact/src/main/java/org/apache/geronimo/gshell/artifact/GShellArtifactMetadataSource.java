@@ -43,6 +43,10 @@ public class GShellArtifactMetadataSource
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    //
+    // TODO: Look into creating a simple model that only deals with dependency bits and perform basic processing, avoiding the need for all this Maven stuff
+    //
+
     @Requirement(hint="maven")
     private ArtifactMetadataSource delegate;
 
