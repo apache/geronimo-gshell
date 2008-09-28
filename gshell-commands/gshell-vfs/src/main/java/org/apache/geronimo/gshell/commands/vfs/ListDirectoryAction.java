@@ -23,6 +23,9 @@ import org.apache.commons.vfs.FileContent;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.FileFilter;
+import org.apache.commons.vfs.FileSelectInfo;
+import org.apache.commons.vfs.FileFilterSelector;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
@@ -42,7 +45,10 @@ public class ListDirectoryAction
     @Argument
     private String path;
 
-    @Option(name="-r", aliases={ "--recursive" })
+    @Option(name="-a")
+    private boolean includeHidden = false;
+
+    @Option(name="-r", aliases={"--recursive"})
     private boolean recursive = false;
 
     public Object execute(final CommandContext context) throws Exception {
@@ -79,15 +85,26 @@ public class ListDirectoryAction
         assert dir != null;
         assert prefix != null;
 
-        for (FileObject child : dir.getChildren()) {
-            io.out.print(prefix);
-            io.out.print(child.getName().getBaseName());
+        FileFilter filter = new FileFilter() {
+            public boolean accept(final FileSelectInfo selection) {
+                assert selection != null;
 
-            if (child.getType() == FileType.FOLDER) {
+                // When includeHidden only include the file if there is not "." prefix, else include everything
+                return includeHidden || !selection.getFile().getName().getBaseName().startsWith(".");
+            }
+        };
+
+        FileObject[] files = dir.findFiles(new FileFilterSelector(filter));
+
+        for (FileObject file : files) {
+            io.out.print(prefix);
+            io.out.print(file.getName().getBaseName());
+
+            if (file.getType() == FileType.FOLDER) {
                 io.out.println("/");
 
                 if (recursive) {
-                    listChildren(io, child, recursive, prefix + "    ");
+                    listChildren(io, file, recursive, prefix + "    ");
                 }
             }
             else {
