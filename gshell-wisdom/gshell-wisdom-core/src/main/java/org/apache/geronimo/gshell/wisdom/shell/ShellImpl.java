@@ -103,9 +103,8 @@ public class ShellImpl
         return true;
     }
 
-    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
-    private void init() {
+    public void init() {
         eventManager.addListener(new EventListener() {
             public void onEvent(Event event) throws Exception {
                 assert event != null;
@@ -123,11 +122,21 @@ public class ShellImpl
                         }
 
                         public Variables getVariables() {
+                            //
+                            // TODO: Each shell should really have its own variables, using the apps vars as its parents
+                            //       but before we do that we need to implement a general ShellContextHolder to allow
+                            //       detached components access in the threads context.
+                            //
+
                             return application.getVariables();
                         }
                     };
                     
                     branding = application.getModel().getBranding();
+
+                    //
+                    // TODO: Populate variables with some defaults, like the username/hostname/etc.
+                    //
 
                     loadProfileScripts();
                 }
@@ -247,6 +256,13 @@ public class ShellImpl
     protected Prompter createPrompter() {
         return new Prompter() {
             Renderer renderer = new Renderer();
+
+            //
+            // TODO: Need to create a PatternPrompter, which can use interpolation of a variable to render the prompt
+            //       so the following variable value would set the same prompt as we are hardcoding here:
+            //
+            //    set gshell.prompt="@|bold ${application.username}|@${application.localHost.hostName}:@|bold ${application.branding.name}|> "
+            //
 
             public String prompt() {
                 assert applicationManager != null;
