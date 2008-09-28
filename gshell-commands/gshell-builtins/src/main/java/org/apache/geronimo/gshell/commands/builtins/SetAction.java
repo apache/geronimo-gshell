@@ -51,52 +51,75 @@ public class SetAction
     @Option(name="-m", aliases={"--mode"})
     private Mode mode = Mode.VARIABLE;
 
+    @Option(name="-v", aliases={"--verbose"})
+    private boolean verbose;
+
     @Argument
     private List<String> args = null;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
-        IO io = context.getIo();
-        Variables variables = context.getVariables();
-
         // No args... list all properties or variables
         if (args == null || args.size() == 0) {
-            switch (mode) {
-                case PROPERTY: {
-                    Properties props = System.getProperties();
-
-                    for (Object o : props.keySet()) {
-                        String name = (String) o;
-                        String value = props.getProperty(name);
-
-                        io.out.print(name);
-                        io.out.print("=");
-                        io.out.print(value);
-                        io.out.println();
-                    }
-                    break;
-                }
-
-                case VARIABLE: {
-                    Iterator<String> iter = variables.names();
-
-                    while (iter.hasNext()) {
-                        String name = iter.next();
-                        Object value = variables.get(name);
-
-                        io.out.print(name);
-                        io.out.print("=");
-                        io.out.print(value);
-                        io.out.println();
-                    }
-                    break;
-                }
-            }
-
-            return Result.SUCCESS;
+            return displayList(context);
         }
 
+        return set(context);
+    }
+
+    private Object displayList(final CommandContext context) throws Exception {
+        assert context != null;
+        IO io = context.getIo();
+
+        switch (mode) {
+            case PROPERTY: {
+                Properties props = System.getProperties();
+
+                for (Object o : props.keySet()) {
+                    String name = (String) o;
+                    String value = props.getProperty(name);
+
+                    io.out.print(name);
+                    io.out.print("=");
+                    io.out.print(value);
+                    // Value is always a string, so no need to add muck here for --verbose
+
+                    io.out.println();
+                }
+                break;
+            }
+
+            case VARIABLE: {
+                Variables variables = context.getVariables();
+                Iterator<String> iter = variables.names();
+
+                while (iter.hasNext()) {
+                    String name = iter.next();
+                    Object value = variables.get(name);
+
+                    io.out.print(name);
+                    io.out.print("=");
+                    io.out.print(value);
+
+                    // When --verbose include the class details of the value
+                    if (verbose && value != null) {
+                        io.out.print(" (");
+                        io.out.print(value.getClass());
+                        io.out.print(")");
+                    }
+
+                    io.out.println();
+                }
+                break;
+            }
+        }
+
+        return Result.SUCCESS;
+    }
+
+    private Object set(final CommandContext context) throws Exception {
+        assert context != null;
         //
         // FIXME: This does not jive well with the parser, and stuff like foo = "b a r"
         //
@@ -114,6 +137,7 @@ public class SetAction
                     break;
 
                 case VARIABLE:
+                    Variables variables = context.getVariables();
                     setVariable(variables, namevalue);
                     break;
             }
@@ -139,11 +163,11 @@ public class SetAction
             nv.name = input;
             nv.value = "true";
         }
-        else if ( firstDoubleQuote != -1) {
+        else if (firstDoubleQuote != -1) {
         	nv.name = input.substring(0,i);
         	nv.value = input.substring(firstDoubleQuote + 1, input.length()-1); 
         } 
-        else if ( firstSingleQuote != -1) {
+        else if (firstSingleQuote != -1) {
         	nv.name = input.substring(0,i);
         	nv.value = input.substring(firstSingleQuote + 1, input.length()-1); 
         } 
