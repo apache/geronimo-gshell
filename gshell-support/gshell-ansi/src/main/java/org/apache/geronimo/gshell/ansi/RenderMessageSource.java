@@ -29,6 +29,10 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
 public class RenderMessageSource
     implements MessageSource
 {
+    //
+    // TODO: Rename
+    //
+    
     private final Renderer renderer = new Renderer();
 
     private final MessageSource source;

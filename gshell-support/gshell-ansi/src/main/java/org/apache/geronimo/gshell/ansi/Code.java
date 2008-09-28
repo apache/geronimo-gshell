@@ -31,6 +31,10 @@ import java.util.Map;
  */
 public class Code
 {
+    //
+    // TODO: Rename
+    //
+    
     public static final int OFF = 0;
     public static final int BOLD = 1;
     public static final int UNDERSCORE = 4;

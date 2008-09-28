@@ -31,6 +31,10 @@ import java.io.Writer;
 public class RenderWriter
     extends PrintWriter
 {
+    //
+    // TODO: Rename
+    //
+    
     private final Renderer renderer = new Renderer();
 
     public RenderWriter(final OutputStream out) {

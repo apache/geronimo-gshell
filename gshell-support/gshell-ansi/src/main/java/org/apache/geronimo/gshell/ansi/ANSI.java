@@ -28,6 +28,10 @@ import jline.Terminal;
  */
 public class ANSI
 {
+    //
+    // TODO: Need to make this thread-aware.
+    //
+
     /**
      * Tries to detect if the current system supports ANSI.
      */

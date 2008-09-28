@@ -33,6 +33,10 @@ package org.apache.geronimo.gshell.ansi;
  */
 public class Renderer
 {
+    //
+    // TODO: Rename
+    //
+
     public static final String BEGIN_TOKEN = "@|";
 
     private static final int BEGIN_TOKEN_SIZE = BEGIN_TOKEN.length();

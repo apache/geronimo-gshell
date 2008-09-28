@@ -26,6 +26,10 @@ package org.apache.geronimo.gshell.ansi;
  */
 public class Buffer
 {
+    //
+    // TODO: Rename
+    //
+    
     private final StringBuffer buff = new StringBuffer();
 
     public Boolean ansiEnabled;
