@@ -29,12 +29,71 @@
 
     <gshell:plugin name="gshell-vfs">
         <gshell:command-bundle name="default">
-            <gshell:command name="copy">
+            <gshell:command name="cat">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CatAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
+
+            <gshell:command name="cd">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.ChangeDirectoryAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
+
+            <gshell:command name="cp">
                 <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CopyAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
+
+            <gshell:link name="copy" target="cp"/>
+
+            <gshell:command name="pwd" type="stateless">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.DisplayCurrentDirectoryAction"/>
+            </gshell:command>
+
+            <gshell:command name="ls">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.ListDirectoryAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
+
+            <gshell:link name="dir" target="ls"/>
+
+            <gshell:command name="rm">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.RemoveAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
+
+            <gshell:link name="del" target="rm"/>
+
+            <gshell:command name="touch">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.TouchAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
-    <bean id="fileSystemManager" class="org.apache.geronimo.gshell.commands.vfs.FileSystemManagerFactoryBean"/>
+    <bean id="fileSystemManager" class="org.apache.geronimo.gshell.commands.vfs.support.FileSystemManagerFactoryBean"/>
+
+    <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.commands.vfs.support.FileSystemAccessImpl"/>
+
+    <bean id="fileObjectNameCompleter" class="org.apache.geronimo.gshell.commands.vfs.support.FileObjectNameCompleter"/>
 
 </beans>

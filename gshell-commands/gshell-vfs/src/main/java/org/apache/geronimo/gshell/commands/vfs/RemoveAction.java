@@ -19,27 +19,31 @@
 
 package org.apache.geronimo.gshell.commands.vfs;
 
-import org.apache.commons.vfs.FileSystemManager;
-import org.apache.commons.vfs.VFS;
-import org.springframework.beans.factory.FactoryBean;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.Selectors;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandContext;
 
 /**
- * Sprint {@link FactoryBean} to construct the {@link FileSystemManager} instance.
+ * Remove a file or directory.
  *
  * @version $Rev$ $Date$
  */
-public class FileSystemManagerFactoryBean
-    implements FactoryBean
+public class RemoveAction
+    extends VfsActionSupport
 {
-    public Object getObject() throws Exception {
-        return VFS.getManager();
-    }
+    @Argument(required=true)
+    private String path;
 
-    public Class getObjectType() {
-        return FileSystemManager.class;
-    }
+    public Object execute(final CommandContext context) throws Exception {
+        assert context != null;
 
-    public boolean isSingleton() {
-        return true;
+        FileObject file = resolveFile(context, path);
+
+        // TODO: Validate more
+
+        file.delete(Selectors.SELECT_SELF);
+
+        return Result.SUCCESS;
     }
 }

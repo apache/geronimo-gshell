@@ -21,40 +21,44 @@ package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.Selectors;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
- * Copies a file or directory.
+ * Changes the current directory.
  *
  * @version $Rev$ $Date$
  */
-public class CopyAction
+public class ChangeDirectoryAction
     extends VfsActionSupport
 {
-    @Argument(index=0, required=true)
-    private String sourcePath;
-
-    @Argument(index=1, required=true)
-    private String targetPath;
+    @Argument
+    private String path;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
 
-        FileObject source = resolveFile(context, sourcePath);
-        FileObject target = resolveFile(context, targetPath);
-
-        // TODO: Validate more
-
-        if (target.exists() && target.getType() == FileType.FOLDER) {
-            target = target.resolveFile(source.getName().getBaseName());
+        if (path == null) {
+            // TODO: May need to ask the Application for this, as it might be different depending on the context (ie. remote user, etc)
+            path = System.getProperty("user.home");
         }
 
-        log.info("Copying {} -> {}", source, target);
+        FileObject file = resolveFile(context, path);
 
-        target.copyFrom(source, Selectors.SELECT_ALL);
+        // Complain if the file is missing or is not a directory
+        if (!file.exists()) {
+            io.error("Directory not found: {}", file.getName());
+            return Result.FAILURE;
+        }
+        else if (file.getType() != FileType.FOLDER) {
+            io.error("File is not a directory: {}", file.getName());
+            return Result.FAILURE;
+        }
 
+        setCurrentDirectory(context, file);
+        
         return Result.SUCCESS;
     }
 }

@@ -20,40 +20,32 @@
 package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.Selectors;
+import org.apache.commons.vfs.FileUtil;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
- * Copies a file or directory.
+ * Displays the contents of a file.
  *
  * @version $Rev$ $Date$
  */
-public class CopyAction
+public class CatAction
     extends VfsActionSupport
 {
-    @Argument(index=0, required=true)
-    private String sourcePath;
-
-    @Argument(index=1, required=true)
-    private String targetPath;
+    @Argument(required=true)
+    private String path;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
 
-        FileObject source = resolveFile(context, sourcePath);
-        FileObject target = resolveFile(context, targetPath);
+        FileObject file = resolveFile(context, path);
 
         // TODO: Validate more
 
-        if (target.exists() && target.getType() == FileType.FOLDER) {
-            target = target.resolveFile(source.getName().getBaseName());
-        }
-
-        log.info("Copying {} -> {}", source, target);
-
-        target.copyFrom(source, Selectors.SELECT_ALL);
+        FileUtil.writeContent(file, io.outputStream);
+        io.out.println();
 
         return Result.SUCCESS;
     }

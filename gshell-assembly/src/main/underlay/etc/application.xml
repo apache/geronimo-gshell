@@ -70,6 +70,10 @@
                 <artifactId>gshell-remote</artifactId>
             </plugin>
 
+            <plugin>
+                <artifactId>gshell-vfs</artifactId>
+            </plugin>
+            
             <!--
             <plugin>
                 <artifactId>gshell-optional</artifactId>
@@ -81,10 +85,6 @@
 
             <plugin>
                 <artifactId>gshell-bsf</artifactId>
-            </plugin>
-
-            <plugin>
-                <artifactId>gshell-vfs</artifactId>
             </plugin>
             -->
         </pluginGroup>

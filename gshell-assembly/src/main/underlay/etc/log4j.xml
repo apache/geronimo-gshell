@@ -93,6 +93,10 @@
         <level value="INFO"/>
     </logger>
 
+    <logger name="org.apache.commons.vfs.cache">
+        <level value="INFO"/>
+    </logger>
+
     <root>
         <level value="${gshell.log.console.level}"/>
         <appender-ref ref="CONSOLE"/>
