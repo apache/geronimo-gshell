@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
 import org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter;
+import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,6 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
-import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedList;
