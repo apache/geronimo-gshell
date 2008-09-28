@@ -19,18 +19,20 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
-import org.apache.geronimo.gshell.application.plugin.Plugin;
+import org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter;
+import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.ManagedList;
+import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -38,7 +40,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,14 @@ public class PluginParser
     private static final String DOCUMENTER = "documenter";
 
     private static final String COMPLETER = "completer";
+
+    private static final String COMPLETERS = "completers";
+
+    private static final String BEAN = "bean";
+
+    private static final String REF = "ref";
+
+    private static final String NULL = "null";
 
     private static final String MESSAGE_SOURCE = "message-source";
 
@@ -185,6 +194,14 @@ public class PluginParser
         }
 
         @SuppressWarnings({"unchecked"})
+        private List<Element> getChildElements(final Element element, final String[] names) {
+            assert element != null;
+            assert names != null;
+
+            return DomUtils.getChildElementsByTagName(element, names);
+        }
+
+        @SuppressWarnings({"unchecked"})
         private Element getChildElement(final Element element, final String name) {
             assert element != null;
             assert name != null;
@@ -196,11 +213,18 @@ public class PluginParser
             return null;
         }
 
-        private BeanDefinitionHolder parseBeanDefinitionElement(final Element element) {
+        private BeanDefinitionParserDelegate createBeanDefinitionParserDelegate(final Element element) {
             assert element != null;
 
             BeanDefinitionParserDelegate parser = new BeanDefinitionParserDelegate(context.getReaderContext());
             parser.initDefaults(element.getOwnerDocument().getDocumentElement());
+            return parser;
+        }
+
+        private BeanDefinitionHolder parseBeanDefinitionElement(final Element element) {
+            assert element != null;
+
+            BeanDefinitionParserDelegate parser = createBeanDefinitionParserDelegate(element);
             return parser.parseBeanDefinitionElement(element);
         }
 
@@ -318,8 +342,7 @@ public class PluginParser
             parseAndApplyDescription(element, bundle);
 
             //
-            // NOTE: Seems we have to use ManagedMap to inject things properly.
-            //       But they are not generic, so so limit their usage here.
+            // TODO: Figure out how we can save the order of <gshell:command> and <gshell:link> so that 'help' displays them in the order they are defined
             //
 
             ManagedMap commands = new ManagedMap();
@@ -390,11 +413,53 @@ public class PluginParser
                 command.addPropertyValue(COMPLETER, holder.getBeanDefinition());
             }
 
+            child = getChildElement(element, COMPLETERS);
+            if (child != null) {
+                BeanDefinitionBuilder completer = parseCommandCompleters(child);
+                command.addPropertyValue(COMPLETER, completer.getBeanDefinition());
+            }
+
             child = getChildElement(element, MESSAGE_SOURCE);
             if (child != null) {
                 BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
                 command.addPropertyValue(MESSAGES, holder.getBeanDefinition());
             }
+
+            return command;
+        }
+
+        //
+        // <gshell:completers>
+        //
+
+        private BeanDefinitionBuilder parseCommandCompleters(final Element element) {
+            assert element != null;
+
+            BeanDefinitionBuilder command = BeanDefinitionBuilder.rootBeanDefinition(ConfigurableCommandCompleter.class);
+
+            ManagedList completers = new ManagedList();
+
+            List<Element> children = getChildElements(element, new String[] {BEAN, REF, NULL});
+
+            for (Element child : children) {
+                if (DomUtils.nodeNameEquals(child, BEAN)) {
+                    BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
+                    // noinspection unchecked
+                    completers.add(holder.getBeanDefinition());
+                }
+                else if (DomUtils.nodeNameEquals(child, REF)) {
+                    BeanDefinitionParserDelegate parser = createBeanDefinitionParserDelegate(child);
+                    RuntimeBeanReference ref = (RuntimeBeanReference) parser.parsePropertySubElement(child, command.getRawBeanDefinition());
+                    // noinspection unchecked
+                    completers.add(ref);
+                }
+                else if (DomUtils.nodeNameEquals(child, NULL)) {
+                    // noinspection unchecked
+                    completers.add(null);
+                }
+            }
+
+            command.addPropertyValue(COMPLETERS, completers);
 
             return command;
         }

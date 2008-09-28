@@ -85,7 +85,10 @@
                 -->
                 <xsd:element ref="action" minOccurs="1" maxOccurs="1"/>
                 <xsd:element ref="documenter" minOccurs="0" maxOccurs="1"/>
-                <xsd:element ref="completer" minOccurs="0" maxOccurs="1"/>
+                <xsd:choice minOccurs="0" maxOccurs="1">
+                    <xsd:element ref="completer"/>
+                    <xsd:element ref="completers"/>
+                </xsd:choice>
                 <xsd:element ref="message-source" minOccurs="0" maxOccurs="1"/>
             </xsd:sequence>
             <xsd:attribute name="name" type="xsd:string" use="required"/>
@@ -232,6 +235,23 @@
             <xsd:complexContent>
                 <xsd:extension base="commandComponent"/>
             </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="completers">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation>
+                    Defines a configurable command completer with a set of completers.
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:sequence>
+                <xsd:choice minOccurs="1" maxOccurs="unbounded">
+                    <xsd:element ref="beans:bean"/>
+                    <xsd:element ref="beans:ref"/>
+                    <xsd:element ref="beans:null"/>
+                </xsd:choice>
+            </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
 

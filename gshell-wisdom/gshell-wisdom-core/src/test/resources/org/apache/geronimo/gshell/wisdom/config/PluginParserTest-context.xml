@@ -112,6 +112,11 @@
                 </description>
 
                 <gshell:action class="org.apache.geronimo.gshell.wisdom.config.DummyAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
