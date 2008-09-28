@@ -57,7 +57,7 @@ public class FileSystemAccessImpl
 
         Object var = vars.get(CWD);
         if (var instanceof String) {
-            log.debug("Resolving CWD from string: {}", var);
+            log.trace("Resolving CWD from string: {}", var);
 
             cwd = getManager().resolveFile((String)var);
         }
@@ -69,7 +69,7 @@ public class FileSystemAccessImpl
         }
 
         if (cwd == null) {
-            log.debug("CWD not set, resolving from user.dir");
+            log.trace("CWD not set, resolving from user.dir");
 
             // TODO: May need to ask the Application for this, as it might be different depending on the context (ie. remote user, etc)
             String userDir = System.getProperty("user.dir");
@@ -82,7 +82,7 @@ public class FileSystemAccessImpl
     public FileObject getCurrentDirectory() throws FileSystemException {
         assert applicationManager != null;
 
-        log.debug("Resolving CWD from application variables");
+        log.trace("Resolving CWD from application variables");
 
         return getCurrentDirectory(applicationManager.getApplication().getVariables());
     }
@@ -91,7 +91,7 @@ public class FileSystemAccessImpl
         assert vars != null;
         assert dir != null;
 
-        log.debug("Setting CWD: {}", dir);
+        log.trace("Setting CWD: {}", dir);
 
         // Make sure that the given file object exists and is really a directory
         if (!dir.exists()) {
@@ -109,7 +109,7 @@ public class FileSystemAccessImpl
 
         assert applicationManager != null;
 
-        log.debug("Setting CWD to application variables");
+        log.trace("Setting CWD to application variables");
 
         setCurrentDirectory(applicationManager.getApplication().getVariables(), dir);
     }

@@ -53,49 +53,53 @@ public class FileObjectNameCompleter
 
         String path = buffer == null ? "" : buffer;
 
-        log.debug("Path: '{}'", path);
+        log.trace("Path: '{}'", path);
         
         try {
             assert fileSystemAccess != null;
             FileObject dir = fileSystemAccess.resolveFile(path);
 
-            //
-            // FIXME: The processing logic here is not correct...
-            //
-            
-            /*
-            log.debug("Dir (before): {}", dir);
-            if (!path.endsWith(File.separator)) {
+            final String search;
+
+            // If we have resolved to a directory which does not exist, then base the selection on its parent and set the
+            // search criteria to the name of the non-existant file
+            if (!dir.exists()) {
+                search = dir.getName().getBaseName();
                 dir = dir.getParent();
             }
-            log.debug("Dir (after): {}", dir);
-            */
-            log.debug("Dir: {}", dir);
+            else {
+                // Else we want to show all contents
+                search = null;
+            }
+
+            log.trace("Dir: {}", dir);
+            log.trace("Search: {}", search);
 
             if (dir != null) {
-                final String prefix = path;
                 FileFilter filter = new FileFilter() {
                     public boolean accept(final FileSelectInfo selection) {
                         assert selection != null;
 
-                        if (log.isDebugEnabled()) {
-                            log.debug("Filtering selection: {}", selection.getFile().getName());
+                        if (log.isTraceEnabled()) {
+                            log.trace("Filtering selection: {}", selection.getFile().getName());
                         }
 
-                        return selection.getFile().getName().getPath().startsWith(prefix);
+                        // If we have something to search for then only include selections which match (start with search), else select everything
+                        return search == null || selection.getFile().getName().getBaseName().startsWith(search);
+
                     }
                 };
 
                 FileObject[] files = dir.findFiles(new FileFilterSelector(filter));
 
                 if (files == null || files.length == 0) {
-                    log.debug("No matching files found");
+                    log.trace("No matching files found");
                 }
                 else {
-                    log.debug("Found {} matching files:", files.length);
+                    log.trace("Found {} matching files:", files.length);
 
                     for (FileObject file : files) {
-                        log.debug("    {}", file);
+                        log.trace("    {}", file);
 
                         StringBuilder buff = new StringBuilder();
                         buff.append(file.getName().getBaseName());
