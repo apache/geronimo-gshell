@@ -35,21 +35,17 @@
 
             <gshell:command name="help">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.HelpAction"/>
-                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
-                    <property name="completers">
-                        <list>
-                            <bean class="org.apache.geronimo.gshell.console.completer.AggregateCompleter">
-                                <constructor-arg>
-                                    <list>
-                                        <ref bean="aliasNameCompleter"/>
-                                        <ref bean="commandNameCompleter"/>
-                                    </list>
-                                </constructor-arg>
-                            </bean>
-                            <null/>
-                        </list>
-                    </property>
-                </gshell:completer>
+                <gshell:completers>
+                    <bean class="org.apache.geronimo.gshell.console.completer.AggregateCompleter">
+                        <constructor-arg>
+                            <list>
+                                <ref bean="aliasNameCompleter"/>
+                                <ref bean="commandNameCompleter"/>
+                            </list>
+                        </constructor-arg>
+                    </bean>
+                    <null/>
+                </gshell:completers>
             </gshell:command>
 
             <gshell:command name="exit">
@@ -70,14 +66,10 @@
 
             <gshell:command name="source">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SourceAction"/>
-                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
-                    <property name="completers">
-                        <list>
-                            <bean class="jline.FileNameCompletor"/>
-                            <null/>
-                        </list>
-                    </property>
-                </gshell:completer>
+                <gshell:completers>
+                    <bean class="jline.FileNameCompletor"/>
+                    <null/>
+                </gshell:completers>
             </gshell:command>
             
             <gshell:link name="." target="source"/>
@@ -88,14 +80,10 @@
 
             <gshell:command name="unset">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnsetAction"/>
-                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
-                    <property name="completers">
-                        <list>
-                            <bean class="org.apache.geronimo.gshell.wisdom.completer.VariableNameCompleter"/>
-                            <null/>
-                        </list>
-                    </property>
-                </gshell:completer>
+                <gshell:completers>
+                    <bean class="org.apache.geronimo.gshell.wisdom.completer.VariableNameCompleter"/>
+                    <null/>
+                </gshell:completers>
             </gshell:command>
 
             <gshell:command name="alias">
@@ -104,14 +92,10 @@
 
             <gshell:command name="unalias">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnaliasAction"/>
-                <gshell:completer class="org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter">
-                    <property name="completers">
-                        <list>
-                            <ref bean="aliasNameCompleter"/>
-                            <null/>
-                        </list>
-                    </property>
-                </gshell:completer>
+                <gshell:completers>
+                    <ref bean="aliasNameCompleter"/>
+                    <null/>
+                </gshell:completers>
             </gshell:command>
             
             <gshell:command name="history">
