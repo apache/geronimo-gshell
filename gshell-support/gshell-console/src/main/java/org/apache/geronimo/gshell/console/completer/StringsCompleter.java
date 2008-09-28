@@ -53,16 +53,18 @@ public class StringsCompleter
         return strings;
     }
 
-    public int complete(final String buffer, final int cursor, final List candidates) {
+    public int complete(String buffer, final int cursor, final List candidates) {
         // buffer could be null
         assert candidates != null;
 
-        String start = (buffer == null) ? "" : buffer;
+        if (buffer == null) {
+            buffer = "";
+        }
 
-        SortedSet<String> matches = strings.tailSet(start);
+        SortedSet<String> matches = strings.tailSet(buffer);
 
         for (String match : matches) {
-            if (!match.startsWith(start)) {
+            if (!match.startsWith(buffer)) {
                 break;
             }
 
