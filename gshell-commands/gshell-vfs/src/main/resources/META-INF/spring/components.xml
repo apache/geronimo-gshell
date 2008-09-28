@@ -88,6 +88,10 @@
                 </gshell:completers>
             </gshell:command>
         </gshell:command-bundle>
+
+        <!--
+        TODO: Add bundles which will flip on more providers, which may or may not need additional artifacts resolved and stuffed into the classpath.
+        -->
     </gshell:plugin>
 
     <bean id="fileSystemManager" class="org.apache.geronimo.gshell.commands.vfs.support.FileSystemManagerFactoryBean"/>
