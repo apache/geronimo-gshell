@@ -48,6 +48,10 @@ public class CatAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    //
+    // TODO: Merge this into the *.vfs.CatAction and drop this guy.
+    //
+    
     @Option(name="-n")
     private boolean displayLineNumbers;
 
