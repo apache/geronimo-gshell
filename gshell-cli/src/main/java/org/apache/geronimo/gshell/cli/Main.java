@@ -61,6 +61,10 @@ public class Main
     //       https://issues.apache.org/jira/browse/GSHELL-47
     //
 
+    //
+    // TODO: Add --application and --settings
+    //
+
     @Option(name="-h", aliases={"--help"}, requireOverride=true)
     private boolean help;
 
@@ -113,13 +117,13 @@ public class Main
         }
     }
 
-    @Option(name="-c", aliases={"--commands"}, token="STRING")
+    @Option(name="-c", aliases={"--commands"})
     private String commands;
 
-    @Argument(token="COMMAND")
+    @Argument
     private List<String> commandArgs = null;
 
-    @Option(name="-D", aliases={"--define"}, token="NAME=VALUE")
+    @Option(name="-D", aliases={"--define"})
     private void setSystemProperty(final String nameValue) {
         assert nameValue != null;
 
@@ -144,7 +148,7 @@ public class Main
         ANSI.setEnabled(flag);
     }
 
-    @Option(name="-T", aliases={"--terminal"}, token="TYPE", argumentRequired=true)
+    @Option(name="-T", aliases={"--terminal"}, argumentRequired=true)
     private void setTerminalType(String type) {
         type = type.toLowerCase();
 
