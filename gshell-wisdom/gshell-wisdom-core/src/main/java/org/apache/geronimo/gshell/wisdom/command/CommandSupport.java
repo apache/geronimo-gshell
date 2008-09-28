@@ -285,6 +285,8 @@ public abstract class CommandSupport
         CommandResult result;
 
         try {
+            CommandAction action = getAction();
+            
             log.trace("Executing action: {}", action);
 
             Object value = action.execute(ctx);
