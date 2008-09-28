@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs.support;
+package org.apache.geronimo.gshell.vfs;
 
 import jline.Completor;
 import org.apache.commons.vfs.FileFilter;

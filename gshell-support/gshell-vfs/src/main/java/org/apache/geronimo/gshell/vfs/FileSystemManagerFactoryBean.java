@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs.support;
+package org.apache.geronimo.gshell.vfs;
 
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.VFS;
@@ -42,6 +42,7 @@ public class FileSystemManagerFactoryBean
         //
         // TODO: Manually construct the FSM stuff, don't use the default
         //
+        
         FileSystemManager fsm = VFS.getManager();
 
         log.debug("File system manager: {}", fsm);

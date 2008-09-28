@@ -54,6 +54,7 @@
         <module>gshell-interpolation</module>
         <module>gshell-url</module>
         <module>gshell-console</module>
+        <module>gshell-vfs</module>
     </modules>
 
 </project>

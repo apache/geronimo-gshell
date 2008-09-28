@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs.support;
+package org.apache.geronimo.gshell.vfs;
 
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileObject;
