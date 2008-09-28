@@ -44,7 +44,7 @@ public class EventManagerImpl
     public void addListener(final EventListener listener) {
         assert listener != null;
 
-        log.debug("Adding listener: {}", listener);
+        log.trace("Adding listener: {}", listener);
 
         synchronized (listeners) {
             listeners.add(listener);
@@ -54,7 +54,7 @@ public class EventManagerImpl
     public void removeListneer(final EventListener listener) {
         assert listener != null;
         
-        log.debug("Removing listener: {}", listener);
+        log.trace("Removing listener: {}", listener);
 
         synchronized (listeners) {
             listeners.remove(listener);

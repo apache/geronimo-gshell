@@ -30,33 +30,17 @@
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <artifactId>gshell-console</artifactId>
-    <name>GShell Support :: Console</name>
+    <artifactId>gshell-terminal</artifactId>
+    <name>GShell Support :: Terminal</name>
     
     <description>
-        Interactive console support.
+        Terminal abstraction.
     </description>
     
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-terminal</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-io</artifactId>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
         </dependency>
     </dependencies>
 

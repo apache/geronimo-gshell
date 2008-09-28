@@ -44,8 +44,8 @@
         </dependency>
 
         <dependency>
-            <groupId>jline</groupId>
-            <artifactId>jline</artifactId>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-terminal</artifactId>
         </dependency>
     </dependencies>
 

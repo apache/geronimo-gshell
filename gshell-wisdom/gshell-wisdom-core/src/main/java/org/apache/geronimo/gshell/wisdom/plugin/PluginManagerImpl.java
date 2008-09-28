@@ -149,6 +149,10 @@ public class PluginManagerImpl
 
         filter.add(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
 
+        //
+        // FIXME: Need to inherit some of this crap from the applications exclusions!
+        //
+        
         filter.add(new ExclusionSetFilter(new String[] {
             "aopalliance",
             "geronimo-annotation_1.0_spec",
@@ -163,6 +167,9 @@ public class PluginManagerImpl
             "gshell-yarn",
             "gshell-interpolation",
             "gshell-layout",
+            "gshell-terminal",
+            "gshell-console",
+            "gshell-chronos",
             "jcl104-over-slf4j",
             "jline",
             "plexus-classworlds",

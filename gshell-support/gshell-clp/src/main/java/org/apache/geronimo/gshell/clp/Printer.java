@@ -41,6 +41,10 @@ public class Printer
     private CommandLineProcessor processor;
 
     //
+    // FIXME: Refactor all this stuff to simplify the API
+    //
+    
+    //
     // TODO: Combine these into 1 dynamic MS
     //
 
