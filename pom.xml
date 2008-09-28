@@ -366,6 +366,19 @@
             </dependency>
 
             <dependency>
+                <groupId>org.jsecurity</groupId>
+                <artifactId>jsecurity</artifactId>
+                <version>0.9.0-RC2</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!--
+            <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
                 <version>2.0.3</version>
@@ -388,7 +401,8 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
+            -->
+            
             <!--
             <dependency>
                 <groupId>org.springframework.osgi</groupId>
