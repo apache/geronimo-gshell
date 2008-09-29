@@ -19,12 +19,20 @@
 
 package org.apache.geronimo.gshell.commands.vfs;
 
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileContentInfo;
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileUtil;
 import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Displays the contents of a file.
@@ -37,9 +45,16 @@ public class CatAction
     @Argument(required=true)
     private String path;
 
+    @Option(name="-n")
+    private boolean displayLineNumbers;
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
+
+        //
+        // TODO: Support multi-path cat, and the special '-' token (which is the default if no paths are given)
+        //
 
         FileObject file = resolveFile(context, path);
 
@@ -51,10 +66,42 @@ public class CatAction
             io.error("File is a directory: {}", file.getName());
             return Result.FAILURE;
         }
-        
-        FileUtil.writeContent(file, io.outputStream);
+
+        FileContent content = file.getContent();
+        FileContentInfo info = content.getContentInfo();
+        log.debug("Content type: {}", info.getContentType());
+        log.debug("Content encoding: {}", info.getContentEncoding());
+
+        //
+        // TODO: Only cat files which we think are text
+        //
+
+        log.debug("Displaying file: {}", file.getName());
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(content.getInputStream()));
+        try {
+            cat(reader, io);
+        }
+        finally {
+            IOUtil.close(reader);
+        }
+
         io.out.println();
 
         return Result.SUCCESS;
+    }
+
+    private void cat(final BufferedReader reader, final IO io) throws IOException {
+        String line;
+        int lineno = 1;
+
+        while ((line = reader.readLine()) != null) {
+            if (displayLineNumbers) {
+                String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
+                io.out.print(gutter);
+                io.out.print("  ");
+            }
+            io.out.println(line);
+        }
     }
 }
