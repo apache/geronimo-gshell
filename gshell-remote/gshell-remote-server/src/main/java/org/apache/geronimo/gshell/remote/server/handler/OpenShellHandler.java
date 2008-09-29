@@ -65,6 +65,7 @@ public class OpenShellHandler
         context.io = new RemoteIO(session);
         context.variables = new Variables();
 
+        // HACK: Need a shell context, but currently that muck is not exposed, so make a new one
         ShellContext shellContext = new ShellContext() {
             public IO getIo() {
                 return context.io;
