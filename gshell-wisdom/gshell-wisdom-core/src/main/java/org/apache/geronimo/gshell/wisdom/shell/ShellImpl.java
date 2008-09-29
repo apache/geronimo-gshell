@@ -341,6 +341,10 @@ public class ShellImpl
             StackTraceElement[] trace = cause.getStackTrace();
             StringBuffer buff = new StringBuffer();
 
+            //
+            // TODO: Move this to helper in gshell-ansi
+            //
+
             for (StackTraceElement e : trace) {
                 buff.append("        @|bold at| ").
                     append(e.getClassName()).
