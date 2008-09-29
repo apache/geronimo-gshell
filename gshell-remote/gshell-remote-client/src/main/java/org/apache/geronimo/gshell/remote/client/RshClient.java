@@ -129,6 +129,7 @@ public class RshClient
         CallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(username, password);
         LoginContext loginContext = new LoginContext("RshClient", callbackHandler);
 
+        // HACK: Set and unset the transport for JAAS muck
         RemoteLoginModule.setTransport(transport);
         try {
             loginContext.login();
