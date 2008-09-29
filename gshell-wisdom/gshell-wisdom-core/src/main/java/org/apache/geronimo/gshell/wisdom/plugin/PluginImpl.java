@@ -28,6 +28,8 @@ import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationTask;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.Bundle;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.NoSuchBundleException;
+import org.apache.geronimo.gshell.model.common.Artifact;
+import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * Default implementation of {@link Plugin}.
@@ -48,7 +52,13 @@ public class PluginImpl
 
     private final String name;
 
+    /*
     private boolean enabled = false;
+    */
+    
+    private PluginArtifact artifact;
+
+    private Set<Artifact> artifacts;
 
     private List<String> bundleNames;
 
@@ -70,6 +80,48 @@ public class PluginImpl
 
     public String getName() {
         return name;
+    }
+
+    public PluginArtifact getArtifact() {
+        if (artifact == null) {
+            throw new IllegalStateException("Artifact not initialized");
+        }
+        return artifact;
+    }
+
+    void initArtifact(final PluginArtifact artifact) {
+        assert artifact != null;
+        
+        this.artifact = artifact;
+    }
+
+    public Set<Artifact> getArtifacts() {
+        if (artifacts == null) {
+            throw new IllegalStateException("Artifacts not initialized");
+        }
+        return artifacts;
+    }
+
+    void initArtifacts(final Set<org.apache.maven.artifact.Artifact> artifacts) {
+        assert artifacts != null;
+
+        Set<Artifact> set = new LinkedHashSet<Artifact>();
+
+        log.debug("Plugin artifacts:");
+
+        for (org.apache.maven.artifact.Artifact source : artifacts) {
+            Artifact artifact = new Artifact();
+            artifact.setGroupId(source.getGroupId());
+            artifact.setArtifactId(source.getArtifactId());
+            artifact.setType(source.getType());
+            artifact.setVersion(source.getVersion());
+
+            log.debug("    {}", artifact.getId());
+
+            set.add(artifact);
+        }
+
+        this.artifacts = set;
     }
 
     public List<String> getBundleNames() {

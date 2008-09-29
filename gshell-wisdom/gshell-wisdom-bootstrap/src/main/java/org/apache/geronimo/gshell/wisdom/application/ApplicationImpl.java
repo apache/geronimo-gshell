@@ -24,13 +24,15 @@ import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
+import org.apache.geronimo.gshell.model.common.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * Event fired once the application has constructed a shell.
@@ -43,6 +45,8 @@ public class ApplicationImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ApplicationConfiguration config;
+
+    private Set<Artifact> artifacts;
 
     private InetAddress localHost;
 
@@ -66,6 +70,35 @@ public class ApplicationImpl
 
     public Variables getVariables() {
         return config.getVariables();
+    }
+
+    public Set<Artifact> getArtifacts() {
+        if (artifacts == null) {
+            throw new IllegalStateException("Artifacts not initialized");
+        }
+        return artifacts;
+    }
+
+    void initArtifacts(final Set<org.apache.maven.artifact.Artifact> artifacts) {
+        assert artifacts != null;
+
+        Set<Artifact> set = new LinkedHashSet<Artifact>();
+
+        log.debug("Application artifacts:");
+
+        for (org.apache.maven.artifact.Artifact source : artifacts) {
+            Artifact artifact = new Artifact();
+            artifact.setGroupId(source.getGroupId());
+            artifact.setArtifactId(source.getArtifactId());
+            artifact.setType(source.getType());
+            artifact.setVersion(source.getVersion());
+            
+            log.debug("    {}", artifact.getId());
+
+            set.add(artifact);
+        }
+
+        this.artifacts = set;
     }
 
     public ApplicationModel getModel() {

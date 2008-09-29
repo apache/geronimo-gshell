@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
@@ -35,9 +36,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
-import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +59,9 @@ public class PluginManagerImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
+    private ApplicationManager applicationManager;
+
+    @Autowired
     private ArtifactManager artifactManager;
 
     @Autowired
@@ -79,9 +80,8 @@ public class PluginManagerImpl
         this.container = container;
     }
 
-    @SuppressWarnings({"UnusedDeclaration"})
     @PostConstruct
-    private void init() {
+    public void init() {
         assert eventManager != null;
         eventManager.addListener(new EventListener() {
             public void onEvent(Event event) throws Exception {
@@ -109,7 +109,7 @@ public class PluginManagerImpl
 
         for (PluginArtifact artifact : artifacts) {
             try {
-                loadPlugin(artifact);
+                loadPlugin(application, artifact);
             }
             catch (Exception e) {
                 log.error("Failed to load plugin: " + artifact, e);
@@ -117,19 +117,25 @@ public class PluginManagerImpl
         }
     }
 
-    public void loadPlugin(final PluginArtifact artifact) throws Exception {
+    private void loadPlugin(final Application application, final PluginArtifact artifact) throws Exception {
+        assert application != null;
         assert artifact != null;
 
         log.debug("Loading plugin: {}", artifact.getId());
 
-        List<URL> classPath = createClassPath(artifact);
+        Set<Artifact> artifacts = resolveArtifacts(application, artifact);
+        List<URL> classPath = createClassPath(artifacts);
 
-        BeanContainer pluginContainer = container.createChild("gshell.plugin[" + artifact.getId() + "]", classPath);
+        BeanContainer pluginContainer = container.createChild("gshell.plugin(" + artifact.getId() + ")", classPath);
         pluginContainer.start();
         
         log.debug("Created plugin container: {}", pluginContainer);
         
-        Plugin plugin = pluginContainer.getBean(Plugin.class);
+        PluginImpl plugin = pluginContainer.getBean(PluginImpl.class);
+
+        // Initialize the plugins artifact configuration
+        plugin.initArtifact(artifact);
+        plugin.initArtifacts(artifacts);
 
         plugins.add(plugin);
 
@@ -140,50 +146,22 @@ public class PluginManagerImpl
         eventPublisher.publish(new PluginLoadedEvent(plugin, artifact));
     }
 
-    private List<URL> createClassPath(final PluginArtifact artifact) throws Exception {
+    public void loadPlugin(final PluginArtifact artifact) throws Exception {
+        assert applicationManager != null;
+        loadPlugin(applicationManager.getApplication(), artifact);
+    }
+
+    private Set<Artifact> resolveArtifacts(final Application application, final PluginArtifact artifact) throws Exception {
+        assert application != null;
         assert artifact != null;
 
-        ArtifactResolutionRequest request = new ArtifactResolutionRequest();
-
-        AndArtifactFilter filter = new AndArtifactFilter();
-
-        filter.add(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
-
-        //
-        // FIXME: Need to inherit some of this crap from the applications exclusions!
-        //
+        log.debug("Resolving plugin artifacts");
         
-        filter.add(new ExclusionSetFilter(new String[] {
-            "aopalliance",
-            "geronimo-annotation_1.0_spec",
-            "gshell-ansi",
-            "gshell-api",
-            "gshell-application",
-            "gshell-clp",
-            "gshell-i18n",
-            "gshell-io",
-            "gshell-model",
-            "gshell-spring",
-            "gshell-yarn",
-            "gshell-interpolation",
-            "gshell-layout",
-            "gshell-terminal",
-            "gshell-console",
-            "gshell-chronos",
-            "jcl104-over-slf4j",
-            "jline",
-            "plexus-classworlds",
-            "slf4j-api",
-            "spring-core",
-            "spring-context",
-            "spring-beans",
-            "xpp3_min",
-            "xstream",
-        }));
-
-        request.setFilter(filter);
+        ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+        request.setFilter(new PluginArtifactFilter(application));
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
+        assert artifactManager != null;
         ArtifactFactory factory = artifactManager.getArtifactFactory();
 
         Artifact pluginArtifact = factory.createArtifact(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), /*scope*/null, artifact.getType());
@@ -197,18 +175,23 @@ public class PluginManagerImpl
 
         ArtifactResolutionResult result = artifactManager.resolve(request);
 
-        List<URL> classPath = new LinkedList<URL>();
-        Set<Artifact> resolvedArtifacts = result.getArtifacts();
+        return result.getArtifacts();
+    }
 
-        if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
+    private List<URL> createClassPath(final Set<Artifact> artifacts) throws Exception {
+        assert artifacts != null;
+
+        List<URL> classPath = new LinkedList<URL>();
+
+        if (!artifacts.isEmpty()) {
             log.debug("Plugin classpath:");
 
-            for (Artifact a : resolvedArtifacts) {
+            for (Artifact a : artifacts) {
                 File file = a.getFile();
                 assert file != null;
 
                 URL url = file.toURI().toURL();
-                log.debug(" + {}", url);
+                log.debug("    {}", url);
 
                 classPath.add(url);
             }

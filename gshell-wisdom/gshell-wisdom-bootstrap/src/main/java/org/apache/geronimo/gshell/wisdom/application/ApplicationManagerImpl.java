@@ -25,9 +25,7 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.application.DependencyArtifact;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
@@ -42,9 +40,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
-import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,11 +106,10 @@ public class ApplicationManagerImpl
         // Interpolate the model
         interpolate(config);
 
-        // Configure the application
-        configure(config.getModel());
+        // Apply artifact manager configuration settings for application
+        configureArtifactManager(config.getModel());
 
-        // Create a new context
-        application = new ApplicationImpl(config);
+        application = loadApplication(config);
 
         log.debug("Application configured");
         
@@ -147,20 +141,6 @@ public class ApplicationManagerImpl
         config.setModel(model);
     }
 
-    private void configure(final ApplicationModel model) throws Exception {
-        assert model != null;
-
-        log.debug("Application ID: {}", model.getId());
-        log.trace("Application descriptor: {}", model);
-
-        // Apply artifact manager configuration settings for application
-        configureArtifactManager(model);
-
-        // Create the application container
-        applicationContainer = createContainer(model);
-        applicationContainer.start();
-    }
-
     private void configureArtifactManager(final ApplicationModel model) throws Exception {
         assert model != null;
         assert artifactManager != null;
@@ -178,87 +158,47 @@ public class ApplicationManagerImpl
         }
     }
 
-    private BeanContainer createContainer(final ApplicationModel model) throws Exception {
-        assert model != null;
+    private ApplicationImpl loadApplication(final ApplicationConfiguration config) throws Exception {
+        assert config != null;
 
-        log.debug("Creating application container");
+        ApplicationImpl app = new ApplicationImpl(config);
 
-        List<URL> classPath = createClassPath(model);
+        ApplicationModel model = app.getModel();
 
-        BeanContainer child = container.createChild("gshell.application[" + model.getId() + "]", classPath);
+        log.debug("Loading application: {}", app.getId());
+        log.trace("Application model: {}", model);
+
+        Set<Artifact> artifacts = resolveArtifacts(model);
+
+        // Initialize the applications artifact configuration
+        app.initArtifacts(artifacts);
+
+        List<URL> classPath = createClassPath(artifacts);
+
+        BeanContainer child = container.createChild("gshell.application(" + model.getId() + ")", classPath);
 
         log.debug("Application container: {}", child);
 
-        return child;
+        child.start();
+
+        applicationContainer = child;
+
+        return app;
     }
 
-    private List<URL> createClassPath(final ApplicationModel model) throws Exception {
+    private Set<Artifact> resolveArtifacts(final ApplicationModel model) throws Exception {
         assert model != null;
 
+        log.debug("Resolving application artifacts");
+
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
-
-        AndArtifactFilter filter = new AndArtifactFilter();
-
-        filter.add(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
-
-        filter.add(new ExclusionSetFilter(new String[] {
-            //
-            // FIXME: Load this list from build-generated properties or something like that
-            //
-
-            "aopalliance",
-            "aspectjrt",
-            "geronimo-annotation_1.0_spec",
-            "gshell-ansi",
-            "gshell-api",
-            "gshell-artifact",
-            "gshell-application",
-            "gshell-cli",
-            "gshell-clp",
-            "gshell-chronos",
-            "gshell-i18n",
-            "gshell-io",
-            "gshell-model",
-            "gshell-spring",
-            "gshell-wisdom-bootstrap",
-            "gshell-yarn",
-            "gshell-interpolation",
-            "jcl104-over-slf4j",
-            "gshell-terminal",
-            "jline",
-            "log4j",
-            "maven-artifact",
-            "maven-model",
-            "maven-profile",
-            "maven-project",
-            "maven-workspace",
-            "maven-settings",
-            "maven-plugin-registry",
-            "plexus-component-annotations",
-            "plexus-container-default",
-            "plexus-interpolation",
-            "plexus-utils",
-            "plexus-classworlds",
-            "slf4j-api",
-            "slf4j-log4j12",
-            "spring-core",
-            "spring-context",
-            "spring-beans",
-            "wagon-file",
-            "wagon-http-lightweight",
-            "wagon-http-shared",
-            "wagon-provider-api",
-            "xbean-reflect",
-            "xpp3_min",
-            "xstream",
-        }));
-
-        request.setFilter(filter);
+        request.setFilter(new ApplicationArtifactFilter());
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
         List<DependencyArtifact> dependencies = model.getDependencies(true); // include groups
 
         if (!dependencies.isEmpty()) {
+            assert artifactManager != null;
             ArtifactFactory factory = artifactManager.getArtifactFactory();
 
             log.debug("Application dependencies:");
@@ -267,7 +207,7 @@ public class ApplicationManagerImpl
                 Artifact artifact = factory.createArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), /*scope*/null, dep.getType());
                 assert artifact != null;
 
-                log.debug(" + {}", artifact);
+                log.debug("    {}", artifact);
 
                 artifacts.add(artifact);
             }
@@ -277,18 +217,23 @@ public class ApplicationManagerImpl
 
         ArtifactResolutionResult result = artifactManager.resolve(request);
 
-        List<URL> classPath = new LinkedList<URL>();
-        Set<Artifact> resolvedArtifacts = result.getArtifacts();
+        return result.getArtifacts();
+    }
 
-        if (resolvedArtifacts != null && !resolvedArtifacts.isEmpty()) {
+    private List<URL> createClassPath(final Set<Artifact> artifacts) throws Exception {
+        assert artifacts != null;
+
+        List<URL> classPath = new LinkedList<URL>();
+
+        if (!artifacts.isEmpty()) {
             log.debug("Application classpath:");
 
-            for (Artifact artifact : resolvedArtifacts) {
+            for (Artifact artifact : artifacts) {
                 File file = artifact.getFile();
                 assert file != null;
 
                 URL url = file.toURI().toURL();
-                log.debug(" + {}", url);
+                log.debug("    {}", url);
 
                 classPath.add(url);
             }
