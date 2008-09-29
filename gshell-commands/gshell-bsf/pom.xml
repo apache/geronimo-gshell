@@ -40,13 +40,60 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-vfs</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-console</artifactId>
         </dependency>
+
+        <!--
+        TODO: Update to use Apache BSF 3.0
+
+        <dependency>
+            <groupId>org.apache.bsf</groupId>
+            <artifactId>bsf-api</artifactId>
+            <version>3.0-beta2</version>
+        </dependency>
+        -->
 
         <dependency>
             <groupId>bsf</groupId>
             <artifactId>bsf</artifactId>
-            <version>2.3.0</version>
+            <version>2.4.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl104-over-slf4j</artifactId>
+        </dependency>
+
+        <!--
+        TODO: Add commands to help install new scripting language support, for now just add some deps to get engines enabled.
+        -->
+        
+        <dependency>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh-bsf</artifactId>
+            <version>2.0b4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all-minimal</artifactId>
+            <version>1.5.6</version>
         </dependency>
     </dependencies>
 

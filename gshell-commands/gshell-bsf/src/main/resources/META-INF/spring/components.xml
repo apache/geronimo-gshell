@@ -31,8 +31,14 @@
         <gshell:command-bundle name="default">
             <gshell:command name="script">
                 <gshell:action class="org.apache.geronimo.gshell.commands.bsf.ScriptAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
+
+    <bean id="bsfManager" class="org.apache.geronimo.gshell.commands.bsf.BSFManagerFactoryBean"/>
 
 </beans>

@@ -20,22 +20,26 @@
 package org.apache.geronimo.gshell.commands.bsf;
 
 import org.apache.bsf.BSFEngine;
+import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.FileUtil;
+import org.apache.geronimo.gshell.ansi.Code;
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
@@ -43,9 +47,17 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 public class ScriptAction
-    implements CommandAction
+    implements CommandAction, BeanContainerAware
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private BSFManager manager;
+
+    @Autowired
+    private FileSystemAccess fileSystemAccess;
+
+    private BeanContainer container;
 
     private String language;
 
@@ -60,104 +72,170 @@ public class ScriptAction
         this.language = language;
     }
 
-    @Option(name="-i", aliases={"--interactive"})
-    private boolean interactive;
-
     @Option(name="-e", aliases={"--expression"})
     private String expression;
-    
+
     @Argument
-    private List<String> args = null;
+    private String path;
+
+    public void setBeanContainer(final BeanContainer container) {
+        assert container != null;
+
+        this.container = container;
+    }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-
         IO io = context.getIo();
 
-        //
-        // TODO: When given a file/url, try to figure out language from ext if language not given
-        //       https://issues.apache.org/jira/browse/GSHELL-49
-        //
-        
-        String path = null;
-        String filename = null;
-
-    	if (args != null) {
-    		path = args.get(0); // Only allowing one script for now
-    		filename = ((path.lastIndexOf('/')) == -1) ? path : path.substring(path.lastIndexOf('/') + 1) ; // Just the filename, please   		
-    	}
-    	
-    	if (language == null) {
-    		if (filename == null) {
-    			throw new CommandException("If a file/URL is not provided, language must" +
-    					" be specified using the -l (--language) option.");
-    		}
-    		language = BSFManager.getLangFromFilename(filename);   		
-    	}
-
-    	BSFManager manager = new BSFManager();
-        final BSFEngine engine = manager.loadScriptingEngine(language);
-
-        if (this.expression != null) {
-            log.info("Evaluating expression: " + expression);
-
-            Object obj = engine.eval("<unknown>", 1, 1, expression);
-
-            log.info("Expression result: " + obj);
+        if (expression != null && path != null) {
+            io.error("Can only specify an expression or a script file");
+            return Result.FAILURE;
+        }
+        else if (expression != null) {
+            return eval(context);
         }
         else if (path != null){
-        	log.info("Evaluating file: " + path);
-        	//Make a file.  Is it really a file?  Sweet, execute it.
-        	//Is it not a file?  Make a URI, convert that to a URL, or maybe just make a URL, check on that.  Execute it.
-        	//Do it in a nifty way so mother would be proud.
-        	File pathFile = new File(path);
-        	URL pathURL;
-        	if (pathFile.isFile()) {
-        		pathURL = pathFile.toURI().toURL();
-        	} else {
-        		URI pathURI = new URI(path);
-        		pathURL = pathURI.toURL();
-        	}
-        	
-        	engine.exec(path, 1, 1, pathURL.getContent());
-        	
-        	log.info("Finished executing script: " + filename);
+        	return exec(context);
         }
 
-        if (this.interactive) {
-            log.debug("Starting interactive console...");
-            
-            Console.Executor executor = new Console.Executor() {
-                public Result execute(final String line) throws Exception {
-                    // Execute unless the line is just blank
-                    
-                    if (!line.trim().equals("")) {
-                        engine.exec("<unknown>", 1, 1, line);
-                    }
+        return console(context);
+    }
 
-                    return Result.CONTINUE;
-                }
-            };
+    private String detectLanguage(final FileObject file) throws Exception {
+        assert file != null;
 
-            JLineConsole runner = new JLineConsole(executor, io);
+        return BSFManager.getLangFromFilename(file.getName().getBaseName());
+    }
 
-            runner.setErrorHandler(new Console.ErrorHandler() {
-                public Result handleError(final Throwable error) {
-                    log.error("Script evalutation failed: " + error, error);
+    private BSFEngine createEngine(final CommandContext context) throws BSFException {
+        assert context != null;
 
-                    return Result.CONTINUE;
-                }
-            });
+        // Bind some stuff into the scripting engine's namespace
+        manager.declareBean("container", container, BeanContainer.class);
+        manager.declareBean("context", context, CommandContext.class);
 
-            runner.setPrompter(new Console.Prompter() {
-                public String prompt() {
-                    return language + "> ";
-                }
-            });
+        BSFEngine engine = manager.loadScriptingEngine(language);
 
-            runner.run();
+        log.debug("Created engine: {}", engine);
+
+        return engine;
+    }
+
+    private Object eval(final CommandContext context) throws Exception {
+        assert context != null;
+        IO io = context.getIo();
+
+        if (language == null) {
+            io.error("The scripting language must be configured via --language to evaluate an expression");
+            return Result.FAILURE;
         }
 
-        return Result.SUCCESS;
+        log.debug("Evaluating script ({}): {}", language, expression);
+
+        BSFEngine engine = createEngine(context);
+
+        try {
+            return engine.eval("<script.expression>", 1, 1, expression);
+        }
+        finally {
+            engine.terminate();
+        }
+    }
+
+    private Object exec(final CommandContext context) throws Exception {
+        assert context != null;
+        IO io = context.getIo();
+
+        FileObject cwd = fileSystemAccess.getCurrentDirectory(context.getVariables());
+        FileObject file = fileSystemAccess.resolveFile(cwd, path);
+
+        if (!file.exists()) {
+            io.error("File not found: {}", file.getName());
+            return Result.FAILURE;
+        }
+        else if (file.getType() == FileType.FOLDER) {
+            io.error("File is a directory: {}", file.getName());
+            return Result.FAILURE;
+        }
+        else if (!file.isReadable()) {
+            io.error("File is not readable: {}", file.getName());
+            return Result.FAILURE;
+        }
+
+        if (language == null) {
+            language = detectLanguage(file);
+        }
+
+        BSFEngine engine = createEngine(context);
+
+        byte[] bytes = FileUtil.getContent(file);
+        String script = new String(bytes);
+
+        log.info("Evaluating file ({}): {}", language, path);
+
+        try {
+            return engine.eval(file.getName().getBaseName(), 1, 1, script);
+        }
+        finally {
+            engine.terminate();
+        }
+    }
+
+    private Object console(final CommandContext context) throws Exception {
+        assert context != null;
+        IO io = context.getIo();
+
+        if (language == null) {
+            io.error("The scripting language must be configured via --language to run an interactive console");
+            return Result.FAILURE;
+        }
+
+        log.debug("Starting console ({})...", language);
+
+        final BSFEngine engine = createEngine(context);
+        final ResultHolder holder = new ResultHolder();
+
+        Console.Executor executor = new Console.Executor() {
+            public Result execute(final String line) throws Exception {
+                if (line == null || line.trim().equals("exit") || line.trim().equals("quit")) {
+                    return Result.STOP;
+                }
+                else if (!line.trim().equals("")) {
+                    holder.result = engine.eval("<script.console>", 1, 1, line);
+                }
+
+                return Result.CONTINUE;
+            }
+        };
+
+        JLineConsole runner = new JLineConsole(executor, io);
+
+        runner.setErrorHandler(new Console.ErrorHandler() {
+            public Result handleError(final Throwable error) {
+                log.error("Script evalutation failed: " + error, error);
+
+                return Result.CONTINUE;
+            }
+        });
+
+        runner.setPrompter(new Console.Prompter() {
+            Renderer renderer = new Renderer();
+
+            public String prompt() {
+                return renderer.render(Renderer.encode(language, Code.BOLD) + "> ");
+            }
+        });
+
+        runner.run();
+
+        engine.terminate();
+
+        return holder.result;
+    }
+
+    private class ResultHolder
+    {
+        public Object result;
     }
 }
