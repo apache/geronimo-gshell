@@ -39,21 +39,16 @@ public class ExecuteAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private ProcessBuilder builder;
-
     @Argument(required=true)
     private List<String> args;
 
+    // TODO: Support setting the process directory and envrionment muck
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-
         IO io = context.getIo();
 
-        //
-        // FIXME: Seems we are missing the builder here... oops
-        //
-        
-        assert builder != null;
+        ProcessBuilder builder = new ProcessBuilder(args);
 
         log.info("Executing: {}", builder.command());
 
@@ -66,7 +61,6 @@ public class ExecuteAction
         log.debug("Waiting for process to exit...");
 
         int status = p.waitFor();
-
         
         log.info("Process exited w/status: {}", status);
 
