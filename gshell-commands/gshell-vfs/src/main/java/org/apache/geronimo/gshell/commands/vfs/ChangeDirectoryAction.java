@@ -47,7 +47,6 @@ public class ChangeDirectoryAction
 
         FileObject file = resolveFile(context, path);
 
-        // Complain if the file is missing or is not a directory
         if (!file.exists()) {
             io.error("Directory not found: {}", file.getName());
             return Result.FAILURE;

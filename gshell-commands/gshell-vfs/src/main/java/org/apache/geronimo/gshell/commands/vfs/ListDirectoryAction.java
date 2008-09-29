@@ -70,11 +70,11 @@ public class ListDirectoryAction
             io.info("{}", file.getName());
 
             FileContent content = file.getContent();
-            io.info("Size: {} bytes", content.getSize());
+            io.verbose("Size: {} bytes", content.getSize());
 
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
             String lastMod = dateFormat.format(new Date(content.getLastModifiedTime()));
-            io.info("Last modified: {}", lastMod);
+            io.verbose("Last modified: {}", lastMod);
         }
 
         return Result.SUCCESS;

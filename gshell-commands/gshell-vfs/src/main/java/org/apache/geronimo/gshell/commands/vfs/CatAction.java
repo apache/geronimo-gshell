@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileUtil;
+import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
@@ -42,8 +43,15 @@ public class CatAction
 
         FileObject file = resolveFile(context, path);
 
-        // TODO: Validate more
-
+        if (!file.exists()) {
+            io.error("File not found: {}", file.getName());
+            return Result.FAILURE;
+        }
+        else if (file.getType() == FileType.FOLDER) {
+            io.error("File is a directory: {}", file.getName());
+            return Result.FAILURE;
+        }
+        
         FileUtil.writeContent(file, io.outputStream);
         io.out.println();
 

@@ -21,8 +21,10 @@ package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.Selectors;
+import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
  * Remove a file or directory.
@@ -35,12 +37,18 @@ public class RemoveAction
     @Argument(required=true)
     private String path;
 
+    // TODO: Add --recursive support
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
 
         FileObject file = resolveFile(context, path);
 
-        // TODO: Validate more
+        if (!file.exists()) {
+            io.error("File not found: {}", file.getName());
+            return Result.FAILURE;
+        }
 
         file.delete(Selectors.SELECT_SELF);
 

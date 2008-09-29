@@ -39,8 +39,6 @@ public class TouchAction
 
         FileObject file = resolveFile(context, path);
 
-        // TODO: Validate more
-
         if (!file.exists()) {
             file.createFile();
         }

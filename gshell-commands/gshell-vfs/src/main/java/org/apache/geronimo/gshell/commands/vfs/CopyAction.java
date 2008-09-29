@@ -24,6 +24,7 @@ import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.Selectors;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
  * Copies a file or directory.
@@ -39,11 +40,19 @@ public class CopyAction
     @Argument(index=1, required=true)
     private String targetPath;
 
+    // TODO: Add --recursive suport
+    
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
 
         FileObject source = resolveFile(context, sourcePath);
         FileObject target = resolveFile(context, targetPath);
+
+        if (!source.exists()) {
+            io.error("Source file not found: {}", source.getName());
+            return Result.FAILURE;
+        }
 
         // TODO: Validate more
 
