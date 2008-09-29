@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 
 /**
- * Sprint {@link FactoryBean} to construct the {@link FileSystemManager} instance.
+ * Spring {@link FactoryBean} to construct a {@link FileSystemManager} instance.
  *
  * @version $Rev$ $Date$
  */
