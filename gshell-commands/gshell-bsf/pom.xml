@@ -90,6 +90,11 @@
             <version>2.0b4</version>
         </dependency>
 
+        <!--
+        NOTE: Including groovy to test, but really should implement a 'groovy' command which uses the groovysh stuff under the covers for more a robust groovy scripting console.
+              and/or update the groovy bsf impl to use the groovysh stuff under the covers?
+        -->
+        
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all-minimal</artifactId>
