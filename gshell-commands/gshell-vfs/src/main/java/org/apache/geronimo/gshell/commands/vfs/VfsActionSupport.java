@@ -47,11 +47,6 @@ public abstract class VfsActionSupport
         assert fileSystemAccess != null;
         return fileSystemAccess;
     }
-
-    //
-    // TODO: Hook up monitor support to display something while long operations or going on.  Might not
-    //       be possible with VFS 1.0, as its on the list of things to be done.
-    //
     
     protected FileObject getCurrentDirectory(final CommandContext context) throws FileSystemException {
         assert context != null;
