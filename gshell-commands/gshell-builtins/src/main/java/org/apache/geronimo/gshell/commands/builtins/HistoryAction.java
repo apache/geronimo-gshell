@@ -41,6 +41,10 @@ public class HistoryAction
     @Autowired
     private History history;
 
+    // TODO: Support displaying a range of history
+    
+    // TODO: Add clear and recall support
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
