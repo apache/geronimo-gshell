@@ -40,10 +40,6 @@
             <gshell:command name="sleep">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.SleepAction"/>
             </gshell:command>
-
-            <gshell:command name="wait">
-                <gshell:action class="org.apache.geronimo.gshell.commands.optional.WaitAction"/>
-            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
