@@ -328,6 +328,10 @@ public class ApplicationManagerImpl
                     return method.invoke(this, args);
                 }
 
+                //
+                // TODO: This would be a good place to inject the shell or the shell context into a thread holder
+                //
+                
                 final SecurityManager prevSM = System.getSecurityManager();
                 System.setSecurityManager(sm);
                 try {
