@@ -19,6 +19,11 @@
 
 package org.apache.geronimo.gshell.application.plugin;
 
+import org.apache.geronimo.gshell.model.application.PluginArtifact;
+import org.apache.geronimo.gshell.model.common.Artifact;
+
+import java.util.Set;
+
 /**
  * Plugin.
  *
@@ -27,6 +32,10 @@ package org.apache.geronimo.gshell.application.plugin;
 public interface Plugin
 {
     String getName();
+
+    PluginArtifact getArtifact();
+
+    Set<Artifact> getArtifacts();
 
     /*
     boolean isEnabled();
