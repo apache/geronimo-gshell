@@ -24,12 +24,12 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -42,7 +42,7 @@ public class SetAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    enum Mode
+    private enum Mode
     {
         VARIABLE,
         PROPERTY
@@ -54,18 +54,39 @@ public class SetAction
     @Option(name="-v", aliases={"--verbose"})
     private boolean verbose;
 
-    @Argument
-    private List<String> args = null;
+    @Argument(index=0)
+    private String name;
+
+    @Argument(index=1)
+    private String value;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
+        MessageSource messages = context.getCommand().getMessages();
 
-        // No args... list all properties or variables
-        if (args == null || args.size() == 0) {
+        if (name == null) {
             return displayList(context);
         }
+        else if (value == null) {
+            io.error("Missing required argument: {}", messages.getMessage("command.argument.value.token"));
+            return Result.FAILURE;
+        }
 
-        return set(context);
+        switch (mode) {
+            case PROPERTY:
+                log.debug("Setting system property: {}={}", name, value);
+                System.setProperty(name, value);
+                break;
+
+            case VARIABLE:
+                Variables vars = context.getVariables();
+                log.info("Setting variable: {}={}", name, value);
+                vars.parent().set(name, value);
+                break;
+        }
+
+        return Result.SUCCESS;
     }
 
     private Object displayList(final CommandContext context) throws Exception {
@@ -116,85 +137,5 @@ public class SetAction
         }
 
         return Result.SUCCESS;
-    }
-
-    private Object set(final CommandContext context) throws Exception {
-        assert context != null;
-        //
-        // FIXME: This does not jive well with the parser, and stuff like foo = "b a r"
-        //
-
-        //
-        // NOTE: May want to make x=b part of the CL grammar
-        //
-
-        for (Object arg : args) {
-            String namevalue = String.valueOf(arg);
-
-            switch (mode) {
-                case PROPERTY:
-                    setProperty(namevalue);
-                    break;
-
-                case VARIABLE:
-                    Variables variables = context.getVariables();
-                    setVariable(variables, namevalue);
-                    break;
-            }
-        }
-
-        return Result.SUCCESS;
-    }
-
-    class NameValue
-    {
-        String name;
-        String value;
-    }
-
-    private NameValue parse(final String input) {
-        NameValue nv = new NameValue();
-
-        int i = input.indexOf("=");
-        int firstDoubleQuote = input.indexOf("\"");
-        int firstSingleQuote = input.indexOf("'");
-
-        if (i == -1) {
-            nv.name = input;
-            nv.value = "true";
-        }
-        else if (firstDoubleQuote != -1) {
-        	nv.name = input.substring(0,i);
-        	nv.value = input.substring(firstDoubleQuote + 1, input.length()-1); 
-        } 
-        else if (firstSingleQuote != -1) {
-        	nv.name = input.substring(0,i);
-        	nv.value = input.substring(firstSingleQuote + 1, input.length()-1); 
-        } 
-        else {
-            nv.name = input.substring(0, i);
-            nv.value = input.substring(i + 1, input.length());
-        }
-
-        nv.name = nv.name.trim();
-
-        return nv;
-    }
-
-    private void setProperty(final String namevalue) {
-        NameValue nv = parse(namevalue);
-
-        log.info("Setting system property: {}={}", nv.name, nv.value);
-
-        System.setProperty(nv.name, nv.value);
-    }
-
-    private void setVariable(final Variables vars, final String namevalue) {
-        NameValue nv = parse(namevalue);
-
-        log.info("Setting variable: {}={}", nv.name, nv.value);
-
-        // Command vars always has a parent, set only makes sence when setting in parent's scope
-        vars.parent().set(nv.name, nv.value);
     }
 }

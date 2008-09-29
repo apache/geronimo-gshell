@@ -39,7 +39,7 @@ public class UnsetAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    enum Mode
+    private enum Mode
     {
         VARIABLE,
         PROPERTY
