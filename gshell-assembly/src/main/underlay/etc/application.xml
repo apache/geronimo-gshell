@@ -45,13 +45,21 @@
         -->
     </remoteRepositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.wisdom</groupId>
-            <artifactId>gshell-wisdom-core</artifactId>
+    <dependencyGroups>
+        <dependencyGroup>
             <version>1.0-alpha-2-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.wisdom</groupId>
+                <artifactId>gshell-wisdom-core</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-vfs</artifactId>
+            </dependency>
+        </dependencyGroup>
+    </dependencyGroups>
 
     <pluginGroups>
         <pluginGroup>

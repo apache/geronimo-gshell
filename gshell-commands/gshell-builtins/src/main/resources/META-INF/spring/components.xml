@@ -67,7 +67,7 @@
             <gshell:command name="source">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SourceAction"/>
                 <gshell:completers>
-                    <bean class="jline.FileNameCompletor"/>
+                    <ref bean="fileObjectNameCompleter"/>
                     <null/>
                 </gshell:completers>
             </gshell:command>

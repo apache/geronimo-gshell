@@ -19,6 +19,9 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
@@ -26,21 +29,17 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
- * Read and execute commands from a file/url in the current shell environment.
+ * Read and execute commands from a file in the current shell environment.
  *
  * @version $Rev$ $Date$
  */
@@ -52,22 +51,32 @@ public class SourceAction
     @Autowired
     private CommandLineExecutor executor;
 
+    @Autowired
+    private FileSystemAccess fileSystemAccess;
+
     @Argument(required=true)
-    private String source;
+    private String path;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
+        IO io = context.getIo();
 
-        URL url;
-        
-        try {
-            url = new URL(source);
+        FileObject cwd = fileSystemAccess.getCurrentDirectory(context.getVariables());
+        FileObject file = fileSystemAccess.resolveFile(cwd, path);
+
+        if (!file.exists()) {
+            io.error("File not found: {}", file.getName());
+            return Result.FAILURE;
         }
-        catch (MalformedURLException e) {
-            url = new File(source).toURI().toURL();
+        else if (file.getType() == FileType.FOLDER) {
+            io.error("File is a directory: {}", file.getName());
+            return Result.FAILURE;
         }
+
+        log.debug("Sourcing file: {}", file.getName());
         
-        BufferedReader reader = openReader(url);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContent().getInputStream()));
+        
         try {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -78,6 +87,7 @@ public class SourceAction
                     continue;
                 }
 
+                // HACK: Need a shell context, but currently that muck is not exposed, so make a new one
                 ShellContext ctx = new ShellContext() {
                     public IO getIo() {
                         return context.getIo();
@@ -96,42 +106,5 @@ public class SourceAction
         }
         
         return Result.SUCCESS;
-    }
-
-    private BufferedReader openReader(final Object source) throws IOException {
-        BufferedReader reader;
-
-        if (source instanceof File) {
-            File file = (File)source;
-            log.info("Using source file: {}", file);
-
-            reader = new BufferedReader(new FileReader(file));
-        }
-        else if (source instanceof URL) {
-            URL url = (URL)source;
-            log.info("Using source URL: {}", url);
-
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        }
-        else {
-            String tmp = String.valueOf(source);
-
-            // First try a URL
-            try {
-                URL url = new URL(tmp);
-                log.info("Using source URL: {}", url);
-
-                reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            }
-            catch (MalformedURLException ignore) {
-                // They try a file
-                File file = new File(tmp);
-                log.info("Using source file: {}", file);
-                
-                reader = new BufferedReader(new FileReader(tmp));
-            }
-        }
-        
-        return reader;
     }
 }
