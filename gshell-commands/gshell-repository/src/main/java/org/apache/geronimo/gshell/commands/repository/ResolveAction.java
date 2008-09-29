@@ -124,9 +124,13 @@ public class ResolveAction
 
         ArtifactResolutionResult result = artifactManager.resolve(request);
 
-        //
-        // TODO: Do something with the result?
-        //
+        Set<Artifact> artifacts = result.getArtifacts();
+
+        io.info("Resolved artifacts:");
+
+        for (Artifact a : artifacts) {
+            io.info("    {}", a);    
+        }
 
         return Result.SUCCESS;
     }
