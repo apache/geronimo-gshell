@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
+import org.apache.geronimo.gshell.model.application.Branding;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -45,7 +46,8 @@ public class AboutAction
         assert applicationManager != null;
         Application app = applicationManager.getApplication();
         ApplicationModel model = app.getModel();
-
+        Branding branding = app.getModel().getBranding();
+        
         String id = app.getId();
         String name = model.getName();
 
@@ -57,6 +59,9 @@ public class AboutAction
         }
 
         io.info("{}", model.getVersion());
+
+        io.out.println();
+        io.out.println(branding.getAboutMessage());
 
         //
         // TODO: Add more options to get specific details out.  Hook up the branding muck here too.

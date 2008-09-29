@@ -65,6 +65,10 @@ public class Main
     // TODO: Add --application and --settings
     //
 
+    //
+    // TODO: Add --file <file>, which will run: source <file> 
+    //
+
     @Option(name="-h", aliases={"--help"}, requireOverride=true)
     private boolean help;
 
@@ -218,10 +222,7 @@ public class Main
             ApplicationModel applicationModel = new ApplicationModelLocator().locate();
             builder.setApplicationModel(applicationModel);
 
-            //
-            // HACK: --help and --version need access to the application's information, so we have to handle these options late
-            //
-            
+            // --help and --version need access to the application's information, so we have to handle these options late
             if (help|version) {
                 if (help) {
                     Printer printer = new Printer(clp);

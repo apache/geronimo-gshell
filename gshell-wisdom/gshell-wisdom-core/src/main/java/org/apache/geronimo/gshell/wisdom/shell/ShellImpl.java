@@ -43,6 +43,7 @@ import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -214,12 +215,17 @@ public class ShellImpl
         if (!io.isQuiet()) {
             String message = branding.getWelcomeMessage();
             if (message != null) {
-                io.out.println(message);
-            }
+                io.out.print(message);
 
-            //
-            // TODO: Render a nice line here if the branding has some property configured to enable it (move that bit out of branding's job)
-            //
+                // If we can't tell, or have something bogus then use a reasonable default
+                int width = io.getTerminal().getTerminalWidth();
+                if (width < 1) {
+                    width = 80;
+                }
+                io.out.println(StringUtils.repeat("-", width - 1));
+
+                io.out.flush();
+            }
         }
 
         // Check if there are args, and run them and then enter interactive

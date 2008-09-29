@@ -98,8 +98,6 @@
         </pluginGroup>
     </pluginGroups>
 
-    <branding>
-        <name>gshell</name>
-    </branding>
+    <branding class="org.apache.geronimo.gshell.wisdom.branding.GShellBranding"/>
 
 </application>
