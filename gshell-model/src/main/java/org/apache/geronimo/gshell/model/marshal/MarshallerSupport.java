@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.model.marshal;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.xml.XppDriver;
 import org.apache.geronimo.gshell.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,15 +52,11 @@ public class MarshallerSupport<T extends Model>
     }
 
     protected XStream createXStream() {
-        XStream xs;
+        XStream xs = new XStream(new DomDriver());
 
-        try {
-            Class.forName("org.xmlpull.mxp1.MXParser");
-            xs = new XStream(new XppDriver());
-        }
-        catch (ClassNotFoundException ignore) {
-            xs = new XStream(new DomDriver());
-        }
+        //
+        // TODO: See how we can enable schema validation when the input document has them configured.
+        //
 
         configure(xs);
         

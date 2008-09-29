@@ -20,12 +20,10 @@
 package org.apache.geronimo.gshell.model.application;
 
 import junit.framework.TestCase;
-import org.apache.geronimo.gshell.model.application.DependencyArtifact;
-import org.apache.geronimo.gshell.model.application.DependencyGroup;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 
-import java.net.URL;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 /**
