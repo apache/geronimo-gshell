@@ -21,13 +21,10 @@ package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.remote.RemoteShell;
-import org.apache.geronimo.gshell.remote.jaas.Identity;
-import org.apache.geronimo.gshell.remote.jaas.UserPrincipal;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 
-import javax.security.auth.Subject;
 import java.security.PublicKey;
 
 /**
@@ -41,8 +38,6 @@ public class ServerSessionContext
 
     public PublicKey pk;
 
-    public Identity identity;
-
     public BeanContainer container;
 
     public RemoteIO io;
@@ -50,22 +45,6 @@ public class ServerSessionContext
     public Variables variables;
 
     public RemoteShell shell;
-
-    public Object getIdentityToken() {
-        return identity.getToken();
-    }
-
-    public Subject getSubject() {
-        return identity.getSubject();
-    }
-
-    public UserPrincipal getUserPrincipal() {
-        return getSubject().getPrincipals(UserPrincipal.class).iterator().next();
-    }
-
-    public String getUsername() {
-        return getUserPrincipal().getName();
-    }
 
     public void close() {
         shell.close();
@@ -77,7 +56,6 @@ public class ServerSessionContext
 
         io = null;
         variables = null;
-        identity = null;
         pk = null;
     }
 }

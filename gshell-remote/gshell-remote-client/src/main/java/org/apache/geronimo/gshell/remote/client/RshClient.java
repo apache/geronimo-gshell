@@ -19,15 +19,14 @@
 
 package org.apache.geronimo.gshell.remote.client;
 
-import org.apache.geronimo.gshell.remote.client.auth.RemoteLoginModule;
 import org.apache.geronimo.gshell.remote.client.handler.ClientMessageHandler;
 import org.apache.geronimo.gshell.remote.client.handler.ClientSessionContext;
-import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
-import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
+import org.apache.geronimo.gshell.security.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
+import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.message.MessageHandler;
@@ -41,8 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
@@ -126,20 +124,26 @@ public class RshClient
 
         ClientSessionContext context = ClientSessionContext.BINDER.lookup(session.getSession());
 
-        CallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(username, password);
-        LoginContext loginContext = new LoginContext("RshClient", callbackHandler);
-
-        // HACK: Set and unset the transport for JAAS muck
-        RemoteLoginModule.setTransport(transport);
+        // Send the login message
+        Message response;
         try {
-            loginContext.login();
+            response = session.request(new LoginMessage(username, password));
         }
-        finally {
-            RemoteLoginModule.unsetTransport();
+        catch (Exception e) {
+            throw new LoginException(e.getMessage());
         }
 
-        context.subject = loginContext.getSubject();
-        log.debug("Subject: {}", context.subject);
+        if (response instanceof LoginMessage.Success) {
+            context.identity = ((LoginMessage.Success)response).getToken();
+
+            log.debug("Client identity: {}", context.identity);
+        }
+        else if (response instanceof LoginMessage.Failure) {
+            LoginMessage.Failure failure = (LoginMessage.Failure)response;
+
+            // FIXME: Remove this jaas exception once we figure out how to use jsecurity in this context
+            throw new LoginException("Login failed: " + failure.getReason());
+        }
     }
     
     public void echo(final String text) throws Exception {

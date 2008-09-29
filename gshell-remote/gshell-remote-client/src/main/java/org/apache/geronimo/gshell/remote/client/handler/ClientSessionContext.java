@@ -21,9 +21,6 @@ package org.apache.geronimo.gshell.remote.client.handler;
 
 import java.security.PublicKey;
 
-import javax.security.auth.Subject;
-
-import org.apache.geronimo.gshell.remote.client.auth.ClientPrincipal;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 
 /**
@@ -38,18 +35,10 @@ public class ClientSessionContext
     /** The server's public key. */
     public PublicKey pk;
 
-    /** The subject which the remote client has been authenticated as. */
-    public Subject subject;
+    public Object identity;
 
-    public ClientPrincipal getClientPrincipal() {
-        return subject.getPrincipals(ClientPrincipal.class).iterator().next();
-    }
-
-    public Object getIdentityToken() {
-        return getClientPrincipal().getIdentityToken();
-    }
-
-    public String getUsername() {
-        return getClientPrincipal().getName();
+    public void close() {
+        pk = null;
+        identity = null;
     }
 }

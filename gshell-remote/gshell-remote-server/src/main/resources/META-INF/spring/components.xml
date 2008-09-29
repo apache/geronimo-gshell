@@ -27,21 +27,15 @@
 
     <bean id="timeoutManager" class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl"/>
 
-    <bean id="jaasConfigurationLoader" class="org.apache.geronimo.gshell.remote.jaas.JaasConfigurationLoader">
-        <property name="resourceName" value="server.login.conf"/>
-    </bean>
-
     <bean id="rshServer" class="org.apache.geronimo.gshell.remote.server.RshServer" scope="prototype">
         <constructor-arg>
             <list>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.CloseShellHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.ConnectHandler"/>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.EchoHandler"/>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.ExecuteHandler"/>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler" depends-on="jaasConfigurationLoader">
-                    <property name="defaultRealm" value="BogusLogin"/>
-                </bean>
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.OpenShellHandler"/>
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.ExecuteHandler"/>
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.CloseShellHandler"/>
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.EchoHandler"/>
             </list>
         </constructor-arg>
     </bean>

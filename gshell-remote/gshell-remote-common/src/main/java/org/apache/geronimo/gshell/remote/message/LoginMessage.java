@@ -36,11 +36,11 @@ public class LoginMessage
     private final String username;
 
     @YarnStyle(omit=true)
-    private final char[] password;
+    private final String password;
 
     private final String realm;
     
-    public LoginMessage(final String username, final char[] password, final String realm) {
+    public LoginMessage(final String username, final String password, final String realm) {
         this.username = username;
         
         this.password = password;
@@ -48,7 +48,7 @@ public class LoginMessage
         this.realm = realm;
     }
 
-    public LoginMessage(final String username, final char[] password) {
+    public LoginMessage(final String username, final String password) {
         this(username, password, null);
     }
 
@@ -60,7 +60,7 @@ public class LoginMessage
         return username;
     }
 
-    public char[] getPassword() {
+    public String getPassword() {
         return password;
     }
 

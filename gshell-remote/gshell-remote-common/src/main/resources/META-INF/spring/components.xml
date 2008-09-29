@@ -25,9 +25,8 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="cryptoContext" class="org.apache.geronimo.gshell.remote.crypto.CryptoContextImpl">
-        <property name="transformation" value="RSA"/>
-        <property name="provider" value="default"/>
-    </bean>
+    <!--
+    TODO: Add some beans or drop this puppy.
+    -->
 
 </beans>

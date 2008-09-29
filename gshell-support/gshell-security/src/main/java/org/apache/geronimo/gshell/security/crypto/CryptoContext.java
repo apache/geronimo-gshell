@@ -17,44 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.client.auth;
+package org.apache.geronimo.gshell.security.crypto;
 
-import org.apache.geronimo.gshell.yarn.Yarn;
-
-import java.io.Serializable;
-import java.security.Principal;
+import java.security.Key;
+import java.security.PublicKey;
 
 /**
- * ???
+ * Provides an abstraction of the crypto bits which are required for some remote shell communications.
  *
  * @version $Rev$ $Date$
  */
-public class ClientPrincipal
-    implements Principal, Serializable
+public interface CryptoContext
 {
-    private static final long serialVersionUID = 1;
+    PublicKey getPublicKey();
 
-    private final String name;
+    PublicKey deserializePublicKey(byte[] bytes) throws Exception;
 
-    private final Object identity;
+    byte[] encrypt(Key key, byte[] bytes) throws Exception;
 
-    public ClientPrincipal(final String name, final Object identity) {
-        assert name != null;
-        assert identity != null;
+    byte[] encrypt(byte[] bytes) throws Exception;
 
-        this.name = name;
-        this.identity = identity;
-    }
+    byte[] decrypt(Key key, byte[] bytes) throws Exception;
 
-    public String getName() {
-        return name;
-    }
-
-    public Object getIdentityToken() {
-        return identity;
-    }
-
-    public String toString() {
-        return Yarn.render(this);
-    }
+    byte[] decrypt(byte[] bytes) throws Exception;
 }

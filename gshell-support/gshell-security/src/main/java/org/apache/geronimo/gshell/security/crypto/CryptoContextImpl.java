@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.crypto;
+package org.apache.geronimo.gshell.security.crypto;
 
 import java.security.Key;
 import java.security.KeyFactory;
@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Default {@link CryptoContext} component.
+ * {@link CryptoContext} component.
  *
  * @version $Rev$ $Date$
  */

@@ -19,16 +19,12 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.remote.jaas.Identity;
-import org.apache.geronimo.gshell.remote.jaas.UsernamePasswordCallbackHandler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.security.auth.Subject;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
+import java.util.UUID;
 
 /**
  * Server handler for {@link LoginMessage} messages.
@@ -41,20 +37,8 @@ public class LoginHandler
     @Autowired
     private TimeoutManager timeoutManager;
 
-    private String defaultRealm = "BogusLogin";
-
     public LoginHandler() {
         super(LoginMessage.class);
-    }
-
-    public String getDefaultRealm() {
-        return defaultRealm;
-    }
-
-    public void setDefaultRealm(final String defaultRealm) {
-        assert defaultRealm != null;
-        
-        this.defaultRealm = defaultRealm;
     }
 
     public void handle(final Session session, final ServerSessionContext context, final LoginMessage message) throws Exception {
@@ -67,32 +51,34 @@ public class LoginHandler
             log.warn("Aborting login processing; timeout has triggered");
         }
         else {
-            String realm = message.getRealm();
-            if (realm == null) {
-                realm = defaultRealm;
-            }
-
             String username = message.getUsername();
-            char[] password = message.getPassword();
+            String password = message.getPassword();
 
-            try {
-                LoginContext loginContext = new LoginContext(realm, new UsernamePasswordCallbackHandler(username, password));
-                loginContext.login();
+            //
+            // HACK: Just accept anything that is not "bogus"
+            //
 
-                Subject subject = loginContext.getSubject();
-                context.identity = new Identity(subject);
+            log.debug("Processing login: username='{}', password='{}'", username, password);
 
-                log.debug("Username: {}, Identity: {}", context.getUsername(), context.identity);
-
-                LoginMessage.Success reply = new LoginMessage.Success(context.identity.getToken());
-                reply.setCorrelationId(message.getId());
-                session.send(reply);
-            }
-            catch (LoginException e) {
-                String reason = e.toString();
+            if (username == null || username.equals("bogus")) {
+                String reason = "Invalid username";
                 log.debug("Login failed for user: {}, cause: {}", username, reason);
 
                 LoginMessage.Failure reply = new LoginMessage.Failure(reason);
+                reply.setCorrelationId(message.getId());
+                session.send(reply);
+            }
+            else if (password == null || password.equals("bogus")) {
+                String reason = "Invalid password";
+                log.debug("Login failed for user: {}, cause: {}", username, reason);
+
+                LoginMessage.Failure reply = new LoginMessage.Failure(reason);
+                reply.setCorrelationId(message.getId());
+                session.send(reply);
+            }
+            else {
+                UUID identity = UUID.randomUUID();
+                LoginMessage.Success reply = new LoginMessage.Success(identity);
                 reply.setCorrelationId(message.getId());
                 session.send(reply);
             }

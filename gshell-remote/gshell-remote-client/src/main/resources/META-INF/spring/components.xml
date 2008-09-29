@@ -25,11 +25,7 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="jaasConfigurationLoader" class="org.apache.geronimo.gshell.remote.jaas.JaasConfigurationLoader">
-        <property name="resourceName" value="client.login.conf"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.remote.client.RshClient" scope="prototype" depends-on="jaasConfigurationLoader">
+    <bean class="org.apache.geronimo.gshell.remote.client.RshClient" scope="prototype">
         <constructor-arg>
             <list>
                 <bean class="org.apache.geronimo.gshell.remote.client.handler.EchoHandler"/>

@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.remote.crypto.CryptoContext;
+import org.apache.geronimo.gshell.security.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.server.RshServer;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
