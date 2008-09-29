@@ -33,6 +33,12 @@ import org.apache.geronimo.gshell.io.IO;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.io.PrintWriter;
+
+import jline.ConsoleReader;
 
 /**
  * List the contents of a file or directory.
@@ -44,6 +50,10 @@ public class ListDirectoryAction
 {
     @Argument
     private String path;
+
+    //
+    // TODO: Add -l support
+    //
 
     @Option(name="-a")
     private boolean includeHidden = false;
@@ -64,7 +74,7 @@ public class ListDirectoryAction
         }
 
         if (file.getType() == FileType.FOLDER) {
-            listChildren(io, file, recursive, "");
+            listChildren(io, file);
         }
         else {
             io.info("{}", file.getName());
@@ -80,10 +90,9 @@ public class ListDirectoryAction
         return Result.SUCCESS;
     }
 
-    private void listChildren(final IO io, final FileObject dir, final boolean recursive, final String prefix) throws FileSystemException {
+    private void listChildren(final IO io, final FileObject dir) throws Exception {
         assert io != null;
         assert dir != null;
-        assert prefix != null;
 
         FileObject[] files;
 
@@ -107,19 +116,41 @@ public class ListDirectoryAction
             files = dir.findFiles(new FileFilterSelector(filter));
         }
 
+        //
+        // FIXME: Need to have the framework provide a reader, which is initialized correctly... or make this accessible via IO?
+        //
+
+        ConsoleReader reader = new ConsoleReader(
+                io.inputStream,
+                new PrintWriter(io.outputStream, true),
+                null, // bindings
+                io.getTerminal());
+        
+        reader.setUsePagination(false);
+
+        List<String> names = new ArrayList<String>(files.length);
+        List<FileObject> dirs = new LinkedList<FileObject>();
+
         for (FileObject file : files) {
-            io.out.print(prefix);
-            io.out.print(file.getName().getBaseName());
+            names.add(file.getName().getBaseName());
 
             if (file.getType() == FileType.FOLDER) {
-                io.out.println("/");
+                names.add(file.getName().getBaseName() + "/");
 
                 if (recursive) {
-                    listChildren(io, file, recursive, prefix + "    ");
+                    dirs.add(file);
                 }
             }
-            else {
+        }
+
+        reader.printColumns(names);
+        
+        if (!dirs.isEmpty()) {
+            for (FileObject subdir : dirs) {
                 io.out.println();
+                io.out.print(subdir.getName().getBaseName());
+                io.out.print(":");
+                listChildren(io, subdir);
             }
         }
     }
