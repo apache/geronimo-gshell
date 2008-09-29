@@ -76,21 +76,26 @@ public class FileObjectNameCompleter
             log.trace("Search: {}", search);
 
             if (dir != null) {
-                FileFilter filter = new FileFilter() {
-                    public boolean accept(final FileSelectInfo selection) {
-                        assert selection != null;
+                FileObject[] files;
 
-                        if (log.isTraceEnabled()) {
-                            log.trace("Filtering selection: {}", selection.getFile().getName());
+                if (search != null) {
+                    FileFilter filter = new FileFilter() {
+                        public boolean accept(final FileSelectInfo selection) {
+                            assert selection != null;
+
+                            if (log.isTraceEnabled()) {
+                                log.trace("Filtering selection: {}", selection.getFile().getName());
+                            }
+
+                            return selection.getFile().getName().getBaseName().startsWith(search);
                         }
+                    };
 
-                        // If we have something to search for then only include selections which match (start with search), else select everything
-                        return search == null || selection.getFile().getName().getBaseName().startsWith(search);
-
-                    }
-                };
-
-                FileObject[] files = dir.findFiles(new FileFilterSelector(filter));
+                    files = dir.findFiles(new FileFilterSelector(filter));
+                }
+                else {
+                    files = dir.getChildren();
+                }
 
                 if (files == null || files.length == 0) {
                     log.trace("No matching files found");
