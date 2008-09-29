@@ -23,7 +23,7 @@ import java.security.Key;
 import java.security.PublicKey;
 
 /**
- * Provides an abstraction of the crypto bits which are required for some remote shell communications.
+ * Provides an abstraction of some crypto bits.
  *
  * @version $Rev$ $Date$
  */
