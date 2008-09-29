@@ -39,6 +39,8 @@ public class RemoveAction
 
     // TODO: Add --recursive support
 
+    // TODO: Add --verbose support
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();

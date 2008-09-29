@@ -28,7 +28,7 @@ import org.apache.geronimo.gshell.io.IO;
  *
  * @version $Rev$ $Date$
  */
-public class DisplayCurrentDirectoryAction
+public class CurrentDirectoryAction
     extends VfsActionSupport
 {
     public Object execute(final CommandContext context) throws Exception {

@@ -57,7 +57,7 @@
             <gshell:link name="copy" target="cp"/>
 
             <gshell:command name="pwd" type="stateless">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.DisplayCurrentDirectoryAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CurrentDirectoryAction"/>
             </gshell:command>
 
             <gshell:command name="ls">

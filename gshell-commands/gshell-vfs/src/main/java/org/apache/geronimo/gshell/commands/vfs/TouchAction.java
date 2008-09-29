@@ -34,6 +34,8 @@ public class TouchAction
     @Argument(required=true)
     private String path;
 
+    // TODO: Add options similar to UNIX touch (like -r FILE) see man page for more details.
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 

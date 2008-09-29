@@ -41,6 +41,8 @@ public class CopyAction
     private String targetPath;
 
     // TODO: Add --recursive suport
+
+    // TODO: Add --verbose support
     
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
