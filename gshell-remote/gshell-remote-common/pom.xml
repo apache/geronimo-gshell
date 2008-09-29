@@ -54,6 +54,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-security</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.geronimo.gshell.remote</groupId>
             <artifactId>gshell-whisper</artifactId>
         </dependency>
