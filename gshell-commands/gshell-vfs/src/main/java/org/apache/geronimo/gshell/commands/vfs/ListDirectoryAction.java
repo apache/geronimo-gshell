@@ -85,16 +85,27 @@ public class ListDirectoryAction
         assert dir != null;
         assert prefix != null;
 
-        FileFilter filter = new FileFilter() {
-            public boolean accept(final FileSelectInfo selection) {
-                assert selection != null;
+        FileObject[] files;
 
-                // When includeHidden only include the file if there is not "." prefix, else include everything
-                return includeHidden || !selection.getFile().getName().getBaseName().startsWith(".");
-            }
-        };
+        if (includeHidden) {
+            files = dir.getChildren();
+        }
+        else {
+            FileFilter filter = new FileFilter() {
+                public boolean accept(final FileSelectInfo selection) {
+                    assert selection != null;
 
-        FileObject[] files = dir.findFiles(new FileFilterSelector(filter));
+                    try {
+                        return !selection.getFile().isHidden();
+                    }
+                    catch (FileSystemException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+
+            files = dir.findFiles(new FileFilterSelector(filter));
+        }
 
         for (FileObject file : files) {
             io.out.print(prefix);
