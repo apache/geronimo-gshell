@@ -64,6 +64,9 @@
             <artifactId>spring-core</artifactId>
         </dependency>
 
+        <!--
+        FIXME: Try to get ride of this dependency, or put it on a diet, cause it has was too muck crap we don't want/need/care about... and its 462K
+        -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
