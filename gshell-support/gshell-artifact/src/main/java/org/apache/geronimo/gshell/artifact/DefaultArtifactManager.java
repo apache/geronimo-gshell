@@ -25,12 +25,16 @@ import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.CyclicDependencyException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Default implementation of the {@link ArtifactManager} component.
@@ -115,16 +119,69 @@ public class DefaultArtifactManager
 
         log.debug("Validating result: {}", result);
 
-        if (result.hasErrorArtifactExceptions() ||
-            result.hasCircularDependencyExceptions() ||
-            result.hasMetadataResolutionExceptions() ||
-            result.hasVersionRangeViolations() ||
-            !result.getMissingArtifacts().isEmpty())
-        {
-            // Puke
-            throw new ResolutionException(request, result);
+        boolean failed = false;
+
+        if (result.hasErrorArtifactExceptions()) {
+            failed = true;
+
+            log.error("Artifact resolution errors:");
+            List<ArtifactResolutionException> exceptions = result.getErrorArtifactExceptions();
+            for (ArtifactResolutionException exception : exceptions) {
+                log.error("    {}", exception);
+                log.trace("Artifact resolution error", exception);
+            }
         }
 
+        if (result.hasCircularDependencyExceptions()) {
+            failed = true;
+
+            log.error("Artifact circular dependency errors:");
+            List<CyclicDependencyException> exceptions = result.getCircularDependencyExceptions();
+            for (CyclicDependencyException exception : exceptions) {
+                log.error("    {}", exception);
+                log.trace("Artifact circular dependency error", exception);
+            }
+        }
+
+        if (result.hasMetadataResolutionExceptions()) {
+            failed = true;
+
+            log.error("Artifact metadata resolution errors:");
+            // noinspection unchecked
+            List<ArtifactResolutionException> exceptions = result.getMetadataResolutionExceptions();
+            for (ArtifactResolutionException exception : exceptions) {
+                log.error("    {}", exception);
+                log.trace("Artifact metadata resolution error", exception);
+            }
+        }
+
+        if (result.hasVersionRangeViolations()) {
+            failed = true;
+
+            log.error("Artifact version range violations:");
+            // noinspection unchecked
+            List<Exception> exceptions = result.getVersionRangeViolations();
+            for (Exception exception : exceptions) {
+                log.error("    {}", exception);
+                log.trace("Artifact version range violation", exception);
+            }
+        }
+
+        // noinspection unchecked
+        List<Artifact> artifacts = result.getMissingArtifacts();
+        if (!artifacts.isEmpty()) {
+            failed = true;
+
+            log.error("Missing artifacts:");
+            for (Artifact artifact : artifacts) {
+                log.error("    {}", artifact);
+            }
+        }
+
+        if (failed) {
+            throw new ResolutionException(request, result);
+        }
+        
         return result;
     }
 }
