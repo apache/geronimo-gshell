@@ -21,9 +21,9 @@ package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
+import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.Arguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,19 +55,19 @@ public class JavaAction
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-        
+
+        log.debug("Loading class: {}", className);
         Class type = Thread.currentThread().getContextClassLoader().loadClass(className);
         log.info("Using type: {}", type);
 
+        log.debug("Locating method: {}", methodName);
         Method method = type.getMethod(methodName, String[].class);
         log.info("Using method: {}", method);
 
         log.info("Invoking w/arguments: {}", Arguments.asString(args));
-
         Object result = method.invoke(null, args);
-
         log.info("Result: {}", result);
         
-        return Result.SUCCESS;
+        return result;
     }
 }
