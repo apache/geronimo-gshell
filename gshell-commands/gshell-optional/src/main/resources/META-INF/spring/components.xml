@@ -44,6 +44,10 @@
             <gshell:command name="date">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.DateAction"/>
             </gshell:command>
+
+            <gshell:command name="hostname">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.HostnameAction"/>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
