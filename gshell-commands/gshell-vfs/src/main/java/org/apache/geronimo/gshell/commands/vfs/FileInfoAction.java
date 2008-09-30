@@ -45,15 +45,6 @@ public class FileInfoAction
 
         FileObject file = resolveFile(context, path);
 
-        if (!file.exists()) {
-            io.error("File not found: {}", file.getName());
-            return Result.FAILURE;
-        }
-        else if (file.getType() == FileType.FOLDER) {
-            io.error("File is a directory: {}", file.getName());
-            return Result.FAILURE;
-        }
-        
         io.info("URL: {}", file.getURL());
         io.info("Name: {}", file.getName());
         io.info("BaseName: {}", file.getName().getBaseName());
