@@ -40,6 +40,10 @@
             <gshell:command name="sleep">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.SleepAction"/>
             </gshell:command>
+
+            <gshell:command name="date">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.DateAction"/>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
