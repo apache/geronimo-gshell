@@ -22,6 +22,12 @@
 
 <application>
 
+    <!--
+    TODO: Consider making application.xml a spring beans file, with a custom 'application' (and 'settings' for settings.xml) namespace.
+          Will need a way to install application specific beans and config which is not in a plugin anyways.
+          And, we can drop the need for XStream and some of the bits from gshell-model
+    -->
+
     <groupId>org.apache.geronimo.gshell</groupId>
     <artifactId>gshell</artifactId>
     <name>GShell</name>

@@ -48,6 +48,10 @@ import java.util.Set;
 public class BeanContainerContext
     extends GenericApplicationContext
 {
+    //
+    // FIXME: Just use a BeanFactory (ConfigurableListableBeanFactory or something) as we don't need the applicationContext muck, and it eats up 500k
+    //
+
     private static final String[] CONFIG_LOCATIONS = {
         "classpath*:META-INF/spring/components.xml"
     };
@@ -55,6 +59,10 @@ public class BeanContainerContext
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Set<Resource> ownedResources = new HashSet<Resource>();
+
+    //
+    // TODO: Implement a custom scope which can handle some of the state issues for objects that should be created once and only once for each shell instance.
+    //
 
     public BeanContainerContext(final ClassLoader classLoader) {
         this(classLoader, null);
