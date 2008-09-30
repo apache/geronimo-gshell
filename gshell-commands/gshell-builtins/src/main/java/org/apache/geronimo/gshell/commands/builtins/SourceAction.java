@@ -103,8 +103,10 @@ public class SourceAction
         }
         finally {
             IOUtil.close(reader);
+
+            file.close();
         }
-        
+
         return Result.SUCCESS;
     }
 }

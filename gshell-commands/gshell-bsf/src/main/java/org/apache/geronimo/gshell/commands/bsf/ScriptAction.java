@@ -179,6 +179,7 @@ public class ScriptAction
         }
         finally {
             engine.terminate();
+            file.close();
         }
     }
 
