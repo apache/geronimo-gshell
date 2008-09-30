@@ -21,11 +21,11 @@ package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.remote.server.RemoteShellContextHolder;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.whisper.transport.Session;
@@ -80,7 +80,7 @@ public class OpenShellHandler
 
         try {
             // Create a new shell instance
-            context.shell = context.container.getBean("remoteShell", RemoteShell.class);
+            context.shell = context.container.getBean("remoteShell", Shell.class);
         }
         finally {
             RemoteShellContextHolder.clearContext();

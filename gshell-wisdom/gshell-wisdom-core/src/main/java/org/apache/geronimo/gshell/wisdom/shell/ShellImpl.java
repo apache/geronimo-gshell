@@ -100,6 +100,14 @@ public class ShellImpl
         return context;
     }
 
+    public boolean isOpened() {
+        return true;
+    }
+
+    public void close() {
+        // Nothing
+    }
+
     public boolean isInteractive() {
         return true;
     }

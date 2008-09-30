@@ -35,7 +35,11 @@ public interface Shell
     Object execute(Object... args) throws Exception;
 
     Object execute(Object[][] commands) throws Exception;
-    
+
+    boolean isOpened();
+
+    void close();
+
     /**
      * Check if the shell can be run interactivly.
      * 

@@ -61,7 +61,8 @@ public class BeanContainerContext
     private final Set<Resource> ownedResources = new HashSet<Resource>();
 
     //
-    // TODO: Implement a custom scope which can handle some of the state issues for objects that should be created once and only once for each shell instance.
+    // TODO: Implement a custom scope which can handle some of the state issues for objects that should be
+    //       created once and only once for each shell instance.  "application" and "shell" scopes
     //
 
     public BeanContainerContext(final ClassLoader classLoader) {

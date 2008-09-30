@@ -20,10 +20,10 @@
 package org.apache.geronimo.gshell.remote.server.handler;
 
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
+import org.apache.geronimo.gshell.shell.Shell;
 
 import java.security.PublicKey;
 
@@ -44,7 +44,7 @@ public class ServerSessionContext
 
     public Variables variables;
 
-    public RemoteShell shell;
+    public Shell shell;
 
     public void close() {
         shell.close();

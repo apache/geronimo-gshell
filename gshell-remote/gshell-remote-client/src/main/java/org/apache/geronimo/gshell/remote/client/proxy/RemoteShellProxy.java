@@ -24,9 +24,9 @@ import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ExitNotification;
-import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.remote.client.RshClient;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.whisper.stream.StreamFeeder;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version $Rev$ $Date$
  */
 public class RemoteShellProxy
-    implements RemoteShell
+    implements Shell
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 

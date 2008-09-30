@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.remote.server;
 
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
-import org.apache.geronimo.gshell.remote.RemoteShell;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version $Rev$ $Date$
  */
 public class RemoteShellImpl
-    implements RemoteShell
+    implements Shell
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
