@@ -296,7 +296,7 @@ public abstract class CommandSupport
             result = new CommandResult.ValueResult(value);
         }
         catch (final Notification n) {
-            log.trace("Notified: {}, n");
+            log.trace("Notified: {}", n);
 
             result = new CommandResult.NotificationResult(n);
         }
