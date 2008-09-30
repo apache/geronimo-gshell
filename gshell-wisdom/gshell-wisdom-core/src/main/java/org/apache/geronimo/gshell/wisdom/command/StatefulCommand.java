@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 
 /**
  * Stateful {@link org.apache.geronimo.gshell.command.Command} component.
@@ -57,8 +58,10 @@ public class StatefulCommand
         CommandAction action = actionHolder.get();
 
         if (action == null) {
+            StopWatch watch = new StopWatch(true);
             action = createAction();
             setAction(action);
+            log.trace("Action created in {}", watch);
         }
 
         return action;
