@@ -103,6 +103,14 @@
                     <null/>
                 </gshell:completers>
             </gshell:command>
+
+            <gshell:command name="find">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FindAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
         </gshell:command-bundle>
 
         <!--
