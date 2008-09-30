@@ -80,6 +80,8 @@ public class FindAction
 
         find(context, root, selector);
 
+        closeFile(root);
+        
         return Result.SUCCESS;
     }
 

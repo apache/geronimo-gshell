@@ -66,6 +66,9 @@ public class CopyAction
 
         target.copyFrom(source, Selectors.SELECT_ALL);
 
+        closeFile(source);
+        closeFile(target);
+        
         return Result.SUCCESS;
     }
 }

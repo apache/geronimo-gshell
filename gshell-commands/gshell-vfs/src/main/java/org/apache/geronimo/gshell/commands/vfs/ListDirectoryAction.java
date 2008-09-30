@@ -87,6 +87,8 @@ public class ListDirectoryAction
             io.verbose("Last modified: {}", lastMod);
         }
 
+        closeFile(file);
+        
         return Result.SUCCESS;
     }
 

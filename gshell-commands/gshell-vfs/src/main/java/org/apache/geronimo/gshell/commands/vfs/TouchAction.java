@@ -47,6 +47,8 @@ public class TouchAction
 
         file.getContent().setLastModifiedTime(System.currentTimeMillis());
 
+        closeFile(file);
+        
         return Result.SUCCESS;
     }
 }

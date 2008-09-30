@@ -35,8 +35,10 @@ public class CurrentDirectoryAction
         assert context != null;
         IO io = context.getIo();
 
-        FileObject cwd = getCurrentDirectory(context);
-        io.info("{}", cwd.getName());
+        FileObject dir = getCurrentDirectory(context);
+        io.info("{}", dir.getName());
+
+        closeFile(dir);
 
         return Result.SUCCESS;
     }

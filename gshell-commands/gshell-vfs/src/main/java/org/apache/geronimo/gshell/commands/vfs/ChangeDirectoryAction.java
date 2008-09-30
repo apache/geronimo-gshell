@@ -57,6 +57,8 @@ public class ChangeDirectoryAction
         }
 
         setCurrentDirectory(context, file);
+
+        closeFile(file);
         
         return Result.SUCCESS;
     }

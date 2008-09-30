@@ -86,6 +86,8 @@ public class CatAction
             IOUtil.close(reader);
         }
 
+        closeFile(file);
+        
         io.out.println();
 
         return Result.SUCCESS;

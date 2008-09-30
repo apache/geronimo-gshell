@@ -80,9 +80,9 @@ public class FileInfoAction
         else {
             io.info("The file does not exist");
         }
-        
-        file.close();
 
+        closeFile(file);
+        
         return Result.SUCCESS;
     }
 }

@@ -98,8 +98,11 @@ public class EditAction
             log.debug("Updating original file with edited content");
             file.copyFrom(tmp, Selectors.SELECT_SELF);
             tmp.delete();
+            closeFile(tmp);
         }
 
+        closeFile(file);
+        
         return result;
     }
 

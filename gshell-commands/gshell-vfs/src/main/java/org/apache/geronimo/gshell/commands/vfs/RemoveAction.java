@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.Selectors;
-import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
@@ -54,6 +53,8 @@ public class RemoveAction
 
         file.delete(Selectors.SELECT_SELF);
 
+        closeFile(file);
+        
         return Result.SUCCESS;
     }
 }

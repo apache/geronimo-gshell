@@ -64,7 +64,22 @@ public abstract class VfsActionSupport
         assert context != null;
         assert path != null;
 
+        log.trace("Resolving path: {}", path);
+        
         FileObject cwd = getCurrentDirectory(context);
         return getFileSystemAccess().resolveFile(cwd, path);
+    }
+
+    protected void closeFile(final FileObject file) {
+        if (file != null) {
+            log.trace("Closing file: {}", file);
+            
+            try {
+                file.close();
+            }
+            catch (FileSystemException e) {
+                log.debug("Failed to close file: " + file, e);
+            }
+        }
     }
 }
