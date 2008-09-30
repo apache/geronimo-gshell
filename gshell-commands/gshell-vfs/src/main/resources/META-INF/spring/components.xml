@@ -95,6 +95,14 @@
                     <null/>
                 </gshell:completers>
             </gshell:command>
+
+            <gshell:command name="fileinfo">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FileInfoAction"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
         </gshell:command-bundle>
 
         <!--
