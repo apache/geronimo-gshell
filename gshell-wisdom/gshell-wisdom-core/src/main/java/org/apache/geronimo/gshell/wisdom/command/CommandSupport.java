@@ -296,12 +296,12 @@ public abstract class CommandSupport
             result = new CommandResult.ValueResult(value);
         }
         catch (final Notification n) {
-            log.trace("Notified: {}", n);
+            log.trace("Notified: " + n, n);
 
             result = new CommandResult.NotificationResult(n);
         }
         catch (final Throwable t) {
-            log.trace("Caught: {}", t);
+            log.trace("Caught: " + t, t);
 
             result = new CommandResult.FailureResult(t);
         }
