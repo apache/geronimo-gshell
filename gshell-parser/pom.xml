@@ -66,6 +66,7 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/grammar</sourceDirectory>
+                            <interimDirectory>${project.build.directory}/tmp/jjtree</interimDirectory>
                         </configuration>
                     </execution>
                 </executions>
