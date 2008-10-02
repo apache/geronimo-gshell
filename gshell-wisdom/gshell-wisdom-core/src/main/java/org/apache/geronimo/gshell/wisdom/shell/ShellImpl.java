@@ -19,12 +19,11 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import jline.History;
 import jline.Completor;
-import org.apache.geronimo.gshell.ansi.Renderer;
+import jline.History;
 import org.apache.geronimo.gshell.ansi.Code;
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.Application;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -32,16 +31,12 @@ import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
-import org.apache.geronimo.gshell.event.Event;
-import org.apache.geronimo.gshell.event.EventListener;
-import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
@@ -66,10 +61,7 @@ public class ShellImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ApplicationManager applicationManager;
-
-    @Autowired
-    private EventManager eventManager;
+    private Application application;
 
     @Autowired
     private CommandLineExecutor executor;
@@ -100,12 +92,16 @@ public class ShellImpl
         return context;
     }
 
+    //
+    // TODO: Add ensureOpened() and add checks
+    //
+    
     public boolean isOpened() {
         return true;
     }
 
     public void close() {
-        // Nothing
+        log.debug("Closing");
     }
 
     public boolean isInteractive() {
@@ -113,44 +109,36 @@ public class ShellImpl
     }
 
     @PostConstruct
-    public void init() {
-        eventManager.addListener(new EventListener() {
-            public void onEvent(Event event) throws Exception {
-                assert event != null;
+    public void init() throws Exception {
+        assert application != null;
 
-                if (event instanceof ApplicationConfiguredEvent) {
-                    ApplicationConfiguredEvent targetEvent = (ApplicationConfiguredEvent)event;
+        // Dereference some bits from the applciation context
+        final IO io = application.getIo();
 
-                    log.debug("Binding application io/variables/branding from context");
+        //
+        // TODO: Each shell should really have its own variables, using the apps vars as its parents
+        //       but before we do that we need to implement a general ShellContextHolder to allow
+        //       detached components access in the threads context.
+        //
+        final Variables vars = application.getVariables();
 
-                    // Dereference some bits from the applciation context
-                    final Application application = targetEvent.getApplication();
-                    context = new ShellContext() {
-                        public IO getIo() {
-                            return application.getIo();
-                        }
-
-                        public Variables getVariables() {
-                            //
-                            // TODO: Each shell should really have its own variables, using the apps vars as its parents
-                            //       but before we do that we need to implement a general ShellContextHolder to allow
-                            //       detached components access in the threads context.
-                            //
-
-                            return application.getVariables();
-                        }
-                    };
-                    
-                    branding = application.getModel().getBranding();
-
-                    //
-                    // TODO: Populate variables with some defaults, like the username/hostname/etc.
-                    //
-
-                    loadProfileScripts();
-                }
+        context = new ShellContext() {
+            public IO getIo() {
+                return io;
             }
-        });
+
+            public Variables getVariables() {
+                return vars;
+            }
+        };
+
+        branding = application.getModel().getBranding();
+
+        //
+        // TODO: Populate variables with some defaults, like the username/hostname/etc.
+        //
+
+        loadProfileScripts();
     }
 
     public Object execute(final String line) throws Exception {
@@ -279,14 +267,13 @@ public class ShellImpl
             //
 
             public String prompt() {
-                assert applicationManager != null;
-                Application app = applicationManager.getApplication();
-                Branding branding = app.getModel().getBranding();
+                assert application != null;
+                Branding branding = application.getModel().getBranding();
                 
                 StringBuilder buff = new StringBuilder();
-                buff.append(Renderer.encode(app.getUserName(), Code.BOLD));
+                buff.append(Renderer.encode(application.getUserName(), Code.BOLD));
                 buff.append("@");
-                buff.append(app.getLocalHost().getHostName());
+                buff.append(application.getLocalHost().getHostName());
                 buff.append(":");
                 buff.append(Renderer.encode(branding.getName(), Code.BOLD));
                 buff.append("> ");

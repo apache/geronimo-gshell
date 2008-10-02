@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.spring.BeanContainerImpl;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 import java.util.UUID;
@@ -59,7 +60,9 @@ public class OpenShellHandler
         // Create a new container which will be the parent for our remote shells
         String id = "gshell.remote-shell[" + UUID.randomUUID() + "]";
         context.container = container.createChild(id);
-        context.container.start();
+        context.container.loadBeans(new String[] {
+            "classpath*:META-INF/spring/components.xml"
+        });
 
         // Setup the shell context and related components
         context.io = new RemoteIO(session);

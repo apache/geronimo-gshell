@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package org.apache.geronimo.gshell.spring;
 
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
@@ -37,12 +36,8 @@ public interface BeanContainer
 
     ClassRealm getClassRealm();
 
-    void start();
+    void loadBeans(String[] locations) throws Exception;
 
-    void stop();
-
-    void close();
-    
     <T> T getBean(Class<T> type);
 
     <T> T getBean(String name, Class<T> requiredType);
@@ -56,6 +51,4 @@ public interface BeanContainer
     BeanContainer createChild(String id, List<URL> classPath);
 
     BeanContainer createChild(String id);
-
-    // Object configure(Object bean);
 }

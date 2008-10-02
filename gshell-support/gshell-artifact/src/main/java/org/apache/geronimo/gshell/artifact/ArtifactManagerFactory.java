@@ -19,17 +19,15 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import org.springframework.beans.factory.FactoryBean;
+import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
+import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.DefaultContainerConfiguration;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
-
-import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.FactoryBean;
 
 /**
  * Creates {@link ArtifactManager} beans.
@@ -41,10 +39,7 @@ public class ArtifactManagerFactory
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private PlexusContainer container;
-
-    @PostConstruct
-    private void init() throws Exception {
+    private PlexusContainer createContainer() throws Exception {
         DefaultContainerConfiguration config = new DefaultContainerConfiguration();
 
         // When running under ClassWorlds already, then set the containers realm to the current realm
@@ -59,15 +54,17 @@ public class ArtifactManagerFactory
             config.setRealm(classRealm);
         }
 
-        container = new DefaultPlexusContainer(config);
+        DefaultPlexusContainer container = new DefaultPlexusContainer(config);
 
         container.setLoggerManager(new Slf4jLoggingManager());
 
         log.debug("Constructed Plexus container: {}", container);
+
+        return container;
     }
-    
+
     public Object getObject() throws Exception {
-        Object target = container.lookup(ArtifactManager.class);
+        Object target = createContainer().lookup(ArtifactManager.class);
 
         log.debug("Using ArtifactManager: {}", target);
 

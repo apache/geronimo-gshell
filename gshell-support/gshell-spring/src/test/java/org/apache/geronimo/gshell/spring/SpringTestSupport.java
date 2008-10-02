@@ -19,17 +19,9 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import junit.framework.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
-
-import java.util.Map;
-import java.util.List;
-import java.net.URL;
 
 /**
  * Suport for Spring-based tests.
@@ -37,9 +29,24 @@ import java.net.URL;
  * @version $Rev$ $Date$
  */
 public abstract class SpringTestSupport
-    extends AbstractDependencyInjectionSpringContextTests
+    extends TestCase
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    private BeanContainerImpl container;
+
+    protected void setUp() throws Exception {
+        container = new BeanContainerImpl(getClass().getClassLoader());
+        configure(container);
+    }
+    
+    protected void tearDown() throws Exception {
+        container = null;
+    }
+
+    protected void configure(final BeanContainerImpl container) throws Exception {
+        container.loadBeans(getConfigLocations());
+    }
 
     protected String[] getConfigLocations() {
         return new String[] {
@@ -47,38 +54,10 @@ public abstract class SpringTestSupport
         };
     }
 
-    private BeanContainer container;
-
-    protected void prepareApplicationContext(final GenericApplicationContext context) {
-        assert context != null;
-
-	    log.debug("Prepare applciation context");
-
-        container = new BeanContainerSupport() {
-            protected ConfigurableApplicationContext getContext() {
-                return context;
-            }
-
-            public BeanContainer getParent() {
-                return null;
-            }
-
-            public ClassRealm getClassRealm() {
-                throw new UnsupportedOperationException();
-            }
-
-            public BeanContainer createChild(final String id, final List<URL> classPath) {
-                throw new UnsupportedOperationException();
-            }
-        };
+    protected BeanContainerImpl getBeanContainer() {
+        if (container == null) {
+            throw new IllegalStateException();
+        }
+        return container;
     }
-
-    protected void customizeBeanFactory(final DefaultListableBeanFactory beanFactory) {
-        assert beanFactory != null;
-
-        log.debug("Customize bean factory");
-
-        assert container != null;
-        beanFactory.addBeanPostProcessor(new BeanContainerAwareProcessor(container));
-	}
 }

@@ -61,13 +61,23 @@ public class ShellBuilderImpl
 
     private ArtifactManager artifactManager;
 
-    private BeanContainer createContainer() {
-        return new BeanContainerImpl(getClassLoader());
+    private BeanContainer createContainer() throws Exception {
+        BeanContainerImpl container = new BeanContainerImpl(getClassLoader());
+        container.loadBeans(new String[] {
+            "classpath*:META-INF/spring/components.xml"
+        });
+
+        return container;
     }
 
     private BeanContainer getContainer() {
         if (container == null) {
-            container = createContainer();
+            try {
+                container = createContainer();
+            }
+            catch (Exception e) {
+                throw new RuntimeException("Failed to create container", e);
+            }
         }
         return container;
     }
@@ -189,8 +199,6 @@ public class ShellBuilderImpl
 
         // Initialize the container
         BeanContainer container = getContainer();
-        container.start();
-        
         log.debug("Container: {}", container);
 
         //

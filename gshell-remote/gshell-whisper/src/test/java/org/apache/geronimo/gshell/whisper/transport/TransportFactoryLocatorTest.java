@@ -34,23 +34,17 @@ import java.net.URI;
 public class TransportFactoryLocatorTest
     extends SpringTestSupport
 {
-    private TransportFactoryLocator locator;
-
     private TransportFactoryLocator getLocator() {
-        TransportFactoryLocator locator = (TransportFactoryLocator) applicationContext.getBean("transportFactoryLocator");
+        TransportFactoryLocator locator = getBeanContainer().getBean("transportFactoryLocator", TransportFactoryLocator.class);
         assertNotNull(locator);
 
         return locator;
     }
 
-    protected void onSetUp() throws Exception {
-        locator = getLocator();
-    }
-
     public void testLocate_vm() throws Exception {
         URI uri = new URI("vm://local:1");
 
-        TransportFactory factory = locator.locate(uri);
+        TransportFactory factory = getLocator().locate(uri);
 
         assertTrue(factory instanceof VmTransportFactory);
 
@@ -60,7 +54,7 @@ public class TransportFactoryLocatorTest
     public void testLocate_tcp() throws Exception {
         URI uri = new URI("tcp://localhost:9999");
 
-        TransportFactory factory = locator.locate(uri);
+        TransportFactory factory = getLocator().locate(uri);
 
         assertTrue(factory instanceof TcpTransportFactory);
 
@@ -70,7 +64,7 @@ public class TransportFactoryLocatorTest
     public void testLocate_ssl() throws Exception {
         URI uri = new URI("ssl://localhost:9999");
 
-        TransportFactory factory = locator.locate(uri);
+        TransportFactory factory = getLocator().locate(uri);
 
         assertTrue(factory instanceof SslTransportFactory);
 
@@ -81,7 +75,7 @@ public class TransportFactoryLocatorTest
         URI uri = new URI("unknown://localhost:9999");
 
         try {
-            locator.locate(uri);
+            getLocator().locate(uri);
             fail();
         }
         catch (InvalidLocationException expected) {}
@@ -91,7 +85,7 @@ public class TransportFactoryLocatorTest
         URI uri = new URI("localhost");
 
         try {
-            locator.locate(uri);
+            getLocator().locate(uri);
             fail();
         }
         catch (InvalidLocationException expected) {}

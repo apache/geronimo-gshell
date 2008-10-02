@@ -127,10 +127,12 @@ public class PluginManagerImpl
         List<URL> classPath = createClassPath(artifacts);
 
         BeanContainer pluginContainer = container.createChild("gshell.plugin(" + artifact.getId() + ")", classPath);
-        pluginContainer.start();
-        
         log.debug("Created plugin container: {}", pluginContainer);
-        
+
+        pluginContainer.loadBeans(new String[] {
+            "classpath*:META-INF/spring/components.xml"
+        });
+    
         PluginImpl plugin = pluginContainer.getBean(PluginImpl.class);
 
         // Initialize the plugins artifact configuration

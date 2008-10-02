@@ -87,12 +87,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-spring</artifactId>
             <classifier>tests</classifier>

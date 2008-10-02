@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Event fired once the application has constructed a shell.

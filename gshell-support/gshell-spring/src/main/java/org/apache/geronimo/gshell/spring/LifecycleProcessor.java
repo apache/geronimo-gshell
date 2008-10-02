@@ -17,24 +17,26 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.config;
+package org.apache.geronimo.gshell.spring;
 
-import org.apache.geronimo.gshell.spring.LoggingProcessor;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
+import org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor;
+import org.springframework.core.Ordered;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
- * Unit tests for the {@link LoggingProcessor} class.
+ * Extention of the Spring {@link InitDestroyAnnotationBeanPostProcessor} to support
+ * {@link PostConstruct} and {PreDestroy} annotations.
  *
  * @version $Rev$ $Date$
  */
-public class PluginParserTest
-    extends SpringTestSupport
-{   
-    public void testParser() throws Exception {
-        LoggingProcessor processor = new LoggingProcessor();
-        String xml = processor.render(getBeanContainer().getContext());
-        assertNotNull(xml);
-
-        System.out.println("XML:\n" + xml);
+public class LifecycleProcessor
+    extends InitDestroyAnnotationBeanPostProcessor
+{
+    public LifecycleProcessor() {
+        setOrder(Ordered.LOWEST_PRECEDENCE - 3);
+        setInitAnnotationType(PostConstruct.class);
+		setDestroyAnnotationType(PreDestroy.class);
     }
 }

@@ -146,13 +146,15 @@ public class PingPongProtocolTest
     private TransportFactoryLocator locator;
 
     private TransportFactoryLocator getLocator() {
-        TransportFactoryLocator locator = (TransportFactoryLocator) applicationContext.getBean("transportFactoryLocator");
+        TransportFactoryLocator locator = getBeanContainer().getBean("transportFactoryLocator", TransportFactoryLocator.class);
         assertNotNull(locator);
 
         return locator;
     }
 
-    protected void onSetUp() throws Exception {
+    protected void setUp() throws Exception {
+        super.setUp();
+        
         locator = getLocator();
     }
 

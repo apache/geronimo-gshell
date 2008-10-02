@@ -19,10 +19,6 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-
-import org.jmock.Mockery;
-
 import javax.annotation.PostConstruct;
 
 import junit.framework.Assert;
@@ -35,17 +31,11 @@ import junit.framework.Assert;
 public class BeanContainerAwareProcessorTest
     extends SpringTestSupport
 {
-    private Mockery context = new Mockery();
-
-    protected void customizeBeanFactory(DefaultListableBeanFactory beanFactory) {
-        BeanContainer container = context.mock(BeanContainer.class);
-        beanFactory.addBeanPostProcessor(new BeanContainerAwareProcessor(container));
-    }
-
     public void testProcessor() throws Exception {
-        Target target = (Target) applicationContext.getBean("target");
+        Target target = getBeanContainer().getBean("target", Target.class);
         assertNotNull(target);
         assertNotNull(target.container);
+        assertTrue(target.initialized);
     }
 
     //
@@ -56,13 +46,16 @@ public class BeanContainerAwareProcessorTest
         implements BeanContainerAware
     {
         public BeanContainer container;
-        
+
+        public boolean initialized = false;
+
         public void setBeanContainer(BeanContainer container) {
             this.container = container;
         }
-        
+
         @PostConstruct
-        private void init() {
+        public void init() {
+            initialized = true;
             Assert.assertNotNull(container);
         }
     }

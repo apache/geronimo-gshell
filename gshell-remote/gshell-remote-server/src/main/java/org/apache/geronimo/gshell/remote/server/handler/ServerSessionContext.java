@@ -50,10 +50,7 @@ public class ServerSessionContext
         shell.close();
         shell = null;
 
-        container.stop();
-        container.close();
         container = null;
-
         io = null;
         variables = null;
         pk = null;

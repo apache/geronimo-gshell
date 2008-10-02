@@ -17,24 +17,32 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.config;
+package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.geronimo.gshell.spring.LoggingProcessor;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
+import org.springframework.beans.factory.config.Scope;
+import org.springframework.beans.factory.ObjectFactory;
 
 /**
- * Unit tests for the {@link LoggingProcessor} class.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class PluginParserTest
-    extends SpringTestSupport
-{   
-    public void testParser() throws Exception {
-        LoggingProcessor processor = new LoggingProcessor();
-        String xml = processor.render(getBeanContainer().getContext());
-        assertNotNull(xml);
+public class ApplicationScope
+    implements Scope
+{
+    public Object get(final String name, final ObjectFactory objectFactory) {
+        return null;
+    }
 
-        System.out.println("XML:\n" + xml);
+    public Object remove(final String name) {
+        return null;
+    }
+
+    public void registerDestructionCallback(final String name, final Runnable callback) {
+
+    }
+
+    public String getConversationId() {
+        return null;
     }
 }

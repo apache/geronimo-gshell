@@ -17,39 +17,42 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.spring;
+package org.apache.geronimo.gshell.wisdom.application;
 
+import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public class BeanContainerContext
-    extends DefaultListableBeanFactory
+public class ApplicationFactoryBean
+    implements FactoryBean
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    //
-    // TODO: Add more muck to support stuff in AbstractApplicationContext here, move some of the container bits from BeanContainerImpl into here.
-    //
-    
-    public BeanContainerContext(final BeanContainerContext parent) {
-        super(parent);
+    @Autowired
+    private ApplicationManager applicationManager;
+
+    public Object getObject() throws Exception {
+        assert applicationManager != null;
+        Application app = applicationManager.getApplication();
+
+        log.debug("Applictaion: {}", app);
+
+        return app;
     }
 
-    public void addBeanPostProcessor(final BeanPostProcessor processor) {
-        assert processor != null;
+    public Class getObjectType() {
+        return Application.class;
+    }
 
-        if (processor instanceof BeanFactoryAware) {
-            ((BeanFactoryAware)processor).setBeanFactory(this);
-        }
-
-        super.addBeanPostProcessor(processor);
+    public boolean isSingleton() {
+        return true;
     }
 }

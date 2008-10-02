@@ -41,13 +41,15 @@ public class VmTransportFactoryTest
     private URI uri;
 
     private TransportFactoryLocator getLocator() {
-        TransportFactoryLocator locator = (TransportFactoryLocator) applicationContext.getBean("transportFactoryLocator");
+        TransportFactoryLocator locator = getBeanContainer().getBean("transportFactoryLocator", TransportFactoryLocator.class);
         assertNotNull(locator);
 
         return locator;
     }
 
-    protected void onSetUp() throws Exception {
+    protected void setUp() throws Exception {
+        super.setUp();
+        
         uri = new URI("vm://local:1");
 
         factory = getLocator().locate(uri);

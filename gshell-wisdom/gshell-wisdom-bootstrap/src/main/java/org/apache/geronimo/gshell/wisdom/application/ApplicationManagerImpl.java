@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
+import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.event.EventPublisher;
@@ -112,6 +113,9 @@ public class ApplicationManagerImpl
         application = loadApplication(config);
 
         log.debug("Application configured");
+
+        // HACK: Force the plugin manager to boot up before we fire the event
+        applicationContainer.getBean(PluginManager.class);
         
         eventPublisher.publish(new ApplicationConfiguredEvent(application));
     }
@@ -176,11 +180,12 @@ public class ApplicationManagerImpl
         List<URL> classPath = createClassPath(artifacts);
 
         BeanContainer child = container.createChild("gshell.application(" + model.getId() + ")", classPath);
-
         log.debug("Application container: {}", child);
 
-        child.start();
-
+        child.loadBeans(new String[] {
+            "classpath*:META-INF/spring/components.xml"
+        });
+        
         applicationContainer = child;
 
         return app;

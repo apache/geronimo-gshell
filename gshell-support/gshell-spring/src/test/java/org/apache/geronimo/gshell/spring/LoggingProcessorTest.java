@@ -29,7 +29,7 @@ public class LoggingProcessorTest
 {
     public void testProcessor() throws Exception {
         LoggingProcessor processor = new LoggingProcessor();
-        String xml = processor.render(applicationContext.getBeanFactory());
+        String xml = processor.render(getBeanContainer().getContext());
         assertNotNull(xml);
 
         System.out.println("XML:\n" + xml);

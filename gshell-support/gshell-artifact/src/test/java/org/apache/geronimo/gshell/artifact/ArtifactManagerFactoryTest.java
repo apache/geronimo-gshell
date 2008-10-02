@@ -30,7 +30,7 @@ public class ArtifactManagerFactoryTest
     extends SpringTestSupport
 {
     public void testProcessor() throws Exception {
-        ArtifactManager artifactManager = (ArtifactManager) applicationContext.getBean("artifactManager");
+        ArtifactManager artifactManager = getBeanContainer().getBean("artifactManager", ArtifactManager.class);
         assertNotNull(artifactManager);
     }
 }
