@@ -43,6 +43,25 @@
         <property name="scheme" value="zip"/>
     </bean>
 
+    <!-- TAR -->
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="scheme" value="tar"/>
+        <property name="provider">
+            <bean class="org.apache.geronimo.gshell.support.vfs.provider.truezip.TruezipFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="tar"/>
+        <property name="scheme" value="tar"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="mimeType" value="application/x-tar"/>
+        <property name="scheme" value="tar"/>
+    </bean>
+
     <!-- JAR -->
     
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
