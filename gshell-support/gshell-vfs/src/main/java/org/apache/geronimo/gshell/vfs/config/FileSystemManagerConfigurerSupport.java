@@ -17,32 +17,27 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs;
+package org.apache.geronimo.gshell.vfs.config;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
-import org.apache.geronimo.gshell.command.Variables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Provides access to VFS file systems.
+ * Support for configuration of a {@link FileSystemManager}.
  *
  * @version $Rev$ $Date$
  */
-public interface FileSystemAccess
+public class FileSystemManagerConfigurerSupport
 {
-    String CWD = "vfs.cwd";
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    FileSystemManager getManager();
+    @Autowired
+    private ConfigurableFileSystemManager fileSystemManager;
 
-    FileObject getCurrentDirectory(Variables vars) throws FileSystemException;
-
-    FileObject getCurrentDirectory() throws FileSystemException;
-
-    void setCurrentDirectory(Variables vars, FileObject dir) throws FileSystemException;
-
-    FileObject resolveFile(FileObject baseFile, String name) throws FileSystemException;
-
-    FileObject resolveFile(String name) throws FileSystemException;
-
+    public ConfigurableFileSystemManager getFileSystemManager() {
+        assert fileSystemManager != null;
+        return fileSystemManager;
+    }
 }

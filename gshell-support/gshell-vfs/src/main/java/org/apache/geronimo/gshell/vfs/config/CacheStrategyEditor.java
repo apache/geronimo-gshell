@@ -17,32 +17,35 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs;
+package org.apache.geronimo.gshell.vfs.config;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileSystemManager;
-import org.apache.geronimo.gshell.command.Variables;
+import org.apache.commons.vfs.CacheStrategy;
+
+import java.beans.PropertyEditorSupport;
 
 /**
- * Provides access to VFS file systems.
+ * Property editor for {@link CacheStrategy} types.
  *
  * @version $Rev$ $Date$
  */
-public interface FileSystemAccess
+public class CacheStrategyEditor
+    extends PropertyEditorSupport
 {
-    String CWD = "vfs.cwd";
+    @Override
+    public void setAsText(final String text) throws IllegalArgumentException {
+        assert text != null;
 
-    FileSystemManager getManager();
-
-    FileObject getCurrentDirectory(Variables vars) throws FileSystemException;
-
-    FileObject getCurrentDirectory() throws FileSystemException;
-
-    void setCurrentDirectory(Variables vars, FileObject dir) throws FileSystemException;
-
-    FileObject resolveFile(FileObject baseFile, String name) throws FileSystemException;
-
-    FileObject resolveFile(String name) throws FileSystemException;
-
+        if (text.equalsIgnoreCase("MANUAL")) {
+            setValue(CacheStrategy.MANUAL);
+        }
+        else if (text.equalsIgnoreCase("ON_RESOLVE")) {
+            setValue(CacheStrategy.ON_RESOLVE);
+        }
+        else if (text.equalsIgnoreCase("ON_CALL")) {
+            setValue(CacheStrategy.ON_CALL);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown cache strategy: " + text);
+        }
+    }
 }

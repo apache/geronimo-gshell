@@ -25,7 +25,133 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="fileSystemManager" class="org.apache.geronimo.gshell.vfs.FileSystemManagerFactoryBean"/>
+    <!--
+    FIXME: Need BeanFactoryPostProcessor support in BeanContainer.
+    -->
+
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="org.apache.commons.vfs.CacheStrategy">
+                    <bean class="org.apache.geronimo.gshell.vfs.config.CacheStrategyEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="defaultFileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator"/>
+
+    <bean id="fileSystemManager" class="org.apache.geronimo.gshell.vfs.config.FileSystemManagerFactoryBean">
+        <property name="filesCache">
+            <bean class="org.apache.commons.vfs.cache.SoftRefFilesCache"/>
+        </property>
+
+        <property name="cacheStrategy" value="ON_RESOLVE"/>
+        
+        <property name="fileReplicator">
+            <bean class="org.apache.commons.vfs.impl.PrivilegedFileReplicator">
+                <constructor-arg ref="defaultFileReplicator"/>
+            </bean>
+        </property>
+
+        <property name="temporaryFileStore">
+            <ref bean="defaultFileReplicator"/>
+        </property>
+
+        <property name="fileContentInfoFactory">
+            <bean class="org.apache.commons.vfs.impl.FileContentInfoFilenameFactory"/>
+        </property>
+
+        <property name="defaultProvider">
+            <bean class="org.apache.commons.vfs.provider.url.UrlFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="scheme" value="file"/>
+        <property name="provider">
+            <bean class="org.apache.commons.vfs.provider.local.DefaultLocalFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="scheme" value="tmp"/>
+        <property name="provider">
+            <bean class="org.apache.commons.vfs.provider.temp.TemporaryFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="scheme" value="ram"/>
+        <property name="provider">
+            <bean class="org.apache.commons.vfs.provider.ram.RamFileProvider"/>
+        </property>
+    </bean>
+    
+    <!--
+    TODO: Roll up this configuration into one bean for ext another for mime,
+          or maybe just one bean for both.  This is too verbose.
+    -->
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="zip"/>
+        <property name="scheme" value="zip"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="tar"/>
+        <property name="scheme" value="tar"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="tar"/>
+        <property name="scheme" value="tar"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="jar"/>
+        <property name="scheme" value="jar"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="bz2"/>
+        <property name="scheme" value="bz2"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="gz"/>
+        <property name="scheme" value="gz"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="tgz"/>
+        <property name="scheme" value="tar"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+        <property name="extention" value="tar"/>
+        <property name="scheme" value="tbz2"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="mimeType" value="application/zip"/>
+        <property name="scheme" value="zip"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="mimeType" value="application/x-tar"/>
+        <property name="scheme" value="tar"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="mimeType" value="application/x-gzip"/>
+        <property name="scheme" value="gz"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="mimeType" value="application/zip"/>
+        <property name="scheme" value="zip"/>
+    </bean>
 
     <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl"/>
 

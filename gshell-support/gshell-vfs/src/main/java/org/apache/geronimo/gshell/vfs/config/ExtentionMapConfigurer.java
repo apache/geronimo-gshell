@@ -17,32 +17,36 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs;
+package org.apache.geronimo.gshell.vfs.config;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileSystemManager;
-import org.apache.geronimo.gshell.command.Variables;
+import javax.annotation.PostConstruct;
 
 /**
- * Provides access to VFS file systems.
+ * Configures an extention mapping.
  *
  * @version $Rev$ $Date$
  */
-public interface FileSystemAccess
+public class ExtentionMapConfigurer
+extends FileSystemManagerConfigurerSupport
 {
-    String CWD = "vfs.cwd";
+    private String extention;
 
-    FileSystemManager getManager();
+    private String scheme;
 
-    FileObject getCurrentDirectory(Variables vars) throws FileSystemException;
+    public void setExtention(final String extention) {
+        this.extention = extention;
+    }
 
-    FileObject getCurrentDirectory() throws FileSystemException;
+    public void setScheme(final String scheme) {
+        this.scheme = scheme;
+    }
 
-    void setCurrentDirectory(Variables vars, FileObject dir) throws FileSystemException;
+    @PostConstruct
+    public void init() {
+        // TODO: Complain on null
 
-    FileObject resolveFile(FileObject baseFile, String name) throws FileSystemException;
-
-    FileObject resolveFile(String name) throws FileSystemException;
-
+        log.debug("Adding extention mapping: {} -> {}", extention, scheme);
+        ConfigurableFileSystemManager fsm = getFileSystemManager();
+        fsm.addExtensionMap(extention, scheme);
+    }
 }

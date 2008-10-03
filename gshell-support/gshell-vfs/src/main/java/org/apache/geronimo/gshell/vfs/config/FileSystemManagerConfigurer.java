@@ -17,32 +17,40 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs;
+package org.apache.geronimo.gshell.vfs.config;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
-import org.apache.geronimo.gshell.command.Variables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
 
 /**
- * Provides access to VFS file systems.
+ * Support for configuration of a {@link FileSystemManager}.
  *
  * @version $Rev$ $Date$
  */
-public interface FileSystemAccess
+public class FileSystemManagerConfigurer
 {
-    String CWD = "vfs.cwd";
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    FileSystemManager getManager();
+    @Autowired
+    private ConfigurableFileSystemManager fileSystemManager;
 
-    FileObject getCurrentDirectory(Variables vars) throws FileSystemException;
+    // TODO: Maybe add a provider configurer, which will support mapping extentions, mime-tyeps for a single provider?
 
-    FileObject getCurrentDirectory() throws FileSystemException;
+    // providers Map<List<String>,Provider>
 
-    void setCurrentDirectory(Variables vars, FileObject dir) throws FileSystemException;
+    // operation providers Map<List<String>,Provider>
 
-    FileObject resolveFile(FileObject baseFile, String name) throws FileSystemException;
+    // extentions
 
-    FileObject resolveFile(String name) throws FileSystemException;
+    // mime-types
 
+    @PostConstruct
+    public void init() {
+        assert fileSystemManager != null;
+        log.debug("Configuring file system manager: {}", fileSystemManager);
+    }
 }
