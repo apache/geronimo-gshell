@@ -71,6 +71,13 @@ public class CommandResolverImpl
         // FIXME: For now just ask for the named stuff, eventually need a better path parser and lookup thingy
         //
 
+        //
+        // TODO: Implement a gshell:// VFS file-system and have a gshell://commands tree which contains all commands
+        //       registered, or rather files which contain accessors to the commands, probably set teh command as an attribute?
+        //
+        //       Can also have a gshell://plugins tree which contains those details as well.
+        //
+
         Command command;
 
         assert aliasRegistry != null;
