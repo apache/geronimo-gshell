@@ -93,7 +93,7 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.apache.geronimo.gshell.spring.BeanContainerContext">
+    <logger name="org.apache.geronimo.gshell.spring.BeanContainerContextImpl">
         <level value="INFO"/>
     </logger>
 
