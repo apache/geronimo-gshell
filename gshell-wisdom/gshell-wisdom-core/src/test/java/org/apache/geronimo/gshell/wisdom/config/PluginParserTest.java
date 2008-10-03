@@ -32,7 +32,7 @@ public class PluginParserTest
 {   
     public void testParser() throws Exception {
         LoggingProcessor processor = new LoggingProcessor();
-        String xml = processor.render(getBeanContainer().getContext());
+        String xml = processor.render(getBeanContainer().getContext().getBeanFactory());
         assertNotNull(xml);
 
         System.out.println("XML:\n" + xml);
