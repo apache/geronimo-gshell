@@ -19,37 +19,34 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.HierarchicalBeanFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.core.io.support.ResourcePatternResolver;
+
+import java.io.Closeable;
 
 /**
- * ???
+ * Bean container context.
+ *
+ * This is basically a merged and trimmed down version of a Spring ConfigurableApplicationContext.
  *
  * @version $Rev$ $Date$
  */
-public class BeanContainerContext
-    extends DefaultListableBeanFactory
+public interface BeanContainerContext
+    extends ListableBeanFactory, HierarchicalBeanFactory, ResourcePatternResolver, Closeable
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+	String getId();
 
-    //
-    // TODO: Add more muck to support stuff in AbstractApplicationContext here, move some of the container bits from BeanContainerImpl into here.
-    //
-    
-    public BeanContainerContext(final BeanContainerContext parent) {
-        super(parent);
-    }
+	BeanContainerContext getParent();
 
-    public void addBeanPostProcessor(final BeanPostProcessor processor) {
-        assert processor != null;
+	void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor);
 
-        if (processor instanceof BeanFactoryAware) {
-            ((BeanFactoryAware)processor).setBeanFactory(this);
-        }
+	void refresh() throws BeansException, IllegalStateException;
 
-        super.addBeanPostProcessor(processor);
-    }
+	boolean isActive();
+
+	ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException;
 }

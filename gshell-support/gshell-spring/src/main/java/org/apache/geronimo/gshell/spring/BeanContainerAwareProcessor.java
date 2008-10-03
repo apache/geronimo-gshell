@@ -41,10 +41,6 @@ public class BeanContainerAwareProcessor
     public Object postProcessBeforeInitialization(final Object bean, final String beanName) throws BeansException {
         assert bean != null;
 
-        //
-        // TODO: Support ResourceLoaderAware like ApplicationContextAwareProcessor does
-        //
-        
         if (bean instanceof BeanContainerAware) {
             ((BeanContainerAware)bean).setBeanContainer(container);
         }

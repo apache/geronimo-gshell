@@ -24,27 +24,14 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.FatalBeanException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.xml.ResourceEntityResolver;
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.beans.support.ResourceEditorRegistrar;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.UUID;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -56,22 +43,14 @@ public class BeanContainerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private static final String REALM_ID = "gshell";
-
     private final ClassRealm classRealm;
     
     private final BeanContainerImpl parent;
 
-    private final ResourcePatternResolver resourceLoader;
-
-    private final BeanContainerContext context;
-
-    private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<BeanFactoryPostProcessor>();
-
-    private final Set<Resource> resources = new LinkedHashSet<Resource>();
+    private final BeanContainerContextImpl context;
 
     public BeanContainerImpl(final ClassLoader cl) {
-        this(createDefaultClassRealm(cl), null);
+        this(createClassRealm(cl), null);
     }
 
     private BeanContainerImpl(final ClassRealm classRealm, final BeanContainerImpl parent) {
@@ -81,30 +60,19 @@ public class BeanContainerImpl
         this.parent = parent;
         this.classRealm = classRealm;
 
-        //
-        // TODO: Move most of this to BeanContainerContext
-        //
-        
-        // Construct the bean factory
-        context = new BeanContainerContext(parent != null ? parent.getContext() : null);
-        context.setBeanClassLoader(classRealm);
-        context.registerResolvableDependency(BeanFactory.class, context);
-
-        // Setup resource loading
-        resourceLoader = new PathMatchingResourcePatternResolver(new DefaultResourceLoader(classRealm));
-        context.addPropertyEditorRegistrar(new ResourceEditorRegistrar(resourceLoader));
-        context.registerResolvableDependency(ResourceLoader.class, resourceLoader);
+        // Construct the container and add customizations
+        context = new BeanContainerContextImpl(classRealm, parent != null ? parent.context : null);
+        context.setId(classRealm.getId());
 
         // Add support for BeanContainerAware
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
-        context.ignoreDependencyInterface(BeanContainerAware.class);
 
         // Hook up annotation processing
         context.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
         context.addBeanPostProcessor(new LifecycleProcessor());
 
         // Add automatic trace logging of loaded beans
-        beanFactoryPostProcessors.add(new LoggingProcessor());
+        context.addBeanFactoryPostProcessor(new LoggingProcessor());
     }
 
     public ClassRealm getClassRealm() {
@@ -122,51 +90,9 @@ public class BeanContainerImpl
     public void loadBeans(final String[] locations) throws Exception {
         assert locations != null;
 
-        log.debug("Loading beans");
-
-        for (String location : locations) {
-            Resource[] resources = resourceLoader.getResources(location);
-
-            for (Resource resource : resources) {
-                if (parent != null && parent.isOwnedResource(resource)) {
-                    log.trace("Omitting resource owned by parent: {}", resource);
-                }
-                else {
-                    log.trace("Adding resource: {}", resource);
-                    this.resources.add(resource);
-                }
-            }
-        }
-
-        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
-        reader.setResourceLoader(resourceLoader);
-		reader.setEntityResolver(new ResourceEntityResolver(resourceLoader));
-
-        log.debug("Loading bean definitions from {} resources", resources.size());
-
-        reader.loadBeanDefinitions(resources.toArray(new Resource[resources.size()]));
-
-        for (BeanFactoryPostProcessor processor : beanFactoryPostProcessors) {
-            processor.postProcessBeanFactory(context);
-        }
+        context.configure(locations);
+        context.refresh();
     }
-
-    private boolean isOwnedResource(final Resource resource) {
-        assert resource != null;
-
-        if (resources.contains(resource)) {
-            return true;
-        }
-        else if (parent != null) {
-            return parent.isOwnedResource(resource);
-        }
-
-        return false;
-    }
-
-    //
-    // TODO: Bring back start/stop/destroy support
-    //
 
     public BeanContainer createChild(final String id, final List<URL> classPath) {
         assert id != null;
@@ -189,7 +115,7 @@ public class BeanContainerImpl
             childRealm = classRealm.createChildRealm(id);
         }
         catch (DuplicateRealmException e) {
-            throw new FatalBeanException("Failed to create child container realm: " + id, e);
+            throw new BeanContainerException("Failed to create child container realm: " + id, e);
         }
 
         if (classPath != null) {
@@ -257,15 +183,11 @@ public class BeanContainerImpl
         return createChild(id, null);
     }
 
-    //
-    // TODO: See if we can drop the need for this.
-    //
-
-    private static ClassRealm createDefaultClassRealm(final ClassLoader cl) {
+    private static ClassRealm createClassRealm(final ClassLoader cl) {
         assert cl != null;
 
         try {
-            return new ClassWorld().newRealm(REALM_ID, cl);
+            return new ClassWorld().newRealm("gshell(" + UUID.randomUUID() + ")", cl);
         }
         catch (DuplicateRealmException e) {
             // Should never happen
