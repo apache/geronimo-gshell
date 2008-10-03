@@ -93,11 +93,7 @@
           or maybe just one bean for both.  This is too verbose.
     -->
 
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
-        <property name="extention" value="zip"/>
-        <property name="scheme" value="zip"/>
-    </bean>
-
+    <!--
     <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
         <property name="extention" value="tar"/>
         <property name="scheme" value="tar"/>
@@ -152,6 +148,7 @@
         <property name="mimeType" value="application/zip"/>
         <property name="scheme" value="zip"/>
     </bean>
+    -->
 
     <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl"/>
 
