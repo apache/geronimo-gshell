@@ -22,12 +22,7 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <!--
-    FIXME: Need BeanFactoryPostProcessor support in BeanContainer.
-    -->
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
         <property name="customEditors">
@@ -95,21 +90,6 @@
 
     <!--
     <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
-        <property name="extention" value="tar"/>
-        <property name="scheme" value="tar"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
-        <property name="extention" value="tar"/>
-        <property name="scheme" value="tar"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
-        <property name="extention" value="jar"/>
-        <property name="scheme" value="jar"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
         <property name="extention" value="bz2"/>
         <property name="scheme" value="bz2"/>
     </bean>
@@ -128,27 +108,11 @@
         <property name="extention" value="tar"/>
         <property name="scheme" value="tbz2"/>
     </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
-        <property name="mimeType" value="application/zip"/>
-        <property name="scheme" value="zip"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
-        <property name="mimeType" value="application/x-tar"/>
-        <property name="scheme" value="tar"/>
-    </bean>
-
     <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
         <property name="mimeType" value="application/x-gzip"/>
         <property name="scheme" value="gz"/>
     </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
-        <property name="mimeType" value="application/zip"/>
-        <property name="scheme" value="zip"/>
-    </bean>
-    -->
+-->
 
     <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl"/>
 
