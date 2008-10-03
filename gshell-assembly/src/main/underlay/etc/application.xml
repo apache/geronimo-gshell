@@ -64,6 +64,11 @@
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-vfs</artifactId>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.support</groupId>
+                <artifactId>gshell-vfs-truezip</artifactId>
+            </dependency>
         </dependencyGroup>
     </dependencyGroups>
 
