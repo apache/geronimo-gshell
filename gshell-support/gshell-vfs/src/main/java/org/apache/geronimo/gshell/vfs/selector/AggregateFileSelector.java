@@ -22,8 +22,8 @@ package org.apache.geronimo.gshell.vfs.selector;
 import org.apache.commons.vfs.FileSelectInfo;
 import org.apache.commons.vfs.FileSelector;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Apply multipule selectors.
