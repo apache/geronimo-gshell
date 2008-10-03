@@ -21,42 +21,33 @@
 <!-- $Rev$ $Date$ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
-    
-    <groupId>org.apache.geronimo.gshell.support</groupId>
-    <artifactId>gshell-support</artifactId>
-    <name>GShell Support</name>
-    <packaging>pom</packaging>
-    
+
+    <artifactId>gshell-vfs-truezip</artifactId>
+    <name>GShell Support :: VFS TrueZip</name>
+
     <description>
-        Support modules for GShell fluff.
+        VFS TrueZip provider.
     </description>
-    
-    <modules>
-        <module>gshell-yarn</module>
-        <module>gshell-chronos</module>
-        <module>gshell-terminal</module>
-        <module>gshell-ansi</module>
-        <module>gshell-artifact</module>
-        <module>gshell-clp</module>
-        <module>gshell-i18n</module>
-        <module>gshell-io</module>
-        <module>gshell-event</module>
-        <module>gshell-prefs</module>
-        <module>gshell-spring</module>
-        <module>gshell-plexus</module>
-        <module>gshell-interpolation</module>
-        <module>gshell-console</module>
-        <module>gshell-vfs</module>
-        <module>gshell-vfs-truezip</module>
-        <module>gshell-security</module>
-    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-vfs</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.schlichtherle.io</groupId>
+            <artifactId>truezip</artifactId>
+            <version>6.6</version>
+        </dependency>
+    </dependencies>
 
 </project>
