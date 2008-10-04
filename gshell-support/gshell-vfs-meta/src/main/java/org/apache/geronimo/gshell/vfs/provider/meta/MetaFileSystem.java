@@ -42,7 +42,7 @@ public class MetaFileSystem
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private MetaFileDataRegistry registry;
+    private final MetaFileDataRegistry registry;
 
     public MetaFileSystem(final MetaFileDataRegistry registry, final FileName rootName, final FileSystemOptions options) {
         super(rootName, null, options);
@@ -84,9 +84,25 @@ public class MetaFileSystem
     // Internal bits invoked from MetaFileObject
     //
 
-    //
-    // TODO: Need to remove some of this, as the files aren't created per-normal, they need to be bound in the registry
-    //
+    MetaFileData lookupData(final MetaFileObject file) throws FileSystemException {
+        assert file != null;
+
+        log.debug("Looking up data: {}", file);
+
+        FileName name = file.getName();
+        assert name != null;
+
+        // FIXME: This should probably toss an exception if the data is not registered
+        MetaFileData data = registry.lookup(name);
+        if (data == null) {
+            data = new MetaFileData(name, FileType.IMAGINARY);
+        }
+
+        return data;
+    }
+
+    /*
+    TODO: Move this stuff into the registry impl
     
     void save(final MetaFileObject file) throws FileSystemException {
         assert file != null;
@@ -111,22 +127,6 @@ public class MetaFileSystem
         file.close();
     }
 
-    void attach(final MetaFileObject file) throws FileSystemException {
-        assert file != null;
-
-        log.debug("Attaching: {}", file);
-
-        FileName name = file.getName();
-        assert name != null;
-
-        MetaFileData data = registry.lookup(name);
-        if (data == null) {
-            data = new MetaFileData(name);
-        }
-
-        file.setData(data);
-    }
-
     void delete(final MetaFileObject file) throws FileSystemException {
         assert file != null;
 
@@ -144,6 +144,7 @@ public class MetaFileSystem
 
         file.close();
     }
+    */
 
     String[] listChildren(final FileName name) throws FileSystemException {
         assert name != null;

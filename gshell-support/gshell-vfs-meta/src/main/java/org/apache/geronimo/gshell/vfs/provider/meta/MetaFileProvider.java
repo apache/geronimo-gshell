@@ -45,11 +45,6 @@ public class MetaFileProvider
 
     public static final Collection<Capability> CAPABILITIES = Collections.unmodifiableCollection(Arrays.asList(
         Capability.ATTRIBUTES,
-
-        // TODO: All modification should be done via the registry, see about nuking these
-        Capability.CREATE,
-        Capability.DELETE,
-        
         Capability.GET_TYPE,
         Capability.GET_LAST_MODIFIED,
         Capability.LAST_MODIFIED,
@@ -60,6 +55,10 @@ public class MetaFileProvider
     @Autowired
     private MetaFileDataRegistry registry;
 
+    public MetaFileProvider() {
+        setFileNameParser(new MetaFileNameParser());
+    }
+
     public Collection getCapabilities() {
         return CAPABILITIES;
     }
@@ -67,10 +66,10 @@ public class MetaFileProvider
     protected FileSystem doCreateFileSystem(final FileName fileName, final FileSystemOptions options) throws FileSystemException {
         assert registry != null;
 
-        MetaFileSystem fs = new MetaFileSystem(registry, fileName, options);
+        MetaFileSystem fileSystem = new MetaFileSystem(registry, fileName, options);
 
-        log.debug("Created file system: {}", fs);
+        log.debug("Created file system: {}", fileSystem);
 
-        return fs;
+        return fileSystem;
     }
 }

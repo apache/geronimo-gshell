@@ -22,8 +22,6 @@ package org.apache.geronimo.gshell.vfs.provider.meta;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.provider.AbstractFileObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -47,18 +45,11 @@ public class MetaFileObject
         this.fileSystem = fileSystem;
     }
 
-    MetaFileData getData() {
+    public MetaFileData getData() {
         assert data != null;
         
         return data;
     }
-
-    void setData(final MetaFileData data) {
-        assert data != null;
-        
-        this.data = data;
-    }
-
 
     @Override
     protected FileType doGetType() throws Exception {
@@ -102,37 +93,14 @@ public class MetaFileObject
     }
 
     @Override
-    protected void doDelete() throws Exception {
-        fileSystem.delete(this);
-    }
-
-    @Override
-    protected void doCreateFolder() throws Exception {
-        injectType(FileType.FOLDER);
-        fileSystem.save(this);
-    }
-
-    @Override
     protected void doAttach() throws Exception {
         if (data == null) {
-            fileSystem.attach(this);
+            data = fileSystem.lookupData(this);
         }
     }
 
     @Override
     protected void doDetach() throws Exception {
         data = null;
-    }
-
-    //
-    // TODO: See where this is called and figure out if we can nuke it.
-    //
-
-    @Override
-    protected void injectType(final FileType type) {
-        assert type != null;
-
-        getData().setType(type);
-        super.injectType(type);
     }
 }

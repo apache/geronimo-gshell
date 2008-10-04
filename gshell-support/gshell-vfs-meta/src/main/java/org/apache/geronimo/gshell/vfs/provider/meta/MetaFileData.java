@@ -42,7 +42,7 @@ public class MetaFileData
 
     private final FileName name;
 
-    private FileType type = FileType.IMAGINARY;
+    private final FileType type;
 
     private long lastModified = -1;
 
@@ -58,27 +58,12 @@ public class MetaFileData
         this.type = type;
     }
 
-
-    public MetaFileData(final FileName name) {
-        this(name, FileType.IMAGINARY);
-    }
-
     public FileName getName() {
         return name;
     }
 
     public FileType getType() {
         return type;
-    }
-
-    //
-    // TODO: Used by MetaFileObject.injectType() see if we can nuke that and this.  Finalize type once that is done.
-    //
-
-    public void setType(final FileType type) {
-        assert type != null;
-
-        this.type = type;
     }
 
     public void updateLastModified() {

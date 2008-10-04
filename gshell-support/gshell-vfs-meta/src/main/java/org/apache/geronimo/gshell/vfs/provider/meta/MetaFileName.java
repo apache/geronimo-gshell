@@ -20,45 +20,34 @@
 package org.apache.geronimo.gshell.vfs.provider.meta;
 
 import org.apache.commons.vfs.FileName;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.provider.AbstractFileName;
 
 /**
- * {@link MetaFileDataRegistry} component.
+ * Meta file name.
  *
  * @version $Rev$ $Date$
  */
-public class MetaFileDataRegistryImpl
-    implements MetaFileDataRegistry
+public class MetaFileName
+    extends AbstractFileName
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private final Map<FileName,MetaFileData> nodes = Collections.synchronizedMap(new HashMap<FileName,MetaFileData>());
-
-    public void register(final FileName name, final MetaFileData data) {
-        assert name != null;
-        assert data != null;
-
-        log.debug("Registering: {} -> {}", name, data);
-
-        nodes.put(name, data);
+    public static final String SCHEME = "meta";
+    
+    protected MetaFileName(final String scheme, final String path, final FileType type) {
+        super(scheme, path, type);
     }
 
-    public void remove(final FileName name) {
-        assert name != null;
-
-        log.debug("Removing: {}", name);
-
-        nodes.remove(name);
+    public FileName createName(final String path, final FileType type) {
+        return new MetaFileName(getScheme(), path, type);
     }
 
-    public MetaFileData lookup(final FileName name) {
-        assert name != null;
+    protected void appendRootUri(final StringBuffer buffer, final boolean addPassword) {
+        assert buffer != null;
 
-        return nodes.get(name);
+        //
+        // TODO: May want to always append ":/", and make sure the path has that stuff stripped off
+        //
+
+        buffer.append(getScheme()).append(":");
     }
 }
