@@ -64,25 +64,27 @@ public class  MetaFileDataRegistryImpl
 
         if (name.getDepth() > 0) {
             FileName parentName = name.getParent();
-            if (containsData(parentName)) {
-                MetaFileData parent = lookupData(parentName);
+            if (parentName != null) {
+                if (containsData(parentName)) {
+                    MetaFileData parent = lookupData(parentName);
 
-                if (!parent.hasChild(data)) {
-                    try {
-                        parent.addChild(data);
-                    }
-                    catch (FileSystemException ignore) {
-                        throw new Error(ignore);
+                    if (!parent.hasChild(data)) {
+                        try {
+                            parent.addChild(data);
+                        }
+                        catch (FileSystemException ignore) {
+                            throw new Error(ignore);
+                        }
                     }
                 }
-            }
-            else {
-                //
-                // TODO: Consider auto-creating parents, this will work well
-                //       if we switch to all files as FileType.FILE_OR_FOLDER
-                //
-                
-                log.warn("Missing parent folder: " + parentName);
+                else {
+                    //
+                    // TODO: Consider auto-creating parents, this will work well
+                    //       if we switch to all files as FileType.FILE_OR_FOLDER
+                    //
+
+                    log.warn("Missing parent folder: " + parentName);
+                }
             }
         }
 
@@ -97,7 +99,7 @@ public class  MetaFileDataRegistryImpl
         MetaFileData data = getNodes().remove(name);
 
         FileName parentName = name.getParent();
-        if (containsData(parentName)) {
+        if (parentName != null && containsData(parentName)) {
             MetaFileData parent = lookupData(parentName);
             try {
                 parent.removeChild(data);
