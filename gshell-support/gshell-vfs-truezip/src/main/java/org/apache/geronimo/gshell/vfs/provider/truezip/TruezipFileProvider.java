@@ -43,7 +43,7 @@ import java.util.Collections;
 public class TruezipFileProvider
     extends AbstractLayeredFileProvider
 {
-    public final static Collection capabilities = Collections.unmodifiableCollection(Arrays.asList(
+    public static final Collection<Capability> CAPABILITIES = Collections.unmodifiableCollection(Arrays.asList(
         Capability.CREATE,
         Capability.DELETE,
         Capability.RENAME,
@@ -86,6 +86,6 @@ public class TruezipFileProvider
     }
 
     public Collection getCapabilities() {
-        return capabilities;
+        return CAPABILITIES;
     }
 }

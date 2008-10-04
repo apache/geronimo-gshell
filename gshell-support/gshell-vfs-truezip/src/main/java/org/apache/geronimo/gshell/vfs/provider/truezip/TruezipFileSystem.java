@@ -65,7 +65,7 @@ public class TruezipFileSystem
      */
     protected void addCapabilities(final Collection caps) {
         // noinspection unchecked
-        caps.addAll(TruezipFileProvider.capabilities);
+        caps.addAll(TruezipFileProvider.CAPABILITIES);
     }
 
     /**
