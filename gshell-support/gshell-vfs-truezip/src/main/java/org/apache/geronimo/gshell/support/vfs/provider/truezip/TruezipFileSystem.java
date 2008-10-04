@@ -34,7 +34,7 @@ import de.schlichtherle.io.ArchiveException;
 import de.schlichtherle.io.File;
 
 /**
- * <h href="https://truezip.dev.java.net">Truezip</a> file system.
+ * <h href="https://truezip.dev.java.net">TrueZIP</a> file system.
  *
  * @version $Rev$ $Date$
  */

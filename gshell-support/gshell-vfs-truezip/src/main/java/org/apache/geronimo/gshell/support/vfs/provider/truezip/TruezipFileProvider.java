@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * <h href="https://truezip.dev.java.net">Truezip</a> file provider.
+ * <h href="https://truezip.dev.java.net">TrueZIP</a> file provider.
  *
  * @version $Rev$ $Date$
  */

@@ -41,7 +41,7 @@ import de.schlichtherle.io.FileInputStream;
 import de.schlichtherle.io.FileOutputStream;
 
 /**
- * <h href="https://truezip.dev.java.net">Truezip</a> file object.
+ * <h href="https://truezip.dev.java.net">TrueZIP</a> file object.
  *
  * @version $Rev$ $Date$
  */

@@ -24,6 +24,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--
+    TODO: Add other TZ schemes, docs suggest that OOTB TZ6 supports:
+          ZIP, TAR, JAR, TAR.GZ, TAR.BZ2, TZP (no idea what TZP is though)
+    -->
+    
     <!-- ZIP -->
 
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">

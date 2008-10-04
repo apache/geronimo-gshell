@@ -31,10 +31,10 @@
     </parent>
 
     <artifactId>gshell-vfs-truezip</artifactId>
-    <name>GShell Support :: VFS TrueZip</name>
+    <name>GShell Support :: VFS TrueZIP</name>
 
     <description>
-        VFS TrueZip provider.
+        TrueZIP VFS provider.
     </description>
 
     <dependencies>
