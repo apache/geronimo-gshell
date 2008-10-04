@@ -27,6 +27,7 @@ import org.apache.commons.vfs.FileSystemOptions;
 import org.apache.commons.vfs.provider.AbstractOriginatingFileProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,8 +45,11 @@ public class MetaFileProvider
 
     public static final Collection<Capability> CAPABILITIES = Collections.unmodifiableCollection(Arrays.asList(
         Capability.ATTRIBUTES,
+
+        // TODO: All modification should be done via the registry, see about nuking these
         Capability.CREATE,
         Capability.DELETE,
+        
         Capability.GET_TYPE,
         Capability.GET_LAST_MODIFIED,
         Capability.LAST_MODIFIED,
@@ -53,12 +57,17 @@ public class MetaFileProvider
         Capability.URI
     ));
 
+    @Autowired
+    private MetaFileDataRegistry registry;
+
     public Collection getCapabilities() {
         return CAPABILITIES;
     }
 
     protected FileSystem doCreateFileSystem(final FileName fileName, final FileSystemOptions options) throws FileSystemException {
-        MetaFileSystem fs = new MetaFileSystem(fileName, options);
+        assert registry != null;
+
+        MetaFileSystem fs = new MetaFileSystem(registry, fileName, options);
 
         log.debug("Created file system: {}", fs);
 

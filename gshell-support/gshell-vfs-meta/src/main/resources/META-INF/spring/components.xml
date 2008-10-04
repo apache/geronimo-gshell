@@ -24,6 +24,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="metaFileDataRegistry" class="org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistryImpl"/>
+    
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
         <property name="scheme" value="meta"/>
         <property name="provider">

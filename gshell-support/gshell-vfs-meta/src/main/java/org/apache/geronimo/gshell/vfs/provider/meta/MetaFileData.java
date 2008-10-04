@@ -50,10 +50,17 @@ public class MetaFileData
 
     private final Collection<MetaFileData> children = Collections.synchronizedCollection(new ArrayList<MetaFileData>());
 
-    public MetaFileData(final FileName name) {
+    public MetaFileData(final FileName name, final FileType type) {
         assert name != null;
+        assert type != null;
 
         this.name = name;
+        this.type = type;
+    }
+
+
+    public MetaFileData(final FileName name) {
+        this(name, FileType.IMAGINARY);
     }
 
     public FileName getName() {
@@ -63,6 +70,10 @@ public class MetaFileData
     public FileType getType() {
         return type;
     }
+
+    //
+    // TODO: Used by MetaFileObject.injectType() see if we can nuke that and this.  Finalize type once that is done.
+    //
 
     public void setType(final FileType type) {
         assert type != null;

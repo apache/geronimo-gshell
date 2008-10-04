@@ -36,8 +36,6 @@ import java.util.Map;
 public class MetaFileObject
     extends AbstractFileObject
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
     private final MetaFileSystem fileSystem;
 
     private MetaFileData data;
@@ -116,13 +114,19 @@ public class MetaFileObject
 
     @Override
     protected void doAttach() throws Exception {
-        fileSystem.attach(this);
+        if (data == null) {
+            fileSystem.attach(this);
+        }
     }
 
     @Override
     protected void doDetach() throws Exception {
         data = null;
     }
+
+    //
+    // TODO: See where this is called and figure out if we can nuke it.
+    //
 
     @Override
     protected void injectType(final FileType type) {
