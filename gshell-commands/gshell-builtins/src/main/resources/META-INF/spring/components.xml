@@ -52,13 +52,13 @@
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ExitAction"/>
             </gshell:command>
 
-            <gshell:alias name="quit" alias="exit"/>
+            <gshell:link name="quit" target="exit"/>
 
             <gshell:command name="echo">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.EchoAction"/>
             </gshell:command>
 
-            <gshell:alias name="print" alias="echo"/>
+            <gshell:link name="print" target="echo"/>
 
             <gshell:command name="clear" type="stateless">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ClearAction"/>
