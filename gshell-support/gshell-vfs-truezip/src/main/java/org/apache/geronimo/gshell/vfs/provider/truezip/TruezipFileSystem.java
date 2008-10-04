@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.support.vfs.provider.truezip;
+package org.apache.geronimo.gshell.vfs.provider.truezip;
 
 import java.io.FilePermission;
 import java.util.Collection;

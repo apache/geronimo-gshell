@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.support.vfs.provider.local;
+package org.apache.geronimo.gshell.vfs.provider.local;
 
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;

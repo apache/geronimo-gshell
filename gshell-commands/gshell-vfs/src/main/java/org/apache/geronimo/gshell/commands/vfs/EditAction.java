@@ -28,8 +28,8 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.support.vfs.provider.local.LocalFile;
-import org.apache.geronimo.gshell.support.vfs.provider.local.LocalFileSystem;
+import org.apache.geronimo.gshell.vfs.provider.local.LocalFile;
+import org.apache.geronimo.gshell.vfs.provider.local.LocalFileSystem;
 
 import java.io.File;
 import java.util.Arrays;

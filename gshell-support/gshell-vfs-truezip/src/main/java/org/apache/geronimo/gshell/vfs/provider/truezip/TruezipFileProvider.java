@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.support.vfs.provider.truezip;
+package org.apache.geronimo.gshell.vfs.provider.truezip;
 
 import org.apache.commons.vfs.Capability;
 import org.apache.commons.vfs.FileName;

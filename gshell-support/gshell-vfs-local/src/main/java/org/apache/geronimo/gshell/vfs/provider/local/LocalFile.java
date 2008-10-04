@@ -17,24 +17,26 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.support.vfs.provider.local;
+package org.apache.geronimo.gshell.vfs.provider.local;
 
-import org.apache.commons.vfs.provider.local.LocalFileName;
 import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileSystem;
 import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileSystemOptions;
+
+import java.io.File;
 
 /**
- * Custom VFS local file provider.
+ * Custom VFS local file to provide public access to the underlying file object.
  *
  * @version $Rev$ $Date$
  */
-public class LocalFileProvider
-    extends org.apache.commons.vfs.provider.local.DefaultLocalFileProvider
+public class LocalFile
+    extends org.apache.commons.vfs.provider.local.LocalFile
 {
-    protected FileSystem doCreateFileSystem(final FileName name, final FileSystemOptions options) throws FileSystemException {
-        LocalFileName rootName = (LocalFileName)name;
-        return new LocalFileSystem(rootName, rootName.getRootFile(), options);
+    protected LocalFile(final LocalFileSystem fileSystem, final String rootFile, final FileName name) throws FileSystemException {
+        super(fileSystem, rootFile, name);
+    }
+
+    public File getLocalFile() {
+        return super.getLocalFile();
     }
 }

@@ -24,11 +24,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
         <property name="scheme" value="file"/>
         <property name="provider">
             <bean class="org.apache.geronimo.gshell.vfs.provider.local.LocalFileProvider"/>
         </property>
     </bean>
+    -->
 
 </beans>
