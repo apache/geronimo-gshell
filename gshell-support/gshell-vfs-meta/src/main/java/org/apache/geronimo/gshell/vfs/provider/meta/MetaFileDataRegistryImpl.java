@@ -77,6 +77,11 @@ public class  MetaFileDataRegistryImpl
                 }
             }
             else {
+                //
+                // TODO: Consider auto-creating parents, this will work well
+                //       if we switch to all files as FileType.FILE_OR_FOLDER
+                //
+                
                 log.warn("Missing parent folder: " + parentName);
             }
         }
