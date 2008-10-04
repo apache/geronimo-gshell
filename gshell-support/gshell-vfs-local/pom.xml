@@ -21,31 +21,26 @@
 <!-- $Rev$ $Date$ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
-        <groupId>org.apache.geronimo.gshell.commands</groupId>
-        <artifactId>gshell-commands</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
-    
-    <artifactId>gshell-vfs</artifactId>
-    <name>GShell Commands :: VFS</name>
+
+    <artifactId>gshell-vfs-local</artifactId>
+    <name>GShell Support :: VFS Local</name>
 
     <description>
-        Provides integration with Jakarta Commons VFS.
+        Local VFS provider.
     </description>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-vfs</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-vfs-local</artifactId>
         </dependency>
     </dependencies>
 

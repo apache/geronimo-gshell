@@ -23,18 +23,17 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystem;
 import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.Selectors;
-import org.apache.commons.vfs.provider.local.LocalFileSystem;
-import org.apache.commons.vfs.provider.local.LocalFile;
 import org.apache.commons.vfs.util.Os;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.support.vfs.provider.local.LocalFile;
+import org.apache.geronimo.gshell.support.vfs.provider.local.LocalFileSystem;
 
-import java.util.List;
-import java.util.Arrays;
 import java.io.File;
-import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Edit a file with an external editor.
@@ -81,8 +80,6 @@ public class EditAction
         // If the file is not on the local file system, then create tmp file for editing
         if (!(fs instanceof LocalFileSystem)) {
             // Create a new temporary file, copy the contents for editing
-            // TODO: Ask branding for the app name er something here?
-            // TODO: Check if we need to put this timestamp in here or not, VFS might make it unique anyways
             tmp = resolveFile(context, "tmp:/gshell.edit-" + System.currentTimeMillis() + ".txt");
             log.debug("Using temporary file for edit: {} ({})", tmp, tmp.getClass());
             tmp.createFile();
@@ -110,32 +107,13 @@ public class EditAction
         assert file != null;
         assert file instanceof LocalFile;
 
-        //
-        // HACK: Need to get access to the LocalFile's file field.
-        //
+        // This uses our custom accessible LocalFile implementation, which allows us to grap the File object.
+        LocalFile lfile = (LocalFile)file;
 
         // Force the file to attach if it hasn't already
-        file.exists();
+        lfile.refresh();
 
-        Class type = file.getClass();
-        log.debug("File type: {}", type);
-
-        Field field = type.getDeclaredField("file");
-        log.debug("File field: {}", field);
-
-        File localFile;
-
-        try {
-            localFile = (File)field.get(file);
-        }
-        catch (IllegalAccessException ignore) {
-            field.setAccessible(true);
-            localFile = (File) field.get(file);        
-        }
-
-        log.debug("Local file: {}", localFile);
-
-        return localFile;
+        return lfile.getLocalFile();
     }
 
     private Object edit(final CommandContext context, final File localFile) throws Exception {

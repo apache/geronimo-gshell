@@ -24,9 +24,14 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileContentInfo;
+import org.apache.commons.vfs.FileSystemException;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.security.cert.Certificate;
 
 /**
  * Display information about a file.
@@ -61,8 +66,39 @@ public class FileInfoAction
         io.info("Root path: {}", file.getFileSystem().getRoot().getName().getPath());
 
         if (file.exists()) {
+            FileContent content = file.getContent();
+            FileContentInfo contentInfo = content.getContentInfo();
+            io.info("Content type: {}", contentInfo.getContentType());
+            io.info("Content encoding: {}", contentInfo.getContentEncoding());
+
+            try {
+                Map<String,Object> attrs = content.getAttributes();
+                if (attrs != null && !attrs.isEmpty()) {
+                    io.info("Attributes:");
+                    for (Map.Entry<String,Object> entry : attrs.entrySet()) {
+                        io.info("    {}='{}'", entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+            catch (FileSystemException e) {
+                io.info("File attributes are NOT supported");
+            }
+
+            try {
+                Certificate[] certs = content.getCertificates();
+                if (certs != null && certs.length != 0) {
+                    io.info("Certificate:");
+                    for (Certificate cert : certs) {
+                        io.info("    {}", cert);
+                    }
+                }
+            }
+            catch (FileSystemException e) {
+                io.info("File certificates are NOT supported");
+            }
+
             if (file.getType().equals(FileType.FILE)) {
-                io.info("Size: {} bytes", file.getContent().getSize());
+                io.info("Size: {} bytes", content.getSize());
             }
             else if (file.getType().equals(FileType.FOLDER) && file.isReadable()) {
                 FileObject[] children = file.getChildren();
@@ -75,7 +111,8 @@ public class FileInfoAction
                     }
                 }
             }
-            io.info("Last modified: {}", DateFormat.getInstance().format(new Date(file.getContent().getLastModifiedTime())));
+
+            io.info("Last modified: {}", DateFormat.getInstance().format(new Date(content.getLastModifiedTime())));
         }
         else {
             io.info("The file does not exist");
