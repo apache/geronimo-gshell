@@ -77,6 +77,10 @@
     </bean>
 
     <!--
+    TODO: Setup repo:// to access the local repository.
+    -->
+    
+    <!--
     TODO: Setup authentication support.
     -->
 

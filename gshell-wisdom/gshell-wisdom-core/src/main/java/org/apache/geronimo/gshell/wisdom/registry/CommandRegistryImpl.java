@@ -24,10 +24,14 @@ import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.registry.DuplicateCommandException;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistryConfigurer;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -46,7 +50,19 @@ public class CommandRegistryImpl
     @Autowired
     private EventPublisher eventPublisher;
 
+    @Autowired
+    private MetaFileDataRegistry metaRegistry;
+
+    private MetaFileDataRegistryConfigurer metaConfig;
+
     private final Map<String,Command> commands = new LinkedHashMap<String,Command>();
+
+    @PostConstruct
+    public void init() {
+        assert metaRegistry != null;
+        metaConfig = new MetaFileDataRegistryConfigurer(metaRegistry);
+        metaConfig.addFolder("/commands");
+    }
 
     public void registerCommand(final String name, final Command command) throws DuplicateCommandException {
         assert name != null;
@@ -57,6 +73,12 @@ public class CommandRegistryImpl
         if (containsCommand(name)) {
             throw new DuplicateCommandException(name);
         }
+
+        assert metaConfig != null;
+        MetaFileData data = metaConfig.addFile("/commands/" + name);
+
+        // HACK: For now just add something
+        data.addAttribute("COMMAND", command);
 
         commands.put(name, command);
 
@@ -72,6 +94,8 @@ public class CommandRegistryImpl
             throw new NoSuchCommandException(name);
         }
 
+        // TODO: Remove from meta
+        
         commands.remove(name);
 
         eventPublisher.publish(new CommandRemovedEvent(name));

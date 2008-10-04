@@ -50,21 +50,23 @@ public class MetaFileNameParser
         this(MetaFileName.SCHEME);
     }
 
-    public FileName parseUri(final VfsComponentContext context, final FileName baseName, final String fileName) throws FileSystemException {
-        // context is ignored
+    public FileName parseUri(final FileName baseName, final String fileName) throws FileSystemException {
         // baseName could be null
         assert fileName != null;
 
-        log.info("Parsing URI; base={}, filename={}", baseName, fileName);
+        log.trace("Parsing URI; base={}, filename={}", baseName, fileName);
 
+        /*
         if (baseName != null) {
             //
             // FIXME: Do something with base.  Maybe need to build a filename first, then if its relative, prefix base?
+            //        only support using base when its meta: ?
             //
 
             throw new UnsupportedOperationException("Base prefixing is not yet supported");
         }
-
+        */
+        
         StringBuffer buff = new StringBuffer();
 
         String scheme = UriParser.extractScheme(fileName, buff);
@@ -76,7 +78,9 @@ public class MetaFileNameParser
         UriParser.fixSeparators(buff);
         FileType type = UriParser.normalisePath(buff);
 
-        log.info("Creating file name; scheme={}, path={}, type={}", new Object[] {scheme, buff, type});
+        if (log.isTraceEnabled()) {
+            log.trace("Creating file name; scheme={}, path={}, type={}", new Object[] {scheme, buff, type});
+        }
 
         //
         // TODO: Need to make sure that we end up with something looking abs here?
@@ -84,8 +88,16 @@ public class MetaFileNameParser
         
         FileName name = new MetaFileName(scheme, buff.toString(), type);
 
-        log.info("Created file name: {}", name);
+        log.trace("Created file name: {}", name);
 
         return name;
+    }
+
+    public FileName parseUri(final VfsComponentContext context, final FileName baseName, final String fileName) throws FileSystemException {
+        return parseUri(baseName, fileName);
+    }
+
+    public FileName parseUri(final String fileName) throws FileSystemException {
+        return parseUri(null, fileName);
     }
 }

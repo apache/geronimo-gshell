@@ -28,19 +28,11 @@ import org.apache.commons.vfs.FileName;
  */
 public interface MetaFileDataRegistry
 {
-    //
-    // TODO: Add some helpers to assist registration of new data.  Specifically register(String name, MetaFileData)
-    //       and maybe even registerChild(FileName parent, FileName name, MetaFileData)
-    //       Might also not need the child name, as data contains it already?
-    //
+    void registerData(FileName name, MetaFileData data);
 
-    void register(FileName name, MetaFileData data);
+    void removeData(FileName name);
 
-    void remove(FileName name);
+    MetaFileData lookupData(FileName name) /* throws MetaFileDataRegistryException */;
 
-    //
-    // TODO: Consider making this always return non-null, throw exception when not found, add contains(FileName)
-    //
-    
-    MetaFileData lookup(FileName name);
+    boolean containsData(FileName name);
 }

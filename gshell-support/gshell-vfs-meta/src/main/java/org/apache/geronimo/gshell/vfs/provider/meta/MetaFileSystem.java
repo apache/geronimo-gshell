@@ -49,15 +49,6 @@ public class MetaFileSystem
 
         assert registry != null;
         this.registry = registry;
-
-        //
-        // TODO: Probably don't need this, as the root file should have been registered, but lets see
-        //
-
-        // Setup the root file's data
-        MetaFileData data = new MetaFileData(rootName, FileType.FOLDER);
-        data.updateLastModified();
-        registry.register(rootName, data);
     }
 
     protected FileObject createFile(final FileName fileName) throws Exception {
@@ -75,11 +66,6 @@ public class MetaFileSystem
         capabilities.addAll(MetaFileProvider.CAPABILITIES);
     }
 
-    @Override
-    public void close() {
-        super.close();
-    }
-
     //
     // Internal bits invoked from MetaFileObject
     //
@@ -93,7 +79,7 @@ public class MetaFileSystem
         assert name != null;
 
         // FIXME: This should probably toss an exception if the data is not registered
-        MetaFileData data = registry.lookup(name);
+        MetaFileData data = registry.lookupData(name);
         if (data == null) {
             data = new MetaFileData(name, FileType.IMAGINARY);
         }
@@ -101,57 +87,12 @@ public class MetaFileSystem
         return data;
     }
 
-    /*
-    TODO: Move this stuff into the registry impl
-    
-    void save(final MetaFileObject file) throws FileSystemException {
-        assert file != null;
-
-        log.debug("Saving: {}", file);
-
-        FileName name = file.getName();
-        MetaFileData data = file.getData();
-
-        if (name.getDepth() > 0) {
-            MetaFileData parentData = registry.lookup(file.getParent().getName());
-
-            if (!parentData.hasChild(data)) {
-                MetaFileObject parent = (MetaFileObject)file.getParent();
-                parent.getData().addChild(data);
-                parent.close();
-            }
-        }
-
-        registry.register(name, data);
-        file.getData().updateLastModified();
-        file.close();
-    }
-
-    void delete(final MetaFileObject file) throws FileSystemException {
-        assert file != null;
-
-        log.debug("Deleting: {}", file);
-
-        if (file.getParent() == null) {
-            throw new FileSystemException("Can not delete file-system root");
-        }
-
-        registry.remove(file.getName());
-
-        MetaFileObject parent = (MetaFileObject) resolveFile(file.getParent().getName());
-        parent.getData().removeChild(file.getData());
-        parent.close();
-
-        file.close();
-    }
-    */
-
     String[] listChildren(final FileName name) throws FileSystemException {
         assert name != null;
 
         log.debug("Listing children: {}", name);
 
-        MetaFileData data = registry.lookup(name);
+        MetaFileData data = registry.lookupData(name);
         Collection<MetaFileData> children = data.getChildren();
 
         List<String> names = new ArrayList<String>(children.size());

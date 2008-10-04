@@ -82,6 +82,19 @@ public class MetaFileData
         return attributes;
     }
 
+    public void addAttribute(final String name, final Object value) {
+        assert name != null;
+        // value could be null
+
+        getAttributes().put(name, value);
+    }
+
+    public Object removeAttribute(final String name) {
+        assert name != null;
+
+        return getAttributes().remove(name);
+    }
+
     public Collection<MetaFileData> getChildren() {
         return children;
     }
