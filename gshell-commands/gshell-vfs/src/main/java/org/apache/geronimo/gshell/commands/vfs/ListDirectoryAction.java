@@ -134,14 +134,21 @@ public class ListDirectoryAction
         List<FileObject> dirs = new LinkedList<FileObject>();
 
         for (FileObject file : files) {
-            names.add(file.getName().getBaseName());
+            FileType type = file.getType();
 
-            if (file.getType() == FileType.FOLDER) {
+            if (type == FileType.FILE) {
+                names.add(file.getName().getBaseName());
+
+            }
+            else if (type == FileType.FOLDER) {
                 names.add(file.getName().getBaseName() + "/");
 
                 if (recursive) {
                     dirs.add(file);
                 }
+            }
+            else {
+                log.warn("Unable to handle file type: {}", type);
             }
         }
 
