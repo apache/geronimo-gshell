@@ -76,8 +76,6 @@ public class CommandRegistryImpl
 
         assert metaConfig != null;
         MetaFileData data = metaConfig.addFile("/commands/" + name);
-
-        // HACK: For now just add something
         data.addAttribute("COMMAND", command);
 
         commands.put(name, command);

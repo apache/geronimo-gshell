@@ -42,6 +42,10 @@ public class MetaFileData
 
     private final FileName name;
 
+    //
+    //  TODO: Consider making all meta files FileType.FILE_OR_FOLDER
+    //
+    
     private final FileType type;
 
     private long lastModified = -1;
