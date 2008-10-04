@@ -46,9 +46,7 @@ public class TruezipFileSystem
         super(rootName, null, opts);
     }
 
-    protected TruezipFileSystem(final FileName rootName,
-        final FileObject file,
-        final FileSystemOptions fileSystemOptions) throws FileSystemException {
+    protected TruezipFileSystem(final FileName rootName, final FileObject file, final FileSystemOptions fileSystemOptions) throws FileSystemException {
         super(rootName, file, fileSystemOptions);
     }
 
