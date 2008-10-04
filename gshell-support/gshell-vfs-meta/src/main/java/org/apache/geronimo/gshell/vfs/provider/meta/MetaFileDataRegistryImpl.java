@@ -35,12 +35,12 @@ import java.util.Map;
  *
  * @version $Rev$ $Date$
  */
-public class MetaFileDataRegistryImpl
+public class  MetaFileDataRegistryImpl
     implements MetaFileDataRegistry
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Map<FileName,MetaFileData> nodes = Collections.synchronizedMap(new HashMap<FileName,MetaFileData>());
+    private final Map<FileName,MetaFileData> nodes = /*Collections.synchronizedMap(*/new HashMap<FileName,MetaFileData>()/*)*/;
 
     private String rootFileName = MetaFileName.SCHEME + ":/";
 
@@ -52,6 +52,10 @@ public class MetaFileDataRegistryImpl
         registerData(rootName, new MetaFileData(rootName, FileType.FOLDER));
     }
 
+    protected Map<FileName,MetaFileData> getNodes() {
+        return nodes;
+    }
+    
     public void registerData(final FileName name, final MetaFileData data) {
         assert name != null;
         assert data != null;
@@ -77,7 +81,7 @@ public class MetaFileDataRegistryImpl
             }
         }
 
-        nodes.put(name, data);
+        getNodes().put(name, data);
     }
 
     public void removeData(final FileName name) {
@@ -85,7 +89,7 @@ public class MetaFileDataRegistryImpl
 
         log.debug("Removing data: {}", name);
 
-        MetaFileData data = nodes.remove(name);
+        MetaFileData data = getNodes().remove(name);
 
         FileName parentName = name.getParent();
         if (containsData(parentName)) {
@@ -102,7 +106,7 @@ public class MetaFileDataRegistryImpl
     public boolean containsData(final FileName name) {
         assert name != null;
 
-        return nodes.containsKey(name);
+        return getNodes().containsKey(name);
     }
 
     public MetaFileData lookupData(final FileName name) {
@@ -110,49 +114,6 @@ public class MetaFileDataRegistryImpl
 
         log.debug("Looking up data: {}", name);
         
-        return nodes.get(name);
+        return getNodes().get(name);
     }
-
-    /*
-    void save(final MetaFileObject file) throws FileSystemException {
-        assert file != null;
-
-        log.debug("Saving: {}", file);
-
-        FileName name = file.getName();
-        MetaFileData data = file.getData();
-
-        if (name.getDepth() > 0) {
-            MetaFileData parentData = registry.lookup(file.getParent().getName());
-
-            if (!parentData.hasChild(data)) {
-                MetaFileObject parent = (MetaFileObject)file.getParent();
-                parent.getData().addChild(data);
-                parent.close();
-            }
-        }
-
-        registry.register(name, data);
-        file.getData().updateLastModified();
-        file.close();
-    }
-
-    void delete(final MetaFileObject file) throws FileSystemException {
-        assert file != null;
-
-        log.debug("Deleting: {}", file);
-
-        if (file.getParent() == null) {
-            throw new FileSystemException("Can not delete file-system root");
-        }
-
-        registry.remove(file.getName());
-
-        MetaFileObject parent = (MetaFileObject) resolveFile(file.getParent().getName());
-        parent.getData().removeChild(file.getData());
-        parent.close();
-
-        file.close();
-    }
-    */
 }

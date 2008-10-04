@@ -46,9 +46,9 @@ public class MetaFileData
 
     private long lastModified = -1;
 
-    private final Map<String,Object> attributes = Collections.synchronizedMap(new HashMap<String,Object>());
+    private final Map<String,Object> attributes = /*Collections.synchronizedMap(*/new HashMap<String,Object>()/*)*/;
 
-    private final Collection<MetaFileData> children = Collections.synchronizedCollection(new ArrayList<MetaFileData>());
+    private final Collection<MetaFileData> children = /*Collections.synchronizedCollection(*/new ArrayList<MetaFileData>()/*)*/;
 
     public MetaFileData(final FileName name, final FileType type) {
         assert name != null;
@@ -87,12 +87,18 @@ public class MetaFileData
         // value could be null
 
         getAttributes().put(name, value);
+
+        updateLastModified();
     }
 
     public Object removeAttribute(final String name) {
         assert name != null;
 
-        return getAttributes().remove(name);
+        Object old = getAttributes().remove(name);
+
+        updateLastModified();
+
+        return old;
     }
 
     public Collection<MetaFileData> getChildren() {
