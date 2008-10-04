@@ -48,6 +48,11 @@
             <artifactId>gshell-application</artifactId>
         </dependency>
 
+        <!--
+        NOTE: The POM installed in central for this puppy are not valid, RC2 shows version is RC1
+              and both have the file named *.pom.xml instead *.pom.
+        -->
+        
         <dependency>
             <groupId>org.jsecurity</groupId>
             <artifactId>jsecurity</artifactId>
