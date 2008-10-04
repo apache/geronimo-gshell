@@ -78,8 +78,6 @@ public class MetaFileDataRegistryImpl
         }
 
         nodes.put(name, data);
-
-        // HACK:
     }
 
     public void removeData(final FileName name) {
