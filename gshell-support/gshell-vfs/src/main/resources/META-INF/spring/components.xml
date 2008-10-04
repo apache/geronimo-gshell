@@ -75,7 +75,11 @@
             <bean class="org.apache.commons.vfs.provider.ram.RamFileProvider"/>
         </property>
     </bean>
-    
+
+    <!--
+    TODO: Setup authentication support.
+    -->
+
     <!--
     TODO: Roll up this configuration into one bean for ext another for mime,
           or maybe just one bean for both.  This is too verbose.
@@ -105,7 +109,7 @@
         <property name="mimeType" value="application/x-gzip"/>
         <property name="scheme" value="gz"/>
     </bean>
--->
+    -->
 
     <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl"/>
 
