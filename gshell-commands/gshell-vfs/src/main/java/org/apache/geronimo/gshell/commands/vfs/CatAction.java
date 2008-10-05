@@ -73,7 +73,7 @@ public class CatAction
         log.debug("Content encoding: {}", info.getContentEncoding());
 
         //
-        // TODO: Only cat files which we think are text
+        // TODO: Only cat files which we think are text, or warn if its not, allow flag to force
         //
 
         log.debug("Displaying file: {}", file.getName());
@@ -88,8 +88,6 @@ public class CatAction
 
         closeFile(file);
         
-        io.out.println();
-
         return Result.SUCCESS;
     }
 
@@ -99,6 +97,10 @@ public class CatAction
 
         while ((line = reader.readLine()) != null) {
             if (displayLineNumbers) {
+                //
+                // TODO: Replace with io.out.printf()
+                //
+
                 String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
                 io.out.print(gutter);
                 io.out.print("  ");
