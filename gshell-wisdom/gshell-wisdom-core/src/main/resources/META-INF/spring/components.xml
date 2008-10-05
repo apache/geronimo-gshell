@@ -58,9 +58,7 @@
 
     <bean id="commandsCompleter" class="org.apache.geronimo.gshell.wisdom.completer.CommandsCompleter"/>
 
-    <bean class="org.apache.geronimo.gshell.wisdom.meta.MetaDataInstaller">
-        
-    </bean>
+    <bean class="org.apache.geronimo.gshell.wisdom.meta.MetaDataInstaller"/>
 
     <bean id="pluginTemplate" class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl" abstract="true">
         <property name="activationRules">

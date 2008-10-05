@@ -19,39 +19,38 @@
 
 package org.apache.geronimo.gshell.wisdom.meta;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaData;
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileType;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataContent;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import java.util.Properties;
+import java.util.Map;
 
 /**
- * {@link MetaData} to return the contents of {@link System#getProperties}.
+ * Support for {@link MetaDataContent} generated for a {@link Map}.
  *
  * @version $Rev$ $Date$
  */
-public class SystemPropertiesMetaData
-    extends MetaData
+public abstract class MapContentSupport<K,V>
+    implements MetaDataContent
 {
-    public SystemPropertiesMetaData(final FileName name) {
-        super(name, FileType.FILE);
-    }
-
-    @Override
     public byte[] getBuffer() {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        StringWriter writer = new StringWriter();
+        PrintWriter out = new PrintWriter(writer);
 
-        Properties props = System.getProperties();
-
-        try {
-            props.store(output, "System Properties");
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
+        for (Map.Entry<K,V> entry : getMap().entrySet()) {
+            out.print(entry.getKey());
+            out.print("=");
+            out.println(entry.getValue());
         }
 
-        return output.toByteArray();
+        out.flush();
+        out.close();
+
+        return writer.toString().getBytes();
     }
+
+    protected abstract Map<K,V> getMap();
 }

@@ -47,18 +47,30 @@ public class MetaData
     
     private final FileType type;
 
+    private final MetaDataContent content;
+
+    private final Map<String,Object> attributes = new HashMap<String,Object>();
+
+    private final Collection<MetaData> children = new ArrayList<MetaData>();
+
     private long lastModified = -1;
-
-    private final Map<String,Object> attributes = /*Collections.synchronizedMap(*/new HashMap<String,Object>()/*)*/;
-
-    private final Collection<MetaData> children = /*Collections.synchronizedCollection(*/new ArrayList<MetaData>()/*)*/;
-
-    public MetaData(final FileName name, final FileType type) {
+    
+    public MetaData(final FileName name, final FileType type, final MetaDataContent content) {
         assert name != null;
         assert type != null;
+        // content may be null
 
         this.name = name;
         this.type = type;
+        this.content = content;
+    }
+
+    public MetaData(final FileName name, final FileType type) {
+        this(name, type, null);
+    }
+
+    public MetaData(final FileName name, final MetaDataContent content) {
+        this(name, FileType.FILE, content);
     }
 
     public FileName getName() {
@@ -70,7 +82,7 @@ public class MetaData
     }
 
     public byte[] getBuffer() {
-        return null;
+        return content != null ? content.getBuffer() : null;
     }
 
     public void updateLastModified() {

@@ -30,6 +30,7 @@ import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.registry.AliasCommand;
+import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,9 @@ public class CommandResolverImpl
     private AliasRegistry aliasRegistry;
 
     @Autowired
+    private FileSystemAccess fileSystemAccess;
+
+    @Autowired
     private CommandLineExecutor executor;
 
     private BeanContainer container;
@@ -69,13 +73,6 @@ public class CommandResolverImpl
 
         //
         // FIXME: For now just ask for the named stuff, eventually need a better path parser and lookup thingy
-        //
-
-        //
-        // TODO: Implement a gshell:// VFS file-system and have a gshell://commands tree which contains all commands
-        //       registered, or rather files which contain accessors to the commands, probably set teh command as an attribute?
-        //
-        //       Can also have a gshell://plugins tree which contains those details as well.
         //
 
         Command command;

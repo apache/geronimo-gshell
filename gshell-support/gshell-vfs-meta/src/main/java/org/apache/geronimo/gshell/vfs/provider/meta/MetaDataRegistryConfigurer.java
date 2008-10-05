@@ -97,6 +97,18 @@ public class MetaDataRegistryConfigurer
         return addFolder(parseName(name));
     }
 
+    public MetaData addContent(final FileName name, final MetaDataContent content) {
+        assert name != null;
+        assert content != null;
+
+        MetaData data = new MetaData(name, content);
+        return add(name, data);
+    }
+
+    public MetaData addContent(final String name, final MetaDataContent content) {
+        return addContent(parseName(name), content);
+    }
+
     //
     // TODO: Add remove methods, and nested namespace muck, once we get base stuff working in the parser
     //

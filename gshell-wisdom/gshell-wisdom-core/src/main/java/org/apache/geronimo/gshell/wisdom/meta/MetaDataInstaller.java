@@ -22,16 +22,9 @@ package org.apache.geronimo.gshell.wisdom.meta;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistryConfigurer;
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.Map;
-import java.util.LinkedHashMap;
 
 /**
  * Installs {@link MetaData} into the {@link MetaDataRegistry}.
@@ -43,8 +36,6 @@ public class MetaDataInstaller
     @Autowired
     private MetaDataRegistry metaRegistry;
 
-    // private MetaDataRegistryConfigurer metaConfig;
-
     @PostConstruct
     public void init() throws Exception {
         assert metaRegistry != null;
@@ -52,7 +43,12 @@ public class MetaDataInstaller
 
         // HACK: Hard code this for now, evetually configure via spring
         metaConfig.addFolder("/system");
-        FileName name = metaConfig.getNameParser().parseUri("/system/properties");
-        metaConfig.add(name, new SystemPropertiesMetaData(name));
+        metaConfig.addContent("/system/runtime", new RuntimeContent());
+        metaConfig.addContent("/system/properties", new SystemPropertiesContent());
+        metaConfig.addContent("/system/environment", new SystemEnvironmentContent());
+
+        //
+        // TODO: Add /system/threads
+        //
     }
 }
