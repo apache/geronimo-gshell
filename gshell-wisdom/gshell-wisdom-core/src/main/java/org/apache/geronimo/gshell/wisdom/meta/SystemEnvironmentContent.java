@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.meta;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MapMetaDataContentSupport;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MapMetaDataContentSupport;
 
 import java.util.Map;
 

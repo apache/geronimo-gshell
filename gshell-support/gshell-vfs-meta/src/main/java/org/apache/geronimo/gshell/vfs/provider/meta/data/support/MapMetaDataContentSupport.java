@@ -17,21 +17,37 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.meta;
+package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MapMetaDataContentSupport;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * {@link org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent} to return the contents of {@link System#getProperties}.
+ * Support for {@link MetaDataContent} generated for a {@link Map}.
  *
  * @version $Rev$ $Date$
  */
-public class SystemPropertiesContent
-    extends MapMetaDataContentSupport<Object,Object>
+public abstract class MapMetaDataContentSupport<K,V>
+    implements MetaDataContent
 {
-    protected Map<Object, Object> getMap() {
-        return System.getProperties();
+    public byte[] getBuffer() {
+        StringWriter writer = new StringWriter();
+        PrintWriter out = new PrintWriter(writer);
+
+        for (Map.Entry<K,V> entry : getMap().entrySet()) {
+            out.print(entry.getKey());
+            out.print("=");
+            out.println(entry.getValue());
+        }
+
+        out.flush();
+        out.close();
+
+        return writer.toString().getBytes();
     }
+
+    protected abstract Map<K,V> getMap();
 }

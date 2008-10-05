@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.vfs.provider.meta;
 
 import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryConfigurer;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
 import org.apache.commons.vfs.FileName;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -29,7 +29,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.util.Map;
 
 /**
- * Unit tests for the {@link org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryConfigurer} class.
+ * Unit tests for the {@link org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer} class.
  *
  * @version $Rev$ $Date$
  */

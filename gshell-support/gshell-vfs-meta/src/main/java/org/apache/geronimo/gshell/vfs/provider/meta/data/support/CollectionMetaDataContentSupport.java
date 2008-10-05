@@ -17,28 +17,28 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs.provider.meta.data;
+package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
+
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map;
+import java.util.Collection;
 
 /**
- * Support for {@link MetaDataContent} generated for a {@link Map}.
+ * Support for {@link MetaDataContent} generated for a {@link Collection}.
  *
  * @version $Rev$ $Date$
  */
-public abstract class MapMetaDataContentSupport<K,V>
+public abstract class CollectionMetaDataContentSupport<T>
     implements MetaDataContent
 {
     public byte[] getBuffer() {
         StringWriter writer = new StringWriter();
         PrintWriter out = new PrintWriter(writer);
 
-        for (Map.Entry<K,V> entry : getMap().entrySet()) {
-            out.print(entry.getKey());
-            out.print("=");
-            out.println(entry.getValue());
+        for (T element : getCollection()) {
+            out.println(element);
         }
 
         out.flush();
@@ -47,5 +47,5 @@ public abstract class MapMetaDataContentSupport<K,V>
         return writer.toString().getBytes();
     }
 
-    protected abstract Map<K,V> getMap();
+    protected abstract Collection<T> getCollection();
 }
