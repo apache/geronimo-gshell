@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.meta;
 
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataContent;
+import org.apache.geronimo.gshell.vfs.provider.meta.MapMetaDataContentSupport;
 
 import java.util.Map;
 
@@ -29,7 +30,7 @@ import java.util.Map;
  * @version $Rev$ $Date$
  */
 public class SystemEnvironmentContent
-    extends MapContentSupport<String,String>
+    extends MapMetaDataContentSupport<String,String>
 {
     protected Map<String, String> getMap() {
         return System.getenv();

@@ -20,9 +20,8 @@
 package org.apache.geronimo.gshell.wisdom.meta;
 
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataContent;
+import org.apache.geronimo.gshell.vfs.provider.meta.MapMetaDataContentSupport;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
@@ -32,7 +31,7 @@ import java.util.LinkedHashMap;
  * @version $Rev$ $Date$
  */
 public class RuntimeContent
-    extends MapContentSupport<String,Object>
+    extends MapMetaDataContentSupport<String,Object>
 {
     protected Map<String, Object> getMap() {
         Map<String,Object> map = new LinkedHashMap<String,Object>();

@@ -17,15 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.meta;
+package org.apache.geronimo.gshell.vfs.provider.meta;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataContent;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.io.PrintWriter;
-import java.util.Properties;
+import java.io.StringWriter;
 import java.util.Map;
 
 /**
@@ -33,7 +28,7 @@ import java.util.Map;
  *
  * @version $Rev$ $Date$
  */
-public abstract class MapContentSupport<K,V>
+public abstract class MapMetaDataContentSupport<K,V>
     implements MetaDataContent
 {
     public byte[] getBuffer() {
