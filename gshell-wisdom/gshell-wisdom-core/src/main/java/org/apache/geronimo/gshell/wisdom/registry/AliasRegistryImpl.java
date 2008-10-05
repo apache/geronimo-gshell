@@ -22,10 +22,9 @@ package org.apache.geronimo.gshell.wisdom.registry;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistryConfigurer;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileData;
-import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistryConfigurer;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,16 +49,16 @@ public class AliasRegistryImpl
     private EventPublisher eventPublisher;
 
     @Autowired
-    private MetaFileDataRegistry metaRegistry;
+    private MetaDataRegistry metaRegistry;
 
-    private MetaFileDataRegistryConfigurer metaConfig;
+    private MetaDataRegistryConfigurer metaConfig;
 
     private final Map<String,String> aliases = new LinkedHashMap<String,String>();
 
     @PostConstruct
     public void init() {
         assert metaRegistry != null;
-        metaConfig = new MetaFileDataRegistryConfigurer(metaRegistry);
+        metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
         metaConfig.addFolder("/aliases");
     }
 
@@ -74,7 +73,7 @@ public class AliasRegistryImpl
         }
 
         assert metaConfig != null;
-        MetaFileData data = metaConfig.addFile("/aliases/" + name);
+        MetaData data = metaConfig.addFile("/aliases/" + name);
         data.addAttribute("ALIAS", alias);
 
         aliases.put(name, alias);

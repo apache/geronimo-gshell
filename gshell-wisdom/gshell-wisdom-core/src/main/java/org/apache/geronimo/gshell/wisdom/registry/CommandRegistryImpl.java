@@ -24,9 +24,9 @@ import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.registry.DuplicateCommandException;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistryConfigurer;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileData;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistryConfigurer;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +51,16 @@ public class CommandRegistryImpl
     private EventPublisher eventPublisher;
 
     @Autowired
-    private MetaFileDataRegistry metaRegistry;
+    private MetaDataRegistry metaRegistry;
 
-    private MetaFileDataRegistryConfigurer metaConfig;
+    private MetaDataRegistryConfigurer metaConfig;
 
     private final Map<String,Command> commands = new LinkedHashMap<String,Command>();
 
     @PostConstruct
     public void init() {
         assert metaRegistry != null;
-        metaConfig = new MetaFileDataRegistryConfigurer(metaRegistry);
+        metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
         metaConfig.addFolder("/commands");
     }
 
@@ -75,7 +75,7 @@ public class CommandRegistryImpl
         }
 
         assert metaConfig != null;
-        MetaFileData data = metaConfig.addFile("/commands/" + name);
+        MetaData data = metaConfig.addFile("/commands/" + name);
         data.addAttribute("COMMAND", command);
 
         commands.put(name, command);

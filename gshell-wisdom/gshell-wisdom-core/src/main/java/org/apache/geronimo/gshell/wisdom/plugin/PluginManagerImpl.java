@@ -32,9 +32,9 @@ import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileDataRegistryConfigurer;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileData;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistryConfigurer;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaData;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -76,9 +76,9 @@ public class PluginManagerImpl
     private BeanContainer container;
 
     @Autowired
-    private MetaFileDataRegistry metaRegistry;
+    private MetaDataRegistry metaRegistry;
 
-    private MetaFileDataRegistryConfigurer metaConfig;
+    private MetaDataRegistryConfigurer metaConfig;
 
     private Set<Plugin> plugins = new LinkedHashSet<Plugin>();
 
@@ -91,7 +91,7 @@ public class PluginManagerImpl
     @PostConstruct
     public void init() {
         assert metaRegistry != null;
-        metaConfig = new MetaFileDataRegistryConfigurer(metaRegistry);
+        metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
         metaConfig.addFolder("/plugins");
 
         assert eventManager != null;
@@ -152,7 +152,7 @@ public class PluginManagerImpl
         plugin.initArtifacts(artifacts);
 
         assert metaConfig != null;
-        MetaFileData data = metaConfig.addFile("/plugins/" + plugin.getName());
+        MetaData data = metaConfig.addFile("/plugins/" + plugin.getName());
         data.addAttribute("PLUGIN", plugin);
 
         plugins.add(plugin);
