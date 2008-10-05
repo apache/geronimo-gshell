@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.apache.geronimo.gshell.clp.IllegalAnnotationError;
 
@@ -72,17 +73,18 @@ public class CollectionFieldSetter
 
         // If the field is not set, then create a new instance of the collection and set it
         if (obj == null) {
-            if (List.class.isAssignableFrom(field.getType())) {
+            Class type = field.getType();
+
+            if (List.class.isAssignableFrom(type)) {
                 obj = new ArrayList();
             }
-            else if (Set.class.isAssignableFrom(field.getType())) {
-                obj = new HashSet();
+            else if (Set.class.isAssignableFrom(type)) {
+                obj = new LinkedHashSet();
+            }
+            else if (Collection.class.isAssignableFrom(type)) {
+                obj = new ArrayList();
             }
             else {
-                //
-                // TODO: Add support for the default collection types
-                //
-                
                 throw new IllegalAnnotationError("Unsupported collection type: " + field.getType());
             }
 
