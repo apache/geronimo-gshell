@@ -42,9 +42,9 @@ public class MetaFileSystem
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final MetaFileDataRegistry registry;
+    private final MetaDataRegistry registry;
 
-    public MetaFileSystem(final MetaFileDataRegistry registry, final FileName rootName, final FileSystemOptions options) {
+    public MetaFileSystem(final MetaDataRegistry registry, final FileName rootName, final FileSystemOptions options) {
         super(rootName, null, options);
 
         assert registry != null;
@@ -70,7 +70,7 @@ public class MetaFileSystem
     // Internal bits invoked from MetaFileObject
     //
 
-    MetaFileData lookupData(final MetaFileObject file) throws FileSystemException {
+    MetaData lookupData(final MetaFileObject file) throws FileSystemException {
         assert file != null;
 
         log.debug("Looking up data: {}", file);
@@ -79,9 +79,9 @@ public class MetaFileSystem
         assert name != null;
 
         // FIXME: This should probably toss an exception if the data is not registered
-        MetaFileData data = registry.lookupData(name);
+        MetaData data = registry.lookupData(name);
         if (data == null) {
-            data = new MetaFileData(name, FileType.IMAGINARY);
+            data = new MetaData(name, FileType.IMAGINARY);
         }
 
         return data;
@@ -92,11 +92,11 @@ public class MetaFileSystem
 
         log.debug("Listing children: {}", name);
 
-        MetaFileData data = registry.lookupData(name);
-        Collection<MetaFileData> children = data.getChildren();
+        MetaData data = registry.lookupData(name);
+        Collection<MetaData> children = data.getChildren();
 
         List<String> names = new ArrayList<String>(children.size());
-        for (MetaFileData child : children) {
+        for (MetaData child : children) {
             names.add(child.getName().getBaseName());
         }
 

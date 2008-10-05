@@ -27,61 +27,61 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.util.Map;
 
 /**
- * Unit tests for the {@link MetaFileDataRegistryConfigurer} class.
+ * Unit tests for the {@link MetaDataRegistryConfigurer} class.
  *
  * @version $Rev$ $Date$
  */
-public class MetaFileDataRegistryConfigurerTest
+public class MetaDataRegistryConfigurerTest
     extends SpringTestSupport
 {
-    private AccessibleMetaFileDataRegistry registry;
+    private AccessibleMetaDataRegistry registry;
 
-    private MetaFileDataRegistryConfigurer config;
+    private MetaDataRegistryConfigurer config;
 
     protected void setUp() throws Exception {
         super.setUp();
 
-        registry = getBeanContainer().getBean(AccessibleMetaFileDataRegistry.class);
+        registry = getBeanContainer().getBean(AccessibleMetaDataRegistry.class);
         assertNotNull(registry);
 
-        config = new MetaFileDataRegistryConfigurer(registry);
+        config = new MetaDataRegistryConfigurer(registry);
     }
 
     public void testAddFolder() throws Exception {
-        MetaFileData data = config.addFolder("testing");
+        MetaData data = config.addFolder("testing");
         assertNotNull(data);
 
-        Map<FileName, MetaFileData> nodes = registry.getNodes();
+        Map<FileName, MetaData> nodes = registry.getNodes();
         assertNotNull(nodes);
         assertEquals(2, nodes.size());
     }
 
     public void testAddNestedFiles() throws Exception {
-        MetaFileData d1 = config.addFolder("testing");
+        MetaData d1 = config.addFolder("testing");
         assertNotNull(d1);
 
-        MetaFileData d2 = config.addFile("testing/stuff");
+        MetaData d2 = config.addFile("testing/stuff");
         assertNotNull(d2);
 
-        MetaFileData d3 = config.addFile("testing/more-stuff");
+        MetaData d3 = config.addFile("testing/more-stuff");
         assertNotNull(d3);
 
-        Map<FileName, MetaFileData> nodes = registry.getNodes();
+        Map<FileName, MetaData> nodes = registry.getNodes();
         assertNotNull(nodes);
         assertEquals(4, nodes.size());
     }
 
     public void testAddNestedFilesWithScheme() throws Exception {
-        MetaFileData d1 = config.addFolder("meta:/testing");
+        MetaData d1 = config.addFolder("meta:/testing");
         assertNotNull(d1);
 
-        MetaFileData d2 = config.addFile("meta:/testing/stuff");
+        MetaData d2 = config.addFile("meta:/testing/stuff");
         assertNotNull(d2);
 
-        MetaFileData d3 = config.addFile("meta:/testing/more-stuff");
+        MetaData d3 = config.addFile("meta:/testing/more-stuff");
         assertNotNull(d3);
 
-        Map<FileName, MetaFileData> nodes = registry.getNodes();
+        Map<FileName, MetaData> nodes = registry.getNodes();
         assertNotNull(nodes);
         assertEquals(4, nodes.size());
 

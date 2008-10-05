@@ -19,37 +19,20 @@
 
 package org.apache.geronimo.gshell.vfs.provider.meta;
 
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.commons.vfs.FileName;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import java.util.Map;
 
 /**
- * Unit tests for the {@link MetaFileDataRegistryImpl} class.
+ * Accessible {@link MetaDataRegistryImpl}.
  *
  * @version $Rev$ $Date$
  */
-public class MetaFileDataRegistryImplTest
-    extends SpringTestSupport
+public class AccessibleMetaDataRegistry
+    extends MetaDataRegistryImpl
 {
-    private AccessibleMetaFileDataRegistry registry;
-
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        registry = getBeanContainer().getBean(AccessibleMetaFileDataRegistry.class);
-        assertNotNull(registry);
-    }
-
-    public void testInitialState() throws Exception {
-        Map<FileName, MetaFileData> nodes = registry.getNodes();
-        assertNotNull(nodes);
-        assertEquals(1, nodes.size());
-
-        XStream xs = new XStream(new DomDriver());
-        String xml = xs.toXML(registry);
-        System.out.println(xml);
+    @Override
+    public Map<FileName, MetaData> getNodes() {
+        return super.getNodes();
     }
 }

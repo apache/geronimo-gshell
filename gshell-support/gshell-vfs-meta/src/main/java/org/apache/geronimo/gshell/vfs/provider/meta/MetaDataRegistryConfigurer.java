@@ -26,26 +26,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Helper to configure the contents of a {@link MetaFileDataRegistry}.
+ * Helper to configure the contents of a {@link MetaDataRegistry}.
  *
  * @version $Rev$ $Date$
  */
-public class MetaFileDataRegistryConfigurer
+public class MetaDataRegistryConfigurer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final MetaFileDataRegistry registry;
+    private final MetaDataRegistry registry;
 
     private final MetaFileNameParser nameParser;
 
-    public MetaFileDataRegistryConfigurer(final MetaFileDataRegistry registry) {
+    public MetaDataRegistryConfigurer(final MetaDataRegistry registry) {
         assert registry != null;
 
         this.registry = registry;
         this.nameParser = new MetaFileNameParser();
     }
 
-    public MetaFileDataRegistry getRegistry() {
+    public MetaDataRegistry getRegistry() {
         return registry;
     }
 
@@ -64,7 +64,7 @@ public class MetaFileDataRegistryConfigurer
         }
     }
 
-    public MetaFileData add(final FileName name, final MetaFileData data) {
+    public MetaData add(final FileName name, final MetaData data) {
         assert name != null;
         assert data != null;
 
@@ -77,23 +77,23 @@ public class MetaFileDataRegistryConfigurer
         return data;
     }
 
-    public MetaFileData add(final String name, final MetaFileData data) {
+    public MetaData add(final String name, final MetaData data) {
         return add(parseName(name), data);
     }
 
-    public MetaFileData addFile(final FileName name) {
-        return add(name, new MetaFileData(name, FileType.FILE));
+    public MetaData addFile(final FileName name) {
+        return add(name, new MetaData(name, FileType.FILE));
     }
 
-    public MetaFileData addFile(final String name) {
+    public MetaData addFile(final String name) {
         return addFile(parseName(name));
     }
 
-    public MetaFileData addFolder(final FileName name) {
-        return add(name, new MetaFileData(name, FileType.FOLDER));
+    public MetaData addFolder(final FileName name) {
+        return add(name, new MetaData(name, FileType.FOLDER));
     }
 
-    public MetaFileData addFolder(final String name) {
+    public MetaData addFolder(final String name) {
         return addFolder(parseName(name));
     }
 

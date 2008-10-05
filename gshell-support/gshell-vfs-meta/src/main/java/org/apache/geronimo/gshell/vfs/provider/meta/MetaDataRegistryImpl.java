@@ -26,21 +26,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * {@link MetaFileDataRegistry} component.
+ * {@link MetaDataRegistry} component.
  *
  * @version $Rev$ $Date$
  */
-public class  MetaFileDataRegistryImpl
-    implements MetaFileDataRegistry
+public class MetaDataRegistryImpl
+    implements MetaDataRegistry
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Map<FileName,MetaFileData> nodes = /*Collections.synchronizedMap(*/new HashMap<FileName,MetaFileData>()/*)*/;
+    private final Map<FileName, MetaData> nodes = /*Collections.synchronizedMap(*/new HashMap<FileName, MetaData>()/*)*/;
 
     private String rootFileName = MetaFileName.SCHEME + ":/";
 
@@ -49,14 +48,14 @@ public class  MetaFileDataRegistryImpl
         // Register the root folder
         MetaFileNameParser parser = new MetaFileNameParser();
         FileName rootName = parser.parseUri(rootFileName);
-        registerData(rootName, new MetaFileData(rootName, FileType.FOLDER));
+        registerData(rootName, new MetaData(rootName, FileType.FOLDER));
     }
 
-    protected Map<FileName,MetaFileData> getNodes() {
+    protected Map<FileName, MetaData> getNodes() {
         return nodes;
     }
     
-    public void registerData(final FileName name, final MetaFileData data) {
+    public void registerData(final FileName name, final MetaData data) {
         assert name != null;
         assert data != null;
 
@@ -66,7 +65,7 @@ public class  MetaFileDataRegistryImpl
             FileName parentName = name.getParent();
             if (parentName != null) {
                 if (containsData(parentName)) {
-                    MetaFileData parent = lookupData(parentName);
+                    MetaData parent = lookupData(parentName);
 
                     if (!parent.hasChild(data)) {
                         try {
@@ -96,11 +95,11 @@ public class  MetaFileDataRegistryImpl
 
         log.debug("Removing data: {}", name);
 
-        MetaFileData data = getNodes().remove(name);
+        MetaData data = getNodes().remove(name);
 
         FileName parentName = name.getParent();
         if (parentName != null && containsData(parentName)) {
-            MetaFileData parent = lookupData(parentName);
+            MetaData parent = lookupData(parentName);
             try {
                 parent.removeChild(data);
             }
@@ -116,7 +115,7 @@ public class  MetaFileDataRegistryImpl
         return getNodes().containsKey(name);
     }
 
-    public MetaFileData lookupData(final FileName name) {
+    public MetaData lookupData(final FileName name) {
         assert name != null;
 
         log.debug("Looking up data: {}", name);

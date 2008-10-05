@@ -27,16 +27,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Meta file data.
+ * Meta data.
  *
  * @version $Rev$ $Date$
  */
-public class MetaFileData
+public class MetaData
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -52,9 +51,9 @@ public class MetaFileData
 
     private final Map<String,Object> attributes = /*Collections.synchronizedMap(*/new HashMap<String,Object>()/*)*/;
 
-    private final Collection<MetaFileData> children = /*Collections.synchronizedCollection(*/new ArrayList<MetaFileData>()/*)*/;
+    private final Collection<MetaData> children = /*Collections.synchronizedCollection(*/new ArrayList<MetaData>()/*)*/;
 
-    public MetaFileData(final FileName name, final FileType type) {
+    public MetaData(final FileName name, final FileType type) {
         assert name != null;
         assert type != null;
 
@@ -109,11 +108,11 @@ public class MetaFileData
         return old;
     }
 
-    public Collection<MetaFileData> getChildren() {
+    public Collection<MetaData> getChildren() {
         return children;
     }
 
-    public void addChild(final MetaFileData data) throws FileSystemException {
+    public void addChild(final MetaData data) throws FileSystemException {
         assert data != null;
 
         if (!getType().hasChildren()) {
@@ -129,7 +128,7 @@ public class MetaFileData
         updateLastModified();
     }
 
-    public void removeChild(final MetaFileData data) throws FileSystemException{
+    public void removeChild(final MetaData data) throws FileSystemException{
         assert data != null;
 
         if (!getType().hasChildren()) {
@@ -145,7 +144,7 @@ public class MetaFileData
         updateLastModified();
     }
 
-    public boolean hasChild(final MetaFileData data) {
+    public boolean hasChild(final MetaData data) {
         assert data != null;
 
         return getChildren().contains(data);
@@ -156,7 +155,7 @@ public class MetaFileData
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
 
-        MetaFileData that = (MetaFileData) obj;
+        MetaData that = (MetaData) obj;
         return !(name != null ? !name.equals(that.name) : that.name != null);
 
     }

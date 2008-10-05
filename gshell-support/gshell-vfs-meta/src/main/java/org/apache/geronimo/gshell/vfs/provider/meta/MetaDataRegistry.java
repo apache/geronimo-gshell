@@ -22,17 +22,17 @@ package org.apache.geronimo.gshell.vfs.provider.meta;
 import org.apache.commons.vfs.FileName;
 
 /**
- * Meta file data registry.
+ * Meta data registry.
  *
  * @version $Rev$ $Date$
  */
-public interface MetaFileDataRegistry
+public interface MetaDataRegistry
 {
-    void registerData(FileName name, MetaFileData data);
+    void registerData(FileName name, MetaData data);
 
     void removeData(FileName name);
 
-    MetaFileData lookupData(FileName name) /* throws MetaFileDataRegistryException */;
+    MetaData lookupData(FileName name) /* throws MetaFileDataRegistryException */;
 
     boolean containsData(FileName name);
 }

@@ -54,7 +54,7 @@ public class MetaFileProvider
     ));
 
     @Autowired
-    private MetaFileDataRegistry registry;
+    private MetaDataRegistry registry;
 
     public MetaFileProvider() {
         setFileNameParser(new MetaFileNameParser());

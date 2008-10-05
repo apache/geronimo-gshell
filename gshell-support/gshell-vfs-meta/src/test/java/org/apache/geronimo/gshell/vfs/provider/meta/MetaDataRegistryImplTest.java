@@ -27,15 +27,29 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.util.Map;
 
 /**
- * Accessible {@link MetaFileDataRegistryImpl}.
+ * Unit tests for the {@link MetaDataRegistryImpl} class.
  *
  * @version $Rev$ $Date$
  */
-public class AccessibleMetaFileDataRegistry
-    extends MetaFileDataRegistryImpl
+public class MetaDataRegistryImplTest
+    extends SpringTestSupport
 {
-    @Override
-    public Map<FileName, MetaFileData> getNodes() {
-        return super.getNodes();
+    private AccessibleMetaDataRegistry registry;
+
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        registry = getBeanContainer().getBean(AccessibleMetaDataRegistry.class);
+        assertNotNull(registry);
+    }
+
+    public void testInitialState() throws Exception {
+        Map<FileName, MetaData> nodes = registry.getNodes();
+        assertNotNull(nodes);
+        assertEquals(1, nodes.size());
+
+        XStream xs = new XStream(new DomDriver());
+        String xml = xs.toXML(registry);
+        System.out.println(xml);
     }
 }

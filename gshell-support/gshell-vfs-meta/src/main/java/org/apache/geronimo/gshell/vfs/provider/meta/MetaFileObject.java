@@ -37,7 +37,7 @@ public class MetaFileObject
 {
     private final MetaFileSystem fileSystem;
 
-    private MetaFileData data;
+    private MetaData data;
 
     public MetaFileObject(final FileName fileName, final MetaFileSystem fileSystem) {
         super(fileName, fileSystem);
@@ -46,8 +46,10 @@ public class MetaFileObject
         this.fileSystem = fileSystem;
     }
 
-    public MetaFileData getData() {
-        assert data != null;
+    public MetaData getData() {
+        if (data == null) {
+            throw new IllegalStateException("Meta data has not been attached");
+        }
         
         return data;
     }
