@@ -24,6 +24,7 @@ import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.provider.AbstractFileObject;
 
 import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.util.Map;
 
 /**
@@ -62,14 +63,23 @@ public class MetaFileObject
     }
 
     @Override
+    protected boolean doIsReadable() throws Exception {
+        return data.getBuffer() != null;
+    }
+
+    @Override
     protected long doGetContentSize() throws Exception {
-        // Meta file is always empty
-        return 0;
+        byte[] bytes = data.getBuffer();
+        return bytes != null ? bytes.length : 0;
     }
 
     @Override
     protected InputStream doGetInputStream() throws Exception {
-        // No contents thus no input stream
+        byte[] bytes = data.getBuffer();
+        if (bytes != null) {
+            return new ByteArrayInputStream(bytes);
+        }
+
         return null;
     }
 

@@ -70,6 +70,10 @@ public class MetaFileData
         return type;
     }
 
+    public byte[] getBuffer() {
+        return null;
+    }
+
     public void updateLastModified() {
         lastModified = System.currentTimeMillis();
     }

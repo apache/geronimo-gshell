@@ -45,6 +45,7 @@ public class MetaFileProvider
 
     public static final Collection<Capability> CAPABILITIES = Collections.unmodifiableCollection(Arrays.asList(
         Capability.ATTRIBUTES,
+        Capability.READ_CONTENT,
         Capability.GET_TYPE,
         Capability.GET_LAST_MODIFIED,
         Capability.LAST_MODIFIED,
