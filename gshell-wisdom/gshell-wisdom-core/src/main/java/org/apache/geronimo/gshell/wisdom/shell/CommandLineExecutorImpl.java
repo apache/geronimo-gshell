@@ -214,7 +214,7 @@ public class CommandLineExecutorImpl
 
         // Locate the command
         Variables variables = context.getVariables();
-        Command command = commandResolver.resolve(variables, path);
+        Command command = commandResolver.resolveCommand(variables, path);
 
         // Hijack the system streams in the current thread's context
         IO io = context.getIo();

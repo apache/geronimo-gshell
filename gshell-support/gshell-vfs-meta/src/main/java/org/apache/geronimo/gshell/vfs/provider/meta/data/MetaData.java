@@ -54,6 +54,10 @@ public class MetaData
     private final Collection<MetaData> children = new ArrayList<MetaData>();
 
     private long lastModified = -1;
+
+    //
+    // TODO: Consider changing "name" to a String here?
+    //
     
     public MetaData(final FileName name, final FileType type, final MetaDataContent content) {
         assert name != null;

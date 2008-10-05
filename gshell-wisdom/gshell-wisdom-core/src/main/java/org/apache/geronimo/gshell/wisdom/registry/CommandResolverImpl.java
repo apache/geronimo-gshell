@@ -27,13 +27,18 @@ import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
+import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.wisdom.registry.AliasCommand;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * {@link CommandResolver} component.
@@ -45,8 +50,8 @@ public class CommandResolverImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandRegistry commandRegistry;
+    // @Autowired
+    // private CommandRegistry commandRegistry;
 
     @Autowired
     private AliasRegistry aliasRegistry;
@@ -65,7 +70,7 @@ public class CommandResolverImpl
         this.container = container;
     }
 
-    public Command resolve(final Variables variables, final String path) throws CommandException {
+    public Command resolveCommand(final Variables variables, final String path) throws CommandException {
         assert variables != null;
         assert path != null;
 
@@ -82,8 +87,24 @@ public class CommandResolverImpl
             command = createAliasCommand(path);
         }
         else {
-            assert commandRegistry != null;
-            command = commandRegistry.getCommand(path);
+            try {
+                FileObject commands = fileSystemAccess.resolveFile("meta:/commands");
+                assert commands.exists();
+                log.debug("Commands base: {}", commands);
+
+                FileObject file = fileSystemAccess.resolveFile(commands, path);
+                log.debug("Command file: {}", file);
+                
+                if (file.exists()) {
+                    command = (Command) file.getContent().getAttribute("COMMAND");
+                }
+                else {
+                    throw new NoSuchCommandException(path);
+                }
+            }
+            catch (FileSystemException e) {
+                throw new CommandException(e);
+            }
         }
 
         log.debug("Resolved command: {} -> {}", path, command);
@@ -109,5 +130,16 @@ public class CommandResolverImpl
         command.setBeanContainer(container);
 
         return command;
+    }
+
+    public Collection<Command> resolveCommands(final Variables variables, final String path) throws CommandException {
+        assert variables != null;
+        assert path != null;
+
+        //
+        // FIXME:
+        //
+        
+        return Collections.emptySet();
     }
 }

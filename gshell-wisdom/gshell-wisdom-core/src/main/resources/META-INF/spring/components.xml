@@ -27,9 +27,15 @@
 
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl"/>
 
+    <bean id="pluginMetaMapper" class="org.apache.geronimo.gshell.wisdom.plugin.PluginMetaMapper"/>
+
     <bean id="aliasRegistry" class="org.apache.geronimo.gshell.wisdom.registry.AliasRegistryImpl"/>
 
+    <bean id="aliasMetaMapper" class="org.apache.geronimo.gshell.wisdom.registry.AliasMetaMapper"/>
+
     <bean id="commandRegistry" class="org.apache.geronimo.gshell.wisdom.registry.CommandRegistryImpl"/>
+
+    <bean id="commandMetaMapper" class="org.apache.geronimo.gshell.wisdom.registry.CommandMetaMapper"/>
 
     <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.registry.CommandResolverImpl"/>
     

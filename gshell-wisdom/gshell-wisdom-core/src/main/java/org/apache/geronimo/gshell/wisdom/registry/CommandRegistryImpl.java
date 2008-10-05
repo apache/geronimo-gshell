@@ -22,16 +22,12 @@ package org.apache.geronimo.gshell.wisdom.registry;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.registry.DuplicateCommandException;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryConfigurer;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
+import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -50,19 +46,7 @@ public class CommandRegistryImpl
     @Autowired
     private EventPublisher eventPublisher;
 
-    @Autowired
-    private MetaDataRegistry metaRegistry;
-
-    private MetaDataRegistryConfigurer metaConfig;
-
     private final Map<String,Command> commands = new LinkedHashMap<String,Command>();
-
-    @PostConstruct
-    public void init() {
-        assert metaRegistry != null;
-        metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-        metaConfig.addFolder("/commands");
-    }
 
     public void registerCommand(final String name, final Command command) throws DuplicateCommandException {
         assert name != null;
@@ -73,10 +57,6 @@ public class CommandRegistryImpl
         if (containsCommand(name)) {
             throw new DuplicateCommandException(name);
         }
-
-        assert metaConfig != null;
-        MetaData data = metaConfig.addFile("/commands/" + name);
-        data.addAttribute("COMMAND", command);
 
         commands.put(name, command);
 
@@ -92,8 +72,6 @@ public class CommandRegistryImpl
             throw new NoSuchCommandException(name);
         }
 
-        // TODO: Remove from meta
-        
         commands.remove(name);
 
         eventPublisher.publish(new CommandRemovedEvent(name));

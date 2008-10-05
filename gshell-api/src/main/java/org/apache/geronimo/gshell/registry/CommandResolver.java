@@ -23,6 +23,8 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.command.CommandException;
 
+import java.util.Collection;
+
 /**
  * Resolves {@link Command} instances for a given path.
  *
@@ -30,14 +32,7 @@ import org.apache.geronimo.gshell.command.CommandException;
  */
 public interface CommandResolver
 {
-    /**
-     * Resolve the given path to a command instance.
-     *
-     * @param variables     The current shell variables.
-     * @param path          The path of the command to resolve.
-     * @return              The resolved command instance; never null.
-     *
-     * @throws CommandException     Failed to resolve command.
-     */
-    Command resolve(Variables variables, String path) throws CommandException;
+    Command resolveCommand(Variables variables, String path) throws CommandException;
+
+    Collection<Command> resolveCommands(Variables variables, String path) throws CommandException;
 }
