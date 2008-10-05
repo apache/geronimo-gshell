@@ -27,10 +27,10 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
+import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class HelpAction
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private CommandRegistry commandRegistry;
+    private CommandResolver commandResolver;
 
     @Autowired
     private AliasRegistry aliasRegistry;
@@ -67,15 +67,15 @@ public class HelpAction
         return displayAvailableCommands(context);
     }
 
-    private Object displayCommandManual(final CommandContext context) {
+    private Object displayCommandManual(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
         log.debug("Displaying help manual for command: {}", commandName);
 
         try {
-            assert commandRegistry != null;
-            Command command = commandRegistry.getCommand(commandName);
+            assert commandResolver != null;
+            Command command = commandResolver.resolveCommand(context.getVariables(), commandName);
 
             assert command != null;
             command.getDocumenter().renderManual(io.out);
@@ -117,23 +117,22 @@ public class HelpAction
 
         log.debug("Listing brief help for commands");
 
-        assert commandRegistry != null;
-        Collection<String> names = commandRegistry.getCommandNames();
+        assert commandResolver != null;
+        Collection<Command> commands = commandResolver.resolveCommands(context.getVariables(), null);
 
         // Determine the maximun name length
         int maxNameLen = 0;
-        for (String name : names) {
-            if (name.length() > maxNameLen) {
-                maxNameLen = name.length();
-            }
+        for (Command command : commands) {
+            int len = command.getDocumenter().getName().length();
+            maxNameLen = Math.max(len, maxNameLen);
         }
 
         io.out.println("Available commands:");
-        for (String name : names) {
-            Command command = commandRegistry.getCommand(name);
+        for (Command command : commands) {
             CommandDocumenter documenter = command.getDocumenter();
 
-            String formattedName = StringUtils.rightPad(name, maxNameLen);
+            // TODO: Use printf
+            String formattedName = StringUtils.rightPad(documenter.getName(), maxNameLen);
             String desc = documenter.getDescription();
 
             io.out.print("  ");

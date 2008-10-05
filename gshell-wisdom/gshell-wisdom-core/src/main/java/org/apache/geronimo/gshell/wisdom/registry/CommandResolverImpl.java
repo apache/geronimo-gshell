@@ -39,6 +39,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link CommandResolver} component.
@@ -88,19 +90,19 @@ public class CommandResolverImpl
         }
         else {
             try {
-                FileObject commands = fileSystemAccess.resolveFile("meta:/commands");
-                assert commands.exists();
-                log.debug("Commands base: {}", commands);
+                FileObject base = fileSystemAccess.resolveFile("meta:/commands");
+                assert base.exists();
 
-                FileObject file = fileSystemAccess.resolveFile(commands, path);
-                log.debug("Command file: {}", file);
-                
+                FileObject file = fileSystemAccess.resolveFile(base, path);
                 if (file.exists()) {
                     command = (Command) file.getContent().getAttribute("COMMAND");
                 }
                 else {
                     throw new NoSuchCommandException(path);
                 }
+
+                base.close();
+                file.close();
             }
             catch (FileSystemException e) {
                 throw new CommandException(e);
@@ -134,12 +136,34 @@ public class CommandResolverImpl
 
     public Collection<Command> resolveCommands(final Variables variables, final String path) throws CommandException {
         assert variables != null;
-        assert path != null;
+        // for now path can be null
 
+        log.debug("Resolving commands for path: {}", path);
+        
         //
-        // FIXME:
+        // FIXME: For now ingore path, just return all commands under meta:/commands
         //
         
-        return Collections.emptySet();
+        List<Command> commands = new ArrayList<Command>();
+
+        try {
+            FileObject base = fileSystemAccess.resolveFile("meta:/commands");
+            assert base.exists();
+
+            for (FileObject file : base.getChildren()) {
+                Command command = (Command)file.getContent().getAttribute("COMMAND");
+                commands.add(command);
+            }
+
+            base.close();
+
+        }
+        catch (FileSystemException e) {
+            throw new CommandException(e);
+        }
+
+        log.debug("Resolved {} commands: {}", commands.size(), commands);
+        
+        return commands;
     }
 }

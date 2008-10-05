@@ -45,9 +45,5 @@ public class MetaDataInstaller
         metaConfig.addContent("/system/runtime", new RuntimeContent());
         metaConfig.addContent("/system/properties", new SystemPropertiesContent());
         metaConfig.addContent("/system/environment", new SystemEnvironmentContent());
-
-        //
-        // TODO: Add /system/threads
-        //
     }
 }
