@@ -45,6 +45,7 @@
 
     <!--
     FIXME: This should really not be prototype scoped, or it should be accessible for a Shell instance.
+           Should probably create a HistoryProvider component to deal with this shit.
     -->
     
     <bean id="history" class="org.apache.geronimo.gshell.wisdom.shell.HistoryImpl" scope="prototype"/>

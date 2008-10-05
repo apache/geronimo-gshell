@@ -47,11 +47,11 @@ public interface CommandAction
         /**
          * The command execution was successful.
          */
-        SUCCESS,
+        SUCCESS, // 0
 
         /**
          * The command exectuion failed.
          */
-        FAILURE
+        FAILURE // 1
     }
 }

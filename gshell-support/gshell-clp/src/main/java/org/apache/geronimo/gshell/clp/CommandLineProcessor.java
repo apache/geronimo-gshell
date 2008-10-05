@@ -296,6 +296,10 @@ public class CommandLineProcessor
         if (!requireOverride) {
 	        for (Handler handler : optionHandlers) {
 	            if (handler.descriptor.isRequired() && !present.contains(handler)) {
+                    //
+                    // FIXME: This needs to be i18n aware
+                    //
+
 	                throw new ProcessingException(Messages.REQUIRED_OPTION_MISSING.format(handler.descriptor.toString()));
 	            }
 	        }
@@ -303,6 +307,10 @@ public class CommandLineProcessor
 	        // Ensure that all required argument handlers are present
 	        for (Handler handler : argumentHandlers) {
 	            if (handler.descriptor.isRequired() && !present.contains(handler)) {
+                    //
+                    // FIXME: This needs to be i18n aware
+                    //
+                    
 	                throw new ProcessingException(Messages.REQUIRED_ARGUMENT_MISSING.format(handler.descriptor.toString()));
 	            }
 	        }
