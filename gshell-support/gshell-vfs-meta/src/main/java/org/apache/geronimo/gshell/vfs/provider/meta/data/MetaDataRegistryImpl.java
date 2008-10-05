@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs.provider.meta;
+package org.apache.geronimo.gshell.vfs.provider.meta.data;
 
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

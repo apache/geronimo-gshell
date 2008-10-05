@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.meta;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataContent;
-import org.apache.geronimo.gshell.vfs.provider.meta.MapMetaDataContentSupport;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MapMetaDataContentSupport;
 
 import java.util.Map;
 import java.util.LinkedHashMap;

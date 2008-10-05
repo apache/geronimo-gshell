@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs.provider.meta;
+package org.apache.geronimo.gshell.vfs.provider.meta.data;
 
 import org.apache.commons.vfs.FileName;
 

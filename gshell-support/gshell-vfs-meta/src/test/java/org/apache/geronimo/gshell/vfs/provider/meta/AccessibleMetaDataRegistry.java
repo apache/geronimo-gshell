@@ -20,6 +20,8 @@
 package org.apache.geronimo.gshell.vfs.provider.meta;
 
 import org.apache.commons.vfs.FileName;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryImpl;
 
 import java.util.Map;
 

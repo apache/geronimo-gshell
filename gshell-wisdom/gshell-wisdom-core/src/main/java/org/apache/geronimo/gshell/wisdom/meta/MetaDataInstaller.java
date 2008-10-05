@@ -19,15 +19,14 @@
 
 package org.apache.geronimo.gshell.wisdom.meta;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaData;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataRegistryConfigurer;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
 /**
- * Installs {@link MetaData} into the {@link MetaDataRegistry}.
+ * Installs {@link org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData} into the {@link MetaDataRegistry}.
  *
  * @version $Rev$ $Date$
  */

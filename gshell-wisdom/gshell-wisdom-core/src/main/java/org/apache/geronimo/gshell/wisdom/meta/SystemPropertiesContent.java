@@ -19,13 +19,12 @@
 
 package org.apache.geronimo.gshell.wisdom.meta;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaDataContent;
-import org.apache.geronimo.gshell.vfs.provider.meta.MapMetaDataContentSupport;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MapMetaDataContentSupport;
 
 import java.util.Map;
 
 /**
- * {@link MetaDataContent} to return the contents of {@link System#getProperties}.
+ * {@link org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent} to return the contents of {@link System#getProperties}.
  *
  * @version $Rev$ $Date$
  */

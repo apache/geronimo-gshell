@@ -17,35 +17,18 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs.provider.meta;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Map;
+package org.apache.geronimo.gshell.vfs.provider.meta.data;
 
 /**
- * Support for {@link MetaDataContent} generated for a {@link Map}.
+ * Meta data content.
  *
  * @version $Rev$ $Date$
  */
-public abstract class MapMetaDataContentSupport<K,V>
-    implements MetaDataContent
+public interface MetaDataContent
 {
-    public byte[] getBuffer() {
-        StringWriter writer = new StringWriter();
-        PrintWriter out = new PrintWriter(writer);
+    byte[] getBuffer();
 
-        for (Map.Entry<K,V> entry : getMap().entrySet()) {
-            out.print(entry.getKey());
-            out.print("=");
-            out.println(entry.getValue());
-        }
-
-        out.flush();
-        out.close();
-
-        return writer.toString().getBytes();
-    }
-
-    protected abstract Map<K,V> getMap();
+    //
+    // TODO: Expose the content-type and encoding?  Need to provide custom handling of FileContent and FileContentInfo stuff to use.
+    //
 }
