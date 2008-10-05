@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.io;
 
 import jline.Terminal;
+import jline.ConsoleReader;
 import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.apache.geronimo.gshell.yarn.Yarn;
 import org.codehaus.plexus.util.IOUtil;
@@ -345,5 +346,17 @@ public class IO
 
     public void error(final String format, final Object... args) {
         err.println(MessageFormatter.arrayFormat(format, args));
+    }
+
+    //
+    // HACK: Expose creation of a configured ConsoleReader, really need to rethink this class soon.
+    //
+
+    public ConsoleReader createConsoleReader() throws IOException {
+        return new ConsoleReader(
+            inputStream,
+            new PrintWriter(outputStream, true),
+            null, // bindings
+            getTerminal());
     }
 }

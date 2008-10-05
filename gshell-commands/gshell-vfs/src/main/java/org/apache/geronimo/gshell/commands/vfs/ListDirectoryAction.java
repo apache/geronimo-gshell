@@ -19,26 +19,21 @@
 
 package org.apache.geronimo.gshell.commands.vfs;
 
-import org.apache.commons.vfs.FileContent;
+import jline.ConsoleReader;
+import org.apache.commons.vfs.FileFilter;
+import org.apache.commons.vfs.FileFilterSelector;
 import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSelectInfo;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.FileFilter;
-import org.apache.commons.vfs.FileSelectInfo;
-import org.apache.commons.vfs.FileFilterSelector;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.io.PrintWriter;
-
-import jline.ConsoleReader;
+import java.util.List;
 
 /**
  * List the contents of a file or directory.
@@ -51,15 +46,14 @@ public class ListDirectoryAction
     @Argument
     private String path;
 
-    //
-    // TODO: Add -l support
-    //
+    @Option(name="-l", aliases={"--long"})
+    private boolean longList;
 
-    @Option(name="-a")
-    private boolean includeHidden = false;
+    @Option(name="-a", aliases={"--all"})
+    private boolean includeHidden;
 
     @Option(name="-r", aliases={"--recursive"})
-    private boolean recursive = false;
+    private boolean recursive;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
@@ -73,18 +67,12 @@ public class ListDirectoryAction
             file = getCurrentDirectory(context);
         }
 
-        if (file.getType() == FileType.FOLDER) {
+        FileType type = file.getType();
+        if (type == FileType.FOLDER || type == FileType.FILE_OR_FOLDER) {
             listChildren(io, file);
         }
         else {
-            io.info("{}", file.getName());
-
-            FileContent content = file.getContent();
-            io.verbose("Size: {} bytes", content.getSize());
-
-            DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
-            String lastMod = dateFormat.format(new Date(content.getLastModifiedTime()));
-            io.verbose("Last modified: {}", lastMod);
+            io.info(file.getName().getPath());
         }
 
         closeFile(file);
@@ -117,17 +105,8 @@ public class ListDirectoryAction
 
             files = dir.findFiles(new FileFilterSelector(filter));
         }
-
-        //
-        // FIXME: Need to have the framework provide a reader, which is initialized correctly... or make this accessible via IO?
-        //
-
-        ConsoleReader reader = new ConsoleReader(
-                io.inputStream,
-                new PrintWriter(io.outputStream, true),
-                null, // bindings
-                io.getTerminal());
         
+        ConsoleReader reader = io.createConsoleReader();
         reader.setUsePagination(false);
 
         List<String> names = new ArrayList<String>(files.length);
@@ -140,7 +119,7 @@ public class ListDirectoryAction
                 names.add(file.getName().getBaseName());
 
             }
-            else if (type == FileType.FOLDER) {
+            else if (type == FileType.FOLDER || type == FileType.FILE_OR_FOLDER) {
                 names.add(file.getName().getBaseName() + "/");
 
                 if (recursive) {
@@ -152,8 +131,15 @@ public class ListDirectoryAction
             }
         }
 
-        reader.printColumns(names);
-        
+        if (longList) {
+            for (String name : names) {
+                io.out.println(name);
+            }
+        }
+        else {
+            reader.printColumns(names);
+        }
+
         if (!dirs.isEmpty()) {
             for (FileObject subdir : dirs) {
                 io.out.println();

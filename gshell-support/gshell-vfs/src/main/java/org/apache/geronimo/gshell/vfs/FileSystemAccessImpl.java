@@ -118,7 +118,7 @@ public class FileSystemAccessImpl
         return getManager().resolveFile(baseFile, name);
     }
 
-    public FileObject resolveFile(String name) throws FileSystemException {
+    public FileObject resolveFile(final String name) throws FileSystemException {
         return getManager().resolveFile(getCurrentDirectory(), name);
     }
 }

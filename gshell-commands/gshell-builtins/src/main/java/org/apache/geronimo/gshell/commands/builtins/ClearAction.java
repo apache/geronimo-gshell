@@ -25,8 +25,6 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 
-import java.io.PrintWriter;
-
 /**
  * Clear the terminal screen.
  *
@@ -46,16 +44,7 @@ public class ClearAction
             return Result.FAILURE;
         }
 
-        //
-        // FIXME: Need to have the framework provide a reader, which is initialized correctly?
-        //
-
-        ConsoleReader reader = new ConsoleReader(
-                io.inputStream,
-                new PrintWriter(io.outputStream, true),
-                null, // bindings
-                io.getTerminal());
-
+        ConsoleReader reader = io.createConsoleReader();
         reader.clearScreen();
 
         return Result.SUCCESS;
