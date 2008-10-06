@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.commands.vfs;
 import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 
 /**
  * Displays the current directory.
@@ -36,9 +37,9 @@ public class CurrentDirectoryAction
         IO io = context.getIo();
 
         FileObject dir = getCurrentDirectory(context);
-        io.info("{}", dir.getName());
+        io.info(dir.getName().getURI());
 
-        closeFile(dir);
+        FileObjects.close(dir);
 
         return Result.SUCCESS;
     }

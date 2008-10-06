@@ -49,7 +49,6 @@ public class AliasMetaMapper
     public void init() {
         assert metaRegistry != null;
         metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-        metaConfig.addFolder("/aliases");
 
         assert eventManager != null;
         eventManager.addListener(this);

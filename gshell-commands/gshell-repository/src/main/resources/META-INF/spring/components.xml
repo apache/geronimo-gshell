@@ -29,7 +29,7 @@
 
     <gshell:plugin name="gshell-repository">
         <gshell:command-bundle name="default">
-            <gshell:command name="resolve">
+            <gshell:command name="repository/resolve">
                 <gshell:action class="org.apache.geronimo.gshell.commands.repository.ResolveAction"/>
             </gshell:command>
         </gshell:command-bundle>

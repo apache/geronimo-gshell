@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.selector.AggregateFileSelector;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.oro.text.GlobCompiler;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
@@ -73,14 +74,11 @@ public class FindAction
 
         FileObject root = resolveFile(context, path);
 
-        if (!root.exists()) {
-            io.error("File not found: {}", root.getName());
-            return Result.FAILURE;
-        }
+        ensureFileExists(root);
 
         find(context, root, selector);
 
-        closeFile(root);
+        FileObjects.close(root);
         
         return Result.SUCCESS;
     }
@@ -96,7 +94,7 @@ public class FindAction
             for (FileObject child : files) {
                 display(context, child);
 
-                if (child.getType() == FileType.FOLDER) {
+                if (child.getType().hasChildren()) {
                     find(context, child, selector);
                 }
             }
@@ -145,6 +143,8 @@ public class FindAction
 
                 case F:
                     return ftype == FileType.FILE;
+
+                // TODO: Handle FileType.FILE_OR_FOLDER
 
                 default:
                     return false;

@@ -24,6 +24,8 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
+import org.apache.geronimo.gshell.vfs.FileObjects;
+import org.apache.geronimo.gshell.notification.FailureNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class VfsActionSupport
     implements CommandAction
 {
-    public static final String CWD = "vfs.cwd";
-
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -70,16 +70,52 @@ public abstract class VfsActionSupport
         return getFileSystemAccess().resolveFile(cwd, path);
     }
 
-    protected void closeFile(final FileObject file) {
-        if (file != null) {
-            log.trace("Closing file: {}", file);
-            
-            try {
-                file.close();
-            }
-            catch (FileSystemException e) {
-                log.debug("Failed to close file: " + file, e);
-            }
+    //
+    // TODO: Make these more generally available to other plugins.  Maybe even to FileObjects?
+    //
+    
+    protected void ensureFileExists(final FileObject file) throws FileSystemException {
+        assert file != null;
+
+        if (!file.exists()) {
+            FileObjects.close(file);
+            throw new FailureNotification("File not found: " + file.getName());
+        }
+    }
+
+    protected void ensureFileHasContent(final FileObject file) throws FileSystemException {
+        assert file != null;
+
+        if (!file.getType().hasContent()) {
+            FileObjects.close(file);
+            throw new FailureNotification("File has no content: " + file.getName());
+        }
+    }
+
+    protected void ensureFileHasChildren(final FileObject file) throws FileSystemException {
+        assert file != null;
+
+        if (!file.getType().hasChildren()) {
+            FileObjects.close(file);
+            throw new FailureNotification("File has no children: " + file.getName());
+        }
+    }
+
+    protected void ensureFileIsReadable(final FileObject file) throws FileSystemException {
+        assert file != null;
+
+        if (!file.getType().hasChildren()) {
+            FileObjects.close(file);
+            throw new FailureNotification("File is not readable: " + file.getName());
+        }
+    }
+
+    protected void ensureFileIsWritable(final FileObject file) throws FileSystemException {
+        assert file != null;
+
+        if (!file.getType().hasChildren()) {
+            FileObjects.close(file);
+            throw new FailureNotification("File is not writable: " + file.getName());
         }
     }
 }

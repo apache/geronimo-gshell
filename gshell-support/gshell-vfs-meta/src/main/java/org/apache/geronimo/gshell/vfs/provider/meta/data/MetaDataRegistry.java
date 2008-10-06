@@ -32,7 +32,7 @@ public interface MetaDataRegistry
 
     void removeData(FileName name);
 
-    MetaData lookupData(FileName name) /* throws MetaFileDataRegistryException */;
+    MetaData lookupData(FileName name);
 
     boolean containsData(FileName name);
 }

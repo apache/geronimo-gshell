@@ -154,8 +154,8 @@ public class ScriptAction
             io.error("File not found: {}", file.getName());
             return Result.FAILURE;
         }
-        else if (file.getType() == FileType.FOLDER) {
-            io.error("File is a directory: {}", file.getName());
+        else if (!file.getType().hasContent()) {
+            io.error("File has not content: {}", file.getName());
             return Result.FAILURE;
         }
         else if (!file.isReadable()) {

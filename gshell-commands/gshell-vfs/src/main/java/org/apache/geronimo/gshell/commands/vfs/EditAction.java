@@ -21,13 +21,13 @@ package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystem;
-import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.Selectors;
 import org.apache.commons.vfs.util.Os;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.vfs.provider.local.LocalFile;
 import org.apache.geronimo.gshell.vfs.provider.local.LocalFileSystem;
 
@@ -55,23 +55,11 @@ public class EditAction
 
         FileObject file = resolveFile(context, path);
 
-        if (!file.exists()) {
-            // TODO: Allow creation of files which don't exist
-            io.error("File not found: {}", file.getName());
-            return Result.FAILURE;
-        }
-        else if (file.getType() == FileType.FOLDER) {
-            io.error("File is a directory: {}", file.getName());
-            return Result.FAILURE;
-        }
-        else if (!file.isReadable()) {
-            io.error("File is not readble: {}", file.getName());
-            return Result.FAILURE;
-        }
-        else if (!file.isWriteable()) {
-            io.error("File is not writable: {}", file.getName());
-            return Result.FAILURE;
-        }
+        ensureFileExists(file);
+        ensureFileHasContent(file);
+        ensureFileIsReadable(file);
+        ensureFileIsWritable(file);
+ 
         FileObject tmp = file;
 
         FileSystem fs = file.getFileSystem();
@@ -95,10 +83,10 @@ public class EditAction
             log.debug("Updating original file with edited content");
             file.copyFrom(tmp, Selectors.SELECT_SELF);
             tmp.delete();
-            closeFile(tmp);
+            FileObjects.close(tmp);
         }
 
-        closeFile(file);
+        FileObjects.close(file);
         
         return result;
     }

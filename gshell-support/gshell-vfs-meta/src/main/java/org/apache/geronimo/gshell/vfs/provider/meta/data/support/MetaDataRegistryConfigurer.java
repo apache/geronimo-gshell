@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Helper to configure the contents of a {@link org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry}.
+ * Helper to configure the contents of a {@link MetaDataRegistry}.
  *
  * @version $Rev$ $Date$
  */

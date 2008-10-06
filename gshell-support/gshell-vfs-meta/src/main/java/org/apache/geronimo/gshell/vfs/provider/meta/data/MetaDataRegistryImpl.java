@@ -41,7 +41,7 @@ public class MetaDataRegistryImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Map<FileName, MetaData> nodes = /*Collections.synchronizedMap(*/new HashMap<FileName, MetaData>()/*)*/;
+    private final Map<FileName, MetaData> nodes = new HashMap<FileName, MetaData>();
 
     private String rootFileName = MetaFileName.SCHEME + ":/";
 
@@ -61,35 +61,41 @@ public class MetaDataRegistryImpl
         assert name != null;
         assert data != null;
 
-        log.debug("Registering data: {} -> {}", name, data);
+        log.debug("Registering data: {}", name);
 
         if (name.getDepth() > 0) {
-            FileName parentName = name.getParent();
-            if (parentName != null) {
-                if (containsData(parentName)) {
-                    MetaData parent = lookupData(parentName);
-
-                    if (!parent.hasChild(data)) {
-                        try {
-                            parent.addChild(data);
-                        }
-                        catch (FileSystemException ignore) {
-                            throw new Error(ignore);
-                        }
-                    }
+            MetaData parent = getParentData(name);
+            if (parent != null) {
+                if (!parent.hasChild(data)) {
+                    parent.addChild(data);
                 }
-                else {
-                    //
-                    // TODO: Consider auto-creating parents, this will work well
-                    //       if we switch to all files as FileType.FILE_OR_FOLDER
-                    //
-
-                    log.warn("Missing parent folder: " + parentName);
-                }
+            }
+            else {
+                log.warn("Depth is > 0, but parent name is null for node: " + name);
             }
         }
 
         getNodes().put(name, data);
+    }
+
+    private MetaData getParentData(final FileName name) {
+        assert name != null;
+
+        FileName parentName = name.getParent();
+        MetaData parent = null;
+
+        if (parentName != null) {
+            if (containsData(parentName)) {
+                parent = lookupData(parentName);
+            }
+            else {
+                log.debug("Building parent tree: {}", parentName);
+                parent = new MetaData(parentName, FileType.FOLDER);
+                registerData(parentName, parent);
+            }
+        }
+
+        return parent;
     }
 
     public void removeData(final FileName name) {
@@ -102,12 +108,7 @@ public class MetaDataRegistryImpl
         FileName parentName = name.getParent();
         if (parentName != null && containsData(parentName)) {
             MetaData parent = lookupData(parentName);
-            try {
-                parent.removeChild(data);
-            }
-            catch (FileSystemException ignore) {
-                throw new Error(ignore);
-            }
+            parent.removeChild(data);
         }
     }
 
@@ -120,8 +121,15 @@ public class MetaDataRegistryImpl
     public MetaData lookupData(final FileName name) {
         assert name != null;
 
-        log.debug("Looking up data: {}", name);
+        log.trace("Looking up data: {}", name);
         
+        if (!containsData(name)) {
+            //
+            // TODO: Maybe reconsider just returning null, not sure the exception sipmlifies anything
+            //
+            throw new MetaDataRegistryException("No data registered for: " + name);
+        }
+
         return getNodes().get(name);
     }
 }

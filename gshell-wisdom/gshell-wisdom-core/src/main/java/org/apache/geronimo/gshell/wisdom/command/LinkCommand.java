@@ -80,6 +80,9 @@ public class LinkCommand
 
         return new CommandDocumenter() {
             public String getName() {
+                //
+                // FIXME: This is not correct, need to fix this... help listing shows up bunk.
+                //
                 return delegate.getName();
             }
 

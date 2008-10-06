@@ -29,7 +29,7 @@
 
     <gshell:plugin name="gshell-bsf">
         <gshell:command-bundle name="default">
-            <gshell:command name="script">
+            <gshell:command name="bsf/script">
                 <gshell:action class="org.apache.geronimo.gshell.commands.bsf.ScriptAction"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>

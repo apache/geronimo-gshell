@@ -32,6 +32,8 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.notification.FailureNotification;
+import org.apache.geronimo.gshell.notification.SuccessNotification;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -259,6 +261,8 @@ public abstract class CommandSupport
         assert context != null;
         assert args != null;
 
+        final IO io = context.getIo();
+
         log.trace("Executing action");
 
         // Setup the command context
@@ -270,7 +274,7 @@ public abstract class CommandSupport
             }
 
             public IO getIo() {
-                return context.getIo();
+                return io;
             }
 
             public Variables getVariables() {
@@ -294,6 +298,20 @@ public abstract class CommandSupport
             log.trace("Result: {}", value);
 
             result = new CommandResult.ValueResult(value);
+        }
+        catch (final FailureNotification n) {
+            log.trace("Command notified FAILURE result: " + n, n);
+
+            io.error(n.getMessage());
+
+            result = new CommandResult.ValueResult(CommandAction.Result.FAILURE);
+        }
+        catch (final SuccessNotification n) {
+            log.trace("Command notified SUCCESS result: " + n, n);
+
+            io.verbose(n.getMessage());
+
+            result = new CommandResult.ValueResult(CommandAction.Result.SUCCESS);
         }
         catch (final Notification n) {
             log.trace("Notified: " + n, n);

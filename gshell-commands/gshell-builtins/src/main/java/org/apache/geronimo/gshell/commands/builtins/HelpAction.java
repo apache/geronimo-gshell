@@ -31,7 +31,6 @@ import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +90,6 @@ public class HelpAction
                 io.out.print(Renderer.encode(commandName, Code.BOLD));
                 io.out.print(" is an alias to: ");
                 io.out.println(Renderer.encode(alias, Code.BOLD));
-                io.out.println();
 
                 return Result.SUCCESS;
             }
@@ -103,8 +101,6 @@ public class HelpAction
                 io.out.print("Try ");
                 io.out.print(Renderer.encode("help", Code.BOLD));
                 io.out.println(" for a list of available commands.");
-
-                io.out.println();
 
                 return Result.FAILURE;
             }
@@ -131,8 +127,7 @@ public class HelpAction
         for (Command command : commands) {
             CommandDocumenter documenter = command.getDocumenter();
 
-            // TODO: Use printf
-            String formattedName = StringUtils.rightPad(documenter.getName(), maxNameLen);
+            String formattedName = String.format("%-" + maxNameLen + "s", documenter.getName());
             String desc = documenter.getDescription();
 
             io.out.print("  ");
@@ -146,8 +141,6 @@ public class HelpAction
                 io.out.println();
             }
         }
-
-        io.out.println();
 
         return Result.SUCCESS;
     }

@@ -19,27 +19,27 @@
 
 package org.apache.geronimo.gshell.wisdom.registry;
 
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
-import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
-import java.util.Collections;
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -52,9 +52,6 @@ public class CommandResolverImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    // @Autowired
-    // private CommandRegistry commandRegistry;
-
     @Autowired
     private AliasRegistry aliasRegistry;
 
@@ -65,6 +62,14 @@ public class CommandResolverImpl
     private CommandLineExecutor executor;
 
     private BeanContainer container;
+
+    private FileObject commandsDirectory;
+
+    @PostConstruct
+    public void init() throws Exception {
+        assert fileSystemAccess != null;
+        commandsDirectory = fileSystemAccess.resolveFile(null, "meta:/commands");
+    }
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
@@ -90,10 +95,8 @@ public class CommandResolverImpl
         }
         else {
             try {
-                FileObject base = fileSystemAccess.resolveFile("meta:/commands");
-                assert base.exists();
-
-                FileObject file = fileSystemAccess.resolveFile(base, path);
+                assert commandsDirectory != null;
+                FileObject file = fileSystemAccess.resolveFile(commandsDirectory, path);
                 if (file.exists()) {
                     command = (Command) file.getContent().getAttribute("COMMAND");
                 }
@@ -101,8 +104,7 @@ public class CommandResolverImpl
                     throw new NoSuchCommandException(path);
                 }
 
-                base.close();
-                file.close();
+                FileObjects.close(file);
             }
             catch (FileSystemException e) {
                 throw new CommandException(e);
@@ -147,16 +149,13 @@ public class CommandResolverImpl
         List<Command> commands = new ArrayList<Command>();
 
         try {
-            FileObject base = fileSystemAccess.resolveFile("meta:/commands");
-            assert base.exists();
-
-            for (FileObject file : base.getChildren()) {
-                Command command = (Command)file.getContent().getAttribute("COMMAND");
-                commands.add(command);
+            for (FileObject file : commandsDirectory.getChildren()) {
+                // FIXME: For now ignore folders, not yet supported fully
+                if (!file.getType().hasChildren()) {
+                    Command command = (Command)file.getContent().getAttribute("COMMAND");
+                    commands.add(command);
+                }
             }
-
-            base.close();
-
         }
         catch (FileSystemException e) {
             throw new CommandException(e);

@@ -20,10 +20,10 @@
 package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 
 /**
  * Changes the current directory.
@@ -47,18 +47,12 @@ public class ChangeDirectoryAction
 
         FileObject file = resolveFile(context, path);
 
-        if (!file.exists()) {
-            io.error("Directory not found: {}", file.getName());
-            return Result.FAILURE;
-        }
-        else if (file.getType() != FileType.FOLDER) {
-            io.error("File is not a directory: {}", file.getName());
-            return Result.FAILURE;
-        }
+        ensureFileExists(file);
+        ensureFileHasChildren(file);
 
         setCurrentDirectory(context, file);
 
-        closeFile(file);
+        FileObjects.close(file);
         
         return Result.SUCCESS;
     }

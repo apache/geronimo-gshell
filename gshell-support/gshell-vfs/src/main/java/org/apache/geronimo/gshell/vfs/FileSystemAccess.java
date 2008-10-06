@@ -43,6 +43,9 @@ public interface FileSystemAccess
 
     FileObject resolveFile(FileObject baseFile, String name) throws FileSystemException;
 
+    //
+    // TODO: Consider renaming this puppy, as it resolved relative to CWD, to resolve w/o use ^^^ and pass null to the first, bit me a few times already
+    //
+    
     FileObject resolveFile(String name) throws FileSystemException;
-
 }

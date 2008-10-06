@@ -27,8 +27,6 @@ import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.provider.AbstractFileSystem;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,8 +40,6 @@ import java.util.List;
 public class MetaFileSystem
     extends AbstractFileSystem
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
     private final MetaDataRegistry registry;
 
     public MetaFileSystem(final MetaDataRegistry registry, final FileName rootName, final FileSystemOptions options) {
@@ -54,11 +50,7 @@ public class MetaFileSystem
     }
 
     protected FileObject createFile(final FileName fileName) throws Exception {
-        MetaFileObject file = new MetaFileObject(fileName, this);
-
-        log.debug("Created file: {}", file);
-
-        return file;
+        return new MetaFileObject(fileName, this);
     }
 
     protected void addCapabilities(final Collection capabilities) {
@@ -74,25 +66,17 @@ public class MetaFileSystem
 
     MetaData lookupData(final MetaFileObject file) throws FileSystemException {
         assert file != null;
-
-        log.debug("Looking up data: {}", file);
-
         FileName name = file.getName();
-        assert name != null;
 
-        // FIXME: This should probably toss an exception if the data is not registered
-        MetaData data = registry.lookupData(name);
-        if (data == null) {
-            data = new MetaData(name, FileType.IMAGINARY);
+        if (!registry.containsData(name)) {
+            return new MetaData(name, FileType.IMAGINARY);
         }
 
-        return data;
+        return registry.lookupData(name);
     }
 
     String[] listChildren(final FileName name) throws FileSystemException {
         assert name != null;
-
-        log.debug("Listing children: {}", name);
 
         MetaData data = registry.lookupData(name);
         Collection<MetaData> children = data.getChildren();

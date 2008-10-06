@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.commands.vfs;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.FileContent;
@@ -72,6 +73,7 @@ public class FileInfoAction
             io.info("Content encoding: {}", contentInfo.getContentEncoding());
 
             try {
+                // noinspection unchecked
                 Map<String,Object> attrs = content.getAttributes();
                 if (attrs != null && !attrs.isEmpty()) {
                     io.info("Attributes:");
@@ -100,7 +102,7 @@ public class FileInfoAction
             if (file.getType().equals(FileType.FILE)) {
                 io.info("Size: {} bytes", content.getSize());
             }
-            else if (file.getType().equals(FileType.FOLDER) && file.isReadable()) {
+            else if (file.getType().hasChildren() && file.isReadable()) {
                 FileObject[] children = file.getChildren();
                 io.info("Directory with {} files", children.length);
 
@@ -118,7 +120,7 @@ public class FileInfoAction
             io.info("The file does not exist");
         }
 
-        closeFile(file);
+        FileObjects.close(file);
         
         return Result.SUCCESS;
     }

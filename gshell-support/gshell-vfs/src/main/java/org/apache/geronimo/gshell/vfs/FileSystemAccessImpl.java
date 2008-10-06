@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.vfs;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
-import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
@@ -97,8 +96,8 @@ public class FileSystemAccessImpl
         if (!dir.exists()) {
             throw new RuntimeException("Directory not found: " + dir.getName());
         }
-        else if (dir.getType() != FileType.FOLDER) {
-            throw new RuntimeException("File is not a directory: " + dir.getName());
+        else if (!dir.getType().hasChildren()) {
+            throw new RuntimeException("File can not contain children: " + dir.getName());
         }
 
         vars.parent().set(CWD, dir);

@@ -108,6 +108,10 @@ public abstract class CommandDocumenterSupport
         out.println(getDescription());
         out.println();
 
+        //
+        // TODO: Use a prefixing writer here, take the impl from shitty
+        //
+        
         out.println(renderer.render(Renderer.encode("MANUAL", Code.BOLD)));
         out.println(getManual());
         out.println();

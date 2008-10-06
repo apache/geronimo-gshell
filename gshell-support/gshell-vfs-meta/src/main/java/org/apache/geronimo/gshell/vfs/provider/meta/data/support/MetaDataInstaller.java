@@ -17,16 +17,18 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.meta;
+package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
 
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.util.Map;
 
 /**
- * Installs {@link org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData} into the {@link MetaDataRegistry}.
+ * Installs {@link MetaData} into the {@link MetaDataRegistry}.
  *
  * @version $Rev$ $Date$
  */
@@ -35,15 +37,25 @@ public class MetaDataInstaller
     @Autowired
     private MetaDataRegistry metaRegistry;
 
+    private Map<String,MetaDataContent> contentNodes;
+
+    public void setContentNodes(final Map<String, MetaDataContent> nodes) {
+        this.contentNodes = nodes;
+    }
+
     @PostConstruct
     public void init() throws Exception {
         assert metaRegistry != null;
         MetaDataRegistryConfigurer metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
 
-        // HACK: Hard code this for now, evetually configure via spring
-        metaConfig.addFolder("/system");
-        metaConfig.addContent("/system/runtime", new RuntimeContent());
-        metaConfig.addContent("/system/properties", new SystemPropertiesContent());
-        metaConfig.addContent("/system/environment", new SystemEnvironmentContent());
+        if (contentNodes != null && !contentNodes.isEmpty()) {
+            for (Map.Entry<String,MetaDataContent> entry : contentNodes.entrySet()) {
+                metaConfig.addContent(entry.getKey(), entry.getValue());
+            }
+        }
     }
+
+    //
+    // TODO: Merge this guy with MetaDataRegistryConfigurer, allow for spring+direct usage.
+    //
 }

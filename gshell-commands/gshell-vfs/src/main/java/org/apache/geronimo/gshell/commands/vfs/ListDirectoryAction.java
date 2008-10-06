@@ -25,11 +25,12 @@ import org.apache.commons.vfs.FileFilterSelector;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSelectInfo;
 import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.FileName;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -67,15 +68,14 @@ public class ListDirectoryAction
             file = getCurrentDirectory(context);
         }
 
-        FileType type = file.getType();
-        if (type == FileType.FOLDER || type == FileType.FILE_OR_FOLDER) {
+        if (file.getType().hasChildren()) {
             listChildren(io, file);
         }
         else {
             io.info(file.getName().getPath());
         }
 
-        closeFile(file);
+        FileObjects.close(file);
         
         return Result.SUCCESS;
     }
@@ -113,22 +113,19 @@ public class ListDirectoryAction
         List<FileObject> dirs = new LinkedList<FileObject>();
 
         for (FileObject file : files) {
-            FileType type = file.getType();
+            String fileName = file.getName().getBaseName();
 
-            if (type == FileType.FILE) {
-                names.add(file.getName().getBaseName());
-
-            }
-            else if (type == FileType.FOLDER || type == FileType.FILE_OR_FOLDER) {
-                names.add(file.getName().getBaseName() + "/");
+            if (FileObjects.hasChildren(file)) {
+                fileName += FileName.SEPARATOR;
 
                 if (recursive) {
                     dirs.add(file);
                 }
             }
-            else {
-                log.warn("Unable to handle file type: {}", type);
-            }
+
+            names.add(fileName);
+
+            file.close();
         }
 
         if (longList) {
@@ -148,5 +145,7 @@ public class ListDirectoryAction
                 listChildren(io, subdir);
             }
         }
+
+        dir.close();
     }
 }

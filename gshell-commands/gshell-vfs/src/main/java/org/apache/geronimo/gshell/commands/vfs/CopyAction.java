@@ -20,11 +20,11 @@
 package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.Selectors;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 
 /**
  * Copies a file or directory.
@@ -51,14 +51,11 @@ public class CopyAction
         FileObject source = resolveFile(context, sourcePath);
         FileObject target = resolveFile(context, targetPath);
 
-        if (!source.exists()) {
-            io.error("Source file not found: {}", source.getName());
-            return Result.FAILURE;
-        }
+        ensureFileExists(source);
 
         // TODO: Validate more
 
-        if (target.exists() && target.getType() == FileType.FOLDER) {
+        if (target.exists() && target.getType().hasChildren()) {
             target = target.resolveFile(source.getName().getBaseName());
         }
 
@@ -66,8 +63,7 @@ public class CopyAction
 
         target.copyFrom(source, Selectors.SELECT_ALL);
 
-        closeFile(source);
-        closeFile(target);
+        FileObjects.closeAll(source, target);
         
         return Result.SUCCESS;
     }

@@ -24,6 +24,7 @@ import org.apache.commons.vfs.Selectors;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 
 /**
  * Remove a file or directory.
@@ -46,15 +47,15 @@ public class RemoveAction
 
         FileObject file = resolveFile(context, path);
 
-        if (!file.exists()) {
-            io.error("File not found: {}", file.getName());
-            return Result.FAILURE;
+        ensureFileExists(file);
+
+        try {
+            file.delete(Selectors.SELECT_SELF);
+        }
+        finally {
+            FileObjects.close(file);
         }
 
-        file.delete(Selectors.SELECT_SELF);
-
-        closeFile(file);
-        
         return Result.SUCCESS;
     }
 }

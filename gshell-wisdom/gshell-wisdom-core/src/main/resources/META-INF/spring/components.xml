@@ -37,7 +37,7 @@
 
     <bean id="commandMetaMapper" class="org.apache.geronimo.gshell.wisdom.registry.CommandMetaMapper"/>
 
-    <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.registry.CommandResolverImpl"/>
+    <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.registry.CommandResolverImpl" depends-on="metaFileProviderConfigurer"/>
     
     <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl"/>
 
@@ -65,7 +65,21 @@
 
     <bean id="commandsCompleter" class="org.apache.geronimo.gshell.wisdom.completer.CommandsCompleter"/>
 
-    <bean class="org.apache.geronimo.gshell.wisdom.meta.MetaDataInstaller"/>
+    <bean class="org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataInstaller">
+        <property name="contentNodes">
+            <map>
+                <entry key="/system/runtime">
+                    <bean class="org.apache.geronimo.gshell.wisdom.meta.RuntimeContent"/>
+                </entry>
+                <entry key="/system/properties">
+                    <bean class="org.apache.geronimo.gshell.wisdom.meta.SystemPropertiesContent"/>
+                </entry>
+                <entry key="/system/environment">
+                    <bean class="org.apache.geronimo.gshell.wisdom.meta.SystemEnvironmentContent"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
     <bean id="pluginTemplate" class="org.apache.geronimo.gshell.wisdom.plugin.PluginImpl" abstract="true">
         <property name="activationRules">

@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.vfs.provider.meta.data;
 
 import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +39,6 @@ public class MetaData
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final FileName name;
-
-    //
-    //  TODO: Consider making all meta files FileType.FILE_OR_FOLDER
-    //
     
     private final FileType type;
 
@@ -56,7 +51,7 @@ public class MetaData
     private long lastModified = -1;
 
     //
-    // TODO: Consider changing "name" to a String here?
+    // TODO: Consider changing "name" to a String here?  name.getParent() is used in a few places, so have to resolve that first, perhaps expose MetaData getParent() ?
     //
     
     public MetaData(final FileName name, final FileType type, final MetaDataContent content) {
@@ -74,7 +69,11 @@ public class MetaData
     }
 
     public MetaData(final FileName name, final MetaDataContent content) {
-        this(name, FileType.FILE, content);
+        this(name, FileType.FILE_OR_FOLDER, content);
+    }
+
+    public MetaData(final FileName name) {
+        this(name, FileType.FILE_OR_FOLDER, null);
     }
 
     public FileName getName() {
@@ -128,33 +127,33 @@ public class MetaData
         return children;
     }
 
-    public void addChild(final MetaData data) throws FileSystemException {
+    public void addChild(final MetaData data) {
         assert data != null;
 
         if (!getType().hasChildren()) {
-            throw new FileSystemException("A child can only be added in a folder");
+            throw new MetaDataException("A child can only be added in a folder");
         }
         if (hasChild(data)) {
-            throw new FileSystemException("Child already exists: " + data);
+            throw new MetaDataException("Child already exists: " + data);
         }
 
-        log.debug("Adding child: {}", data);
+        log.trace("Adding child: {}", data);
 
         getChildren().add(data);
         updateLastModified();
     }
 
-    public void removeChild(final MetaData data) throws FileSystemException{
+    public void removeChild(final MetaData data) {
         assert data != null;
 
         if (!getType().hasChildren()) {
-            throw new FileSystemException("A child can only be removed from a folder");
+            throw new MetaDataException("A child can only be removed from a folder");
         }
         if (!hasChild(data)) {
-            throw new FileSystemException("Child not found: " + data);
+            throw new MetaDataException("Child not found: " + data);
         }
 
-        log.debug("Removing child: {}", data);
+        log.trace("Removing child: {}", data);
         
         getChildren().remove(data);
         updateLastModified();

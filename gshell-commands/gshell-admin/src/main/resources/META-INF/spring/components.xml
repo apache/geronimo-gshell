@@ -29,11 +29,11 @@
 
     <gshell:plugin name="gshell-admin">
         <gshell:command-bundle name="default">
-            <gshell:command name="list-plugins" type="stateless">
+            <gshell:command name="admin/list-plugins" type="stateless">
                 <gshell:action class="org.apache.geronimo.gshell.commands.admin.ListPluginsAction"/>
             </gshell:command>
 
-            <gshell:command name="install-plugin">
+            <gshell:command name="admin/install-plugin">
                 <gshell:action class="org.apache.geronimo.gshell.commands.admin.InstallPluginAction"/>
             </gshell:command>
         </gshell:command-bundle>

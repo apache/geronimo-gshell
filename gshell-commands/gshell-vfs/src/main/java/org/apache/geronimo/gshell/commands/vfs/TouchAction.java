@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.commands.vfs;
 import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 
 /**
  * Sets the last-modified time of a file.
@@ -41,14 +42,17 @@ public class TouchAction
 
         FileObject file = resolveFile(context, path);
 
-        if (!file.exists()) {
-            file.createFile();
+        try {
+            if (!file.exists()) {
+                file.createFile();
+            }
+
+            file.getContent().setLastModifiedTime(System.currentTimeMillis());
+        }
+        finally {
+            FileObjects.close(file);
         }
 
-        file.getContent().setLastModifiedTime(System.currentTimeMillis());
-
-        closeFile(file);
-        
         return Result.SUCCESS;
     }
 }

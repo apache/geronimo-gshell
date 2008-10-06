@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +86,7 @@ public class AliasAction
             io.out.println("Defined aliases:");
             for (String name : names) {
                 String alias = aliasRegistry.getAlias(name);
-                String formattedName = StringUtils.rightPad(name, maxNameLen);
+                String formattedName = String.format("%-" + maxNameLen + "s", name);
 
                 io.out.print("  ");
                 io.out.print(Renderer.encode(formattedName, Code.BOLD));
@@ -96,8 +95,6 @@ public class AliasAction
                 io.out.print("Alias to: ");
                 io.out.println(alias);
             }
-
-            io.out.println();
         }
 
         return Result.SUCCESS;

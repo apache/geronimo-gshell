@@ -22,13 +22,12 @@ package org.apache.geronimo.gshell.commands.vfs;
 import org.apache.commons.vfs.FileContent;
 import org.apache.commons.vfs.FileContentInfo;
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,12 +41,12 @@ import java.io.InputStreamReader;
 public class CatAction
     extends VfsActionSupport
 {
-    @Argument(required=true)
-    private String path;
-
     @Option(name="-n")
     private boolean displayLineNumbers;
 
+    @Argument(required=true)
+    private String path;
+    
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
@@ -58,14 +57,8 @@ public class CatAction
 
         FileObject file = resolveFile(context, path);
 
-        if (!file.exists()) {
-            io.error("File not found: {}", file.getName());
-            return Result.FAILURE;
-        }
-        else if (file.getType() == FileType.FOLDER) {
-            io.error("File is a directory: {}", file.getName());
-            return Result.FAILURE;
-        }
+        ensureFileExists(file);
+        ensureFileHasContent(file);
 
         FileContent content = file.getContent();
         FileContentInfo info = content.getContentInfo();
@@ -86,7 +79,7 @@ public class CatAction
             IOUtil.close(reader);
         }
 
-        closeFile(file);
+        FileObjects.close(file);
         
         return Result.SUCCESS;
     }
@@ -97,13 +90,7 @@ public class CatAction
 
         while ((line = reader.readLine()) != null) {
             if (displayLineNumbers) {
-                //
-                // TODO: Replace with io.out.printf()
-                //
-
-                String gutter = StringUtils.leftPad(String.valueOf(lineno++), 6);
-                io.out.print(gutter);
-                io.out.print("  ");
+                io.out.print(String.format("%6d  ", lineno++));
             }
             io.out.println(line);
         }

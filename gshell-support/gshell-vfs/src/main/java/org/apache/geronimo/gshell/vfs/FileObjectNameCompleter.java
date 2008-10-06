@@ -61,6 +61,10 @@ public class FileObjectNameCompleter
             assert fileSystemAccess != null;
             FileObject file = fileSystemAccess.resolveFile(path);
 
+            //
+            // TODO: Close files
+            //
+            
             log.trace("Resolved file: {}", file);
 
             final String search;
@@ -72,7 +76,7 @@ public class FileObjectNameCompleter
                     file = file.getParent();
                 }
             }
-            else if (file.getType() == FileType.FOLDER && !path.endsWith(FileName.SEPARATOR)) {
+            else if (file.getType().hasChildren() && !path.endsWith(FileName.SEPARATOR)) {
                 // Handle the special cases when we resolved to a directory, with out a trailing seperator,
                 // complete to the directory + "/" first.
 
@@ -147,7 +151,7 @@ public class FileObjectNameCompleter
                         // TODO: Need to encode spaces, once the parser can handle escaped spaces.
                         //
 
-                        if (files.length == 1 && child.getType() == FileType.FOLDER) {
+                        if (files.length == 1 && child.getType().hasChildren()) {
                             buff.append(FileName.SEPARATOR);
                         }
                         else {

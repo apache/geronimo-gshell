@@ -49,7 +49,6 @@ public class CommandMetaMapper
     public void init() {
         assert metaRegistry != null;
         metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-        metaConfig.addFolder("/commands");
 
         assert eventManager != null;
         eventManager.addListener(this);

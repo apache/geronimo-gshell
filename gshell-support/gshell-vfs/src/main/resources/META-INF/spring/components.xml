@@ -49,6 +49,9 @@
             </bean>
         </property>
 
+        <!--
+        TODO: Try and root the temporary store under ${gshell.home}/tmp or something
+        -->
         <property name="temporaryFileStore">
             <ref bean="defaultFileReplicator"/>
         </property>

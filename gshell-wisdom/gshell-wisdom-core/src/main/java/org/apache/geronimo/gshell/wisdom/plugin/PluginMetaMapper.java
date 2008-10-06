@@ -49,7 +49,6 @@ public class PluginMetaMapper
     public void init() {
         assert metaRegistry != null;
         metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-        metaConfig.addFolder("/plugins");
 
         assert eventManager != null;
         eventManager.addListener(this);

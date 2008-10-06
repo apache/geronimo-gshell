@@ -24,17 +24,18 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.oro.text.MatchAction;
 import org.apache.oro.text.MatchActionInfo;
 import org.apache.oro.text.MatchActionProcessor;
 import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.MatchResult;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternCompiler;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.oro.text.regex.PatternMatcher;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternMatcherInput;
-import org.apache.oro.text.regex.MatchResult;
-import org.apache.oro.text.regex.PatternCompiler;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedInputStream;
@@ -119,13 +120,12 @@ public class GrepAction
         }
 
         FileObject file = resolveFile(context, path);
-        BufferedInputStream input = new BufferedInputStream(file.getContent().getInputStream());
+
         try {
-            processor.processMatches(input, io.outputStream);
+            grep(context, processor, file);
         }
         finally {
-            IOUtil.close(input);
-            closeFile(file);
+            FileObjects.close(file);
         }
 
         if (count) {
@@ -133,6 +133,24 @@ public class GrepAction
         }
 
         return matches != 0 ? FOUND: NOT_FOUND;
+    }
+
+    private void grep(final CommandContext context, final MatchActionProcessor processor, final FileObject file) throws Exception {
+        assert context != null;
+        assert processor != null;
+        assert file != null;
+        
+        ensureFileExists(file);
+        ensureFileHasContent(file);
+        ensureFileIsReadable(file);
+
+        BufferedInputStream input = new BufferedInputStream(file.getContent().getInputStream());
+        try {
+            processor.processMatches(input, context.getIo().outputStream);
+        }
+        finally {
+            IOUtil.close(input);
+        }
     }
 
     /**

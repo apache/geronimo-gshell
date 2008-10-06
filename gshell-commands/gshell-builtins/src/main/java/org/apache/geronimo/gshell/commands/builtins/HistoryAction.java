@@ -19,14 +19,13 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
+import jline.History;
+import org.apache.geronimo.gshell.ansi.Code;
+import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.ansi.Renderer;
-import org.apache.geronimo.gshell.ansi.Code;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.codehaus.plexus.util.StringUtils;
-import jline.History;
 
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class HistoryAction
 
         int i = 0;
         for (String element : elements) {
-            String index = StringUtils.leftPad(String.valueOf(i), 3, " ");
+            String index = String.format("%3d", i);
             io.info("  {}  {}", Renderer.encode(index, Code.BOLD), element);
             i++;
         }
