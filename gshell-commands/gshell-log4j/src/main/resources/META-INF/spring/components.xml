@@ -32,14 +32,6 @@
             <gshell:command name="log4j/logger">
                 <gshell:action class="org.apache.geronimo.gshell.commands.log4j.LoggerAction"/>
             </gshell:command>
-
-            <gshell:command name="log4j/chainsaw">
-                <gshell:action class="org.apache.geronimo.gshell.commands.log4j.ChainsawAction"/>
-            </gshell:command>
-
-            <gshell:command name="log4j/lf5">
-                <gshell:action class="org.apache.geronimo.gshell.commands.log4j.Lf5Action"/>
-            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
