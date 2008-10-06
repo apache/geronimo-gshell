@@ -44,7 +44,7 @@ public class PrintfAction
         assert context != null;
         IO io = context.getIo();
 
-        io.out.print(String.format(format, arguments.toArray()));
+        io.out.printf(format, arguments.toArray());
         
         return Result.SUCCESS;
     }
