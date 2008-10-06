@@ -86,6 +86,10 @@
             </plugin>
 
             <plugin>
+                <artifactId>gshell-log4j</artifactId>
+            </plugin>
+
+            <plugin>
                 <artifactId>gshell-vfs</artifactId>
             </plugin>
             
