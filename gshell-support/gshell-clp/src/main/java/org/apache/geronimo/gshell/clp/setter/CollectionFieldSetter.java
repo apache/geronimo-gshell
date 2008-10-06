@@ -22,9 +22,9 @@ package org.apache.geronimo.gshell.clp.setter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.LinkedHashSet;
@@ -85,7 +85,12 @@ public class CollectionFieldSetter
                 obj = new ArrayList();
             }
             else {
-                throw new IllegalAnnotationError("Unsupported collection type: " + field.getType());
+                try {
+                    obj = type.newInstance();
+                }
+                catch (Exception e) {
+                    throw new IllegalAnnotationError("Unsupported collection type: " + field.getType(), e);
+                }
             }
 
             field.set(bean, obj);
