@@ -22,23 +22,27 @@ package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 
 import java.io.PrintWriter;
-import java.util.Map;
+import java.io.StringWriter;
 
 /**
- * Support for {@link MetaDataContent} generated for a {@link Map}.
+ * Support for text-based {@link MetaDataContent}.
  *
  * @version $Rev$ $Date$
  */
-public abstract class MapMetaDataContentSupport<K,V>
-    extends TextMetaDataContentSupport
+public abstract class TextMetaDataContentSupport
+    implements MetaDataContent
 {
-    protected void fillBuffer(final PrintWriter out) {
-        for (Map.Entry<K,V> entry : getMap().entrySet()) {
-            out.print(entry.getKey());
-            out.print("=");
-            out.println(entry.getValue());
-        }
+    public byte[] getBuffer() {
+        StringWriter writer = new StringWriter();
+        PrintWriter out = new PrintWriter(writer);
+
+        fillBuffer(out);
+
+        out.flush();
+        out.close();
+
+        return writer.toString().getBytes();
     }
 
-    protected abstract Map<K,V> getMap();
+    protected abstract void fillBuffer(PrintWriter out);
 }

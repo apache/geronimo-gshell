@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Collection;
 
 /**
@@ -31,20 +30,12 @@ import java.util.Collection;
  * @version $Rev$ $Date$
  */
 public abstract class CollectionMetaDataContentSupport<T>
-    implements MetaDataContent
+    extends TextMetaDataContentSupport
 {
-    public byte[] getBuffer() {
-        StringWriter writer = new StringWriter();
-        PrintWriter out = new PrintWriter(writer);
-
+    protected void fillBuffer(final PrintWriter out) {
         for (T element : getCollection()) {
             out.println(element);
         }
-
-        out.flush();
-        out.close();
-
-        return writer.toString().getBytes();
     }
 
     protected abstract Collection<T> getCollection();
