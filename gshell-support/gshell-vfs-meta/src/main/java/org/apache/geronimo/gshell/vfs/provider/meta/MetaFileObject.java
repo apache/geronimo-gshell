@@ -71,6 +71,11 @@ public class MetaFileObject
     }
 
     @Override
+    protected boolean doIsWriteable() throws Exception {
+        return false;
+    }
+
+    @Override
     protected long doGetContentSize() throws Exception {
         byte[] bytes = data.getBuffer();
         return bytes != null ? bytes.length : 0;
