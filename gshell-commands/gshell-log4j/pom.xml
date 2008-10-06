@@ -25,46 +25,28 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.commands</groupId>
+        <artifactId>gshell-commands</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.commands</groupId>
-    <artifactId>gshell-commands</artifactId>
-    <name>GShell Commands</name>
-    <packaging>pom</packaging>
+    <artifactId>gshell-log4j</artifactId>
+    <name>GShell Commands :: Log4j</name>
     
     <description>
-        Collection of commands for GShell functionality.
+        Log4j commands.
     </description>
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-clp</artifactId>
+            <artifactId>gshell-spring</artifactId>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-api</artifactId>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
         </dependency>
     </dependencies>
-
-    <modules>
-        <module>gshell-builtins</module>
-        <module>gshell-admin</module>
-        <module>gshell-optional</module>
-        <module>gshell-repository</module>
-        <module>gshell-bsf</module>
-        <module>gshell-vfs</module>
-        <module>gshell-remote</module>
-        <module>gshell-log4j</module>
-    </modules>
 
 </project>
