@@ -17,18 +17,29 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs.provider.meta.data;
+package org.apache.geronimo.gshell.vfs.provider.meta;
+
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileContentInfo;
+import org.apache.commons.vfs.FileContentInfoFactory;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.impl.DefaultFileContentInfo;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 
 /**
- * Meta data content.
+ * Meta file content info factory.
  *
  * @version $Rev$ $Date$
  */
-public interface MetaDataContent
+public class MetaFileContentInfoFactory
+    implements FileContentInfoFactory
 {
-    String getType();
+    public FileContentInfo create(final FileContent content) throws FileSystemException {
+        assert content != null;
 
-    String getEncoding();
+        MetaFileObject file = (MetaFileObject)content.getFile();
+        MetaData data = file.getData();
 
-    byte[] getBuffer();
+        return new DefaultFileContentInfo(data.getContentType(), data.getContentEncoding());
+    }
 }

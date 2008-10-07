@@ -100,6 +100,14 @@ public class MetaData
         this.lastModified = lastModified;
     }
 
+    public String getContentType() {
+        return content != null ? content.getType() : null;
+    }
+
+    public String getContentEncoding() {
+        return content != null ? content.getEncoding() : null;
+    }
+
     public Map<String,Object> getAttributes() {
         return attributes;
     }

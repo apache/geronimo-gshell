@@ -21,6 +21,9 @@ package org.apache.geronimo.gshell.vfs.provider.meta;
 
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileContentInfoFactory;
 import org.apache.commons.vfs.provider.AbstractFileObject;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 
@@ -73,6 +76,11 @@ public class MetaFileObject
     @Override
     protected boolean doIsWriteable() throws Exception {
         return false;
+    }
+
+    @Override
+    protected FileContentInfoFactory getFileContentInfoFactory() {
+        return fileSystem.getFileContentInfoFactory();
     }
 
     @Override

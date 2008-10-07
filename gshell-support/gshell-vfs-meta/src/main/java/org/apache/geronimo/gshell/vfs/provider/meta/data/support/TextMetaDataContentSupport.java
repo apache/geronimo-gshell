@@ -44,5 +44,13 @@ public abstract class TextMetaDataContentSupport
         return writer.toString().getBytes();
     }
 
+    public String getType() {
+        return "text/plain";
+    }
+
+    public String getEncoding() {
+        return "UTF-8";
+    }
+
     protected abstract void fillBuffer(PrintWriter out);
 }

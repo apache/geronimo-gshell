@@ -24,6 +24,7 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemOptions;
 import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.FileContentInfoFactory;
 import org.apache.commons.vfs.provider.AbstractFileSystem;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
@@ -41,6 +42,8 @@ public class MetaFileSystem
     extends AbstractFileSystem
 {
     private final MetaDataRegistry registry;
+
+    private FileContentInfoFactory fileContentInfoFactory;
 
     public MetaFileSystem(final MetaDataRegistry registry, final FileName rootName, final FileSystemOptions options) {
         super(rootName, null, options);
@@ -87,5 +90,12 @@ public class MetaFileSystem
         }
 
         return names.toArray(new String[names.size()]);
+    }
+
+    FileContentInfoFactory getFileContentInfoFactory() {
+        if (fileContentInfoFactory == null) {
+            fileContentInfoFactory = new MetaFileContentInfoFactory();
+        }
+        return fileContentInfoFactory;
     }
 }
