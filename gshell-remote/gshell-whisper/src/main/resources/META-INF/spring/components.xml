@@ -55,7 +55,7 @@
 
     <bean id="sslTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory" lazy-init="true"/>
 
-    <bean id="sslContextFactory" class="org.apache.geronimo.gshell.whisper.ssl.BogusSSLContextFactory"/>
+    <bean id="sslContextFactory" class="org.apache.geronimo.gshell.whisper.ssl.BogusSSLContextFactory" lazy-init="true"/>
 
     <bean id="sslTransport" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransport" scope="prototype">
         <property name="sslContextFactory" ref="sslContextFactory"/>
