@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
-import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
@@ -36,12 +36,12 @@ import java.util.List;
 public class GroupCommand
     extends CommandSupport
 {
-    private final FileName name;
+    private final FileObject file;
 
-    public GroupCommand(final FileName name) {
-        assert name != null;
+    public GroupCommand(final FileObject file) {
+        assert file != null;
 
-        this.name = name;
+        this.file = file;
 
         setAction(new GroupCommandAction());
         setDocumenter(new GroupCommandDocumenter());
@@ -50,7 +50,7 @@ public class GroupCommand
     }
 
     /**
-     * ???
+     * Action to set the gshell group.
      */
     private class GroupCommandAction
         implements CommandAction
@@ -61,8 +61,9 @@ public class GroupCommand
         public Object execute(final CommandContext context) throws Exception {
             assert context != null;
 
-            // TODO:
-            log.debug("Changing to group: {}", name);
+            log.debug("Changing to group: {}", file);
+            
+            context.getVariables().parent().set("gshell.group", file);
 
             return Result.SUCCESS;
         }
@@ -76,12 +77,12 @@ public class GroupCommand
     {
         @Override
         public String getName() {
-            return name.getBaseName();
+            return file.getName().getBaseName();
         }
 
         @Override
         public String getDescription() {
-            return getMessages().format(COMMAND_DESCRIPTION, name.getBaseName());
+            return getMessages().format(COMMAND_DESCRIPTION, file.getName().getBaseName());
         }
     }
 

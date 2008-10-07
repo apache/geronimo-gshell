@@ -89,8 +89,8 @@ public class CommandResolverImpl
     //       should be 'shell *.gsh' once we have a sub-shell command.
     //
     
-    public Command resolveCommand(final Variables variables, final String path) throws CommandException {
-        assert variables != null;
+    public Command resolveCommand(final Variables vars, final String path) throws CommandException {
+        assert vars != null;
         assert path != null;
 
         log.debug("Resolving command for path: {}", path);
@@ -99,18 +99,24 @@ public class CommandResolverImpl
         // FIXME: For now just ask for the named stuff, eventually need a better path parser and lookup thingy
         //
 
+        //
+        // FIXME: Handle "/" to get to commandsDirectory.  Handle avoiding ../ leading to group dir set to meta:/ (should never go up past meta:/commands)
+        //
+                
         Command command = findAliasCommand(path);
 
         if (command == null) {
             try {
-                assert commandsDirectory != null;
-                FileObject file = fileSystemAccess.resolveFile(commandsDirectory, path);
+                FileObject dir = getGroupDirectory(vars);
+                FileObject file = fileSystemAccess.resolveFile(dir, path);
+                
                 if (file.exists()) {
                     command = (Command) file.getContent().getAttribute("COMMAND");
-                    
+
                     // Dynamically create group commands
                     if (command == null && file.getType().hasChildren()) {
                         command = createGroupCommand(file);
+                        file.getContent().setAttribute("COMMAND", command);
                     }
                 }
                 else {
@@ -129,6 +135,36 @@ public class CommandResolverImpl
         return command;
     }
 
+    private FileObject getGroupDirectory(final Variables vars) throws FileSystemException {
+        assert vars != null;
+
+        FileObject dir;
+
+        Object tmp = vars.get("gshell.group");
+
+        if (tmp == null) {
+            assert commandsDirectory != null;
+            dir = commandsDirectory;
+        }
+        else if (tmp instanceof String) {
+            log.trace("Resolving group directory from string: {}", tmp);
+            dir = fileSystemAccess.resolveFile(null, (String)tmp);
+        }
+        else if (tmp instanceof FileObject) {
+            dir = (FileObject)tmp;
+        }
+        else {
+            // Complain, then use the default so commands still work
+            log.error("Invalid type for variable 'gshell.group'; expected String or FileObject; found: " + tmp.getClass());
+            assert commandsDirectory != null;
+            dir = commandsDirectory;
+        }
+        
+        assert dir != null;
+        return dir;
+    }
+
+
     private Command findAliasCommand(final String path) throws CommandException {
         assert path != null;
 
@@ -140,6 +176,7 @@ public class CommandResolverImpl
             if (file.exists()) {
                 command = (Command)file.getContent().getAttribute("COMMAND");
 
+                // Dynamically create alias commands
                 if (command == null) {
                     command = createAliasCommand(file);
                     file.getContent().setAttribute("COMMAND", command);
@@ -156,15 +193,10 @@ public class CommandResolverImpl
         return command;
     }
 
-    private Command createAliasCommand(final FileObject file) throws NoSuchAliasException {
+    private Command createAliasCommand(final FileObject file) throws FileSystemException, NoSuchAliasException {
         assert file != null;
 
-        return createAliasCommand(file.getName().getBaseName());
-    }
-
-    private Command createAliasCommand(final String name) throws NoSuchAliasException {
-        assert name != null;
-
+        String name = file.getName().getBaseName();
         log.debug("Creating command for alias: {}", name);
 
         assert aliasRegistry != null;
@@ -220,8 +252,7 @@ public class CommandResolverImpl
 
         log.debug("Creating command for group: {}", file);
 
-        GroupCommand command = new GroupCommand(file.getName());
-        file.getContent().setAttribute("COMMAND", command);
+        GroupCommand command = new GroupCommand(file);
 
         //
         // FIXME: Have to inject the container because we are not wiring ^^^, and because its support muck needs some crap

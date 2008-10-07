@@ -124,7 +124,7 @@ public class ShellImpl
         vars.set("SHELL.HISTORY", getHistory(), true);
 
         // HACK: Set the default prompt here for now, probably want to get this from branding
-        vars.set("prompt", "@|bold %{application.userName}|@%{application.localHost.hostName}:@|bold %{branding.name}|> ");
+        vars.set("gshell.prompt", "@|bold %{application.userName}|@%{application.localHost.hostName}:@|bold %{branding.name}|> ");
         
         branding = application.getModel().getBranding();
 

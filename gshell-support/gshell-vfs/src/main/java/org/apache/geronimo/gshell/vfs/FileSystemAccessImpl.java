@@ -64,7 +64,7 @@ public class FileSystemAccessImpl
             cwd = (FileObject)var;
         }
         else if (var != null) {
-            throw new RuntimeException("Invalid variable type for '" + CWD + "'; expected String or FileObject; found: " + var.getClass().getName());
+            throw new RuntimeException("Invalid variable type for '" + CWD + "'; expected String or FileObject; found: " + var.getClass());
         }
 
         if (cwd == null) {

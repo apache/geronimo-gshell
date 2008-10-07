@@ -66,7 +66,7 @@ public class ConsolePrompterImpl
 
         assert application != null;
         Variables vars = application.getVariables();
-        String pattern = (String) vars.get("prompt");
+        String pattern = (String) vars.get("gshell.prompt");
 
         if (pattern != null) {
             assert variablesValueSource != null;
