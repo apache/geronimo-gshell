@@ -20,9 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.History;
-import org.apache.geronimo.gshell.event.EventAdapter;
-import org.apache.geronimo.gshell.event.EventManager;
-import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
+import org.apache.geronimo.gshell.application.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,19 +40,14 @@ public class HistoryImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private EventManager eventManager;
+    private Application application;
 
     @PostConstruct
-    public void init() {
-        assert eventManager != null;
-        eventManager.addListener(new EventAdapter<ApplicationConfiguredEvent>() {
-            protected void handleEvent(final ApplicationConfiguredEvent event) throws Exception {
-                assert event != null;
-
-                File file = event.getApplication().getModel().getBranding().getHistoryFile();
-                log.debug("History file: {}", file);
-            }
-        });
+    public void init() throws Exception {
+        assert application != null;
+        File file = application.getModel().getBranding().getHistoryFile();
+        log.debug("History file: {}", file);
+        setHistoryFile(file);
     }
     
     public void setHistoryFile(final File file) throws IOException {

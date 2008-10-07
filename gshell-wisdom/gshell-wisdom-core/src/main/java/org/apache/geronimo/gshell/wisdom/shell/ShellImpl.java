@@ -21,8 +21,6 @@ package org.apache.geronimo.gshell.wisdom.shell;
 
 import jline.Completor;
 import jline.History;
-import org.apache.geronimo.gshell.ansi.Code;
-import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
@@ -33,7 +31,6 @@ import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.Branding;
-import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
@@ -66,7 +63,6 @@ public class ShellImpl
     @Autowired
     private CommandLineExecutor executor;
 
-    @Autowired
     private History history;
 
     private List<Completor> completers;
@@ -91,35 +87,13 @@ public class ShellImpl
         return true;
     }
 
-    public synchronized void close() {
-        log.debug("Closing");
-        opened = false;
-    }
-
-    public ShellContext getContext() {
-        ensureOpened();
-
-        if (context == null) {
-            throw new IllegalStateException("Shell context has not been initialized");
-        }
-        return context;
-    }
-
-    public void setCompleters(final List<Completor> completers) {
-        assert completers != null;
-
-        this.completers = completers;
-    }
-    
-    public boolean isInteractive() {
-        return true;
-    }
-
     @PostConstruct
-    public void init() throws Exception {
+    public synchronized void init() throws Exception {
         if (opened) {
             throw new IllegalStateException("Shell is already opened");
         }
+
+        log.debug("Initializing");
 
         assert application != null;
 
@@ -143,6 +117,12 @@ public class ShellImpl
             }
         };
 
+        // HACK: Add ourself to variables so commands can get to us.  Maybe need to add to ^^^ and expose in CommandContent
+        vars.set("SHELL", this, true);
+
+        // HACK: Add history for the 'history' command, since its not part of the Shell interf it can't really access it easy, resolve with ^^^
+        vars.set("SHELL.HISTORY", getHistory(), true);
+
         branding = application.getModel().getBranding();
 
         opened = true;
@@ -152,6 +132,42 @@ public class ShellImpl
         //
 
         loadProfileScripts();
+    }
+
+    public synchronized void close() {
+        log.debug("Closing");
+
+        opened = false;
+    }
+    
+    public ShellContext getContext() {
+        ensureOpened();
+
+        if (context == null) {
+            throw new IllegalStateException("Shell context has not been initialized");
+        }
+        return context;
+    }
+
+    public void setCompleters(final List<Completor> completers) {
+        assert completers != null;
+
+        this.completers = completers;
+    }
+
+    public History getHistory() {
+        if (history == null) {
+            throw new IllegalStateException("Missing configuration property: history");
+        }
+        return history;
+    }
+
+    public void setHistory(final History history) {
+        this.history = history;
+    }
+
+    public boolean isInteractive() {
+        return true;
     }
 
     public Object execute(final String line) throws Exception {
@@ -264,7 +280,7 @@ public class ShellImpl
 
     public Prompter getPrompter() {
         if (prompter == null) {
-            prompter = createPrompter();
+            throw new IllegalStateException("Missing configuration property: prompter");
         }
         return prompter;
     }
@@ -272,125 +288,16 @@ public class ShellImpl
     public void setPrompter(final Prompter prompter) {
         this.prompter = prompter;
     }
-
-    /**
-     * Allow subclasses to override the default Prompter implementation used.
-     *
-     * @return Interactive properter.
-     */
-    protected Prompter createPrompter() {
-        return new Prompter() {
-            Renderer renderer = new Renderer();
-
-            //
-            // TODO: Need to create a PatternPrompter, which can use interpolation of a variable to render the prompt
-            //       so the following variable value would set the same prompt as we are hardcoding here:
-            //
-            //    set gshell.prompt="@|bold ${application.username}|@${application.localHost.hostName}:@|bold ${application.branding.name}|> "
-            //
-
-            public String prompt() {
-                assert application != null;
-                Branding branding = application.getModel().getBranding();
-                
-                StringBuilder buff = new StringBuilder();
-                buff.append(Renderer.encode(application.getUserName(), Code.BOLD));
-                buff.append("@");
-                buff.append(application.getLocalHost().getHostName());
-                buff.append(":");
-                buff.append(Renderer.encode(branding.getName(), Code.BOLD));
-                buff.append("> ");
-
-                return renderer.render(buff.toString());
-            }
-        };
-    }
-
+    
     public ErrorHandler getErrorHandler() {
         if (errorHandler == null) {
-            errorHandler = createErrorHandler();
+            throw new IllegalStateException("Missing configuration property: errorHandler");
         }
         return errorHandler;
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler) {
-        this.errorHandler = errorHandler;
-    }
-
-    public ErrorHandler createErrorHandler() {
-        return new ErrorHandler() {
-            public Result handleError(final Throwable error) {
-                assert error != null;
-
-                displayError(error);
-
-                return Result.CONTINUE;
-            }
-        };
-    }
-
-    //
-    // Error Display
-    //
-
-    private void displayError(final Throwable error) {
-        assert error != null;
-
-        // Decode any error notifications
-        Throwable cause = error;
-        if (error instanceof ErrorNotification) {
-            cause = error.getCause();
-        }
-
-        IO io = getContext().getIo();
-
-        // Spit out the terse reason why we've failed
-        io.err.print("@|bold,red ERROR| ");
-        io.err.print(cause.getClass().getSimpleName());
-        io.err.println(": @|bold,red " + cause.getMessage() + "|");
-
-        // Determine if the stack trace flag is set
-        String stackTraceProperty = System.getProperty("gshell.show.stacktrace");
-        boolean stackTraceFlag = false;
-        if (stackTraceProperty != null) {
-        	stackTraceFlag = stackTraceProperty.trim().equals("true");
-        }
-
-        if (io.isDebug()) {
-            // If we have debug enabled then skip the fancy bits below, and log the full error, don't decode shit
-            log.debug(error.toString(), error);
-        }
-        else if (io.isVerbose() || stackTraceFlag) {
-            // Render a fancy ansi colored stack trace
-            StackTraceElement[] trace = cause.getStackTrace();
-            StringBuffer buff = new StringBuffer();
-
-            //
-            // TODO: Move this to helper in gshell-ansi
-            //
-
-            for (StackTraceElement e : trace) {
-                buff.append("        @|bold at| ").
-                    append(e.getClassName()).
-                    append(".").
-                    append(e.getMethodName()).
-                    append(" (@|bold ");
-
-                buff.append(e.isNativeMethod() ? "Native Method" :
-                        (e.getFileName() != null && e.getLineNumber() != -1 ? e.getFileName() + ":" + e.getLineNumber() :
-                            (e.getFileName() != null ? e.getFileName() : "Unknown Source")));
-
-                buff.append("|)");
-
-                //
-                // FIXME: This does not properly display the full exception detail when cause contains nested exceptions
-                //
-
-                io.err.println(buff);
-
-                buff.setLength(0);
-            }
-        }
+    public void setErrorHandler(final ErrorHandler handler) {
+        this.errorHandler = handler;
     }
 
     //

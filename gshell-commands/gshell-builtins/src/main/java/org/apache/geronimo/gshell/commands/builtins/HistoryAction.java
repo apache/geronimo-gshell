@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -37,9 +36,6 @@ import java.util.List;
 public class HistoryAction
     implements CommandAction
 {
-    @Autowired
-    private History history;
-
     // TODO: Support displaying a range of history
     
     // TODO: Add clear and recall support
@@ -47,6 +43,10 @@ public class HistoryAction
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
+
+        // HACK: Get at the shell's history from our variables
+        History history = (History) context.getVariables().get("SHELL.HISTORY");
+        assert history != null;
 
         // noinspection unchecked
         List<String> elements = history.getHistoryList();

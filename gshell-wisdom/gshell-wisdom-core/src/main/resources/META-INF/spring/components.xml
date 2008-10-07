@@ -43,18 +43,24 @@
 
     <bean id="commandLineExecutor" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineExecutorImpl"/>
 
-    <!--
-    FIXME: Need to find a better way to configure the history for a Shell, this singleton is defs not correct.
-    -->
-
-    <bean id="history" class="org.apache.geronimo.gshell.wisdom.shell.HistoryImpl"/>
-
     <bean id="shell" class="org.apache.geronimo.gshell.wisdom.shell.ShellImpl" scope="prototype">
         <property name="completers">
             <list>
                 <ref bean="commandsCompleter"/>
                 <ref bean="aliasNameCompleter"/>
             </list>
+        </property>
+        
+        <property name="prompter">
+            <bean class="org.apache.geronimo.gshell.wisdom.shell.ConsolePrompterImpl"/>
+        </property>
+
+        <property name="errorHandler">
+            <bean class="org.apache.geronimo.gshell.wisdom.shell.ConsoleErrorHandlerImpl"/>
+        </property>
+
+        <property name="history">
+            <bean class="org.apache.geronimo.gshell.wisdom.shell.HistoryImpl"/>
         </property>
     </bean>
 
