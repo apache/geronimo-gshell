@@ -76,7 +76,8 @@ public class ResolveAction
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-
+        IO io = context.getIo();
+        
         assert artifactManager != null;
         ArtifactFactory factory = artifactManager.getArtifactFactory();
 
@@ -95,17 +96,8 @@ public class ResolveAction
 
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 
-        IO io = context.getIo();
-
-        //
-        // TODO: Update the AM API to use this as originating when artifact == null and artifact dependencies != null
-        //
-
         if (transitive) {
             io.info("Resolving artifact (transitively): {}", artifact);
-
-            Artifact originating = factory.createArtifact("dummy", "dummy", "dummy", null, "jar");
-            request.setArtifact(originating);
             request.setArtifactDependencies(Collections.singleton(artifact));
         }
         else {
