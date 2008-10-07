@@ -60,6 +60,10 @@ public class CommandMetaMapper
         if (event instanceof CommandRegisteredEvent) {
             CommandRegisteredEvent targetEvent = (CommandRegisteredEvent)event;
 
+            //
+            // TODO: Need to allow command instances to be come _aware_ of their mapping (name + path)
+            //
+
             MetaData data = metaConfig.addFile("/commands/" + targetEvent.getName());
             data.addAttribute("COMMAND", targetEvent.getCommand());
         }

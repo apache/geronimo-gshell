@@ -33,6 +33,8 @@ import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.apache.geronimo.gshell.vfs.FileObjects;
+import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
+import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,10 +67,13 @@ public class CommandResolverImpl
 
     private FileObject commandsDirectory;
 
+    private FileObject aliasesDirectory;
+
     @PostConstruct
     public void init() throws Exception {
         assert fileSystemAccess != null;
         commandsDirectory = fileSystemAccess.resolveFile(null, "meta:/commands");
+        aliasesDirectory = fileSystemAccess.resolveFile(null, "meta:/aliases");
     }
 
     public void setBeanContainer(final BeanContainer container) {
@@ -77,6 +82,13 @@ public class CommandResolverImpl
         this.container = container;
     }
 
+    //
+    // TODO: Consider adding an undefined command handler to allow for even more customization of
+    //       execution when no defined command is found?  So one can say directly execute a
+    //       *.gsh script, which under the covers will translate into 'source *.gsh' (or really
+    //       should be 'shell *.gsh' once we have a sub-shell command.
+    //
+    
     public Command resolveCommand(final Variables variables, final String path) throws CommandException {
         assert variables != null;
         assert path != null;
@@ -87,18 +99,19 @@ public class CommandResolverImpl
         // FIXME: For now just ask for the named stuff, eventually need a better path parser and lookup thingy
         //
 
-        Command command;
+        Command command = findAliasCommand(path);
 
-        assert aliasRegistry != null;
-        if (aliasRegistry.containsAlias(path)) {
-            command = createAliasCommand(path);
-        }
-        else {
+        if (command == null) {
             try {
                 assert commandsDirectory != null;
                 FileObject file = fileSystemAccess.resolveFile(commandsDirectory, path);
                 if (file.exists()) {
                     command = (Command) file.getContent().getAttribute("COMMAND");
+                    
+                    // Dynamically create group commands
+                    if (command == null && file.getType().hasChildren()) {
+                        command = createGroupCommand(file);
+                    }
                 }
                 else {
                     throw new NoSuchCommandException(path);
@@ -114,6 +127,39 @@ public class CommandResolverImpl
         log.debug("Resolved command: {} -> {}", path, command);
         
         return command;
+    }
+
+    private Command findAliasCommand(final String path) throws CommandException {
+        assert path != null;
+
+        Command command = null;
+
+        try {
+            assert aliasesDirectory != null;
+            FileObject file = fileSystemAccess.resolveFile(aliasesDirectory, path);
+            if (file.exists()) {
+                command = (Command)file.getContent().getAttribute("COMMAND");
+
+                if (command == null) {
+                    command = createAliasCommand(file);
+                    file.getContent().setAttribute("COMMAND", command);
+                }
+            }
+        }
+        catch (FileSystemException e) {
+            throw new CommandException(e);
+        }
+        catch (NoSuchAliasException e) {
+            // ignore
+        }
+
+        return command;
+    }
+
+    private Command createAliasCommand(final FileObject file) throws NoSuchAliasException {
+        assert file != null;
+
+        return createAliasCommand(file.getName().getBaseName());
     }
 
     private Command createAliasCommand(final String name) throws NoSuchAliasException {
@@ -150,11 +196,14 @@ public class CommandResolverImpl
 
         try {
             for (FileObject file : commandsDirectory.getChildren()) {
-                // FIXME: For now ignore folders, not yet supported fully
-                if (!file.getType().hasChildren()) {
-                    Command command = (Command)file.getContent().getAttribute("COMMAND");
-                    commands.add(command);
+                Command command = (Command)file.getContent().getAttribute("COMMAND");
+
+                // Dynamically create group commands
+                if (command == null && file.getType().hasChildren()) {
+                    command = createGroupCommand(file);
                 }
+
+                commands.add(command);
             }
         }
         catch (FileSystemException e) {
@@ -164,5 +213,24 @@ public class CommandResolverImpl
         log.debug("Resolved {} commands: {}", commands.size(), commands);
         
         return commands;
+    }
+
+    private Command createGroupCommand(final FileObject file) throws FileSystemException {
+        assert file != null;
+
+        log.debug("Creating command for group: {}", file);
+
+        GroupCommand command = new GroupCommand(file.getName());
+        file.getContent().setAttribute("COMMAND", command);
+
+        //
+        // FIXME: Have to inject the container because we are not wiring ^^^, and because its support muck needs some crap
+        //        probably need to use a prototype here
+        //
+
+        assert container != null;
+        command.setBeanContainer(container);
+
+        return command;
     }
 }

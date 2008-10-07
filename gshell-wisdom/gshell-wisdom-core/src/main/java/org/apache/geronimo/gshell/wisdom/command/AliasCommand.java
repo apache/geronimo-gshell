@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.registry;
+package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -28,10 +28,6 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
-import org.apache.geronimo.gshell.wisdom.command.HelpSupport;
-import org.apache.geronimo.gshell.wisdom.command.MessageSourceCommandDocumenter;
-import org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter;
 
 import java.util.Iterator;
 import java.util.List;
@@ -132,10 +128,12 @@ public class AliasCommand
     private class AliasCommandDocumenter
         extends MessageSourceCommandDocumenter
     {
+        @Override
         public String getName() {
             return name;
         }
 
+        @Override
         public String getDescription() {
             return getMessages().format(COMMAND_DESCRIPTION, alias);
         }
