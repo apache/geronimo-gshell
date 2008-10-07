@@ -19,23 +19,13 @@
 
 package org.apache.geronimo.gshell.interpolation;
 
-import org.apache.commons.jexl.Expression;
-import org.apache.commons.jexl.ExpressionFactory;
-import org.apache.commons.jexl.JexlContext;
-import org.apache.commons.jexl.resolver.FlatResolver;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.Interpolator;
 import org.codehaus.plexus.interpolation.RegexBasedInterpolator;
-import org.codehaus.plexus.interpolation.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.List;
 
 /**
  * Provides interpolation for shell variables using Jexl.
@@ -48,8 +38,6 @@ import java.util.List;
 public class VariableInterpolator
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private final FlatResolver resolver = new FlatResolver(true);
 
     public String interpolate(final String input, final Variables vars) {
         assert input != null;
@@ -78,109 +66,10 @@ public class VariableInterpolator
     }
 
     private Interpolator createInterpolator(final Variables vars) {
+        assert vars != null;
+        
         Interpolator interp = new RegexBasedInterpolator();
-
-        // This complex crap here is to adapt our Variables to a JexlContext w/the least overhead
-        interp.addValueSource(new ValueSource()
-        {
-            final Map map = new Map() {
-                private String key(final Object key) {
-                    return String.valueOf(key);
-                }
-
-                public Object get(final Object key) {
-                    return vars.get(key(key));
-                }
-
-                public Object put(final Object key, final Object value) {
-                    Object prev = vars.get(key(key));
-
-                    vars.set(key(key), value);
-
-                    return prev;
-                }
-
-                // Jexl does not use any of these Map methods
-
-                public int size() {
-                    throw new UnsupportedOperationException();
-                }
-
-                public boolean isEmpty() {
-                    throw new UnsupportedOperationException();
-                }
-
-                public boolean containsKey(Object key) {
-                    throw new UnsupportedOperationException();
-                }
-
-                public boolean containsValue(Object value) {
-                    throw new UnsupportedOperationException();
-                }
-
-                public Object remove(Object key) {
-                    throw new UnsupportedOperationException();
-                }
-
-                public void putAll(Map t) {
-                    throw new UnsupportedOperationException();
-                }
-
-                public void clear() {
-                    throw new UnsupportedOperationException();
-                }
-
-                public Set keySet() {
-                    throw new UnsupportedOperationException();
-                }
-
-                public Collection values() {
-                    throw new UnsupportedOperationException();
-                }
-
-                public Set entrySet() {
-                    throw new UnsupportedOperationException();
-                }
-            };
-
-            final JexlContext jc = new JexlContext()
-            {
-                public Map getVars() {
-                    return map;
-                }
-
-                // Jexl never calls setVars
-
-                public void setVars(Map map) {
-                    throw new UnsupportedOperationException();
-                }
-            };
-
-            public Object getValue(final String s) {
-                try {
-                    Expression expr = ExpressionFactory.createExpression(s);
-                    expr.addPreResolver(resolver);
-
-                    return expr.evaluate(jc);
-                }
-                catch (Exception e) {
-                    throw new ErrorNotification("Failed to evaluate expression: " + s, e);
-                }
-            }
-
-            //
-            // TODO: See what this is supposed to return...
-            //
-
-            public List getFeedback() {
-                return null;
-            }
-
-            public void clearFeedback() {
-                // ???
-            }
-        });
-
+        interp.addValueSource(new VariablesValueSource(vars));
         return interp;
     }
 }

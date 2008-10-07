@@ -19,14 +19,20 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
 import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.Console;
-import org.apache.geronimo.gshell.model.application.Branding;
+import org.apache.geronimo.gshell.interpolation.VariablesValueSource;
+import org.codehaus.plexus.interpolation.InterpolationException;
+import org.codehaus.plexus.interpolation.Interpolator;
+import org.codehaus.plexus.interpolation.PrefixedObjectValueSource;
+import org.codehaus.plexus.interpolation.StringSearchInterpolator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
 
 /**
  * {@link Console.Prompter} component.
@@ -41,27 +47,55 @@ public class ConsolePrompterImpl
     @Autowired
     private Application application;
 
-    private Renderer renderer = new Renderer();
+    private final Interpolator interp = new StringSearchInterpolator("%{", "}");
 
-    //
-    // TODO: Need to create a PatternPrompter, which can use interpolation of a variable to render the prompt
-    //       so the following variable value would set the same prompt as we are hardcoding here:
-    //
-    //    set gshell.prompt="@|bold ${application.username}|@${application.localHost.hostName}:@|bold ${application.branding.name}|> "
-    //
+    private final VariablesValueSource variablesValueSource = new VariablesValueSource();
+
+    private final Renderer renderer = new Renderer();
+
+    @PostConstruct
+    public void init() {
+        assert application != null;
+        interp.addValueSource(new PrefixedObjectValueSource("application", application));
+        interp.addValueSource(new PrefixedObjectValueSource("branding", application.getModel().getBranding()));
+        interp.addValueSource(variablesValueSource);
+    }
 
     public String prompt() {
+        String prompt = null;
+
         assert application != null;
-        Branding branding = application.getModel().getBranding();
+        Variables vars = application.getVariables();
+        String pattern = (String) vars.get("prompt");
 
-        StringBuilder buff = new StringBuilder();
-        buff.append(Renderer.encode(application.getUserName(), Code.BOLD));
-        buff.append("@");
-        buff.append(application.getLocalHost().getHostName());
-        buff.append(":");
-        buff.append(Renderer.encode(branding.getName(), Code.BOLD));
-        buff.append("> ");
+        if (pattern != null) {
+            assert variablesValueSource != null;
+            variablesValueSource.setVariables(vars);
 
-        return renderer.render(buff.toString());
+            try {
+                assert interp != null;
+                prompt = interp.interpolate(pattern);
+            }
+            catch (InterpolationException e) {
+                log.error("Failed to render prompt pattern: " + pattern, e);
+            }
+        }
+
+        // Use a default prompt if we don't have anything here
+        if (prompt == null) {
+            prompt = defaultPrompt();
+        }
+
+        // Encode ANSI muck if it looks like there are codes encoded
+        if (Renderer.test(prompt)) {
+            prompt = renderer.render(prompt);
+        }
+
+        return prompt;
+    }
+
+    private String defaultPrompt() {
+        assert application != null;
+        return application.getModel().getBranding().getName() + "> ";
     }
 }

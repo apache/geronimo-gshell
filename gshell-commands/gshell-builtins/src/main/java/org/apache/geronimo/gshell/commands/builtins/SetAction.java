@@ -93,6 +93,8 @@ public class SetAction
         assert context != null;
         IO io = context.getIo();
 
+        // NOTE: Using io.outputStream to display values to avoid any ANSI encoding or other translation.
+        
         switch (mode) {
             case PROPERTY: {
                 Properties props = System.getProperties();
@@ -101,12 +103,14 @@ public class SetAction
                     String name = (String) o;
                     String value = props.getProperty(name);
 
-                    io.out.print(name);
-                    io.out.print("=");
-                    io.out.print(value);
+                    io.outputStream.print(name);
+                    io.outputStream.print("='");
+                    io.outputStream.print(value);
+                    io.outputStream.print("'");
+
                     // Value is always a string, so no need to add muck here for --verbose
 
-                    io.out.println();
+                    io.outputStream.println();
                 }
                 break;
             }
@@ -117,24 +121,35 @@ public class SetAction
 
                 while (iter.hasNext()) {
                     String name = iter.next();
+
+                    // HACK: Hide some internal muck for now
+                    if (name.startsWith("SHELL")) {
+                        continue;
+                    }
+
                     Object value = variables.get(name);
 
-                    io.out.print(name);
-                    io.out.print("=");
-                    io.out.print(value);
+                    io.outputStream.print(name);
+                    io.outputStream.print("='");
+                    io.outputStream.print(value);
+                    io.outputStream.flush();
+                    io.outputStream.print("'");
 
                     // When --verbose include the class details of the value
                     if (verbose && value != null) {
-                        io.out.print(" (");
-                        io.out.print(value.getClass());
-                        io.out.print(")");
+                        io.outputStream.print(" (");
+                        io.outputStream.print(value.getClass());
+                        io.outputStream.print(")");
                     }
 
-                    io.out.println();
+                    io.outputStream.println();
                 }
                 break;
             }
         }
+
+        // Manually flush the stream, normally framework only flushes io.out
+        io.outputStream.flush();
 
         return Result.SUCCESS;
     }

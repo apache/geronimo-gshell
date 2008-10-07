@@ -123,6 +123,9 @@ public class ShellImpl
         // HACK: Add history for the 'history' command, since its not part of the Shell interf it can't really access it easy, resolve with ^^^
         vars.set("SHELL.HISTORY", getHistory(), true);
 
+        // HACK: Set the default prompt here for now, probably want to get this from branding
+        vars.set("prompt", "@|bold %{application.userName}|@%{application.localHost.hostName}:@|bold %{branding.name}|> ");
+        
         branding = application.getModel().getBranding();
 
         opened = true;
