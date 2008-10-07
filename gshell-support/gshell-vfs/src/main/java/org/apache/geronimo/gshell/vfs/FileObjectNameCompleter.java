@@ -61,10 +61,6 @@ public class FileObjectNameCompleter
             assert fileSystemAccess != null;
             FileObject file = fileSystemAccess.resolveFile(path);
 
-            //
-            // TODO: Close files
-            //
-            
             log.trace("Resolved file: {}", file);
 
             final String search;
@@ -102,7 +98,9 @@ public class FileObjectNameCompleter
                 int result = path.lastIndexOf(FileName.SEPARATOR) + 1;
 
                 log.trace("Result: {}", result);
-                
+
+                FileObjects.close(file);
+
                 return result;
             }
             else {
@@ -164,6 +162,8 @@ public class FileObjectNameCompleter
 
                     // noinspection unchecked
                     Collections.sort(candidates);
+
+                    FileObjects.closeAll(files);
                 }
             }
 
@@ -177,6 +177,8 @@ public class FileObjectNameCompleter
             }
 
             log.trace("Result: {}", result);
+
+            FileObjects.close(file);
 
             return result;
         }
