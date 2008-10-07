@@ -79,37 +79,48 @@ public class ShellImpl
 
     private ErrorHandler errorHandler;
 
-    public void setCompleters(final List<Completor> completers) {
-        assert completers != null;
+    private boolean opened;
 
-        this.completers = completers;
+    private synchronized void ensureOpened() {
+        if (!opened) {
+            throw new IllegalStateException("Shell has not been opened or has been closed");
+        }
+    }
+
+    public synchronized boolean isOpened() {
+        return true;
+    }
+
+    public synchronized void close() {
+        log.debug("Closing");
+        opened = false;
     }
 
     public ShellContext getContext() {
+        ensureOpened();
+
         if (context == null) {
             throw new IllegalStateException("Shell context has not been initialized");
         }
         return context;
     }
 
-    //
-    // TODO: Add ensureOpened() and add checks
-    //
+    public void setCompleters(final List<Completor> completers) {
+        assert completers != null;
+
+        this.completers = completers;
+    }
     
-    public boolean isOpened() {
-        return true;
-    }
-
-    public void close() {
-        log.debug("Closing");
-    }
-
     public boolean isInteractive() {
         return true;
     }
 
     @PostConstruct
     public void init() throws Exception {
+        if (opened) {
+            throw new IllegalStateException("Shell is already opened");
+        }
+
         assert application != null;
 
         // Dereference some bits from the applciation context
@@ -134,6 +145,8 @@ public class ShellImpl
 
         branding = application.getModel().getBranding();
 
+        opened = true;
+
         //
         // TODO: Populate variables with some defaults, like the username/hostname/etc.
         //
@@ -142,27 +155,37 @@ public class ShellImpl
     }
 
     public Object execute(final String line) throws Exception {
+        ensureOpened();
+
         assert executor != null;
         return executor.execute(getContext(), line);
     }
 
     public Object execute(final String command, final Object[] args) throws Exception {
+        ensureOpened();
+
         assert executor != null;
         return executor.execute(getContext(), command, args);
     }
 
     public Object execute(final Object... args) throws Exception {
+        ensureOpened();
+
         assert executor != null;
         return executor.execute(getContext(), args);
     }
 
     public Object execute(final Object[][] commands) throws Exception {
+        ensureOpened();
+
         assert executor != null;
         return executor.execute(getContext(), commands);
     }
 
     public void run(final Object... args) throws Exception {
         assert args != null;
+
+        ensureOpened();
 
         log.debug("Starting interactive console; args: {}", args);
 
