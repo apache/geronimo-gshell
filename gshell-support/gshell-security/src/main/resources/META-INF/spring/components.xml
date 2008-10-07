@@ -25,20 +25,20 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="cryptoContext" class="org.apache.geronimo.gshell.security.crypto.CryptoContextImpl">
+    <bean id="cryptoContext" class="org.apache.geronimo.gshell.security.crypto.CryptoContextImpl" lazy-init="true">
         <property name="transformation" value="RSA"/>
         <property name="provider" value="default"/>
     </bean>
     
-    <bean id="securityManager" class="org.jsecurity.mgt.DefaultSecurityManager">
+    <bean id="securityManager" class="org.jsecurity.mgt.DefaultSecurityManager" lazy-init="true">
         <property name="realms">
             <list>
-                <ref bean="bogusRealm"/>    
+                <ref bean="bogusRealm"/>
             </list>
         </property>
     </bean>
 
-    <bean id="bogusRealm" class="org.jsecurity.realm.text.TextConfigurationRealm">
+    <bean id="bogusRealm" class="org.jsecurity.realm.text.TextConfigurationRealm" lazy-init="true">
         <property name="userDefinitions">
             <value>
                 test=test

@@ -25,7 +25,7 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="timeoutManager" class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl"/>
+    <bean id="timeoutManager" class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl" lazy-init="true"/>
 
     <bean id="rshServer" class="org.apache.geronimo.gshell.remote.server.RshServer" scope="prototype">
         <constructor-arg>
