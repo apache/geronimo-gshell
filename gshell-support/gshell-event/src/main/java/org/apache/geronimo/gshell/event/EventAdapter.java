@@ -29,17 +29,13 @@ public abstract class EventAdapter<T extends Event>
 {
     @SuppressWarnings({"unchecked"})
     public void onEvent(final Event event) throws Exception {
-        T targetEvent = null;
+        assert event != null;
 
         // HACK: Can't check the type from T, so just handle the CCE, might not be very efficent though :-(
         try {
-            targetEvent = (T)event;
+            handleEvent((T)event);
         }
         catch (ClassCastException ignore) {}
-
-        if (targetEvent != null) {
-            handleEvent(targetEvent);
-        }
     }
 
     protected abstract void handleEvent(T event) throws Exception;
