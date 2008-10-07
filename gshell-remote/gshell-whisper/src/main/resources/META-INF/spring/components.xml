@@ -25,7 +25,7 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="transportFactoryLocator" class="org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocatorImpl">
+    <bean id="transportFactoryLocator" class="org.apache.geronimo.gshell.whisper.transport.TransportFactoryLocatorImpl" lazy-init="true">
         <property name="factories">
             <set>
                 <ref bean="vmTransportFactory"/>
@@ -37,7 +37,7 @@
 
     <!-- vm:// -->
 
-    <bean id="vmTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.vm.VmTransportFactory"/>
+    <bean id="vmTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.vm.VmTransportFactory" lazy-init="true"/>
 
     <bean id="vmTransport" class="org.apache.geronimo.gshell.whisper.transport.vm.VmTransport" scope="prototype"/>
 
@@ -45,7 +45,7 @@
 
     <!-- tcp:// -->
 
-    <bean id="tcpTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory"/>
+    <bean id="tcpTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory" lazy-init="true"/>
 
     <bean id="tcpTransport" class="org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransport" scope="prototype"/>
 
@@ -53,7 +53,7 @@
 
     <!-- ssl:// -->
 
-    <bean id="sslTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory"/>
+    <bean id="sslTransportFactory" class="org.apache.geronimo.gshell.whisper.transport.ssl.SslTransportFactory" lazy-init="true"/>
 
     <bean id="sslContextFactory" class="org.apache.geronimo.gshell.whisper.ssl.BogusSSLContextFactory"/>
 
