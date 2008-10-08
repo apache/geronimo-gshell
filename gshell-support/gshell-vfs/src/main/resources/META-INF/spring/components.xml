@@ -34,6 +34,9 @@
         </property>
     </bean>
 
+    <!--
+    TODO: Set tempDir File arg in constructor to set the temporary location, may need 2 replicators?
+    -->
     <bean id="defaultFileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator"/>
 
     <bean id="fileSystemManager" class="org.apache.geronimo.gshell.vfs.config.FileSystemManagerFactoryBean">
