@@ -53,12 +53,20 @@ public class HelpAction
     @Autowired
     private AliasRegistry aliasRegistry;
 
+    //
+    // TODO: Rename to path or name
+    //
+    
     @Argument
     private String commandName;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
 
+        //
+        // FIXME: Resolve commands first based on path, if there is one match, then display manual, else display brief listing
+        //
+        
         if (commandName != null) {
             return displayCommandManual(context);
         }
@@ -74,7 +82,7 @@ public class HelpAction
 
         try {
             assert commandResolver != null;
-            Command command = commandResolver.resolveCommand(context.getVariables(), commandName);
+            Command command = commandResolver.resolveCommand(commandName, context.getVariables());
 
             assert command != null;
             command.getDocumenter().renderManual(io.out);
@@ -114,8 +122,8 @@ public class HelpAction
         log.debug("Listing brief help for commands");
 
         assert commandResolver != null;
-        Collection<Command> commands = commandResolver.resolveCommands(context.getVariables(), null);
-
+        Collection<Command> commands = commandResolver.resolveCommands(null, context.getVariables());
+        
         // Determine the maximun name length
         int maxNameLen = 0;
         for (Command command : commands) {
