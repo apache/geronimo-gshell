@@ -34,6 +34,7 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.notification.FailureNotification;
 import org.apache.geronimo.gshell.notification.SuccessNotification;
+import org.apache.geronimo.gshell.notification.ResultNotification;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -304,14 +305,19 @@ public abstract class CommandSupport
 
             io.error(n.getMessage());
 
-            result = new CommandResult.ValueResult(CommandAction.Result.FAILURE);
+            result = new CommandResult.ValueResult(n.getResult());
         }
         catch (final SuccessNotification n) {
             log.trace("Command notified SUCCESS result: " + n, n);
 
             io.verbose(n.getMessage());
 
-            result = new CommandResult.ValueResult(CommandAction.Result.SUCCESS);
+            result = new CommandResult.ValueResult(n.getResult());
+        }
+        catch (final ResultNotification n) {
+            log.trace("Command notified result: " + n, n);
+
+            result = new CommandResult.ValueResult(n.getResult());
         }
         catch (final Notification n) {
             log.trace("Notified: " + n, n);
