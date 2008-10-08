@@ -29,24 +29,16 @@ import org.apache.geronimo.gshell.command.CommandAction.Result;
  *
  * @version $Rev$ $Date$
  */
-public final class SuccessNotification
-    extends Notification
+public class SuccessNotification
+    extends ResultNotification
 {
     private static final long serialVersionUID = 1;
 
     public SuccessNotification(final String msg) {
-        super(msg);
-    }
-
-    public SuccessNotification(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-    public SuccessNotification(final Throwable cause) {
-        super(cause);
+        super(msg, Result.SUCCESS);
     }
 
     public SuccessNotification() {
-        super();
+        super(Result.SUCCESS);
     }
 }

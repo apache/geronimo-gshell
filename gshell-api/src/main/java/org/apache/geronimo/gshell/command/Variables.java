@@ -97,6 +97,13 @@ public class Variables
         return value;
     }
 
+    @SuppressWarnings({"unchecked"})
+    public <T> T get(final String name, final Class<T> type) {
+        assert type != null;
+
+        return (T)get(name);
+    }
+    
     public Object get(final String name, final Object _default) {
         Object value = get(name);
         if (value == null) {
@@ -199,8 +206,6 @@ public class Variables
     public class ImmutableVariableException
         extends RuntimeException
     {
-        ///CLOVER:OFF
-
         public ImmutableVariableException(final String name) {
             super("Variable is immutable: " + name);
         }

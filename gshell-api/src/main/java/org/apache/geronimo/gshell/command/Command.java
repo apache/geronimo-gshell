@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.command;
 
 import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
@@ -30,6 +29,8 @@ import org.apache.geronimo.gshell.shell.ShellContext;
  */
 public interface Command
 {
+    // TODO: Add getName():String or getLocation():CommandLocation
+
     /**
      * Returns the action of the command.
      *

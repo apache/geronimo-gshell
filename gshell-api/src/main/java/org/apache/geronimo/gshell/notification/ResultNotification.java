@@ -17,28 +17,33 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.registry;
-
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.Variables;
-
-import java.util.Collection;
+package org.apache.geronimo.gshell.notification;
 
 /**
- * Resolves {@link Command} instances for a given path.
+ * Thrown to indicate a command result state.
  *
  * @version $Rev$ $Date$
  */
-public interface CommandResolver
+public class ResultNotification
+    extends Notification
 {
-    String PATH = "gshell.path";
+    private static final long serialVersionUID = 1;
 
-    String PATH_SEPARATOR = ":";
+    private final Object result;
 
-    String GROUP = "gshell.group";
+    public ResultNotification(final Object result) {
+        super();
 
-    Command resolveCommand(String name, Variables variables) throws CommandException;
+        this.result = result;
+    }
 
-    Collection<Command> resolveCommands(String name, Variables variables) throws CommandException;
+    public ResultNotification(final String msg, final Object result) {
+        super(msg);
+
+        this.result = result;
+    }
+
+    public Object getResult() {
+        return result;
+    }
 }
