@@ -27,10 +27,7 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.CommandResolver;
-import org.apache.geronimo.gshell.registry.NoSuchAliasException;
-import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,80 +47,43 @@ public class HelpAction
     @Autowired
     private CommandResolver commandResolver;
 
-    @Autowired
-    private AliasRegistry aliasRegistry;
-
-    //
-    // TODO: Rename to path or name
-    //
-    
     @Argument
     private String commandName;
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-
-        //
-        // FIXME: Resolve commands first based on path, if there is one match, then display manual, else display brief listing
-        //
-        
-        if (commandName != null) {
-            return displayCommandManual(context);
-        }
-
-        return displayAvailableCommands(context);
-    }
-
-    private Object displayCommandManual(final CommandContext context) throws Exception {
-        assert context != null;
         IO io = context.getIo();
 
-        log.debug("Displaying help manual for command: {}", commandName);
+        Collection<Command> commands = commandResolver.resolveCommands(commandName, context.getVariables());
 
-        try {
-            assert commandResolver != null;
-            Command command = commandResolver.resolveCommand(commandName, context.getVariables());
+        if (commands.isEmpty()) {
+            io.out.print("Command ");
+            io.out.print(Renderer.encode(commandName, Code.BOLD));
+            io.out.println(" not found.");
 
-            assert command != null;
+            io.out.print("Try ");
+            io.out.print(Renderer.encode("help", Code.BOLD));
+            io.out.println(" for a list of available commands.");
+
+            return Result.FAILURE;
+        }
+        else if (commands.size() == 1) {
+            Command command = commands.iterator().next();
             command.getDocumenter().renderManual(io.out);
-
+            
             return Result.SUCCESS;
         }
-        catch (NoSuchCommandException e) {
-            try {
-                assert aliasRegistry != null;
-                String alias = aliasRegistry.getAlias(commandName);
-                
-                io.out.print("Command ");
-                io.out.print(Renderer.encode(commandName, Code.BOLD));
-                io.out.print(" is an alias to: ");
-                io.out.println(Renderer.encode(alias, Code.BOLD));
-
-                return Result.SUCCESS;
-            }
-            catch (NoSuchAliasException e1) {
-                io.out.print("Command ");
-                io.out.print(Renderer.encode(commandName, Code.BOLD));
-                io.out.println(" not found.");
-
-                io.out.print("Try ");
-                io.out.print(Renderer.encode("help", Code.BOLD));
-                io.out.println(" for a list of available commands.");
-
-                return Result.FAILURE;
-            }
+        else {
+            return displayAvailableCommands(context, commands);
         }
     }
 
-    private Object displayAvailableCommands(final CommandContext context) throws Exception {
+    private Object displayAvailableCommands(final CommandContext context, final Collection<Command> commands) throws Exception {
         assert context != null;
-        IO io = context.getIo();
+        assert commands != null;
 
         log.debug("Listing brief help for commands");
 
-        assert commandResolver != null;
-        Collection<Command> commands = commandResolver.resolveCommands(null, context.getVariables());
-        
         // Determine the maximun name length
         int maxNameLen = 0;
         for (Command command : commands) {
@@ -131,6 +91,7 @@ public class HelpAction
             maxNameLen = Math.max(len, maxNameLen);
         }
 
+        IO io = context.getIo();
         io.out.println("Available commands:");
         for (Command command : commands) {
             CommandDocumenter documenter = command.getDocumenter();

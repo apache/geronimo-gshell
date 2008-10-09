@@ -38,6 +38,10 @@ public interface CommandResolver
 
     String GROUP = "gshell.group";
 
+    String COMMANDS_ROOT = "meta:/commands";
+
+    String ALIASES_ROOT = "meta:/aliases";
+
     Command resolveCommand(String name, Variables variables) throws CommandException;
 
     Collection<Command> resolveCommands(String name, Variables variables) throws CommandException;

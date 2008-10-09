@@ -28,6 +28,7 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,26 +41,47 @@ import java.util.List;
 public class AliasCommand
     extends CommandSupport
 {
-    // @Autowired
-    private final CommandLineExecutor executor;
+    @Autowired
+    private CommandLineExecutor executor;
 
-    private final String name;
+    private String name;
 
-    private final String alias;
+    private String alias;
 
-    public AliasCommand(final String name, final String alias, final CommandLineExecutor executor) {
-        assert name != null;
-        assert alias != null;
-        assert executor != null;
+    public AliasCommand(final String name, final String alias) {
+        // name could be null
+        // alias could be null
 
         this.name = name;
         this.alias = alias;
-        this.executor = executor;
 
         setAction(new AliasCommandAction());
         setDocumenter(new AliasCommandDocumenter());
         setCompleter(new NullCommandCompleter());
         setMessages(new AliasCommandMessageSource());
+    }
+
+    public String getName() {
+        if (name == null) {
+            throw new IllegalStateException("Missing property: name");
+        }
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(final String alias) {
+        if (alias == null) {
+            throw new IllegalStateException("Missing property: alias");
+        }
+
+        this.alias = alias;
     }
 
     @Override
@@ -92,7 +114,7 @@ public class AliasCommand
             };
 
             StringBuilder buff = new StringBuilder();
-            buff.append(alias);
+            buff.append(getAlias());
 
             // If we have args to append, then do it
             if (appendArgs != null && !appendArgs.isEmpty()) {
@@ -130,12 +152,12 @@ public class AliasCommand
     {
         @Override
         public String getName() {
-            return name;
+            return AliasCommand.this.getName();
         }
 
         @Override
         public String getDescription() {
-            return getMessages().format(COMMAND_DESCRIPTION, alias);
+            return getMessages().format(COMMAND_DESCRIPTION, getAlias());
         }
     }
 

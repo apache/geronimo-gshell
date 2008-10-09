@@ -19,27 +19,23 @@
 
 package org.apache.geronimo.gshell.wisdom.registry;
 
+import org.apache.commons.vfs.FileContent;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandException;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
-import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.CommandResolver;
-import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.apache.geronimo.gshell.vfs.FileObjects;
-import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
 import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,26 +51,11 @@ public class CommandResolverImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private AliasRegistry aliasRegistry;
-
-    @Autowired
     private FileSystemAccess fileSystemAccess;
-
-    @Autowired
-    private CommandLineExecutor executor;
-
-    private BeanContainer container;
 
     private FileObject commandsDirectory;
 
-    private FileObject aliasesDirectory;
-
-    @PostConstruct
-    public void init() throws Exception {
-        assert fileSystemAccess != null;
-        commandsDirectory = fileSystemAccess.resolveFile(null, "meta:/commands");
-        aliasesDirectory = fileSystemAccess.resolveFile(null, "meta:/aliases");
-    }
+    private BeanContainer container;
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
@@ -88,51 +69,164 @@ public class CommandResolverImpl
     //       *.gsh script, which under the covers will translate into 'source *.gsh' (or really
     //       should be 'shell *.gsh' once we have a sub-shell command.
     //
-    
-    public Command resolveCommand(final Variables vars, final String path) throws CommandException {
-        assert vars != null;
-        assert path != null;
 
-        log.debug("Resolving command for path: {}", path);
+    public Command resolveCommand(final String name, final Variables variables) throws CommandException {
+        assert name != null;
+        assert variables != null;
 
-        //
-        // FIXME: For now just ask for the named stuff, eventually need a better path parser and lookup thingy
-        //
+        log.debug("Resolving command name: {}", name);
 
-        //
-        // FIXME: Handle "/" to get to commandsDirectory.  Handle avoiding ../ leading to group dir set to meta:/ (should never go up past meta:/commands)
-        //
-                
-        Command command = findAliasCommand(path);
+        Command command = null;
+        
+        try {
+            FileObject file = resolveCommandFile(name, variables);
+
+            if (file != null) {
+                command = createCommand(file);
+            }
+        }
+        catch (FileSystemException e) {
+            log.warn("Unable to resolve command for name: " + name, e);
+        }
 
         if (command == null) {
-            try {
-                FileObject dir = getGroupDirectory(vars);
-                FileObject file = fileSystemAccess.resolveFile(dir, path);
-                
-                if (file.exists()) {
-                    command = (Command) file.getContent().getAttribute("COMMAND");
+            throw new NoSuchCommandException(name);
+        }
 
-                    // Dynamically create group commands
-                    if (command == null && file.getType().hasChildren()) {
-                        command = createGroupCommand(file);
-                        file.getContent().setAttribute("COMMAND", command);
-                    }
-                }
-                else {
-                    throw new NoSuchCommandException(path);
-                }
+        log.debug("Resolved command: {}", command);
 
-                FileObjects.close(file);
-            }
-            catch (FileSystemException e) {
-                throw new CommandException(e);
+        return command;
+    }
+
+    private FileObject resolveCommandFile(final String name, final Variables variables) throws FileSystemException {
+        assert name != null;
+        assert variables != null;
+
+        log.debug("Resolving command file: {}", name);
+
+        // Special handling for root
+        if (name.equals("/")) {
+            return getCommandsDirectory();
+        }
+        
+        String[] searchPath = getSearchPath(variables);
+
+        log.debug("Search path: {}", searchPath);
+
+        FileObject groupDir = getGroupDirectory(variables);
+
+        log.debug("Group dir: {}", groupDir);
+
+        FileObject file = null;
+
+        for (String pathElement : searchPath) {
+            log.debug("Resolving file; name={}, pathElement={}", name, pathElement);
+
+            FileObject dir = fileSystemAccess.resolveFile(null, groupDir.getName().getURI() + "/" + pathElement);
+
+            log.debug("Dir: {}", dir);
+
+            FileObject tmp = fileSystemAccess.resolveFile(dir, name);
+
+            log.debug("File: {}", tmp);
+
+            if (tmp.exists()) {
+                file = tmp;
+                break;
             }
         }
 
-        log.debug("Resolved command: {} -> {}", path, command);
+        if (file != null) {
+            log.debug("Resolved file: {}", file);
+
+            // Make sure whatever file we resolved is actually a meta file
+            if (!isMetaFile(file)) {
+                log.warn("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
+                return null;
+            }
+
+            // Make sure we found a file in the meta:/commands tree
+            if (!file.getName().getPath().startsWith("/commands")) {
+                log.warn("Command name '{}' did not resolve under " + COMMANDS_ROOT + "; found: {}", name, file);
+                return null;
+            }
+        }
+
+        return file;
+    }
+
+    private String[] getSearchPath(final Variables vars) {
+        assert vars != null;
+
+        Object tmp = vars.get(PATH);
+
+        if (tmp instanceof String) {
+            return ((String)tmp).split(PATH_SEPARATOR);
+        }
+        else if (tmp != null) {
+            log.error("Invalid type for variable '" + PATH + "'; expected String; found: " + tmp.getClass());
+        }
+
+        // Return the default
+        return new String[] { "/" };
+    }
+
+    public Collection<Command> resolveCommands(String name, Variables variables) throws CommandException {
+        // name may be null
+        assert variables != null;
+
+        if (name == null) {
+            name = "";
+        }
         
-        return command;
+        log.debug("Resolving commands for name: {}", name);
+
+        List<Command> commands = new ArrayList<Command>();
+
+        try {
+            FileObject file = resolveCommandFile(name, variables);
+
+            log.debug("Resolved (for commands): {}", file);
+
+            if (file != null && file.exists()) {
+                if (file.getType().hasChildren()) {
+                    for (FileObject child : file.getChildren()) {
+                        Command command = createCommand(child);
+                        commands.add(command);
+                    }
+                }
+                else {
+                    Command command = createCommand(file);
+                    commands.add(command);
+                }
+            }
+        }
+        catch (FileSystemException e) {
+            log.warn("Failed to resolve commands for name: " + name, e);
+        }
+
+        log.debug("Resolved {} commands", commands.size());
+        if (log.isTraceEnabled()) {
+            for (Command command : commands) {
+                log.trace("    {}", command);
+            }
+        }
+
+        return commands;
+    }
+
+    private boolean isMetaFile(final FileObject file) {
+        assert file != null;
+
+        return MetaFileName.SCHEME.equals(file.getName().getScheme());
+    }
+
+    private FileObject getCommandsDirectory() throws FileSystemException {
+        if (commandsDirectory == null) {
+            commandsDirectory = fileSystemAccess.resolveFile(null, COMMANDS_ROOT);
+        }
+
+        return commandsDirectory;
     }
 
     private FileObject getGroupDirectory(final Variables vars) throws FileSystemException {
@@ -140,11 +234,10 @@ public class CommandResolverImpl
 
         FileObject dir;
 
-        Object tmp = vars.get("gshell.group");
+        Object tmp = vars.get(GROUP);
 
         if (tmp == null) {
-            assert commandsDirectory != null;
-            dir = commandsDirectory;
+            dir = getCommandsDirectory();
         }
         else if (tmp instanceof String) {
             log.trace("Resolving group directory from string: {}", tmp);
@@ -155,113 +248,76 @@ public class CommandResolverImpl
         }
         else {
             // Complain, then use the default so commands still work
-            log.error("Invalid type for variable 'gshell.group'; expected String or FileObject; found: " + tmp.getClass());
-            assert commandsDirectory != null;
-            dir = commandsDirectory;
+            log.error("Invalid type for variable '" + GROUP + "'; expected String or FileObject; found: " + tmp.getClass());
+            dir = getCommandsDirectory();
         }
-        
-        assert dir != null;
+
+        if (!isMetaFile(dir)) {
+            log.error("Command group did not resolve to a meta-file: {}", dir);
+            dir = getCommandsDirectory();
+        }
+
         return dir;
     }
 
+    private Command createCommand(final FileObject file) throws FileSystemException, CommandException {
+        assert file != null;
 
-    private Command findAliasCommand(final String path) throws CommandException {
-        assert path != null;
+        log.debug("Creating command for file: {}", file);
 
         Command command = null;
 
-        try {
-            assert aliasesDirectory != null;
-            FileObject file = fileSystemAccess.resolveFile(aliasesDirectory, path);
-            if (file.exists()) {
-                command = (Command)file.getContent().getAttribute("COMMAND");
+        if (file.exists()) {
+            FileContent content = file.getContent();
+            command = (Command)content.getAttribute("COMMAND");
 
-                // Dynamically create alias commands
-                if (command == null) {
-                    command = createAliasCommand(file);
-                    file.getContent().setAttribute("COMMAND", command);
+            if (command == null) {
+                if (file.getType().hasChildren()) {
+                    command = createGroupCommand(file);
+                    content.setAttribute("COMMAND", command);
                 }
+
+                // TODO: Try to construct AliasCommand?
             }
         }
-        catch (FileSystemException e) {
-            throw new CommandException(e);
-        }
-        catch (NoSuchAliasException e) {
-            // ignore
+
+        if (command == null) {
+            throw new CommandException("Unable to create command for file: " + file.getName());
         }
 
         return command;
     }
 
-    private Command createAliasCommand(final FileObject file) throws FileSystemException, NoSuchAliasException {
+    /*
+    private Command createAliasCommand(final FileObject file) throws FileSystemException {
         assert file != null;
 
         String name = file.getName().getBaseName();
+
         log.debug("Creating command for alias: {}", name);
 
-        assert aliasRegistry != null;
-        String alias = aliasRegistry.getAlias(name);
-        AliasCommand command = new AliasCommand(name, alias, executor);
+        AliasCommand command = container.getBean(AliasCommand.class);
 
-        //
-        // FIXME: Have to inject the container because we are not wiring ^^^, and because its support muck needs some crap
-        //        probably need to use a prototype here
-        //
+        String alias = (String) file.getContent().getAttribute("ALIAS");
+        if (alias == null) {
+            throw new IllegalStateException("Alias meta-file does not contain 'ALIAS' attribute: " + file);
+        }
 
-        assert container != null;
-        command.setBeanContainer(container);
+        command.setName(name);
+        command.setAlias(alias);
 
         return command;
     }
-
-    public Collection<Command> resolveCommands(final Variables variables, final String path) throws CommandException {
-        assert variables != null;
-        // for now path can be null
-
-        log.debug("Resolving commands for path: {}", path);
-        
-        //
-        // FIXME: For now ingore path, just return all commands under meta:/commands
-        //
-        
-        List<Command> commands = new ArrayList<Command>();
-
-        try {
-            for (FileObject file : commandsDirectory.getChildren()) {
-                Command command = (Command)file.getContent().getAttribute("COMMAND");
-
-                // Dynamically create group commands
-                if (command == null && file.getType().hasChildren()) {
-                    command = createGroupCommand(file);
-                }
-
-                commands.add(command);
-            }
-        }
-        catch (FileSystemException e) {
-            throw new CommandException(e);
-        }
-
-        log.debug("Resolved {} commands: {}", commands.size(), commands);
-        
-        return commands;
-    }
+    */
 
     private Command createGroupCommand(final FileObject file) throws FileSystemException {
         assert file != null;
 
         log.debug("Creating command for group: {}", file);
 
-        GroupCommand command = new GroupCommand(file);
-
-        //
-        // FIXME: Have to inject the container because we are not wiring ^^^, and because its support muck needs some crap
-        //        probably need to use a prototype here
-        //
-
-        assert container != null;
-        command.setBeanContainer(container);
-
+        GroupCommand command = container.getBean(GroupCommand.class);
+        command.setFile(file);
+        
         return command;
     }
 }

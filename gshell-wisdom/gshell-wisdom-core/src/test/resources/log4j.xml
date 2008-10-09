@@ -39,12 +39,20 @@
         <level value="WARN"/>
     </logger>
 
+    <logger name="org.springframework.beans.factory.support">
+        <level value="WARN"/>
+    </logger>
+
     <logger name="org.apache.geronimo.gshell.spring">
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.apache.commons.vfs.cache">
+    <logger name="org.apache.geronimo.gshell.vfs.config">
         <level value="INFO"/>
+    </logger>
+
+    <logger name="org.apache.commons.vfs">
+        <level value="WARN"/>
     </logger>
 
     <root>

@@ -52,6 +52,10 @@ public abstract class SpringTestSupport
         return "classpath:" + getClass().getName().replace('.', '/') + "-context.xml";
     }
 
+    protected String getDefaultComponentsConfigLocation() {
+        return "classpath*:META-INF/spring/components.xml";
+    }
+    
     protected String[] getConfigLocations() {
         return new String[] {
             getDefaultConfigLocation()

@@ -20,13 +20,11 @@
 package org.apache.geronimo.gshell.wisdom.command;
 
 import org.apache.commons.vfs.FileObject;
-import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
-
-import java.util.List;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 
 /**
  * Group {@link org.apache.geronimo.gshell.command.Command} component.
@@ -36,11 +34,11 @@ import java.util.List;
 public class GroupCommand
     extends CommandSupport
 {
-    private final FileObject file;
+    private FileObject file;
 
     public GroupCommand(final FileObject file) {
-        assert file != null;
-
+        // file could be null
+        
         this.file = file;
 
         setAction(new GroupCommandAction());
@@ -49,21 +47,35 @@ public class GroupCommand
         setMessages(new GroupCommandMessageSource());
     }
 
+    public GroupCommand() {
+        this(null);
+    }
+
+    public FileObject getFile() {
+        if (file == null) {
+            throw new IllegalStateException("Missing property: file");
+        }
+        return file;
+    }
+
+    public void setFile(final FileObject file) {
+        this.file = file;
+    }
+
     /**
      * Action to set the gshell group.
      */
     private class GroupCommandAction
         implements CommandAction
     {
-        @Argument
-        private List<String> appendArgs = null;
-
         public Object execute(final CommandContext context) throws Exception {
             assert context != null;
 
+            FileObject file = getFile();
+
             log.debug("Changing to group: {}", file);
             
-            context.getVariables().parent().set("gshell.group", file);
+            context.getVariables().parent().set(CommandResolver.GROUP, file);
 
             return Result.SUCCESS;
         }
@@ -77,12 +89,12 @@ public class GroupCommand
     {
         @Override
         public String getName() {
-            return file.getName().getBaseName();
+            return getFile().getName().getBaseName();
         }
 
         @Override
         public String getDescription() {
-            return getMessages().format(COMMAND_DESCRIPTION, file.getName().getBaseName());
+            return getMessages().format(COMMAND_DESCRIPTION, getFile().getName().getBaseName());
         }
     }
 

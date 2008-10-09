@@ -213,9 +213,9 @@ public class CommandLineExecutorImpl
         log.debug("Executing");
 
         // Locate the command
-        Variables variables = context.getVariables();
-        Command command = commandResolver.resolveCommand(variables, path);
-
+        Variables vars = context.getVariables();
+        Command command = commandResolver.resolveCommand(path, vars);
+        
         // Hijack the system streams in the current thread's context
         IO io = context.getIo();
         SystemOutputHijacker.register(io.outputStream, io.errorStream);

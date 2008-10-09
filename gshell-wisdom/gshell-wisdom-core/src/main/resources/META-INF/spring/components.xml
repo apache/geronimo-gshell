@@ -37,8 +37,12 @@
 
     <bean id="commandMetaMapper" class="org.apache.geronimo.gshell.wisdom.registry.CommandMetaMapper"/>
 
-    <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.registry.CommandResolverImpl" depends-on="metaFileProviderConfigurer"/>
-    
+    <bean id="commandResolver" class="org.apache.geronimo.gshell.wisdom.registry.CommandResolverImpl"/>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.AliasCommand" scope="prototype"/>
+
+    <bean class="org.apache.geronimo.gshell.wisdom.command.GroupCommand" scope="prototype"/>
+
     <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl"/>
 
     <bean id="commandLineExecutor" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineExecutorImpl"/>
