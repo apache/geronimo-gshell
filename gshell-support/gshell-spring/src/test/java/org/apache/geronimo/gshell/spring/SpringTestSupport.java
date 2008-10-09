@@ -48,9 +48,13 @@ public abstract class SpringTestSupport
         container.loadBeans(getConfigLocations());
     }
 
+    protected String getDefaultConfigLocation() {
+        return "classpath:" + getClass().getName().replace('.', '/') + "-context.xml";
+    }
+
     protected String[] getConfigLocations() {
         return new String[] {
-            "classpath:" + getClass().getName().replace('.', '/') + "-context.xml"
+            getDefaultConfigLocation()
         };
     }
 
@@ -59,5 +63,13 @@ public abstract class SpringTestSupport
             throw new IllegalStateException();
         }
         return container;
+    }
+
+    protected <T> T getBean(final Class<T> type) {
+        return getBeanContainer().getBean(type);
+    }
+
+    protected <T> T getBean(final String name, final Class<T> requiredType) {
+        return getBeanContainer().getBean(name, requiredType);    
     }
 }
