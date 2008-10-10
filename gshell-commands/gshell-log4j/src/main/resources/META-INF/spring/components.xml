@@ -32,6 +32,18 @@
             <gshell:command name="log4j/logger">
                 <gshell:action class="org.apache.geronimo.gshell.commands.log4j.LoggerAction"/>
             </gshell:command>
+
+            <gshell:command name="log4j/loggers" type="stateless">
+                <gshell:action class="org.apache.geronimo.gshell.commands.log4j.LoggersAction"/>
+            </gshell:command>
+
+            <gshell:command name="log4j/mdc">
+                <gshell:action class="org.apache.geronimo.gshell.commands.log4j.MdcAction"/>
+            </gshell:command>
+
+            <gshell:command name="log4j/ndc">
+                <gshell:action class="org.apache.geronimo.gshell.commands.log4j.NdcAction"/>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
