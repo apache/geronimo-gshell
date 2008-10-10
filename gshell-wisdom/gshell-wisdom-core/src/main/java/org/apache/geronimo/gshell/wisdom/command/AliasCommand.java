@@ -61,6 +61,10 @@ public class AliasCommand
         setMessages(new AliasCommandMessageSource());
     }
 
+    public AliasCommand() {
+        this(null, null);
+    }
+    
     public String getName() {
         if (name == null) {
             throw new IllegalStateException("Missing property: name");

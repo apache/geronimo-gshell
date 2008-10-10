@@ -50,7 +50,7 @@
     <logger name="org.apache.geronimo.gshell.vfs.config">
         <level value="INFO"/>
     </logger>
-
+    
     <logger name="org.apache.commons.vfs">
         <level value="WARN"/>
     </logger>

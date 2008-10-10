@@ -25,7 +25,9 @@ import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.registry.CommandResolver;
+import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
+import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
 
 import java.util.Collection;
 
@@ -129,7 +131,7 @@ public class CommandResolverImplTest
 
     public void testResolveCustomPathInGroup() throws Exception {
         vars.set(CommandResolver.GROUP, "meta:/commands/group1");
-        vars.set(CommandResolver.PATH, "/");
+        vars.set(CommandResolver.PATH, "/:.");
 
         Command command;
 
@@ -144,18 +146,11 @@ public class CommandResolverImplTest
 
         command = resolver.resolveCommand("child2", vars);
         assertNotNull(command);
-
-        try {
-            resolver.resolveCommand("no-such-command", vars);
-            fail();
-        }
-        catch (NoSuchCommandException ignore) {
-            // expected
-        }
     }
 
     public void testResolveInGroup() throws Exception {
         vars.set(CommandResolver.GROUP, "meta:/commands/group1");
+        vars.set(CommandResolver.PATH, "/:.");
 
         Command command;
 
@@ -198,5 +193,16 @@ public class CommandResolverImplTest
         Collection<Command> commands = resolver.resolveCommands(null, vars);
         assertNotNull(commands);
         assertEquals(6, commands.size());
+    }
+
+    public void testResolveAliases() throws Exception {
+        AliasRegistry aliasRegistry = getBean(AliasRegistry.class);
+        aliasRegistry.registerAlias("test", "test1");
+
+        Command command;
+
+        command = resolver.resolveCommand("test", vars);
+        assertNotNull(command);
+        assertTrue(command instanceof AliasCommand);
     }
 }

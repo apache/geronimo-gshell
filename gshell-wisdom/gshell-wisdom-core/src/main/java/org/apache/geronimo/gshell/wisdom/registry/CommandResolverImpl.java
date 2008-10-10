@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
 import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
+import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,13 @@ public class CommandResolverImpl
     @Autowired
     private FileSystemAccess fileSystemAccess;
 
+    //
+    // TODO: Consider using FileSystemManager.createVirtualFileSystem() to chroot for resolving?
+    //
+    
     private FileObject commandsDirectory;
+
+    private FileObject aliasesDirectory;
 
     private BeanContainer container;
 
@@ -76,24 +83,63 @@ public class CommandResolverImpl
 
         log.debug("Resolving command name: {}", name);
 
-        Command command = null;
-        
-        try {
-            FileObject file = resolveCommandFile(name, variables);
+        // Always try to resolve aliases before we resolve commands
+        Command command = resolveAliasCommand(name, variables);
 
-            if (file != null) {
-                command = createCommand(file);
+        if (command == null) {
+            try {
+                FileObject file = resolveCommandFile(name, variables);
+
+                if (file != null) {
+                    command = createCommand(file);
+                }
             }
-        }
-        catch (FileSystemException e) {
-            log.warn("Unable to resolve command for name: " + name, e);
+            catch (FileSystemException e) {
+                log.warn("Unable to resolve command for name: " + name, e);
+            }
         }
 
         if (command == null) {
             throw new NoSuchCommandException(name);
         }
-
+        
         log.debug("Resolved command: {}", command);
+
+        return command;
+    }
+
+    private AliasCommand resolveAliasCommand(final String name, final Variables variables) {
+        assert name != null;
+        assert variables != null;
+
+        log.debug("Resolving alias for name: {}", name);
+        
+        AliasCommand command = null;
+
+        try {
+            FileObject file = fileSystemAccess.resolveFile(getAliasesDirectory(), name);
+
+            if (file != null && file.exists()) {
+                log.debug("Resolved file: {}", file);
+
+                // Make sure whatever file we resolved is actually a meta file
+                if (!isMetaFile(file)) {
+                    log.warn("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
+                    return null;
+                }
+
+                // Make sure we found a file in the meta:/commands tree
+                if (!file.getName().getPath().startsWith("/aliases")) {
+                    log.warn("Command name '{}' did not resolve under " + ALIASES_ROOT + "; found: {}", name, file);
+                    return null;
+                }
+
+                command = createAliasCommand(file);
+            }
+        }
+        catch (FileSystemException e) {
+            log.warn("Failed to resolve alias command for name: " + name, e);
+        }
 
         return command;
     }
@@ -104,9 +150,12 @@ public class CommandResolverImpl
 
         log.debug("Resolving command file: {}", name);
 
-        // Special handling for root
+        // Special handling for root & group
         if (name.equals("/")) {
             return getCommandsDirectory();
+        }
+        else if (name.equals(".")) {
+            return getGroupDirectory(variables);
         }
         
         String[] searchPath = getSearchPath(variables);
@@ -122,7 +171,17 @@ public class CommandResolverImpl
         for (String pathElement : searchPath) {
             log.debug("Resolving file; name={}, pathElement={}", name, pathElement);
 
-            FileObject dir = fileSystemAccess.resolveFile(null, groupDir.getName().getURI() + "/" + pathElement);
+            FileObject dir;
+            
+            if (pathElement.equals("/")) {
+                dir = getCommandsDirectory();
+            }
+            else if (pathElement.startsWith("/")) {
+                dir = fileSystemAccess.resolveFile(getCommandsDirectory(), pathElement.substring(1, pathElement.length()));
+            }
+            else {
+                dir = fileSystemAccess.resolveFile(groupDir, pathElement);
+            }
 
             log.debug("Dir: {}", dir);
 
@@ -167,8 +226,8 @@ public class CommandResolverImpl
             log.error("Invalid type for variable '" + PATH + "'; expected String; found: " + tmp.getClass());
         }
 
-        // Return the default
-        return new String[] { "/" };
+        // Return the default search path (group then root)
+        return new String[] { ".", "/" };
     }
 
     public Collection<Command> resolveCommands(String name, Variables variables) throws CommandException {
@@ -227,6 +286,14 @@ public class CommandResolverImpl
         }
 
         return commandsDirectory;
+    }
+
+    private FileObject getAliasesDirectory() throws FileSystemException {
+        if (aliasesDirectory == null) {
+            aliasesDirectory = fileSystemAccess.resolveFile(null, ALIASES_ROOT);
+        }
+
+        return aliasesDirectory;
     }
 
     private FileObject getGroupDirectory(final Variables vars) throws FileSystemException {
@@ -288,8 +355,7 @@ public class CommandResolverImpl
         return command;
     }
 
-    /*
-    private Command createAliasCommand(final FileObject file) throws FileSystemException {
+    private AliasCommand createAliasCommand(final FileObject file) throws FileSystemException {
         assert file != null;
 
         String name = file.getName().getBaseName();
@@ -308,9 +374,8 @@ public class CommandResolverImpl
 
         return command;
     }
-    */
 
-    private Command createGroupCommand(final FileObject file) throws FileSystemException {
+    private GroupCommand createGroupCommand(final FileObject file) throws FileSystemException {
         assert file != null;
 
         log.debug("Creating command for group: {}", file);

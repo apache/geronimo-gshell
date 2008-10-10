@@ -20,7 +20,12 @@
 package org.apache.geronimo.gshell.vfs.config;
 
 import org.apache.commons.vfs.FileSystemManager;
+import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.NameScope;
 import org.apache.commons.vfs.impl.DefaultFileSystemManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Configurable {@link FileSystemManager}.
@@ -30,5 +35,21 @@ import org.apache.commons.vfs.impl.DefaultFileSystemManager;
 public class ConfigurableFileSystemManager
     extends DefaultFileSystemManager
 {
-    // ???
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    /*
+    @Override
+    public FileName resolveName(final FileName root, final String path) throws FileSystemException {
+        return super.resolveName(root, path);
+    }
+    */
+    
+    @Override
+    public FileName resolveName(final FileName base, final String name, final NameScope scope) throws FileSystemException {
+        if (log.isDebugEnabled()) {
+            log.debug("Resolving name; base={}, name={}, scope={}", new Object[] { base, name, scope });
+        }
+
+        return super.resolveName(base, name, scope);
+    }
 }
