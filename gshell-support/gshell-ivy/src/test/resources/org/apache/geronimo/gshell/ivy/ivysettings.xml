@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<!-- $Rev$ $Date$ -->
+
+<ivysettings>
+    <settings defaultResolver="default"/>
+
+    <property name="ivy.m2local.default.root"             value="${user.home}/.m2/repository" override="false"/>
+	<property name="ivy.m2local.default.ivy.pattern"      value="[organisation]/[module]/[revision]/[module]-[revision].pom" override="false"/>
+	<property name="ivy.m2local.default.artifact.pattern" value="[organisation]/[module]/[revision]/[module]-[revision].[ext]" override="false"/>
+
+    <resolvers>
+        <chain name="default"> <!-- returnFirst="true" checkmodified="true"> -->
+            <filesystem name="m2local" m2compatible="true">
+                <ivy pattern="${ivy.m2local.default.root}/${ivy.m2local.default.ivy.pattern}"/>
+                <artifact pattern="${ivy.m2local.default.root}/${ivy.m2local.default.artifact.pattern}"/>
+            </filesystem>
+
+            <!--
+            <ibiblio name="ibiblio" m2compatible="true"/>
+            -->
+        </chain>
+    </resolvers>
+</ivysettings>
