@@ -98,7 +98,6 @@ public class CommandLineExecutorImpl
     public Object execute(final ShellContext context, final Object... args) throws Exception {
         assert context != null;
         assert args != null;
-        assert args.length > 1;
 
         log.info("Executing (Object...): [{}]", Arguments.asString(args));
 
