@@ -194,13 +194,6 @@ public class ShellImpl
         return executor.execute(getContext(), args);
     }
 
-    public Object execute(final Object[][] commands) throws Exception {
-        ensureOpened();
-
-        assert executor != null;
-        return executor.execute(getContext(), commands);
-    }
-
     public void run(final Object... args) throws Exception {
         assert args != null;
 
@@ -241,7 +234,7 @@ public class ShellImpl
         JLineConsole console = new JLineConsole(executor, io);
         console.setPrompter(getPrompter());
         console.setErrorHandler(getErrorHandler());
-        console.setHistory(history);
+        console.setHistory(getHistory());
 
         // Attach completers if there are any
         if (completers != null) {
