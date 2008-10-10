@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandLocation;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
@@ -59,6 +60,15 @@ public class AliasCommand
         setDocumenter(new AliasCommandDocumenter());
         setCompleter(new NullCommandCompleter());
         setMessages(new AliasCommandMessageSource());
+        setLocation(new CommandLocation() {
+            public String getName() {
+                return name;
+            }
+
+            public String getPath() {
+                return null;
+            }
+        });
     }
 
     public AliasCommand() {
@@ -154,11 +164,6 @@ public class AliasCommand
     private class AliasCommandDocumenter
         extends MessageSourceCommandDocumenter
     {
-        @Override
-        public String getName() {
-            return AliasCommand.this.getName();
-        }
-
         @Override
         public String getDescription() {
             return getMessages().format(COMMAND_DESCRIPTION, getAlias());

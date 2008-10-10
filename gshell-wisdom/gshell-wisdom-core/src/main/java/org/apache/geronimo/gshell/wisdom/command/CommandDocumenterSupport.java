@@ -86,7 +86,7 @@ public abstract class CommandDocumenterSupport
 
         Printer printer = new Printer(clp);
         printer.setMessageSource(new PrefixingMessageSource(getCommand().getMessages(), "command."));
-        printer.printUsage(out, getName());
+        printer.printUsage(out, getCommand().getLocation().getName());
     }
 
     protected abstract String getManual();
@@ -100,7 +100,7 @@ public abstract class CommandDocumenterSupport
         
         out.println(renderer.render(Renderer.encode("NAME", Code.BOLD)));
         out.print("  ");
-        out.println(getName());
+        out.println(getCommand().getLocation().getName());
         out.println();
 
         out.println(renderer.render(Renderer.encode("DESCRIPTION", Code.BOLD)));

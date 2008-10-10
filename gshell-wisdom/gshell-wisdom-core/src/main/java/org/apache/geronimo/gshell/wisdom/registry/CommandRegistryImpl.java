@@ -20,10 +20,12 @@
 package org.apache.geronimo.gshell.wisdom.registry;
 
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandLocation;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.DuplicateCommandException;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
+import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,10 @@ public class CommandRegistryImpl
 
         if (containsCommand(name)) {
             throw new DuplicateCommandException(name);
+        }
+
+        if (command instanceof CommandSupport) {
+            ((CommandSupport)command).setLocation(new CommandLocationImpl(name));
         }
 
         commands.put(name, command);
@@ -95,5 +101,46 @@ public class CommandRegistryImpl
 
     public Collection<String> getCommandNames() {
         return Collections.unmodifiableSet(commands.keySet());
+    }
+
+    //
+    // CommandLocationImpl
+    //
+
+    private class CommandLocationImpl
+        implements CommandLocation
+    {
+        private final String name;
+
+        private final String path;
+
+        public CommandLocationImpl(final String name) {
+            assert name != null;
+
+            int i = name.lastIndexOf("/");
+            if (i != -1) {
+                this.name = name.substring(i + 1, name.length());
+                this.path = name.substring(0, i);
+            }
+            else {
+                this.name = name;
+                this.path = null;
+            }
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public String toString() {
+            if (path != null) {
+                return path + "/" + name;
+            }
+            return name;
+        }
     }
 }

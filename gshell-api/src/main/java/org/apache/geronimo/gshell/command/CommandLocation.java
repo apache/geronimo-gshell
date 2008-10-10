@@ -17,34 +17,19 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.command;
+package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
 /**
- * {@link MessageSource} {@link CommandDocumenter} component.
+ * Provides information about the location of a {@link Command}.
  *
  * @version $Rev$ $Date$
  */
-public class MessageSourceCommandDocumenter
-    extends CommandDocumenterSupport
+public interface CommandLocation
 {
-    public static final String COMMAND_DESCRIPTION = "command.description";
+    String getName();
 
-    public static final String COMMAND_MANUAL = "command.manual";
-
-    protected MessageSource getMessages() {
-        MessageSource messages = getCommand().getMessages();
-        assert messages != null;
-        return messages;
-    }
-
-    public String getDescription() {
-        return getMessages().getMessage(COMMAND_DESCRIPTION);
-    }
-
-    protected String getManual() {
-        return getMessages().getMessage(COMMAND_MANUAL);
-    }
+    String getPath();
 }

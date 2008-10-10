@@ -28,17 +28,6 @@ import java.io.PrintWriter;
  */
 public interface CommandDocumenter
 {
-    //
-    // FIXME: Need to drop this from this interface, and provide some configuration to expose it via Command.getName()
-    //
-
-    /**
-     * Get the name of the command.
-     *
-     * @return The name of the command.
-     */
-    String getName();
-
     /**
      * Get the terse description of the command.
      *

@@ -87,7 +87,7 @@ public class HelpAction
         // Determine the maximun name length
         int maxNameLen = 0;
         for (Command command : commands) {
-            int len = command.getDocumenter().getName().length();
+            int len = command.getLocation().getName().length();
             maxNameLen = Math.max(len, maxNameLen);
         }
 
@@ -96,7 +96,7 @@ public class HelpAction
         for (Command command : commands) {
             CommandDocumenter documenter = command.getDocumenter();
 
-            String formattedName = String.format("%-" + maxNameLen + "s", documenter.getName());
+            String formattedName = String.format("%-" + maxNameLen + "s", command.getLocation().getName());
             String desc = documenter.getDescription();
 
             io.out.print("  ");

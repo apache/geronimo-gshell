@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.wisdom.command;
 import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandLocation;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.registry.CommandResolver;
@@ -45,6 +46,16 @@ public class GroupCommand
         setDocumenter(new GroupCommandDocumenter());
         setCompleter(new NullCommandCompleter());
         setMessages(new GroupCommandMessageSource());
+        setLocation(new CommandLocation() {
+            public String getName() {
+                return getFile().getName().getBaseName();
+            }
+
+            public String getPath() {
+                // FIXME: This isn't going to be correct, need to strip off the /commands stuff.
+                return getFile().getName().getPath();
+            }
+        });
     }
 
     public GroupCommand() {
@@ -87,11 +98,6 @@ public class GroupCommand
     private class GroupCommandDocumenter
         extends MessageSourceCommandDocumenter
     {
-        @Override
-        public String getName() {
-            return getFile().getName().getBaseName();
-        }
-
         @Override
         public String getDescription() {
             return getMessages().format(COMMAND_DESCRIPTION, getFile().getName().getBaseName());

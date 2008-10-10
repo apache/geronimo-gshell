@@ -79,13 +79,6 @@ public class LinkCommand
         final CommandDocumenter delegate = getCommand().getDocumenter();
 
         return new CommandDocumenter() {
-            public String getName() {
-                //
-                // FIXME: This is not correct, need to fix this... help listing shows up bunk.
-                //
-                return delegate.getName();
-            }
-
             public String getDescription() {
                 // TODO: i18n
                 return "Link to: " + target;

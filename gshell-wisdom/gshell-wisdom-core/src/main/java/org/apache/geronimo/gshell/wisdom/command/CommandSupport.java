@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.command.CommandLocation;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
@@ -51,6 +52,8 @@ public abstract class CommandSupport
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
+    private CommandLocation location;
+
     private CommandAction action;
 
     private CommandDocumenter documenter;
@@ -58,6 +61,23 @@ public abstract class CommandSupport
     private CommandCompleter completer;
 
     private MessageSource messages;
+
+    public CommandLocation getLocation() {
+        if (location == null) {
+            throw new IllegalStateException("Missing required property: location");
+        }
+        return location;
+    }
+
+    public void setLocation(final CommandLocation location) {
+        assert location != null;
+
+        handleCommandAware(location);
+
+        log.trace("Location: {}", location);
+        
+        this.location = location;
+    }
 
     public CommandAction getAction() {
         if (action == null) {

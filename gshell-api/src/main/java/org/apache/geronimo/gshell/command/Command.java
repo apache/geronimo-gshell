@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.shell.ShellContext;
  */
 public interface Command
 {
-    // TODO: Add getName():String or getLocation():CommandLocation
+    CommandLocation getLocation();
 
     /**
      * Returns the action of the command.
