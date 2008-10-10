@@ -44,6 +44,10 @@
             <gshell:command name="log4j/ndc">
                 <gshell:action class="org.apache.geronimo.gshell.commands.log4j.NdcAction"/>
             </gshell:command>
+
+            <gshell:command name="log4j/configure">
+                <gshell:action class="org.apache.geronimo.gshell.commands.log4j.ConfigureAction"/>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
