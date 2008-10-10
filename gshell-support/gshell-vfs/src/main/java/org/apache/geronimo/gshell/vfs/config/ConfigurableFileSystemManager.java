@@ -37,17 +37,10 @@ public class ConfigurableFileSystemManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    /*
-    @Override
-    public FileName resolveName(final FileName root, final String path) throws FileSystemException {
-        return super.resolveName(root, path);
-    }
-    */
-    
     @Override
     public FileName resolveName(final FileName base, final String name, final NameScope scope) throws FileSystemException {
-        if (log.isDebugEnabled()) {
-            log.debug("Resolving name; base={}, name={}, scope={}", new Object[] { base, name, scope });
+        if (log.isTraceEnabled()) {
+            log.trace("Resolving name; base={}, name={}, scope={}", new Object[] { base, name, scope });
         }
 
         return super.resolveName(base, name, scope);
