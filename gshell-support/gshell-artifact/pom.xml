@@ -36,7 +36,11 @@
     <description>
         Provides support for working with artifacts and repositories.
     </description>
-    
+
+    <properties>
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
