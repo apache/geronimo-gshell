@@ -31,6 +31,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,7 +109,11 @@ public class DefaultArtifactManager
 
         log.debug("Resolving request: {}", request);
 
+        StopWatch watch = new StopWatch(true);
+
         ArtifactResolutionResult result = artifactResolver.resolve(request);
+
+        log.debug("Resolution completed after: {}", watch);
 
         return validateResolutionResult(request, result);
     }

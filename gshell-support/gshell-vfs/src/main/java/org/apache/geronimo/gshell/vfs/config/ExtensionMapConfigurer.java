@@ -22,19 +22,19 @@ package org.apache.geronimo.gshell.vfs.config;
 import javax.annotation.PostConstruct;
 
 /**
- * Configures an extention mapping.
+ * Configures an extension mapping.
  *
  * @version $Rev$ $Date$
  */
-public class ExtentionMapConfigurer
-extends FileSystemManagerConfigurerSupport
+public class ExtensionMapConfigurer
+    extends FileSystemManagerConfigurerSupport
 {
-    private String extention;
+    private String extension;
 
     private String scheme;
 
-    public void setExtention(final String extention) {
-        this.extention = extention;
+    public void setExtension(final String extension) {
+        this.extension = extension;
     }
 
     public void setScheme(final String scheme) {
@@ -43,10 +43,15 @@ extends FileSystemManagerConfigurerSupport
 
     @PostConstruct
     public void init() {
-        // TODO: Complain on null
+        if (extension == null) {
+            throw new RuntimeException("Missing property: extension");
+        }
+        if (scheme == null) {
+            throw new RuntimeException("Missing property: scheme");
+        }
 
-        log.debug("Adding extention mapping: {} -> {}", extention, scheme);
+        log.debug("Adding extension mapping: {} -> {}", extension, scheme);
         ConfigurableFileSystemManager fsm = getFileSystemManager();
-        fsm.addExtensionMap(extention, scheme);
+        fsm.addExtensionMap(extension, scheme);
     }
 }

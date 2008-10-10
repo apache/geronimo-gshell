@@ -23,6 +23,10 @@ import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.model.settings.SettingsModelMarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.java2d.loops.GraphicsPrimitiveMgr;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Locates {@link SettingsModel} instances.
@@ -35,13 +39,21 @@ public class SettingsModelLocator
 
     private final SettingsModelMarshaller marshaller = new SettingsModelMarshaller();
 
+    private final List<String> locations = new ArrayList<String>();
+
     //
     // FIXME: Need to make this more robust, allow a file override/hint look in META-INF/gshell, user.home, etc.
     //
 
-    //
-    // TODO: Use builder pattern to add additonal bits to help location
-    //
+    public SettingsModelLocator addLocation(final String location) {
+        if (location != null) {
+            log.debug("Adding location: {}", location);
+        }
+
+        // TODO:
+        
+        return this;
+    }
 
     public SettingsModel locate() throws Exception {
         log.debug("Locating settings model descriptor");

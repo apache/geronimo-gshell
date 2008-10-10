@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * {@link CommandResolver} component.
@@ -112,7 +113,7 @@ public class CommandResolverImpl
         assert name != null;
         assert variables != null;
 
-        log.debug("Resolving alias for name: {}", name);
+        log.trace("Resolving alias for name: {}", name);
         
         AliasCommand command = null;
 
@@ -120,7 +121,7 @@ public class CommandResolverImpl
             FileObject file = fileSystemAccess.resolveFile(getAliasesDirectory(), name);
 
             if (file != null && file.exists()) {
-                log.debug("Resolved file: {}", file);
+                log.trace("Resolved file: {}", file);
 
                 // Make sure whatever file we resolved is actually a meta file
                 if (!isMetaFile(file)) {
@@ -148,7 +149,7 @@ public class CommandResolverImpl
         assert name != null;
         assert variables != null;
 
-        log.debug("Resolving command file: {}", name);
+        log.trace("Resolving command file: {}", name);
 
         // Special handling for root & group
         if (name.equals("/")) {
@@ -158,18 +159,18 @@ public class CommandResolverImpl
             return getGroupDirectory(variables);
         }
         
-        String[] searchPath = getSearchPath(variables);
+        Collection<String> searchPath = getSearchPath(variables);
 
-        log.debug("Search path: {}", searchPath);
+        log.trace("Search path: {}", searchPath);
 
         FileObject groupDir = getGroupDirectory(variables);
 
-        log.debug("Group dir: {}", groupDir);
+        log.trace("Group dir: {}", groupDir);
 
         FileObject file = null;
 
         for (String pathElement : searchPath) {
-            log.debug("Resolving file; name={}, pathElement={}", name, pathElement);
+            log.trace("Resolving file; name={}, pathElement={}", name, pathElement);
 
             FileObject dir;
             
@@ -183,11 +184,11 @@ public class CommandResolverImpl
                 dir = fileSystemAccess.resolveFile(groupDir, pathElement);
             }
 
-            log.debug("Dir: {}", dir);
+            log.trace("Dir: {}", dir);
 
             FileObject tmp = fileSystemAccess.resolveFile(dir, name);
 
-            log.debug("File: {}", tmp);
+            log.trace("File: {}", tmp);
 
             if (tmp.exists()) {
                 file = tmp;
@@ -196,7 +197,7 @@ public class CommandResolverImpl
         }
 
         if (file != null) {
-            log.debug("Resolved file: {}", file);
+            log.trace("Resolved file: {}", file);
 
             // Make sure whatever file we resolved is actually a meta file
             if (!isMetaFile(file)) {
@@ -214,20 +215,20 @@ public class CommandResolverImpl
         return file;
     }
 
-    private String[] getSearchPath(final Variables vars) {
+    private Collection<String> getSearchPath(final Variables vars) {
         assert vars != null;
 
         Object tmp = vars.get(PATH);
 
         if (tmp instanceof String) {
-            return ((String)tmp).split(PATH_SEPARATOR);
+            return Arrays.asList(((String)tmp).split(PATH_SEPARATOR));
         }
         else if (tmp != null) {
             log.error("Invalid type for variable '" + PATH + "'; expected String; found: " + tmp.getClass());
         }
 
         // Return the default search path (group then root)
-        return new String[] { ".", "/" };
+        return Arrays.asList(".", "/");
     }
 
     public Collection<Command> resolveCommands(String name, Variables variables) throws CommandException {
@@ -245,7 +246,7 @@ public class CommandResolverImpl
         try {
             FileObject file = resolveCommandFile(name, variables);
 
-            log.debug("Resolved (for commands): {}", file);
+            log.trace("Resolved (for commands): {}", file);
 
             if (file != null && file.exists()) {
                 if (file.getType().hasChildren()) {
@@ -330,7 +331,7 @@ public class CommandResolverImpl
     private Command createCommand(final FileObject file) throws FileSystemException, CommandException {
         assert file != null;
 
-        log.debug("Creating command for file: {}", file);
+        log.trace("Creating command for file: {}", file);
 
         Command command = null;
 
@@ -360,7 +361,7 @@ public class CommandResolverImpl
 
         String name = file.getName().getBaseName();
 
-        log.debug("Creating command for alias: {}", name);
+        log.trace("Creating command for alias: {}", name);
 
         AliasCommand command = container.getBean(AliasCommand.class);
 
@@ -378,7 +379,7 @@ public class CommandResolverImpl
     private GroupCommand createGroupCommand(final FileObject file) throws FileSystemException {
         assert file != null;
 
-        log.debug("Creating command for group: {}", file);
+        log.trace("Creating command for group: {}", file);
 
         GroupCommand command = container.getBean(GroupCommand.class);
         command.setFile(file);

@@ -43,7 +43,12 @@ public class MimeTypeMapConfigurer
 
     @PostConstruct
     public void init() {
-        // TODO: Complain on null
+        if (mimeType == null) {
+            throw new RuntimeException("Missing property: mimeType");
+        }
+        if (scheme == null) {
+            throw new RuntimeException("Missing property: scheme");
+        }
 
         log.debug("Adding mime-type mapping: {} -> {}", mimeType, scheme);
         ConfigurableFileSystemManager fsm = getFileSystemManager();

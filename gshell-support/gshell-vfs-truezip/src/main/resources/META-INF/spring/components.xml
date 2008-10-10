@@ -38,8 +38,8 @@
         </property>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
-        <property name="extention" value="zip"/>
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="extension" value="zip"/>
         <property name="scheme" value="zip"/>
     </bean>
 
@@ -57,8 +57,8 @@
         </property>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
-        <property name="extention" value="tar"/>
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="extension" value="tar"/>
         <property name="scheme" value="tar"/>
     </bean>
 
@@ -76,8 +76,8 @@
         </property>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
-        <property name="extention" value="jar"/>
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="extension" value="jar"/>
         <property name="scheme" value="jar"/>
     </bean>
 

@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -90,13 +91,21 @@ public class BeanContainerImpl
     public void loadBeans(final String[] locations) throws Exception {
         assert locations != null;
 
+        log.debug("Loading beans; locations: {}", locations);
+
+        StopWatch watch = new StopWatch(true);
+
         context.configure(locations);
         context.refresh();
+
+        log.debug("Loaded beans after: {}", watch);
     }
 
     public BeanContainer createChild(final String id, final List<URL> classPath) {
         assert id != null;
         // classPath may be null
+
+        log.debug("Creating child container: {}", id);
 
         if (log.isTraceEnabled()) {
             log.trace("Creating child container: {}", id);

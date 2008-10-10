@@ -59,6 +59,7 @@
         <module>gshell-vfs-meta</module>
         <module>gshell-vfs-truezip</module>
         <module>gshell-security</module>
+        <module>gshell-ivy</module>
     </modules>
 
 </project>

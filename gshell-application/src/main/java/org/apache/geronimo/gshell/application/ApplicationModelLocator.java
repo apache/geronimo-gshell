@@ -25,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Locates {@link ApplicationModel} instances.
@@ -37,18 +39,33 @@ public class ApplicationModelLocator
 
     private final ApplicationModelMarshaller marshaller = new ApplicationModelMarshaller();
 
+    private final List<String> locations = new ArrayList<String>();
+
     //
     // FIXME: Need to make this more robust, allow a file override/hint look in META-INF/gshell, etc.
     //
 
-    //
-    // TODO: Use builder pattern to add additonal bits to help location
-    //
-    
+    public ApplicationModelLocator addLocation(final String location) {
+        if (location != null) {
+            log.debug("Adding location: {}", location);
+        }
+
+        locations.add(location);
+
+        return this;
+    }
+
     public ApplicationModel locate() throws Exception {
         log.debug("Locating application model descriptor");
 
-        URL url = getClass().getClassLoader().getResource("application.xml");
+        // TODO: look for locations, based on reverse view of locations list
+
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        URL url = cl.getResource("application.xml");
+
+        if (url == null) {
+            throw new RuntimeException("Unable to locate application model descriptor");
+        }
 
         log.debug("Application model descriptor URL: {}", url);
         

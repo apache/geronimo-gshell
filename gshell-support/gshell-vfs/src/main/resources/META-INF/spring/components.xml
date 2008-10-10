@@ -96,22 +96,22 @@
     -->
 
     <!--
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
         <property name="extention" value="bz2"/>
         <property name="scheme" value="bz2"/>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
         <property name="extention" value="gz"/>
         <property name="scheme" value="gz"/>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
         <property name="extention" value="tgz"/>
         <property name="scheme" value="tar"/>
     </bean>
 
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtentionMapConfigurer">
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
         <property name="extention" value="tar"/>
         <property name="scheme" value="tbz2"/>
     </bean>

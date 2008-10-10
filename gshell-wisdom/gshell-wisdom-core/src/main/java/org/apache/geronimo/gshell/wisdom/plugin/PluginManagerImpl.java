@@ -32,6 +32,7 @@ import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -121,6 +122,8 @@ public class PluginManagerImpl
         assert application != null;
         assert artifact != null;
 
+        StopWatch watch = new StopWatch(true);
+
         log.debug("Loading plugin: {}", artifact.getId());
 
         Set<Artifact> artifacts = resolveArtifacts(application, artifact);
@@ -145,6 +148,8 @@ public class PluginManagerImpl
 
         plugin.activate();
 
+        log.debug("Loaded plugin in: {}", watch);
+        
         eventPublisher.publish(new PluginLoadedEvent(plugin, artifact));
     }
 

@@ -177,8 +177,7 @@ public class ShellBuilderImpl
     public Shell create() throws Exception {
         log.debug("Building");
 
-        StopWatch watch = new StopWatch();
-        watch.start();
+        StopWatch watch = new StopWatch(true);
         
         // Set some defaults
         if (applicationConfig.getIo() == null) {

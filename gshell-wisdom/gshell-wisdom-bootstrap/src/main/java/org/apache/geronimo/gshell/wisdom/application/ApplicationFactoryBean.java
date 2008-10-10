@@ -27,7 +27,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * ???
+ * Provides access to the {@link Application} instance.
  *
  * @version $Rev$ $Date$
  */
@@ -43,7 +43,7 @@ public class ApplicationFactoryBean
         assert applicationManager != null;
         Application app = applicationManager.getApplication();
 
-        log.debug("Applictaion: {}", app);
+        log.debug("Application: {}", app);
 
         return app;
     }

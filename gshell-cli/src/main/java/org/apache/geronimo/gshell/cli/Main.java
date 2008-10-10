@@ -62,10 +62,6 @@ public class Main
     //
 
     //
-    // TODO: Add --application and --settings
-    //
-
-    //
     // TODO: Add --file <file>, which will run: source <file> 
     //
 
@@ -81,6 +77,12 @@ public class Main
     private void setConsoleLogLevel(final String level) {
         System.setProperty("gshell.log.console.level", level);
     }
+
+    @Option(name="-a", aliases={"--application"})
+    private String applicationDescriptor;
+
+    @Option(name="-s", aliases={"--settings"})
+    private String settingsDescriptor;
 
     @Option(name="-e", aliases={"--exception"})
     private void setException(boolean flag) {
@@ -215,11 +217,13 @@ public class Main
             builder.setIo(io);
 
             // Find our settings descriptor
-            SettingsModel settingsModel = new SettingsModelLocator().locate();
+            SettingsModel settingsModel = new SettingsModelLocator().
+                    addLocation(settingsDescriptor).locate();
             builder.setSettingsModel(settingsModel);
 
             // Find our application descriptor
-            ApplicationModel applicationModel = new ApplicationModelLocator().locate();
+            ApplicationModel applicationModel = new ApplicationModelLocator().
+                    addLocation(applicationDescriptor).locate();
             builder.setApplicationModel(applicationModel);
 
             // --help and --version need access to the application's information, so we have to handle these options late

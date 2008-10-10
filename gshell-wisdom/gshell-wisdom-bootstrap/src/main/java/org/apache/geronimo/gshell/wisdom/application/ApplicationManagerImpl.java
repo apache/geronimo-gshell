@@ -37,6 +37,7 @@ import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -165,6 +166,8 @@ public class ApplicationManagerImpl
     private ApplicationImpl loadApplication(final ApplicationConfiguration config) throws Exception {
         assert config != null;
 
+        StopWatch watch = new StopWatch(true);
+
         ApplicationImpl app = new ApplicationImpl(config);
 
         ApplicationModel model = app.getModel();
@@ -187,6 +190,8 @@ public class ApplicationManagerImpl
         });
         
         applicationContainer = child;
+
+        log.debug("Application loaded in: {}", watch);
 
         return app;
     }
