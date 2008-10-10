@@ -245,7 +245,7 @@ public class Main
             // clp gives us a list, but we need an array
             String[] _args = {};
             if (commandArgs != null) {
-                commandArgs.toArray(new String[commandArgs.size()]);
+                _args = commandArgs.toArray(new String[commandArgs.size()]);
             }
 
             if (commands != null) {
