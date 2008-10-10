@@ -78,11 +78,13 @@ public class Main
         System.setProperty("gshell.log.console.level", level);
     }
 
+    /*
     @Option(name="-a", aliases={"--application"})
     private String applicationDescriptor;
 
     @Option(name="-s", aliases={"--settings"})
     private String settingsDescriptor;
+    */
 
     @Option(name="-e", aliases={"--exception"})
     private void setException(boolean flag) {
@@ -218,12 +220,12 @@ public class Main
 
             // Find our settings descriptor
             SettingsModel settingsModel = new SettingsModelLocator().
-                    addLocation(settingsDescriptor).locate();
+                    /*addLocation(settingsDescriptor).*/locate();
             builder.setSettingsModel(settingsModel);
 
             // Find our application descriptor
             ApplicationModel applicationModel = new ApplicationModelLocator().
-                    addLocation(applicationDescriptor).locate();
+                    /*addLocation(applicationDescriptor).*/locate();
             builder.setApplicationModel(applicationModel);
 
             // --help and --version need access to the application's information, so we have to handle these options late
