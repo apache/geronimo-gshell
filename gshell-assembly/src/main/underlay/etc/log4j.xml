@@ -86,7 +86,7 @@
     </logger>
 
     <logger name="org.springframework">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
 
     <logger name="org.apache.geronimo.gshell.spring.LifecycleProcessor">
@@ -94,7 +94,7 @@
     </logger>
 
     <logger name="org.apache.geronimo.gshell.spring.BeanContainerContextImpl">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
 
     <logger name="org.apache.commons.vfs.cache">
