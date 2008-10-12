@@ -38,4 +38,8 @@ public interface ArtifactManager
     void setDownloadMonitor(TransferListener listener);
 
     ArtifactResolutionResult resolve(ArtifactResolutionRequest request) throws ResolutionException;
+
+    boolean isOnline();
+
+    void setOnline(boolean flag);
 }

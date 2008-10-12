@@ -189,4 +189,14 @@ public class DefaultArtifactManager
         
         return result;
     }
+
+    public boolean isOnline() {
+        return wagonManager.isOnline();
+    }
+
+    public void setOnline(final boolean flag) {
+        log.debug("Online: {}", flag);
+
+        wagonManager.setOnline(flag);
+    }
 }
