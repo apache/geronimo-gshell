@@ -58,6 +58,7 @@ public class XStoreImpl
     private FileSystem getFileSystem() {
         if (fileSystem == null) {
             try {
+                assert fileSystemAccess != null;
                 FileObject file = fileSystemAccess.getManager().createVirtualFileSystem(getRootUri());
                 log.debug("Root file: {}", file);
 
