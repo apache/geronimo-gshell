@@ -38,6 +38,8 @@ public class SettingsModel
 {
     private Properties properties;
 
+    private boolean online;
+
     // TODO: Proxies
 
     private List<RemoteRepository> remoteRepositories;
@@ -56,6 +58,14 @@ public class SettingsModel
 
     public void setProperties(final Properties properties) {
         this.properties = properties;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(final boolean online) {
+        this.online = online;
     }
 
     public List<RemoteRepository> remoteRepositories() {
