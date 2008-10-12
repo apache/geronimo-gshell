@@ -62,6 +62,6 @@ public class SettingsModelLocator
         // TODO: For now we just ignore user settings, but should try to locate a descriptor and unmarshal
         //
         
-        return null;
+        return new SettingsModel();
     }
 }
