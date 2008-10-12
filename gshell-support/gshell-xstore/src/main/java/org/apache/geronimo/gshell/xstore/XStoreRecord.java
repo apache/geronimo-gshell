@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.xstore;
 import java.util.Collection;
 
 /**
- * ???
+ * A record in an {@link XStore}.
  *
  * @version $Rev$ $Date$
  */
@@ -32,9 +32,9 @@ public interface XStoreRecord
 
     boolean exists();
 
-    void set(Object object);
+    void set(Object value);
 
-    Object get();
+    <T> T get(Class<T> type);
 
     void close();
 

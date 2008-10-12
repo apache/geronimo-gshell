@@ -20,13 +20,11 @@
 package org.apache.geronimo.gshell.xstore;
 
 /**
- * ???
+ * Provides access to {@link XStoreRecord} instances..
  *
  * @version $Rev$ $Date$
  */
 public interface XStore
 {
     XStoreRecord resolveRecord(String path);
-
-    void close();
 }
