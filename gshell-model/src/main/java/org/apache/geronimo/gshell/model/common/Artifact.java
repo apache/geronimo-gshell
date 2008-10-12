@@ -20,12 +20,14 @@
 package org.apache.geronimo.gshell.model.common;
 
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Defines an artifact (groupId, artifactId, version, etc).
  *
  * @version $Rev$ $Date$
  */
+@XStreamAlias("artifact")
 public class Artifact
     extends ArtifactSupport
 {

@@ -17,19 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.settings;
-
-import org.apache.geronimo.gshell.marshal.MarshallerSupport;
+package org.apache.geronimo.gshell.marshal;
 
 /**
- * Marshaller for {@link SettingsModel} models.
+ * Allows marshelled objects to beome aware of their {@link Marshaller}.
  *
  * @version $Rev$ $Date$
  */
-public class SettingsModelMarshaller
-    extends MarshallerSupport<SettingsModel>
+public interface MarshallerAware
 {
-    public SettingsModelMarshaller() {
-        super(SettingsModel.class);
-    }
+    void setMarshaller(Marshaller marshaller);
 }

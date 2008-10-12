@@ -19,7 +19,8 @@
 
 package org.apache.geronimo.gshell.model;
 
-import org.apache.geronimo.gshell.model.marshal.Marshaller;
+import org.apache.geronimo.gshell.marshal.Marshaller;
+import org.apache.geronimo.gshell.marshal.MarshallerAware;
 
 /**
  * Base class for root model elements.
@@ -28,6 +29,7 @@ import org.apache.geronimo.gshell.model.marshal.Marshaller;
  */
 public abstract class Model
     extends Element
+    implements MarshallerAware
 {
     private transient Marshaller marshaller;
 

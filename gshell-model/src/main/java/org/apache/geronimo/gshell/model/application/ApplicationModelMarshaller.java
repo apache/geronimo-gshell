@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import org.apache.geronimo.gshell.model.marshal.MarshallerSupport;
+import org.apache.geronimo.gshell.marshal.MarshallerSupport;
 
 /**
  * Marshaller for {@link ApplicationModel} models.

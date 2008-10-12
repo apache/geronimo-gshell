@@ -17,14 +17,18 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.marshal;
+package org.apache.geronimo.gshell.marshal;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import org.apache.geronimo.gshell.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,18 +38,18 @@ import java.io.Writer;
 import java.net.URL;
 
 /**
- * Support for model {@link Marshaller} implementations.
+ * Support for {@link Marshaller} implementations.
  *
  * @version $Rev$ $Date$
  */
-public class MarshallerSupport<T extends Model>
+public class MarshallerSupport<T>
     implements Marshaller<T>
 {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
     private final Class rootType;
 
-    protected MarshallerSupport(final Class rootType) {
+    public MarshallerSupport(final Class rootType) {
         assert rootType != null;
 
         this.rootType = rootType;
@@ -106,7 +110,9 @@ public class MarshallerSupport<T extends Model>
 
         T model = (T)createXStream().fromXML(input);
 
-        model.setMarshaller(this);
+        if (model instanceof MarshallerAware) {
+            ((MarshallerAware)model).setMarshaller(this);
+        }
 
         log.trace("Unmarshalled: {}", model);
 
@@ -119,7 +125,9 @@ public class MarshallerSupport<T extends Model>
 
         T model = (T)createXStream().fromXML(reader);
 
-        model.setMarshaller(this);
+        if (model instanceof MarshallerAware) {
+            ((MarshallerAware)model).setMarshaller(this);
+        }
 
         log.trace("Unmarshalled: {}", model);
         
@@ -144,4 +152,31 @@ public class MarshallerSupport<T extends Model>
             input.close();
         }
     }
+
+    public void marshal(final T root, final File file) throws IOException {
+        assert root != null;
+        assert file != null;
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        try {
+            marshal(root, writer);
+        }
+        finally {
+            writer.close();
+        }
+    }
+
+    public T unmarshal(final File file) throws IOException {
+        assert file != null;
+
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+
+        try {
+            return unmarshal(reader);
+        }
+        finally {
+            reader.close();
+        }
+    }
+
 }

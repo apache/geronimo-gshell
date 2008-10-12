@@ -17,21 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.marshal;
+package org.apache.geronimo.gshell.marshal;
 
-import org.apache.geronimo.gshell.model.Model;
-
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 
 /**
- * Model marshaller interface.
+ * Marshaller interface.
  *
  * @version $Rev$ $Date$
  */
-public interface Marshaller<T extends Model>
+public interface Marshaller<T>
 {
     void marshal(T root, OutputStream output);
 
@@ -39,9 +40,15 @@ public interface Marshaller<T extends Model>
 
     String marshal(T root);
 
+    void marshal(T root, File file) throws IOException;
+
     T unmarshal(InputStream input);
 
     T unmarshal(Reader reader);
 
     T unmarshal(String xml);
+
+    T unmarshal(URL url) throws IOException;
+
+    T unmarshal(File file) throws IOException;
 }

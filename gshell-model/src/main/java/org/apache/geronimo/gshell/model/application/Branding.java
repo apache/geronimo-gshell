@@ -53,6 +53,8 @@ public class Branding
 
     private String sharedDirectory;
 
+    // TODO: Need stateDirectory (${gshell.home}/var/<name>
+
     private String profileScriptName;
 
     private String historyFileName;

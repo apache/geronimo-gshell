@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.model.interpolate;
 
 import org.apache.geronimo.gshell.model.Model;
-import org.apache.geronimo.gshell.model.marshal.Marshaller;
+import org.apache.geronimo.gshell.marshal.Marshaller;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.RecursionInterceptor;
 import org.codehaus.plexus.interpolation.RegexBasedInterpolator;
