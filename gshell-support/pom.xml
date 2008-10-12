@@ -60,6 +60,8 @@
         <module>gshell-vfs-truezip</module>
         <module>gshell-security</module>
         <module>gshell-ivy</module>
+        <module>gshell-marshal</module>
+        <module>gshell-xstore</module>
     </modules>
 
 </project>
