@@ -23,10 +23,14 @@ import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
+import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
+import org.apache.geronimo.gshell.marshal.MarshallerSupport;
+import org.apache.geronimo.gshell.marshal.Marshaller;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.application.DependencyArtifact;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
@@ -37,7 +41,6 @@ import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -52,11 +55,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.net.URL;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.net.URL;
 
 /**
  * Default implementation of the {@link ApplicationManager} component.
@@ -169,20 +171,15 @@ public class ApplicationManagerImpl
         StopWatch watch = new StopWatch(true);
 
         ApplicationImpl app = new ApplicationImpl(config);
-
         ApplicationModel model = app.getModel();
 
         log.debug("Loading application: {}", app.getId());
         log.trace("Application model: {}", model);
 
-        Set<Artifact> artifacts = resolveArtifacts(model);
+        ClassPath classPath = loadClassPath(model);
+        app.initClassPath(classPath);
 
-        // Initialize the applications artifact configuration
-        app.initArtifacts(artifacts);
-
-        List<URL> classPath = createClassPath(artifacts);
-
-        BeanContainer child = container.createChild("gshell.application(" + model.getId() + ")", classPath);
+        BeanContainer child = container.createChild("gshell.application(" + model.getId() + ")", classPath.getUrls());
         log.debug("Application container: {}", child);
 
         child.loadBeans(new String[] {
@@ -194,6 +191,36 @@ public class ApplicationManagerImpl
         log.debug("Application loaded in: {}", watch);
 
         return app;
+    }
+
+    private ClassPath loadClassPath(final ApplicationModel model) throws Exception {
+        assert model != null;
+
+        Marshaller<ClassPath> marshaller = new MarshallerSupport<ClassPath>(ClassPathImpl.class);
+        File file = new File(new File(System.getProperty("gshell.home")), "var/gshell/classpath.xml");  // FIXME: Get state directory from application/branding
+        ClassPath classPath;
+
+        if (file.exists()) {
+            classPath = marshaller.unmarshal(file);
+            log.debug("Loaded classpath from cache: {}", file);
+        }
+        else {
+            Set<Artifact> artifacts = resolveArtifacts(model);
+            classPath = new ClassPathImpl(artifacts);
+            log.debug("Saving classpath to cache: {}", file);
+            file.getParentFile().mkdirs();
+            marshaller.marshal(classPath, file);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Application classpath:");
+
+            for (URL url : classPath.getUrls()) {
+                log.debug("    {}", url);
+            }
+        }
+
+        return classPath;
     }
 
     private Set<Artifact> resolveArtifacts(final ApplicationModel model) throws Exception {
@@ -228,28 +255,6 @@ public class ApplicationManagerImpl
         ArtifactResolutionResult result = artifactManager.resolve(request);
 
         return result.getArtifacts();
-    }
-
-    private List<URL> createClassPath(final Set<Artifact> artifacts) throws Exception {
-        assert artifacts != null;
-
-        List<URL> classPath = new LinkedList<URL>();
-
-        if (!artifacts.isEmpty()) {
-            log.debug("Application classpath:");
-
-            for (Artifact artifact : artifacts) {
-                File file = artifact.getFile();
-                assert file != null;
-
-                URL url = file.toURI().toURL();
-                log.debug("    {}", url);
-
-                classPath.add(url);
-            }
-        }
-
-        return classPath;
     }
 
     //

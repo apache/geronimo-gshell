@@ -50,7 +50,7 @@ public class PluginArtifactFilter
         
         // Filter out application artifacts, need to use gid:aid to make sure we don't clober anything which has the same artifactId, but different groupId
         final Set<String> excludes = new HashSet<String>();
-        for (org.apache.geronimo.gshell.model.common.Artifact a : application.getArtifacts()) {
+        for (org.apache.geronimo.gshell.model.common.Artifact a : application.getClassPath().getArtifacts()) {
             String id = a.getGroupId() + ":" + a.getArtifactId();
             excludes.add(id);
         }

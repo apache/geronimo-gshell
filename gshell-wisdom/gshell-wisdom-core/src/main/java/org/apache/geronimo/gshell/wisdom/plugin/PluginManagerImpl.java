@@ -21,18 +21,22 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.event.EventPublisher;
+import org.apache.geronimo.gshell.marshal.MarshallerSupport;
+import org.apache.geronimo.gshell.marshal.Marshaller;
 import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
-import org.apache.geronimo.gshell.chronos.StopWatch;
+import org.apache.geronimo.gshell.wisdom.application.ClassPathImpl;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -43,11 +47,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.net.URL;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.net.URL;
 
 /**
  * Default implementation of the {@link PluginManager} component.
@@ -126,10 +129,9 @@ public class PluginManagerImpl
 
         log.debug("Loading plugin: {}", artifact.getId());
 
-        Set<Artifact> artifacts = resolveArtifacts(application, artifact);
-        List<URL> classPath = createClassPath(artifacts);
-
-        BeanContainer pluginContainer = container.createChild("gshell.plugin(" + artifact.getId() + ")", classPath);
+        ClassPath classPath = loadClassPath(application, artifact);
+        
+        BeanContainer pluginContainer = container.createChild("gshell.plugin(" + artifact.getId() + ")", classPath.getUrls());
         log.debug("Created plugin container: {}", pluginContainer);
 
         pluginContainer.loadBeans(new String[] {
@@ -140,7 +142,7 @@ public class PluginManagerImpl
 
         // Initialize the plugins artifact configuration
         plugin.initArtifact(artifact);
-        plugin.initArtifacts(artifacts);
+        plugin.initClassPath(classPath);
 
         plugins.add(plugin);
 
@@ -151,6 +153,37 @@ public class PluginManagerImpl
         log.debug("Loaded plugin in: {}", watch);
         
         eventPublisher.publish(new PluginLoadedEvent(plugin, artifact));
+    }
+
+    private ClassPath loadClassPath(final Application application, final PluginArtifact artifact) throws Exception {
+        assert application != null;
+        assert artifact != null;
+
+        Marshaller<ClassPath> marshaller = new MarshallerSupport<ClassPath>(ClassPathImpl.class);
+        File file = new File(new File(System.getProperty("gshell.home")), "var/gshell/" + artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml");  // FIXME: Get state directory from application/branding
+        ClassPath classPath;
+
+        if (file.exists()) {
+            classPath = marshaller.unmarshal(file);
+            log.debug("Loaded classpath from cache: {}", file);
+        }
+        else {
+            Set<Artifact> artifacts = resolveArtifacts(application, artifact);
+            classPath = new ClassPathImpl(artifacts);
+            log.debug("Saving classpath to cache: {}", file);
+            file.getParentFile().mkdirs();
+            marshaller.marshal(classPath, file);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Plugin classpath:");
+
+            for (URL url : classPath.getUrls()) {
+                log.debug("    {}", url);
+            }
+        }
+
+        return classPath;
     }
 
     public void loadPlugin(final PluginArtifact artifact) throws Exception {
@@ -183,27 +216,5 @@ public class PluginManagerImpl
         ArtifactResolutionResult result = artifactManager.resolve(request);
 
         return result.getArtifacts();
-    }
-
-    private List<URL> createClassPath(final Set<Artifact> artifacts) throws Exception {
-        assert artifacts != null;
-
-        List<URL> classPath = new LinkedList<URL>();
-
-        if (!artifacts.isEmpty()) {
-            log.debug("Plugin classpath:");
-
-            for (Artifact a : artifacts) {
-                File file = a.getFile();
-                assert file != null;
-
-                URL url = file.toURI().toURL();
-                log.debug("    {}", url);
-
-                classPath.add(url);
-            }
-        }
-
-        return classPath;
     }
 }

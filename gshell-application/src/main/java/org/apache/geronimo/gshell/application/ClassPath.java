@@ -17,31 +17,21 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.application.plugin;
+package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.model.application.PluginArtifact;
+import org.apache.geronimo.gshell.model.common.Artifact;
+
+import java.net.URL;
+import java.util.Collection;
 
 /**
- * Plugin.
+ * Provides details about a classpath configuration.
  *
  * @version $Rev$ $Date$
  */
-public interface Plugin
+public interface ClassPath
 {
-    String getName();
+    Collection<URL> getUrls();
 
-    PluginArtifact getArtifact();
-
-    ClassPath getClassPath();
-
-    /*
-    boolean isEnabled();
-
-    void enable() throws Exception;
-
-    void disable() throws Exception;
-    */
-    
-    void activate();
+    Collection<Artifact> getArtifacts();
 }

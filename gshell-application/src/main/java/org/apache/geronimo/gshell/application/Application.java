@@ -19,14 +19,12 @@
 
 package org.apache.geronimo.gshell.application;
 
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.model.common.Artifact;
-import org.apache.geronimo.gshell.command.Variables;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.util.Set;
 
 /**
  * Encapsulates the context for an application.
@@ -43,7 +41,7 @@ public interface Application
     
     ApplicationModel getModel();
 
-    Set<Artifact> getArtifacts();
+    ClassPath getClassPath();
     
     /**
      * Returns the home directory of the shell.

@@ -20,6 +20,9 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.plugin.Plugin;
+import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.ClassPath;
+import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;
@@ -28,8 +31,6 @@ import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationTask;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.Bundle;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.NoSuchBundleException;
-import org.apache.geronimo.gshell.model.common.Artifact;
-import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.LinkedHashSet;
 
 /**
  * Default implementation of {@link Plugin}.
@@ -58,7 +57,7 @@ public class PluginImpl
     
     private PluginArtifact artifact;
 
-    private Set<Artifact> artifacts;
+    private ClassPath classPath;
 
     private List<String> bundleNames;
 
@@ -95,35 +94,19 @@ public class PluginImpl
         this.artifact = artifact;
     }
 
-    public Set<Artifact> getArtifacts() {
-        if (artifacts == null) {
-            throw new IllegalStateException("Artifacts not initialized");
+    public ClassPath getClassPath() {
+        if (classPath == null) {
+            throw new IllegalStateException("Classpath not initialized");
         }
-        return artifacts;
+        return classPath;
     }
 
-    void initArtifacts(final Set<org.apache.maven.artifact.Artifact> artifacts) {
-        assert artifacts != null;
+    void initClassPath(final ClassPath classPath) {
+        assert classPath != null;
 
-        Set<Artifact> set = new LinkedHashSet<Artifact>();
-
-        log.debug("Plugin artifacts:");
-
-        for (org.apache.maven.artifact.Artifact source : artifacts) {
-            Artifact artifact = new Artifact();
-            artifact.setGroupId(source.getGroupId());
-            artifact.setArtifactId(source.getArtifactId());
-            artifact.setType(source.getType());
-            artifact.setVersion(source.getVersion());
-
-            log.debug("    {}", artifact.getId());
-
-            set.add(artifact);
-        }
-
-        this.artifacts = set;
+        this.classPath = classPath;
     }
-
+    
     public List<String> getBundleNames() {
         List<String> list = bundleNames;
 

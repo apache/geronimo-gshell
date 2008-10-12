@@ -21,18 +21,16 @@ package org.apache.geronimo.gshell.wisdom.application;
 
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
+import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.model.common.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Event fired once the application has constructed a shell.
@@ -46,7 +44,7 @@ public class ApplicationImpl
 
     private final ApplicationConfiguration config;
 
-    private Set<Artifact> artifacts;
+    private ClassPath classPath;
 
     private InetAddress localHost;
 
@@ -72,33 +70,17 @@ public class ApplicationImpl
         return config.getVariables();
     }
 
-    public Set<Artifact> getArtifacts() {
-        if (artifacts == null) {
-            throw new IllegalStateException("Artifacts not initialized");
+    public ClassPath getClassPath() {
+        if (classPath == null) {
+            throw new IllegalStateException("Classpath not initialized");
         }
-        return artifacts;
+        return classPath;
     }
 
-    void initArtifacts(final Set<org.apache.maven.artifact.Artifact> artifacts) {
-        assert artifacts != null;
+    void initClassPath(final ClassPath classPath) {
+        assert classPath != null;
 
-        Set<Artifact> set = new LinkedHashSet<Artifact>();
-
-        log.debug("Application artifacts:");
-
-        for (org.apache.maven.artifact.Artifact source : artifacts) {
-            Artifact artifact = new Artifact();
-            artifact.setGroupId(source.getGroupId());
-            artifact.setArtifactId(source.getArtifactId());
-            artifact.setType(source.getType());
-            artifact.setVersion(source.getVersion());
-            
-            log.debug("    {}", artifact.getId());
-
-            set.add(artifact);
-        }
-
-        this.artifacts = set;
+        this.classPath = classPath;
     }
 
     public ApplicationModel getModel() {

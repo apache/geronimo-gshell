@@ -65,6 +65,7 @@ public class ApplicationArtifactFilter
             "gshell-interpolation",
             "jcl104-over-slf4j",
             "gshell-terminal",
+            "gshell-marshal",
             "jline",
             "log4j",
             "maven-artifact",

@@ -72,6 +72,11 @@
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-vfs-meta</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-xstore</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
