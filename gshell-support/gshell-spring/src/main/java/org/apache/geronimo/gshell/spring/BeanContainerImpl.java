@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.spring;
 
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
@@ -26,11 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
-import org.apache.geronimo.gshell.chronos.StopWatch;
 
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -101,7 +101,7 @@ public class BeanContainerImpl
         log.debug("Loaded beans after: {}", watch);
     }
 
-    public BeanContainer createChild(final String id, final List<URL> classPath) {
+    public BeanContainer createChild(final String id, final Collection<URL> classPath) {
         assert id != null;
         // classPath may be null
 

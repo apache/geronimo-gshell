@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.spring;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -48,7 +48,7 @@ public interface BeanContainer
 
     String[] getBeanNames(Class type);
 
-    BeanContainer createChild(String id, List<URL> classPath);
+    BeanContainer createChild(String id, Collection<URL> classPath);
 
     BeanContainer createChild(String id);
 }
