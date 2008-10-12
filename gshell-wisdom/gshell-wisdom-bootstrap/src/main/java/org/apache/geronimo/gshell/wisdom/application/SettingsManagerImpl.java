@@ -69,16 +69,19 @@ public class SettingsManagerImpl
         // Validate the configuration
         config.validate();
 
-        if (config.getModel() != null) {
+        SettingsModel model = config.getModel();
+        if (model != null) {
+            log.debug("Settings model: {}", model);
+            
 	        // Interpolate the model
-	        interpolate(config);
+	        // interpolate(config);
 
 	        // Configure settings
-            configure(config.getModel());
+            configure(model);
         }
 
         // TODO: Merge in some default settings or something?
-
+        
         settingsConfiguration = config;
 
         settings = new Settings()
@@ -113,6 +116,8 @@ public class SettingsManagerImpl
         assert model != null;
 
         // TODO: Add settings interpolation here
+
+        artifactManager.setOnline(model.isOnline());
 
         // Setup remote repositories
         for (RemoteRepository repo : model.remoteRepositories()) {
