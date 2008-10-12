@@ -183,6 +183,9 @@ public class Main
         System.setProperty("jline.terminal", type);
     }
 
+    @Option(name="-o", aliases="--offline")
+    private boolean offline;
+
     public void boot(final String[] args) throws Exception {
         assert args != null;
 
@@ -221,6 +224,7 @@ public class Main
             // Find our settings descriptor
             SettingsModel settingsModel = new SettingsModelLocator().
                     /*addLocation(settingsDescriptor).*/locate();
+            settingsModel.setOnline(!offline);
             builder.setSettingsModel(settingsModel);
 
             // Find our application descriptor
