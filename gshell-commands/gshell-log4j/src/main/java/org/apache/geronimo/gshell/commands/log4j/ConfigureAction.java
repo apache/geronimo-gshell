@@ -34,6 +34,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 
@@ -48,6 +49,7 @@ public class ConfigureAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private FileSystemAccess fileSystemAccess;
 
     @Argument
