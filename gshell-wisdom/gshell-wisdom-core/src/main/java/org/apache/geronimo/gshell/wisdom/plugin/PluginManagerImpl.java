@@ -30,13 +30,13 @@ import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.marshal.MarshallerSupport;
-import org.apache.geronimo.gshell.marshal.Marshaller;
 import org.apache.geronimo.gshell.model.application.PluginArtifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.apache.geronimo.gshell.wisdom.application.ClassPathImpl;
+import org.apache.geronimo.gshell.xstore.XStore;
+import org.apache.geronimo.gshell.xstore.XStoreRecord;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -46,11 +46,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
+import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.net.URL;
 
 /**
  * Default implementation of the {@link PluginManager} component.
@@ -73,6 +72,9 @@ public class PluginManagerImpl
 
     @Autowired
     private EventPublisher eventPublisher;
+
+    @Autowired
+    private XStore xstore;
 
     private BeanContainer container;
 
@@ -159,22 +161,19 @@ public class PluginManagerImpl
         assert application != null;
         assert artifact != null;
 
-        Marshaller<ClassPath> marshaller = new MarshallerSupport<ClassPath>(ClassPathImpl.class);
-        File file = new File(new File(System.getProperty("gshell.home")), "var/gshell/" + artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml");  // FIXME: Get state directory from application/branding
         ClassPath classPath;
-
-        if (file.exists()) {
-            classPath = marshaller.unmarshal(file);
-            log.debug("Loaded classpath from cache: {}", file);
+        XStoreRecord record = xstore.resolveRecord("gshell/" + artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml"); // FIXME: Get state directory from application/branding
+        if (record.exists()) {
+            classPath = record.get(ClassPath.class);
+            log.debug("Loaded classpath from cache: {}", record);
         }
         else {
             Set<Artifact> artifacts = resolveArtifacts(application, artifact);
             classPath = new ClassPathImpl(artifacts);
-            log.debug("Saving classpath to cache: {}", file);
-            file.getParentFile().mkdirs();
-            marshaller.marshal(classPath, file);
+            log.debug("Saving classpath to cache: {}", record);
+            record.set(classPath);
         }
-
+        
         if (log.isDebugEnabled()) {
             log.debug("Plugin classpath:");
 

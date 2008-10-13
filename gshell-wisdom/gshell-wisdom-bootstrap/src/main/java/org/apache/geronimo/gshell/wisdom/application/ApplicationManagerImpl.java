@@ -197,7 +197,7 @@ public class ApplicationManagerImpl
         assert model != null;
 
         Marshaller<ClassPath> marshaller = new MarshallerSupport<ClassPath>(ClassPathImpl.class);
-        File file = new File(new File(System.getProperty("gshell.home")), "var/gshell/classpath.xml");  // FIXME: Get state directory from application/branding
+        File file = new File(new File(System.getProperty("gshell.home")), "var/xstore/gshell/classpath.xml");  // FIXME: Get state directory from application/branding
         ClassPath classPath;
 
         if (file.exists()) {
