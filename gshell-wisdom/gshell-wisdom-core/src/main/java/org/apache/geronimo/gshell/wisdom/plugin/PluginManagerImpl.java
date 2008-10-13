@@ -162,7 +162,7 @@ public class PluginManagerImpl
         assert artifact != null;
 
         ClassPath classPath;
-        XStoreRecord record = xstore.resolveRecord("gshell/" + artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml"); // FIXME: Get state directory from application/branding
+        XStoreRecord record = xstore.resolveRecord(artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml"); // FIXME: Get state directory from application/branding
         if (record.exists()) {
             classPath = record.get(ClassPath.class);
             log.debug("Loaded classpath from cache: {}", record);
