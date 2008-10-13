@@ -55,6 +55,10 @@ public class XStoreRecordImpl
         return file.getName().getPath();
     }
 
+    public String toString() {
+        return getPath();    
+    }
+
     public boolean exists() {
         try {
             return file.exists();
@@ -93,6 +97,12 @@ public class XStoreRecordImpl
 
         try {
             Marshaller<T> marshaller = new MarshallerSupport<T>(type);
+            
+            FileObject parent = file.getParent();
+            if (parent != null && !parent.exists()) {
+                parent.createFolder();
+            }
+
             input = new BufferedInputStream(file.getContent().getInputStream());
             T value = marshaller.unmarshal(input);
             log.debug("Value: {}", value);

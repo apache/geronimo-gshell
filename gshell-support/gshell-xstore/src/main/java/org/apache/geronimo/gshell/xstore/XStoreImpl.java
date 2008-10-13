@@ -59,14 +59,17 @@ public class XStoreImpl
         if (fileSystem == null) {
             try {
                 assert fileSystemAccess != null;
-                FileObject file = fileSystemAccess.getManager().createVirtualFileSystem(getRootUri());
-                log.debug("Root file: {}", file);
+                String uri = getRootUri();
 
+                FileObject root = fileSystemAccess.resolveFile(null, uri);
+                log.debug("Root: {}", uri);
+
+                FileObject file = fileSystemAccess.getManager().createVirtualFileSystem(root);
                 fileSystem = file.getFileSystem();
                 log.debug("File system: {}", fileSystem);
             }
             catch (FileSystemException e) {
-                throw new XStoreException("Failed to create file-sysytem", e);
+                throw new XStoreException(e);
             }
         }
 
