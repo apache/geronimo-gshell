@@ -34,7 +34,7 @@
     <version>1.0-alpha-2-SNAPSHOT</version>
 
     <localRepository>
-        <directory>${gshell.home}/repository</directory>
+        <directory>${gshell.home}/var/repository</directory>
     </localRepository>
 
     <remoteRepositories>
@@ -92,8 +92,6 @@
             <plugin>
                 <artifactId>gshell-vfs</artifactId>
             </plugin>
-            
-            <!--
             <plugin>
                 <artifactId>gshell-remote</artifactId>
             </plugin>
@@ -109,7 +107,6 @@
             <plugin>
                 <artifactId>gshell-bsf</artifactId>
             </plugin>
-            -->
         </pluginGroup>
     </pluginGroups>
 
