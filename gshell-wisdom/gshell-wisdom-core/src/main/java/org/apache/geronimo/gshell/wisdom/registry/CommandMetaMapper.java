@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
+import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -43,18 +44,27 @@ public class CommandMetaMapper
     @Autowired
     private MetaDataRegistry metaRegistry;
 
+    @Autowired
+    private CommandRegistry commandRegistry;
+
     private MetaDataRegistryConfigurer metaConfig;
 
     @PostConstruct
-    public void init() {
+    public synchronized void init() throws Exception {
         assert metaRegistry != null;
         metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
 
         assert eventManager != null;
         eventManager.addListener(this);
+
+        // Add existing commands in case some have already been registered
+        for (String name : commandRegistry.getCommandNames()) {
+            MetaData data = metaConfig.addFile("/commands/" + name);
+            data.addAttribute("COMMAND", commandRegistry.getCommand(name));
+        }
     }
 
-    public void onEvent(final Event event) throws Exception {
+    public synchronized void onEvent(final Event event) throws Exception {
         assert event != null;
 
         if (event instanceof CommandRegisteredEvent) {
