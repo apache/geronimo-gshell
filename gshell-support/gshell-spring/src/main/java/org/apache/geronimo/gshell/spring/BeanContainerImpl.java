@@ -76,7 +76,7 @@ public class BeanContainerImpl
         context.addBeanFactoryPostProcessor(new LoggingProcessor());
     }
 
-    public ClassRealm getClassRealm() {
+    public ClassLoader getClassLoader() {
         return classRealm;
     }
     

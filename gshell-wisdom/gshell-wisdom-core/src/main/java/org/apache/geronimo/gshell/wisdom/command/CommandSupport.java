@@ -187,7 +187,7 @@ public abstract class CommandSupport
 
         // Set the TCL to the command bean containers realm
         final ClassLoader prevCL = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(getContainer().getClassRealm());
+        Thread.currentThread().setContextClassLoader(getContainer().getClassLoader());
         
         CommandResult result;
 

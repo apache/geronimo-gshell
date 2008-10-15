@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
-
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
@@ -34,7 +32,7 @@ public interface BeanContainer
 {
     BeanContainer getParent();
 
-    ClassRealm getClassRealm();
+    ClassLoader getClassLoader();
 
     void loadBeans(String[] locations) throws Exception;
 
