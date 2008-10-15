@@ -24,12 +24,12 @@ package org.apache.geronimo.gshell.commandline;
  *
  * @version $Rev$ $Date$
  */
-public class CommandLineExecutionFailied
+public class CommandLineExecutionFailed
     extends Exception
 {
     private static final long serialVersionUID = 1;
 
-    public CommandLineExecutionFailied(final Throwable cause) {
+    public CommandLineExecutionFailed(final Throwable cause) {
         super(cause);
     }
 }
