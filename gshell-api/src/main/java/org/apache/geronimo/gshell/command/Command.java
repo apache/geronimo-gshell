@@ -31,6 +31,8 @@ public interface Command
 {
     CommandLocation getLocation();
 
+    void setLocation(CommandLocation location);
+
     /**
      * Returns the action of the command.
      *

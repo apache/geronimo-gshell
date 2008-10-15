@@ -60,9 +60,7 @@ public class CommandRegistryImpl
             throw new DuplicateCommandException(name);
         }
 
-        if (command instanceof CommandSupport) {
-            ((CommandSupport)command).setLocation(new CommandLocationImpl(name));
-        }
+        command.setLocation(new CommandLocationImpl(name));
 
         commands.put(name, command);
 
