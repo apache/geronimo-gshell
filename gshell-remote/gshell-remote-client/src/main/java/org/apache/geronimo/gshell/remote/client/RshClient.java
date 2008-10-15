@@ -73,6 +73,16 @@ public class RshClient
         this.handlers = handlers;
     }
 
+    public RshClient(final CryptoContext crypto, final TransportFactoryLocator locator, final List<ClientMessageHandler> handlers) {
+        assert crypto != null;
+        assert locator != null;
+        assert handlers != null;
+
+        this.crypto = crypto;
+        this.locator = locator;
+        this.handlers = handlers;
+    }
+
     public void connect(final URI remote, final URI local) throws Exception {
         TransportFactory factory = locator.locate(remote);
 
