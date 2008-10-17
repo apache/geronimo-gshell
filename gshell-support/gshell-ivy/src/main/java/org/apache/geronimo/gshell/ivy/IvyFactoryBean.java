@@ -61,6 +61,10 @@ public class IvyFactoryBean
         log.debug("Settings URL: {}", url);
         ivy.configure(url);
 
+        //
+        // TODO: Hook up download monitor
+        //
+        
         // settings.setVariable("ivy.default.configuration.m2compatible", "true")
         
         return ivy;

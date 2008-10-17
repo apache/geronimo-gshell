@@ -74,6 +74,38 @@
                     <property name="artifactId" value="gshell-vfs"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
+
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifactId" value="gshell-admin"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
+
+                <!--
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifactId" value="gshell-optional"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
+
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifactId" value="gshell-log4j"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
+
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifactId" value="gshell-bsf"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
+
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifactId" value="gshell-remote"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
+                -->
             </list>
         </property>
     </bean>

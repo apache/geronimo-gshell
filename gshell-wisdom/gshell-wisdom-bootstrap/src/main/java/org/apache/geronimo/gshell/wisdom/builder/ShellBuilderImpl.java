@@ -148,15 +148,6 @@ public class ShellBuilderImpl
         BeanContainer container = getContainer();
         log.debug("Container: {}", container);
 
-        //
-        // TODO: Allow someway to configure a non-interactive monitor
-        //
-
-        // Configure download monitor
-        // FIXME:
-        // ArtifactManager artifactManager = getContainer().getBean(ArtifactManager.class);
-        // artifactManager.setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
-
         applicationConfig.setModel(getApplicationModel());
 
         // Configure application
