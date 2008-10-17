@@ -157,9 +157,6 @@ public class ShellBuilderImpl
         ApplicationModel applicationModel = container.getBean(ApplicationModel.class);
         applicationConfig.setModel(applicationModel);
 
-        // HACK: Hookup branding's parent
-        applicationModel.getBranding().setParent(applicationModel);
-        
         // Configure application
         getApplicationManager().configure(applicationConfig);
 
