@@ -24,23 +24,27 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
-import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.model.application.PluginArtifact;
+import org.apache.geronimo.gshell.model.Artifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.apache.geronimo.gshell.wisdom.application.ClassPathImpl;
 import org.apache.geronimo.gshell.xstore.XStore;
 import org.apache.geronimo.gshell.xstore.XStoreRecord;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.ivy.Ivy;
+import org.apache.ivy.core.module.descriptor.Configuration;
+import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
+import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
+import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
+import org.apache.ivy.core.module.id.ModuleRevisionId;
+import org.apache.ivy.core.report.ArtifactDownloadReport;
+import org.apache.ivy.core.report.ResolveReport;
+import org.apache.ivy.core.resolve.ResolveOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +69,6 @@ public class PluginManagerImpl
     private ApplicationManager applicationManager;
 
     @Autowired
-    private ArtifactManager artifactManager;
-
-    @Autowired
     private EventManager eventManager;
 
     @Autowired
@@ -75,6 +76,9 @@ public class PluginManagerImpl
 
     @Autowired
     private XStore xstore;
+
+    @Autowired
+    private Ivy ivy;
 
     private BeanContainer container;
 
@@ -111,9 +115,9 @@ public class PluginManagerImpl
 
         log.debug("Loading plugins for application: {}", application.getId());
 
-        List<PluginArtifact> artifacts = application.getModel().getPlugins();
+        List<Artifact> artifacts = application.getModel().getPlugins();
 
-        for (PluginArtifact artifact : artifacts) {
+        for (Artifact artifact : artifacts) {
             try {
                 loadPlugin(application, artifact);
             }
@@ -123,7 +127,7 @@ public class PluginManagerImpl
         }
     }
 
-    private void loadPlugin(final Application application, final PluginArtifact artifact) throws Exception {
+    private void loadPlugin(final Application application, final Artifact artifact) throws Exception {
         assert application != null;
         assert artifact != null;
 
@@ -157,7 +161,7 @@ public class PluginManagerImpl
         eventPublisher.publish(new PluginLoadedEvent(plugin, artifact));
     }
 
-    private ClassPath loadClassPath(final Application application, final PluginArtifact artifact) throws Exception {
+    private ClassPath loadClassPath(final Application application, final Artifact artifact) throws Exception {
         assert application != null;
         assert artifact != null;
 
@@ -174,7 +178,7 @@ public class PluginManagerImpl
             record.set(classPath);
         }
         record.close();
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Plugin classpath:");
 
@@ -186,35 +190,73 @@ public class PluginManagerImpl
         return classPath;
     }
 
-    public void loadPlugin(final PluginArtifact artifact) throws Exception {
+    public void loadPlugin(final Artifact artifact) throws Exception {
         assert applicationManager != null;
         loadPlugin(applicationManager.getApplication(), artifact);
     }
 
-    private Set<Artifact> resolveArtifacts(final Application application, final PluginArtifact artifact) throws Exception {
+    private Set<Artifact> resolveArtifacts(final Application application, final Artifact artifact) throws Exception {
         assert application != null;
         assert artifact != null;
 
         log.debug("Resolving plugin artifacts");
-        
-        ArtifactResolutionRequest request = new ArtifactResolutionRequest();
-        request.setFilter(new PluginArtifactFilter(application));
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        assert artifactManager != null;
-        ArtifactFactory factory = artifactManager.getArtifactFactory();
 
-        Artifact pluginArtifact = factory.createArtifact(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), /*scope*/null, artifact.getType());
-        assert pluginArtifact != null;
+        ResolveOptions options = new ResolveOptions();
+        options.setOutputReport(true);
+        options.setTransitive(true);
+        options.setArtifactFilter(new PluginArtifactFilter(application));
 
-        log.debug("Plugin artifact: {}", pluginArtifact);
+        ModuleDescriptor md = createPluginModuleDescriptor(artifact);
 
-        artifacts.add(pluginArtifact);
+        StopWatch watch = new StopWatch(true);
 
-        request.setArtifactDependencies(artifacts);
+        ResolveReport resolveReport = ivy.resolve(md, options);
 
-        ArtifactResolutionResult result = artifactManager.resolve(request);
+        log.debug("Resolve completed in: {}", watch);
 
-        return result.getArtifacts();
+        if (resolveReport.hasError()) {
+            log.error("Report has errors:");
+            // noinspection unchecked
+            List<String> problems = resolveReport.getAllProblemMessages();
+            for (String problem : problems) {
+                log.error("    {}", problem);
+            }
+        }
+
+        log.debug("Plugin artifacts:");
+        for (ArtifactDownloadReport downloadReport : resolveReport.getAllArtifactsReports()) {
+            org.apache.ivy.core.module.descriptor.Artifact downloadedArtifact = downloadReport.getArtifact();
+            ModuleRevisionId id = downloadedArtifact.getModuleRevisionId();
+
+            Artifact resolved = new Artifact();
+            resolved.setGroupId(id.getOrganisation());
+            resolved.setArtifactId(id.getName());
+            resolved.setVersion(id.getRevision());
+            resolved.setType(downloadedArtifact.getType());
+            resolved.setFile(downloadReport.getLocalFile());
+            artifacts.add(resolved);
+            
+            log.debug("    {}", resolved.getId());
+        }
+
+        return artifacts;
+    }
+
+    private ModuleDescriptor createPluginModuleDescriptor(final Artifact artifact) {
+        assert artifact != null;
+
+        ModuleRevisionId pluginId = ModuleRevisionId.newInstance("gshell.plugin-" + artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
+        DefaultModuleDescriptor md = new DefaultModuleDescriptor(pluginId, "integration", null, true);
+        md.addConfiguration(new Configuration("default"));
+        md.setLastModified(System.currentTimeMillis());
+
+        ModuleRevisionId depId = ModuleRevisionId.newInstance(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
+        DefaultDependencyDescriptor dd = new DefaultDependencyDescriptor(md, depId, /* force */ false, /* changing*/ false, /* transitive */ true);
+        dd.addDependencyConfiguration("default", "default");
+        md.addDependency(dd);
+
+        return md;
     }
 }

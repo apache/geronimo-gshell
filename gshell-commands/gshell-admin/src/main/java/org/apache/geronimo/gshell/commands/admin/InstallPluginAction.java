@@ -24,7 +24,7 @@ import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.PluginArtifact;
+import org.apache.geronimo.gshell.model.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class InstallPluginAction
         assert context != null;
         IO io = context.getIo();
 
-        PluginArtifact artifact = new PluginArtifact();
+        Artifact artifact = new Artifact();
         artifact.setGroupId(groupId);
         artifact.setArtifactId(artifactId);
         artifact.setVersion(version);

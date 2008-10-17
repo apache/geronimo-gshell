@@ -112,7 +112,12 @@ public class BeanContainerContextImpl
     protected void loadBeanDefinitions(final XmlBeanDefinitionReader reader) throws BeansException, IOException {
         assert reader != null;
 
-        log.debug("Loading bean definitions from resources: {}", resources);
+        log.debug("Loading bean definitions from resources");
+        if (log.isTraceEnabled()) {
+            for (Resource resource : resources) {
+                log.trace("    {}", resource);
+            }
+        }
 
         reader.loadBeanDefinitions(resources.toArray(new Resource[resources.size()]));
     }

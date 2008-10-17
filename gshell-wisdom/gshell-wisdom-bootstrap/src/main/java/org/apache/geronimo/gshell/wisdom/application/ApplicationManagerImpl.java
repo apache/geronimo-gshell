@@ -25,20 +25,22 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
-import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.model.application.DependencyArtifact;
-import org.apache.geronimo.gshell.model.common.LocalRepository;
-import org.apache.geronimo.gshell.model.common.RemoteRepository;
+import org.apache.geronimo.gshell.model.ApplicationModel;
+import org.apache.geronimo.gshell.model.Artifact;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.ivy.Ivy;
+import org.apache.ivy.core.module.descriptor.Configuration;
+import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
+import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
+import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
+import org.apache.ivy.core.module.id.ModuleRevisionId;
+import org.apache.ivy.core.report.ArtifactDownloadReport;
+import org.apache.ivy.core.report.ResolveReport;
+import org.apache.ivy.core.resolve.ResolveOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +49,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.net.URL;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.List;
+import java.net.URL;
 
 /**
  * Default implementation of the {@link ApplicationManager} component.
@@ -63,10 +65,10 @@ public class ApplicationManagerImpl
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ArtifactManager artifactManager;
+    private EventPublisher eventPublisher;
 
     @Autowired
-    private EventPublisher eventPublisher;
+    private Ivy ivy;
     
     private BeanContainer container;
 
@@ -96,9 +98,6 @@ public class ApplicationManagerImpl
         // Validate the configuration
         config.validate();
 
-        // Apply artifact manager configuration settings for application
-        configureArtifactManager(config.getModel());
-
         application = loadApplication(config);
 
         log.debug("Application configured");
@@ -107,23 +106,6 @@ public class ApplicationManagerImpl
         applicationContainer.getBean(PluginManager.class);
         
         eventPublisher.publish(new ApplicationConfiguredEvent(application));
-    }
-
-    private void configureArtifactManager(final ApplicationModel model) throws Exception {
-        assert model != null;
-        assert artifactManager != null;
-
-        // Setup the local repository
-        LocalRepository localRepository = model.getLocalRepository();
-
-        if (localRepository != null) {
-            artifactManager.getRepositoryManager().setLocalRepository(localRepository.getDirectoryFile());
-        }
-
-        // Setup remote repositories
-        for (RemoteRepository repo : model.getRemoteRepositories()) {
-            artifactManager.getRepositoryManager().addRemoteRepository(repo.getId(), repo.getLocationUri());
-        }
     }
 
     private ApplicationImpl loadApplication(final ApplicationConfiguration config) throws Exception {
@@ -190,7 +172,7 @@ public class ApplicationManagerImpl
                 log.debug("    {}", url);
             }
         }
-
+        
         return classPath;
     }
 
@@ -199,33 +181,65 @@ public class ApplicationManagerImpl
 
         log.debug("Resolving application artifacts");
 
-        ArtifactResolutionRequest request = new ArtifactResolutionRequest();
-        request.setFilter(new ApplicationArtifactFilter());
-
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<DependencyArtifact> dependencies = model.getDependencies();
 
-        if (!dependencies.isEmpty()) {
-            assert artifactManager != null;
-            ArtifactFactory factory = artifactManager.getArtifactFactory();
+        ResolveOptions options = new ResolveOptions();
+        options.setOutputReport(false);
+        options.setTransitive(true);
+        options.setArtifactFilter(new ApplicationArtifactFilter());
 
-            log.debug("Application dependencies:");
+        ModuleDescriptor md = createApplicationModuleDescriptor(model);
 
-            for (DependencyArtifact dep : dependencies) {
-                Artifact artifact = factory.createArtifact(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), /*scope*/null, dep.getType());
-                assert artifact != null;
+        StopWatch watch = new StopWatch(true);
 
-                log.debug("    {}", artifact);
+        ResolveReport resolveReport = ivy.resolve(md, options);
 
-                artifacts.add(artifact);
+        log.debug("Resolve completed in: {}", watch);
+
+        if (resolveReport.hasError()) {
+            log.error("Report has errors:");
+            // noinspection unchecked
+            List<String> problems = resolveReport.getAllProblemMessages();
+            for (String problem : problems) {
+                log.error("    {}", problem);
             }
         }
 
-        request.setArtifactDependencies(artifacts);
+        log.debug("Application artifacts:");
+        for (ArtifactDownloadReport downloadReport : resolveReport.getAllArtifactsReports()) {
+            org.apache.ivy.core.module.descriptor.Artifact downloadedArtifact = downloadReport.getArtifact();
+            ModuleRevisionId id = downloadedArtifact.getModuleRevisionId();
 
-        ArtifactResolutionResult result = artifactManager.resolve(request);
+            Artifact resolved = new Artifact();
+            resolved.setGroupId(id.getOrganisation());
+            resolved.setArtifactId(id.getName());
+            resolved.setVersion(id.getRevision());
+            resolved.setType(downloadedArtifact.getType());
+            resolved.setFile(downloadReport.getLocalFile());
+            artifacts.add(resolved);
+            
+            log.debug("    {}", resolved.getId());
+        }
+        
+        return artifacts;
+    }
 
-        return result.getArtifacts();
+    private ModuleDescriptor createApplicationModuleDescriptor(final ApplicationModel model) {
+        assert model != null;
+
+        ModuleRevisionId appId = ModuleRevisionId.newInstance("gshell.application-" + model.getGroupId(), model.getArtifactId(), model.getVersion());
+        DefaultModuleDescriptor md = new DefaultModuleDescriptor(appId, "integration", null, true);
+        md.addConfiguration(new Configuration("default"));
+        md.setLastModified(System.currentTimeMillis());
+
+        for (Artifact dep : model.getDependencies()) {
+            ModuleRevisionId depId = ModuleRevisionId.newInstance(dep.getGroupId(), dep.getArtifactId(), dep.getVersion());
+            DefaultDependencyDescriptor dd = new DefaultDependencyDescriptor(md, depId, /* force */ false, /* changing*/ false, /* transitive */ true);
+            dd.addDependencyConfiguration("default", "default");
+            md.addDependency(dd);
+        }
+
+        return md;
     }
 
     //
@@ -240,8 +254,7 @@ public class ApplicationManagerImpl
 
         log.debug("Created shell instance: {}", shell);
 
-        InvocationHandler handler = new InvocationHandler()
-        {
+        InvocationHandler handler = new InvocationHandler() {
             //
             // FIXME: Need to resolve how to handle the security manager for the application,
             //        the SM is not thread-specific, but VM specific... so not sure this is

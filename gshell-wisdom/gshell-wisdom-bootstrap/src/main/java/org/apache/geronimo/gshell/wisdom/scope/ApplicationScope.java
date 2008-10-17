@@ -17,36 +17,32 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.plugin;
+package org.apache.geronimo.gshell.wisdom.scope;
 
-import org.apache.geronimo.gshell.application.plugin.Plugin;
-import org.apache.geronimo.gshell.event.Event;
-import org.apache.geronimo.gshell.model.Artifact;
+import org.springframework.beans.factory.config.Scope;
+import org.springframework.beans.factory.ObjectFactory;
 
 /**
- * Event fired once a plugin has been loaded.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public class PluginLoadedEvent
-    implements Event
+public class ApplicationScope
+    implements Scope
 {
-    private final Plugin plugin;
-
-    private final Artifact artifact;
-
-    public PluginLoadedEvent(final Plugin plugin, final Artifact artifact) {
-        assert plugin != null;
-
-        this.plugin = plugin;
-        this.artifact = artifact;
+    public Object get(final String name, final ObjectFactory objectFactory) {
+        return null;
     }
 
-    public Plugin getPlugin() {
-        return plugin;
+    public Object remove(final String name) {
+        return null;
     }
 
-    public Artifact getArtifact() {
-        return artifact;
+    public void registerDestructionCallback(final String name, final Runnable callback) {
+
+    }
+
+    public String getConversationId() {
+        return null;
     }
 }

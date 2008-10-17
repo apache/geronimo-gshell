@@ -91,7 +91,7 @@ public class BeanContainerImpl
     public void loadBeans(final String[] locations) throws Exception {
         assert locations != null;
 
-        log.debug("Loading beans; locations: {}", locations);
+        log.debug("Loading beans");
 
         StopWatch watch = new StopWatch(true);
 

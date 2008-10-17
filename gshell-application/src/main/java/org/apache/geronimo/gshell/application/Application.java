@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.ApplicationModel;
+import org.apache.geronimo.gshell.model.ApplicationModel;
 
 import java.io.File;
 import java.net.InetAddress;

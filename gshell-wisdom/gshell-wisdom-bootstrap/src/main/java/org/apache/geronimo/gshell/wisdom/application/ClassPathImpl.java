@@ -20,72 +20,62 @@
 package org.apache.geronimo.gshell.wisdom.application;
 
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.model.common.Artifact;
+import org.apache.geronimo.gshell.model.Artifact;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.io.File;
 
 /**
- * {@link ClassPath} implementation backed up by a set of Maven artifacts.
+ * {@link ClassPath} implementation backed up by a set of artifacts.
  *
  * @version $Rev$ $Date$
  */
 public class ClassPathImpl
     implements ClassPath
-{
-    private Collection<URL> urls;
-
+{   
     private Collection<Artifact> artifacts;
 
+    private Collection<URL> urls;
+
     public ClassPathImpl() {}
-    
-    public ClassPathImpl(final Set<org.apache.maven.artifact.Artifact> artifacts) {
+
+    public ClassPathImpl(final Set<Artifact> artifacts) {
         assert artifacts != null;
 
-        this.artifacts = new LinkedHashSet<Artifact>();
-        this.urls = new LinkedHashSet<URL>();
-
-        for (org.apache.maven.artifact.Artifact source : artifacts) {
-            Artifact artifact = new Artifact();
-            artifact.setGroupId(source.getGroupId());
-            artifact.setArtifactId(source.getArtifactId());
-            artifact.setType(source.getType());
-            artifact.setVersion(source.getVersion());
-
-            try {
-                File file = source.getFile();
-                if (file == null) {
-                    throw new IllegalStateException("Artifact missing resolved local-file: " + source);
-                }
-
-                //
-                // TODO: Need to make this handle when ${gshell.home} is moved, so we can still re-use the cache.
-                //       Also need to, when unmarshalling, validate that the files still exist and invalidate if not
-                //
-                
-                URL url = file.toURI().toURL();
-                this.urls.add(url);
-            }
-            catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            }
-
-            this.artifacts.add(artifact);
-        }
-    }
-
-    public Collection<URL> getUrls() {
-        assert urls != null;
-        return Collections.unmodifiableCollection(urls);
+        this.artifacts = artifacts;
     }
 
     public Collection<Artifact> getArtifacts() {
         assert artifacts != null;
         return Collections.unmodifiableCollection(artifacts);
+    }
+
+    public Collection<URL> getUrls() {
+        if (urls == null) {
+            List<URL> list = new ArrayList<URL>(artifacts.size());
+
+            for (Artifact artifact : artifacts) {
+                File file = artifact.getFile();
+
+                if (file != null) {
+                    try {
+                        list.add(file.toURI().toURL());
+                    }
+                    catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            this.urls = Collections.unmodifiableCollection(list);
+        }
+
+        return urls;
     }
 }

@@ -31,7 +31,7 @@ import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.Closer;
-import org.apache.geronimo.gshell.model.application.Branding;
+import org.apache.geronimo.gshell.model.Branding;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;

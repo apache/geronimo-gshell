@@ -20,9 +20,8 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.plugin.Plugin;
-import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.model.application.PluginArtifact;
+import org.apache.geronimo.gshell.model.Artifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;
@@ -55,7 +54,7 @@ public class PluginImpl
     private boolean enabled = false;
     */
     
-    private PluginArtifact artifact;
+    private Artifact artifact;
 
     private ClassPath classPath;
 
@@ -81,14 +80,14 @@ public class PluginImpl
         return name;
     }
 
-    public PluginArtifact getArtifact() {
+    public Artifact getArtifact() {
         if (artifact == null) {
             throw new IllegalStateException("Artifact not initialized");
         }
         return artifact;
     }
 
-    void initArtifact(final PluginArtifact artifact) {
+    void initArtifact(final Artifact artifact) {
         assert artifact != null;
         
         this.artifact = artifact;

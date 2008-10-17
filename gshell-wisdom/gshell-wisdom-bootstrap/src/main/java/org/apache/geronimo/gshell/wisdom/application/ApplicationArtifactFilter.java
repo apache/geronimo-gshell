@@ -19,11 +19,12 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
-import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
+import org.apache.ivy.util.filter.Filter;
+import org.apache.ivy.core.module.descriptor.Artifact;
+
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
 
 /**
  * Artifact filter for applications.
@@ -31,73 +32,52 @@ import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
  * @version $Rev$ $Date$
  */
 public class ApplicationArtifactFilter
-    implements ArtifactFilter
+    implements Filter
 {
-    private ArtifactFilter delegate;
+    private static final String[] EXCLUDES = {
+        "geronimo-annotation_1.0_spec",
+        "gshell-ansi",
+        "gshell-api",
+        "gshell-artifact",
+        "gshell-application",
+        "gshell-cli",
+        "gshell-clp",
+        "gshell-chronos",
+        "gshell-event",
+        "gshell-i18n",
+        "gshell-io",
+        "gshell-ivy",
+        "gshell-model",
+        "gshell-spring",
+        "gshell-terminal",
+        "gshell-wisdom-bootstrap",
+        "gshell-yarn",
+        "ivy",
+        "jcl-over-slf4j",
+        "jline",
+        "log4j",
+        "plexus-classworlds",
+        "slf4j-api",
+        "slf4j-log4j12",
+        "spring-core",
+        "spring-beans"
+    };
 
-    protected AndArtifactFilter createFilter() {
-        AndArtifactFilter filter = new AndArtifactFilter();
+    private final Set<String> excludes = new HashSet<String>();
 
-        filter.add(new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME));
+    public ApplicationArtifactFilter() {
+        excludes.addAll(Arrays.asList(EXCLUDES));
 
-        // Exclude bootstrap classes (stuff which lives in ${gshell.home}/lib
-        filter.add(new ExclusionSetFilter(new String[] {
-            //
-            // FIXME: Load this list from build-generated properties or something like that
-            //
-
-            "aopalliance",
-            "aspectjrt",
-            "geronimo-annotation_1.0_spec",
-            "gshell-ansi",
-            "gshell-api",
-            "gshell-artifact",
-            "gshell-application",
-            "gshell-cli",
-            "gshell-clp",
-            "gshell-chronos",
-            "gshell-i18n",
-            "gshell-io",
-            "gshell-model",
-            "gshell-spring",
-            "gshell-wisdom-bootstrap",
-            "gshell-yarn",
-            "jcl104-over-slf4j",
-            "gshell-terminal",
-            "jline",
-            "log4j",
-            "maven-artifact",
-            "maven-model",
-            "maven-profile",
-            "maven-project",
-            "maven-workspace",
-            "maven-settings",
-            "maven-plugin-registry",
-            "plexus-component-annotations",
-            "plexus-container-default",
-            "plexus-interpolation",
-            "plexus-utils",
-            "plexus-classworlds",
-            "slf4j-api",
-            "slf4j-log4j12",
-            "spring-core",
-            "spring-context",
-            "spring-beans",
-            "wagon-file",
-            "wagon-http-lightweight",
-            "wagon-http-shared",
-            "wagon-provider-api",
-            "xbean-reflect"
-        }));
-
-        return filter;
     }
 
-    public final boolean include(final Artifact artifact) {
-        if (delegate == null) {
-            delegate = createFilter();
+    public boolean accept(final Object target) {
+        if (!(target instanceof Artifact)) {
+            return false;
         }
-        
-        return delegate.include(artifact);
+
+        Artifact artifact = (Artifact)target;
+        String name = artifact.getName();
+
+        return !excludes.contains(name);
     }
 }

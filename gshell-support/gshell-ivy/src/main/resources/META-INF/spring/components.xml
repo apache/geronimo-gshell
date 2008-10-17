@@ -25,4 +25,10 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+    
+    <bean class="org.apache.geronimo.gshell.ivy.IvyFactoryBean">
+        <property name="settingsUrl" value="file:${gshell.home}/etc/ivysettings.xml"/>
+    </bean>
+
 </beans>

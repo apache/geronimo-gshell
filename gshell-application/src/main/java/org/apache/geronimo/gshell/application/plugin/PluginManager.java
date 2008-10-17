@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.application.plugin;
 
-import org.apache.geronimo.gshell.model.application.PluginArtifact;
+import org.apache.geronimo.gshell.model.Artifact;
 
 import java.util.Set;
 
@@ -32,5 +32,5 @@ public interface PluginManager
 {
     Set<Plugin> getPlugins();
 
-    void loadPlugin(final PluginArtifact artifact) throws Exception;
+    void loadPlugin(final Artifact artifact) throws Exception;
 }

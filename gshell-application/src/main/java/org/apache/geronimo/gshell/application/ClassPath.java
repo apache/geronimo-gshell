@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.model.common.Artifact;
+import org.apache.geronimo.gshell.model.Artifact;
 
-import java.net.URL;
 import java.util.Collection;
+import java.net.URL;
 
 /**
  * Provides details about a classpath configuration.
@@ -31,7 +31,7 @@ import java.util.Collection;
  */
 public interface ClassPath
 {
-    Collection<URL> getUrls();
-
     Collection<Artifact> getArtifacts();
+
+    Collection<URL> getUrls();
 }

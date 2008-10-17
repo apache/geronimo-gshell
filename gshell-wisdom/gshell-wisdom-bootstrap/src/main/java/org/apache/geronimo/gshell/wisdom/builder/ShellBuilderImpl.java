@@ -21,13 +21,11 @@ package org.apache.geronimo.gshell.wisdom.builder;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.artifact.ArtifactManager;
-import org.apache.geronimo.gshell.artifact.monitor.ProgressSpinnerMonitor;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
-import org.apache.geronimo.gshell.model.application.ApplicationModel;
+import org.apache.geronimo.gshell.model.ApplicationModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
@@ -151,8 +149,9 @@ public class ShellBuilderImpl
         //
 
         // Configure download monitor
-        ArtifactManager artifactManager = getContainer().getBean(ArtifactManager.class);
-        artifactManager.setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
+        // FIXME:
+        // ArtifactManager artifactManager = getContainer().getBean(ArtifactManager.class);
+        // artifactManager.setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
 
         ApplicationModel applicationModel = container.getBean(ApplicationModel.class);
         applicationConfig.setModel(applicationModel);

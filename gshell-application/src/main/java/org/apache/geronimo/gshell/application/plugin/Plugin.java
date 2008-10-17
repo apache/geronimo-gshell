@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.application.plugin;
 
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.model.application.PluginArtifact;
+import org.apache.geronimo.gshell.model.Artifact;
 
 /**
  * Plugin.
@@ -31,7 +31,7 @@ public interface Plugin
 {
     String getName();
 
-    PluginArtifact getArtifact();
+    Artifact getArtifact();
 
     ClassPath getClassPath();
 

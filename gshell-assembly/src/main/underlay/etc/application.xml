@@ -27,26 +27,11 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <bean class="org.apache.geronimo.gshell.model.application.ApplicationModel">
+    <bean class="org.apache.geronimo.gshell.model.ApplicationModel">
         <property name="groupId" value="org.apache.geronimo.gshell"/>
         <property name="artifactId" value="gshell"/>
         <property name="name" value="GShell"/>
         <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
-
-        <property name="localRepository">
-            <bean class="org.apache.geronimo.gshell.model.common.LocalRepository">
-                <property name="directory" value="${gshell.home}/var/repository"/>
-            </bean>
-        </property>
-
-        <property name="remoteRepositories">
-            <list>
-                <bean class="org.apache.geronimo.gshell.model.common.RemoteRepository">
-                    <property name="id" value="cache"/>
-                    <property name="location" value="file:${user.home}/.m2/repository"/>
-                </bean>
-            </list>
-        </property>
 
         <property name="branding">
             <bean class="org.apache.geronimo.gshell.wisdom.branding.GShellBranding"/>
@@ -54,35 +39,37 @@
 
         <property name="dependencies">
             <list>
-                <bean class="org.apache.geronimo.gshell.model.application.DependencyArtifact">
+                <bean class="org.apache.geronimo.gshell.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.wisdom"/>
                     <property name="artifactId" value="gshell-wisdom-core"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.model.application.DependencyArtifact">
+                <bean class="org.apache.geronimo.gshell.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.support"/>
                     <property name="artifactId" value="gshell-vfs-local"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.model.application.DependencyArtifact">
+                <!--
+                <bean class="org.apache.geronimo.gshell.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.support"/>
                     <property name="artifactId" value="gshell-vfs-truezip"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
+                -->
             </list>
         </property>
 
         <property name="plugins">
             <list>
-                <bean class="org.apache.geronimo.gshell.model.application.PluginArtifact">
+                <bean class="org.apache.geronimo.gshell.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
                     <property name="artifactId" value="gshell-builtins"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.model.application.PluginArtifact">
+                <bean class="org.apache.geronimo.gshell.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
                     <property name="artifactId" value="gshell-vfs"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>

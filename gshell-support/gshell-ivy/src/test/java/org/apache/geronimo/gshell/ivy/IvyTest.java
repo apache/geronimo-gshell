@@ -50,14 +50,11 @@ public class IvyTest
         Message.setDefaultLogger(new DefaultMessageLogger(-1)); // Message.MSG_INFO));
 
         IvySettings settings = new IvySettings();
-        log.debug("Settings: {}", settings);
-
         URL url = getClass().getResource("ivysettings.xml");
         log.debug("Settings URL: {}", url);
         settings.load(url);
 
         Ivy ivy = Ivy.newInstance(settings);
-        log.debug("Ivy: {}", ivy);
 
         ModuleRevisionId mrid = ModuleRevisionId.newInstance("org.apache.geronimo.gshell.wisdom", "gshell-wisdom-bootstrap", "1.0-alpha-2-SNAPSHOT");
         log.debug("MRID: {}", mrid);
@@ -100,7 +97,13 @@ public class IvyTest
         log.debug("Artifact download reports");
         for (ArtifactDownloadReport adl : report.getAllArtifactsReports()) {
             Artifact artifact = adl.getArtifact();
-            log.debug("    {} -> {}", artifact, adl.getLocalFile());
+            mrid = artifact.getModuleRevisionId();
+
+            log.info("groupId: " + mrid.getOrganisation());
+            log.info("artifactId: " + mrid.getName());
+            log.info("version: " + mrid.getRevision());
+            log.info("type: " + artifact.getType());
+            log.info("file: " + adl.getLocalFile());
         }
     }
 }

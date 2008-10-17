@@ -44,7 +44,6 @@
         <module>gshell-chronos</module>
         <module>gshell-terminal</module>
         <module>gshell-ansi</module>
-        <module>gshell-artifact</module>
         <module>gshell-clp</module>
         <module>gshell-i18n</module>
         <module>gshell-io</module>

@@ -19,11 +19,9 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
-import org.apache.geronimo.gshell.wisdom.application.ApplicationArtifactFilter;
 import org.apache.geronimo.gshell.application.Application;
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
-import org.apache.maven.artifact.Artifact;
+import org.apache.geronimo.gshell.wisdom.application.ApplicationArtifactFilter;
+import org.apache.ivy.core.module.descriptor.Artifact;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -36,33 +34,24 @@ import java.util.HashSet;
 public class PluginArtifactFilter
     extends ApplicationArtifactFilter
 {
-    private final Application application;
+    private final Set<String> excludes = new HashSet<String>();
 
     public PluginArtifactFilter(final Application application) {
         assert application != null;
 
-        this.application = application;
-    }
-
-    @Override
-    protected AndArtifactFilter createFilter() {
-        AndArtifactFilter filter = super.createFilter();
-        
         // Filter out application artifacts, need to use gid:aid to make sure we don't clober anything which has the same artifactId, but different groupId
-        final Set<String> excludes = new HashSet<String>();
-        for (org.apache.geronimo.gshell.model.common.Artifact a : application.getClassPath().getArtifacts()) {
-            String id = a.getGroupId() + ":" + a.getArtifactId();
+        for (org.apache.geronimo.gshell.model.Artifact artifact : application.getClassPath().getArtifacts()) {
+            String id = artifact.getGroupId() + ":" + artifact.getArtifactId();
             excludes.add(id);
         }
+    }
 
-        filter.add(new ArtifactFilter() {
-            public boolean include(final Artifact artifact) {
-                assert artifact != null;
-                String id = artifact.getGroupId() + ":" + artifact.getArtifactId();
-                return !excludes.contains(id);
-            }
-        });
-
-        return filter;
+    public boolean accept(final Object target) {
+        if (super.accept(target)) {
+            Artifact artifact = (Artifact)target;
+            String id = artifact.getModuleRevisionId().getOrganisation() + ":" + artifact.getName();
+            return !excludes.contains(id);
+        }
+        return false;
     }
 }
