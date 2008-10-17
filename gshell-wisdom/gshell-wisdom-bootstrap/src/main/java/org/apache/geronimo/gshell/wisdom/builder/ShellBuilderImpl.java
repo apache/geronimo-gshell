@@ -52,8 +52,6 @@ public class ShellBuilderImpl
 
     private ApplicationConfiguration applicationConfig = new ApplicationConfiguration();
 
-    private ArtifactManager artifactManager;
-
     private BeanContainer createContainer() throws Exception {
         BeanContainerImpl container = new BeanContainerImpl(getClassLoader());
         container.loadBeans(new String[] {
@@ -125,21 +123,6 @@ public class ShellBuilderImpl
         this.applicationManager = applicationManager;
     }
 
-    private ArtifactManager createArtifactManager() {
-        return getContainer().getBean(ArtifactManager.class);
-    }
-
-    public ArtifactManager getArtifactManager() {
-        if (artifactManager == null) {
-            artifactManager = createArtifactManager();
-        }
-        return artifactManager;
-    }
-
-    public void setArtifactManager(final ArtifactManager artifactManager) {
-        this.artifactManager = artifactManager;
-    }
-
     //
     // ShellFactory
     //
@@ -175,7 +158,8 @@ public class ShellBuilderImpl
         //
 
         // Configure download monitor
-        getArtifactManager().setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
+        ArtifactManager artifactManager = getContainer().getBean(ArtifactManager.class);
+        artifactManager.setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
 
         // Configure application
         getApplicationManager().configure(applicationConfig);
