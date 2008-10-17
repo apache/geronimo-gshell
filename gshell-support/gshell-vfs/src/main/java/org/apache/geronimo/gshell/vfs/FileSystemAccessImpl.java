@@ -71,7 +71,7 @@ public class FileSystemAccessImpl
             log.trace("CWD not set, resolving from user.dir");
 
             // TODO: May need to ask the Application for this, as it might be different depending on the context (ie. remote user, etc)
-            String userDir = System.getProperty("user.dir");
+            String userDir = "file://" + System.getProperty("user.dir");
             cwd = getManager().resolveFile(userDir);
         }
 
