@@ -48,6 +48,14 @@
             <gshell:command name="optional/hostname">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.HostnameAction"/>
             </gshell:command>
+
+            <gshell:command name="optional/cat">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.CatAction"/>
+            </gshell:command>
+
+            <gshell:command name="optional/grep">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.GrepAction"/>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
