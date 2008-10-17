@@ -164,7 +164,7 @@ public class PluginManagerImpl
         ClassPath classPath;
         XStoreRecord record = xstore.resolveRecord(artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml"); // FIXME: Get state directory from application/branding
         if (record.exists()) {
-            classPath = record.get(ClassPath.class);
+            classPath = record.get(ClassPathImpl.class);
             log.debug("Loaded classpath from cache: {}", record);
         }
         else {
@@ -173,6 +173,7 @@ public class PluginManagerImpl
             log.debug("Saving classpath to cache: {}", record);
             record.set(classPath);
         }
+        record.close();
         
         if (log.isDebugEnabled()) {
             log.debug("Plugin classpath:");
