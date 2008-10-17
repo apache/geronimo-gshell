@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.builder;
 
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellFactory;
@@ -47,4 +48,6 @@ public interface ShellBuilder
     ApplicationManager getApplicationManager();
 
     void setApplicationManager(ApplicationManager applicationManager);
+
+    ApplicationModel getApplicationModel();
 }

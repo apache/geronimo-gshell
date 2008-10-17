@@ -35,6 +35,7 @@ import org.apache.geronimo.gshell.terminal.UnsupportedTerminal;
 import org.apache.geronimo.gshell.terminal.WindowsTerminal;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -204,14 +205,15 @@ public class Main
 
             // --help and --version need access to the application's information, so we have to handle these options late
             if (help|version) {
+                ApplicationModel applicationModel = builder.getApplicationModel();
+
                 if (help) {
                     Printer printer = new Printer(clp);
                     printer.setMessageSource(messages);
-                    printer.printUsage(io.out, "FIXME"/*applicationModel.getBranding().getProgramName()*/);
+                    printer.printUsage(io.out, applicationModel.getBranding().getProgramName());
                 }
                 else if (version) {
-                    io.out.println("FIXME"/*applicationModel.getVersion()*/);
-                    io.out.println();
+                    io.out.println(applicationModel.getVersion());
                 }
 
                 io.out.flush();

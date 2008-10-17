@@ -114,6 +114,10 @@ public class ShellBuilderImpl
         this.applicationManager = applicationManager;
     }
 
+    public ApplicationModel getApplicationModel() {
+        return getContainer().getBean(ApplicationModel.class);
+    }
+
     //
     // ShellFactory
     //
@@ -153,8 +157,7 @@ public class ShellBuilderImpl
         // ArtifactManager artifactManager = getContainer().getBean(ArtifactManager.class);
         // artifactManager.setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
 
-        ApplicationModel applicationModel = container.getBean(ApplicationModel.class);
-        applicationConfig.setModel(applicationModel);
+        applicationConfig.setModel(getApplicationModel());
 
         // Configure application
         getApplicationManager().configure(applicationConfig);
