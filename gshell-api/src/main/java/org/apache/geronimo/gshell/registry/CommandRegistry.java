@@ -30,9 +30,9 @@ import java.util.Collection;
  */
 public interface CommandRegistry
 {
-    void registerCommand(String name, Command command) throws DuplicateCommandException;
+    void registerCommand(Command command) throws DuplicateCommandException;
 
-    void removeCommand(String name) throws NoSuchCommandException;
+    void removeCommand(Command command) throws NoSuchCommandException;
 
     Command getCommand(String name) throws NoSuchCommandException;
 

@@ -50,9 +50,11 @@ public class CommandRegistryImpl
 
     private final Map<String,Command> commands = new LinkedHashMap<String,Command>();
 
-    public void registerCommand(final String name, final Command command) throws DuplicateCommandException {
-        assert name != null;
+    public void registerCommand(final Command command) throws DuplicateCommandException {
         assert command != null;
+
+        // TODO: add a method on the CommandLocation to avoid using toString()
+        String name = command.getLocation().getFullPath();
 
         log.debug("Registering command: {} -> {}", name, command);
 
@@ -60,15 +62,16 @@ public class CommandRegistryImpl
             throw new DuplicateCommandException(name);
         }
 
-        command.setLocation(new CommandLocationImpl(name));
-
         commands.put(name, command);
 
         eventPublisher.publish(new CommandRegisteredEvent(name, command));
     }
 
-    public void removeCommand(final String name) throws NoSuchCommandException {
-        assert name != null;
+    public void removeCommand(final Command command) throws NoSuchCommandException {
+        assert command != null;
+
+        // TODO: add a method on the CommandLocation to avoid using toString()
+        String name = command.getLocation().getFullPath();
 
         log.debug("Removing command: {}", name);
 
@@ -105,40 +108,4 @@ public class CommandRegistryImpl
     // CommandLocationImpl
     //
 
-    private class CommandLocationImpl
-        implements CommandLocation
-    {
-        private final String name;
-
-        private final String path;
-
-        public CommandLocationImpl(final String name) {
-            assert name != null;
-
-            int i = name.lastIndexOf("/");
-            if (i != -1) {
-                this.name = name.substring(i + 1, name.length());
-                this.path = name.substring(0, i);
-            }
-            else {
-                this.name = name;
-                this.path = null;
-            }
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public String toString() {
-            if (path != null) {
-                return path + "/" + name;
-            }
-            return name;
-        }
-    }
 }

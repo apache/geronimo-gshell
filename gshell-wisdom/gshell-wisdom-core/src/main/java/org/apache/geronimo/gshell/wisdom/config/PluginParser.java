@@ -22,6 +22,8 @@ package org.apache.geronimo.gshell.wisdom.config;
 import org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter;
 import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
+import org.apache.geronimo.gshell.wisdom.registry.CommandLocationImpl;
+import org.apache.geronimo.gshell.command.CommandLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
@@ -32,6 +34,7 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -42,6 +45,7 @@ import org.w3c.dom.Element;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * Parser for the &lt;gshell:plugin/&gt; element.
@@ -64,6 +68,8 @@ public class PluginParser
     private static final String COMMAND_BUNDLE = "command-bundle";
 
     private static final String NAME = "name";
+
+    private static final String LOCATION = "location";
 
     private static final String COMMANDS = "commands";
 
@@ -342,11 +348,11 @@ public class PluginParser
             // TODO: Figure out how we can save the order of <gshell:command> and <gshell:link> so that 'help' displays them in the order they are defined
             //
 
-            ManagedMap commands = new ManagedMap();
+            ManagedList commands = new ManagedList();
             // noinspection unchecked
-            commands.putAll(parseCommands(element));
+            commands.addAll(parseCommands(element));
             // noinspection unchecked
-            commands.putAll(parseLinks(element));
+            commands.addAll(parseLinks(element));
             bundle.addPropertyValue(COMMANDS, commands);
 
             ManagedMap aliases = new ManagedMap();
@@ -361,19 +367,18 @@ public class PluginParser
         // <gshell:command>
         //
 
-        private Map<String,BeanDefinition> parseCommands(final Element element) {
+        private List<BeanDefinition> parseCommands(final Element element) {
             assert element != null;
 
             log.trace("Parse commands; element; {}", element);
 
-            Map<String,BeanDefinition> commands = new LinkedHashMap<String,BeanDefinition>();
+            List<BeanDefinition> commands = new ArrayList<BeanDefinition>();
 
             List<Element> children = getChildElements(element, COMMAND);
 
             for (Element child : children) {
-                String name = child.getAttribute(NAME);
                 BeanDefinitionBuilder command = parseCommand(child);
-                commands.put(name, command.getBeanDefinition());
+                commands.add(command.getBeanDefinition());
             }
 
             return commands;
@@ -391,6 +396,12 @@ public class PluginParser
             Element child;
 
             // Required children elements
+
+            String name = element.getAttribute(NAME);
+            BeanDefinition def = new GenericBeanDefinition();
+            def.setBeanClassName(CommandLocationImpl.class.getName());
+            def.getConstructorArgumentValues().addGenericArgumentValue(name);
+            command.addPropertyValue(LOCATION, def);
 
             child = getChildElement(element, ACTION);
             BeanDefinitionHolder action = parseCommandAction(child);
@@ -485,12 +496,12 @@ public class PluginParser
         // <gshell:link>
         //
 
-        private Map<String,BeanDefinition> parseLinks(final Element element) {
+        private List<BeanDefinition> parseLinks(final Element element) {
             assert element != null;
 
             log.trace("Parse links; element; {}", element);
 
-            Map<String,BeanDefinition> links = new LinkedHashMap<String,BeanDefinition>();
+            List<BeanDefinition> links = new ArrayList<BeanDefinition>();
 
             List<Element> children = getChildElements(element, LINK);
 
@@ -499,7 +510,12 @@ public class PluginParser
                 link.addConstructorArgValue(child.getAttribute(TARGET));
 
                 String name = child.getAttribute(NAME);
-                links.put(name, link.getBeanDefinition());
+                BeanDefinition def = new GenericBeanDefinition();
+                def.setBeanClassName(CommandLocationImpl.class.getName());
+                def.getConstructorArgumentValues().addGenericArgumentValue(name);
+                link.addPropertyValue(LOCATION, def);
+
+                links.add(link.getBeanDefinition());
             }
 
             return links;

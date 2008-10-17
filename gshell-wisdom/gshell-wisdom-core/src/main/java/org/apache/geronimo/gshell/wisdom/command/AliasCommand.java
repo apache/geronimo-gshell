@@ -29,6 +29,7 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.wisdom.registry.CommandLocationImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
@@ -53,22 +54,13 @@ public class AliasCommand
         // name could be null
         // alias could be null
 
-        this.name = name;
         this.alias = alias;
 
+        setName(name);
         setAction(new AliasCommandAction());
         setDocumenter(new AliasCommandDocumenter());
         setCompleter(new NullCommandCompleter());
         setMessages(new AliasCommandMessageSource());
-        setLocation(new CommandLocation() {
-            public String getName() {
-                return name;
-            }
-
-            public String getPath() {
-                return null;
-            }
-        });
     }
 
     public AliasCommand() {
@@ -84,6 +76,9 @@ public class AliasCommand
 
     public void setName(final String name) {
         this.name = name;
+        if (name != null) {
+            setLocation(new CommandLocationImpl(name));
+        }
     }
 
     public String getAlias() {

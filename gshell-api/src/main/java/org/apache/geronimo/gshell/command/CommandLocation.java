@@ -32,4 +32,6 @@ public interface CommandLocation
     String getName();
 
     String getPath();
+
+    String getFullPath();
 }

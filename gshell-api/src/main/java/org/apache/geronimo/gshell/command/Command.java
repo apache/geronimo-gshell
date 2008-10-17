@@ -29,9 +29,12 @@ import org.apache.geronimo.gshell.shell.ShellContext;
  */
 public interface Command
 {
+    /**
+     * Returns the location of the command
+     *
+     * @return The command location; never null
+     */
     CommandLocation getLocation();
-
-    void setLocation(CommandLocation location);
 
     /**
      * Returns the action of the command.

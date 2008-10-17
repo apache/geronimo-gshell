@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
+import java.util.List;
 
 /**
  * A bundle of {@link Command} instances.
@@ -40,7 +41,7 @@ public class CommandBundle
     @Autowired
     private AliasRegistry aliasRegistry;
 
-    private Map<String,Command> commands;
+    private List<Command> commands;
 
     private Map<String,String> aliases;
 
@@ -48,11 +49,11 @@ public class CommandBundle
         super(name);
     }
 
-    public Map<String, Command> getCommands() {
+    public List<Command> getCommands() {
         return commands;
     }
 
-    public void setCommands(final Map<String, Command> commands) {
+    public void setCommands(final List<Command> commands) {
         assert commands != null;
         
         this.commands = commands;
@@ -70,8 +71,8 @@ public class CommandBundle
 
     protected void doEnable() throws Exception {
         assert commandRegistry != null;
-        for (String name : commands.keySet()) {
-            commandRegistry.registerCommand(name, commands.get(name));
+        for (Command command : commands) {
+            commandRegistry.registerCommand(command);
         }
 
         assert aliasRegistry != null;
@@ -82,8 +83,8 @@ public class CommandBundle
 
     protected void doDisable() throws Exception {
         assert commandRegistry != null;
-        for (String name : commands.keySet()) {
-            commandRegistry.removeCommand(name);
+        for (Command command : commands) {
+            commandRegistry.removeCommand(command);
         }
 
         assert aliasRegistry != null;
