@@ -37,11 +37,4 @@
         Internationalization support.
     </description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-        </dependency>
-    </dependencies>
-
 </project>
