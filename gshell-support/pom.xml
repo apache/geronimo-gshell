@@ -48,7 +48,6 @@
         <module>gshell-i18n</module>
         <module>gshell-io</module>
         <module>gshell-event</module>
-        <module>gshell-prefs</module>
         <module>gshell-spring</module>
         <module>gshell-interpolation</module>
         <module>gshell-console</module>
