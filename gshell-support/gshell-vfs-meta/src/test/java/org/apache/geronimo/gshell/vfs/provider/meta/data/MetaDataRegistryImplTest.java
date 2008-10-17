@@ -17,18 +17,34 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model;
+package org.apache.geronimo.gshell.vfs.provider.meta.data;
 
-import org.apache.geronimo.gshell.yarn.Yarn;
+import org.apache.commons.vfs.FileName;
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
+import org.apache.geronimo.gshell.vfs.provider.meta.AccessibleMetaDataRegistry;
+
+import java.util.Map;
 
 /**
- * Base class for model elements.
+ * Unit tests for the {@link MetaDataRegistryImpl} class.
  *
  * @version $Rev$ $Date$
  */
-public abstract class Element
+public class MetaDataRegistryImplTest
+    extends SpringTestSupport
 {
-    public String toString() {
-        return Yarn.render(this);
+    private AccessibleMetaDataRegistry registry;
+
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        registry = getBeanContainer().getBean(AccessibleMetaDataRegistry.class);
+        assertNotNull(registry);
+    }
+
+    public void testInitialState() throws Exception {
+        Map<FileName, MetaData> nodes = registry.getNodes();
+        assertNotNull(nodes);
+        assertEquals(1, nodes.size());
     }
 }

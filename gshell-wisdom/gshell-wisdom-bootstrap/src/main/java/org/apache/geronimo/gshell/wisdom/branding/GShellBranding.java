@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.wisdom.branding;
 import org.apache.geronimo.gshell.ansi.Buffer;
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.RenderWriter;
-import org.apache.geronimo.gshell.model.Branding;
+import org.apache.geronimo.gshell.application.model.Branding;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

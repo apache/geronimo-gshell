@@ -261,12 +261,6 @@
                 <artifactId>gshell-parser</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-			
-            <dependency>
-                <groupId>org.apache.geronimo.gshell</groupId>
-                <artifactId>gshell-model</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
@@ -385,7 +379,6 @@
         <module>gshell-api</module>
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>
-        <module>gshell-model</module>
         <module>gshell-application</module>
         <module>gshell-parser</module>
         <module>gshell-wisdom</module>

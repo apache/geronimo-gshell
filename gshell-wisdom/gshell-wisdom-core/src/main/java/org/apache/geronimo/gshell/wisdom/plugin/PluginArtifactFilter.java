@@ -40,7 +40,7 @@ public class PluginArtifactFilter
         assert application != null;
 
         // Filter out application artifacts, need to use gid:aid to make sure we don't clober anything which has the same artifactId, but different groupId
-        for (org.apache.geronimo.gshell.model.Artifact artifact : application.getClassPath().getArtifacts()) {
+        for (org.apache.geronimo.gshell.application.model.Artifact artifact : application.getClassPath().getArtifacts()) {
             String id = artifact.getGroupId() + ":" + artifact.getArtifactId();
             excludes.add(id);
         }

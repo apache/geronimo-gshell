@@ -17,19 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.vfs.provider.meta;
+package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
 
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
 import org.apache.commons.vfs.FileName;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
+import org.apache.geronimo.gshell.vfs.provider.meta.AccessibleMetaDataRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 
 import java.util.Map;
 
 /**
- * Unit tests for the {@link org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer} class.
+ * Unit tests for the {@link MetaDataRegistryConfigurer} class.
  *
  * @version $Rev$ $Date$
  */
@@ -86,9 +84,5 @@ public class MetaDataRegistryConfigurerTest
         Map<FileName, MetaData> nodes = registry.getNodes();
         assertNotNull(nodes);
         assertEquals(4, nodes.size());
-
-        XStream xs = new XStream(new DomDriver());
-        String xml = xs.toXML(registry);
-        System.out.println(xml);
     }
 }

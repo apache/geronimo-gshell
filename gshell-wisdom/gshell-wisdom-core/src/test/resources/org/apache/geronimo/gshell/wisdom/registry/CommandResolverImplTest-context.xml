@@ -33,6 +33,10 @@
         <property name="rootUri"  value="file:${basedir}/target/xstore"/>
     </bean>
 
+    <bean id="ivy" class="org.apache.geronimo.gshell.ivy.IvyFactoryBean">
+        <property name="settingsUrl" value="file:${basedir}/target/test-classes/ivysettings.xml"/>
+    </bean>
+
     <gshell:plugin name="test-plugin">
         <gshell:command-bundle name="default">
             <gshell:command name="test1">

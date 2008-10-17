@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.application;
 
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.model.Artifact;
+import org.apache.geronimo.gshell.application.model.Artifact;
 
 import java.io.File;
 import java.io.Serializable;
@@ -38,7 +38,9 @@ import java.util.List;
  */
 public class ClassPathImpl
     implements ClassPath, Serializable
-{   
+{
+    private static final long serialVersionUID = 1;
+    
     private Collection<Artifact> artifacts;
 
     private transient Collection<URL> urls;

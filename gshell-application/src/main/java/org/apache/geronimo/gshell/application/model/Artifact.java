@@ -17,7 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model;
+package org.apache.geronimo.gshell.application.model;
+
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 import java.io.File;
 import java.io.Serializable;
@@ -28,9 +30,10 @@ import java.io.Serializable;
  * @version $Rev$ $Date$
  */
 public class Artifact
-    extends Element
     implements Serializable
 {
+    private static final long serialVersionUID = 1;
+    
     public static final String DEFAULT_TYPE = "jar";
 
     private String groupId;
@@ -44,6 +47,10 @@ public class Artifact
     private String version;
 
     private File file;
+
+    public String toString() {
+        return Yarn.render(this);
+    }
 
     public String getGroupId() {
         return groupId;

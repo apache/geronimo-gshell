@@ -17,7 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model;
+package org.apache.geronimo.gshell.application.model;
+
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,6 @@ import java.util.Properties;
  * @version $Rev$ $Date$
  */
 public class ApplicationModel
-    extends Model
 {
     private String groupId;
 
@@ -48,6 +49,10 @@ public class ApplicationModel
     private List<Artifact> plugins;
 
     private Branding branding;
+
+    public String toString() {
+        return Yarn.render(this);
+    }
 
     public String getGroupId() {
         return groupId;
@@ -160,17 +165,5 @@ public class ApplicationModel
 
         // HACK: Hookup parent
         branding.setParent(this);
-    }
-    
-    /**
-     * Link children to their parent when deserializing.
-     */
-    @SuppressWarnings({"UnusedDeclaration"})
-    private Object readResolve() {
-        if (branding != null) {
-            branding.setParent(this);
-        }
-
-        return this;
     }
 }

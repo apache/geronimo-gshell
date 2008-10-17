@@ -57,7 +57,7 @@
         <level value="DEBUG"/>
     </logger>
 
-    <logger name="org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport">
+    <logger name="org.apache.geronimo.gshell.application.model.interpolate.InterpolatorSupport">
         <level value="DEBUG"/>
     </logger>
 

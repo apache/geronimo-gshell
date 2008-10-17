@@ -27,7 +27,7 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
     
-    <bean class="org.apache.geronimo.gshell.ivy.IvyFactoryBean">
+    <bean id="ivy" class="org.apache.geronimo.gshell.ivy.IvyFactoryBean">
         <property name="settingsUrl" value="file:${gshell.home}/etc/ivysettings.xml"/>
     </bean>
 

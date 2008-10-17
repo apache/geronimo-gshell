@@ -27,7 +27,7 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <bean class="org.apache.geronimo.gshell.model.ApplicationModel">
+    <bean class="org.apache.geronimo.gshell.application.model.ApplicationModel">
         <property name="groupId" value="org.apache.geronimo.gshell"/>
         <property name="artifactId" value="gshell"/>
         <property name="name" value="GShell"/>
@@ -39,20 +39,20 @@
 
         <property name="dependencies">
             <list>
-                <bean class="org.apache.geronimo.gshell.model.Artifact">
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.wisdom"/>
                     <property name="artifactId" value="gshell-wisdom-core"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.model.Artifact">
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.support"/>
                     <property name="artifactId" value="gshell-vfs-local"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
                 <!--
-                <bean class="org.apache.geronimo.gshell.model.Artifact">
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.support"/>
                     <property name="artifactId" value="gshell-vfs-truezip"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
@@ -63,13 +63,13 @@
 
         <property name="plugins">
             <list>
-                <bean class="org.apache.geronimo.gshell.model.Artifact">
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
                     <property name="artifactId" value="gshell-builtins"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
-                <bean class="org.apache.geronimo.gshell.model.Artifact">
+                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
                     <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
                     <property name="artifactId" value="gshell-vfs"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>

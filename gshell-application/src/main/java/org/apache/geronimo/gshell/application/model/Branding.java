@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model;
+package org.apache.geronimo.gshell.application.model;
 
-import org.apache.geronimo.gshell.model.Element;
+import org.apache.geronimo.gshell.yarn.Yarn;
 
 import java.io.File;
 import java.util.Properties;
@@ -30,7 +30,6 @@ import java.util.Properties;
  * @version $Rev$ $Date$
  */
 public class Branding
-    extends Element
 {
     private transient ApplicationModel parent;
 
@@ -63,6 +62,10 @@ public class Branding
     private String welcomeMessage;
 
     private String goodbyeMessage;
+
+    public String toString() {
+        return Yarn.render(this);
+    }
 
     public ApplicationModel getParent() {
         if (parent == null) {

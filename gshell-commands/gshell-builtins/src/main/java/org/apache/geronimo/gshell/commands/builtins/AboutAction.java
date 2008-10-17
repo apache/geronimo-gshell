@@ -24,8 +24,8 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.ApplicationModel;
-import org.apache.geronimo.gshell.model.Branding;
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
+import org.apache.geronimo.gshell.application.model.Branding;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
