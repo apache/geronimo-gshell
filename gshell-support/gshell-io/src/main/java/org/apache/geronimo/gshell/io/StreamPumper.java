@@ -22,8 +22,6 @@ package org.apache.geronimo.gshell.io;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.codehaus.plexus.util.IOUtil;
-
 //
 // Based on Apache Ant 1.6.5
 //
@@ -121,7 +119,7 @@ public class StreamPumper
         }
         finally {
             if (closeWhenExhausted) {
-                IOUtil.close(out);
+                Closer.close(out);
             }
             finished = true;
 

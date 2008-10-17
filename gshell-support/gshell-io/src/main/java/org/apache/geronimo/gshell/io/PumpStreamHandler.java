@@ -19,11 +19,8 @@
 
 package org.apache.geronimo.gshell.io;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.codehaus.plexus.util.IOUtil;
 
 //
 // Based on Apache Ant 1.6.5
@@ -100,7 +97,7 @@ public class PumpStreamHandler
             inputPump = createInputPump(in, out, true);
         }
         else {
-            IOUtil.close(out);
+            Closer.close(out);
         }
     }
 
@@ -161,19 +158,7 @@ public class PumpStreamHandler
             inputPump.stop();
         }
 
-        try {
-            err.flush();
-        }
-        catch (IOException e) {
-            // ignore
-        }
-
-        try {
-            out.flush();
-        }
-        catch (IOException e) {
-            // ignore
-        }
+        Flusher.flush(err, out);
     }
 
     /**

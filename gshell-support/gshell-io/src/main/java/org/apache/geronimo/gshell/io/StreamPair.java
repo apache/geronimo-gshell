@@ -64,18 +64,18 @@ public class StreamPair
     }
 
     public void flush() {
-        out.flush();
-        
+        Flusher.flush(out);
+
         if (!combined) {
-            err.flush();
+            Flusher.flush(err);
         }
     }
     
     public void close() {
-        out.close();
-        
+        Closer.close(out);
+
         if (!combined) {
-            err.close();
+            Closer.close(err);
         }
     }
 

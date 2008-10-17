@@ -23,7 +23,6 @@ import jline.Terminal;
 import jline.ConsoleReader;
 import org.apache.geronimo.gshell.ansi.RenderWriter;
 import org.apache.geronimo.gshell.yarn.Yarn;
-import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
@@ -249,11 +248,11 @@ public class IO
      * Flush both output streams.
      */
     public void flush() {
-        out.flush();
+        Flusher.flush(out);
 
         // Only attempt to flush the err stream if we aren't sharing it with out
         if (!isSharedOutputStreams()) {
-            err.flush();
+            Flusher.flush(err);
         }
     }
 
@@ -261,12 +260,11 @@ public class IO
      * Close all streams.
      */
     public void close() throws IOException {
-        IOUtil.close(in);
-        IOUtil.close(out);
+        Closer.close(in, out);
 
         // Only attempt to close the err stream if we aren't sharing it with out
         if (!isSharedOutputStreams()) {
-            IOUtil.close(err);
+            Closer.close(err);
         }
     }
 
