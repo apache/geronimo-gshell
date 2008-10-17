@@ -55,7 +55,8 @@ public class ShellBuilderImpl
     private BeanContainer createContainer() throws Exception {
         BeanContainerImpl container = new BeanContainerImpl(getClassLoader());
         container.loadBeans(new String[] {
-            "classpath*:META-INF/spring/components.xml"
+            "classpath*:META-INF/spring/components.xml",
+            "classpath:application.xml"
         });
 
         return container;
@@ -98,14 +99,6 @@ public class ShellBuilderImpl
 
     public void setVariables(final Variables variables) {
         applicationConfig.setVariables(variables);
-    }
-
-    public ApplicationModel getApplicationModel() {
-        return applicationConfig.getModel();
-    }
-
-    public void setApplicationModel(final ApplicationModel applicationModel) {
-        applicationConfig.setModel(applicationModel);
     }
 
     private ApplicationManager createApplicationManager() {
@@ -161,6 +154,12 @@ public class ShellBuilderImpl
         ArtifactManager artifactManager = getContainer().getBean(ArtifactManager.class);
         artifactManager.setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
 
+        ApplicationModel applicationModel = container.getBean(ApplicationModel.class);
+        applicationConfig.setModel(applicationModel);
+
+        // HACK: Hookup branding's parent
+        applicationModel.getBranding().setParent(applicationModel);
+        
         // Configure application
         getApplicationManager().configure(applicationConfig);
 

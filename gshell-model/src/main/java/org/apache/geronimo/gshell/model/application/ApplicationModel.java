@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.DescriptorSupport;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
@@ -32,7 +31,6 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("application")
 public class ApplicationModel
     extends DescriptorSupport
 {
@@ -70,6 +68,10 @@ public class ApplicationModel
         return remoteRepositories;
     }
 
+    public void setRemoteRepositories(final List<RemoteRepository> repositories) {
+        this.remoteRepositories = repositories;
+    }
+
     public void add(final RemoteRepository repository) {
         assert repository != null;
 
@@ -100,6 +102,10 @@ public class ApplicationModel
         }
 
         return dependencies;
+    }
+
+    public void setDependencies(final List<DependencyArtifact> dependencies) {
+        this.dependencies = dependencies;
     }
 
     public List<DependencyArtifact> getDependencies(boolean includeGroups) {
@@ -148,6 +154,10 @@ public class ApplicationModel
         }
 
         return plugins;
+    }
+
+    public void setPlugins(final List<PluginArtifact> plugins) {
+        this.plugins = plugins;
     }
 
     public List<PluginArtifact> getPlugins(boolean includeGroups) {

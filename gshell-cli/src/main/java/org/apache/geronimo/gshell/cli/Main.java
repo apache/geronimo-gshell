@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.cli;
 
 import org.apache.geronimo.gshell.ansi.ANSI;
-import org.apache.geronimo.gshell.application.ApplicationModelLocator;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
@@ -28,15 +27,14 @@ import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.terminal.AutoDetectedTerminal;
+import org.apache.geronimo.gshell.terminal.UnixTerminal;
+import org.apache.geronimo.gshell.terminal.UnsupportedTerminal;
+import org.apache.geronimo.gshell.terminal.WindowsTerminal;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
-import org.apache.geronimo.gshell.terminal.UnixTerminal;
-import org.apache.geronimo.gshell.terminal.WindowsTerminal;
-import org.apache.geronimo.gshell.terminal.UnsupportedTerminal;
-import org.apache.geronimo.gshell.terminal.AutoDetectedTerminal;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -80,11 +78,6 @@ public class Main
         System.setProperty("gshell.log.console.level", level);
     }
 
-    /*
-    @Option(name="-a", aliases={"--application"})
-    private String applicationDescriptor;
-    */
-    
     @Option(name="-e", aliases={"--exception"})
     private void setException(boolean flag) {
     	if (flag) {
@@ -209,20 +202,15 @@ public class Main
             builder.setClassLoader(getClass().getClassLoader());
             builder.setIo(io);
 
-            // Find our application descriptor
-            ApplicationModel applicationModel = new ApplicationModelLocator().
-                    /*addLocation(applicationDescriptor).*/locate();
-            builder.setApplicationModel(applicationModel);
-
             // --help and --version need access to the application's information, so we have to handle these options late
             if (help|version) {
                 if (help) {
                     Printer printer = new Printer(clp);
                     printer.setMessageSource(messages);
-                    printer.printUsage(io.out, applicationModel.getBranding().getProgramName());
+                    printer.printUsage(io.out, "FIXME"/*applicationModel.getBranding().getProgramName()*/);
                 }
                 else if (version) {
-                    io.out.println(applicationModel.getVersion());
+                    io.out.println("FIXME"/*applicationModel.getVersion()*/);
                     io.out.println();
                 }
 

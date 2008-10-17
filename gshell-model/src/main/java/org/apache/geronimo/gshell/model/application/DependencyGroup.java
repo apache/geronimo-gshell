@@ -19,24 +19,20 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import org.apache.geronimo.gshell.model.common.ArtifactGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.geronimo.gshell.model.common.ArtifactGroup;
 
 /**
  * Groups {@link DependencyArtifact} elements to allow artifact configuration to be shared.
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("dependencyGroup")
 public class DependencyGroup
     extends ArtifactGroup<DependencyArtifact>
 {
-    @XStreamImplicit
+    // @XStreamImplicit
     private List<DependencyArtifact> dependencies;
 
     public List<DependencyArtifact> getArtifacts() {

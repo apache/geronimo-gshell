@@ -17,25 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.model.interpolate;
-
-import org.apache.geronimo.gshell.model.Model;
-import org.codehaus.plexus.interpolation.InterpolationException;
-import org.codehaus.plexus.interpolation.RecursionInterceptor;
-import org.codehaus.plexus.interpolation.ValueSource;
+package org.apache.geronimo.gshell.ivy;
 
 /**
- * Provides variable/context interpolation for models.
+ * ???
  *
  * @version $Rev$ $Date$
  */
-public interface Interpolator<T extends Model>
+public interface ArtifactResolver
 {
-	void setPrefixPattern(String pattern);
-	
-	void setRecursionInterceptor(RecursionInterceptor interceptor);
-	
-	void addValueSource(ValueSource source);
-	
-	T interpolate(T input) throws InterpolationException;
+    
 }

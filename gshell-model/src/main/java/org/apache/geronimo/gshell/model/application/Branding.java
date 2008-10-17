@@ -19,9 +19,7 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.Element;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.util.Properties;
@@ -31,7 +29,6 @@ import java.util.Properties;
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("branding")
 public class Branding
     extends Element
 {
@@ -93,10 +90,25 @@ public class Branding
 
     public String getDisplayName() {
         if (displayName == null) {
-            return StringUtils.capitalise(getName());
+            return capitalise(getName());
         }
 
         return displayName;
+    }
+
+    private static String capitalise(final String str) {
+        if (str == null) {
+            return null;
+        }
+        else if (str.length() == 0) {
+            return "";
+        }
+        else {
+            return new StringBuffer(str.length())
+                    .append(Character.toTitleCase(str.charAt(0)))
+                    .append(str.substring(1))
+                    .toString();
+        }
     }
 
     public void setDisplayName(final String displayName) {

@@ -34,7 +34,7 @@
     <name>GShell Model</name>
 
     <description>
-		GShell XML models.
+		GShell models.
     </description>
 
     <dependencies>
@@ -42,34 +42,10 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-yarn</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-interpolation</artifactId>
-        </dependency>
         
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-marshal</artifactId>
-        </dependency>
-
-        <!--
-        NOTE: Used for StringUtils.capitalise() only.
-        -->
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
+            <artifactId>gshell-yarn</artifactId>
         </dependency>
     </dependencies>
 

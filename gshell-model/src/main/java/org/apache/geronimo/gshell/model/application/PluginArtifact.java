@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.model.common.Artifact;
 
 /**
@@ -27,7 +26,6 @@ import org.apache.geronimo.gshell.model.common.Artifact;
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("plugin")
 public class PluginArtifact
     extends Artifact
 {

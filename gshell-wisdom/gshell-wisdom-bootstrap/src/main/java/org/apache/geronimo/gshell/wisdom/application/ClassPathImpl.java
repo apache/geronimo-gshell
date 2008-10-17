@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.model.common.Artifact;
 
@@ -36,7 +35,6 @@ import java.util.Set;
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("classpath")
 public class ClassPathImpl
     implements ClassPath
 {

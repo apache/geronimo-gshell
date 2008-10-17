@@ -20,96 +20,74 @@
 
 <!-- $Rev$ $Date$ -->
 
-<application>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--
-    TODO: Consider making application.xml a spring beans file, with a custom 'application' (and 'settings' for settings.xml) namespace.
-          Will need a way to install application specific beans and config which is not in a plugin anyways.
-          And, we can drop the need for XStream and some of the bits from gshell-model
-    -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <groupId>org.apache.geronimo.gshell</groupId>
-    <artifactId>gshell</artifactId>
-    <name>GShell</name>
-    <version>1.0-alpha-2-SNAPSHOT</version>
+    <bean class="org.apache.geronimo.gshell.model.application.ApplicationModel">
+        <property name="groupId" value="org.apache.geronimo.gshell"/>
+        <property name="artifactId" value="gshell"/>
+        <property name="name" value="GShell"/>
+        <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
 
-    <localRepository>
-        <directory>${gshell.home}/var/repository</directory>
-    </localRepository>
+        <property name="localRepository">
+            <bean class="org.apache.geronimo.gshell.model.common.LocalRepository">
+                <property name="directory" value="${gshell.home}/var/repository"/>
+            </bean>
+        </property>
 
-    <remoteRepositories>
-        <remoteRepository>
-            <id>cache</id>
-            <location>file:${user.home}/.m2/repository</location>
-        </remoteRepository>
-        
-        <!--
-        <remoteRepository>
-            <id>central</id>
-            <location>http://repo1.maven.org/maven2</location>
-        </remoteRepository>
-        -->
-    </remoteRepositories>
+        <property name="remoteRepositories">
+            <list>
+                <bean class="org.apache.geronimo.gshell.model.common.RemoteRepository">
+                    <property name="id" value="cache"/>
+                    <property name="location" value="file:${user.home}/.m2/repository"/>
+                </bean>
+            </list>
+        </property>
 
-    <dependencyGroups>
-        <dependencyGroup>
-            <version>1.0-alpha-2-SNAPSHOT</version>
+        <property name="branding">
+            <bean class="org.apache.geronimo.gshell.wisdom.branding.GShellBranding"/>
+        </property>
 
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.wisdom</groupId>
-                <artifactId>gshell-wisdom-core</artifactId>
-            </dependency>
+        <property name="dependencies">
+            <list>
+                <bean class="org.apache.geronimo.gshell.model.application.DependencyArtifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.wisdom"/>
+                    <property name="artifactId" value="gshell-wisdom-core"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
 
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.support</groupId>
-                <artifactId>gshell-vfs-local</artifactId>
-            </dependency>
+                <bean class="org.apache.geronimo.gshell.model.application.DependencyArtifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.support"/>
+                    <property name="artifactId" value="gshell-vfs-local"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
 
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.support</groupId>
-                <artifactId>gshell-vfs-truezip</artifactId>
-            </dependency>
-        </dependencyGroup>
-    </dependencyGroups>
+                <bean class="org.apache.geronimo.gshell.model.application.DependencyArtifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.support"/>
+                    <property name="artifactId" value="gshell-vfs-truezip"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
+            </list>
+        </property>
 
-    <pluginGroups>
-        <pluginGroup>
-            <groupId>org.apache.geronimo.gshell.commands</groupId>
-            <version>1.0-alpha-2-SNAPSHOT</version>
+        <property name="plugins">
+            <list>
+                <bean class="org.apache.geronimo.gshell.model.application.PluginArtifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifactId" value="gshell-builtins"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
 
-            <plugin>
-                <artifactId>gshell-builtins</artifactId>
-            </plugin>
-
-            <plugin>
-                <artifactId>gshell-admin</artifactId>
-            </plugin>
-
-            <plugin>
-                <artifactId>gshell-log4j</artifactId>
-            </plugin>
-
-            <plugin>
-                <artifactId>gshell-vfs</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>gshell-remote</artifactId>
-            </plugin>
-            
-            <plugin>
-                <artifactId>gshell-optional</artifactId>
-            </plugin>
-
-            <plugin>
-                <artifactId>gshell-repository</artifactId>
-            </plugin>
-
-            <plugin>
-                <artifactId>gshell-bsf</artifactId>
-            </plugin>
-        </pluginGroup>
-    </pluginGroups>
-
-    <branding class="org.apache.geronimo.gshell.wisdom.branding.GShellBranding"/>
-
-</application>
+                <bean class="org.apache.geronimo.gshell.model.application.PluginArtifact">
+                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifactId" value="gshell-vfs"/>
+                    <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+</beans>

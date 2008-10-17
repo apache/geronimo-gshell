@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.model.application;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import org.apache.geronimo.gshell.model.common.ArtifactGroup;
 
 import java.util.ArrayList;
@@ -31,11 +29,10 @@ import java.util.List;
  *
  * @version $Rev$ $Date$
  */
-@XStreamAlias("pluginGroup")
 public class PluginGroup
     extends ArtifactGroup<PluginArtifact>
 {
-    @XStreamImplicit
+    // @XStreamImplicit
     private List<PluginArtifact> plugins;
 
     public List<PluginArtifact> getArtifacts() {

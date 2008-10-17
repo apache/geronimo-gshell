@@ -19,9 +19,6 @@
 
 package org.apache.geronimo.gshell.model;
 
-import org.apache.geronimo.gshell.marshal.Marshaller;
-import org.apache.geronimo.gshell.marshal.MarshallerAware;
-
 /**
  * Base class for root model elements.
  *
@@ -29,9 +26,9 @@ import org.apache.geronimo.gshell.marshal.MarshallerAware;
  */
 public abstract class Model
     extends Element
-    implements MarshallerAware
+    // implements MarshallerAware
 {
-    private transient Marshaller marshaller;
+    // private transient Marshaller marshaller;
 
     /*
     @XStreamAlias("version")
@@ -39,6 +36,7 @@ public abstract class Model
     private String modelVersion;
     */
 
+    /*
     public Marshaller getMarshaller() {
     	if (marshaller == null) {
     		throw new IllegalStateException("Marshaller is not bound");
@@ -50,6 +48,7 @@ public abstract class Model
     public void setMarshaller(final Marshaller marshaller) {
         this.marshaller = marshaller;
     }
+    */
 
     /*
     public String getModelVersion() {

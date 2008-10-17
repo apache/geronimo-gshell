@@ -36,7 +36,6 @@ import org.apache.ivy.core.resolve.ResolveOptions;
 import org.apache.ivy.core.cache.ResolutionCacheManager;
 
 import java.io.File;
-import java.util.List;
 import java.net.URL;
 
 /**

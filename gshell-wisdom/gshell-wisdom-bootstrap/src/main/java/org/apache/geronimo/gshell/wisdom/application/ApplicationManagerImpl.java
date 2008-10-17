@@ -28,14 +28,10 @@ import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.marshal.MarshallerSupport;
-import org.apache.geronimo.gshell.marshal.Marshaller;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
 import org.apache.geronimo.gshell.model.application.DependencyArtifact;
 import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
-import org.apache.geronimo.gshell.model.interpolate.Interpolator;
-import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -43,20 +39,18 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.net.URL;
 
 /**
  * Default implementation of the {@link ApplicationManager} component.
@@ -102,9 +96,6 @@ public class ApplicationManagerImpl
         // Validate the configuration
         config.validate();
 
-        // Interpolate the model
-        interpolate(config);
-
         // Apply artifact manager configuration settings for application
         configureArtifactManager(config.getModel());
 
@@ -116,24 +107,6 @@ public class ApplicationManagerImpl
         applicationContainer.getBean(PluginManager.class);
         
         eventPublisher.publish(new ApplicationConfiguredEvent(application));
-    }
-
-    private void interpolate(final ApplicationConfiguration config) throws Exception {
-    	assert config != null;
-
-        ApplicationModel model = config.getModel();
-        Interpolator<ApplicationModel> interp = new InterpolatorSupport<ApplicationModel>();
-
-        // Add value sources to resolve muck
-        interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
-
-        // Add application settings
-        interp.addValueSource(new PropertiesBasedValueSource(model.getProperties()));
-
-        model = interp.interpolate(model);
-
-        // Update the configuration with the new model
-        config.setModel(model);
     }
 
     private void configureArtifactManager(final ApplicationModel model) throws Exception {
@@ -184,21 +157,31 @@ public class ApplicationManagerImpl
     private ClassPath loadClassPath(final ApplicationModel model) throws Exception {
         assert model != null;
 
-        Marshaller<ClassPath> marshaller = new MarshallerSupport<ClassPath>(ClassPathImpl.class);
+        Set<Artifact> artifacts = resolveArtifacts(model);
+        ClassPath classPath = new ClassPathImpl(artifacts);
+
+        /*
+        FIXME: This needs to find a way to work w/o XStream, which isn't available on the classpath yet.
+
         File file = new File(new File(System.getProperty("gshell.home")), "var/xstore/classpath.xml");  // FIXME: Get state directory from application/branding
         ClassPath classPath;
 
         if (file.exists()) {
-            classPath = marshaller.unmarshal(file);
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
+            classPath = (ClassPath)decoder.readObject();
             log.debug("Loaded classpath from cache: {}", file);
+            decoder.close();
         }
         else {
             Set<Artifact> artifacts = resolveArtifacts(model);
             classPath = new ClassPathImpl(artifacts);
             log.debug("Saving classpath to cache: {}", file);
             file.getParentFile().mkdirs();
-            marshaller.marshal(classPath, file);
+            XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
+            encoder.writeObject(classPath);
+            encoder.close();
         }
+        */
 
         if (log.isDebugEnabled()) {
             log.debug("Application classpath:");

@@ -62,10 +62,8 @@ public class ApplicationArtifactFilter
             "gshell-spring",
             "gshell-wisdom-bootstrap",
             "gshell-yarn",
-            "gshell-interpolation",
             "jcl104-over-slf4j",
             "gshell-terminal",
-            "gshell-marshal",
             "jline",
             "log4j",
             "maven-artifact",
@@ -89,8 +87,7 @@ public class ApplicationArtifactFilter
             "wagon-http-lightweight",
             "wagon-http-shared",
             "wagon-provider-api",
-            "xbean-reflect",
-            "xstream",
+            "xbean-reflect"
         }));
 
         return filter;
