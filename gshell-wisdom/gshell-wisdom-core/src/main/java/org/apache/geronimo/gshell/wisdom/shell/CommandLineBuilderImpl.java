@@ -29,7 +29,7 @@ import org.apache.geronimo.gshell.parser.ParseException;
 import org.apache.geronimo.gshell.parser.visitor.ExecutingVisitor;
 import org.apache.geronimo.gshell.parser.visitor.LoggingVisitor;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.geronimo.gshell.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class CommandLineBuilderImpl
             cl = parser.parse(reader);
         }
         finally {
-            IOUtil.close(reader);
+            Closer.close(reader);
         }
 
         // If debug is enabled, the log the parse tree

@@ -30,12 +30,11 @@ import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.model.application.Branding;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -247,7 +246,7 @@ public class ShellImpl
             String message = branding.getWelcomeMessage();
             if (message != null) {
                 io.out.print(message);
-                io.out.println(StringUtils.repeat("-", io.getTerminal().getTerminalWidth() - 1));
+                io.out.println(repeat("-", io.getTerminal().getTerminalWidth() - 1));
                 io.out.flush();
             }
         }
@@ -265,6 +264,14 @@ public class ShellImpl
         if (n != null) {
             throw n;
         }
+    }
+
+    private static String repeat(String str, int repeat) {
+        StringBuffer buffer = new StringBuffer(repeat * str.length());
+        for (int i = 0; i < repeat; i++) {
+            buffer.append(str);
+        }
+        return buffer.toString();
     }
 
     public Prompter getPrompter() {
@@ -316,7 +323,7 @@ public class ShellImpl
             }
         }
         finally {
-            IOUtil.close(reader);
+            Closer.close(reader);
         }
     }
 

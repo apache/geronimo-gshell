@@ -32,10 +32,10 @@ import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailed;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,10 +171,10 @@ public class CommandLineExecutorImpl
                     }
                     finally {
                         if (idx > 0) {
-                            IOUtil.close(ios[idx].inputStream);
+                            Closer.close(ios[idx].inputStream);
                         }
                         if (idx < commands.length - 1) {
-                            IOUtil.close(ios[idx].outputStream);
+                            Closer.close(ios[idx].outputStream);
                         }
                     }
                 }
@@ -244,7 +244,7 @@ public class CommandLineExecutorImpl
             throw result.getNotification();
         }
         else if (result.hasFailed()) {
-            //noinspection ThrowableResultOfMethodCallIgnored
+            // noinspection ThrowableResultOfMethodCallIgnored
             throw new CommandException(result.getFailure());
         }
         else {
