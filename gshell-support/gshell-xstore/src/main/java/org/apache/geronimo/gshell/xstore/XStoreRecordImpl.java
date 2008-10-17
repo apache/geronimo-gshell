@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.xstore;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.marshal.Marshaller;
 import org.apache.geronimo.gshell.marshal.MarshallerSupport;
 import org.slf4j.Logger;
@@ -28,7 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -84,12 +84,7 @@ public class XStoreRecordImpl
             throw new XStoreException(e);
         }
         finally {
-            try {
-                output.close();
-            }
-            catch (IOException e) {
-                // ignore
-            }
+            Closer.close(output);
         }
     }
 
@@ -117,12 +112,7 @@ public class XStoreRecordImpl
             throw new XStoreException(e);
         }
         finally {
-            try {
-                input.close();
-            }
-            catch (IOException e) {
-                // ignore
-            }
+            Closer.close(input);
         }
     }
 
