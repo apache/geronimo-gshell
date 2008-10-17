@@ -61,7 +61,7 @@ public class GrepAction
     @Argument(index=0, required=true)
     private String pattern;
 
-    @Argument(index=1, required=true)
+    @Argument(index=1, required=false)
     private String path;
 
     @Option(name="-c", aliases={"--count"})
@@ -119,13 +119,18 @@ public class GrepAction
             return Result.FAILURE;
         }
 
-        FileObject file = resolveFile(context, path);
+        if (path != null) {
+            FileObject file = resolveFile(context, path);
 
-        try {
-            grep(context, processor, file);
+            try {
+                grep(context, processor, file);
+            }
+            finally {
+                FileObjects.close(file);
+            }
         }
-        finally {
-            FileObjects.close(file);
+        else {
+            processor.processMatches(context.getIo().inputStream, context.getIo().outputStream);
         }
 
         if (count) {
