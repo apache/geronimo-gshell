@@ -51,7 +51,6 @@
         <module>gshell-event</module>
         <module>gshell-prefs</module>
         <module>gshell-spring</module>
-        <module>gshell-plexus</module>
         <module>gshell-interpolation</module>
         <module>gshell-console</module>
         <module>gshell-vfs</module>

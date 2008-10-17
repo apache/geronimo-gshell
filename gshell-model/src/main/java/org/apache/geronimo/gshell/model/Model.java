@@ -26,37 +26,6 @@ package org.apache.geronimo.gshell.model;
  */
 public abstract class Model
     extends Element
-    // implements MarshallerAware
 {
-    // private transient Marshaller marshaller;
-
-    /*
-    @XStreamAlias("version")
-    @XStreamAsAttribute
-    private String modelVersion;
-    */
-
-    /*
-    public Marshaller getMarshaller() {
-    	if (marshaller == null) {
-    		throw new IllegalStateException("Marshaller is not bound");
-    	}
-    	
-        return marshaller;
-    }
-
-    public void setMarshaller(final Marshaller marshaller) {
-        this.marshaller = marshaller;
-    }
-    */
-
-    /*
-    public String getModelVersion() {
-        return modelVersion;
-    }
-
-    public void setModelVersion(final String modelVersion) {
-        this.modelVersion = modelVersion;
-    }
-    */
+    // ???
 }
