@@ -71,7 +71,7 @@ public class XStoreRecordImpl
     public void set(final Object value) {
         assert value != null;
 
-        log.debug("Setting: {} -> {}", file.getName(), value);
+        log.trace("Setting: {} -> {}", file.getName(), value);
 
         BufferedOutputStream output = null;
         try {
@@ -96,7 +96,7 @@ public class XStoreRecordImpl
     public <T> T get(final Class<T> type) {
         assert type != null;
 
-        log.debug("Getting: {}", file);
+        log.trace("Getting: {}", file);
 
         BufferedInputStream input = null;
 
@@ -110,7 +110,7 @@ public class XStoreRecordImpl
 
             input = new BufferedInputStream(file.getContent().getInputStream());
             T value = marshaller.unmarshal(input);
-            log.debug("Value: {}", value);
+            log.trace("Value: {}", value);
             return value;
         }
         catch (FileSystemException e) {
@@ -127,7 +127,7 @@ public class XStoreRecordImpl
     }
 
     public void close() {
-        log.debug("Closing: {}", file);
+        log.trace("Closing: {}", file);
         
         try {
             file.close();
@@ -138,7 +138,7 @@ public class XStoreRecordImpl
     }
 
     public boolean delete() {
-        log.debug("Deleting: {}", file);
+        log.trace("Deleting: {}", file);
 
         try {
             return file.delete();
@@ -149,7 +149,7 @@ public class XStoreRecordImpl
     }
 
     public void refresh() {
-        log.debug("Refreshing: {}", file);
+        log.trace("Refreshing: {}", file);
 
         try {
             file.refresh();

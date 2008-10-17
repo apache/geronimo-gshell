@@ -46,7 +46,6 @@ public class HistoryImpl
     public void init() throws Exception {
         assert application != null;
         File file = application.getModel().getBranding().getHistoryFile();
-        log.debug("History file: {}", file);
         setHistoryFile(file);
     }
     
@@ -56,16 +55,11 @@ public class HistoryImpl
         File dir = file.getParentFile();
 
         if (!dir.exists()) {
-            boolean result = dir.mkdirs();
-            if (!result) {
-                log.warn("Failed to create base directory for history file: {}", dir);
-            }
-            else {
-                log.debug("Created base directory for history file: {}", dir);
-            }
+            // noinspection ResultOfMethodCallIgnored
+            dir.mkdirs();
         }
 
-        log.debug("Using history file: {}", file);
+        log.debug("History file: {}", file);
 
         super.setHistoryFile(file);
     }

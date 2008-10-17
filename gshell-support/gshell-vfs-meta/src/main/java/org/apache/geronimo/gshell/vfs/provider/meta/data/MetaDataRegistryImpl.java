@@ -89,7 +89,8 @@ public class MetaDataRegistryImpl
                 parent = lookupData(parentName);
             }
             else {
-                log.debug("Building parent tree: {}", parentName);
+                log.trace("Building parent tree: {}", parentName);
+                
                 parent = new MetaData(parentName, FileType.FOLDER);
                 registerData(parentName, parent);
             }
