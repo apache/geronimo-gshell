@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.cli;
 
 import org.apache.geronimo.gshell.ansi.ANSI;
 import org.apache.geronimo.gshell.application.ApplicationModelLocator;
-import org.apache.geronimo.gshell.application.settings.SettingsModelLocator;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
@@ -30,11 +29,14 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
+import org.apache.geronimo.gshell.terminal.UnixTerminal;
+import org.apache.geronimo.gshell.terminal.WindowsTerminal;
+import org.apache.geronimo.gshell.terminal.UnsupportedTerminal;
+import org.apache.geronimo.gshell.terminal.AutoDetectedTerminal;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -81,11 +83,8 @@ public class Main
     /*
     @Option(name="-a", aliases={"--application"})
     private String applicationDescriptor;
-
-    @Option(name="-s", aliases={"--settings"})
-    private String settingsDescriptor;
     */
-
+    
     @Option(name="-e", aliases={"--exception"})
     private void setException(boolean flag) {
     	if (flag) {
@@ -160,34 +159,23 @@ public class Main
     private void setTerminalType(String type) {
         type = type.toLowerCase();
 
-        //
-        // FIXME: Provide an abstraction over the jline term stuff and its warts, and/or fork it and re-implement it to not be so broken
-        //
-
         if ("unix".equals(type)) {
-            type = "jline.UnixTerminal";
+            type = UnixTerminal.class.getName();
         }
         else if ("win".equals(type) || "windows".equals("type")) {
-            type = "jline.WindowsTerminal";
+            type = WindowsTerminal.class.getName();
         }
         else if ("false".equals(type) || "off".equals(type) || "none".equals(type)) {
-            type = "jline.UnsupportedTerminal";
-            
-            //
-            // HACK: Disable ANSI, for some reason UnsupportedTerminal reports ANSI as enabled, when it shouldn't
-            //       as a temporary solution, could provide a Terminal instance which can delegate and fix warts like this
-            //
-            ANSI.setEnabled(false);
+            type = UnsupportedTerminal.class.getName();
         }
 
         System.setProperty("jline.terminal", type);
     }
 
-    @Option(name="-o", aliases="--offline")
-    private boolean offline;
-
     public void boot(final String[] args) throws Exception {
         assert args != null;
+
+        System.setProperty("jline.terminal", AutoDetectedTerminal.class.getName());
 
         // Default is to be quiet
         setConsoleLogLevel("WARN");
@@ -220,12 +208,6 @@ public class Main
             ShellBuilder builder = new ShellBuilderImpl();
             builder.setClassLoader(getClass().getClassLoader());
             builder.setIo(io);
-
-            // Find our settings descriptor
-            SettingsModel settingsModel = new SettingsModelLocator().
-                    /*addLocation(settingsDescriptor).*/locate();
-            settingsModel.setOnline(!offline);
-            builder.setSettingsModel(settingsModel);
 
             // Find our application descriptor
             ApplicationModel applicationModel = new ApplicationModelLocator().
