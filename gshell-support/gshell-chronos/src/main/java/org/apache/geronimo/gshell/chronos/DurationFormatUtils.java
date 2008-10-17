@@ -23,8 +23,6 @@ package org.apache.geronimo.gshell.chronos;
 // NOTE: Copied and massaged from commons-lang 2.3
 //
 
-import org.codehaus.plexus.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -186,16 +184,16 @@ public class DurationFormatUtils
         if (suppressLeadingZeroElements) {
             // this is a temporary marker on the front. Like ^ in regexp.
             duration = " " + duration;
-            String tmp = StringUtils.replaceOnce(duration, " 0 days", "");
+            String tmp = replaceOnce(duration, " 0 days", "");
             if (tmp.length() != duration.length()) {
                 duration = tmp;
-                tmp = StringUtils.replaceOnce(duration, " 0 hours", "");
+                tmp = replaceOnce(duration, " 0 hours", "");
                 if (tmp.length() != duration.length()) {
                     duration = tmp;
-                    tmp = StringUtils.replaceOnce(duration, " 0 minutes", "");
+                    tmp = replaceOnce(duration, " 0 minutes", "");
                     duration = tmp;
                     if (tmp.length() != duration.length()) {
-                        duration = StringUtils.replaceOnce(tmp, " 0 seconds", "");
+                        duration = replaceOnce(tmp, " 0 seconds", "");
                     }
                 }
             }
@@ -205,25 +203,25 @@ public class DurationFormatUtils
             }
         }
         if (suppressTrailingZeroElements) {
-            String tmp = StringUtils.replaceOnce(duration, " 0 seconds", "");
+            String tmp = replaceOnce(duration, " 0 seconds", "");
             if (tmp.length() != duration.length()) {
                 duration = tmp;
-                tmp = StringUtils.replaceOnce(duration, " 0 minutes", "");
+                tmp = replaceOnce(duration, " 0 minutes", "");
                 if (tmp.length() != duration.length()) {
                     duration = tmp;
-                    tmp = StringUtils.replaceOnce(duration, " 0 hours", "");
+                    tmp = replaceOnce(duration, " 0 hours", "");
                     if (tmp.length() != duration.length()) {
-                        duration = StringUtils.replaceOnce(tmp, " 0 days", "");
+                        duration = replaceOnce(tmp, " 0 days", "");
                     }
                 }
             }
         }
         // handle plurals
         duration = " " + duration;
-        duration = StringUtils.replaceOnce(duration, " 1 seconds", " 1 second");
-        duration = StringUtils.replaceOnce(duration, " 1 minutes", " 1 minute");
-        duration = StringUtils.replaceOnce(duration, " 1 hours", " 1 hour");
-        duration = StringUtils.replaceOnce(duration, " 1 days", " 1 day");
+        duration = replaceOnce(duration, " 1 seconds", " 1 second");
+        duration = replaceOnce(duration, " 1 minutes", " 1 minute");
+        duration = replaceOnce(duration, " 1 hours", " 1 hour");
+        duration = replaceOnce(duration, " 1 days", " 1 day");
         return duration.trim();
     }
 
@@ -437,39 +435,39 @@ public class DurationFormatUtils
                 buffer.append(value.toString());
             } else {
                 if (value == y) {
-                    buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(years), count, "0") : Integer
+                    buffer.append(padWithZeros ? leftPad(Integer.toString(years), count, "0") : Integer
                             .toString(years));
                     lastOutputSeconds = false;
                 } else if (value == M) {
-                    buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(months), count, "0") : Integer
+                    buffer.append(padWithZeros ? leftPad(Integer.toString(months), count, "0") : Integer
                             .toString(months));
                     lastOutputSeconds = false;
                 } else if (value == d) {
-                    buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(days), count, "0") : Integer
+                    buffer.append(padWithZeros ? leftPad(Integer.toString(days), count, "0") : Integer
                             .toString(days));
                     lastOutputSeconds = false;
                 } else if (value == H) {
-                    buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(hours), count, "0") : Integer
+                    buffer.append(padWithZeros ? leftPad(Integer.toString(hours), count, "0") : Integer
                             .toString(hours));
                     lastOutputSeconds = false;
                 } else if (value == m) {
-                    buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(minutes), count, "0") : Integer
+                    buffer.append(padWithZeros ? leftPad(Integer.toString(minutes), count, "0") : Integer
                             .toString(minutes));
                     lastOutputSeconds = false;
                 } else if (value == s) {
-                    buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(seconds), count, "0") : Integer
+                    buffer.append(padWithZeros ? leftPad(Integer.toString(seconds), count, "0") : Integer
                             .toString(seconds));
                     lastOutputSeconds = true;
                 } else if (value == S) {
                     if (lastOutputSeconds) {
                         milliseconds += 1000;
                         String str = padWithZeros
-                                ? StringUtils.leftPad(Integer.toString(milliseconds), count, "0")
+                                ? leftPad(Integer.toString(milliseconds), count, "0")
                                 : Integer.toString(milliseconds);
                         buffer.append(str.substring(1));
                     } else {
                         buffer.append(padWithZeros
-                                ? StringUtils.leftPad(Integer.toString(milliseconds), count, "0")
+                                ? leftPad(Integer.toString(milliseconds), count, "0")
                                 : Integer.toString(milliseconds));
                     }
                     lastOutputSeconds = false;
@@ -664,8 +662,54 @@ public class DurationFormatUtils
          * @return String representation of the token
          */
         public String toString() {
-            return StringUtils.repeat(this.value.toString(), this.count);
+            return repeat(this.value.toString(), this.count);
         }
     }
 
+    //
+    // NOTE: Copied from plexus-utils StringUtils 1.5.5
+    //
+
+    private static String replaceOnce(String text, String repl, String with) {
+        return replace(text, repl, with, 1);
+    }
+
+    private static String replace(String text, String repl, String with, int max) {
+        if ((text == null) || (repl == null) || (with == null) || (repl.length() == 0)) {
+            return text;
+        }
+
+        StringBuffer buf = new StringBuffer(text.length());
+        int start = 0, end = 0;
+        while ((end = text.indexOf(repl, start)) != -1) {
+            buf.append(text.substring(start, end)).append(with);
+            start = end + repl.length();
+
+            if (--max == 0) {
+                break;
+            }
+        }
+        buf.append(text.substring(start));
+        return buf.toString();
+    }
+
+    private static String repeat(String str, int repeat) {
+        StringBuffer buffer = new StringBuffer(repeat * str.length());
+        for (int i = 0; i < repeat; i++) {
+            buffer.append(str);
+        }
+        return buffer.toString();
+    }
+
+    private static String leftPad(String str, int size) {
+        return leftPad(str, size, " ");
+    }
+
+    private static String leftPad(String str, int size, String delim) {
+        size = (size - str.length()) / delim.length();
+        if (size > 0) {
+            str = repeat(delim, size) + str;
+        }
+        return str;
+    }
 }

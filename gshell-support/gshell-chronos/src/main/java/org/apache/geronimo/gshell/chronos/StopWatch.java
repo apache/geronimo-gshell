@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.chronos;
 
-import org.apache.geronimo.gshell.chronos.DurationFormatUtils;
-
 //
 // NOTE: Copied and massaged from commons-lang 2.3
 //
