@@ -247,14 +247,7 @@ public class ShellImpl
             String message = branding.getWelcomeMessage();
             if (message != null) {
                 io.out.print(message);
-
-                // If we can't tell, or have something bogus then use a reasonable default
-                int width = io.getTerminal().getTerminalWidth();
-                if (width < 1) {
-                    width = 80;
-                }
-                io.out.println(StringUtils.repeat("-", width - 1));
-
+                io.out.println(StringUtils.repeat("-", io.getTerminal().getTerminalWidth() - 1));
                 io.out.flush();
             }
         }
