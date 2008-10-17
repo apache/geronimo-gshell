@@ -19,76 +19,67 @@
 
 package org.apache.geronimo.gshell.model.common;
 
+import org.apache.geronimo.gshell.model.Element;
+
 /**
  * Defines an artifact (groupId, artifactId, version, etc).
  *
  * @version $Rev$ $Date$
  */
 public class Artifact
-    extends ArtifactSupport
+    extends Element
 {
-    private transient ArtifactGroup artifactGroup;
+    private String groupId;
 
-    public ArtifactGroup getArtifactGroup() {
-        return artifactGroup;
-    }
+    private String artifactId;
 
-    public void setArtifactGroup(final ArtifactGroup artifactGroup) {
-        this.artifactGroup = artifactGroup;
-    }
+    private String classifier;
 
-    @Override
+    private String type;
+
+    private String version;
+
     public String getGroupId() {
-        String tmp = super.getGroupId();
-
-        if (tmp == null && artifactGroup != null) {
-            tmp = artifactGroup.getGroupId();
-        }
-
-        return tmp;
+        return groupId;
     }
 
-    @Override
+    public void setGroupId(final String groupId) {
+        this.groupId = groupId;
+    }
+
     public String getArtifactId() {
-        String tmp = super.getArtifactId();
-
-        if (tmp == null && artifactGroup != null) {
-            tmp = artifactGroup.getArtifactId();
-        }
-
-        return tmp;
+        return artifactId;
     }
 
-    @Override
+    public void setArtifactId(final String artifactId) {
+        this.artifactId = artifactId;
+    }
+
     public String getClassifier() {
-        String tmp = super.getClassifier();
-
-        if (tmp == null && artifactGroup != null) {
-            tmp = artifactGroup.getClassifier();
-        }
-
-        return tmp;
+        return classifier;
     }
 
-    @Override
+    public void setClassifier(final String classifier) {
+        this.classifier = classifier;
+    }
+
     public String getType() {
-        String tmp = super.getType();
-
-        if (tmp == null && artifactGroup != null) {
-            tmp = artifactGroup.getType();
-        }
-
-        return tmp;
+        return type;
     }
 
-    @Override
+    public void setType(final String type) {
+        this.type = type;
+    }
+
     public String getVersion() {
-        String tmp = super.getVersion();
+        return version;
+    }
 
-        if (tmp == null && artifactGroup != null) {
-            tmp = artifactGroup.getVersion();
-        }
+    public void setVersion(final String version) {
+        this.version = version;
+    }
 
-        return tmp;
+    public String getId() {
+        return getGroupId() + ":" + getArtifactId() + ":" + getVersion() + ":" + getType();
     }
 }

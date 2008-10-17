@@ -40,11 +40,7 @@ public class ApplicationModel
 
     private List<DependencyArtifact> dependencies;
 
-    private List<DependencyGroup> dependencyGroups;
-
     private List<PluginArtifact> plugins;
-
-    private List<PluginGroup> pluginGroups;
 
     private Branding branding;
 
@@ -78,22 +74,6 @@ public class ApplicationModel
         getRemoteRepositories().add(repository);
     }
 
-    // DependencyGroup
-
-    public List<DependencyGroup> getDependencyGroups() {
-        if (dependencyGroups == null) {
-            dependencyGroups = new ArrayList<DependencyGroup>();
-        }
-
-        return dependencyGroups;
-    }
-
-    public void add(final DependencyGroup group) {
-        assert group != null;
-
-        getDependencyGroups().add(group);
-    }
-
     // DependencyArtifact
 
     public List<DependencyArtifact> getDependencies() {
@@ -108,42 +88,10 @@ public class ApplicationModel
         this.dependencies = dependencies;
     }
 
-    public List<DependencyArtifact> getDependencies(boolean includeGroups) {
-        if (!includeGroups) {
-            return getDependencies();
-        }
-
-        List<DependencyArtifact> list = new ArrayList<DependencyArtifact>();
-
-        list.addAll(getDependencies());
-
-        for (DependencyGroup group : getDependencyGroups()) {
-            list.addAll(group.getDependencies());
-        }
-
-        return list;
-    }
-
     public void add(final DependencyArtifact dependency) {
         assert dependency != null;
 
         getDependencies().add(dependency);
-    }
-
-    // PluginGroup
-
-    public List<PluginGroup> getPluginGroups() {
-        if (pluginGroups == null) {
-            pluginGroups = new ArrayList<PluginGroup>();
-        }
-
-        return pluginGroups;
-    }
-
-    public void add(final PluginGroup group) {
-        assert group != null;
-
-        getPluginGroups().add(group);
     }
 
     // PluginArtifact
@@ -158,22 +106,6 @@ public class ApplicationModel
 
     public void setPlugins(final List<PluginArtifact> plugins) {
         this.plugins = plugins;
-    }
-
-    public List<PluginArtifact> getPlugins(boolean includeGroups) {
-        if (!includeGroups) {
-            return getPlugins();
-        }
-
-        List<PluginArtifact> list = new ArrayList<PluginArtifact>();
-
-        list.addAll(getPlugins());
-
-        for (PluginGroup group : getPluginGroups()) {
-            list.addAll(group.getPlugins());
-        }
-
-        return list;
     }
 
     public void add(final PluginArtifact plugin) {

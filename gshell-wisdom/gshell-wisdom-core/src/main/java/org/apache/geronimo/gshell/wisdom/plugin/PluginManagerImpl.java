@@ -111,7 +111,7 @@ public class PluginManagerImpl
 
         log.debug("Loading plugins for application: {}", application.getId());
 
-        List<PluginArtifact> artifacts = application.getModel().getPlugins(true);
+        List<PluginArtifact> artifacts = application.getModel().getPlugins();
 
         for (PluginArtifact artifact : artifacts) {
             try {

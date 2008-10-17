@@ -26,14 +26,13 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.Resource;
-import org.apache.geronimo.gshell.chronos.StopWatch;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * {@link BeanContainerContext} implementation used by {@link BeanContainerImpl} instances.
@@ -59,8 +58,6 @@ public class BeanContainerContextImpl
     public void configure(final String[] locations) {
         assert locations != null;
 
-        StopWatch watch = new StopWatch(true);
-
         log.debug("Configuring with locations: {}", locations);
 
         for (String location : locations) {
@@ -81,7 +78,7 @@ public class BeanContainerContextImpl
             this.resources.addAll(Arrays.asList(resources));
         }
 
-        log.debug("Configured {} resources in: {}", resources.size(), watch);
+        log.debug("Configured {} resources", resources.size());
     }
 
     /**

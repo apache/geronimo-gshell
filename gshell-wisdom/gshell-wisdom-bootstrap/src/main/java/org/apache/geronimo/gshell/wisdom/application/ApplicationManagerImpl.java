@@ -203,7 +203,7 @@ public class ApplicationManagerImpl
         request.setFilter(new ApplicationArtifactFilter());
 
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
-        List<DependencyArtifact> dependencies = model.getDependencies(true); // include groups
+        List<DependencyArtifact> dependencies = model.getDependencies();
 
         if (!dependencies.isEmpty()) {
             assert artifactManager != null;
