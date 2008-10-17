@@ -19,15 +19,14 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.springframework.beans.factory.xml.NamespaceHandler;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 /**
- * {@link NamespaceHandler} for the 'gshell' namespace.
+ * {@link org.springframework.beans.factory.xml.NamespaceHandler} for the 'gshell' namespace.
  *
  * @version $Rev$ $Date$
  */
-public class GShellNamespaceHandler
+public class NamespaceHandler
     extends NamespaceHandlerSupport
 {
     public void init() {

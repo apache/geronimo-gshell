@@ -51,8 +51,6 @@ import java.util.Map;
 public class PluginParser
     extends AbstractBeanDefinitionParser
 {
-    private static final String ID = ID_ATTRIBUTE;
-
     private static final String DESCRIPTION = "description";
 
     private static final String PLUGIN_TEMPLATE = "pluginTemplate";

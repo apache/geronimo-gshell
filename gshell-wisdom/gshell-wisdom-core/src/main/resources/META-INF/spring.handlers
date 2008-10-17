@@ -21,4 +21,4 @@
 ## $Rev: 697807 $ $Date: 2008-09-22 20:12:04 +0700 (Mon, 22 Sep 2008) $
 ##
 
-http\://gshell.org/schema/wisdom-gshell=org.apache.geronimo.gshell.wisdom.config.GShellNamespaceHandler
+http\://gshell.org/schema/wisdom-gshell=org.apache.geronimo.gshell.wisdom.config.NamespaceHandler
