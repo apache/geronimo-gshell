@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.whisper.stream;
 
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.geronimo.gshell.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,9 +51,9 @@ public class SessionStreamFilter
      */
     @Override
     public void sessionClosed(final NextFilter nextFilter, final IoSession session) throws Exception {
-        IOUtil.close(SessionInputStream.BINDER.unbind(session));
-        IOUtil.close(SessionOutputStream.BINDER.unbind(session));
-
+        Closer.close(SessionInputStream.BINDER.unbind(session),
+                     SessionOutputStream.BINDER.unbind(session));
+        
         nextFilter.sessionClosed(session);
     }
 

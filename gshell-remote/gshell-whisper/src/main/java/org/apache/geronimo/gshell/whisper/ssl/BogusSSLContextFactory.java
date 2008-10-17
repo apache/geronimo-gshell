@@ -23,9 +23,9 @@
 
 package org.apache.geronimo.gshell.whisper.ssl;
 
-import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.io.Closer;
 
 import javax.annotation.PostConstruct;
 import javax.net.ssl.KeyManagerFactory;
@@ -116,16 +116,16 @@ public class BogusSSLContextFactory
             try {
                 keyStore = KeyStore.getInstance("JKS");
 
-                InputStream in = getClass().getResourceAsStream(keystoreResource);
-                if (in == null) {
+                InputStream input = getClass().getResourceAsStream(keystoreResource);
+                if (input == null) {
                     throw new GeneralSecurityException("Failed to load bogus keystore from resource: " + keystoreResource);
                 }
 
                 try {
-                    keyStore.load(in, keystorePassword);
+                    keyStore.load(input, keystorePassword);
                 }
                 finally {
-                    IOUtil.close(in);
+                    Closer.close(input);
                 }
             }
             catch (IOException e) {
