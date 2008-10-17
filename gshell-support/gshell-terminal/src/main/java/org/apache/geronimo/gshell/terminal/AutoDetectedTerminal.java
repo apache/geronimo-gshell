@@ -39,7 +39,7 @@ public class AutoDetectedTerminal
         String os = System.getProperty("os.name").toLowerCase();
 
         if (os.indexOf("windows") != -1) {
-            terminal = new jline.WindowsTerminal();
+            terminal = new WindowsTerminal();
         }
         else {
             terminal = new UnixTerminal();
