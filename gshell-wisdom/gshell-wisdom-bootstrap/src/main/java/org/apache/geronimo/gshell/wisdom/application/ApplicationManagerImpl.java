@@ -24,12 +24,12 @@ import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.ClassPath;
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
+import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.io.Closer;
-import org.apache.geronimo.gshell.application.model.ApplicationModel;
-import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -165,6 +165,7 @@ public class ApplicationManagerImpl
             Set<Artifact> artifacts = resolveArtifacts(model);
             classPath = new ClassPathImpl(artifacts);
             log.debug("Saving classpath to cache: {}", file);
+            // noinspection ResultOfMethodCallIgnored
             file.getParentFile().mkdirs();
             ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
             output.writeObject(classPath);
@@ -190,7 +191,7 @@ public class ApplicationManagerImpl
         Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
 
         ResolveOptions options = new ResolveOptions();
-        options.setOutputReport(false);
+        options.setOutputReport(true);
         options.setTransitive(true);
         options.setArtifactFilter(new ApplicationArtifactFilter());
 
@@ -223,10 +224,10 @@ public class ApplicationManagerImpl
             resolved.setType(downloadedArtifact.getType());
             resolved.setFile(downloadReport.getLocalFile());
             artifacts.add(resolved);
-            
+
             log.debug("    {}", resolved.getId());
         }
-        
+
         return artifacts;
     }
 

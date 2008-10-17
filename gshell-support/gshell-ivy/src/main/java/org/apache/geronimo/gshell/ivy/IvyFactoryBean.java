@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.ivy;
 
-import org.springframework.beans.factory.FactoryBean;
 import org.apache.ivy.Ivy;
+import org.apache.ivy.core.settings.IvySettings;
 import org.apache.ivy.util.Message;
-import org.apache.ivy.util.DefaultMessageLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.FactoryBean;
 
 import java.net.URL;
 
@@ -53,19 +53,22 @@ public class IvyFactoryBean
     }
 
     public Object getObject() throws Exception {
-        // FIXME: Install a better logging adapter
-        Message.setDefaultLogger(new DefaultMessageLogger(-1)); // Message.MSG_INFO));
-
-        Ivy ivy = Ivy.newInstance();
+        Message.setDefaultLogger(new Slf4jMessageLogger());
+        
+        IvySettings settings = new IvySettings();
         URL url = getSettingsUrl();
         log.debug("Settings URL: {}", url);
-        ivy.configure(url);
+        settings.load(url);
 
         //
-        // TODO: Hook up download monitor
+        // TODO: Need to hook up a TransferListener to show progress, not really sure how to do that with Ivy...
         //
         
-        // settings.setVariable("ivy.default.configuration.m2compatible", "true")
+        settings.setVariable("ivy.default.configuration.m2compatible", "true");
+        
+        Ivy ivy = Ivy.newInstance(settings);
+
+        log.debug("Ivy: {}", ivy);
         
         return ivy;
     }

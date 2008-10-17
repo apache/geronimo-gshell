@@ -84,7 +84,7 @@ public class MarshallerSupport<T>
         assert model != null;
         assert output != null;
 
-        log.debug("Marshalling: {}", model);
+        log.trace("Marshalling: {}", model);
 
         createXStream().toXML(model, output);
     }
@@ -93,7 +93,7 @@ public class MarshallerSupport<T>
         assert model != null;
         assert writer != null;
 
-        log.debug("Marshalling: {}", model);
+        log.trace("Marshalling: {}", model);
 
         createXStream().toXML(model, writer);
     }

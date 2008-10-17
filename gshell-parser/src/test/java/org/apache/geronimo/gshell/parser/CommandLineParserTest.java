@@ -272,10 +272,6 @@ public class CommandLineParserTest
         ASTCommandLine cl = parse(input);
 
         assertEquals(2, cl.jjtGetNumChildren());
-
-        //
-        // TODO: Verify 2 expressions
-        //
     }
 
     public void testCompoundCommandLine2() throws Exception {
@@ -284,10 +280,6 @@ public class CommandLineParserTest
         ASTCommandLine cl = parse(input);
 
         assertEquals(1, cl.jjtGetNumChildren());
-
-        //
-        // TODO: Verify ...
-        //
     }
 
     public void testCompoundCommandLine3() throws Exception {
@@ -296,10 +288,6 @@ public class CommandLineParserTest
         ASTCommandLine cl = parse(input);
 
         assertEquals(1, cl.jjtGetNumChildren());
-
-        //
-        // TODO: Verify ...
-        //
     }
 
     public void testCompoundCommandLine4() throws Exception {
@@ -308,10 +296,6 @@ public class CommandLineParserTest
         ASTCommandLine cl = parse(input);
 
         assertEquals(2, cl.jjtGetNumChildren());
-
-        //
-        // TODO: Verify ...
-        //
     }
 
     public void testNotCompoundCommandLine1() throws Exception {
@@ -320,10 +304,6 @@ public class CommandLineParserTest
         ASTCommandLine cl = parse(input);
 
         assertEquals(1, cl.jjtGetNumChildren());
-
-        //
-        // TODO: Verify 1 expression
-        //
     }
 
     public void testProcesses1() throws Exception {

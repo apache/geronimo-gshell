@@ -61,7 +61,7 @@ public class MetaDataRegistryImpl
         assert name != null;
         assert data != null;
 
-        log.debug("Registering data: {}", name);
+        log.trace("Registering data: {}", name);
 
         if (name.getDepth() > 0) {
             MetaData parent = getParentData(name);
@@ -101,7 +101,7 @@ public class MetaDataRegistryImpl
     public void removeData(final FileName name) {
         assert name != null;
 
-        log.debug("Removing data: {}", name);
+        log.trace("Removing data: {}", name);
 
         MetaData data = getNodes().remove(name);
 

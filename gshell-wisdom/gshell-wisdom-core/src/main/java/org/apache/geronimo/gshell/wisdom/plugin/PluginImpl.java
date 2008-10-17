@@ -202,10 +202,10 @@ public class PluginImpl
             }
         };
 
-        log.debug("Evaluating activation rules");
+        log.trace("Evaluating activation rules");
 
         for (ActivationRule rule : activationRules) {
-            log.debug("Evaluating activation rule: {}", rule);
+            log.trace("Evaluating activation rule: {}", rule);
 
             try {
                 rule.evaluate(context);
@@ -217,14 +217,14 @@ public class PluginImpl
 
         List<ActivationTask> tasks = context.getTasks();
         if (tasks.isEmpty()) {
-            log.debug("No activation tasks configured in context");
+            log.warn("No activation tasks configured in context");
             return;
         }
 
-        log.debug("Executing activation tasks");
+        log.trace("Executing activation tasks");
         
         for (ActivationTask task : tasks) {
-            log.debug("Executing activation task: {}", task);
+            log.trace("Executing activation task: {}", task);
             
             try {
                 task.execute();
