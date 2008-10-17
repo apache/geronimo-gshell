@@ -27,6 +27,12 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+
+    <bean id="xstore" class="org.apache.geronimo.gshell.xstore.XStoreImpl">
+        <property name="rootUri"  value="file:${basedir}/target/xstore"/>
+    </bean>
+
     <gshell:plugin name="test-plugin">
         <gshell:command-bundle name="default">
             <gshell:command name="test1">
