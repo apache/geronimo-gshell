@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.model;
 
-import org.apache.geronimo.gshell.model.Element;
-
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Defines an artifact (groupId, artifactId, version, etc).
@@ -30,6 +29,7 @@ import java.io.File;
  */
 public class Artifact
     extends Element
+    implements Serializable
 {
     public static final String DEFAULT_TYPE = "jar";
 

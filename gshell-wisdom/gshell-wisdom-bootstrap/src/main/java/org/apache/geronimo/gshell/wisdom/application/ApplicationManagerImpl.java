@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.model.ApplicationModel;
 import org.apache.geronimo.gshell.model.Artifact;
 import org.apache.geronimo.gshell.shell.Shell;
@@ -45,14 +46,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.List;
 import java.net.URL;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Default implementation of the {@link ApplicationManager} component.
@@ -139,32 +147,30 @@ public class ApplicationManagerImpl
     private ClassPath loadClassPath(final ApplicationModel model) throws Exception {
         assert model != null;
 
-        Set<Artifact> artifacts = resolveArtifacts(model);
-        ClassPath classPath = new ClassPathImpl(artifacts);
-
-        /*
-        FIXME: This needs to find a way to work w/o XStream, which isn't available on the classpath yet.
-
-        File file = new File(new File(System.getProperty("gshell.home")), "var/xstore/classpath.xml");  // FIXME: Get state directory from application/branding
+        // FIXME: Get state directory from application/branding
+        File file = new File(new File(System.getProperty("gshell.home")), "var/classpath.ser");
         ClassPath classPath;
 
+        //
+        // HACK: Using a serialized object here, for lack of a better choice.  XStream is not on the classpath yet, and the java.beans.XMLEncoder sucks my balls.
+        //
+
         if (file.exists()) {
-            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
-            classPath = (ClassPath)decoder.readObject();
+            ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
+            classPath = (ClassPath)input.readObject();
             log.debug("Loaded classpath from cache: {}", file);
-            decoder.close();
+            Closer.close(input);
         }
         else {
             Set<Artifact> artifacts = resolveArtifacts(model);
             classPath = new ClassPathImpl(artifacts);
             log.debug("Saving classpath to cache: {}", file);
             file.getParentFile().mkdirs();
-            XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
-            encoder.writeObject(classPath);
-            encoder.close();
+            ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+            output.writeObject(classPath);
+            Closer.close(output);
         }
-        */
-
+        
         if (log.isDebugEnabled()) {
             log.debug("Application classpath:");
 

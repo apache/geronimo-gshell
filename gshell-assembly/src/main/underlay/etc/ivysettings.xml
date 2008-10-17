@@ -28,7 +28,7 @@
 	<property name="ivy.m2local.default.artifact.pattern" value="[organisation]/[module]/[revision]/[module]-[revision].[ext]" override="false"/>
 
     <resolvers>
-        <chain name="default"> <!-- returnFirst="true" checkmodified="true"> -->
+        <chain name="default">
             <filesystem name="m2local" m2compatible="true">
                 <ivy pattern="${ivy.m2local.default.root}/${ivy.m2local.default.ivy.pattern}"/>
                 <artifact pattern="${ivy.m2local.default.root}/${ivy.m2local.default.artifact.pattern}"/>
@@ -39,4 +39,8 @@
             -->
         </chain>
     </resolvers>
+
+    <caches defaultCacheDir="${gshell.home}/var/cache"
+            ivyPattern="[organisation]/[module]/[revision]/[module]-[revision].pom"
+            artifactPattern="[organisation]/[module]/[revision]/[module]-[revision].[ext]"/>
 </ivysettings>

@@ -22,14 +22,14 @@ package org.apache.geronimo.gshell.wisdom.application;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.model.Artifact;
 
+import java.io.File;
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 import java.util.List;
-import java.util.ArrayList;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.io.File;
 
 /**
  * {@link ClassPath} implementation backed up by a set of artifacts.
@@ -37,15 +37,15 @@ import java.io.File;
  * @version $Rev$ $Date$
  */
 public class ClassPathImpl
-    implements ClassPath
+    implements ClassPath, Serializable
 {   
     private Collection<Artifact> artifacts;
 
-    private Collection<URL> urls;
+    private transient Collection<URL> urls;
 
     public ClassPathImpl() {}
 
-    public ClassPathImpl(final Set<Artifact> artifacts) {
+    public ClassPathImpl(final Collection<Artifact> artifacts) {
         assert artifacts != null;
 
         this.artifacts = artifacts;
