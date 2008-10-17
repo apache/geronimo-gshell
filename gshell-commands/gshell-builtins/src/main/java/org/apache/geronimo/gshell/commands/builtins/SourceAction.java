@@ -28,7 +28,6 @@ import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.codehaus.plexus.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +99,7 @@ public class SourceAction
             }
         }
         finally {
-            IOUtil.close(reader);
-
+            reader.close();
             file.close();
         }
 

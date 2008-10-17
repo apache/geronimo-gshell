@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.oro.text.MatchAction;
 import org.apache.oro.text.MatchActionInfo;
@@ -36,7 +37,6 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedInputStream;
 
@@ -154,7 +154,7 @@ public class GrepAction
             processor.processMatches(input, context.getIo().outputStream);
         }
         finally {
-            IOUtil.close(input);
+            Closer.close(input);
         }
     }
 
