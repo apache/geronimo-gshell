@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
-import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
@@ -37,7 +36,6 @@ import org.apache.geronimo.gshell.model.common.LocalRepository;
 import org.apache.geronimo.gshell.model.common.RemoteRepository;
 import org.apache.geronimo.gshell.model.interpolate.Interpolator;
 import org.apache.geronimo.gshell.model.interpolate.InterpolatorSupport;
-import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -72,9 +70,6 @@ public class ApplicationManagerImpl
 
     @Autowired
     private ArtifactManager artifactManager;
-
-    @Autowired
-    private SettingsManager settingsManager;
 
     @Autowired
     private EventPublisher eventPublisher;
@@ -131,13 +126,6 @@ public class ApplicationManagerImpl
 
         // Add value sources to resolve muck
         interp.addValueSource(new PropertiesBasedValueSource(System.getProperties()));
-
-        // User settings should override the applications
-        assert settingsManager != null;
-        SettingsModel settingsModel = settingsManager.getSettings().getModel();
-        if (settingsModel != null) {
-            interp.addValueSource(new PropertiesBasedValueSource(settingsModel.getProperties()));
-        }
 
         // Add application settings
         interp.addValueSource(new PropertiesBasedValueSource(model.getProperties()));

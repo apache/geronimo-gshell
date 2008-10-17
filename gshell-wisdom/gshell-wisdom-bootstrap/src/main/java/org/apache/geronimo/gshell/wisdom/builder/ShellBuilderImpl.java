@@ -21,8 +21,6 @@ package org.apache.geronimo.gshell.wisdom.builder;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.application.settings.SettingsConfiguration;
-import org.apache.geronimo.gshell.application.settings.SettingsManager;
 import org.apache.geronimo.gshell.artifact.ArtifactManager;
 import org.apache.geronimo.gshell.artifact.monitor.ProgressSpinnerMonitor;
 import org.apache.geronimo.gshell.chronos.StopWatch;
@@ -30,7 +28,6 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.model.application.ApplicationModel;
-import org.apache.geronimo.gshell.model.settings.SettingsModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;
@@ -50,10 +47,6 @@ public class ShellBuilderImpl
     private BeanContainer container;
 
     private ClassLoader classLoader;
-    
-    private SettingsManager settingsManager;
-
-    private SettingsConfiguration settingsConfig = new SettingsConfiguration();
 
     private ApplicationManager applicationManager;
 
@@ -107,29 +100,6 @@ public class ShellBuilderImpl
 
     public void setVariables(final Variables variables) {
         applicationConfig.setVariables(variables);
-    }
-
-    public SettingsModel getSettingsModel() {
-        return settingsConfig.getModel();
-    }
-
-    public void setSettingsModel(final SettingsModel settingsModel) {
-        settingsConfig.setModel(settingsModel);
-    }
-
-    private SettingsManager createSettingsManager() {
-        return getContainer().getBean(SettingsManager.class);
-    }
-
-    public SettingsManager getSettingsManager() {
-        if (settingsManager == null) {
-            settingsManager = createSettingsManager();
-        }
-        return settingsManager;
-    }
-
-    public void setSettingsManager(final SettingsManager settingsManager) {
-        this.settingsManager = settingsManager;
     }
 
     public ApplicationModel getApplicationModel() {
@@ -206,9 +176,6 @@ public class ShellBuilderImpl
 
         // Configure download monitor
         getArtifactManager().setDownloadMonitor(new ProgressSpinnerMonitor(getIo()));
-
-        // Configure settings
-        getSettingsManager().configure(settingsConfig);
 
         // Configure application
         getApplicationManager().configure(applicationConfig);

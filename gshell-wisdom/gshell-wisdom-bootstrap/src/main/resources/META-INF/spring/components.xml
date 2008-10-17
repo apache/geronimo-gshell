@@ -25,10 +25,6 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="settingsManager" class="org.apache.geronimo.gshell.wisdom.application.SettingsManagerImpl"/>
-
-    <bean id="settings" class="org.apache.geronimo.gshell.wisdom.application.SettingsFactoryBean"/>
-
     <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl"/>
 
     <bean id="application" class="org.apache.geronimo.gshell.wisdom.application.ApplicationFactoryBean"/>
