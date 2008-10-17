@@ -19,20 +19,14 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import junit.framework.TestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * Suport for Spring-based tests.
+ * Support for Spring-based tests.
  *
  * @version $Rev$ $Date$
  */
 public abstract class SpringTestSupport
-    extends TestCase
+    extends TestSupport
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-
     private BeanContainerImpl container;
 
     protected void setUp() throws Exception {

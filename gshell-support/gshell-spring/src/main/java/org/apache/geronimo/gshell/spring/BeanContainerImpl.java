@@ -136,6 +136,12 @@ public class BeanContainerImpl
         return new BeanContainerImpl(childRealm, this);
     }
 
+    public BeanContainer createChild(final String id) {
+        assert id != null;
+
+        return createChild(id, null);
+    }
+    
     public <T> T getBean(final Class<T> type) {
         assert type != null;
 
@@ -184,12 +190,6 @@ public class BeanContainerImpl
         log.trace("Getting bean names of type: {}", type);
 
         return getContext().getBeanNamesForType(type);
-    }
-
-    public BeanContainer createChild(final String id) {
-        assert id != null;
-
-        return createChild(id, null);
     }
 
     private static ClassRealm createClassRealm(final ClassLoader cl) {
