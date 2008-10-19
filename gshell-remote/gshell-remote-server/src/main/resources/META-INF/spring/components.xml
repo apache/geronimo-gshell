@@ -28,10 +28,17 @@
     <bean id="timeoutManager" class="org.apache.geronimo.gshell.remote.server.timeout.TimeoutManagerImpl" lazy-init="true"/>
 
     <bean id="rshServer" class="org.apache.geronimo.gshell.remote.server.RshServer" scope="prototype">
+        <constructor-arg ref="timeoutManager"/>
+        <constructor-arg ref="transportFactoryLocator"/>
         <constructor-arg>
             <list>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.ConnectHandler"/>
-                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler"/>
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.ConnectHandler">
+                    <constructor-arg ref="cryptoContext"/>
+                    <constructor-arg ref="timeoutManager"/>
+                </bean>
+                <bean class="org.apache.geronimo.gshell.remote.server.handler.LoginHandler">
+                    <constructor-arg ref="timeoutManager"/>
+                </bean>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.OpenShellHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.ExecuteHandler"/>
                 <bean class="org.apache.geronimo.gshell.remote.server.handler.CloseShellHandler"/>
@@ -40,6 +47,8 @@
         </constructor-arg>
     </bean>
 
-    <bean id="remoteShell" class="org.apache.geronimo.gshell.remote.server.RemoteShellImpl" scope="prototype"/>
+    <bean id="remoteShell" class="org.apache.geronimo.gshell.remote.server.RemoteShellImpl" scope="prototype">
+        <constructor-arg ref="commandLineExecutor"/>
+    </bean>
 
 </beans>

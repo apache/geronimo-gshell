@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.vfs.provider.meta;
 
+import org.apache.commons.vfs.FileContentInfoFactory;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemOptions;
 import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.FileContentInfoFactory;
 import org.apache.commons.vfs.provider.AbstractFileSystem;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;

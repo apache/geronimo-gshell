@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
-import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;

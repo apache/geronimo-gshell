@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.vfs.provider.meta;
 
 import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.provider.AbstractFileNameParser;
 import org.apache.commons.vfs.provider.UriParser;
 import org.apache.commons.vfs.provider.VfsComponentContext;

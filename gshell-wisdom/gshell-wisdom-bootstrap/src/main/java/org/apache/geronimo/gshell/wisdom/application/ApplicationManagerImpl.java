@@ -44,7 +44,6 @@ import org.apache.ivy.core.report.ResolveReport;
 import org.apache.ivy.core.resolve.ResolveOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -72,18 +71,23 @@ public class ApplicationManagerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private EventPublisher eventPublisher;
+    private final EventPublisher eventPublisher;
 
-    @Autowired
-    private Ivy ivy;
+    private final Ivy ivy;
     
     private BeanContainer container;
 
     private BeanContainer applicationContainer;
 
     private Application application;
-    
+
+    public ApplicationManagerImpl(final EventPublisher eventPublisher, final Ivy ivy) {
+        assert eventPublisher != null;
+        this.eventPublisher = eventPublisher;
+        assert ivy != null;
+        this.ivy = ivy;
+    }
+
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;
         

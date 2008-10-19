@@ -21,13 +21,13 @@ package org.apache.geronimo.gshell.remote.client;
 
 import org.apache.geronimo.gshell.remote.client.handler.ClientMessageHandler;
 import org.apache.geronimo.gshell.remote.client.handler.ClientSessionContext;
-import org.apache.geronimo.gshell.security.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
+import org.apache.geronimo.gshell.security.crypto.CryptoContext;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.message.MessageHandler;
 import org.apache.geronimo.gshell.whisper.transport.Session;
@@ -38,7 +38,6 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.security.auth.login.LoginException;
 import java.io.InputStream;
@@ -55,23 +54,15 @@ public class RshClient
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CryptoContext crypto;
+    private final CryptoContext crypto;
 
-    @Autowired
-    private TransportFactoryLocator locator;
+    private final TransportFactoryLocator locator;
 
-    private List<ClientMessageHandler> handlers;
+    private final List<ClientMessageHandler> handlers;
 
     private Transport transport;
 
     private Session session;
-
-    public RshClient(final List<ClientMessageHandler> handlers) {
-        assert handlers != null;
-
-        this.handlers = handlers;
-    }
 
     public RshClient(final CryptoContext crypto, final TransportFactoryLocator locator, final List<ClientMessageHandler> handlers) {
         assert crypto != null;

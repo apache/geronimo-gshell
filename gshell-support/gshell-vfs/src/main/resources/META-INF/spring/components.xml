@@ -69,6 +69,7 @@
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="scheme" value="tmp"/>
         <property name="provider">
             <bean class="org.apache.commons.vfs.provider.temp.TemporaryFileProvider"/>
@@ -76,6 +77,7 @@
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="scheme" value="ram"/>
         <property name="provider">
             <bean class="org.apache.commons.vfs.provider.ram.RamFileProvider"/>
@@ -121,8 +123,13 @@
     </bean>
     -->
 
-    <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl"/>
-
-    <bean id="fileObjectNameCompleter" class="org.apache.geronimo.gshell.vfs.FileObjectNameCompleter"/>
+    <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl">
+        <constructor-arg ref="applicationManager"/>
+        <constructor-arg ref="fileSystemManager"/>
+    </bean>
+    
+    <bean id="fileObjectNameCompleter" class="org.apache.geronimo.gshell.vfs.FileObjectNameCompleter">
+        <constructor-arg ref="fileSystemAccess"/>
+    </bean>
 
 </beans>

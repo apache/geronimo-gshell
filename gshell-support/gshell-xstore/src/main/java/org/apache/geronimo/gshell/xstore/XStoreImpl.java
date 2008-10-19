@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.xstore;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.apache.commons.vfs.FileSystem;
 import org.apache.commons.vfs.FileSystemException;
@@ -37,12 +36,16 @@ public class XStoreImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private FileSystemAccess fileSystemAccess;
+    private final FileSystemAccess fileSystemAccess;
 
     private String rootUri;
 
     private FileSystem fileSystem;
+
+    public XStoreImpl(final FileSystemAccess fileSystemAccess) {
+        assert fileSystemAccess != null;
+        this.fileSystemAccess = fileSystemAccess;
+    }
 
     public String getRootUri() {
         if (rootUri == null) {

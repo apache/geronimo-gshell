@@ -26,7 +26,6 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * {@link FileSystemAccess} component.
@@ -38,11 +37,16 @@ public class FileSystemAccessImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private ApplicationManager applicationManager;
+    private final ApplicationManager applicationManager;
 
-    @Autowired
-    private FileSystemManager fileSystemManager;
+    private final FileSystemManager fileSystemManager;
+
+    public FileSystemAccessImpl(final ApplicationManager applicationManager, final FileSystemManager fileSystemManager) {
+        assert applicationManager != null;
+        this.applicationManager = applicationManager;
+        assert fileSystemManager != null;
+        this.fileSystemManager = fileSystemManager;
+    }
 
     public FileSystemManager getManager() {
         assert fileSystemManager != null;

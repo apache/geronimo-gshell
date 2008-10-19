@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.wisdom.command;
 import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.CommandLocation;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.registry.CommandResolver;

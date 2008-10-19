@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Undefine an alias.
@@ -39,11 +38,15 @@ public class UnaliasAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private AliasRegistry aliasRegistry;
+    private final AliasRegistry aliasRegistry;
     
     @Argument(index=0, required=true)
     private String name;
+
+    public UnaliasAction(final AliasRegistry aliasRegistry) {
+        assert aliasRegistry != null;
+        this.aliasRegistry = aliasRegistry;
+    }
 
     public Object execute(final CommandContext context) {
         assert context != null;

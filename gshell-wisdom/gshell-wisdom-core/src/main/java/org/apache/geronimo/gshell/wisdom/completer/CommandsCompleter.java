@@ -31,9 +31,6 @@ import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRemovedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -52,17 +49,20 @@ import java.util.Map;
 public class CommandsCompleter
     implements Completor
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final EventManager eventManager;
 
-    @Autowired
-    private EventManager eventManager;
-
-    @Autowired
-    private CommandRegistry commandRegistry;
+    private final CommandRegistry commandRegistry;
 
     private final Map<String,Completor> completors = new HashMap<String,Completor>();
 
     private final AggregateCompleter delegate = new AggregateCompleter();
+
+    public CommandsCompleter(final EventManager eventManager, final CommandRegistry commandRegistry) {
+        assert eventManager != null;
+        this.eventManager = eventManager;
+        assert commandRegistry != null;
+        this.commandRegistry = commandRegistry;
+    }
 
     @PostConstruct
     public void init() throws Exception {

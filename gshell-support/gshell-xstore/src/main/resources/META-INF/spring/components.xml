@@ -27,6 +27,7 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
     <bean id="xstore" class="org.apache.geronimo.gshell.xstore.XStoreImpl">
+        <constructor-arg ref="fileSystemAccess"/>
         <property name="rootUri"  value="file:${gshell.home}/var/xstore"/>
     </bean>
 

@@ -25,8 +25,13 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl"/>
+    <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl">
+        <constructor-arg ref="eventManager"/>
+        <constructor-arg ref="ivy"/>
+    </bean>
 
-    <bean id="application" class="org.apache.geronimo.gshell.wisdom.application.ApplicationFactoryBean"/>
+    <bean id="application" class="org.apache.geronimo.gshell.wisdom.application.ApplicationFactoryBean">
+        <constructor-arg ref="applicationManager"/>
+    </bean>
 
 </beans>

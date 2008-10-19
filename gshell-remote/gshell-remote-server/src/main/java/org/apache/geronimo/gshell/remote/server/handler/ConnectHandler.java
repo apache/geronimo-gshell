@@ -19,12 +19,11 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.security.crypto.CryptoContext;
 import org.apache.geronimo.gshell.remote.message.ConnectMessage;
 import org.apache.geronimo.gshell.remote.server.RshServer;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
+import org.apache.geronimo.gshell.security.crypto.CryptoContext;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Server handler for {@link ConnectMessage} messages.
@@ -34,14 +33,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ConnectHandler
     extends ServerMessageHandlerSupport<ConnectMessage>
 {
-    @Autowired
-    private CryptoContext crypto;
+    private final CryptoContext crypto;
 
-    @Autowired
-    private TimeoutManager timeoutManager;
+    private final TimeoutManager timeoutManager;
     
-    public ConnectHandler() {
+    public ConnectHandler(final CryptoContext crypto, final TimeoutManager timeoutManager) {
         super(ConnectMessage.class);
+        assert crypto != null;
+        this.crypto = crypto;
+        assert timeoutManager != null;
+        this.timeoutManager = timeoutManager;
     }
 
     public void handle(final Session session, final ServerSessionContext context, final ConnectMessage message) throws Exception {

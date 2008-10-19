@@ -26,7 +26,6 @@ import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.PrintWriter;
 
@@ -40,16 +39,16 @@ import java.io.PrintWriter;
 public class LinkCommand
     extends CommandSupport
 {
-    @Autowired
-    private CommandRegistry commandRegistry;
+    private final CommandRegistry commandRegistry;
 
     private String target;
 
     private Command command;
 
-    public LinkCommand(final String target) {
+    public LinkCommand(final CommandRegistry commandRegistry, final String target) {
+        assert commandRegistry != null;
+        this.commandRegistry = commandRegistry;
         assert target != null;
-
         this.target = target;
     }
 

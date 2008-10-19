@@ -23,8 +23,8 @@ import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationArtifactFilter;
 import org.apache.ivy.core.module.descriptor.Artifact;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Artifact filter for plugins.

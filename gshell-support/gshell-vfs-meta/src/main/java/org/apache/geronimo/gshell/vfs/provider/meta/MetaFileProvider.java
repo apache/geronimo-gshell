@@ -28,7 +28,6 @@ import org.apache.commons.vfs.provider.AbstractOriginatingFileProvider;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -54,10 +53,11 @@ public class MetaFileProvider
         Capability.URI
     ));
 
-    @Autowired
-    private MetaDataRegistry registry;
+    private final MetaDataRegistry registry;
 
-    public MetaFileProvider() {
+    public MetaFileProvider(final MetaDataRegistry registry) {
+        assert registry != null;
+        this.registry = registry;
         setFileNameParser(new MetaFileNameParser());
     }
 

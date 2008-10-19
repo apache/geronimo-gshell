@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.vfs.config;
 import org.apache.commons.vfs.FileSystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Support for configuration of a {@link FileSystemManager}.
@@ -33,8 +33,13 @@ public class FileSystemManagerConfigurerSupport
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private ConfigurableFileSystemManager fileSystemManager;
+
+    @Required
+    public void setFileSystemManager(final ConfigurableFileSystemManager fileSystemManager) {
+        assert fileSystemManager != null;
+        this.fileSystemManager = fileSystemManager;
+    }
 
     public ConfigurableFileSystemManager getFileSystemManager() {
         assert fileSystemManager != null;

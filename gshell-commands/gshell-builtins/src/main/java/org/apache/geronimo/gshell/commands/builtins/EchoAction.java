@@ -25,8 +25,8 @@ import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A simple command to print all arguments to the commands standard output.

@@ -22,11 +22,10 @@ package org.apache.geronimo.gshell.wisdom.registry;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
+import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
-import org.apache.geronimo.gshell.registry.AliasRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
@@ -38,16 +37,22 @@ import javax.annotation.PostConstruct;
 public class AliasMetaMapper
     implements EventListener
 {
-    @Autowired
-    private EventManager eventManager;
+    private final EventManager eventManager;
 
-    @Autowired
-    private MetaDataRegistry metaRegistry;
+    private final MetaDataRegistry metaRegistry;
 
-    @Autowired
-    private AliasRegistry aliasRegistry;
+    private final AliasRegistry aliasRegistry;
 
     private MetaDataRegistryConfigurer metaConfig;
+
+    public AliasMetaMapper(final EventManager eventManager, final MetaDataRegistry metaRegistry, final AliasRegistry aliasRegistry) {
+        assert eventManager != null;
+        this.eventManager = eventManager;
+        assert metaRegistry != null;
+        this.metaRegistry = metaRegistry;
+        assert aliasRegistry != null;
+        this.aliasRegistry = aliasRegistry;
+    }
 
     @PostConstruct
     public synchronized void init() throws Exception {

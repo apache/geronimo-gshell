@@ -27,9 +27,12 @@
     <bean id="metaDataRegistry" class="org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryImpl"/>
     
     <bean id="metaFileProviderConfigurer" class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="scheme" value="meta"/>
         <property name="provider">
-            <bean class="org.apache.geronimo.gshell.vfs.provider.meta.MetaFileProvider"/>
+            <bean class="org.apache.geronimo.gshell.vfs.provider.meta.MetaFileProvider">
+                <constructor-arg ref="metaDataRegistry"/>
+            </bean>
         </property>
     </bean>
 

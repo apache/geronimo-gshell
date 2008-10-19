@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides access to the {@link Application} instance.
@@ -36,8 +35,12 @@ public class ApplicationFactoryBean
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private ApplicationManager applicationManager;
+    private final ApplicationManager applicationManager;
+
+    public ApplicationFactoryBean(final ApplicationManager applicationManager) {
+        assert applicationManager != null;
+        this.applicationManager = applicationManager;
+    }
 
     public Object getObject() throws Exception {
         assert applicationManager != null;

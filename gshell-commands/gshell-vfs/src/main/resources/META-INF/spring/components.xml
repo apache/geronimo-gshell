@@ -27,10 +27,14 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
 
+    <bean id="vfsCommandActionTemplate" abstract="true">
+        <property name="fileSystemAccess" ref="fileSystemAccess"/>
+    </bean>
+
     <gshell:plugin name="gshell-vfs">
         <gshell:command-bundle name="default">
             <gshell:command name="cd">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.ChangeDirectoryAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.ChangeDirectoryAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -38,11 +42,11 @@
             </gshell:command>
 
             <gshell:command name="pwd" type="stateless">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CurrentDirectoryAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CurrentDirectoryAction" parent="vfsCommandActionTemplate"/>
             </gshell:command>
 
             <gshell:command name="ls">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.ListDirectoryAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.ListDirectoryAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -52,7 +56,7 @@
             <gshell:link name="dir" target="ls"/>
 
             <gshell:command name="cp">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CopyAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CopyAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <ref bean="fileObjectNameCompleter"/>
@@ -63,7 +67,7 @@
             <gshell:link name="copy" target="cp"/>
             
             <gshell:command name="rm">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.RemoveAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.RemoveAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -73,7 +77,7 @@
             <gshell:link name="del" target="rm"/>
 
             <gshell:command name="cat">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CatAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CatAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -81,7 +85,7 @@
             </gshell:command>
 
             <gshell:command name="edit">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.EditAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.EditAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -89,7 +93,7 @@
             </gshell:command>
 
             <gshell:command name="touch">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.TouchAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.TouchAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -97,7 +101,7 @@
             </gshell:command>
 
             <gshell:command name="fileinfo">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FileInfoAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FileInfoAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -105,7 +109,7 @@
             </gshell:command>
 
             <gshell:command name="find">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FindAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FindAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -113,7 +117,7 @@
             </gshell:command>
 
             <gshell:command name="grep">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.GrepAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.GrepAction" parent="vfsCommandActionTemplate"/>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>

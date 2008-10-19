@@ -19,13 +19,13 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
+import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.chronos.StopWatch;
 
 /**
  * Stateful {@link org.apache.geronimo.gshell.command.Command} component.

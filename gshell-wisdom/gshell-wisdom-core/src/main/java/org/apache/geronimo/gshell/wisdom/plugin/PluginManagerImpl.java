@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ClassPath;
+import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
@@ -29,7 +30,6 @@ import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
@@ -47,7 +47,6 @@ import org.apache.ivy.core.report.ResolveReport;
 import org.apache.ivy.core.resolve.ResolveOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.net.URL;
@@ -65,24 +64,32 @@ public class PluginManagerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private ApplicationManager applicationManager;
+    private final ApplicationManager applicationManager;
 
-    @Autowired
-    private EventManager eventManager;
+    private final EventManager eventManager;
 
-    @Autowired
-    private EventPublisher eventPublisher;
+    private final EventPublisher eventPublisher;
 
-    @Autowired
-    private XStore xstore;
+    private final XStore xstore;
 
-    @Autowired
-    private Ivy ivy;
+    private final Ivy ivy;
 
     private BeanContainer container;
 
     private Set<Plugin> plugins = new LinkedHashSet<Plugin>();
+
+    public PluginManagerImpl(final ApplicationManager applicationManager, final EventManager eventManager, final EventPublisher eventPublisher, final XStore xstore, final Ivy ivy) {
+        assert applicationManager != null;
+        this.applicationManager = applicationManager;
+        assert eventManager != null;
+        this.eventManager = eventManager;
+        assert eventPublisher != null;
+        this.eventPublisher = eventPublisher;
+        assert xstore != null;
+        this.xstore = xstore;
+        assert ivy != null;
+        this.ivy = ivy;
+    }
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;

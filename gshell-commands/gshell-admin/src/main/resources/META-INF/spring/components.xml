@@ -30,11 +30,15 @@
     <gshell:plugin name="gshell-admin">
         <gshell:command-bundle name="default">
             <gshell:command name="admin/list-plugins" type="stateless">
-                <gshell:action class="org.apache.geronimo.gshell.commands.admin.ListPluginsAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.admin.ListPluginsAction">
+                    <constructor-arg ref="pluginManager"/>
+                </gshell:action>
             </gshell:command>
 
             <gshell:command name="admin/install-plugin">
-                <gshell:action class="org.apache.geronimo.gshell.commands.admin.InstallPluginAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.admin.InstallPluginAction">
+                    <constructor-arg ref="pluginManager"/>
+                </gshell:action>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>

@@ -30,7 +30,6 @@ import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -45,14 +44,19 @@ public class SourceAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandLineExecutor executor;
+    private final CommandLineExecutor executor;
 
-    @Autowired
-    private FileSystemAccess fileSystemAccess;
+    private final FileSystemAccess fileSystemAccess;
 
     @Argument(required=true)
     private String path;
+
+    public SourceAction(final CommandLineExecutor executor, final FileSystemAccess fileSystemAccess) {
+        assert executor != null;
+        this.executor = executor;
+        assert fileSystemAccess != null;
+        this.fileSystemAccess = fileSystemAccess;
+    }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;

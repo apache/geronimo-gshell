@@ -31,16 +31,15 @@ import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
-import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
 import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
+import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Arrays;
 
 /**
  * {@link CommandResolver} component.
@@ -52,8 +51,7 @@ public class CommandResolverImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private FileSystemAccess fileSystemAccess;
+    private final FileSystemAccess fileSystemAccess;
 
     //
     // TODO: Consider using FileSystemManager.createVirtualFileSystem() to chroot for resolving?
@@ -64,6 +62,11 @@ public class CommandResolverImpl
     private FileObject aliasesDirectory;
 
     private BeanContainer container;
+
+    public CommandResolverImpl(final FileSystemAccess fileSystemAccess) {
+        assert fileSystemAccess != null;
+        this.fileSystemAccess = fileSystemAccess;
+    }
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;

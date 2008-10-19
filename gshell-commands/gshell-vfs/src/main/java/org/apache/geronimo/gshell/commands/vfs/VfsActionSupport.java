@@ -23,12 +23,12 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.notification.FailureNotification;
+import org.apache.geronimo.gshell.vfs.FileObjects;
+import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Support for VFS command actions.
@@ -40,8 +40,13 @@ public abstract class VfsActionSupport
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private FileSystemAccess fileSystemAccess;
+
+    @Required
+    public void setFileSystemAccess(final FileSystemAccess fileSystemAccess) {
+        assert fileSystemAccess != null;
+        this.fileSystemAccess = fileSystemAccess;
+    }
 
     protected FileSystemAccess getFileSystemAccess() {
         assert fileSystemAccess != null;

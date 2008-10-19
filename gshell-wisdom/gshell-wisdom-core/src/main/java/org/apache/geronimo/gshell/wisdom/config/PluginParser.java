@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter;
 import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.apache.geronimo.gshell.wisdom.registry.CommandLocationImpl;
-import org.apache.geronimo.gshell.command.CommandLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
@@ -32,9 +31,9 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -42,10 +41,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 /**
  * Parser for the &lt;gshell:plugin/&gt; element.
@@ -340,6 +339,8 @@ public class PluginParser
             log.trace("Parse command bundle; element; {}", element);
 
             BeanDefinitionBuilder bundle = BeanDefinitionBuilder.rootBeanDefinition(CommandBundle.class);
+            bundle.addConstructorArgReference("commandRegistry");
+            bundle.addConstructorArgReference("aliasRegistry");
             bundle.addConstructorArgValue(element.getAttribute(NAME));
             bundle.setLazyInit(true);
             parseAndApplyDescription(element, bundle);
@@ -507,6 +508,7 @@ public class PluginParser
 
             for (Element child : children) {
                 BeanDefinitionBuilder link = BeanDefinitionBuilder.rootBeanDefinition(LinkCommand.class);
+                link.addConstructorArgReference("commandRegistry");
                 link.addConstructorArgValue(child.getAttribute(TARGET));
 
                 String name = child.getAttribute(NAME);

@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.vfs.config;
 import org.apache.commons.vfs.FileSystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
@@ -35,8 +34,7 @@ public class FileSystemManagerConfigurer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private ConfigurableFileSystemManager fileSystemManager;
+    private final ConfigurableFileSystemManager fileSystemManager;
 
     // TODO: Maybe add a provider configurer, which will support mapping extentions, mime-tyeps for a single provider?
 
@@ -47,6 +45,11 @@ public class FileSystemManagerConfigurer
     // extentions
 
     // mime-types
+
+    public FileSystemManagerConfigurer(final ConfigurableFileSystemManager fileSystemManager) {
+        assert fileSystemManager != null;
+        this.fileSystemManager = fileSystemManager;
+    }
 
     @PostConstruct
     public void init() {

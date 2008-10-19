@@ -19,14 +19,13 @@
 
 package org.apache.geronimo.gshell.commands.admin;
 
+import org.apache.geronimo.gshell.application.plugin.Plugin;
+import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.application.plugin.PluginManager;
-import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
@@ -40,14 +39,17 @@ public class ListPluginsAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private PluginManager pluginManager;
+    private final PluginManager pluginManager;
+
+    public ListPluginsAction(final PluginManager pluginManager) {
+        assert pluginManager != null;
+        this.pluginManager = pluginManager;
+    }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
-        assert pluginManager != null;
         log.debug("Plugin manager: {}", pluginManager);
 
         Set<Plugin> plugins = pluginManager.getPlugins();

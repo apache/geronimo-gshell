@@ -22,8 +22,8 @@ package org.apache.geronimo.gshell.wisdom.meta;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MapMetaDataContentSupport;
 
-import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * {@link MetaDataContent} to return details about {@link Runtime}.

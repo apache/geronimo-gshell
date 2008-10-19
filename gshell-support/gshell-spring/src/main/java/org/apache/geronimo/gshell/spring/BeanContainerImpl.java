@@ -26,7 +26,6 @@ import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -69,7 +68,8 @@ public class BeanContainerImpl
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
         // Hook up annotation processing
-        context.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
+        // context.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
+        // context.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
         context.addBeanPostProcessor(new LifecycleProcessor());
 
         // Add automatic trace logging of loaded beans

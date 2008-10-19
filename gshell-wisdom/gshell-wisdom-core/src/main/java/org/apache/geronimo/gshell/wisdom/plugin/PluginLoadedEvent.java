@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
+import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.event.Event;
-import org.apache.geronimo.gshell.application.model.Artifact;
 
 /**
  * Event fired once a plugin has been loaded.

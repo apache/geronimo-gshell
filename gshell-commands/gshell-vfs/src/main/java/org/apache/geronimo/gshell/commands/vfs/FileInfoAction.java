@@ -19,20 +19,20 @@
 
 package org.apache.geronimo.gshell.commands.vfs;
 
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.vfs.FileObjects;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.FileContent;
 import org.apache.commons.vfs.FileContentInfo;
+import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileType;
+import org.apache.geronimo.gshell.clp.Argument;
+import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.vfs.FileObjects;
 
+import java.security.cert.Certificate;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.security.cert.Certificate;
 
 /**
  * Display information about a file.

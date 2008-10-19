@@ -32,7 +32,6 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.handler.demux.DemuxingIoHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
 import java.util.List;
@@ -47,19 +46,20 @@ public class RshServer
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private TimeoutManager timeoutManager;
+    private final TimeoutManager timeoutManager;
 
-    @Autowired
-    private TransportFactoryLocator locator;
+    private final TransportFactoryLocator locator;
 
-    private List<ServerMessageHandler> handlers;
+    private final List<ServerMessageHandler> handlers;
 
     private TransportServer server;
 
-    public RshServer(final List<ServerMessageHandler> handlers) {
+    public RshServer(final TimeoutManager timeoutManager, final TransportFactoryLocator locator, final List<ServerMessageHandler> handlers) {
+        assert timeoutManager != null;
+        this.timeoutManager = timeoutManager;
+        assert locator != null;
+        this.locator = locator;
         assert handlers != null;
-
         this.handlers = handlers;
     }
 

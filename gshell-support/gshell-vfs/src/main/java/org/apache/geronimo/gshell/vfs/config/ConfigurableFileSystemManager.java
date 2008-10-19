@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.vfs.config;
 
-import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.NameScope;
 import org.apache.commons.vfs.impl.DefaultFileSystemManager;
 import org.slf4j.Logger;

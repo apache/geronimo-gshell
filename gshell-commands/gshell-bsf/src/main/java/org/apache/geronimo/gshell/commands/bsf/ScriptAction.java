@@ -23,7 +23,6 @@ import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.FileUtil;
 import org.apache.geronimo.gshell.ansi.Code;
 import org.apache.geronimo.gshell.ansi.Renderer;
@@ -39,7 +38,6 @@ import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides generic scripting language integration via <a href="http://http://jakarta.apache.org/bsf">BSF</a>.
@@ -51,11 +49,9 @@ public class ScriptAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private BSFManager manager;
+    private final BSFManager manager;
 
-    @Autowired
-    private FileSystemAccess fileSystemAccess;
+    private final FileSystemAccess fileSystemAccess;
 
     private BeanContainer container;
 
@@ -77,6 +73,13 @@ public class ScriptAction
 
     @Argument
     private String path;
+
+    public ScriptAction(final BSFManager manager, final FileSystemAccess fileSystemAccess) {
+        assert manager != null;
+        this.manager = manager;
+        assert fileSystemAccess != null;
+        this.fileSystemAccess = fileSystemAccess;
+    }
 
     public void setBeanContainer(final BeanContainer container) {
         assert container != null;

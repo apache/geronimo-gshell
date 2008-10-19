@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.remote.server.handler;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.server.timeout.TimeoutManager;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
@@ -34,11 +33,12 @@ import java.util.UUID;
 public class LoginHandler
     extends ServerMessageHandlerSupport<LoginMessage>
 {
-    @Autowired
-    private TimeoutManager timeoutManager;
+    private final TimeoutManager timeoutManager;
 
-    public LoginHandler() {
+    public LoginHandler(final TimeoutManager timeoutManager) {
         super(LoginMessage.class);
+        assert timeoutManager != null;
+        this.timeoutManager = timeoutManager;
     }
 
     public void handle(final Session session, final ServerSessionContext context, final LoginMessage message) throws Exception {

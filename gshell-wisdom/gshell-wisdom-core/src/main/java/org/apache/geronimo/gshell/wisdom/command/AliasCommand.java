@@ -23,14 +23,12 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.command.CommandLocation;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.wisdom.registry.CommandLocationImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
 import java.util.List;
@@ -43,28 +41,21 @@ import java.util.List;
 public class AliasCommand
     extends CommandSupport
 {
-    @Autowired
-    private CommandLineExecutor executor;
+    private final CommandLineExecutor executor;
 
     private String name;
 
     private String alias;
 
-    public AliasCommand(final String name, final String alias) {
-        // name could be null
-        // alias could be null
+    public AliasCommand(final CommandLineExecutor executor) {
+        assert executor != null;
 
-        this.alias = alias;
+        this.executor = executor;
 
-        setName(name);
         setAction(new AliasCommandAction());
         setDocumenter(new AliasCommandDocumenter());
         setCompleter(new NullCommandCompleter());
         setMessages(new AliasCommandMessageSource());
-    }
-
-    public AliasCommand() {
-        this(null, null);
     }
     
     public String getName() {

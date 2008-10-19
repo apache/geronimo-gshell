@@ -19,15 +19,14 @@
 
 package org.apache.geronimo.gshell.commands.admin;
 
+import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.application.model.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Install a GShell plugin.
@@ -39,8 +38,7 @@ public class InstallPluginAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private PluginManager pluginManager;
+    private final PluginManager pluginManager;
 
     @Option(name="-g", aliases={"--groupId"}, argumentRequired=true, required=true)
     private String groupId;
@@ -50,6 +48,11 @@ public class InstallPluginAction
 
     @Option(name="-v", aliases={"--version"}, argumentRequired=true, required=true)
     private String version;
+
+    public InstallPluginAction(final PluginManager pluginManager) {
+        assert pluginManager != null;
+        this.pluginManager = pluginManager;
+    }
     
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
@@ -61,8 +64,7 @@ public class InstallPluginAction
         artifact.setVersion(version);
 
         io.info("Loading plugin: {}", artifact.getId());
-        
-        assert pluginManager != null;
+
         log.debug("Plugin manager: {}", pluginManager);
 
         try {

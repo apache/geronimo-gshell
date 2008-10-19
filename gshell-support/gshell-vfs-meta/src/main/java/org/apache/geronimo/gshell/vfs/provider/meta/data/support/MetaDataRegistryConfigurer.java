@@ -23,9 +23,9 @@ import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

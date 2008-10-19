@@ -30,7 +30,6 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
@@ -44,12 +43,16 @@ public class HelpAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandResolver commandResolver;
+    private final CommandResolver commandResolver;
 
     @Argument
     private String commandName;
 
+    public HelpAction(final CommandResolver commandResolver) {
+        assert commandResolver != null;
+        this.commandResolver = commandResolver;
+    }
+    
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();

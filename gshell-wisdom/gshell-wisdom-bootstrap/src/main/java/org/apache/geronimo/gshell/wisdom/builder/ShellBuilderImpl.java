@@ -21,11 +21,11 @@ package org.apache.geronimo.gshell.wisdom.builder;
 
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
-import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerImpl;

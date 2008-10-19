@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * {@link Console.ErrorHandler} component.
@@ -39,13 +38,18 @@ public class ConsoleErrorHandlerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private EventManager eventManager;
+    private final EventManager eventManager;
 
-    @Autowired
-    private Application application;
+    private final Application application;
 
     private Renderer renderer = new Renderer();
+
+    public ConsoleErrorHandlerImpl(final EventManager eventManager, final Application application) {
+        assert eventManager != null;
+        this.eventManager = eventManager;
+        assert application != null;
+        this.application = application;
+    }
 
     public Result handleError(final Throwable error) {
         assert error != null;

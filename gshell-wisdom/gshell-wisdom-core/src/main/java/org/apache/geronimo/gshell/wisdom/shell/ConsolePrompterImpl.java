@@ -30,7 +30,6 @@ import org.codehaus.plexus.interpolation.PrefixedObjectValueSource;
 import org.codehaus.plexus.interpolation.StringSearchInterpolator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
@@ -44,14 +43,18 @@ public class ConsolePrompterImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private Application application;
+    private final Application application;
 
     private final Interpolator interp = new StringSearchInterpolator("%{", "}");
 
     private final VariablesValueSource variablesValueSource = new VariablesValueSource();
 
     private final Renderer renderer = new Renderer();
+
+    public ConsolePrompterImpl(final Application application) {
+        assert application != null;
+        this.application = application;
+    }
 
     @PostConstruct
     public void init() {

@@ -19,16 +19,14 @@
 
 package org.apache.geronimo.gshell.vfs.provider.meta;
 
+import org.apache.commons.vfs.FileContentInfoFactory;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.FileContent;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileContentInfoFactory;
 import org.apache.commons.vfs.provider.AbstractFileObject;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 
-import java.io.InputStream;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Map;
 
 /**

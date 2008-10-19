@@ -22,10 +22,9 @@ package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A bundle of {@link Command} instances.
@@ -35,18 +34,20 @@ import java.util.List;
 public class CommandBundle
     extends BundleSupport
 {
-    @Autowired
-    private CommandRegistry commandRegistry;
+    private final CommandRegistry commandRegistry;
 
-    @Autowired
-    private AliasRegistry aliasRegistry;
+    private final AliasRegistry aliasRegistry;
 
     private List<Command> commands;
 
     private Map<String,String> aliases;
 
-    public CommandBundle(final String name) {
+    public CommandBundle(final CommandRegistry commandRegistry, final AliasRegistry aliasRegistry, final String name) {
         super(name);
+        assert commandRegistry != null;
+        this.commandRegistry = commandRegistry;
+        assert aliasRegistry != null;
+        this.aliasRegistry = aliasRegistry;
     }
 
     public List<Command> getCommands() {

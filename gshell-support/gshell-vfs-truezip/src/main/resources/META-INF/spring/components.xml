@@ -32,6 +32,7 @@
     <!-- ZIP -->
 
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="scheme" value="zip"/>
         <property name="provider">
             <bean class="org.apache.geronimo.gshell.vfs.provider.truezip.TruezipFileProvider"/>
@@ -39,11 +40,13 @@
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="extension" value="zip"/>
         <property name="scheme" value="zip"/>
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="mimeType" value="application/zip"/>
         <property name="scheme" value="zip"/>
     </bean>
@@ -51,6 +54,7 @@
     <!-- TAR -->
 
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="scheme" value="tar"/>
         <property name="provider">
             <bean class="org.apache.geronimo.gshell.vfs.provider.truezip.TruezipFileProvider"/>
@@ -58,11 +62,13 @@
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="extension" value="tar"/>
         <property name="scheme" value="tar"/>
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="mimeType" value="application/x-tar"/>
         <property name="scheme" value="tar"/>
     </bean>
@@ -70,6 +76,7 @@
     <!-- JAR -->
     
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="scheme" value="jar"/>
         <property name="provider">
             <bean class="org.apache.geronimo.gshell.vfs.provider.truezip.TruezipFileProvider"/>
@@ -77,11 +84,13 @@
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="extension" value="jar"/>
         <property name="scheme" value="jar"/>
     </bean>
 
     <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="mimeType" value="application/jar"/>
         <property name="scheme" value="jar"/>
     </bean>

@@ -20,11 +20,10 @@
 package org.apache.geronimo.gshell.remote.server;
 
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
-import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Provides the server-side encapsulation of the basic shell bits to allow remote clients to invoke commands.
@@ -36,12 +35,14 @@ public class RemoteShellImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandLineExecutor executor;
+    private final CommandLineExecutor executor;
 
     private boolean opened = true;
 
-    public RemoteShellImpl() {}
+    public RemoteShellImpl(final CommandLineExecutor executor) {
+        assert executor != null;
+        this.executor = executor;
+    }
 
     private void ensureOpened() {
         if (!opened) {

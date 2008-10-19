@@ -21,12 +21,11 @@ package org.apache.geronimo.gshell.commands.builtins;
 
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationManager;
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
+import org.apache.geronimo.gshell.application.model.Branding;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.application.model.ApplicationModel;
-import org.apache.geronimo.gshell.application.model.Branding;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Display information about the current GShell application.
@@ -36,14 +35,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AboutAction
     implements CommandAction
 {
-    @Autowired
-    private ApplicationManager applicationManager;
-    
+    private final ApplicationManager applicationManager;
+
+    public AboutAction(final ApplicationManager applicationManager) {
+        assert applicationManager != null;
+        this.applicationManager = applicationManager;
+    }
+
     public Object execute(CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
-        assert applicationManager != null;
         Application app = applicationManager.getApplication();
         ApplicationModel model = app.getModel();
         Branding branding = app.getModel().getBranding();

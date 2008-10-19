@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.wisdom.shell;
 import jline.Completor;
 import jline.History;
 import org.apache.geronimo.gshell.application.Application;
+import org.apache.geronimo.gshell.application.model.Branding;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -29,15 +30,13 @@ import org.apache.geronimo.gshell.console.Console.ErrorHandler;
 import org.apache.geronimo.gshell.console.Console.Prompter;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.Closer;
-import org.apache.geronimo.gshell.application.model.Branding;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -56,11 +55,9 @@ public class ShellImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private Application application;
+    private final Application application;
 
-    @Autowired
-    private CommandLineExecutor executor;
+    private final CommandLineExecutor executor;
 
     private History history;
 
@@ -75,6 +72,13 @@ public class ShellImpl
     private ErrorHandler errorHandler;
 
     private boolean opened;
+
+    public ShellImpl(final Application application, final CommandLineExecutor executor) {
+        assert application != null;
+        this.application = application;
+        assert executor != null;
+        this.executor = executor;
+    }
 
     private synchronized void ensureOpened() {
         if (!opened) {

@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.ivy.util.filter.Filter;
 import org.apache.ivy.core.module.descriptor.Artifact;
+import org.apache.ivy.util.filter.Filter;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Artifact filter for applications.

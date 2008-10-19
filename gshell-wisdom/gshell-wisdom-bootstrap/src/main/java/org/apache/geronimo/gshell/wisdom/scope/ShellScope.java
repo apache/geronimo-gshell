@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.scope;
 
-import org.springframework.beans.factory.config.Scope;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.config.Scope;
 
 /**
  * ???

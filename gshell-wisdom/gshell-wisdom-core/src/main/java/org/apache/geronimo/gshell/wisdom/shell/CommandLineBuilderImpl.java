@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.wisdom.shell;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.CommandLineParser;
@@ -29,10 +30,8 @@ import org.apache.geronimo.gshell.parser.ParseException;
 import org.apache.geronimo.gshell.parser.visitor.ExecutingVisitor;
 import org.apache.geronimo.gshell.parser.visitor.LoggingVisitor;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -47,10 +46,12 @@ public class CommandLineBuilderImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandLineParser parser;
-    
-    public CommandLineBuilderImpl() {}
+    private final CommandLineParser parser;
+
+    public CommandLineBuilderImpl(final CommandLineParser parser) {
+        assert parser != null;
+        this.parser = parser;
+    }
 
     private ASTCommandLine parse(final String input) throws ParseException {
         assert input != null;

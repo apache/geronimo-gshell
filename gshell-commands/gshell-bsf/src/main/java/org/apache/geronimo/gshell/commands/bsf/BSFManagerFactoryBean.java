@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.commands.bsf;
 
-import org.springframework.beans.factory.FactoryBean;
+import org.apache.bsf.BSFManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.bsf.BSFManager;
+import org.springframework.beans.factory.FactoryBean;
 
 import java.util.Map;
 

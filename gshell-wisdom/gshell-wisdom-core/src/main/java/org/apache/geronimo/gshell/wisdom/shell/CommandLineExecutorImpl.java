@@ -23,22 +23,21 @@ import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.command.Arguments;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailed;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
-import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -59,11 +58,16 @@ public class CommandLineExecutorImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CommandResolver commandResolver;
+    private final CommandResolver commandResolver;
 
-    @Autowired
-    private CommandLineBuilder commandLineBuilder;
+    private final CommandLineBuilder commandLineBuilder;
+
+    public CommandLineExecutorImpl(final CommandResolver commandResolver, final CommandLineBuilder commandLineBuilder) {
+        assert commandResolver != null;
+        this.commandResolver = commandResolver;
+        assert commandLineBuilder != null;
+        this.commandLineBuilder = commandLineBuilder;
+    }
 
     public Object execute(final ShellContext context, final String line) throws Exception {
         assert context != null;

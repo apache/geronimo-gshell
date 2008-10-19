@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
@@ -43,14 +42,18 @@ public class AliasAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private AliasRegistry aliasRegistry;
+    private final AliasRegistry aliasRegistry;
 
     @Argument(index=0)
     private String name;
 
     @Argument(index=1)
     private String target;
+
+    public AliasAction(final AliasRegistry aliasRegistry) {
+        assert aliasRegistry != null;
+        this.aliasRegistry = aliasRegistry;
+    }
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;

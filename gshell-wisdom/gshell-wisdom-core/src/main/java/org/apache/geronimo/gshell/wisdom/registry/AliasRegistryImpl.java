@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchAliasException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -41,10 +40,14 @@ public class AliasRegistryImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private EventPublisher eventPublisher;
+    private final EventPublisher eventPublisher;
 
     private final Map<String,String> aliases = new LinkedHashMap<String,String>();
+
+    public AliasRegistryImpl(final EventPublisher eventPublisher) {
+        assert eventPublisher != null;
+        this.eventPublisher = eventPublisher;
+    }
 
     public void registerAlias(final String name, final String alias) {
         assert name != null;

@@ -23,7 +23,6 @@ import jline.History;
 import org.apache.geronimo.gshell.application.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -39,8 +38,12 @@ public class HistoryImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private Application application;
+    private final Application application;
+
+    public HistoryImpl(final Application application) {
+        assert application != null;
+        this.application = application;
+    }
 
     @PostConstruct
     public void init() throws Exception {

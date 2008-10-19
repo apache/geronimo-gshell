@@ -26,6 +26,8 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="org.apache.geronimo.gshell.remote.client.RshClient" scope="prototype">
+        <constructor-arg ref="cryptoContext"/>
+        <constructor-arg ref="transportFactoryLocatory"/>
         <constructor-arg>
             <list>
                 <bean class="org.apache.geronimo.gshell.remote.client.handler.EchoHandler"/>

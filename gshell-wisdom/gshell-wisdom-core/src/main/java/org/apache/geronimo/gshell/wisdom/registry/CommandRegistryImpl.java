@@ -20,15 +20,12 @@
 package org.apache.geronimo.gshell.wisdom.registry;
 
 import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandLocation;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.DuplicateCommandException;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
-import org.apache.geronimo.gshell.wisdom.command.CommandSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -45,10 +42,14 @@ public class CommandRegistryImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private EventPublisher eventPublisher;
+    private final EventPublisher eventPublisher;
 
     private final Map<String,Command> commands = new LinkedHashMap<String,Command>();
+
+    public CommandRegistryImpl(final EventPublisher eventPublisher) {
+        assert eventPublisher != null;
+        this.eventPublisher = eventPublisher;
+    }
 
     public void registerCommand(final Command command) throws DuplicateCommandException {
         assert command != null;

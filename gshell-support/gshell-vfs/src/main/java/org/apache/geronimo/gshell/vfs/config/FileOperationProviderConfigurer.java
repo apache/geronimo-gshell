@@ -23,8 +23,8 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.operations.FileOperationProvider;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configures a {@link FileOperationProvider}.

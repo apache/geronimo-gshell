@@ -25,7 +25,6 @@ import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
@@ -37,14 +36,19 @@ import javax.annotation.PostConstruct;
 public class PluginMetaMapper
     implements EventListener
 {
-    @Autowired
-    private EventManager eventManager;
+    private final EventManager eventManager;
 
-    @Autowired
-    private MetaDataRegistry metaRegistry;
+    private final MetaDataRegistry metaRegistry;
 
     private MetaDataRegistryConfigurer metaConfig;
 
+    public PluginMetaMapper(final EventManager eventManager, final MetaDataRegistry metaRegistry) {
+        assert eventManager != null;
+        this.eventManager = eventManager;
+        assert metaRegistry != null;
+        this.metaRegistry = metaRegistry;
+    }
+    
     @PostConstruct
     public void init() {
         assert metaRegistry != null;

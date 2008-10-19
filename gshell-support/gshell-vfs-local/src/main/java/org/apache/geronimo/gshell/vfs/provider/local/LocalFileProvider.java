@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.vfs.provider.local;
 
-import org.apache.commons.vfs.provider.local.LocalFileName;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileSystem;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemOptions;
+import org.apache.commons.vfs.provider.local.LocalFileName;
 
 /**
  * Custom VFS local file provider.

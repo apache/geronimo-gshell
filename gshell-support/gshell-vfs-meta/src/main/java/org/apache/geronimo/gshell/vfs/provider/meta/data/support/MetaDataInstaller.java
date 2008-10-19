@@ -19,10 +19,9 @@
 
 package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
 
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -34,10 +33,14 @@ import java.util.Map;
  */
 public class MetaDataInstaller
 {
-    @Autowired
-    private MetaDataRegistry metaRegistry;
+    private final MetaDataRegistry metaRegistry;
 
     private Map<String,MetaDataContent> contentNodes;
+
+    public MetaDataInstaller(final MetaDataRegistry metaRegistry) {
+        assert metaRegistry != null;
+        this.metaRegistry = metaRegistry;
+    }
 
     public void setContentNodes(final Map<String, MetaDataContent> nodes) {
         this.contentNodes = nodes;

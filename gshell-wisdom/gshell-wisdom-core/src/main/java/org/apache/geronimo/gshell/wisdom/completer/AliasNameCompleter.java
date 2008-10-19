@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.completer;
 
+import jline.Completor;
 import org.apache.geronimo.gshell.console.completer.StringsCompleter;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
@@ -26,15 +27,10 @@ import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.wisdom.registry.AliasRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.AliasRemovedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
-
-import jline.Completor;
 
 /**
  * {@link Completor} for alias names.
@@ -46,15 +42,18 @@ import jline.Completor;
 public class AliasNameCompleter
     implements Completor
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final EventManager eventManager;
 
-    @Autowired
-    private EventManager eventManager;
-
-    @Autowired
-    private AliasRegistry aliasRegistry;
+    private final AliasRegistry aliasRegistry;
 
     private final StringsCompleter delegate = new StringsCompleter();
+
+    public AliasNameCompleter(final EventManager eventManager, final AliasRegistry aliasRegistry) {
+        assert eventManager != null;
+        this.eventManager = eventManager;
+        assert aliasRegistry != null;
+        this.aliasRegistry = aliasRegistry;
+    }
 
     @PostConstruct
     public void init() {
