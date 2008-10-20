@@ -51,7 +51,9 @@ public class Launcher
 
             Thread.currentThread().setContextClassLoader(cl);
 
-            Log.debug("Launching: " + method);
+            if (Log.DEBUG) {
+                Log.debug("Launching: " + method);
+            }
 
             method.invoke(null, new Object[] { args });
 

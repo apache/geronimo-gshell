@@ -125,7 +125,10 @@ public class Configuration
 
     private void setProperty(final String name, final String value) {
         System.setProperty(name, value);
-        Log.debug("Property: " + name + "=" + value);
+
+        if (Log.DEBUG) {
+            Log.debug("Property: " + name + "=" + value);
+        }
     }
 
     public void configure() throws Exception {
