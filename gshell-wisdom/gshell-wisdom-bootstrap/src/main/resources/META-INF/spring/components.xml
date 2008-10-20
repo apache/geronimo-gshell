@@ -25,6 +25,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="no">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+
+    <bean id="ivy" class="org.apache.geronimo.gshell.ivy.IvyFactoryBean" lazy-init="true">
+        <property name="settingsUrl" value="file:${gshell.home}/etc/ivysettings.xml"/>
+    </bean>
+    
+    <bean id="eventManager" class="org.apache.geronimo.gshell.event.EventManagerImpl"/>
+
     <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl">
         <constructor-arg ref="eventManager"/>
         <constructor-arg ref="ivy"/>

@@ -52,7 +52,6 @@
         <module>gshell-interpolation</module>
         <module>gshell-console</module>
         <module>gshell-vfs</module>
-        <module>gshell-vfs-local</module>
         <module>gshell-vfs-meta</module>
         <module>gshell-vfs-truezip</module>
         <module>gshell-security</module>

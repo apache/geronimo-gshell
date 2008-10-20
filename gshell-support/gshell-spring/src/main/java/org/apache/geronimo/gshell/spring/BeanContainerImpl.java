@@ -103,8 +103,6 @@ public class BeanContainerImpl
         log.debug("Creating child container: {}", id);
 
         if (log.isTraceEnabled()) {
-            log.trace("Creating child container: {}", id);
-            
             if (classPath != null) {
                 log.trace("Classpath:");
 

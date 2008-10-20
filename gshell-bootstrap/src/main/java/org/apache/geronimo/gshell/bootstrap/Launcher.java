@@ -71,13 +71,13 @@ public class Launcher
     private static Method getMainMethod(final Class type) throws Exception {
         assert type != null;
 
-        Method m = type.getMethod("main", String[].class);
-
-        int modifiers = m.getModifiers();
+        Method method = type.getMethod("main", String[].class);
+        int modifiers = method.getModifiers();
 
         if (Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)) {
-            if (m.getReturnType() == Integer.TYPE || m.getReturnType() == Void.TYPE) {
-                return m;
+            Class returns = method.getReturnType();
+            if (returns == Integer.TYPE || returns == Void.TYPE) {
+                return method;
             }
         }
 

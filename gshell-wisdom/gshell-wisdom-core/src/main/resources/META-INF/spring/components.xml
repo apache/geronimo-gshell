@@ -25,6 +25,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="no">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+
+    <bean id="xstore" class="org.apache.geronimo.gshell.xstore.XStoreImpl">
+        <constructor-arg ref="fileSystemAccess"/>
+        <property name="rootUri"  value="file:${gshell.home}/var/xstore"/>
+    </bean>
+
+    <bean id="commandLineParser" class="org.apache.geronimo.gshell.parser.CommandLineParser"/>
+    
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl">
         <constructor-arg ref="applicationManager"/>
         <constructor-arg ref="eventManager"/>
