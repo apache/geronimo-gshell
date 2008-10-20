@@ -22,7 +22,8 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="no">
 
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
         <property name="fileSystemManager" ref="fileSystemManager"/>

@@ -25,7 +25,8 @@
        xmlns:gshell="http://gshell.org/schema/wisdom-gshell"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd">
+            http://gshell.org/schema/wisdom-gshell http://gshell.org/schema/wisdom-gshell/wisdom-gshell.xsd"
+       default-autowire="no">
 
     <gshell:plugin name="gshell-bsf">
         <gshell:command-bundle name="default">
@@ -42,6 +43,6 @@
         </gshell:command-bundle>
     </gshell:plugin>
 
-    <bean id="bsfManager" class="org.apache.geronimo.gshell.commands.bsf.BSFManagerFactoryBean"/>
+    <bean id="bsfManager" class="org.apache.geronimo.gshell.commands.bsf.BSFManagerFactoryBean" lazy-init="true"/>
 
 </beans>
