@@ -20,18 +20,15 @@
 package org.apache.geronimo.gshell.spring;
 
 import org.apache.geronimo.gshell.chronos.StopWatch;
-import org.codehaus.plexus.classworlds.ClassWorld;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Default {@link BeanContainer} implementation.
@@ -43,33 +40,31 @@ public class BeanContainerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final ClassRealm classRealm;
-    
+    private final ClassLoader classLoader;
+
     private final BeanContainerImpl parent;
 
     private final BeanContainerContextImpl context;
 
     public BeanContainerImpl(final ClassLoader cl) {
-        this(createClassRealm(cl), null);
+        this(cl, null);
     }
 
-    private BeanContainerImpl(final ClassRealm classRealm, final BeanContainerImpl parent) {
-        assert classRealm != null;
+    private BeanContainerImpl(final ClassLoader classLoader, final BeanContainerImpl parent) {
+        assert classLoader != null;
         // parent may be null
 
         this.parent = parent;
-        this.classRealm = classRealm;
+        this.classLoader = classLoader;
 
         // Construct the container and add customizations
-        context = new BeanContainerContextImpl(classRealm, parent != null ? parent.context : null);
-        context.setId(classRealm.getId());
+        context = new BeanContainerContextImpl(classLoader, parent != null ? parent.context : null);
 
         // Add support for BeanContainerAware
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
         // Hook up annotation processing
         // context.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
-        // context.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
         context.addBeanPostProcessor(new LifecycleProcessor());
 
         // Add automatic trace logging of loaded beans
@@ -77,7 +72,7 @@ public class BeanContainerImpl
     }
 
     public ClassLoader getClassLoader() {
-        return classRealm;
+        return classLoader;
     }
     
     public BeanContainer getParent() {
@@ -119,21 +114,15 @@ public class BeanContainerImpl
             }
         }
 
-        ClassRealm childRealm;
-        try {
-            childRealm = classRealm.createChildRealm(id);
-        }
-        catch (DuplicateRealmException e) {
-            throw new BeanContainerException("Failed to create child container realm: " + id, e);
-        }
-
+        URLClassLoader childLoader;
         if (classPath != null) {
-            for (URL url : classPath) {
-                childRealm.addURL(url);
-            }
+            childLoader = new URLClassLoader(classPath.toArray(new URL[classPath.size()]), classLoader);
+        }
+        else {
+            childLoader = new URLClassLoader(new URL[0], classLoader);
         }
 
-        return new BeanContainerImpl(childRealm, this);
+        return new BeanContainerImpl(childLoader, this);
     }
 
     public BeanContainer createChild(final String id) {
@@ -190,17 +179,5 @@ public class BeanContainerImpl
         log.trace("Getting bean names of type: {}", type);
 
         return getContext().getBeanNamesForType(type);
-    }
-
-    private static ClassRealm createClassRealm(final ClassLoader cl) {
-        assert cl != null;
-
-        try {
-            return new ClassWorld().newRealm("gshell(" + UUID.randomUUID() + ")", cl);
-        }
-        catch (DuplicateRealmException e) {
-            // Should never happen
-            throw new Error(e);
-        }
     }
 }
