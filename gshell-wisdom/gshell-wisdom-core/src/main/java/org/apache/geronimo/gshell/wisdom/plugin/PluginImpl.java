@@ -28,12 +28,12 @@ import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationTask;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.Bundle;
-import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.NoSuchBundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +58,7 @@ public class PluginImpl
 
     private ClassPath classPath;
 
-    private List<String> bundleNames;
+    private Map<String,String> bundleIdMap;
 
     private List<ActivationRule> activationRules;
 
@@ -106,38 +106,35 @@ public class PluginImpl
         this.classPath = classPath;
     }
     
-    public List<String> getBundleNames() {
-        List<String> list = bundleNames;
+    public Collection<String> getBundleNames() {
+        Collection<String> names;
 
-        if (bundleNames == null) {
-            list = Collections.emptyList();
+        if (bundleIdMap == null) {
+            names = Collections.emptyList();
+        }
+        else {
+            names = bundleIdMap.keySet();
         }
 
-        return Collections.unmodifiableList(list);
+        return Collections.unmodifiableCollection(names);
     }
 
-    public void setBundleNames(final List<String> bundleNames) {
-        assert bundleNames != null;
-        this.bundleNames = bundleNames;
+    public void setBundleIdMap(final Map<String, String> bundleIdMap) {
+        assert bundleIdMap != null;
+        this.bundleIdMap = bundleIdMap;
     }
 
     public Bundle getBundle(final String name) throws NoSuchBundleException {
-        assert container != null;
-        Map<String, CommandBundle> bundles = container.getBeans(CommandBundle.class);
+        assert name != null;
+        assert bundleIdMap != null;
+        String id = bundleIdMap.get(name);
 
-        CommandBundle bundle = null;
-        for (CommandBundle b : bundles.values()) {
-            if (b.getName().equals(name)) {
-                bundle = b;
-                break;
-            }
-        }
-
-        if (bundle == null) {
+        if (id == null) {
             throw new NoSuchBundleException(name);
         }
 
-        return bundle;
+        assert container != null;
+        return container.getBean(id, Bundle.class);
     }
 
     /*

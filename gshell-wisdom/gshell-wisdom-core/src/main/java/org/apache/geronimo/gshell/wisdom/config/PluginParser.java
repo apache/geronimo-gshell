@@ -274,12 +274,13 @@ public class PluginParser
             BeanDefinitionBuilder plugin = parsePlugin(element);
 
             Map<String,BeanDefinitionHolder> bundles = parseCommandBundles(element);
-
-            ManagedList bundleNames = new ManagedList();
-            // noinspection unchecked
-            bundleNames.addAll(bundles.keySet());
-
-            plugin.addPropertyValue("bundleNames", bundleNames);
+                
+            ManagedMap bundleIdMap = new ManagedMap();
+            for (Map.Entry<String,BeanDefinitionHolder> entry : bundles.entrySet()) {
+                // noinspection unchecked
+                bundleIdMap.put(entry.getKey(), entry.getValue().getBeanName());
+            }
+            plugin.addPropertyValue("bundleIdMap", bundleIdMap);
 
             return plugin;
         }
@@ -344,10 +345,6 @@ public class PluginParser
             bundle.addConstructorArgValue(element.getAttribute(NAME));
             bundle.setLazyInit(true);
             parseAndApplyDescription(element, bundle);
-
-            //
-            // TODO: Figure out how we can save the order of <gshell:command> and <gshell:link> so that 'help' displays them in the order they are defined
-            //
 
             ManagedList commands = new ManagedList();
             // noinspection unchecked
