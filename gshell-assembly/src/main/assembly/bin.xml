@@ -67,17 +67,8 @@
             <outputDirectory>lib</outputDirectory>
             <useStrictFiltering>true</useStrictFiltering>
             <excludes>
-                <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
                 <exclude>org.apache.geronimo.gshell:gshell-bootstrap</exclude>
             </excludes>
-        </dependencySet>
-
-        <dependencySet>
-            <outputDirectory>lib/boot</outputDirectory>
-            <useStrictFiltering>true</useStrictFiltering>
-            <includes>
-                <include>org.codehaus.plexus:plexus-classworlds</include>
-            </includes>
         </dependencySet>
         
         <dependencySet>
