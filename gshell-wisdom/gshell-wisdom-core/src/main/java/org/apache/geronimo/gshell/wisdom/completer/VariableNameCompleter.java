@@ -45,7 +45,6 @@ public class VariableNameCompleter
     }
 
     public int complete(final String buffer, final int cursor, final List candidates) {
-        assert applicationManager != null;
         Variables vars = applicationManager.getApplication().getVariables();
 
         // There are no events for variables muck, so each time we have to rebuild the list.
