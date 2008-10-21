@@ -38,34 +38,41 @@ public class Launcher
     public static void main(final String[] args) {
         assert args != null;
 
-        Configuration config = new Configuration();
-
         try {
-            Log.debug("Configuring");
-            
-            config.configure();
-
-            ClassLoader cl = config.getClassLoader();
-            Class type = cl.loadClass(MAIN_CLASS);
-            Method method = getMainMethod(type);
-
-            Thread.currentThread().setContextClassLoader(cl);
-
-            if (Log.DEBUG) {
-                Log.debug("Launching: " + method);
-            }
-
-            method.invoke(null, new Object[] { args });
+            launch(args);
 
             Log.debug("Exiting");
 
             System.exit(SUCCESS_EXIT_CODE);
         }
         catch (Throwable t) {
+            Log.debug("Failure: " + t);
+            
             t.printStackTrace(System.err);
             System.err.flush();
             System.exit(FAILURE_EXIT_CODE);
         }
+    }
+
+    public static void launch(final String[] args) throws Exception {
+        assert args != null;
+
+        Log.debug("Configuring");
+
+        Configuration config = new Configuration();
+        config.configure();
+
+        ClassLoader cl = config.getClassLoader();
+        Class type = cl.loadClass(MAIN_CLASS);
+        Method method = getMainMethod(type);
+
+        Thread.currentThread().setContextClassLoader(cl);
+
+        if (Log.DEBUG) {
+            Log.debug("Launching: " + method);
+        }
+
+        method.invoke(null, new Object[] { args });
     }
 
     private static Method getMainMethod(final Class type) throws Exception {
