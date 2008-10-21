@@ -24,21 +24,21 @@ package org.apache.geronimo.gshell.xstore;
  *
  * @version $Rev$ $Date$
  */
-public class XStoreHolder
+class XStoreHolder
 {
-    private static final InheritableThreadLocal<XStore> holder = new InheritableThreadLocal<XStore>();
+    private static final InheritableThreadLocal<XStoreImpl> holder = new InheritableThreadLocal<XStoreImpl>();
 
     public static void clear() {
         holder.remove();
     }
 
-    public static void set(final XStore xstore) {
+    public static void set(final XStoreImpl xstore) {
         assert xstore != null;
 
         holder.set(xstore);
     }
 
-    public static XStore get() {
+    public static XStoreImpl get() {
         return holder.get();
     }
 }

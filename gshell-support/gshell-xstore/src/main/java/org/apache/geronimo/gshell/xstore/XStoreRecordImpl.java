@@ -23,7 +23,6 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.marshal.Marshaller;
-import org.apache.geronimo.gshell.marshal.MarshallerSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,11 +42,11 @@ public class XStoreRecordImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final XStore xstore;
+    private final XStoreImpl xstore;
 
     private final FileObject file;
 
-    public XStoreRecordImpl(final XStore xstore, final FileObject file) {
+    XStoreRecordImpl(final XStoreImpl xstore, final FileObject file) {
         assert xstore != null;
         this.xstore = xstore;
         assert file != null;
@@ -71,6 +70,8 @@ public class XStoreRecordImpl
         }
     }
 
+    // TODO: Add marshaller cache
+    
     public void set(final Object value) {
         assert value != null;
 
@@ -78,7 +79,7 @@ public class XStoreRecordImpl
 
         BufferedOutputStream output = null;
         try {
-            Marshaller marshaller = new MarshallerSupport(value.getClass());
+            Marshaller marshaller = xstore.getMarshaller(value.getClass());
             output = new BufferedOutputStream(file.getContent().getOutputStream());
             // noinspection unchecked
             marshaller.marshal(value, output);
@@ -99,8 +100,8 @@ public class XStoreRecordImpl
         BufferedInputStream input = null;
 
         try {
-            Marshaller<T> marshaller = new MarshallerSupport<T>(type);
-            
+            Marshaller<T> marshaller = xstore.getMarshaller(type);
+
             FileObject parent = file.getParent();
             if (parent != null && !parent.exists()) {
                 parent.createFolder();

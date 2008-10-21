@@ -27,11 +27,11 @@ package org.apache.geronimo.gshell.xstore;
 public class XStorePointerImpl
     implements XStorePointer
 {
-    private transient XStore xstore;
+    private transient XStoreImpl xstore;
 
     private String path;
 
-    public XStorePointerImpl(final XStore xstore, final String path) {
+    XStorePointerImpl(final XStoreImpl xstore, final String path) {
         assert xstore != null;
         this.xstore = xstore;
         assert path != null;
