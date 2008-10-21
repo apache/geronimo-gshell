@@ -27,11 +27,133 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="org.apache.commons.vfs.CacheStrategy">
+                    <bean class="org.apache.geronimo.gshell.vfs.config.CacheStrategyEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="org.apache.commons.vfs.provider.FileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator">
+        <constructor-arg value="${gshell.home}/var/tmp"/>
+    </bean>
+
+    <bean id="fileSystemManager" class="org.apache.geronimo.gshell.vfs.config.FileSystemManagerFactoryBean">
+        <property name="filesCache">
+            <bean class="org.apache.commons.vfs.cache.SoftRefFilesCache"/>
+        </property>
+
+        <property name="cacheStrategy" value="ON_RESOLVE"/>
+
+        <property name="fileReplicator">
+            <bean class="org.apache.commons.vfs.impl.PrivilegedFileReplicator">
+                <constructor-arg ref="org.apache.commons.vfs.provider.FileReplicator"/>
+            </bean>
+        </property>
+
+        <property name="temporaryFileStore" ref="org.apache.commons.vfs.provider.FileReplicator"/>
+
+        <property name="fileContentInfoFactory">
+            <bean class="org.apache.commons.vfs.impl.FileContentInfoFilenameFactory"/>
+        </property>
+
+        <property name="defaultProvider">
+            <bean class="org.apache.commons.vfs.provider.url.UrlFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
+        <property name="scheme" value="file"/>
+        <property name="provider">
+            <bean class="org.apache.commons.vfs.provider.local.DefaultLocalFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
+        <property name="scheme" value="tmp"/>
+        <property name="provider">
+            <bean class="org.apache.commons.vfs.provider.temp.TemporaryFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
+        <property name="scheme" value="ram"/>
+        <property name="provider">
+            <bean class="org.apache.commons.vfs.provider.ram.RamFileProvider"/>
+        </property>
+    </bean>
+
+    <!--
+    TODO: Setup repo:// to access the local repository.
+    -->
+
+    <!--
+    TODO: Setup authentication support.
+    -->
+
+    <!--
+    TODO: Roll up this configuration into one bean for ext another for mime,
+          or maybe just one bean for both.  This is too verbose.
+    -->
+
+    <!--
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="extention" value="bz2"/>
+        <property name="scheme" value="bz2"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="extention" value="gz"/>
+        <property name="scheme" value="gz"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="extention" value="tgz"/>
+        <property name="scheme" value="tar"/>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
+        <property name="extention" value="tar"/>
+        <property name="scheme" value="tbz2"/>
+    </bean>
+    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
+        <property name="mimeType" value="application/x-gzip"/>
+        <property name="scheme" value="gz"/>
+    </bean>
+    -->
+
+    <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl" lazy-init="true">
+        <constructor-arg ref="applicationManager"/>
+        <constructor-arg ref="fileSystemManager"/>
+    </bean>
+
+    <bean id="fileObjectNameCompleter" class="org.apache.geronimo.gshell.vfs.FileObjectNameCompleter" lazy-init="true">
+        <constructor-arg ref="fileSystemAccess"/>
+    </bean>
+
     <bean id="xstore" class="org.apache.geronimo.gshell.xstore.XStoreImpl" lazy-init="true">
         <constructor-arg ref="fileSystemAccess"/>
         <property name="rootUri"  value="file:${gshell.home}/var/xstore"/>
     </bean>
 
+    <bean id="metaDataRegistry" class="org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryImpl" lazy-init="true"/>
+
+    <bean id="metaFileProviderConfigurer" class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
+        <property name="scheme" value="meta"/>
+        <property name="provider">
+            <bean class="org.apache.geronimo.gshell.vfs.provider.meta.MetaFileProvider">
+                <constructor-arg ref="metaDataRegistry"/>
+            </bean>
+        </property>
+    </bean>
+    
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl">
         <constructor-arg ref="applicationManager"/>
         <constructor-arg ref="eventManager"/>

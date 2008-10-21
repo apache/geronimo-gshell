@@ -58,7 +58,9 @@ public class BeanContainerContextImpl
     public void configure(final String[] locations) {
         assert locations != null;
 
-        log.debug("Configuring with locations: {}", locations);
+        if (log.isDebugEnabled()) {
+            log.debug("Configuring with locations: {}", Arrays.asList(locations));
+        }
 
         for (String location : locations) {
             Resource[] resources;

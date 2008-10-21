@@ -120,6 +120,10 @@ public class BeanContainerImpl
             childLoader = new URLClassLoader(new URL[0], classLoader);
         }
 
+        //
+        // FIXME: Id is not used, either use it or drop it
+        //
+        
         return new BeanContainerImpl(childLoader, this);
     }
 
