@@ -21,9 +21,10 @@ package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
 
 /**
- * Support for {@link Bundle} components.
+ * Support for {@link org.apache.geronimo.gshell.application.plugin.bundle.Bundle} components.
  *
  * @version $Rev$ $Date$
  */

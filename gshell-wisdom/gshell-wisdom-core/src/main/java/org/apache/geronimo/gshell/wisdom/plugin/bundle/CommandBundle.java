@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.wisdom.plugin.bundle.BundleSupport;
 
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class CommandBundle
         return aliases;
     }
 
-    public void setAliases(final Map<String, String> aliases) {
+    public void setAliases(final Map<String,String> aliases) {
         assert aliases != null;
 
         this.aliases = aliases;

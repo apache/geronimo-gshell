@@ -17,20 +17,22 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.plugin.bundle;
+package org.apache.geronimo.gshell.application.plugin.activation;
+
+import org.apache.geronimo.gshell.application.plugin.Plugin;
+
+import java.util.List;
 
 /**
- * Plugin bundle.
+ * Provides the context for activation rule processing.
  *
  * @version $Rev$ $Date$
  */
-public interface Bundle
+public interface ActivationContext
 {
-    String getName();
+    Plugin getPlugin();
+    
+    List<ActivationTask> getTasks();
 
-    boolean isEnabled();
-
-    void enable() throws Exception;
-
-    void disable() throws Exception;
+    void addTask(ActivationTask task);
 }

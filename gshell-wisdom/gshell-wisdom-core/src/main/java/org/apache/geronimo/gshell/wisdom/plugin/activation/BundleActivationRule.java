@@ -20,7 +20,10 @@
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
 import org.apache.geronimo.gshell.wisdom.plugin.PluginImpl;
-import org.apache.geronimo.gshell.wisdom.plugin.bundle.Bundle;
+import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationContext;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationRule;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationTask;
 
 /**
  * Activation rule which will enable a named-bundle.

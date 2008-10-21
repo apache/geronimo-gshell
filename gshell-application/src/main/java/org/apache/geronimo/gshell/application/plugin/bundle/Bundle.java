@@ -17,21 +17,20 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.plugin.bundle;
-
-import org.apache.geronimo.gshell.command.CommandException;
+package org.apache.geronimo.gshell.application.plugin.bundle;
 
 /**
- * Thrown to indicate an operation requested an undefined named-bundle.
+ * Plugin bundle.
  *
  * @version $Rev$ $Date$
  */
-public class NoSuchBundleException
-    extends CommandException
+public interface Bundle
 {
-    private static final long serialVersionUID = 1;
+    String getName();
 
-    public NoSuchBundleException(final String msg) {
-        super(msg);
-    }
+    boolean isEnabled();
+
+    void enable() throws Exception;
+
+    void disable() throws Exception;
 }

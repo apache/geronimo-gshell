@@ -20,7 +20,13 @@
 package org.apache.geronimo.gshell.application.plugin;
 
 import org.apache.geronimo.gshell.application.ClassPath;
+import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
+import org.apache.geronimo.gshell.application.plugin.bundle.NoSuchBundleException;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.application.model.Artifact;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Plugin.
@@ -35,13 +41,13 @@ public interface Plugin
 
     ClassPath getClassPath();
 
-    /*
-    boolean isEnabled();
+    Collection<String> getBundleNames();
 
-    void enable() throws Exception;
+    Bundle getBundle(String name) throws NoSuchBundleException;
 
-    void disable() throws Exception;
-    */
-    
+    List<ActivationRule> getActivationRules();
+
+    void setActivationRules(List<ActivationRule> rules);
+
     void activate();
 }

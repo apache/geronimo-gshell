@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.plugin.activation;
+package org.apache.geronimo.gshell.application.plugin.activation;
 
 /**
- * An activation rule.  Rules optionally add tasks to the context to perform some action.
+ * An activation task, which is the basic unit of operation for "active" bits.
  *
  * @version $Rev$ $Date$
  */
-public interface ActivationRule
+public interface ActivationTask
 {
-    void evaluate(ActivationContext context) throws Exception;
+    void execute() throws Exception;
 }

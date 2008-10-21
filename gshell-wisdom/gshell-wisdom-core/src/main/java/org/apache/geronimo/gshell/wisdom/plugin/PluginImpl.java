@@ -22,13 +22,13 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
+import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationContext;
-import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationRule;
-import org.apache.geronimo.gshell.wisdom.plugin.activation.ActivationTask;
-import org.apache.geronimo.gshell.wisdom.plugin.bundle.Bundle;
-import org.apache.geronimo.gshell.wisdom.plugin.bundle.NoSuchBundleException;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationContext;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationRule;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationTask;
+import org.apache.geronimo.gshell.application.plugin.bundle.NoSuchBundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,10 +50,6 @@ public class PluginImpl
 
     private final String name;
 
-    /*
-    private boolean enabled = false;
-    */
-    
     private Artifact artifact;
 
     private ClassPath classPath;
@@ -137,44 +133,14 @@ public class PluginImpl
         return container.getBean(id, Bundle.class);
     }
 
-    /*
-    public synchronized boolean isEnabled() {
-        return enabled;
-    }
-
-    public synchronized void enable() throws Exception {
-        if (enabled) {
-            throw new IllegalStateException("Plugin already enabled: " + name);
-        }
-
-        log.debug("Enabling plugin: {}", name);
-
-        // TODO:
-
-        enabled = true;
-    }
-
-    public synchronized void disable() throws Exception {
-        if (!enabled) {
-            throw new IllegalStateException("Plugin not enabled: " + name);
-        }
-
-        log.debug("Disabling bundle: {}", name);
-
-        // TODO:
-
-        enabled = false;
-    }
-    */
-
     public List<ActivationRule> getActivationRules() {
         return activationRules;
     }
 
-    public void setActivationRules(final List<ActivationRule> activationRules) {
-        assert activationRules != null;
+    public void setActivationRules(final List<ActivationRule> rules) {
+        assert rules != null;
 
-        this.activationRules = activationRules;
+        this.activationRules = rules;
     }
 
     public void activate() {

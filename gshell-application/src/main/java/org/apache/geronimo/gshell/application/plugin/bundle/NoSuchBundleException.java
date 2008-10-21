@@ -17,22 +17,21 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.plugin.activation;
+package org.apache.geronimo.gshell.application.plugin.bundle;
 
-import org.apache.geronimo.gshell.application.plugin.Plugin;
-
-import java.util.List;
+import org.apache.geronimo.gshell.command.CommandException;
 
 /**
- * Provides the context for activation rule processing.
+ * Thrown to indicate an operation requested an undefined named-bundle.
  *
  * @version $Rev$ $Date$
  */
-public interface ActivationContext
+public class NoSuchBundleException
+    extends CommandException
 {
-    Plugin getPlugin();
-    
-    List<ActivationTask> getTasks();
+    private static final long serialVersionUID = 1;
 
-    void addTask(ActivationTask task);
+    public NoSuchBundleException(final String msg) {
+        super(msg);
+    }
 }

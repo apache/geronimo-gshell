@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin.activation;
 
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationContext;
+
 /**
  * Activation rule which will enable a named-bundle only if no other activation rules have added tasks.
  *
