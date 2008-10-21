@@ -116,10 +116,7 @@ public abstract class CommandSupport
     }
 
     public CommandCompleter getCompleter() {
-        if (completer == null) {
-            throw new IllegalStateException("Missing required property: completer");
-        }
-        
+        // completer may be null
         return completer;
     }
 
@@ -232,12 +229,7 @@ public abstract class CommandSupport
         // Setup the command action
         try {
             // Process command line options/arguments
-            if (processArguments(io, action, args)) {
-                // Abort if we have been asked to display --help
-                throw new AbortExecutionNotification(new CommandResult.ValueResult(CommandAction.Result.SUCCESS));
-            }
-
-            // TODO: Add preferences processor
+            processArguments(io, action, args);
         }
         catch (Exception e) {
             // Abort if preparation caused a failure
@@ -245,7 +237,7 @@ public abstract class CommandSupport
         }
     }
 
-    protected boolean processArguments(final IO io, final CommandAction action, final Object[] args) throws Exception {
+    protected void processArguments(final IO io, final CommandAction action, final Object[] args) throws Exception {
         assert io != null;
         assert action != null;
         assert args != null;
@@ -257,10 +249,6 @@ public abstract class CommandSupport
         CommandLineProcessor clp = new CommandLineProcessor();
         clp.addBean(action);
 
-        // Attach some help context
-        CommandDocumenter documenter = getDocumenter();
-        clp.addBean(documenter);
-
         HelpSupport help = new HelpSupport();
         clp.addBean(help);
 
@@ -271,11 +259,11 @@ public abstract class CommandSupport
         if (help.displayHelp) {
             log.trace("Render command-line usage");
 
+            CommandDocumenter documenter = getDocumenter();
             documenter.renderUsage(io.out);
-            return true;
-        }
 
-        return false;
+            throw new AbortExecutionNotification(new CommandResult.ValueResult(CommandAction.Result.SUCCESS));
+        }
     }
 
     protected CommandResult executeAction(final ShellContext context, final Object[] args) {

@@ -54,7 +54,6 @@ public class AliasCommand
 
         setAction(new AliasCommandAction());
         setDocumenter(new AliasCommandDocumenter());
-        setCompleter(new NullCommandCompleter());
         setMessages(new AliasCommandMessageSource());
     }
     

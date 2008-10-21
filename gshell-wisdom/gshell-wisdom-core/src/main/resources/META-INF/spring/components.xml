@@ -284,14 +284,10 @@
         </property>
     </bean>
 
-    <bean id="defaultCommandCompleter" class="org.apache.geronimo.gshell.wisdom.command.NullCommandCompleter" lazy-init="true"/>
-
     <bean id="statelessCommandTemplate" class="org.apache.geronimo.gshell.wisdom.command.StatelessCommand" abstract="true">
         <property name="documenter">
             <bean class="org.apache.geronimo.gshell.wisdom.command.MessageSourceCommandDocumenter"/>
         </property>
-
-        <property name="completer" ref="defaultCommandCompleter"/>
 
         <property name="messages">
             <bean class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>
@@ -302,8 +298,6 @@
         <property name="documenter">
             <bean class="org.apache.geronimo.gshell.wisdom.command.MessageSourceCommandDocumenter"/>
         </property>
-
-        <property name="completer" ref="defaultCommandCompleter"/>
 
         <property name="messages">
             <bean class="org.apache.geronimo.gshell.wisdom.command.CommandMessageSource"/>

@@ -42,7 +42,6 @@ public class GroupCommand
         setFile(file);
         setAction(new GroupCommandAction());
         setDocumenter(new GroupCommandDocumenter());
-        setCompleter(new NullCommandCompleter());
         setMessages(new GroupCommandMessageSource());
     }
 
@@ -50,6 +49,10 @@ public class GroupCommand
         this(null);
     }
 
+    //
+    // FIXME: Make this a plain string, hind the mata:/commands stuff
+    //
+    
     public FileObject getFile() {
         if (file == null) {
             throw new IllegalStateException("Missing property: file");

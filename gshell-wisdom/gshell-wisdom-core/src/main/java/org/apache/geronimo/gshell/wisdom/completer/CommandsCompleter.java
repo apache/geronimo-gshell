@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.wisdom.completer;
 
 import jline.ArgumentCompletor;
 import jline.Completor;
-import jline.NullCompletor;
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.console.completer.StringsCompleter;
 import org.apache.geronimo.gshell.event.Event;
@@ -102,19 +102,20 @@ public class CommandsCompleter
         children.add(new StringsCompleter(new String[] { name }));
 
         // Then attach any command specific completers
-        Collection<Completor> commandCompleters = command.getCompleter().createCompletors();
-        if (commandCompleters != null) {
-            for (Completor completer : commandCompleters) {
-                if (completer != null) {
-                    children.add(completer);
+        CommandCompleter commandCompleter = command.getCompleter();
+        if (commandCompleter != null) {
+            Collection<Completor> commandCompleters = commandCompleter.createCompletors();
+            if (commandCompleters != null) {
+                for (Completor completer : commandCompleters) {
+                    children.add(completer != null ? completer : NullCompleter.INSTANCE);
                 }
-                else {
-                    children.add(new NullCompletor());
-                }
+            }
+            else {
+                children.add(NullCompleter.INSTANCE);
             }
         }
         else {
-            children.add(new NullCompletor());
+            children.add(NullCompleter.INSTANCE);
         }
 
         // Setup the root completer for the command

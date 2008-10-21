@@ -17,22 +17,17 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.command;
-
-import jline.Completor;
-import org.apache.geronimo.gshell.command.CommandCompleter;
-
-import java.util.Collection;
+package org.apache.geronimo.gshell.wisdom.completer;
 
 /**
- * A <em>null</em> {@link CommandCompleter}.
+ * Null or terminal completer.
+ *
+ * Keeps up to date automatically by handling alias-related events.
  *
  * @version $Rev$ $Date$
  */
-public class NullCommandCompleter
-    implements CommandCompleter
+public final class NullCompleter
+    extends jline.NullCompletor
 {
-    public Collection<Completor> createCompletors() {
-        return null;
-    }
+    public static final NullCompleter INSTANCE = new NullCompleter();
 }
