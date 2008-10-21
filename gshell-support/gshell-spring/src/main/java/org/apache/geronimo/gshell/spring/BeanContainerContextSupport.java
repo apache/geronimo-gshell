@@ -207,8 +207,7 @@ public abstract class BeanContainerContextSupport
 		// uninitialized to let the bean factory post-processors apply to them!
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, true, false);
 
-		// Separate between BeanFactoryPostProcessors that implement PriorityOrdered,
-		// Ordered, and the rest.
+		// Separate between BeanFactoryPostProcessors that implement PriorityOrdered, Ordered, and the rest.
 		List<BeanFactoryPostProcessor> priorityOrderedPostProcessors = new ArrayList<BeanFactoryPostProcessor>();
 		List<String> orderedPostProcessorNames = new ArrayList<String>();
 		List<String> nonOrderedPostProcessorNames = new ArrayList<String>();
@@ -502,6 +501,7 @@ public abstract class BeanContainerContextSupport
 			DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory(getParent() != null ? getParent().getBeanFactory() : null);
             beanFactory.setAllowBeanDefinitionOverriding(true);
             beanFactory.setAllowCircularReferences(true);
+            beanFactory.setAllowEagerClassLoading(false);
 			loadBeanDefinitions(beanFactory);
 
 			synchronized (beanFactoryMonitor) {
