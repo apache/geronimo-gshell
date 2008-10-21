@@ -36,6 +36,10 @@ import java.net.URL;
 public class IvyFactoryBean
     implements FactoryBean
 {
+    static {
+        Message.setDefaultLogger(new Slf4jMessageLogger());
+    }
+    
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private URL settingsUrl;
@@ -53,8 +57,6 @@ public class IvyFactoryBean
     }
 
     public Object getObject() throws Exception {
-        Message.setDefaultLogger(new Slf4jMessageLogger());
-        
         IvySettings settings = new IvySettings();
         URL url = getSettingsUrl();
         log.debug("Settings URL: {}", url);
