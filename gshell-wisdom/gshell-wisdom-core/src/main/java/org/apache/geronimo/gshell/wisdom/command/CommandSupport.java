@@ -318,6 +318,9 @@ public abstract class CommandSupport
 
             log.trace("Result: {}", value);
 
+            // Save the result to the shell's context under "_"
+            context.getVariables().set("_", value);
+
             result = new CommandResult.ValueResult(value);
         }
         catch (final FailureNotification n) {
