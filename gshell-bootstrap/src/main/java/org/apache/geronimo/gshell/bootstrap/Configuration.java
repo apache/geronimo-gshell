@@ -152,6 +152,10 @@ public class Configuration
                 }
             });
 
+            if (files == null) {
+                throw new Error("No jars found under: " + libDir);
+            }
+            
             for (File file : files) {
                 classPath.add(file.toURI().toURL());
             }
