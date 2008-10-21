@@ -66,7 +66,7 @@ public class EnumHandler<T extends Enum<T>>
 
     @Override
     public String getDefaultToken() {
-    	StringBuffer buff = new StringBuffer();
+    	StringBuilder buff = new StringBuilder();
     	buff.append("[");
 
         for (T constants : enumType.getEnumConstants()) {

@@ -63,7 +63,7 @@ class ToStringBuilder
         defaultStyle = style;
     }
 
-    private final StringBuffer buffer;
+    private final StringBuilder buffer;
 
     /**
      * The object being output.
@@ -83,12 +83,12 @@ class ToStringBuilder
         this(object, style, null);
     }
 
-    public ToStringBuilder(Object object, ToStringStyle style, StringBuffer buffer) {
+    public ToStringBuilder(Object object, ToStringStyle style, StringBuilder buffer) {
         if (style == null) {
             style = getDefaultStyle();
         }
         if (buffer == null) {
-            buffer = new StringBuffer(512);
+            buffer = new StringBuilder(512);
         }
         this.buffer = buffer;
         this.style = style;
@@ -328,7 +328,7 @@ class ToStringBuilder
     }
 
     public ToStringBuilder appendAsObjectToString(Object object) {
-        ObjectUtils_appendIdentityToString(this.getStringBuffer(), object);
+        ObjectUtils_appendIdentityToString(this.getStringBuilder(), object);
         return this;
     }
 
@@ -350,7 +350,7 @@ class ToStringBuilder
         return object;
     }
 
-    public StringBuffer getStringBuffer() {
+    public StringBuilder getStringBuilder() {
         return buffer;
     }
 
@@ -360,11 +360,11 @@ class ToStringBuilder
 
     public String toString() {
         if (this.getObject() == null) {
-            this.getStringBuffer().append(this.getStyle().getNullText());
+            this.getStringBuilder().append(this.getStyle().getNullText());
         } else {
-            style.appendEnd(this.getStringBuffer(), this.getObject());
+            style.appendEnd(this.getStringBuilder(), this.getObject());
         }
-        return this.getStringBuffer().toString();
+        return this.getStringBuilder().toString();
     }
 
     //
@@ -375,12 +375,12 @@ class ToStringBuilder
         return bool ? Boolean.TRUE : Boolean.FALSE;
     }
     
-    private static StringBuffer ObjectUtils_appendIdentityToString(StringBuffer buffer, Object object) {
+    private static StringBuilder ObjectUtils_appendIdentityToString(StringBuilder buffer, Object object) {
         if (object == null) {
             return null;
         }
         if (buffer == null) {
-            buffer = new StringBuffer();
+            buffer = new StringBuilder();
         }
         return buffer
             .append(object.getClass().getName())

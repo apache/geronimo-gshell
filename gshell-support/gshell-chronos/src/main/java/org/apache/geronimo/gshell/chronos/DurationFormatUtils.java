@@ -424,14 +424,14 @@ public class DurationFormatUtils
      */
     static String format(Token[] tokens, int years, int months, int days, int hours, int minutes, int seconds,
             int milliseconds, boolean padWithZeros) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         boolean lastOutputSeconds = false;
         int sz = tokens.length;
         for (int i = 0; i < sz; i++) {
             Token token = tokens[i];
             Object value = token.getValue();
             int count = token.getCount();
-            if (value instanceof StringBuffer) {
+            if (value instanceof StringBuilder) {
                 buffer.append(value.toString());
             } else {
                 if (value == y) {
@@ -496,7 +496,7 @@ public class DurationFormatUtils
         ArrayList<Token> list = new ArrayList<Token>(array.length);
 
         boolean inLiteral = false;
-        StringBuffer buffer = null;
+        StringBuilder buffer = null;
         Token previous = null;
         int sz = array.length;
         for(int i=0; i<sz; i++) {
@@ -513,7 +513,7 @@ public class DurationFormatUtils
                       buffer = null;
                       inLiteral = false;
                   } else {
-                      buffer = new StringBuffer();
+                      buffer = new StringBuilder();
                       list.add(new Token(buffer));
                       inLiteral = true;
                   }
@@ -527,7 +527,7 @@ public class DurationFormatUtils
                 case 'S'  : value = S; break;
                 default   :
                   if(buffer == null) {
-                      buffer = new StringBuffer();
+                      buffer = new StringBuilder();
                       list.add(new Token(buffer));
                   }
                   buffer.append(ch);
@@ -634,7 +634,7 @@ public class DurationFormatUtils
                 if (this.count != tok2.count) {
                     return false;
                 }
-                if (this.value instanceof StringBuffer) {
+                if (this.value instanceof StringBuilder) {
                     return this.value.toString().equals(tok2.value.toString());
                 } else if (this.value instanceof Number) {
                     return this.value.equals(tok2.value);
@@ -679,7 +679,7 @@ public class DurationFormatUtils
             return text;
         }
 
-        StringBuffer buf = new StringBuffer(text.length());
+        StringBuilder buf = new StringBuilder(text.length());
         int start = 0, end = 0;
         while ((end = text.indexOf(repl, start)) != -1) {
             buf.append(text.substring(start, end)).append(with);
@@ -694,7 +694,7 @@ public class DurationFormatUtils
     }
 
     private static String repeat(String str, int repeat) {
-        StringBuffer buffer = new StringBuffer(repeat * str.length());
+        StringBuilder buffer = new StringBuilder(repeat * str.length());
         for (int i = 0; i < repeat; i++) {
             buffer.append(str);
         }

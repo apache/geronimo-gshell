@@ -135,11 +135,11 @@ abstract class ToStringStyle
         super();
     }
 
-    public void appendSuper(StringBuffer buffer, String superToString) {
+    public void appendSuper(StringBuilder buffer, String superToString) {
         appendToString(buffer, superToString);
     }
 
-    public void appendToString(StringBuffer buffer, String toString) {
+    public void appendToString(StringBuilder buffer, String toString) {
         if (toString != null) {
             int pos1 = toString.indexOf(contentStart) + contentStart.length();
             int pos2 = toString.lastIndexOf(contentEnd);
@@ -154,7 +154,7 @@ abstract class ToStringStyle
         }
     }
 
-    public void appendStart(StringBuffer buffer, Object object) {
+    public void appendStart(StringBuilder buffer, Object object) {
         if (object != null) {
             appendClassName(buffer, object);
             appendIdentityHashCode(buffer, object);
@@ -165,7 +165,7 @@ abstract class ToStringStyle
         }
     }
 
-    public void appendEnd(StringBuffer buffer, Object object) {
+    public void appendEnd(StringBuilder buffer, Object object) {
         if (this.fieldSeparatorAtEnd == false) {
             removeLastFieldSeparator(buffer);
         }
@@ -173,7 +173,7 @@ abstract class ToStringStyle
         unregister(object);
     }
 
-    protected void removeLastFieldSeparator(StringBuffer buffer) {
+    protected void removeLastFieldSeparator(StringBuilder buffer) {
         int len = buffer.length();
         int sepLen = fieldSeparator.length();
         if (len > 0 && sepLen > 0 && len >= sepLen) {
@@ -190,7 +190,7 @@ abstract class ToStringStyle
         }
     }
 
-    public void append(StringBuffer buffer, String fieldName, Object value, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, Object value, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (value == null) {
@@ -203,7 +203,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendInternal(StringBuffer buffer, String fieldName, Object value, boolean detail) {
+    protected void appendInternal(StringBuilder buffer, String fieldName, Object value, boolean detail) {
         if (isRegistered(value)
             && !(value instanceof Number || value instanceof Boolean || value instanceof Character)) {
            appendCyclicObject(buffer, fieldName, value);
@@ -302,109 +302,109 @@ abstract class ToStringStyle
         }
     }
 
-    protected void appendCyclicObject(StringBuffer buffer, String fieldName, Object value) {
+    protected void appendCyclicObject(StringBuilder buffer, String fieldName, Object value) {
        ObjectUtils_appendIdentityToString(buffer, value);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, Object value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, Object value) {
         buffer.append(value);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, Collection coll) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, Collection coll) {
         buffer.append(coll);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, Map map) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, Map map) {
         buffer.append(map);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, Object value) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, Object value) {
         buffer.append(summaryObjectStartText);
         buffer.append(getShortClassName(value.getClass()));
         buffer.append(summaryObjectEndText);
     }
 
-    public void append(StringBuffer buffer, String fieldName, long value) {
+    public void append(StringBuilder buffer, String fieldName, long value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, long value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, long value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, int value) {
+    public void append(StringBuilder buffer, String fieldName, int value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, int value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, int value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, short value) {
+    public void append(StringBuilder buffer, String fieldName, short value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, short value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, short value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, byte value) {
+    public void append(StringBuilder buffer, String fieldName, byte value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, byte value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, byte value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, char value) {
+    public void append(StringBuilder buffer, String fieldName, char value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, char value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, char value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, double value) {
+    public void append(StringBuilder buffer, String fieldName, double value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, double value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, double value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, float value) {
+    public void append(StringBuilder buffer, String fieldName, float value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, float value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, float value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, boolean value) {
+    public void append(StringBuilder buffer, String fieldName, boolean value) {
         appendFieldStart(buffer, fieldName);
         appendDetail(buffer, fieldName, value);
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, boolean value) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, boolean value) {
         buffer.append(value);
     }
 
-    public void append(StringBuffer buffer, String fieldName, Object[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, Object[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -420,7 +420,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, Object[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, Object[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             Object item = array[i];
@@ -437,7 +437,7 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void reflectionAppendArrayDetail(StringBuffer buffer, String fieldName, Object array) {
+    protected void reflectionAppendArrayDetail(StringBuilder buffer, String fieldName, Object array) {
         buffer.append(arrayStart);
         int length = Array.getLength(array);
         for (int i = 0; i < length; i++) {
@@ -455,11 +455,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, Object[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, Object[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, long[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, long[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -475,7 +475,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, long[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, long[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -486,11 +486,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, long[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, long[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, int[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, int[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -506,7 +506,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, int[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, int[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -517,11 +517,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, int[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, int[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, short[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, short[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -537,7 +537,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, short[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, short[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -548,11 +548,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, short[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, short[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, byte[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, byte[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -568,7 +568,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, byte[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, byte[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -579,11 +579,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, byte[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, byte[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, char[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, char[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -599,7 +599,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, char[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, char[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -610,11 +610,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, char[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, char[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, double[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, double[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -630,7 +630,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, double[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, double[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -641,11 +641,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, double[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, double[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, float[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, float[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -661,7 +661,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, float[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, float[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -672,11 +672,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, float[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, float[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    public void append(StringBuffer buffer, String fieldName, boolean[] array, Boolean fullDetail) {
+    public void append(StringBuilder buffer, String fieldName, boolean[] array, Boolean fullDetail) {
         appendFieldStart(buffer, fieldName);
 
         if (array == null) {
@@ -692,7 +692,7 @@ abstract class ToStringStyle
         appendFieldEnd(buffer, fieldName);
     }
 
-    protected void appendDetail(StringBuffer buffer, String fieldName, boolean[] array) {
+    protected void appendDetail(StringBuilder buffer, String fieldName, boolean[] array) {
         buffer.append(arrayStart);
         for (int i = 0; i < array.length; i++) {
             if (i > 0) {
@@ -703,11 +703,11 @@ abstract class ToStringStyle
         buffer.append(arrayEnd);
     }
 
-    protected void appendSummary(StringBuffer buffer, String fieldName, boolean[] array) {
+    protected void appendSummary(StringBuilder buffer, String fieldName, boolean[] array) {
         appendSummarySize(buffer, fieldName, array.length);
     }
 
-    protected void appendClassName(StringBuffer buffer, Object object) {
+    protected void appendClassName(StringBuilder buffer, Object object) {
         if (useClassName && object != null) {
             register(object);
             if (useShortClassName) {
@@ -718,7 +718,7 @@ abstract class ToStringStyle
         }
     }
 
-    protected void appendIdentityHashCode(StringBuffer buffer, Object object) {
+    protected void appendIdentityHashCode(StringBuilder buffer, Object object) {
         if (this.isUseIdentityHashCode() && object!=null) {
             register(object);
             buffer.append('@');
@@ -726,34 +726,34 @@ abstract class ToStringStyle
         }
     }
 
-    protected void appendContentStart(StringBuffer buffer) {
+    protected void appendContentStart(StringBuilder buffer) {
         buffer.append(contentStart);
     }
 
-    protected void appendContentEnd(StringBuffer buffer) {
+    protected void appendContentEnd(StringBuilder buffer) {
         buffer.append(contentEnd);
     }
 
-    protected void appendNullText(StringBuffer buffer, String fieldName) {
+    protected void appendNullText(StringBuilder buffer, String fieldName) {
         buffer.append(nullText);
     }
 
-    protected void appendFieldSeparator(StringBuffer buffer) {
+    protected void appendFieldSeparator(StringBuilder buffer) {
         buffer.append(fieldSeparator);
     }
 
-    protected void appendFieldStart(StringBuffer buffer, String fieldName) {
+    protected void appendFieldStart(StringBuilder buffer, String fieldName) {
         if (useFieldNames && fieldName != null) {
             buffer.append(fieldName);
             buffer.append(fieldNameValueSeparator);
         }
     }
 
-    protected void appendFieldEnd(StringBuffer buffer, String fieldName) {
+    protected void appendFieldEnd(StringBuilder buffer, String fieldName) {
         appendFieldSeparator(buffer);
     }
 
-    protected void appendSummarySize(StringBuffer buffer, String fieldName, int size) {
+    protected void appendSummarySize(StringBuilder buffer, String fieldName, int size) {
         buffer.append(sizeStartText);
         buffer.append(size);
         buffer.append(sizeEndText);
@@ -1073,12 +1073,12 @@ abstract class ToStringStyle
 
     private static final String SystemUtils_LINE_SEPARATOR = System.getProperty("line.separator");
 
-    private static StringBuffer ObjectUtils_appendIdentityToString(StringBuffer buffer, Object object) {
+    private static StringBuilder ObjectUtils_appendIdentityToString(StringBuilder buffer, Object object) {
         if (object == null) {
             return null;
         }
         if (buffer == null) {
-            buffer = new StringBuffer();
+            buffer = new StringBuilder();
         }
         return buffer
             .append(object.getClass().getName())

@@ -117,11 +117,11 @@ class ReflectionToStringBuilder
         super(object, style);
     }
 
-    public ReflectionToStringBuilder(Object object, ToStringStyle style, StringBuffer buffer) {
+    public ReflectionToStringBuilder(Object object, ToStringStyle style, StringBuilder buffer) {
         super(object, style, buffer);
     }
 
-    public ReflectionToStringBuilder(Object object, ToStringStyle style, StringBuffer buffer, Class reflectUpToClass,
+    public ReflectionToStringBuilder(Object object, ToStringStyle style, StringBuilder buffer, Class reflectUpToClass,
             boolean outputTransients, boolean outputStatics) {
         super(object, style, buffer);
         this.setUpToClass(reflectUpToClass);
@@ -201,7 +201,7 @@ class ReflectionToStringBuilder
     }
 
     public ToStringBuilder reflectionAppendArray(Object array) {
-        this.getStyle().reflectionAppendArrayDetail(this.getStringBuffer(), null, array);
+        this.getStyle().reflectionAppendArrayDetail(this.getStringBuilder(), null, array);
         return this;
     }
 
