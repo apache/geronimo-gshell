@@ -53,7 +53,7 @@ public class ProgressSpinner
     public String spin(final String message) {
         // message may be null
         
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         String[] elements = style.getElements();
         buff.append(style.getPrefix());

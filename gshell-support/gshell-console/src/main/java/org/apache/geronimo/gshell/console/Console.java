@@ -153,8 +153,8 @@ public abstract class Console
 
         // Log the line as HEX if trace is enabled
         if (log.isTraceEnabled()) {
-            StringBuffer idx = new StringBuffer();
-            StringBuffer hex = new StringBuffer();
+            StringBuilder idx = new StringBuilder();
+            StringBuilder hex = new StringBuilder();
 
             byte[] bytes = line.getBytes();
             for (byte b : bytes) {
