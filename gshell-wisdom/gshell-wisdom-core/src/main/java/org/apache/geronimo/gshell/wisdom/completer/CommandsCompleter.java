@@ -64,6 +64,10 @@ public class CommandsCompleter
         this.commandRegistry = commandRegistry;
     }
 
+    //
+    // FIXME: This does not properly complete when in a command group :-(
+    //
+
     @PostConstruct
     public void init() throws Exception {
         // Populate the initial list of completers from the currently registered commands

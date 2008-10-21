@@ -29,6 +29,10 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
+    <bean id="org.apache.commons.vfs.provider.FileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator">
+        <constructor-arg value="${basedir}/target/tmp"/>
+    </bean>
+
     <bean id="xstore" class="org.apache.geronimo.gshell.xstore.XStoreImpl">
         <constructor-arg ref="fileSystemAccess"/>
         <property name="rootUri"  value="file:${basedir}/target/xstore"/>

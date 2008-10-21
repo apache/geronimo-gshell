@@ -64,6 +64,8 @@ public class PluginParser
 
     private static final String COMMAND_TEMPLATE_SUFFIX = "CommandTemplate";
 
+    private static final String BUNDLE = "bundle";
+
     private static final String COMMAND_BUNDLE = "command-bundle";
 
     private static final String NAME = "name";
@@ -273,13 +275,20 @@ public class PluginParser
 
             BeanDefinitionBuilder plugin = parsePlugin(element);
 
-            Map<String,BeanDefinitionHolder> bundles = parseCommandBundles(element);
-                
             ManagedMap bundleIdMap = new ManagedMap();
+
+            Map<String,BeanDefinitionHolder> bundles = parseBundles(element);
             for (Map.Entry<String,BeanDefinitionHolder> entry : bundles.entrySet()) {
                 // noinspection unchecked
                 bundleIdMap.put(entry.getKey(), entry.getValue().getBeanName());
             }
+
+            bundles = parseCommandBundles(element);
+            for (Map.Entry<String,BeanDefinitionHolder> entry : bundles.entrySet()) {
+                // noinspection unchecked
+                bundleIdMap.put(entry.getKey(), entry.getValue().getBeanName());
+            }
+
             plugin.addPropertyValue("bundleIdMap", bundleIdMap);
 
             return plugin;
@@ -305,6 +314,34 @@ public class PluginParser
             parseAndApplyDescription(element, plugin);
 
             return plugin;
+        }
+
+        //
+        // <gshell:bundle>
+        //
+
+        private Map<String,BeanDefinitionHolder> parseBundles(final Element element) {
+            assert element != null;
+
+            log.trace("Parse bundles; element: {}", element);
+
+            Map<String,BeanDefinitionHolder> bundles = new LinkedHashMap<String,BeanDefinitionHolder>();
+            List<Element> children = getChildElements(element, BUNDLE);
+
+            for (Element child : children) {
+                String name = child.getAttribute(NAME);
+                BeanDefinitionHolder holder = parseBeanDefinitionElement(child);
+                holder.getBeanDefinition().getConstructorArgumentValues().addIndexedArgumentValue(0, name);
+
+                // Generate id and register the bean
+                BeanDefinition def = holder.getBeanDefinition();
+                String id = resolveId(child, def);
+                holder = register(def, id);
+
+                bundles.put(name, holder);
+            }
+
+            return bundles;
         }
 
         //
