@@ -80,4 +80,15 @@ public class ClassPathImpl
 
         return urls;
     }
+
+    public boolean isValid() {
+        for (Artifact artifact : artifacts) {
+            File file = artifact.getFile();
+            if (file != null && !file.exists()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

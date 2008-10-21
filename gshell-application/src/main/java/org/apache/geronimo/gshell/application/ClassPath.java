@@ -34,4 +34,6 @@ public interface ClassPath
     Collection<Artifact> getArtifacts();
 
     Collection<URL> getUrls();
+
+    boolean isValid();
 }

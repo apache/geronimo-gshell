@@ -153,7 +153,7 @@ public class ApplicationManagerImpl
 
         // FIXME: Get state directory from application/branding
         File file = new File(new File(System.getProperty("gshell.home")), "var/classpath.ser");
-        ClassPath classPath;
+        ClassPath classPath = null;
 
         //
         // HACK: Using a serialized object here, for lack of a better choice.  XStream is not on the classpath yet, and the java.beans.XMLEncoder sucks my balls.
@@ -161,19 +161,33 @@ public class ApplicationManagerImpl
 
         if (file.exists()) {
             ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
-            classPath = (ClassPath)input.readObject();
-            log.debug("Loaded classpath from cache: {}", file);
-            Closer.close(input);
+            try {
+                classPath = (ClassPath)input.readObject();
+                log.debug("Loaded classpath from cache: {}", file);
+            }
+            finally {
+                Closer.close(input);
+            }
+
+            if (!classPath.isValid()) {
+                classPath = null;
+                log.debug("Classpath is not valid; reloading");
+            }
         }
-        else {
+
+        if (classPath == null) {
             Set<Artifact> artifacts = resolveArtifacts(model);
             classPath = new ClassPathImpl(artifacts);
             log.debug("Saving classpath to cache: {}", file);
             // noinspection ResultOfMethodCallIgnored
             file.getParentFile().mkdirs();
             ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-            output.writeObject(classPath);
-            Closer.close(output);
+            try {
+                output.writeObject(classPath);
+            }
+            finally {
+                Closer.close(output);
+            }
         }
         
         if (log.isDebugEnabled()) {

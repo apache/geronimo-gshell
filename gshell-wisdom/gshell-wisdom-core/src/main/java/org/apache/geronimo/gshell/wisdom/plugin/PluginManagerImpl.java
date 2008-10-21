@@ -172,14 +172,20 @@ public class PluginManagerImpl
         assert application != null;
         assert artifact != null;
 
-        ClassPath classPath;
+        ClassPath classPath = null;
         // FIXME: Get state directory from application/branding
         XStoreRecord record = xstore.resolveRecord(artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml");
         if (record.exists()) {
             classPath = record.get(ClassPathImpl.class);
             log.debug("Loaded classpath from cache: {}", record);
+
+            if (!classPath.isValid()) {
+                classPath = null;
+                log.debug("Classpath is not valid; reloading");
+            }
         }
-        else {
+
+        if (classPath == null) {
             Set<Artifact> artifacts = resolveArtifacts(application, artifact);
             classPath = new ClassPathImpl(artifacts);
             log.debug("Saving classpath to cache: {}", record);
