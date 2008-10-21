@@ -72,7 +72,6 @@ public class CommandBundle
     }
 
     protected void doEnable() throws Exception {
-        assert commandRegistry != null;
         for (Command command : commands) {
             commandRegistry.registerCommand(command);
         }
@@ -84,12 +83,10 @@ public class CommandBundle
     }
 
     protected void doDisable() throws Exception {
-        assert commandRegistry != null;
         for (Command command : commands) {
             commandRegistry.removeCommand(command);
         }
 
-        assert aliasRegistry != null;
         for (String name : aliases.keySet()) {
             aliasRegistry.removeAlias(name);
         }
