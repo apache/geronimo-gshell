@@ -19,46 +19,45 @@
 
 package org.apache.geronimo.gshell.ansi;
 
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Writer;
+import jline.Terminal;
 
 /**
- * Print writer implementation which supports automatic ANSI color rendering
+ * Provides support for using ANSI color escape codes.
  *
  * @version $Rev$ $Date$
  */
-public class RenderWriter
-    extends PrintWriter
+public class Ansi
 {
-    //
-    // TODO: Rename
-    //
+    /**
+     * Tries to detect if the current system supports ANSI.
+     */
+    private static boolean detect() {
+        boolean enabled = Terminal.getTerminal().isANSISupported();
+
+        if (!enabled) {
+            String force = System.getProperty(Ansi.class.getName() + ".force", "false");
+            enabled = Boolean.valueOf(force);
+        }
+
+        return enabled;
+    }
+
+    public static boolean isDetected() {
+        return detect();
+    }
+
+    private static final InheritableThreadLocal<Boolean> holder = new InheritableThreadLocal<Boolean>() {
+        @Override
+        protected Boolean initialValue() {
+            return isDetected();
+        }
+    };
     
-    private final Renderer renderer = new Renderer();
-
-    public RenderWriter(final OutputStream out) {
-        super(out);
+    public static void setEnabled(final boolean flag) {
+        holder.set(flag);
     }
 
-    public RenderWriter(final OutputStream out, final boolean autoFlush) {
-        super(out, autoFlush);
-    }
-
-    public RenderWriter(final Writer out) {
-        super(out);
-    }
-
-    public RenderWriter(final Writer out, final boolean autoFlush) {
-        super(out, autoFlush);
-    }
-
-    public void write(final String s) {
-        if (Renderer.test(s)) {
-            super.write(renderer.render(s));
-        }
-        else {
-            super.write(s);
-        }
+    public static boolean isEnabled() {
+        return holder.get();
     }
 }

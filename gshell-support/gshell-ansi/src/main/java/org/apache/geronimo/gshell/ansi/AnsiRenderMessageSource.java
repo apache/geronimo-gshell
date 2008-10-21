@@ -26,37 +26,33 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
  *
  * @version $Rev$ $Date$
  */
-public class RenderMessageSource
+public class AnsiRenderMessageSource
     implements MessageSource
 {
-    //
-    // TODO: Rename
-    //
-    
-    private final Renderer renderer = new Renderer();
+    private final AnsiRenderer renderer = new AnsiRenderer();
 
     private final MessageSource source;
 
-    public RenderMessageSource(final MessageSource source) {
+    public AnsiRenderMessageSource(final MessageSource source) {
         assert source != null;
 
         this.source = source;
     }
-    
+
     public String getMessage(final String code) {
         String msg = source.getMessage(code);
 
-        if (Renderer.test(msg)) {
+        if (AnsiRenderer.test(msg)) {
             return renderer.render(msg);
         }
 
         return msg;
     }
 
-    public String format(String code, Object... args) {
+    public String format(final String code, final Object... args) {
         String msg = source.format(code, args);
 
-        if (Renderer.test(msg)) {
+        if (AnsiRenderer.test(msg)) {
             return renderer.render(msg);
         }
 

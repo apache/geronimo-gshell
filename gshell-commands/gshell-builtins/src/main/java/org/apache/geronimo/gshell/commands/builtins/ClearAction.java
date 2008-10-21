@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.commands.builtins;
 
 import jline.ConsoleReader;
-import org.apache.geronimo.gshell.ansi.ANSI;
+import org.apache.geronimo.gshell.ansi.Ansi;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
@@ -39,7 +39,7 @@ public class ClearAction
         IO io = context.getIo();
 
         // We can only clear the screen if ANSI is enabled, so complain and fail otherwise
-        if (!ANSI.isEnabled()) {
+        if (!Ansi.isEnabled()) {
             io.error("ANSI is not enabled.  The clear command is not functional");
             return Result.FAILURE;
         }

@@ -24,27 +24,23 @@ package org.apache.geronimo.gshell.ansi;
  *
  * @version $Rev$ $Date$
  */
-public class Buffer
+public class AnsiBuffer
 {
-    //
-    // TODO: Rename
-    //
-    
-    private final StringBuffer buff = new StringBuffer();
+    private final StringBuilder buff = new StringBuilder();
 
     public Boolean ansiEnabled;
     
     public boolean autoClear;
 
-    public Buffer(final Boolean ansiEnabled, final boolean autoClear) {
+    public AnsiBuffer(final Boolean ansiEnabled, final boolean autoClear) {
         this.ansiEnabled = ansiEnabled;
         this.autoClear = autoClear;
     }
 
-    public Buffer() {
+    public AnsiBuffer() {
         this(null, true);
     }
-    
+
     public String toString() {
         try {
             return buff.toString();
@@ -57,7 +53,7 @@ public class Buffer
     public boolean isAnsiEnabled() {
         // Late bind the current system detected ANSI state
         if (ansiEnabled == null) {
-            ansiEnabled = ANSI.isEnabled();
+            ansiEnabled = Ansi.isEnabled();
         }
 
         return ansiEnabled;
@@ -71,29 +67,29 @@ public class Buffer
         return buff.length();
     }
 
-    public Buffer append(final String text) {
+    public AnsiBuffer append(final String text) {
         buff.append(text);
 
         return this;
     }
 
-    public Buffer append(final Object obj) {
+    public AnsiBuffer append(final Object obj) {
         return append(String.valueOf(obj));
     }
 
-    public Buffer attrib(final int code) {
+    public AnsiBuffer attrib(final int code) {
         if (isAnsiEnabled()) {
-            buff.append(Code.attrib(code));
+            buff.append(AnsiCode.attrib(code));
         }
 
         return this;
     }
 
-    public Buffer attrib(final String text, final int code) {
+    public AnsiBuffer attrib(final String text, final int code) {
         assert text != null;
 
         if (isAnsiEnabled()) {
-            buff.append(Code.attrib(code)).append(text).append(Code.attrib(Code.OFF));
+            buff.append(AnsiCode.attrib(code)).append(text).append(AnsiCode.attrib(AnsiCode.OFF));
         }
         else {
             buff.append(text);
@@ -102,7 +98,7 @@ public class Buffer
         return this;
     }
 
-    public Buffer attrib(final String text, final String codeName) {
-        return attrib(text, Code.forName(codeName));
+    public AnsiBuffer attrib(final String text, final String codeName) {
+        return attrib(text, AnsiCode.forName(codeName));
     }
 }

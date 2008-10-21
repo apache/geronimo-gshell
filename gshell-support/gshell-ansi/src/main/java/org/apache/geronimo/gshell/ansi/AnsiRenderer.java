@@ -31,12 +31,8 @@ package org.apache.geronimo.gshell.ansi;
  *
  * @version $Rev$ $Date$
  */
-public class Renderer
+public class AnsiRenderer
 {
-    //
-    // TODO: Rename
-    //
-
     public static final String BEGIN_TOKEN = "@|";
 
     private static final int BEGIN_TOKEN_SIZE = BEGIN_TOKEN.length();
@@ -49,7 +45,7 @@ public class Renderer
 
     public static final String CODE_LIST_SEPARATOR  = ",";
 
-    private final Buffer buff = new Buffer();
+    private final AnsiBuffer buff = new AnsiBuffer();
 
     public String render(final String input) throws RenderException {
         assert input != null;
@@ -93,13 +89,13 @@ public class Renderer
         String text = input.substring(i + 1, input.length());
 
         for (String name : codes) {
-            int code = Code.forName(name);
+            int code = AnsiCode.forName(name);
             buff.attrib(code);
         }
 
         buff.append(text);
 
-        buff.attrib(Code.OFF);
+        buff.attrib(AnsiCode.OFF);
     }
 
     //
@@ -123,8 +119,8 @@ public class Renderer
     }
 
     public static String encode(final Object text, final int code) {
-        return new StringBuffer(BEGIN_TOKEN).
-                append(Code.name(code)).
+        return new StringBuilder(BEGIN_TOKEN).
+                append(AnsiCode.name(code)).
                 append(CODE_TEXT_SEPARATOR).
                 append(text).
                 append(END_TOKEN).

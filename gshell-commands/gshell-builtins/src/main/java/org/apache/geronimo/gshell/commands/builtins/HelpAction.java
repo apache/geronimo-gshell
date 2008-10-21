@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import org.apache.geronimo.gshell.ansi.Code;
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.AnsiCode;
+import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -61,11 +61,11 @@ public class HelpAction
 
         if (commands.isEmpty()) {
             io.out.print("Command ");
-            io.out.print(Renderer.encode(commandName, Code.BOLD));
+            io.out.print(AnsiRenderer.encode(commandName, AnsiCode.BOLD));
             io.out.println(" not found.");
 
             io.out.print("Try ");
-            io.out.print(Renderer.encode("help", Code.BOLD));
+            io.out.print(AnsiRenderer.encode("help", AnsiCode.BOLD));
             io.out.println(" for a list of available commands.");
 
             return Result.FAILURE;
@@ -107,7 +107,7 @@ public class HelpAction
             String desc = documenter.getDescription();
 
             io.out.print("  ");
-            io.out.print(Renderer.encode(formattedName, Code.BOLD));
+            io.out.print(AnsiRenderer.encode(formattedName, AnsiCode.BOLD));
 
             if (desc != null) {
                 io.out.print("  ");

@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.command;
 
-import org.apache.geronimo.gshell.ansi.Code;
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.AnsiCode;
+import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Printer;
 import org.apache.geronimo.gshell.command.Command;
@@ -96,14 +96,14 @@ public abstract class CommandDocumenterSupport
 
         log.trace("Rendering command manual");
 
-        Renderer renderer = new Renderer();
+        AnsiRenderer renderer = new AnsiRenderer();
         
-        out.println(renderer.render(Renderer.encode("NAME", Code.BOLD)));
+        out.println(renderer.render(AnsiRenderer.encode("NAME", AnsiCode.BOLD)));
         out.print("  ");
         out.println(getCommand().getLocation().getName());
         out.println();
 
-        out.println(renderer.render(Renderer.encode("DESCRIPTION", Code.BOLD)));
+        out.println(renderer.render(AnsiRenderer.encode("DESCRIPTION", AnsiCode.BOLD)));
         out.print("  ");
         out.println(getDescription());
         out.println();
@@ -112,7 +112,7 @@ public abstract class CommandDocumenterSupport
         // TODO: Use a prefixing writer here, take the impl from shitty
         //
         
-        out.println(renderer.render(Renderer.encode("MANUAL", Code.BOLD)));
+        out.println(renderer.render(AnsiRenderer.encode("MANUAL", AnsiCode.BOLD)));
         out.println(getManual());
         out.println();
     }

@@ -24,8 +24,8 @@ import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileUtil;
-import org.apache.geronimo.gshell.ansi.Code;
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.AnsiCode;
+import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -224,10 +224,10 @@ public class ScriptAction
         });
 
         runner.setPrompter(new Console.Prompter() {
-            Renderer renderer = new Renderer();
+            AnsiRenderer renderer = new AnsiRenderer();
 
             public String prompt() {
-                return renderer.render(Renderer.encode(language, Code.BOLD) + "> ");
+                return renderer.render(AnsiRenderer.encode(language, AnsiCode.BOLD) + "> ");
             }
         });
 

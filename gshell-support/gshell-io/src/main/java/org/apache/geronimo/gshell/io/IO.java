@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.io;
 
 import jline.Terminal;
 import jline.ConsoleReader;
-import org.apache.geronimo.gshell.ansi.RenderWriter;
+import org.apache.geronimo.gshell.ansi.AnsiRenderWriter;
 import org.apache.geronimo.gshell.yarn.Yarn;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -107,14 +107,14 @@ public class IO
         //
 
 
-        this.out = new RenderWriter(outputStream, autoFlush);
+        this.out = new AnsiRenderWriter(outputStream, autoFlush);
 
         /// Don't rewrite the error stream if we have the same stream for out and error
         if (isSharedOutputStreams()) {
             this.err = this.out;
         }
         else {
-            this.err = new RenderWriter(errorStream, autoFlush);
+            this.err = new AnsiRenderWriter(errorStream, autoFlush);
         }
 
         // this.out = new PrintWriter(out, autoFlush);

@@ -29,10 +29,10 @@ import java.util.Map;
  *
  * @version $Rev$ $Date$
  */
-public class Code
+public class AnsiCode
 {
     //
-    // TODO: Rename
+    // TODO: Consider converting this to an enum
     //
     
     public static final int OFF = 0;
@@ -79,7 +79,7 @@ public class Code
     private static final Map<Integer,String> CODES_TO_NAMES;
 
     static {
-        Field[] fields = Code.class.getDeclaredFields();
+        Field[] fields = AnsiCode.class.getDeclaredFields();
         Map<String,Integer> names = new HashMap<String,Integer>(fields.length);
         Map<Integer,String> codes = new HashMap<Integer,String>(fields.length);
 
@@ -92,7 +92,7 @@ public class Code
                 }
 
                 String name = field.getName();
-                Integer code = (Integer) field.get(Code.class);
+                Integer code = (Integer) field.get(AnsiCode.class);
 
                 names.put(name, code);
                 codes.put(code, name);
@@ -109,7 +109,7 @@ public class Code
 
     /**
      * Returns the ANSI code for the given symbolic name.  Supported symbolic names are all defined as
-     * fields in {@link Code} where the case is not significant.
+     * fields in {@link AnsiCode} where the case is not significant.
      */
     public static int forName(final String name) throws IllegalArgumentException {
         assert name != null;

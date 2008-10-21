@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.commands.builtins;
 
-import org.apache.geronimo.gshell.ansi.Code;
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.AnsiCode;
+import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
@@ -92,7 +92,7 @@ public class AliasAction
                 String formattedName = String.format("%-" + maxNameLen + "s", name);
 
                 io.out.print("  ");
-                io.out.print(Renderer.encode(formattedName, Code.BOLD));
+                io.out.print(AnsiRenderer.encode(formattedName, AnsiCode.BOLD));
 
                 io.out.print("  ");
                 io.out.print("Alias to: ");

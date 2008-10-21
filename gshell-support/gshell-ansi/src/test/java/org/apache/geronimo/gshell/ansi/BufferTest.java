@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.ansi;
 import junit.framework.TestCase;
 
 /**
- * Tests for the {@link org.apache.geronimo.gshell.ansi.Code} class.
+ * Tests for the {@link AnsiCode} class.
  *
  * @version $Rev$ $Date$
  */
@@ -30,8 +30,8 @@ public class BufferTest
     extends TestCase
 {
     public void testIsAnsiEnabledOverride() throws Exception {
-        boolean detected = ANSI.isEnabled();
-        Buffer buff = new Buffer();
+        boolean detected = Ansi.isEnabled();
+        AnsiBuffer buff = new AnsiBuffer();
 
         // Make sure the buffer starts out with the system detected value
         assertEquals(detected, buff.isAnsiEnabled());

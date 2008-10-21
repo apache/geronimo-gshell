@@ -19,48 +19,42 @@
 
 package org.apache.geronimo.gshell.ansi;
 
-import jline.Terminal;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 /**
- * Provides support for using ANSI color escape codes.
+ * Print writer implementation which supports automatic ANSI color rendering
  *
  * @version $Rev$ $Date$
  */
-public class ANSI
+public class AnsiRenderWriter
+    extends PrintWriter
 {
-    //
-    // TODO: Need to make this thread-aware.
-    //
+    private final AnsiRenderer renderer = new AnsiRenderer();
 
-    /**
-     * Tries to detect if the current system supports ANSI.
-     */
-    private static boolean detect() {
-        boolean enabled = Terminal.getTerminal().isANSISupported();
+    public AnsiRenderWriter(final OutputStream out) {
+        super(out);
+    }
 
-        if (!enabled) {
-            String force = System.getProperty(ANSI.class.getName() + ".force", "false");
-            enabled = Boolean.valueOf(force);
+    public AnsiRenderWriter(final OutputStream out, final boolean autoFlush) {
+        super(out, autoFlush);
+    }
+
+    public AnsiRenderWriter(final Writer out) {
+        super(out);
+    }
+
+    public AnsiRenderWriter(final Writer out, final boolean autoFlush) {
+        super(out, autoFlush);
+    }
+
+    public void write(final String s) {
+        if (AnsiRenderer.test(s)) {
+            super.write(renderer.render(s));
         }
-
-        return enabled;
-    }
-
-    public static boolean isDetected() {
-        return detect();
-    }
-
-    private static Boolean enabled;
-
-    public static void setEnabled(final boolean flag) {
-        enabled = flag;
-    }
-
-    public static boolean isEnabled() {
-        if (enabled == null) {
-            enabled = isDetected();
+        else {
+            super.write(s);
         }
-
-        return enabled;
     }
 }

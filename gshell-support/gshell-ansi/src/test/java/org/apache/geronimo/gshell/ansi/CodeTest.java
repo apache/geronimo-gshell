@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.ansi;
 import junit.framework.TestCase;
 
 /**
- * Tests for the {@link Code} class.
+ * Tests for the {@link AnsiCode} class.
  *
  * @version $Rev$ $Date$
  */
@@ -30,11 +30,11 @@ public class CodeTest
     extends TestCase
 {
     public void testForName() throws Exception {
-        assertEquals(Code.OFF, Code.forName("OFF"));
-        assertEquals(Code.OFF, Code.forName("off"));
+        assertEquals(AnsiCode.OFF, AnsiCode.forName("OFF"));
+        assertEquals(AnsiCode.OFF, AnsiCode.forName("off"));
     }
 
     public void testName() throws Exception {
-        assertEquals("OFF", Code.name(Code.OFF));
+        assertEquals("OFF", AnsiCode.name(AnsiCode.OFF));
     }
 }

@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.cli;
 
-import org.apache.geronimo.gshell.ansi.ANSI;
+import org.apache.geronimo.gshell.ansi.Ansi;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
@@ -146,14 +146,17 @@ public class Main
 
     @Option(name="-C", aliases={"--color"}, argumentRequired=true)
     private void enableAnsiColors(final boolean flag) {
-        ANSI.setEnabled(flag);
+        Ansi.setEnabled(flag);
     }
 
     @Option(name="-T", aliases={"--terminal"}, argumentRequired=true)
     private void setTerminalType(String type) {
         type = type.toLowerCase();
 
-        if ("unix".equals(type)) {
+        if ("auto".equals(type)) {
+            type = AutoDetectedTerminal.class.getName();
+        }
+        else if ("unix".equals(type)) {
             type = UnixTerminal.class.getName();
         }
         else if ("win".equals(type) || "windows".equals("type")) {

@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.remote.client.proxy;
 
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
@@ -189,7 +189,7 @@ public class RemoteShellProxy
         JLineConsole console = new JLineConsole(executor, io);
 
         console.setPrompter(new Console.Prompter() {
-            Renderer renderer = new Renderer();
+            AnsiRenderer renderer = new AnsiRenderer();
 
             public String prompt() {
                 //

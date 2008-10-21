@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.event.EventManager;
@@ -42,7 +42,7 @@ public class ConsoleErrorHandlerImpl
 
     private final Application application;
 
-    private Renderer renderer = new Renderer();
+    private AnsiRenderer renderer = new AnsiRenderer();
 
     public ConsoleErrorHandlerImpl(final EventManager eventManager, final Application application) {
         assert eventManager != null;

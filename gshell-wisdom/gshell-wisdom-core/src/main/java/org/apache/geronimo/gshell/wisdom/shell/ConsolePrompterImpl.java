@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import org.apache.geronimo.gshell.ansi.Renderer;
+import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.Console;
@@ -49,7 +49,7 @@ public class ConsolePrompterImpl
 
     private final VariablesValueSource variablesValueSource = new VariablesValueSource();
 
-    private final Renderer renderer = new Renderer();
+    private final AnsiRenderer renderer = new AnsiRenderer();
 
     public ConsolePrompterImpl(final Application application) {
         assert application != null;
@@ -90,7 +90,7 @@ public class ConsolePrompterImpl
         }
 
         // Encode ANSI muck if it looks like there are codes encoded
-        if (Renderer.test(prompt)) {
+        if (AnsiRenderer.test(prompt)) {
             prompt = renderer.render(prompt);
         }
 
