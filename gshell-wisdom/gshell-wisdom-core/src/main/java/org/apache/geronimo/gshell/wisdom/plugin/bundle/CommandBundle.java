@@ -76,7 +76,6 @@ public class CommandBundle
             commandRegistry.registerCommand(command);
         }
 
-        assert aliasRegistry != null;
         for (String name : aliases.keySet()) {
             aliasRegistry.registerAlias(name, aliases.get(name));
         }
