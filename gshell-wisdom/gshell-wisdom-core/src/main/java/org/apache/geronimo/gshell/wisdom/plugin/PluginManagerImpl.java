@@ -33,9 +33,8 @@ import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
+import org.apache.geronimo.gshell.wisdom.application.ClassPathCache;
 import org.apache.geronimo.gshell.wisdom.application.ClassPathImpl;
-import org.apache.geronimo.gshell.xstore.XStore;
-import org.apache.geronimo.gshell.xstore.XStoreRecord;
 import org.apache.ivy.Ivy;
 import org.apache.ivy.core.module.descriptor.Configuration;
 import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
@@ -49,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -70,25 +70,17 @@ public class PluginManagerImpl
 
     private final EventPublisher eventPublisher;
 
-    private final XStore xstore;
-
-    private final Ivy ivy;
-
     private BeanContainer container;
 
     private Set<Plugin> plugins = new LinkedHashSet<Plugin>();
 
-    public PluginManagerImpl(final ApplicationManager applicationManager, final EventManager eventManager, final EventPublisher eventPublisher, final XStore xstore, final Ivy ivy) {
+    public PluginManagerImpl(final ApplicationManager applicationManager, final EventManager eventManager, final EventPublisher eventPublisher) {
         assert applicationManager != null;
         this.applicationManager = applicationManager;
         assert eventManager != null;
         this.eventManager = eventManager;
         assert eventPublisher != null;
         this.eventPublisher = eventPublisher;
-        assert xstore != null;
-        this.xstore = xstore;
-        assert ivy != null;
-        this.ivy = ivy;
     }
 
     public void setBeanContainer(final BeanContainer container) {
@@ -172,26 +164,15 @@ public class PluginManagerImpl
         assert application != null;
         assert artifact != null;
 
-        ClassPath classPath = null;
-        // FIXME: Get state directory from application/branding
-        XStoreRecord record = xstore.resolveRecord(artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.xml");
-        if (record.exists()) {
-            classPath = record.get(ClassPathImpl.class);
-            log.debug("Loaded classpath from cache: {}", record);
-
-            if (!classPath.isValid()) {
-                classPath = null;
-                log.debug("Classpath is not valid; reloading");
-            }
-        }
+        // FIXME: Get basedir from application
+        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/" + artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.ser"));
+        ClassPath classPath = cache.get();
 
         if (classPath == null) {
             Set<Artifact> artifacts = resolveArtifacts(application, artifact);
             classPath = new ClassPathImpl(artifacts);
-            log.debug("Saving classpath to cache: {}", record);
-            record.set(classPath);
+            cache.set(classPath);
         }
-        record.close();
 
         if (log.isDebugEnabled()) {
             log.debug("Plugin classpath:");
@@ -226,6 +207,8 @@ public class PluginManagerImpl
 
         StopWatch watch = new StopWatch(true);
 
+        Ivy ivy = container.getBean("ivy", Ivy.class);
+        
         ResolveReport resolveReport = ivy.resolve(md, options);
 
         log.debug("Resolve completed in: {}", watch);

@@ -27,19 +27,15 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <bean id="xstore" class="org.apache.geronimo.gshell.xstore.XStoreImpl">
+    <bean id="xstore" class="org.apache.geronimo.gshell.xstore.XStoreImpl" lazy-init="true">
         <constructor-arg ref="fileSystemAccess"/>
         <property name="rootUri"  value="file:${gshell.home}/var/xstore"/>
     </bean>
 
-    <bean id="commandLineParser" class="org.apache.geronimo.gshell.parser.CommandLineParser"/>
-    
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl">
         <constructor-arg ref="applicationManager"/>
         <constructor-arg ref="eventManager"/>
         <constructor-arg ref="eventManager"/>
-        <constructor-arg ref="xstore"/>
-        <constructor-arg ref="ivy"/>
     </bean>
 
     <bean id="pluginMetaMapper" class="org.apache.geronimo.gshell.wisdom.plugin.PluginMetaMapper">
@@ -76,6 +72,8 @@
     </bean>
 
     <bean class="org.apache.geronimo.gshell.wisdom.command.GroupCommand" scope="prototype"/>
+
+    <bean id="commandLineParser" class="org.apache.geronimo.gshell.parser.CommandLineParser"/>
 
     <bean id="commandLineBuilder" class="org.apache.geronimo.gshell.wisdom.shell.CommandLineBuilderImpl">
         <constructor-arg ref="commandLineParser"/>

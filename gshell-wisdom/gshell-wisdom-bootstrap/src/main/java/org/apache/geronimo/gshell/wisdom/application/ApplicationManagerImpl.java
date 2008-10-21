@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.application.model.Artifact;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
-import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
@@ -45,13 +44,7 @@ import org.apache.ivy.core.resolve.ResolveOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -73,19 +66,15 @@ public class ApplicationManagerImpl
 
     private final EventPublisher eventPublisher;
 
-    private final Ivy ivy;
-    
     private BeanContainer container;
 
     private BeanContainer applicationContainer;
 
     private Application application;
 
-    public ApplicationManagerImpl(final EventPublisher eventPublisher, final Ivy ivy) {
+    public ApplicationManagerImpl(final EventPublisher eventPublisher) {
         assert eventPublisher != null;
         this.eventPublisher = eventPublisher;
-        assert ivy != null;
-        this.ivy = ivy;
     }
 
     public void setBeanContainer(final BeanContainer container) {
@@ -151,43 +140,14 @@ public class ApplicationManagerImpl
     private ClassPath loadClassPath(final ApplicationModel model) throws Exception {
         assert model != null;
 
-        // FIXME: Get state directory from application/branding
-        File file = new File(new File(System.getProperty("gshell.home")), "var/classpath.ser");
-        ClassPath classPath = null;
-
-        //
-        // HACK: Using a serialized object here, for lack of a better choice.  XStream is not on the classpath yet, and the java.beans.XMLEncoder sucks my balls.
-        //
-
-        if (file.exists()) {
-            ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
-            try {
-                classPath = (ClassPath)input.readObject();
-                log.debug("Loaded classpath from cache: {}", file);
-            }
-            finally {
-                Closer.close(input);
-            }
-
-            if (!classPath.isValid()) {
-                classPath = null;
-                log.debug("Classpath is not valid; reloading");
-            }
-        }
+        // FIXME: Get basedir from application
+        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/classpath.ser"));
+        ClassPath classPath = cache.get();
 
         if (classPath == null) {
             Set<Artifact> artifacts = resolveArtifacts(model);
             classPath = new ClassPathImpl(artifacts);
-            log.debug("Saving classpath to cache: {}", file);
-            // noinspection ResultOfMethodCallIgnored
-            file.getParentFile().mkdirs();
-            ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-            try {
-                output.writeObject(classPath);
-            }
-            finally {
-                Closer.close(output);
-            }
+            cache.set(classPath);
         }
         
         if (log.isDebugEnabled()) {
@@ -217,6 +177,8 @@ public class ApplicationManagerImpl
 
         StopWatch watch = new StopWatch(true);
 
+        Ivy ivy = container.getBean("ivy", Ivy.class);
+        
         ResolveReport resolveReport = ivy.resolve(md, options);
 
         log.debug("Resolve completed in: {}", watch);

@@ -36,6 +36,10 @@
     <description>
         Provides the tiny GShell bootstrap jar to keep platform scripts as simple as possible.
     </description>
+
+    <properties>
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
     
     <build>
         <plugins>
