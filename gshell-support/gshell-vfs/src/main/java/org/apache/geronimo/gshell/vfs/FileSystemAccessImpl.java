@@ -53,7 +53,6 @@ public class FileSystemAccessImpl
     }
 
     public FileSystemManager getManager() {
-        assert fileSystemManager != null;
         return fileSystemManager;
     }
 
@@ -87,8 +86,6 @@ public class FileSystemAccessImpl
     }
 
     public FileObject getCurrentDirectory() throws FileSystemException {
-        assert applicationManager != null;
-
         log.trace("Resolving CWD from application variables");
 
         return getCurrentDirectory(applicationManager.getApplication().getVariables());
@@ -113,8 +110,6 @@ public class FileSystemAccessImpl
 
     public void setCurrentDirectory(final FileObject dir) throws FileSystemException {
         assert dir != null;
-
-        assert applicationManager != null;
 
         log.trace("Setting CWD to application variables");
 

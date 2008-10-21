@@ -61,7 +61,6 @@ public class FileObjectNameCompleter
         log.trace("Path: '{}'", path);
         
         try {
-            assert fileSystemAccess != null;
             FileObject file = fileSystemAccess.resolveFile(path);
 
             log.trace("Resolved file: {}", file);

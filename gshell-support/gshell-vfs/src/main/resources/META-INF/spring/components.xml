@@ -128,12 +128,12 @@
     </bean>
     -->
 
-    <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl">
+    <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl" lazy-init="true">
         <constructor-arg ref="applicationManager"/>
         <constructor-arg ref="fileSystemManager"/>
     </bean>
     
-    <bean id="fileObjectNameCompleter" class="org.apache.geronimo.gshell.vfs.FileObjectNameCompleter">
+    <bean id="fileObjectNameCompleter" class="org.apache.geronimo.gshell.vfs.FileObjectNameCompleter" lazy-init="true">
         <constructor-arg ref="fileSystemAccess"/>
     </bean>
 

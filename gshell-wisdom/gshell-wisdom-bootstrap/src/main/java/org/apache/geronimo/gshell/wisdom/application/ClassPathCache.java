@@ -64,22 +64,28 @@ public class ClassPathCache
         }
     }
 
-    public ClassPath get() throws IOException, ClassNotFoundException {
+    public ClassPath get() {
         if (!file.exists()) {
             return null;
         }
 
         ClassPath classPath;
 
-        ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
         try {
-            classPath = (ClassPath)input.readObject();
-            log.debug("Loaded classpath from cache: {}", file);
+            ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
+            try {
+                classPath = (ClassPath)input.readObject();
+                log.debug("Loaded classpath from cache: {}", file);
+            }
+            finally {
+                Closer.close(input);
+            }
         }
-        finally {
-            Closer.close(input);
+        catch (Exception e) {
+            log.warn("Failed to load classpath from cache", e);
+            return null;
         }
-
+        
         if (classPath.isValid()) {
             return classPath;
         }

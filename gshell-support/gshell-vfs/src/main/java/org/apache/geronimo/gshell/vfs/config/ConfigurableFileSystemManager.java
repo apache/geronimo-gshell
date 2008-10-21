@@ -37,6 +37,10 @@ public class ConfigurableFileSystemManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    //
+    // TODO: Consider implementing a way to dynamically load providers for a given scheme when requested
+    //
+    
     @Override
     public FileName resolveName(final FileName base, final String name, final NameScope scope) throws FileSystemException {
         if (log.isTraceEnabled()) {

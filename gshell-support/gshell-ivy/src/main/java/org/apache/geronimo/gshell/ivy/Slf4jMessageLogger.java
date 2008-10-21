@@ -31,10 +31,10 @@ import org.slf4j.LoggerFactory;
  *
  * @version $Rev$ $Date$
  */
-public class Slf4jMessageLogger
+public final class Slf4jMessageLogger
     extends AbstractMessageLogger
 {
-    private final Logger log = LoggerFactory.getLogger(Ivy.class);
+    private static final Logger log = LoggerFactory.getLogger(Ivy.class);
 
     public void log(final String msg, final int level) {
         switch (level) {
