@@ -21,22 +21,16 @@ package org.apache.geronimo.gshell.commands.log4j;
 
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.Selectors;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.apache.geronimo.gshell.vfs.provider.local.LocalFile;
-import org.apache.geronimo.gshell.vfs.provider.local.LocalFileSystem;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-
 
 /**
  * Configure logging.
@@ -67,51 +61,20 @@ public class ConfigureAction
 
         // TODO: Validate
 
-        FileObject tmp = file;
-
-        // If the file is not on the local file system, then create tmp file for editing
-        if (!(file.getFileSystem() instanceof LocalFileSystem)) {
-            // Create a new temporary file, copy the contents for editing
-            tmp = fileSystemAccess.resolveFile(null, "tmp:/gshell.log4j.config-" + System.currentTimeMillis() + ".txt");
-            log.debug("Using temporary file for edit: {} ({})", tmp, tmp.getClass());
-            tmp.createFile();
-            tmp.copyFrom(file, Selectors.SELECT_SELF);
-        }
-
-        File configFile = getLocalFile(tmp);
-
-        FileName name = tmp.getName();
+        FileName name = file.getName();
         if (name.getExtension().equals("properties")) {
-            PropertyConfigurator.configure(configFile.toURI().toURL());
+            PropertyConfigurator.configure(file.getURL());
         }
         else if (name.getExtension().equals("xml")) {
-            DOMConfigurator.configure(configFile.toURI().toURL());
+            DOMConfigurator.configure(file.getURL());
         }
         else {
-            io.error("Don't know how to handle configuration file: {}", path);
+            io.error("Do no know how to handle configuration file: {}", path);
             return Result.FAILURE;
-        }
-
-        if (tmp != file) {
-            tmp.delete();
-            FileObjects.close(tmp);
         }
 
         FileObjects.close(file);
 
         return Result.SUCCESS;
-    }
-
-    private File getLocalFile(final FileObject file) throws Exception {
-        assert file != null;
-        assert file instanceof LocalFile;
-
-        // This uses our custom accessible LocalFile implementation, which allows us to grap the File object.
-        LocalFile lfile = (LocalFile)file;
-
-        // Force the file to attach if it hasn't already
-        lfile.refresh();
-
-        return lfile.getLocalFile();
     }
 }

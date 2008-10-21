@@ -24,6 +24,8 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.geronimo.gshell.command.Variables;
 
+import java.io.File;
+
 /**
  * Provides access to VFS file systems.
  *
@@ -44,4 +46,8 @@ public interface FileSystemAccess
     FileObject resolveFile(FileObject baseFile, String name) throws FileSystemException;
 
     FileObject resolveFile(String name) throws FileSystemException;
+
+    boolean isLocalFile(FileObject file);
+
+    File getLocalFile(FileObject file) throws FileSystemException;
 }

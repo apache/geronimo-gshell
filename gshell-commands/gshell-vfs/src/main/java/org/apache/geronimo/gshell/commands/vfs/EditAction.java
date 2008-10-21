@@ -20,16 +20,12 @@
 package org.apache.geronimo.gshell.commands.vfs;
 
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystem;
 import org.apache.commons.vfs.Selectors;
 import org.apache.commons.vfs.util.Os;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.FileObjects;
-import org.apache.geronimo.gshell.vfs.provider.local.LocalFile;
-import org.apache.geronimo.gshell.vfs.provider.local.LocalFileSystem;
 
 import java.io.File;
 import java.util.Arrays;
@@ -51,7 +47,6 @@ public class EditAction
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
-        IO io = context.getIo();
 
         FileObject file = resolveFile(context, path);
 
@@ -62,20 +57,17 @@ public class EditAction
  
         FileObject tmp = file;
 
-        FileSystem fs = file.getFileSystem();
-        log.debug("File system: {}", fs);
-
         // If the file is not on the local file system, then create tmp file for editing
-        if (!(fs instanceof LocalFileSystem)) {
+        if (!getFileSystemAccess().isLocalFile(file)) {
             // Create a new temporary file, copy the contents for editing
-            tmp = resolveFile(context, "tmp:/gshell.edit-" + System.currentTimeMillis() + ".txt");
-            log.debug("Using temporary file for edit: {} ({})", tmp, tmp.getClass());
+            tmp = resolveFile(context, "tmp:/gshell-edit-" + System.currentTimeMillis() + ".txt");
+            log.debug("Using temporary file: {} ({})", tmp, tmp.getClass());
             tmp.createFile();
             tmp.copyFrom(file, Selectors.SELECT_SELF);
         }
 
         // Have to dereference the VFS file into a local file so the editor can access it
-        File localFile = getLocalFile(tmp);
+        File localFile = getFileSystemAccess().getLocalFile(tmp);
         Object result = edit(context, localFile);
 
         // If we had to use a tmp file for editing, then copy back and clean up
@@ -89,19 +81,6 @@ public class EditAction
         FileObjects.close(file);
         
         return result;
-    }
-
-    private File getLocalFile(final FileObject file) throws Exception {
-        assert file != null;
-        assert file instanceof LocalFile;
-
-        // This uses our custom accessible LocalFile implementation, which allows us to grap the File object.
-        LocalFile lfile = (LocalFile)file;
-
-        // Force the file to attach if it hasn't already
-        lfile.refresh();
-
-        return lfile.getLocalFile();
     }
 
     private Object edit(final CommandContext context, final File localFile) throws Exception {

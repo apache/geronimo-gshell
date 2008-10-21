@@ -22,10 +22,14 @@ package org.apache.geronimo.gshell.vfs;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
+import org.apache.commons.vfs.provider.local.LocalFile;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.lang.reflect.Field;
 
 /**
  * {@link FileSystemAccess} component.
@@ -123,5 +127,32 @@ public class FileSystemAccessImpl
 
     public FileObject resolveFile(final String name) throws FileSystemException {
         return getManager().resolveFile(getCurrentDirectory(), name);
+    }
+
+    public boolean isLocalFile(final FileObject file) {
+        return file instanceof LocalFile;
+    }
+
+    public File getLocalFile(final FileObject file) throws FileSystemException {
+        if (!isLocalFile(file)) {
+            throw new FileSystemException("Unable to get local file from: " + file.getClass());
+        }
+
+        try {
+            file.refresh();
+            Field field = LocalFile.class.getDeclaredField("file");
+            
+            try {
+                return (File)field.get(file);
+            }
+            catch (IllegalAccessException ignore) {
+                // try again
+                field.setAccessible(true);
+                return (File)field.get(file);
+            }
+        }
+        catch (Exception e) {
+            throw new FileSystemException(e);
+        }
     }
 }

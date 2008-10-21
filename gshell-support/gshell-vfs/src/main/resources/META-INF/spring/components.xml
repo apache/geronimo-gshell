@@ -67,6 +67,14 @@
 
     <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
         <property name="fileSystemManager" ref="fileSystemManager"/>
+        <property name="scheme" value="file"/>
+        <property name="provider">
+            <bean class="org.apache.commons.vfs.provider.local.DefaultLocalFileProvider"/>
+        </property>
+    </bean>
+
+    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
+        <property name="fileSystemManager" ref="fileSystemManager"/>
         <property name="scheme" value="tmp"/>
         <property name="provider">
             <bean class="org.apache.commons.vfs.provider.temp.TemporaryFileProvider"/>
@@ -127,14 +135,6 @@
     
     <bean id="fileObjectNameCompleter" class="org.apache.geronimo.gshell.vfs.FileObjectNameCompleter">
         <constructor-arg ref="fileSystemAccess"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.FileProviderConfigurer">
-        <property name="fileSystemManager" ref="fileSystemManager"/>
-        <property name="scheme" value="file"/>
-        <property name="provider">
-            <bean class="org.apache.geronimo.gshell.vfs.provider.local.LocalFileProvider"/>
-        </property>
     </bean>
 
 </beans>

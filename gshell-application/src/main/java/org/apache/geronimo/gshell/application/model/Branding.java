@@ -107,7 +107,7 @@ public class Branding
             return "";
         }
         else {
-            return new StringBuffer(str.length())
+            return new StringBuilder(str.length())
                     .append(Character.toTitleCase(str.charAt(0)))
                     .append(str.substring(1))
                     .toString();
