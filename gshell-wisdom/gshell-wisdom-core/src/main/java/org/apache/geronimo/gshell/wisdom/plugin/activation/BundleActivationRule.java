@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
 import org.apache.geronimo.gshell.application.plugin.activation.ActivationContext;
 import org.apache.geronimo.gshell.application.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.application.plugin.activation.ActivationTask;
+import org.apache.geronimo.gshell.application.plugin.Plugin;
 
 /**
  * Activation rule which will enable a named-bundle.
@@ -50,7 +51,7 @@ public class BundleActivationRule
 
         ActivationTask task = new ActivationTask() {
             public void execute() throws Exception {
-                PluginImpl plugin = (PluginImpl) context.getPlugin();
+                Plugin plugin = context.getPlugin();
                 Bundle bundle = plugin.getBundle(bundleName);
                 bundle.enable();
             }
