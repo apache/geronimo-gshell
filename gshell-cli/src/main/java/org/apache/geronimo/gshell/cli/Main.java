@@ -47,6 +47,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Main
 {
+    private static final boolean BYPASS_EXIT = Boolean.getBoolean(Main.class.getName() + ".bypassExit");
+
     //
     // NOTE: Do not use logging from this class, as it is used to configure
     //       the logging level with System properties, which will only get
@@ -169,7 +171,7 @@ public class Main
         System.setProperty("jline.terminal", type);
     }
 
-    public void boot(final String[] args) throws Exception {
+    public int boot(final String[] args) throws Exception {
         assert args != null;
 
         System.setProperty("jline.terminal", AutoDetectedTerminal.class.getName());
@@ -249,12 +251,17 @@ public class Main
 
         codeRef.set(code);
 
-        System.exit(code);
+        return code;
     }
 
     public static void main(final String[] args) throws Exception {
         Main main = new Main();
-        main.boot(args);
+
+        int code = main.boot(args);
+
+        if (!BYPASS_EXIT) {
+            System.exit(code);
+        }
     }
 }
 
