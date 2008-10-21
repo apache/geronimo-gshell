@@ -270,8 +270,8 @@ public class ShellImpl
         }
     }
 
-    private static String repeat(String str, int repeat) {
-        StringBuffer buffer = new StringBuffer(repeat * str.length());
+    private static String repeat(final String str, final int repeat) {
+        StringBuilder buffer = new StringBuilder(repeat * str.length());
         for (int i = 0; i < repeat; i++) {
             buffer.append(str);
         }
