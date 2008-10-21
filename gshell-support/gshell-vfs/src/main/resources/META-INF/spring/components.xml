@@ -25,6 +25,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="no">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+    
     <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
         <property name="customEditors">
             <map>
@@ -35,10 +37,9 @@
         </property>
     </bean>
 
-    <!--
-    TODO: Set tempDir File arg in constructor to set the temporary location, may need 2 replicators?
-    -->
-    <bean id="defaultFileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator"/>
+    <bean id="org.apache.commons.vfs.provider.FileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator">
+        <constructor-arg value="${gshell.home}/var/tmp"/>
+    </bean>
 
     <bean id="fileSystemManager" class="org.apache.geronimo.gshell.vfs.config.FileSystemManagerFactoryBean">
         <property name="filesCache">
@@ -49,16 +50,11 @@
         
         <property name="fileReplicator">
             <bean class="org.apache.commons.vfs.impl.PrivilegedFileReplicator">
-                <constructor-arg ref="defaultFileReplicator"/>
+                <constructor-arg ref="org.apache.commons.vfs.provider.FileReplicator"/>
             </bean>
         </property>
 
-        <!--
-        TODO: Try and root the temporary store under ${gshell.home}/tmp or something
-        -->
-        <property name="temporaryFileStore">
-            <ref bean="defaultFileReplicator"/>
-        </property>
+        <property name="temporaryFileStore" ref="org.apache.commons.vfs.provider.FileReplicator"/>
 
         <property name="fileContentInfoFactory">
             <bean class="org.apache.commons.vfs.impl.FileContentInfoFilenameFactory"/>
