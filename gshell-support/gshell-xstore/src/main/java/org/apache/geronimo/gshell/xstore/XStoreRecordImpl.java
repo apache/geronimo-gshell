@@ -69,8 +69,6 @@ public class XStoreRecordImpl
             throw new XStoreException(e);
         }
     }
-
-    // TODO: Add marshaller cache
     
     public void set(final Object value) {
         assert value != null;
