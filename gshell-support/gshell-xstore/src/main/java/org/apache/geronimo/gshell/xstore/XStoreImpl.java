@@ -82,12 +82,26 @@ public class XStoreImpl
     public XStoreRecord resolveRecord(final String path) {
         assert path != null;
 
+        final XStore prev = XStoreHolder.get();
+        XStoreHolder.set(this);
+
         try {
             FileObject file = getFileSystem().resolveFile(path);
-            return new XStoreRecordImpl(file);
+            return new XStoreRecordImpl(this, file);
         }
         catch (FileSystemException e) {
             throw new XStoreException(e);
         }
+        finally {
+            if (prev != null) {
+                XStoreHolder.set(prev);
+            }
+        }
+    }
+
+    public XStorePointer createPointer(final String path) {
+        assert path != null;
+
+        return new XStorePointerImpl(this, path);
     }
 }

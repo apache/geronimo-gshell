@@ -19,32 +19,26 @@
 
 package org.apache.geronimo.gshell.xstore;
 
-import java.util.Collection;
-
 /**
- * A record in an {@link XStore}.
+ * {@link XStore} thread context holder.
  *
  * @version $Rev$ $Date$
  */
-public interface XStoreRecord
+public class XStoreHolder
 {
-    String getPath();
+    private static final InheritableThreadLocal<XStore> holder = new InheritableThreadLocal<XStore>();
 
-    boolean exists();
+    public static void clear() {
+        holder.remove();
+    }
 
-    void set(Object value);
+    public static void set(final XStore xstore) {
+        assert xstore != null;
 
-    <T> T get(Class<T> type);
+        holder.set(xstore);
+    }
 
-    void close();
-
-    boolean delete();
-
-    void refresh();
-
-    XStoreRecord getParent();
-
-    Collection<XStoreRecord> getChilden();
-
-    XStorePointer createPointer();
+    public static XStore get() {
+        return holder.get();
+    }
 }

@@ -43,11 +43,14 @@ public class XStoreRecordImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private final XStore xstore;
+
     private final FileObject file;
 
-    public XStoreRecordImpl(final FileObject file) {
+    public XStoreRecordImpl(final XStore xstore, final FileObject file) {
+        assert xstore != null;
+        this.xstore = xstore;
         assert file != null;
-
         this.file = file;
     }
     
@@ -160,7 +163,7 @@ public class XStoreRecordImpl
         }
 
         if (parentFile != null) {
-            return new XStoreRecordImpl(parentFile);
+            return new XStoreRecordImpl(xstore, parentFile);
         }
         return null;
     }
@@ -178,9 +181,13 @@ public class XStoreRecordImpl
         List<XStoreRecord> children = new ArrayList<XStoreRecord>(files.length);
 
         for (FileObject file : files) {
-            children.add(new XStoreRecordImpl(file));
+            children.add(new XStoreRecordImpl(xstore, file));
         }
 
         return children;
+    }
+
+    public XStorePointer createPointer() {
+        return xstore.createPointer(getPath());
     }
 }

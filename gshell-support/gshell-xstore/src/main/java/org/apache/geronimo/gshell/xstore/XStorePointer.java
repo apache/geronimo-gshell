@@ -19,32 +19,14 @@
 
 package org.apache.geronimo.gshell.xstore;
 
-import java.util.Collection;
-
 /**
- * A record in an {@link XStore}.
+ * A pointer to an {@link XStoreRecord}.
  *
  * @version $Rev$ $Date$
  */
-public interface XStoreRecord
+public interface XStorePointer
 {
     String getPath();
 
-    boolean exists();
-
-    void set(Object value);
-
-    <T> T get(Class<T> type);
-
-    void close();
-
-    boolean delete();
-
-    void refresh();
-
-    XStoreRecord getParent();
-
-    Collection<XStoreRecord> getChilden();
-
-    XStorePointer createPointer();
+    XStoreRecord getRecord();
 }

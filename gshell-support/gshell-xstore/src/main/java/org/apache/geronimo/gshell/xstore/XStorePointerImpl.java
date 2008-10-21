@@ -19,32 +19,41 @@
 
 package org.apache.geronimo.gshell.xstore;
 
-import java.util.Collection;
-
 /**
- * A record in an {@link XStore}.
+ * {@link XStorePointer} implementation.
  *
  * @version $Rev$ $Date$
  */
-public interface XStoreRecord
+public class XStorePointerImpl
+    implements XStorePointer
 {
-    String getPath();
+    private transient XStore xstore;
 
-    boolean exists();
+    private String path;
 
-    void set(Object value);
+    public XStorePointerImpl(final XStore xstore, final String path) {
+        assert xstore != null;
+        this.xstore = xstore;
+        assert path != null;
+        this.path = path;
+    }
 
-    <T> T get(Class<T> type);
+    public XStorePointerImpl() {}
+    
+    public String getPath() {
+        return path;
+    }
 
-    void close();
+    public XStoreRecord getRecord() {
+        return xstore.resolveRecord(getPath());
+    }
 
-    boolean delete();
-
-    void refresh();
-
-    XStoreRecord getParent();
-
-    Collection<XStoreRecord> getChilden();
-
-    XStorePointer createPointer();
+    @SuppressWarnings({"UnusedDeclaration"})
+    private Object readResolve() {
+        xstore = XStoreHolder.get();
+        if (xstore == null) {
+            throw new IllegalStateException("Unable to attach to XStore instance");
+        }
+        return this;
+    }
 }

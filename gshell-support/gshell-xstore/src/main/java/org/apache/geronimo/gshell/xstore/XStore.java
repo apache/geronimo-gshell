@@ -27,4 +27,6 @@ package org.apache.geronimo.gshell.xstore;
 public interface XStore
 {
     XStoreRecord resolveRecord(String path);
+
+    XStorePointer createPointer(String path);
 }
