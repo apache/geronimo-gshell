@@ -519,6 +519,11 @@ public abstract class BeanContainerContextSupport
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
         reader.setResourceLoader(this);
 		reader.setEntityResolver(new ResourceEntityResolver(this));
+        reader.setNamespaceAware(true);
+        
+        // TODO: Make this configurable via system properties, default to VALIDATION_NONE
+        reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
+
 		loadBeanDefinitions(reader);
 	}
 
