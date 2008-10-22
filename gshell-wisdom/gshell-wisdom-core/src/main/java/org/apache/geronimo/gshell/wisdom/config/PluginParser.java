@@ -40,6 +40,7 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -133,7 +134,7 @@ public class PluginParser
 
         public static CommandType parse(final String text) {
             assert text != null;
-
+            
             return valueOf(text.toUpperCase());
         }
 
@@ -419,12 +420,23 @@ public class PluginParser
             return commands;
         }
 
+        private CommandType parseCommandType(final Element element) {
+            assert element != null;
+
+            Attr attr = element.getAttributeNode(TYPE);
+            if (attr == null) {
+                return CommandType.STATEFUL;
+            }
+
+            return CommandType.parse(attr.getValue());
+        }
+
         private BeanDefinitionBuilder parseCommand(final Element element) {
             assert element != null;
 
             log.trace("Parse command; element; {}", element);
 
-            CommandType type = CommandType.parse(element.getAttribute(TYPE));
+            CommandType type = parseCommandType(element);
             BeanDefinitionBuilder command = BeanDefinitionBuilder.childBeanDefinition(type.getTemplateName());
             parseAndApplyDescription(element, command);
 
