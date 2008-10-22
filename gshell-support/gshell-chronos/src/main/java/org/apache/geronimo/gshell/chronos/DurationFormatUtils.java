@@ -139,20 +139,20 @@ public class DurationFormatUtils
         int milliseconds = 0;
 
         if (Token.containsTokenWithValue(tokens, d) ) {
-            days = (int) (durationMillis / DateUtils.MILLIS_PER_DAY);
-            durationMillis = durationMillis - (days * DateUtils.MILLIS_PER_DAY);
+            days = (int) (durationMillis / DateUtils_MILLIS_PER_DAY);
+            durationMillis = durationMillis - (days * DateUtils_MILLIS_PER_DAY);
         }
         if (Token.containsTokenWithValue(tokens, H) ) {
-            hours = (int) (durationMillis / DateUtils.MILLIS_PER_HOUR);
-            durationMillis = durationMillis - (hours * DateUtils.MILLIS_PER_HOUR);
+            hours = (int) (durationMillis / DateUtils_MILLIS_PER_HOUR);
+            durationMillis = durationMillis - (hours * DateUtils_MILLIS_PER_HOUR);
         }
         if (Token.containsTokenWithValue(tokens, m) ) {
-            minutes = (int) (durationMillis / DateUtils.MILLIS_PER_MINUTE);
-            durationMillis = durationMillis - (minutes * DateUtils.MILLIS_PER_MINUTE);
+            minutes = (int) (durationMillis / DateUtils_MILLIS_PER_MINUTE);
+            durationMillis = durationMillis - (minutes * DateUtils_MILLIS_PER_MINUTE);
         }
         if (Token.containsTokenWithValue(tokens, s) ) {
-            seconds = (int) (durationMillis / DateUtils.MILLIS_PER_SECOND);
-            durationMillis = durationMillis - (seconds * DateUtils.MILLIS_PER_SECOND);
+            seconds = (int) (durationMillis / DateUtils_MILLIS_PER_SECOND);
+            durationMillis = durationMillis - (seconds * DateUtils_MILLIS_PER_SECOND);
         }
         if (Token.containsTokenWithValue(tokens, S) ) {
             milliseconds = (int) durationMillis;
@@ -160,6 +160,16 @@ public class DurationFormatUtils
 
         return format(tokens, 0, 0, days, hours, minutes, seconds, milliseconds, padWithZeros);
     }
+
+    // Copied from DateUtils;
+
+    private static final long DateUtils_MILLIS_PER_SECOND = 1000;
+
+    private static final long DateUtils_MILLIS_PER_MINUTE = 60 * DateUtils_MILLIS_PER_SECOND;
+
+    private static final long DateUtils_MILLIS_PER_HOUR = 60 * DateUtils_MILLIS_PER_MINUTE;
+
+    private static final long DateUtils_MILLIS_PER_DAY = 24 * DateUtils_MILLIS_PER_HOUR;
 
     /**
      * <p>Formats an elapsed time into a plurialization correct string.</p>
@@ -422,8 +432,7 @@ public class DurationFormatUtils
      * @param padWithZeros  whether to pad
      * @return the formatted string
      */
-    static String format(Token[] tokens, int years, int months, int days, int hours, int minutes, int seconds,
-            int milliseconds, boolean padWithZeros) {
+    static String format(Token[] tokens, int years, int months, int days, int hours, int minutes, int seconds, int milliseconds, boolean padWithZeros) {
         StringBuilder buffer = new StringBuilder();
         boolean lastOutputSeconds = false;
         int sz = tokens.length;
