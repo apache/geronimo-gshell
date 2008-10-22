@@ -77,7 +77,7 @@ public class AnsiBuffer
         return append(String.valueOf(obj));
     }
 
-    public AnsiBuffer attrib(final int code) {
+    public AnsiBuffer attrib(final AnsiCode code) {
         if (isAnsiEnabled()) {
             buff.append(AnsiCode.attrib(code));
         }
@@ -85,7 +85,7 @@ public class AnsiBuffer
         return this;
     }
 
-    public AnsiBuffer attrib(final String text, final int code) {
+    public AnsiBuffer attrib(final String text, final AnsiCode code) {
         assert text != null;
 
         if (isAnsiEnabled()) {
@@ -99,6 +99,6 @@ public class AnsiBuffer
     }
 
     public AnsiBuffer attrib(final String text, final String codeName) {
-        return attrib(text, AnsiCode.forName(codeName));
+        return attrib(text, AnsiCode.valueOf(codeName.toUpperCase()));
     }
 }

@@ -89,7 +89,7 @@ public class AnsiRenderer
         String text = input.substring(i + 1, input.length());
 
         for (String name : codes) {
-            int code = AnsiCode.forName(name);
+            AnsiCode code = AnsiCode.valueOf(name.toUpperCase());
             buff.attrib(code);
         }
 
@@ -118,9 +118,9 @@ public class AnsiRenderer
         return text != null && text.indexOf(BEGIN_TOKEN) >= 0;
     }
 
-    public static String encode(final Object text, final int code) {
+    public static String encode(final Object text, final AnsiCode code) {
         return new StringBuilder(BEGIN_TOKEN).
-                append(AnsiCode.name(code)).
+                append(code.name()).
                 append(CODE_TEXT_SEPARATOR).
                 append(text).
                 append(END_TOKEN).

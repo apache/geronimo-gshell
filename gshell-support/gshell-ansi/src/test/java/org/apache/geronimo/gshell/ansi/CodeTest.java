@@ -30,11 +30,10 @@ public class CodeTest
     extends TestCase
 {
     public void testForName() throws Exception {
-        assertEquals(AnsiCode.OFF, AnsiCode.forName("OFF"));
-        assertEquals(AnsiCode.OFF, AnsiCode.forName("off"));
+        assertEquals(AnsiCode.OFF, AnsiCode.valueOf("OFF"));
     }
 
     public void testName() throws Exception {
-        assertEquals("OFF", AnsiCode.name(AnsiCode.OFF));
+        assertEquals("OFF", AnsiCode.OFF.name());
     }
 }
