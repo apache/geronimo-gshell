@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.wisdom.application;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.application.ApplicationSecurityManager;
+import org.apache.geronimo.gshell.wisdom.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.application.model.Artifact;

@@ -18,13 +18,12 @@
  */
 
 
-package org.apache.geronimo.gshell.application;
+package org.apache.geronimo.gshell.wisdom.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.Permission;
-import java.util.PropertyPermission;
 
 /**
  * Custom security manager to prevent commands from doing bad things.
@@ -57,17 +56,19 @@ public class ApplicationSecurityManager
         // TODO: See if there is a more efficent and/or recommended way to implement custom permission handling
         //
 
-        //
-        // FIXME: These don't work as desired ATM, so disable and re-implement a little bit later
-        //
-        
-        /*
         if (perm instanceof RuntimePermission) {
             // Prevent System.exit()
             if (perm.implies(new RuntimePermission("exitVM"))) {
                 throw new SecurityException();
             }
+        }
 
+        //
+        // FIXME: These don't work as desired ATM, so disable and re-implement a little bit later
+        //
+
+        /*
+        if (perm instanceof RuntimePermission) {
             // Prevent unhijacking of the system streams
             if (perm.implies(new RuntimePermission("setIO"))) {
                 throw new SecurityException();

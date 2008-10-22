@@ -45,7 +45,7 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.apache.geronimo.gshell.application.ApplicationSecurityManager">
+    <logger name="org.apache.geronimo.gshell.wisdom.application.ApplicationSecurityManager">
         <level value="DEBUG"/>
     </logger>
 
