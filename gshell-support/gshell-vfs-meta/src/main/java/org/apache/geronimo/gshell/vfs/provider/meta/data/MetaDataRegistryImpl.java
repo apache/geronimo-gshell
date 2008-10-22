@@ -24,6 +24,7 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
+import org.apache.geronimo.gshell.event.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +43,14 @@ public class MetaDataRegistryImpl
 
     private final Map<FileName, MetaData> nodes = new HashMap<FileName, MetaData>();
 
+    private final EventPublisher eventPublisher;
+
     private String rootFileName = MetaFileName.SCHEME + ":/";
+
+    public MetaDataRegistryImpl(final EventPublisher eventPublisher) {
+        assert eventPublisher != null;
+        this.eventPublisher = eventPublisher;
+    }
 
     // @PostConstruct
     public void init() throws FileSystemException {
@@ -75,6 +83,8 @@ public class MetaDataRegistryImpl
         }
 
         getNodes().put(name, data);
+
+        eventPublisher.publish(new MetaDataRegisteredEvent(name, data));
     }
 
     private MetaData getParentData(final FileName name) {
@@ -110,6 +120,8 @@ public class MetaDataRegistryImpl
             MetaData parent = lookupData(parentName);
             parent.removeChild(data);
         }
+
+        eventPublisher.publish(new MetaDataRemovedEvent(name, data));
     }
 
     public boolean containsData(final FileName name) {

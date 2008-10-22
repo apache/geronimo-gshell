@@ -40,6 +40,11 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-event</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-vfs</artifactId>
         </dependency>
 
