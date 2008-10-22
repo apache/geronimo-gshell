@@ -23,9 +23,9 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.notification.FailureNotification;
 import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
+import org.apache.geronimo.gshell.notification.ResultNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -84,7 +84,7 @@ public abstract class VfsActionSupport
 
         if (!file.exists()) {
             FileObjects.close(file);
-            throw new FailureNotification("File not found: " + file.getName());
+            throw new ResultNotification("File not found: " + file.getName(), Result.FAILURE);
         }
     }
 
@@ -93,7 +93,7 @@ public abstract class VfsActionSupport
 
         if (!file.getType().hasContent()) {
             FileObjects.close(file);
-            throw new FailureNotification("File has no content: " + file.getName());
+            throw new ResultNotification("File has no content: " + file.getName(), Result.FAILURE);
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class VfsActionSupport
 
         if (!file.getType().hasChildren()) {
             FileObjects.close(file);
-            throw new FailureNotification("File has no children: " + file.getName());
+            throw new ResultNotification("File has no children: " + file.getName(), Result.FAILURE);
         }
     }
 
@@ -111,7 +111,7 @@ public abstract class VfsActionSupport
 
         if (!file.getType().hasChildren()) {
             FileObjects.close(file);
-            throw new FailureNotification("File is not readable: " + file.getName());
+            throw new ResultNotification("File is not readable: " + file.getName(), Result.FAILURE);
         }
     }
 
@@ -120,7 +120,7 @@ public abstract class VfsActionSupport
 
         if (!file.getType().hasChildren()) {
             FileObjects.close(file);
-            throw new FailureNotification("File is not writable: " + file.getName());
+            throw new ResultNotification("File is not writable: " + file.getName(), Result.FAILURE);
         }
     }
 }

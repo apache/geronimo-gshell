@@ -71,7 +71,10 @@ public class CommandsCompleter
     }
 
     //
-    // FIXME: This does not properly complete when in a command group :-(
+    // FIXME: This does not properly complete when in a command group :-(  So, when we complete, resolve the current group,
+    //        and look for an attribute on the file, which is the completer.  If it does not exist, then build a new one
+    //        and attach it, else use what we found.  Pending how to deal with dynamic add/remove muck.  May need to add
+    //        events to the MetaRegistry?
     //
 
     // @PostConstruct
