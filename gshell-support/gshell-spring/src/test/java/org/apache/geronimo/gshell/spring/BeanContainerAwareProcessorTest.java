@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import junit.framework.Assert;
-
 /**
  * Unit tests for the {@link BeanContainerAwareProcessor} class.
  *
@@ -33,7 +31,6 @@ public class BeanContainerAwareProcessorTest
         Target target = getBeanContainer().getBean("target", Target.class);
         assertNotNull(target);
         assertNotNull(target.container);
-        assertTrue(target.initialized);
     }
 
     //
@@ -49,12 +46,6 @@ public class BeanContainerAwareProcessorTest
 
         public void setBeanContainer(BeanContainer container) {
             this.container = container;
-        }
-
-        // @PostConstruct
-        public void init() {
-            initialized = true;
-            Assert.assertNotNull(container);
         }
     }
 }
