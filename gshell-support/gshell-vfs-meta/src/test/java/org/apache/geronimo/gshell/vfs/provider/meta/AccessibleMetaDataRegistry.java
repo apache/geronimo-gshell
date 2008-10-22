@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.vfs.provider.meta;
 import org.apache.commons.vfs.FileName;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistryImpl;
+import org.apache.geronimo.gshell.event.EventPublisher;
 
 import java.util.Map;
 
@@ -33,6 +34,10 @@ import java.util.Map;
 public class AccessibleMetaDataRegistry
     extends MetaDataRegistryImpl
 {
+    public AccessibleMetaDataRegistry(final EventPublisher eventPublisher) {
+        super(eventPublisher);
+    }
+
     @Override
     public Map<FileName, MetaData> getNodes() {
         return super.getNodes();

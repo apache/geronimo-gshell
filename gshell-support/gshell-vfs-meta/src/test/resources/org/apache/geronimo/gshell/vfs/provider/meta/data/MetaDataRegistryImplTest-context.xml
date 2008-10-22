@@ -28,6 +28,10 @@
        default-init-method="init"
        default-destroy-method="destroy">
 
-    <bean id="metaDataRegistry" class="org.apache.geronimo.gshell.vfs.provider.meta.AccessibleMetaDataRegistry"/>
+    <bean id="eventManager" class="org.apache.geronimo.gshell.event.EventManagerImpl"/>
+    
+    <bean id="metaDataRegistry" class="org.apache.geronimo.gshell.vfs.provider.meta.AccessibleMetaDataRegistry">
+        <constructor-arg ref="eventManager"/>
+    </bean>
 
 </beans>
