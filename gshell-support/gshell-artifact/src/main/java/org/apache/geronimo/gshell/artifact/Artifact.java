@@ -17,9 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.application.model;
-
-import org.apache.geronimo.gshell.yarn.Yarn;
+package org.apache.geronimo.gshell.artifact;
 
 import java.io.File;
 import java.io.Serializable;
@@ -36,9 +34,9 @@ public class Artifact
     
     public static final String DEFAULT_TYPE = "jar";
 
-    private String groupId;
+    private String group;
 
-    private String artifactId;
+    private String artifact;
 
     private String classifier;
 
@@ -49,23 +47,23 @@ public class Artifact
     private File file;
 
     public String toString() {
-        return Yarn.render(this);
+        return getId();
     }
 
-    public String getGroupId() {
-        return groupId;
+    public String getGroup() {
+        return group;
     }
 
-    public void setGroupId(final String groupId) {
-        this.groupId = groupId;
+    public void setGroup(final String group) {
+        this.group = group;
     }
 
-    public String getArtifactId() {
-        return artifactId;
+    public String getArtifact() {
+        return artifact;
     }
 
-    public void setArtifactId(final String artifactId) {
-        this.artifactId = artifactId;
+    public void setArtifact(final String artifact) {
+        this.artifact = artifact;
     }
 
     public String getClassifier() {
@@ -104,6 +102,6 @@ public class Artifact
     }
 
     public String getId() {
-        return getGroupId() + ":" + getArtifactId() + ":" + getVersion() + ":" + getType();
+        return getGroup() + ":" + getArtifact() + ":" + getVersion() + ":" + getType();
     }
 }

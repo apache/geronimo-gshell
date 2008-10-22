@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.application;
 
-import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.util.Collection;
 import java.net.URL;

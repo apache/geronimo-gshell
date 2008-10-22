@@ -20,6 +20,7 @@
 package org.apache.geronimo.gshell.application.model;
 
 import org.apache.geronimo.gshell.yarn.Yarn;
+import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.util.ArrayList;
 import java.util.List;

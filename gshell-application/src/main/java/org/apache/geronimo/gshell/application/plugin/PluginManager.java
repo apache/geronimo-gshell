@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.application.plugin;
 
-import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.util.Set;
 

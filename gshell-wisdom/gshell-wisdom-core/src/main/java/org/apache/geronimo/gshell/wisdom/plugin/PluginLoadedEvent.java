@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
-import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.event.Event;
 

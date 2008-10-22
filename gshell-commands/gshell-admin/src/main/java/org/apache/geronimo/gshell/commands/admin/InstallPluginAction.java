@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.commands.admin;
 
-import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -59,8 +59,8 @@ public class InstallPluginAction
         IO io = context.getIo();
 
         Artifact artifact = new Artifact();
-        artifact.setGroupId(groupId);
-        artifact.setArtifactId(artifactId);
+        artifact.setGroup(groupId);
+        artifact.setArtifact(artifactId);
         artifact.setVersion(version);
 
         io.info("Loading plugin: {}", artifact.getId());

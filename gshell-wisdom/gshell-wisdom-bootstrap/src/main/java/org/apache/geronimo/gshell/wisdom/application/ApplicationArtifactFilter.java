@@ -35,6 +35,7 @@ public class ApplicationArtifactFilter
     implements Filter
 {
     private static final String[] EXCLUDES = {
+        "gshell-artifact",
         "gshell-ansi",
         "gshell-api",
         "gshell-artifact",

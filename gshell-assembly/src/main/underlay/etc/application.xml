@@ -40,9 +40,9 @@
 
         <property name="dependencies">
             <list>
-                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
-                    <property name="groupId" value="org.apache.geronimo.gshell.wisdom"/>
-                    <property name="artifactId" value="gshell-wisdom-core"/>
+                <bean class="org.apache.geronimo.gshell.artifact.Artifact">
+                    <property name="group" value="org.apache.geronimo.gshell.wisdom"/>
+                    <property name="artifact" value="gshell-wisdom-core"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
                 
@@ -58,9 +58,9 @@
 
         <property name="plugins">
             <list>
-                <bean class="org.apache.geronimo.gshell.application.model.Artifact">
-                    <property name="groupId" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifactId" value="gshell-builtins"/>
+                <bean class="org.apache.geronimo.gshell.artifact.Artifact">
+                    <property name="group" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="artifact" value="gshell-builtins"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 

@@ -25,28 +25,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gshell-application</artifactId>
-    <name>GShell Application</name>
+    <artifactId>gshell-artifact</artifactId>
+    <name>GShell Support :: Artifact</name>
 
     <description>
-        Provides the GShell application framework.
+        Remote artifact resolution support.
     </description>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-artifact</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-api</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

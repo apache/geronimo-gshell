@@ -25,7 +25,7 @@ import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.model.ApplicationModel;
-import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
@@ -200,8 +200,8 @@ public class ApplicationManagerImpl
             ModuleRevisionId id = downloadedArtifact.getModuleRevisionId();
 
             Artifact resolved = new Artifact();
-            resolved.setGroupId(id.getOrganisation());
-            resolved.setArtifactId(id.getName());
+            resolved.setGroup(id.getOrganisation());
+            resolved.setArtifact(id.getName());
             resolved.setVersion(id.getRevision());
             resolved.setType(downloadedArtifact.getType());
             resolved.setFile(downloadReport.getLocalFile());
@@ -222,7 +222,7 @@ public class ApplicationManagerImpl
         md.setLastModified(System.currentTimeMillis());
 
         for (Artifact dep : model.getDependencies()) {
-            ModuleRevisionId depId = ModuleRevisionId.newInstance(dep.getGroupId(), dep.getArtifactId(), dep.getVersion());
+            ModuleRevisionId depId = ModuleRevisionId.newInstance(dep.getGroup(), dep.getArtifact(), dep.getVersion());
             DefaultDependencyDescriptor dd = new DefaultDependencyDescriptor(md, depId, /* force */ false, /* changing*/ false, /* transitive */ true);
             dd.addDependencyConfiguration("default", "default");
             md.addDependency(dd);

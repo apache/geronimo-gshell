@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.wisdom.application;
 
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.io.File;
 import java.io.Serializable;

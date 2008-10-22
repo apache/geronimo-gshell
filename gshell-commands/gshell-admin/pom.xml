@@ -44,6 +44,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-artifact</artifactId>
+        </dependency>
+        
+        <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
             <artifactId>gshell-application</artifactId>
         </dependency>

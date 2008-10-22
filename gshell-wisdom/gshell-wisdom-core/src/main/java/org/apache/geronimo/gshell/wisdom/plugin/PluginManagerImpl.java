@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.application.model.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
@@ -160,7 +160,7 @@ public class PluginManagerImpl
         assert artifact != null;
 
         // FIXME: Get basedir from application
-        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/" + artifact.getGroupId() + "/" + artifact.getArtifactId() + "/classpath.ser"));
+        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/" + artifact.getGroup() + "/" + artifact.getArtifact() + "/classpath.ser"));
         ClassPath classPath = cache.get();
 
         if (classPath == null) {
@@ -223,8 +223,8 @@ public class PluginManagerImpl
             ModuleRevisionId id = downloadedArtifact.getModuleRevisionId();
 
             Artifact resolved = new Artifact();
-            resolved.setGroupId(id.getOrganisation());
-            resolved.setArtifactId(id.getName());
+            resolved.setGroup(id.getOrganisation());
+            resolved.setArtifact(id.getName());
             resolved.setVersion(id.getRevision());
             resolved.setType(downloadedArtifact.getType());
             resolved.setFile(downloadReport.getLocalFile());
@@ -239,12 +239,12 @@ public class PluginManagerImpl
     private ModuleDescriptor createPluginModuleDescriptor(final Artifact artifact) {
         assert artifact != null;
 
-        ModuleRevisionId pluginId = ModuleRevisionId.newInstance("gshell.plugin-" + artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
+        ModuleRevisionId pluginId = ModuleRevisionId.newInstance("gshell.plugin-" + artifact.getGroup(), artifact.getArtifact(), artifact.getVersion());
         DefaultModuleDescriptor md = new DefaultModuleDescriptor(pluginId, "integration", null, true);
         md.addConfiguration(new Configuration("default"));
         md.setLastModified(System.currentTimeMillis());
 
-        ModuleRevisionId depId = ModuleRevisionId.newInstance(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
+        ModuleRevisionId depId = ModuleRevisionId.newInstance(artifact.getGroup(), artifact.getArtifact(), artifact.getVersion());
         DefaultDependencyDescriptor dd = new DefaultDependencyDescriptor(md, depId, /* force */ false, /* changing*/ false, /* transitive */ true);
         dd.addDependencyConfiguration("default", "default");
         md.addDependency(dd);
