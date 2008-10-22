@@ -139,7 +139,7 @@ public class PluginManagerImpl
         log.debug("Created plugin container: {}", pluginContainer);
 
         pluginContainer.loadBeans(new String[] {
-            "classpath*:META-INF/spring/components.xml"
+            "classpath*:META-INF/gshell/components.xml"
         });
     
         PluginImpl plugin = pluginContainer.getBean(PluginImpl.class);

@@ -129,7 +129,7 @@ public class ApplicationManagerImpl
         log.debug("Application container: {}", child);
 
         child.loadBeans(new String[] {
-            "classpath*:META-INF/spring/components.xml"
+            "classpath*:META-INF/gshell/components.xml"
         });
         
         applicationContainer = child;

@@ -47,7 +47,7 @@ public abstract class SpringTestSupport
     }
 
     protected String getDefaultComponentsConfigLocation() {
-        return "classpath*:META-INF/spring/components.xml";
+        return "classpath*:META-INF/gshell/components.xml";
     }
     
     protected String[] getConfigLocations() {

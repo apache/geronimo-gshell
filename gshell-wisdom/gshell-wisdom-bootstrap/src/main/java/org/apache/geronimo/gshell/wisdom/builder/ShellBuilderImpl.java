@@ -53,7 +53,7 @@ public class ShellBuilderImpl
     private BeanContainer createContainer() throws Exception {
         BeanContainerImpl container = new BeanContainerImpl(getClassLoader());
         container.loadBeans(new String[] {
-            "classpath*:META-INF/spring/components.xml",
+            "classpath*:META-INF/gshell/components.xml",
             "classpath:application.xml"
         });
 
