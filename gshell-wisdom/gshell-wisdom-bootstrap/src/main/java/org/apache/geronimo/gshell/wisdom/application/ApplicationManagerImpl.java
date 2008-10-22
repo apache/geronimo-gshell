@@ -30,6 +30,8 @@ import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.ivy.Ivy;
@@ -239,6 +241,8 @@ public class ApplicationManagerImpl
 
         final Shell shell = applicationContainer.getBean(Shell.class);
 
+        final ShellContext context = shell.getContext();
+
         log.debug("Created shell instance: {}", shell);
 
         InvocationHandler handler = new InvocationHandler() {
@@ -259,12 +263,12 @@ public class ApplicationManagerImpl
                     return method.invoke(this, args);
                 }
 
-                //
-                // TODO: This would be a good place to inject the shell or the shell context into a thread holder
-                //
-                
+                final ShellContext prevContext = ShellContextHolder.get(true);
+                ShellContextHolder.set(context);
+
                 final SecurityManager prevSM = System.getSecurityManager();
                 System.setSecurityManager(sm);
+                
                 try {
                     return method.invoke(shell, args);
                 }
@@ -273,6 +277,7 @@ public class ApplicationManagerImpl
                 }
                 finally {
                     System.setSecurityManager(prevSM);
+                    ShellContextHolder.set(prevContext);
                 }
             }
         };

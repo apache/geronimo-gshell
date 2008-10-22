@@ -22,12 +22,11 @@ package org.apache.geronimo.gshell.wisdom.command;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.apache.geronimo.gshell.wisdom.registry.CommandLocationImpl;
 
 import java.util.Iterator;
@@ -102,16 +101,6 @@ public class AliasCommand
         public Object execute(final CommandContext context) throws Exception {
             assert context != null;
 
-            ShellContext shellContext = new ShellContext() {
-                public IO getIo() {
-                    return context.getIo();
-                }
-
-                public Variables getVariables() {
-                    return context.getVariables();
-                }
-            };
-
             StringBuilder buff = new StringBuilder();
             buff.append(getAlias());
 
@@ -135,7 +124,7 @@ public class AliasCommand
 
             log.debug("Executing alias: {}", buff);
 
-            Object result = executor.execute(shellContext, buff.toString());
+            Object result = executor.execute(ShellContextHolder.get(), buff.toString());
 
             log.debug("Alias result: {}", result);
 

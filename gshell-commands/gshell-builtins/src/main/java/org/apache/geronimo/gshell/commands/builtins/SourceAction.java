@@ -23,10 +23,9 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,18 +87,7 @@ public class SourceAction
                     continue;
                 }
 
-                // HACK: Need a shell context, but currently that muck is not exposed, so make a new one
-                ShellContext ctx = new ShellContext() {
-                    public IO getIo() {
-                        return context.getIo();
-                    }
-
-                    public Variables getVariables() {
-                        return context.getVariables();
-                    }
-                };
-
-                executor.execute(ctx, line);
+                executor.execute(ShellContextHolder.get(), line);
             }
         }
         finally {

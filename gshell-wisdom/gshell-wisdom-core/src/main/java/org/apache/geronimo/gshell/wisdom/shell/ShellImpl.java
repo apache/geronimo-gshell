@@ -111,6 +111,11 @@ public class ShellImpl
         final Variables vars = application.getVariables();
 
         context = new ShellContext() {
+
+            public Shell getShell() {
+                return ShellImpl.this;
+            }
+
             public IO getIo() {
                 return io;
             }

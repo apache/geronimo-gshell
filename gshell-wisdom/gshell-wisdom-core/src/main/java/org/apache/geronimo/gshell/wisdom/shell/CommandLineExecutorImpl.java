@@ -36,6 +36,7 @@ import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -155,6 +156,10 @@ public class CommandLineExecutorImpl
                 public void run() {
                     try {
                         ShellContext pipedContext = new ShellContext() {
+                            public Shell getShell() {
+                                return context.getShell();
+                            }
+
                             public IO getIo() {
                                 return ios[idx];
                             }

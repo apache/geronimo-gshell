@@ -78,6 +78,10 @@ public class RemoteShellProxy
         outputFeeder.createThread().start();
 
         context = new ShellContext() {
+            public Shell getShell() {
+                return RemoteShellProxy.this;
+            }
+            
             public IO getIo() {
                 return io;
             }

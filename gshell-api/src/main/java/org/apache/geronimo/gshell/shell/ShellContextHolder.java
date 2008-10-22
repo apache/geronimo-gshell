@@ -17,30 +17,41 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.remote.server;
+package org.apache.geronimo.gshell.shell;
 
-import org.apache.geronimo.gshell.shell.ShellContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Remote {@link ShellContext} holder.
+ * {@link ShellContext} thread context holder.
  *
  * @version $Rev$ $Date$
  */
-public class RemoteShellContextHolder
+public class ShellContextHolder
 {
+    private static final Logger log = LoggerFactory.getLogger(ShellContextHolder.class);
+
     private static final InheritableThreadLocal<ShellContext> holder = new InheritableThreadLocal<ShellContext>();
 
-    public static void clearContext() {
-        holder.remove();
-    }
-
-    public static void setContext(final ShellContext context) {
-        assert context != null;
+    public static void set(final ShellContext context) {
+        log.trace("Setting context: {}", context);
 
         holder.set(context);
     }
 
-    public static ShellContext getContext() {
-        return holder.get();
+    public static ShellContext get(final boolean allowNull) {
+        ShellContext context = holder.get();
+
+        log.trace("Getting context ({}): {}", allowNull, context);
+
+        if (!allowNull && context == null) {
+            throw new IllegalStateException("Shell context not initialized for thread: " + Thread.currentThread());
+        }
+
+        return context;
+    }
+
+    public static ShellContext get() {
+        return get(false);
     }
 }

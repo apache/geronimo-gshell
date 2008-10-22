@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.remote.server.RemoteIO;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
 import java.security.PublicKey;
 
@@ -46,6 +47,8 @@ public class ServerSessionContext
 
     public Shell shell;
 
+    public ShellContext shellContext;
+
     public void close() {
         shell.close();
         shell = null;
@@ -53,6 +56,7 @@ public class ServerSessionContext
         container = null;
         io = null;
         variables = null;
+        shellContext = null;
         pk = null;
     }
 }

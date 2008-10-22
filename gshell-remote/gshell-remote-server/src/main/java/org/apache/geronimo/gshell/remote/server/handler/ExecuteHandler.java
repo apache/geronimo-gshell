@@ -19,12 +19,10 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
-import org.apache.geronimo.gshell.remote.server.RemoteShellContextHolder;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
@@ -44,19 +42,10 @@ public class ExecuteHandler
         assert context != null;
         assert message != null;
 
-        ShellContext shellContext = new ShellContext() {
-            public IO getIo() {
-                return context.io;
-            }
-
-            public Variables getVariables() {
-                return context.variables;
-            }
-        };
-
         ExecuteMessage.Result reply;
-        
-        RemoteShellContextHolder.setContext(shellContext);
+
+        ShellContext prevContext = ShellContextHolder.get(true);
+        ShellContextHolder.set(context.shellContext);
 
         try {
             try {
@@ -78,7 +67,7 @@ public class ExecuteHandler
             }
         }
         finally {
-            RemoteShellContextHolder.clearContext();
+            ShellContextHolder.set(prevContext);
         }
 
         reply.setCorrelationId(message.getId());

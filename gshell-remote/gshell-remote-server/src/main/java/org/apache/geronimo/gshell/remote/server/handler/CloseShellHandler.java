@@ -19,11 +19,9 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
-import org.apache.geronimo.gshell.remote.server.RemoteShellContextHolder;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 /**
@@ -43,23 +41,14 @@ public class CloseShellHandler
         assert context != null;
         assert message != null;
 
-        ShellContext shellContext = new ShellContext() {
-            public IO getIo() {
-                return context.io;
-            }
-
-            public Variables getVariables() {
-                return context.variables;
-            }
-        };
-
-        RemoteShellContextHolder.setContext(shellContext);
+        ShellContext prevContext = ShellContextHolder.get(true);
+        ShellContextHolder.set(context.shellContext);
 
         try {
             context.close();
         }
         finally {
-            RemoteShellContextHolder.clearContext();
+            ShellContextHolder.set(prevContext);
         }
 
         CloseShellMessage.Result reply = new CloseShellMessage.Result();

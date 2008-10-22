@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.remote.server;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,13 +64,7 @@ public class RemoteShellImpl
     public ShellContext getContext() {
         ensureOpened();
 
-        ShellContext context = RemoteShellContextHolder.getContext();
-
-        if (context == null) {
-            throw new IllegalStateException("Shell context has not been initialized");
-        }
-
-        return context;
+        return ShellContextHolder.get();
     }
 
     public Object execute(final String line) throws Exception {

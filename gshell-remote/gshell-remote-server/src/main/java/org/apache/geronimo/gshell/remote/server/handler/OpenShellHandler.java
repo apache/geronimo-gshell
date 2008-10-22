@@ -23,12 +23,10 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
-import org.apache.geronimo.gshell.remote.server.RemoteShellContextHolder;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.geronimo.gshell.spring.BeanContainerImpl;
 import org.apache.geronimo.gshell.whisper.transport.Session;
 
 import java.util.UUID;
@@ -68,8 +66,14 @@ public class OpenShellHandler
         context.io = new RemoteIO(session);
         context.variables = new Variables();
 
-        // HACK: Need a shell context, but currently that muck is not exposed, so make a new one
-        ShellContext shellContext = new ShellContext() {
+        // Create a new shell instance
+        context.shell = context.container.getBean("remoteShell", Shell.class);
+
+        context.shellContext = new ShellContext() {
+            public Shell getShell() {
+                return context.shell;
+            }
+            
             public IO getIo() {
                 return context.io;
             }
@@ -78,16 +82,6 @@ public class OpenShellHandler
                 return context.variables;
             }
         };
-
-        RemoteShellContextHolder.setContext(shellContext);
-
-        try {
-            // Create a new shell instance
-            context.shell = context.container.getBean("remoteShell", Shell.class);
-        }
-        finally {
-            RemoteShellContextHolder.clearContext();
-        }
 
         OpenShellMessage.Result reply = new OpenShellMessage.Result();
         reply.setCorrelationId(message.getId());
