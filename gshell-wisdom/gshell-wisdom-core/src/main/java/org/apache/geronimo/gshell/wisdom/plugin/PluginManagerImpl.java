@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
-import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
@@ -67,19 +66,16 @@ public class PluginManagerImpl
 
     private final EventManager eventManager;
 
-    private final EventPublisher eventPublisher;
-
     private BeanContainer container;
 
     private Set<Plugin> plugins = new LinkedHashSet<Plugin>();
 
-    public PluginManagerImpl(final ApplicationManager applicationManager, final EventManager eventManager, final EventPublisher eventPublisher) {
+    public PluginManagerImpl(final ApplicationManager applicationManager, final EventManager eventManager) {
         assert applicationManager != null;
         this.applicationManager = applicationManager;
+
         assert eventManager != null;
         this.eventManager = eventManager;
-        assert eventPublisher != null;
-        this.eventPublisher = eventPublisher;
     }
 
     public void setBeanContainer(final BeanContainer container) {
@@ -156,7 +152,7 @@ public class PluginManagerImpl
 
         log.debug("Loaded plugin in: {}", watch);
         
-        eventPublisher.publish(new PluginLoadedEvent(plugin, artifact));
+        eventManager.getPublisher().publish(new PluginLoadedEvent(plugin, artifact));
     }
 
     private ClassPath loadClassPath(final Application application, final Artifact artifact) throws Exception {

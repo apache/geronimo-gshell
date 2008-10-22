@@ -33,7 +33,7 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <bean id="org.apache.commons.vfs.provider.FileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator">
+    <bean id="fileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator">
         <constructor-arg value="${basedir}/target/tmp"/>
     </bean>
 

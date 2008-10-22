@@ -40,7 +40,7 @@
         </property>
     </bean>
 
-    <bean id="org.apache.commons.vfs.provider.FileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator">
+    <bean id="fileReplicator" class="org.apache.commons.vfs.impl.DefaultFileReplicator">
         <constructor-arg value="${gshell.home}/var/tmp"/>
     </bean>
 
@@ -53,11 +53,11 @@
 
         <property name="fileReplicator">
             <bean class="org.apache.commons.vfs.impl.PrivilegedFileReplicator">
-                <constructor-arg ref="org.apache.commons.vfs.provider.FileReplicator"/>
+                <constructor-arg ref="fileReplicator"/>
             </bean>
         </property>
 
-        <property name="temporaryFileStore" ref="org.apache.commons.vfs.provider.FileReplicator"/>
+        <property name="temporaryFileStore" ref="fileReplicator"/>
 
         <property name="fileContentInfoFactory">
             <bean class="org.apache.commons.vfs.impl.FileContentInfoFilenameFactory"/>
@@ -159,7 +159,6 @@
     
     <bean id="pluginManager" class="org.apache.geronimo.gshell.wisdom.plugin.PluginManagerImpl">
         <constructor-arg ref="applicationManager"/>
-        <constructor-arg ref="eventManager"/>
         <constructor-arg ref="eventManager"/>
     </bean>
 
