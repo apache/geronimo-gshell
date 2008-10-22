@@ -23,11 +23,10 @@
 
 package org.apache.geronimo.gshell.whisper.ssl;
 
+import org.apache.geronimo.gshell.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.geronimo.gshell.io.Closer;
 
-import javax.annotation.PostConstruct;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.SSLContext;
@@ -90,7 +89,7 @@ public class BogusSSLContextFactory
 
     private SSLContext clientInstance;
 
-    @PostConstruct
+    // @PostConstruct
     public synchronized void init() throws Exception {
         if (preload) {
             log.debug("Preloading SSLContext instances");

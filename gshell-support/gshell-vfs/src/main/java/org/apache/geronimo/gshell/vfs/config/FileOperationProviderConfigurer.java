@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.vfs.config;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.operations.FileOperationProvider;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class FileOperationProviderConfigurer
         schemes.add(scheme);
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() throws FileSystemException {
         // TODO: Handle nulls & exceptions
 

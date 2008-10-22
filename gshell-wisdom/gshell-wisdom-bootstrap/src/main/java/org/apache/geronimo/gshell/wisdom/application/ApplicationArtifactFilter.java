@@ -35,7 +35,6 @@ public class ApplicationArtifactFilter
     implements Filter
 {
     private static final String[] EXCLUDES = {
-        "geronimo-annotation_1.0_spec",
         "gshell-ansi",
         "gshell-api",
         "gshell-artifact",

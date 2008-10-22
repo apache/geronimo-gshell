@@ -28,7 +28,6 @@ import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRemovedEvent;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class CommandNameCompleter
         this.commandRegistry = commandRegistry;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         // Populate the initial list of command names
         Collection<String> names = commandRegistry.getCommandNames();

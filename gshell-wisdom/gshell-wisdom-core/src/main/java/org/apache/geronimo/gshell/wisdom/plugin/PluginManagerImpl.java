@@ -47,7 +47,6 @@ import org.apache.ivy.core.resolve.ResolveOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -89,7 +88,7 @@ public class PluginManagerImpl
         this.container = container;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         assert eventManager != null;
         eventManager.addListener(new EventListener() {

@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.vfs.config;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Configures a MIME type mapping.
  *
@@ -41,7 +39,7 @@ public class MimeTypeMapConfigurer
         this.scheme = scheme;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         if (mimeType == null) {
             throw new RuntimeException("Missing property: mimeType");

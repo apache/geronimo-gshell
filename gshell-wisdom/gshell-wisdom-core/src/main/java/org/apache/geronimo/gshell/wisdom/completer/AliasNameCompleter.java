@@ -28,7 +28,6 @@ import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.wisdom.registry.AliasRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.AliasRemovedEvent;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class AliasNameCompleter
         this.aliasRegistry = aliasRegistry;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         // Populate the initial list of alias names
         Collection<String> names = aliasRegistry.getAliasNames();

@@ -27,7 +27,6 @@ import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +44,7 @@ public class MetaDataRegistryImpl
 
     private String rootFileName = MetaFileName.SCHEME + ":/";
 
-    @PostConstruct
+    // @PostConstruct
     public void init() throws FileSystemException {
         // Register the root folder
         MetaFileNameParser parser = new MetaFileNameParser();

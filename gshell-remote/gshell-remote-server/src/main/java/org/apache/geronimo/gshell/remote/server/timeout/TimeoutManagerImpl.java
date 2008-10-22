@@ -19,18 +19,16 @@
 
 package org.apache.geronimo.gshell.remote.server.timeout;
 
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-
 import org.apache.geronimo.gshell.chronos.Duration;
-import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
 import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.apache.geronimo.gshell.whisper.util.NamedThreadFactory;
 import org.apache.geronimo.gshell.whisper.util.SessionAttributeBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Default {@link TimeoutManager} implementation.
@@ -46,7 +44,7 @@ public class TimeoutManagerImpl
 
     private ScheduledThreadPoolExecutor scheduler;
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         ThreadFactory tf = new NamedThreadFactory(getClass());
         scheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), tf);

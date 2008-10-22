@@ -65,7 +65,7 @@ public class BeanContainerImpl
 
         // Hook up annotation processing
         // context.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
-        context.addBeanPostProcessor(new LifecycleProcessor());
+        // context.addBeanPostProcessor(new LifecycleProcessor());
 
         // Add automatic trace logging of loaded beans
         context.addBeanFactoryPostProcessor(new LoggingProcessor());

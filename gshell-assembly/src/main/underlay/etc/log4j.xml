@@ -21,7 +21,7 @@
 <!-- $Rev$ $Date$ -->
 
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-        
+
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
@@ -35,7 +35,7 @@
     <appender name="FILE" class="org.apache.log4j.FileAppender">
         <param name="File" value="${gshell.home}/var/log/gshell.log"/>
         <param name="Append" value="false"/>
-        <param name="Threshold" value="${gshell.log.console.level}"/>
+        <param name="Threshold" value="DEBUG"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p (%t) [%c] %m%n"/>
         </layout>
@@ -45,19 +45,7 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.apache.geronimo.gshell.artifact.GShellArtifactMetadataSource">
-        <level value="DEBUG"/>
-    </logger>
-
-    <logger name="org.apache.geronimo.gshell.artifact.monitor.ProgressSpinnerMonitor">
-        <level value="INFO"/>
-    </logger>
-
     <logger name="org.apache.geronimo.gshell.application.ApplicationSecurityManager">
-        <level value="DEBUG"/>
-    </logger>
-
-    <logger name="org.apache.geronimo.gshell.application.model.interpolate.InterpolatorSupport">
         <level value="DEBUG"/>
     </logger>
 
@@ -65,24 +53,8 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.codehaus.plexus.PlexusContainer">
-        <level value="INFO"/>
-    </logger>
-
     <logger name="org.apache.mina.filter.executor.ExecutorFilter">
         <level value="INFO"/>
-    </logger>
-
-    <logger name="org.apache.maven">
-        <level value="INFO"/>
-    </logger>
-
-    <logger name="org.apache.maven.artifact.manager">
-        <level value="ERROR"/>
-    </logger>
-
-    <logger name="org.apache.maven.artifact.repository.metadata">
-        <level value="WARN"/>
     </logger>
 
     <logger name="org.springframework">
@@ -93,12 +65,6 @@
         <level value="INFO"/>
     </logger>
 
-    <!--
-    <logger name="org.apache.geronimo.gshell.spring.BeanContainerContextImpl">
-        <level value="WARN"/>
-    </logger>
-    -->
-    
     <logger name="org.apache.commons.vfs.cache">
         <level value="INFO"/>
     </logger>

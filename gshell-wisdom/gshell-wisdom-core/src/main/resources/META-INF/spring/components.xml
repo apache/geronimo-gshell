@@ -23,7 +23,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
-       default-autowire="no">
+       default-autowire="no"
+       default-dependency-check="none"
+       default-init-method="init"
+       default-destroy-method="destroy">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
@@ -250,6 +253,7 @@
     <bean id="commandsCompleter" class="org.apache.geronimo.gshell.wisdom.completer.CommandsCompleter" lazy-init="true">
         <constructor-arg ref="eventManager"/>
         <constructor-arg ref="commandRegistry"/>
+        <constructor-arg ref="fileSystemAccess"/>
     </bean>
 
     <bean id="variableNameCompleter" class="org.apache.geronimo.gshell.wisdom.completer.VariableNameCompleter" lazy-init="true">

@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.whisper.transport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class TransportFactoryLocatorImpl<T extends TransportFactory>
         this.factories = factories;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         if (factories == null) {
             log.warn("No transport factories discovered");

@@ -38,7 +38,6 @@ import org.apache.geronimo.gshell.shell.ShellContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -90,7 +89,7 @@ public class ShellImpl
         return true;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public synchronized void init() throws Exception {
         if (opened) {
             throw new IllegalStateException("Shell is already opened");

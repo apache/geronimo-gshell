@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.spring;
 
-import javax.annotation.PostConstruct;
-
 import junit.framework.Assert;
 
 /**
@@ -53,7 +51,7 @@ public class BeanContainerAwareProcessorTest
             this.container = container;
         }
 
-        @PostConstruct
+        // @PostConstruct
         public void init() {
             initialized = true;
             Assert.assertNotNull(container);

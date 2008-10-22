@@ -26,8 +26,6 @@ import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Handles mapping of plugins under <tt>meta:/plugins</tt>.
  *
@@ -49,7 +47,7 @@ public class PluginMetaMapper
         this.metaRegistry = metaRegistry;
     }
     
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         assert metaRegistry != null;
         metaConfig = new MetaDataRegistryConfigurer(metaRegistry);

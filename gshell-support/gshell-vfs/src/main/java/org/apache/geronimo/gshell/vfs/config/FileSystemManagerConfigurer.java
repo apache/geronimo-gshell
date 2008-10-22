@@ -23,8 +23,6 @@ import org.apache.commons.vfs.FileSystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Support for configuration of a {@link FileSystemManager}.
  *
@@ -51,7 +49,7 @@ public class FileSystemManagerConfigurer
         this.fileSystemManager = fileSystemManager;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         assert fileSystemManager != null;
         log.debug("Configuring file system manager: {}", fileSystemManager);

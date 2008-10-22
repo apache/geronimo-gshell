@@ -57,8 +57,10 @@ public class RshServer
     public RshServer(final TimeoutManager timeoutManager, final TransportFactoryLocator locator, final List<ServerMessageHandler> handlers) {
         assert timeoutManager != null;
         this.timeoutManager = timeoutManager;
+
         assert locator != null;
         this.locator = locator;
+
         assert handlers != null;
         this.handlers = handlers;
     }

@@ -23,7 +23,6 @@ import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 
 /**
@@ -46,7 +45,7 @@ public class MetaDataInstaller
         this.contentNodes = nodes;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() throws Exception {
         assert metaRegistry != null;
         MetaDataRegistryConfigurer metaConfig = new MetaDataRegistryConfigurer(metaRegistry);

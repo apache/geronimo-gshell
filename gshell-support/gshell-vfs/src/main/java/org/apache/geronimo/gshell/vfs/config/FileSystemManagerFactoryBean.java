@@ -35,8 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Spring {@link FactoryBean} to construct a {@link FileSystemManager} instance.
  *
@@ -85,7 +83,7 @@ public class FileSystemManagerFactoryBean
         this.defaultProvider = provider;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         if (filesCache == null) {
             filesCache = new SoftRefFilesCache();

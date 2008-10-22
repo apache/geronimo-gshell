@@ -31,8 +31,6 @@ import org.codehaus.plexus.interpolation.StringSearchInterpolator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-
 /**
  * {@link Console.Prompter} component.
  *
@@ -56,7 +54,7 @@ public class ConsolePrompterImpl
         this.application = application;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         assert application != null;
         interp.addValueSource(new PrefixedObjectValueSource("application", application));

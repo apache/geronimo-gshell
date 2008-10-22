@@ -27,8 +27,6 @@ import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Handles mapping of aliases under <tt>meta:/aliases</tt>.
  *
@@ -54,7 +52,7 @@ public class AliasMetaMapper
         this.aliasRegistry = aliasRegistry;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public synchronized void init() throws Exception {
         assert metaRegistry != null;
         metaConfig = new MetaDataRegistryConfigurer(metaRegistry);

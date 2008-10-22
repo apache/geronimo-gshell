@@ -29,10 +29,10 @@ import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRemovedEvent;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -53,22 +53,28 @@ public class CommandsCompleter
 
     private final CommandRegistry commandRegistry;
 
+    private final FileSystemAccess fileSystemAccess;
+
     private final Map<String,Completor> completors = new HashMap<String,Completor>();
 
     private final AggregateCompleter delegate = new AggregateCompleter();
 
-    public CommandsCompleter(final EventManager eventManager, final CommandRegistry commandRegistry) {
+    public CommandsCompleter(final EventManager eventManager, final CommandRegistry commandRegistry, final FileSystemAccess fileSystemAccess) {
         assert eventManager != null;
         this.eventManager = eventManager;
+
         assert commandRegistry != null;
         this.commandRegistry = commandRegistry;
+
+        assert fileSystemAccess != null;
+        this.fileSystemAccess = fileSystemAccess;
     }
 
     //
     // FIXME: This does not properly complete when in a command group :-(
     //
 
-    @PostConstruct
+    // @PostConstruct
     public void init() throws Exception {
         // Populate the initial list of completers from the currently registered commands
         Collection<String> names = commandRegistry.getCommandNames();
