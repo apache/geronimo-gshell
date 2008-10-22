@@ -63,10 +63,6 @@ public class BeanContainerImpl
         // Add support for BeanContainerAware
         context.addBeanPostProcessor(new BeanContainerAwareProcessor(this));
 
-        // Hook up annotation processing
-        // context.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
-        // context.addBeanPostProcessor(new LifecycleProcessor());
-
         // Add automatic trace logging of loaded beans
         context.addBeanFactoryPostProcessor(new LoggingProcessor());
     }
@@ -96,12 +92,11 @@ public class BeanContainerImpl
         log.debug("Loaded beans after: {}", watch);
     }
 
-    public BeanContainer createChild(final String id, final Collection<URL> classPath) {
-        assert id != null;
+    public BeanContainer createChild(final Collection<URL> classPath) {
         // classPath may be null
 
-        log.debug("Creating child container: {}", id);
-
+        log.debug("Creating child container");
+        
         if (log.isTraceEnabled()) {
             if (classPath != null) {
                 log.trace("Classpath:");
@@ -120,17 +115,12 @@ public class BeanContainerImpl
             childLoader = new URLClassLoader(new URL[0], classLoader);
         }
 
-        //
-        // FIXME: Id is not used, either use it or drop it
-        //
         
         return new BeanContainerImpl(childLoader, this);
     }
 
-    public BeanContainer createChild(final String id) {
-        assert id != null;
-
-        return createChild(id, null);
+    public BeanContainer createChild() {
+        return createChild(null);
     }
     
     public <T> T getBean(final Class<T> type) {

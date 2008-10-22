@@ -23,13 +23,11 @@ import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteIO;
-import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.whisper.transport.Session;
-
-import java.util.UUID;
 
 /**
  * Server handler for {@link OpenShellMessage} messages.
@@ -56,8 +54,7 @@ public class OpenShellHandler
         assert message != null;
 
         // Create a new container which will be the parent for our remote shells
-        String id = "gshell.remote-shell[" + UUID.randomUUID() + "]";
-        context.container = container.createChild(id);
+        context.container = container.createChild();
         context.container.loadBeans(new String[] {
             "classpath*:META-INF/spring/components.xml"
         });

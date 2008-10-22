@@ -46,7 +46,7 @@ public interface BeanContainer
 
     String[] getBeanNames(Class type);
 
-    BeanContainer createChild(String id, Collection<URL> classPath);
+    BeanContainer createChild(Collection<URL> classPath);
 
-    BeanContainer createChild(String id);
+    BeanContainer createChild();
 }

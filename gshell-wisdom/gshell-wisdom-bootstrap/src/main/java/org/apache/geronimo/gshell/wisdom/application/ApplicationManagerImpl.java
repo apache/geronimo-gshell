@@ -125,7 +125,7 @@ public class ApplicationManagerImpl
         ClassPath classPath = loadClassPath(model);
         app.initClassPath(classPath);
 
-        BeanContainer child = container.createChild("gshell.application(" + model.getId() + ")", classPath.getUrls());
+        BeanContainer child = container.createChild(classPath.getUrls());
         log.debug("Application container: {}", child);
 
         child.loadBeans(new String[] {
