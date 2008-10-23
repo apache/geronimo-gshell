@@ -61,7 +61,8 @@ public abstract class Descriptor
         }
         
         this.required = required;
-        this.handler = handler;
+        // On IBM JDK, the value passed is null instead of the default value, so fix it in case
+        this.handler = handler != null ? handler : Handler.class;
         this.multiValued = multiValued;
     }
 
