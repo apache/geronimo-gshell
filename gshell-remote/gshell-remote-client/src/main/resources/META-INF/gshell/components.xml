@@ -30,7 +30,7 @@
 
     <bean class="org.apache.geronimo.gshell.remote.client.RshClient" scope="prototype">
         <constructor-arg ref="cryptoContext"/>
-        <constructor-arg ref="transportFactoryLocatory"/>
+        <constructor-arg ref="transportFactoryLocator"/>
         <constructor-arg>
             <list>
                 <bean class="org.apache.geronimo.gshell.remote.client.handler.EchoHandler"/>
