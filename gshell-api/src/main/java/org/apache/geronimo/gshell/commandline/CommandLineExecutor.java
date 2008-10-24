@@ -62,14 +62,4 @@ public interface CommandLineExecutor
      */
     Object execute(ShellContext context, Object... args) throws Exception;
 
-    /**
-     * Execute a piped-command-line.
-     *
-     * @param context   The executing shell's context.
-     * @param commands  Command arguments.
-     * @return          Command execution result.
-     *
-     * @throws Exception    Command-line execution failed.
-     */
-    Object execute(ShellContext context, Object[][] commands) throws Exception;
 }

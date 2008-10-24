@@ -27,27 +27,14 @@ import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLine;
 import org.apache.geronimo.gshell.commandline.CommandLineBuilder;
-import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailed;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
-import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.SystemOutputHijacker;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
-import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.shell.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The default {@link CommandLineExecutor} component.
@@ -117,102 +104,6 @@ public class CommandLineExecutorImpl
         log.info("Executing ({}): [{}]", path, Arguments.asString(args));
 
         return doExecute(context, path, args);
-    }
-
-    public Object execute(final ShellContext context, final Object[][] commands) throws Exception {
-        assert context != null;
-        assert commands != null;
-
-        log.info("Executing (Object[][]): {}", Arguments.asString(commands));
-
-        // Prepare IOs
-        final IO[] ios = new IO[commands.length];
-        PipedOutputStream pos = null;
-
-        IO io = context.getIo();
-
-        for (int i = 0; i < ios.length; i++) {
-            InputStream is = (i == 0) ? io.inputStream : new PipedInputStream(pos);
-            OutputStream os;
-
-            if (i == ios.length - 1) {
-                os = io.outputStream;
-            }
-            else {
-                os = pos = new PipedOutputStream();
-            }
-
-            ios[i] = new IO(is, new PrintStream(os), io.errorStream);
-        }
-
-        Thread[] threads = new Thread[commands.length];
-        final List<Throwable> errors = new CopyOnWriteArrayList<Throwable>();
-        final AtomicReference<Object> ref = new AtomicReference<Object>();
-
-        for (int i = 0; i < commands.length; i++) {
-            final int idx = i;
-
-            threads[i] = createThread(new Runnable() {
-                public void run() {
-                    try {
-                        ShellContext pipedContext = new ShellContext() {
-                            public Shell getShell() {
-                                return context.getShell();
-                            }
-
-                            public IO getIo() {
-                                return ios[idx];
-                            }
-
-                            public Variables getVariables() {
-                                return context.getVariables();
-                            }
-                        };
-
-                        Object obj = execute(pipedContext, String.valueOf(commands[idx][0]), Arguments.shift(commands[idx]));
-
-                        if (idx == commands.length - 1) {
-                            ref.set(obj);
-                        }
-                    }
-                    catch (Throwable t) {
-                        errors.add(t);
-                    }
-                    finally {
-                        if (idx > 0) {
-                            Closer.close(ios[idx].inputStream);
-                        }
-                        if (idx < commands.length - 1) {
-                            Closer.close(ios[idx].outputStream);
-                        }
-                    }
-                }
-            });
-
-            threads[i].start();
-        }
-
-        for (int i = 0; i < commands.length; i++) {
-            threads[i].join();
-        }
-
-        if (!errors.isEmpty()) {
-            Throwable t = errors.get(0);
-
-            // Always preserve the type of notication throwables, reguardless of the trace
-            if (t instanceof Notification) {
-                throw (Notification)t;
-            }
-
-            // Otherwise wrap to preserve the trace
-            throw new CommandLineExecutionFailed(t);
-        }
-
-        return ref.get();
-    }
-
-    protected Thread createThread(final Runnable task) {
-        return new Thread(task);
     }
 
     protected Object doExecute(final ShellContext context, final String path, final Object[] args) throws Exception {

@@ -20,7 +20,9 @@
 package org.apache.geronimo.gshell.parser.visitor;
 
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailed;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
+import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
 import org.apache.geronimo.gshell.parser.ASTExpression;
 import org.apache.geronimo.gshell.parser.ASTOpaqueString;
@@ -30,13 +32,26 @@ import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
 import org.apache.geronimo.gshell.command.Arguments;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.interpolation.VariableInterpolator;
 import org.apache.geronimo.gshell.shell.ShellContext;
+import org.apache.geronimo.gshell.shell.Shell;
+import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
+import java.io.PipedOutputStream;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.IOException;
 
 /**
  * Visitor which will execute command-lines as parsed.
@@ -46,7 +61,7 @@ import java.util.List;
 public class ExecutingVisitor
     implements CommandLineParserVisitor
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger MetaDataRegistryConfigurerTestlog = LoggerFactory.getLogger(getClass());
 
     private final ShellContext context;
 
@@ -97,7 +112,7 @@ public class ExecutingVisitor
         }
 
         try {
-            return executor.execute(context, commands);
+            return executePiped(commands);
         }
         catch (Exception e) {
             String s = Arguments.asString(commands[0]);
@@ -146,4 +161,98 @@ public class ExecutingVisitor
 
         return appendString(node.getValue(), data);
     }
+
+    protected Thread createThread(final Runnable task) {
+        return new Thread(task);
+    }
+
+    private Object executePiped(final Object[][] commands) throws CommandLineExecutionFailed, InterruptedException, IOException {
+        // Prepare IOs
+        final IO[] ios = new IO[commands.length];
+        PipedOutputStream pos = null;
+
+        IO io = this.context.getIo();
+
+        for (int i = 0; i < ios.length; i++) {
+            InputStream is = (i == 0) ? io.inputStream : new PipedInputStream(pos);
+            OutputStream os;
+
+            if (i == ios.length - 1) {
+                os = io.outputStream;
+            }
+            else {
+                os = pos = new PipedOutputStream();
+            }
+
+            ios[i] = new IO(is, new PrintStream(os), io.errorStream);
+        }
+
+        final List<Throwable> errors = new CopyOnWriteArrayList<Throwable>();
+        final AtomicReference<Object> ref = new AtomicReference<Object>();
+        final CountDownLatch latch = new CountDownLatch(commands.length);
+
+        for (int i = 0; i < commands.length; i++) {
+            final int idx = i;
+
+            Runnable r = new Runnable() {
+                public void run() {
+                    try {
+                        ShellContext pipedContext = new ShellContext() {
+                            public Shell getShell() {
+                                return ExecutingVisitor.this.context.getShell();
+                            }
+
+                            public IO getIo() {
+                                return ios[idx];
+                            }
+
+                            public Variables getVariables() {
+                                return ExecutingVisitor.this.context.getVariables();
+                            }
+                        };
+
+                        Object obj = executor.execute(pipedContext, String.valueOf(commands[idx][0]), Arguments.shift(commands[idx]));
+
+                        if (idx == commands.length - 1) {
+                            ref.set(obj);
+                        }
+                    }
+                    catch (Throwable t) {
+                        errors.add(t);
+                    }
+                    finally {
+                        if (idx > 0) {
+                            Closer.close(ios[idx].inputStream);
+                        }
+                        if (idx < commands.length - 1) {
+                            Closer.close(ios[idx].outputStream);
+                        }
+                        latch.countDown();
+                    }
+                }
+            };
+            if (idx != commands.length - 1) {
+                createThread(r).start();
+            } else {
+                r.run();
+            }
+        }
+
+        latch.await();
+
+        if (!errors.isEmpty()) {
+            Throwable t = errors.get(0);
+
+            // Always preserve the type of notication throwables, reguardless of the trace
+            if (t instanceof Notification) {
+                throw (Notification)t;
+            }
+
+            // Otherwise wrap to preserve the trace
+            throw new CommandLineExecutionFailed(t);
+        }
+
+        return ref.get();
+    }
+
 }
