@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
@@ -83,7 +84,7 @@ public class CommandMetaMapper
 
     private FileName createName(final String name) throws FileSystemException {
         assert name != null;
-        return nameParser.parseUri("/commands/" + name);
+        return nameParser.parseUri(CommandResolver.COMMANDS_ROOT + "/" + name);
     }
 
     private void add(final String name, final Command command) throws Exception {

@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
@@ -82,7 +83,7 @@ public class AliasMetaMapper
 
     private FileName createName(final String name) throws FileSystemException {
         assert name != null;
-        return nameParser.parseUri("/aliases/" + name);
+        return nameParser.parseUri(CommandResolver.ALIASES_ROOT + "/" + name);
     }
 
     private void add(final String name, final String alias) throws Exception {

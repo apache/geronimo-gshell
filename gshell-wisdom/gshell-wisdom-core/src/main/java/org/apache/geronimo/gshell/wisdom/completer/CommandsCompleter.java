@@ -29,7 +29,6 @@ import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegisteredEvent;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRemovedEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
@@ -100,11 +99,11 @@ public class CommandsCompleter
                 }
                 else if (event instanceof MetaDataRegisteredEvent) {
                     MetaDataRegisteredEvent targetEvent = (MetaDataRegisteredEvent)event;
-                    log.debug("{}", targetEvent.getName());
+                    log.debug("+ {}", targetEvent.getName());
                 }
                 else if (event instanceof MetaDataRemovedEvent) {
                     MetaDataRemovedEvent targetEvent = (MetaDataRemovedEvent)event;
-                    log.debug("{}", targetEvent.getName());
+                    log.debug("- {}", targetEvent.getName());
                 }
             }
         });

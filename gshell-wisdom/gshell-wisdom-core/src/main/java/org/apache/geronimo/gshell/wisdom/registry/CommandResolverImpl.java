@@ -53,6 +53,8 @@ public class CommandResolverImpl
 
     private final FileSystemAccess fileSystemAccess;
 
+    private final GroupDirectoryResolver groupDirResolver;
+
     //
     // TODO: Consider using FileSystemManager.createVirtualFileSystem() to chroot for resolving?
     //
@@ -63,9 +65,12 @@ public class CommandResolverImpl
 
     private BeanContainer container;
 
-    public CommandResolverImpl(final FileSystemAccess fileSystemAccess) {
+    public CommandResolverImpl(final FileSystemAccess fileSystemAccess, final GroupDirectoryResolver groupDirResolver) {
         assert fileSystemAccess != null;
         this.fileSystemAccess = fileSystemAccess;
+
+        assert groupDirResolver != null;
+        this.groupDirResolver = groupDirResolver;
     }
 
     public void setBeanContainer(final BeanContainer container) {
@@ -159,14 +164,14 @@ public class CommandResolverImpl
             return getCommandsDirectory();
         }
         else if (name.equals(".")) {
-            return getGroupDirectory(variables);
+            return groupDirResolver.getGroupDirectory(variables);
         }
         
         Collection<String> searchPath = getSearchPath(variables);
 
         log.trace("Search path: {}", searchPath);
 
-        FileObject groupDir = getGroupDirectory(variables);
+        FileObject groupDir = groupDirResolver.getGroupDirectory(variables);
 
         log.trace("Group dir: {}", groupDir);
 
@@ -298,37 +303,6 @@ public class CommandResolverImpl
         }
 
         return aliasesDirectory;
-    }
-
-    private FileObject getGroupDirectory(final Variables vars) throws FileSystemException {
-        assert vars != null;
-
-        FileObject dir;
-
-        Object tmp = vars.get(GROUP);
-
-        if (tmp == null) {
-            dir = getCommandsDirectory();
-        }
-        else if (tmp instanceof String) {
-            log.trace("Resolving group directory from string: {}", tmp);
-            dir = fileSystemAccess.resolveFile(null, (String)tmp);
-        }
-        else if (tmp instanceof FileObject) {
-            dir = (FileObject)tmp;
-        }
-        else {
-            // Complain, then use the default so commands still work
-            log.error("Invalid type for variable '" + GROUP + "'; expected String or FileObject; found: " + tmp.getClass());
-            dir = getCommandsDirectory();
-        }
-
-        if (!isMetaFile(dir)) {
-            log.error("Command group did not resolve to a meta-file: {}", dir);
-            dir = getCommandsDirectory();
-        }
-
-        return dir;
     }
 
     private Command createCommand(final FileObject file) throws FileSystemException, CommandException {
