@@ -19,13 +19,16 @@
 
 package org.apache.geronimo.gshell.wisdom.registry;
 
+import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
 
 /**
  * Handles mapping of aliases under <tt>meta:/aliases</tt>.
@@ -41,30 +44,27 @@ public class AliasMetaMapper
 
     private final AliasRegistry aliasRegistry;
 
-    private MetaDataRegistryConfigurer metaConfig;
+    private final MetaFileNameParser nameParser = new MetaFileNameParser();
 
     public AliasMetaMapper(final EventManager eventManager, final MetaDataRegistry metaRegistry, final AliasRegistry aliasRegistry) {
         assert eventManager != null;
         this.eventManager = eventManager;
+
         assert metaRegistry != null;
         this.metaRegistry = metaRegistry;
+
         assert aliasRegistry != null;
         this.aliasRegistry = aliasRegistry;
     }
 
     // @PostConstruct
     public synchronized void init() throws Exception {
-        assert metaRegistry != null;
-        metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-
-        assert eventManager != null;
-        eventManager.addListener(this);
-
         // Add existing aliases in case some have already been registered
         for (String name : aliasRegistry.getAliasNames()) {
-            MetaData data = metaConfig.addFile("/aliases/" + name);
-            data.addAttribute("ALIAS", aliasRegistry.getAlias(name));
+            add(name, aliasRegistry.getAlias(name));
         }
+
+        eventManager.addListener(this);
     }
 
     public synchronized void onEvent(final Event event) throws Exception {
@@ -72,14 +72,35 @@ public class AliasMetaMapper
 
         if (event instanceof AliasRegisteredEvent) {
             AliasRegisteredEvent targetEvent = (AliasRegisteredEvent)event;
-
-            MetaData data = metaConfig.addFile("/aliases/" + targetEvent.getName());
-            data.addAttribute("ALIAS", targetEvent.getAlias());
+            add(targetEvent.getName(), targetEvent.getAlias());
         }
         else if (event instanceof AliasRemovedEvent) {
             AliasRemovedEvent targetEvent = (AliasRemovedEvent)event;
-
-            // TODO: Remove meta:/aliases/<name>
+            remove(targetEvent.getName());
         }
+    }
+
+    private FileName createName(final String name) throws FileSystemException {
+        assert name != null;
+        return nameParser.parseUri("/aliases/" + name);
+    }
+
+    private void add(final String name, final String alias) throws Exception {
+        assert name != null;
+        assert alias != null;
+
+        FileName fileName = createName(name);
+        MetaData data = new MetaData(fileName, FileType.FILE);
+        data.addAttribute("ALIAS", alias);
+
+        metaRegistry.registerData(fileName, data);
+    }
+
+    private void remove(final String name) throws Exception {
+        assert name != null;
+
+        FileName fileName = createName(name);
+
+        metaRegistry.removeData(fileName);
     }
 }

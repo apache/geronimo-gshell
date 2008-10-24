@@ -19,13 +19,17 @@
 
 package org.apache.geronimo.gshell.wisdom.registry;
 
+import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileType;
+import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
 
 /**
  * Handles mapping of commands under <tt>meta:/commands</tt>.
@@ -41,30 +45,27 @@ public class CommandMetaMapper
 
     private final CommandRegistry commandRegistry;
 
-    private MetaDataRegistryConfigurer metaConfig;
+    private final MetaFileNameParser nameParser = new MetaFileNameParser();
 
     public CommandMetaMapper(final EventManager eventManager, final MetaDataRegistry metaRegistry, final CommandRegistry commandRegistry) {
         assert eventManager != null;
         this.eventManager = eventManager;
+
         assert metaRegistry != null;
         this.metaRegistry = metaRegistry;
+
         assert commandRegistry != null;
         this.commandRegistry = commandRegistry;
     }
 
     // @PostConstruct
     public synchronized void init() throws Exception {
-        assert metaRegistry != null;
-        metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-
-        assert eventManager != null;
-        eventManager.addListener(this);
-
         // Add existing commands in case some have already been registered
         for (String name : commandRegistry.getCommandNames()) {
-            MetaData data = metaConfig.addFile("/commands/" + name);
-            data.addAttribute("COMMAND", commandRegistry.getCommand(name));
+            add(name, commandRegistry.getCommand(name));
         }
+
+        eventManager.addListener(this);
     }
 
     public synchronized void onEvent(final Event event) throws Exception {
@@ -72,18 +73,35 @@ public class CommandMetaMapper
 
         if (event instanceof CommandRegisteredEvent) {
             CommandRegisteredEvent targetEvent = (CommandRegisteredEvent)event;
-
-            //
-            // TODO: Need to allow command instances to be come _aware_ of their mapping (name + path)
-            //
-
-            MetaData data = metaConfig.addFile("/commands/" + targetEvent.getName());
-            data.addAttribute("COMMAND", targetEvent.getCommand());
+            add(targetEvent.getName(), targetEvent.getCommand());
         }
         else if (event instanceof CommandRemovedEvent) {
             CommandRemovedEvent targetEvent = (CommandRemovedEvent)event;
-
-            // TODO: Remove meta:/commands/<name>
+            remove(targetEvent.getName());
         }
+    }
+
+    private FileName createName(final String name) throws FileSystemException {
+        assert name != null;
+        return nameParser.parseUri("/commands/" + name);
+    }
+
+    private void add(final String name, final Command command) throws Exception {
+        assert name != null;
+        assert command != null;
+
+        FileName fileName = createName(name);
+        MetaData data = new MetaData(fileName, FileType.FILE);
+        data.addAttribute("COMMAND", command);
+
+        metaRegistry.registerData(fileName, data);
+    }
+
+    private void remove(final String name) throws Exception {
+        assert name != null;
+
+        FileName fileName = createName(name);
+
+        metaRegistry.removeData(fileName);
     }
 }

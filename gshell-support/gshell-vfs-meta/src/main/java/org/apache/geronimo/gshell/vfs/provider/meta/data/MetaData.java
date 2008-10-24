@@ -112,6 +112,10 @@ public class MetaData
         return attributes;
     }
 
+    //
+    // TODO: Allow enums for keys?
+    //
+    
     public void addAttribute(final String name, final Object value) {
         assert name != null;
         // value could be null

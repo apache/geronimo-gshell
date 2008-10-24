@@ -19,12 +19,16 @@
 
 package org.apache.geronimo.gshell.wisdom.plugin;
 
+import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileType;
+import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataRegistryConfigurer;
 
 /**
  * Handles mapping of plugins under <tt>meta:/plugins</tt>.
@@ -38,34 +42,54 @@ public class PluginMetaMapper
 
     private final MetaDataRegistry metaRegistry;
 
-    private MetaDataRegistryConfigurer metaConfig;
+    private final MetaFileNameParser nameParser = new MetaFileNameParser();
 
     public PluginMetaMapper(final EventManager eventManager, final MetaDataRegistry metaRegistry) {
         assert eventManager != null;
         this.eventManager = eventManager;
+
         assert metaRegistry != null;
         this.metaRegistry = metaRegistry;
     }
     
     // @PostConstruct
-    public void init() {
-        assert metaRegistry != null;
-        metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-
-        assert eventManager != null;
+    public synchronized void init() {
+        // TODO: add any existing plugins which may have been configured before we loaded
+        
         eventManager.addListener(this);
     }
 
-    public void onEvent(final Event event) throws Exception {
+    public synchronized void onEvent(final Event event) throws Exception {
         assert event != null;
 
         if (event instanceof PluginLoadedEvent) {
             PluginLoadedEvent targetEvent = (PluginLoadedEvent)event;
-
-            MetaData data = metaConfig.addFile("/plugins/" + targetEvent.getPlugin().getName());
-            data.addAttribute("PLUGIN", targetEvent.getPlugin());
+            add(targetEvent.getPlugin());
         }
 
         // TODO: Handle removing meta:/plugins/<name>
+    }
+
+    private FileName createName(final String name) throws FileSystemException {
+        assert name != null;
+        return nameParser.parseUri("/plugins/" + name);
+    }
+
+    private void add(final Plugin plugin) throws Exception {
+        assert plugin != null;
+
+        FileName fileName = createName(plugin.getName());
+        MetaData data = new MetaData(fileName, FileType.FILE);
+        data.addAttribute("PLUGIN", plugin);
+
+        metaRegistry.registerData(fileName, data);
+    }
+
+    private void remove(final String name) throws Exception {
+        assert name != null;
+
+        FileName fileName = createName(name);
+
+        metaRegistry.removeData(fileName);
     }
 }

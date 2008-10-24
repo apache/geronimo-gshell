@@ -30,8 +30,12 @@ import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegisteredEvent;
+import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRemovedEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRemovedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,25 +53,22 @@ import java.util.Map;
 public class CommandsCompleter
     implements Completor
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     private final EventManager eventManager;
 
     private final CommandRegistry commandRegistry;
-
-    private final FileSystemAccess fileSystemAccess;
 
     private final Map<String,Completor> completors = new HashMap<String,Completor>();
 
     private final AggregateCompleter delegate = new AggregateCompleter();
 
-    public CommandsCompleter(final EventManager eventManager, final CommandRegistry commandRegistry, final FileSystemAccess fileSystemAccess) {
+    public CommandsCompleter(final EventManager eventManager, final CommandRegistry commandRegistry) {
         assert eventManager != null;
         this.eventManager = eventManager;
 
         assert commandRegistry != null;
         this.commandRegistry = commandRegistry;
-
-        assert fileSystemAccess != null;
-        this.fileSystemAccess = fileSystemAccess;
     }
 
     //
@@ -96,6 +97,14 @@ public class CommandsCompleter
                 else if (event instanceof CommandRemovedEvent) {
                     CommandRemovedEvent targetEvent = (CommandRemovedEvent)event;
                     removeCompleter(targetEvent.getName());
+                }
+                else if (event instanceof MetaDataRegisteredEvent) {
+                    MetaDataRegisteredEvent targetEvent = (MetaDataRegisteredEvent)event;
+                    log.debug("{}", targetEvent.getName());
+                }
+                else if (event instanceof MetaDataRemovedEvent) {
+                    MetaDataRemovedEvent targetEvent = (MetaDataRemovedEvent)event;
+                    log.debug("{}", targetEvent.getName());
                 }
             }
         });

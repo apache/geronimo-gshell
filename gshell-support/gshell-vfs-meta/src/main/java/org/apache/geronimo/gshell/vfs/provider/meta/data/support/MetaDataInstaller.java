@@ -19,6 +19,7 @@
 
 package org.apache.geronimo.gshell.vfs.provider.meta.data.support;
 
+import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataContent;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegistry;
@@ -34,6 +35,8 @@ public class MetaDataInstaller
 {
     private final MetaDataRegistry metaRegistry;
 
+    private final MetaFileNameParser nameParser = new MetaFileNameParser();
+
     private Map<String,MetaDataContent> contentNodes;
 
     public MetaDataInstaller(final MetaDataRegistry metaRegistry) {
@@ -47,17 +50,11 @@ public class MetaDataInstaller
 
     // @PostConstruct
     public void init() throws Exception {
-        assert metaRegistry != null;
-        MetaDataRegistryConfigurer metaConfig = new MetaDataRegistryConfigurer(metaRegistry);
-
         if (contentNodes != null && !contentNodes.isEmpty()) {
             for (Map.Entry<String,MetaDataContent> entry : contentNodes.entrySet()) {
-                metaConfig.addContent(entry.getKey(), entry.getValue());
+                MetaData data = new MetaData(nameParser.parseUri(entry.getKey()), entry.getValue());
+                metaRegistry.registerData(data.getName(), data);
             }
         }
     }
-
-    //
-    // TODO: Merge this guy with MetaDataRegistryConfigurer, allow for spring+direct usage.
-    //
 }

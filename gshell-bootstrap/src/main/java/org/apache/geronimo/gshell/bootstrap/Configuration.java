@@ -44,6 +44,10 @@ public class Configuration
 
     private static final String DEFAULT_LOG4J_CONF = "org/apache/geronimo/gshell/bootstrap/default-log4j.xml";
 
+    //
+    // TODO: Support loading an optional properties file to merge into system for persistent customized configuration
+    //
+
     private File homeDir;
 
     private String programName;
