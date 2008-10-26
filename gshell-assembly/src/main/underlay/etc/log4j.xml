@@ -69,6 +69,10 @@
         <level value="INFO"/>
     </logger>
 
+    <logger name="org.apache.ivy.Ivy">
+        <level value="DEBUG"/>
+    </logger>
+    
     <root>
         <level value="${gshell.log.console.level}"/>
         <appender-ref ref="CONSOLE"/>

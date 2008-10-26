@@ -121,8 +121,6 @@ public abstract class BaseService
 
     protected void configure(final IoService service) throws Exception {
         assert service != null;
-
-        log.debug("Configure: {}", service);
         
         // Watch for service events
         service.addListener(new IoServiceListener() {
@@ -130,7 +128,7 @@ public abstract class BaseService
                 log.debug("Service activated: {}, filters:", service);
 
                 for (IoFilterChain.Entry entry : service.getFilterChain().getAll()) {
-                    log.debug("    {}", entry);
+                    log.debug("    {} -> {}", entry.getName(), entry.getFilter());
                 }
             }
 
@@ -142,16 +140,12 @@ public abstract class BaseService
                 log.debug("Session created: {}; filters:", session);
 
                 for (IoFilterChain.Entry entry : session.getFilterChain().getAll()) {
-                    log.debug("    {}", entry);
+                    log.debug("    {} -> {}", entry.getName(), entry.getFilter());
                 }
-
-                // Session.BINDER.bind(session, new SessionAdapter(session));
             }
 
             public void sessionDestroyed(final IoSession session) {
                 log.debug("Session destroyed: {}", session);
-
-                // Session.BINDER.unbind(session);
             }
         });
 
@@ -163,8 +157,6 @@ public abstract class BaseService
 
     protected void configure(final DefaultIoFilterChainBuilder chain) throws Exception {
         assert chain != null;
-
-        log.debug("Configure: {}", chain);
 
         //
         // HACK: For right now just add a few hard codded to test with, need to make all this spring configured
