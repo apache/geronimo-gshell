@@ -133,13 +133,13 @@ public class CommandResolverImpl
 
                 // Make sure whatever file we resolved is actually a meta file
                 if (!isMetaFile(file)) {
-                    log.warn("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
+                    log.debug("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
                     return null;
                 }
 
                 // Make sure we found a file in the meta:/commands tree
                 if (!file.getName().getPath().startsWith("/aliases")) {
-                    log.warn("Command name '{}' did not resolve under " + ALIASES_ROOT + "; found: {}", name, file);
+                    log.debug("Command name '{}' did not resolve under " + ALIASES_ROOT + "; found: {}", name, file);
                     return null;
                 }
 
@@ -209,13 +209,13 @@ public class CommandResolverImpl
 
             // Make sure whatever file we resolved is actually a meta file
             if (!isMetaFile(file)) {
-                log.warn("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
+                log.debug("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
                 return null;
             }
 
             // Make sure we found a file in the meta:/commands tree
             if (!file.getName().getPath().startsWith("/commands")) {
-                log.warn("Command name '{}' did not resolve under " + COMMANDS_ROOT + "; found: {}", name, file);
+                log.debug("Command name '{}' did not resolve under " + COMMANDS_ROOT + "; found: {}", name, file);
                 return null;
             }
         }
