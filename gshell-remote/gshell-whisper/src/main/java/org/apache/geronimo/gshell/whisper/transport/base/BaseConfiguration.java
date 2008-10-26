@@ -21,7 +21,6 @@ package org.apache.geronimo.gshell.whisper.transport.base;
 
 import org.apache.geronimo.gshell.yarn.Yarn;
 import org.apache.mina.common.IoHandler;
-import org.apache.mina.common.ThreadModel;
 
 /**
  * Provides the base configuration for transport services.
@@ -32,22 +31,12 @@ public class BaseConfiguration
 {
     private IoHandler handler;
 
-    private ThreadModel threadModel;
-
     public void setHandler(final IoHandler handler) {
         this.handler = handler;
     }
 
     public IoHandler getHandler() {
         return handler;
-    }
-
-    public ThreadModel getThreadModel() {
-        return threadModel;
-    }
-
-    public void setThreadModel(final ThreadModel threadModel) {
-        this.threadModel = threadModel;
     }
 
     public String toString() {

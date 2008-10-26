@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import javax.security.auth.login.LoginException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Closeable;
 import java.net.URI;
 import java.util.List;
 
@@ -51,6 +52,7 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 public class RshClient
+    implements Closeable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 

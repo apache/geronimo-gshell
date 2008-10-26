@@ -108,28 +108,26 @@ public class RshAction
         IO io = context.getIo();
         MessageSource messages = context.getCommand().getMessages();
 
+        io.info(messages.format("info.connecting", remote));
+        
         // If the username/password was not configured via cli, then prompt the user for the values
         if (username == null || password == null) {
             PromptReader prompter = new PromptReader(io);
             String text;
 
+            log.debug("Prompting user for credentials");
+            
             if (username == null) {
                 text = messages.getMessage("prompt.username");
                 username = prompter.readLine(text + ": ", new UsernamePasswordValidator(text));
-                assert username != null;
-                assert username.length() != 0;
             }
 
             if (password == null) {
                 text = messages.getMessage("prompt.password");
                 password = prompter.readLine(text + ": ", new UsernamePasswordValidator(text));
-                assert password != null;
-                assert password.length() != 0;
             }
         }
         
-        io.info(messages.format("info.connecting", remote));
-
         // Create the client from prototype
         RshClient client = container.getBean(RshClient.class);
 

@@ -96,7 +96,7 @@ public class LoggingProcessor
         if (log.isTraceEnabled()) {
             try {
                 String xml = render(beanFactory);
-                log.trace("Bean factory contents: {}", xml);
+                log.trace("Bean factory contents:\n{}", xml);
             }
             catch (Exception e) {
                 log.error("Failed to render bean factory contents", e);

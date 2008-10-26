@@ -27,11 +27,9 @@ import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoConnector;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
-import org.apache.mina.common.ThreadModel;
 
 import java.net.SocketAddress;
 import java.net.URI;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Support for {@link Transport} implementations.
@@ -42,8 +40,6 @@ public abstract class BaseTransport<T extends IoConnector>
     extends BaseService
     implements Transport
 {
-    private static final AtomicLong INSTANCE_COUNTER = new AtomicLong(0);
-
     private static final SessionAttributeBinder<Transport> TRANSPORT = new SessionAttributeBinder<Transport>(Transport.class);
 
     protected URI remoteLocation;
@@ -60,11 +56,6 @@ public abstract class BaseTransport<T extends IoConnector>
 
     protected BaseTransport(final AddressFactory addressFactory) {
         super(addressFactory);
-    }
-
-    @Override
-    protected synchronized ThreadModel createThreadModel() throws Exception {
-        return new ThreadPoolModel(getClass(), INSTANCE_COUNTER);
     }
 
     //

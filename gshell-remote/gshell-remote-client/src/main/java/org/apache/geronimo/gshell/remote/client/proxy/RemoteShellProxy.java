@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.ansi.AnsiRenderer;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.console.JLineConsole;
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.remote.client.RshClient;
 import org.apache.geronimo.gshell.shell.ShellContext;
@@ -110,10 +111,7 @@ public class RemoteShellProxy
         }
         catch (Exception ignore) {}
 
-        try {
-            outputFeeder.close();
-        }
-        catch (Exception ignore) {}
+        Closer.close(outputFeeder);
 
         opened = false;
     }

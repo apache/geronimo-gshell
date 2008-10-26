@@ -38,10 +38,12 @@ import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.common.ThreadModel;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
+import org.apache.mina.filter.executor.ExecutorFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.concurrent.Executors;
 
 /**
  * Common bits for {@link Transport} and {@link TransportServer} implementations.
@@ -117,21 +119,6 @@ public abstract class BaseService
         return handler;
     }
 
-    private ThreadModel threadModel;
-
-    protected synchronized ThreadModel createThreadModel() throws Exception {
-        return null;
-    }
-
-    protected synchronized ThreadModel getThreadModel() throws Exception {
-        if (threadModel == null) {
-            threadModel = createThreadModel();
-        }
-
-        // This can be null to leave the default model installed
-        return threadModel;
-    }
-
     protected void configure(final IoService service) throws Exception {
         assert service != null;
 
@@ -169,22 +156,9 @@ public abstract class BaseService
         });
 
 
-        configure(service.getDefaultConfig());
+        service.getDefaultConfig().setThreadModel(ThreadModel.MANUAL);
         
         configure(service.getFilterChain());
-    }
-
-    protected void configure(final IoServiceConfig config) throws Exception {
-        assert config != null;
-
-        log.debug("Configure: {}", config);
-
-        ThreadModel threadModel = getThreadModel();
-
-        if (threadModel != null) {
-            config.setThreadModel(threadModel);
-            log.debug("Installed custom thread model: {}", threadModel);
-        }
     }
 
     protected void configure(final DefaultIoFilterChainBuilder chain) throws Exception {
@@ -199,6 +173,8 @@ public abstract class BaseService
         chain.addLast(SessionBindingFilter.class.getSimpleName(), new SessionBindingFilter());
 
         chain.addLast(ProtocolCodecFilter.class.getSimpleName(), new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+
+        chain.addLast(ExecutorFilter.class.getSimpleName(), new ExecutorFilter(Executors.newCachedThreadPool()));
 
         chain.addLast(LoggingFilter.class.getSimpleName(), new LoggingFilter());
 

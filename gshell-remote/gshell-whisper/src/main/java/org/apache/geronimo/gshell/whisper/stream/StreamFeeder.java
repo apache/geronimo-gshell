@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -32,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version $Rev$ $Date$
  */
 public class StreamFeeder
-    implements Runnable
+    implements Runnable, Closeable
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 

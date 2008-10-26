@@ -33,6 +33,7 @@ import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegisteredEvent
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRemovedEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRemovedEvent;
+import org.apache.commons.vfs.FileName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +61,8 @@ public class CommandsCompleter
 
     private final Map<String,Completor> completors = new HashMap<String,Completor>();
 
+    private final Map<FileName,Completor> groupCompleters = new HashMap<FileName,Completor>();
+
     private final AggregateCompleter delegate = new AggregateCompleter();
 
     public CommandsCompleter(final EventManager eventManager, final CommandRegistry commandRegistry) {
@@ -75,6 +78,9 @@ public class CommandsCompleter
     //        and look for an attribute on the file, which is the completer.  If it does not exist, then build a new one
     //        and attach it, else use what we found.  Pending how to deal with dynamic add/remove muck.  May need to add
     //        events to the MetaRegistry?
+
+    //
+    // TODO: Re-write to use meta:/commands and then dynamically lookup the specific completer to use.
     //
 
     // @PostConstruct
@@ -97,6 +103,7 @@ public class CommandsCompleter
                     CommandRemovedEvent targetEvent = (CommandRemovedEvent)event;
                     removeCompleter(targetEvent.getName());
                 }
+                /*
                 else if (event instanceof MetaDataRegisteredEvent) {
                     MetaDataRegisteredEvent targetEvent = (MetaDataRegisteredEvent)event;
                     log.debug("+ {}", targetEvent.getName());
@@ -105,6 +112,7 @@ public class CommandsCompleter
                     MetaDataRemovedEvent targetEvent = (MetaDataRemovedEvent)event;
                     log.debug("- {}", targetEvent.getName());
                 }
+                */
             }
         });
     }
