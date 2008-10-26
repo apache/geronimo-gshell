@@ -19,8 +19,13 @@
 
 package org.apache.geronimo.gshell.parser.visitor;
 
-import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.command.Arguments;
+import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutionFailed;
+import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
+import org.apache.geronimo.gshell.interpolation.VariableInterpolator;
+import org.apache.geronimo.gshell.io.Closer;
+import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.parser.ASTCommandLine;
@@ -31,27 +36,20 @@ import org.apache.geronimo.gshell.parser.ASTProcess;
 import org.apache.geronimo.gshell.parser.ASTQuotedString;
 import org.apache.geronimo.gshell.parser.CommandLineParserVisitor;
 import org.apache.geronimo.gshell.parser.SimpleNode;
-import org.apache.geronimo.gshell.command.Arguments;
-import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.interpolation.VariableInterpolator;
-import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.Shell;
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.io.Closer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-import java.io.PipedOutputStream;
-import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
 
 /**
  * Visitor which will execute command-lines as parsed.
@@ -61,8 +59,6 @@ import java.io.IOException;
 public class ExecutingVisitor
     implements CommandLineParserVisitor
 {
-    private final Logger MetaDataRegistryConfigurerTestlog = LoggerFactory.getLogger(getClass());
-
     private final ShellContext context;
 
     private final CommandLineExecutor executor;
@@ -97,10 +93,6 @@ public class ExecutingVisitor
     public Object visit(final ASTExpression node, final Object data) {
         assert node != null;
 
-        //
-        // FIXME: Really shouldn't use Object[][] execute for everything, as it costs some thread creation
-        //
-        
         Object[][] commands = new Object[node.jjtGetNumChildren()][];
 
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
@@ -167,6 +159,8 @@ public class ExecutingVisitor
     }
 
     private Object executePiped(final Object[][] commands) throws CommandLineExecutionFailed, InterruptedException, IOException {
+        assert commands != null;
+
         // Prepare IOs
         final IO[] ios = new IO[commands.length];
         PipedOutputStream pos = null;
@@ -254,5 +248,4 @@ public class ExecutingVisitor
 
         return ref.get();
     }
-
 }
