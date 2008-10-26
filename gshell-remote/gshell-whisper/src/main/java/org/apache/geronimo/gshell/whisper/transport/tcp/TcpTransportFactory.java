@@ -26,7 +26,7 @@ import org.apache.geronimo.gshell.whisper.transport.base.BaseTransportFactory;
  *
  * @version $Rev$ $Date$
  */
-public class TcpTransportFactory<T extends TcpTransport, S extends TcpTransportServer>
+public class TcpTransportFactory
     extends BaseTransportFactory
 {
     public static final String SCHEME = "tcp";

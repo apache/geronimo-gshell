@@ -27,7 +27,7 @@ import org.apache.geronimo.gshell.whisper.transport.tcp.TcpTransportFactory;
  * @version $Rev$ $Date$
  */
 public class SslTransportFactory
-    extends TcpTransportFactory<SslTransport, SslTransportServer>
+    extends TcpTransportFactory
 {
     public static final String SCHEME = "ssl";
 

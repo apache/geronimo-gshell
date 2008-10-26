@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
-import org.apache.geronimo.gshell.whisper.transport.base.BaseConfiguration;
 import org.apache.mina.common.IoAcceptor;
 
 import java.io.Closeable;
@@ -38,8 +37,4 @@ public interface TransportServer<T extends IoAcceptor>
     T getAcceptor();
 
     void close();
-
-    void setConfiguration(BaseConfiguration config);
-
-    BaseConfiguration getConfiguration();
 }

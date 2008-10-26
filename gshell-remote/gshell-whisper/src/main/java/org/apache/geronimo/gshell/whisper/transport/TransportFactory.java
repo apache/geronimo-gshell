@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.whisper.transport;
 
-import org.apache.geronimo.gshell.whisper.transport.base.BaseConfiguration;
 import org.apache.mina.common.IoHandler;
 
 import java.net.URI;
@@ -33,11 +32,7 @@ public interface TransportFactory<T extends Transport, S extends TransportServer
 {
     String getScheme();
     
-    T connect(URI remote, URI local, BaseConfiguration config) throws Exception;
-
     T connect(URI remote, URI local, IoHandler handler) throws Exception;
     
-    S bind(URI location, BaseConfiguration config) throws Exception;
-
     S bind(URI location, IoHandler handler) throws Exception;
 }

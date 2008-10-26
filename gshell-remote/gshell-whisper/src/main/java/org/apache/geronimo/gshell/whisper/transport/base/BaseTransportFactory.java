@@ -65,25 +65,13 @@ public abstract class BaseTransportFactory<T extends BaseTransport, S extends Ba
         return (T)container.getBean(scheme + "Transport", Transport.class);
     }
 
-    public T connect(final URI remote, final URI local, final BaseConfiguration config) throws Exception {
-        assert remote != null;
-        assert config != null;
-        // local can be null
-
-        T transport = createTransport();
-        transport.setConfiguration(config);
-        transport.connect(remote, local);
-
-        return transport;
-    }
-
     public T connect(final URI remote, final URI local, final IoHandler handler) throws Exception {
         assert remote != null;
         assert handler != null;
         // local can be null
 
         T transport = createTransport();
-        transport.getConfiguration().setHandler(handler);
+        transport.setHandler(handler);
         transport.connect(remote, local);
 
         return transport;
@@ -98,23 +86,12 @@ public abstract class BaseTransportFactory<T extends BaseTransport, S extends Ba
         return (S)container.getBean(scheme + "TransportServer", TransportServer.class);
     }
 
-    public S bind(final URI location, final BaseConfiguration config) throws Exception {
-        assert location != null;
-        assert config != null;
-
-        S server = createTransportServer();
-        server.setConfiguration(config);
-        server.bind(location);
-
-        return server;
-    }
-
     public S bind(final URI location, final IoHandler handler) throws Exception {
         assert location != null;
         assert handler != null;
 
         S server = createTransportServer();
-        server.getConfiguration().setHandler(handler);
+        server.setHandler(handler);
         server.bind(location);
 
         return server;

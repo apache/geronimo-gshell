@@ -73,45 +73,14 @@ public abstract class BaseService
         return Yarn.render(this);
     }
 
-    //
-    // Configuration
-    //
-
-    private BaseConfiguration config;
-
-    protected BaseConfiguration createConfiguration() {
-        return new BaseConfiguration();
-    }
-
-    public synchronized BaseConfiguration getConfiguration() {
-        if (config == null) {
-            config = createConfiguration();
-
-            log.debug("Created configuration: {}", config);
-        }
-
-        return config;
-    }
-
-    public synchronized void setConfiguration(final BaseConfiguration config) {
-        assert config != null;
-
-        this.config = config;
-
-        log.debug("Using configuration: {}", config);
-    }
-
     private IoHandler handler;
 
-    protected synchronized IoHandler createHandler() throws Exception {
-        return getConfiguration().getHandler();
+    public synchronized void setHandler(final IoHandler handler) {
+        assert handler != null;
+        this.handler = handler;
     }
 
     protected synchronized IoHandler getHandler() throws Exception {
-        if (handler == null) {
-            handler = createHandler();
-        }
-
         if (handler == null) {
             throw new IllegalStateException("Handler has not been configured");
         }
