@@ -23,9 +23,11 @@ import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.command.CommandDocumenter;
+import org.apache.geronimo.gshell.command.CommandResult;
 import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
 import org.apache.geronimo.gshell.registry.NoSuchCommandException;
+import org.apache.geronimo.gshell.shell.ShellContext;
 
 import java.io.PrintWriter;
 
@@ -66,6 +68,11 @@ public class LinkCommand
         }
 
         return command;
+    }
+
+    @Override
+    public CommandResult execute(final ShellContext context, final Object[] args) {
+        return getCommand().execute(context, args);
     }
 
     @Override
