@@ -126,7 +126,12 @@ public class LoggingProcessor
 
         if (prettyPrint) {
             // workaround for bug in JDK 1.5
-            transformerFactory.setAttribute("indent-number", indentSize);
+            try {
+                transformerFactory.setAttribute("indent-number", indentSize);
+            }
+            catch (IllegalArgumentException e) {
+                // ignore
+            }
         }
 
         Transformer transformer = transformerFactory.newTransformer();
@@ -134,9 +139,14 @@ public class LoggingProcessor
         StreamResult result = new StreamResult(writer);
 
         if (prettyPrint) {
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            String indentSize = Integer.toString(this.indentSize);
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", indentSize);
+            try {
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                String indentSize = Integer.toString(this.indentSize);
+                transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", indentSize);
+            }
+            catch (IllegalArgumentException e) {
+                // ignore
+            }
         }
 
         transformer.transform(source, result);
