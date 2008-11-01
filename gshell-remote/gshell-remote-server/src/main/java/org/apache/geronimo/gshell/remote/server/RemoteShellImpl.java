@@ -19,12 +19,15 @@
 
 package org.apache.geronimo.gshell.remote.server;
 
+import java.util.List;
+
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import jline.Completor;
 
 /**
  * Provides the server-side encapsulation of the basic shell bits to allow remote clients to invoke commands.
@@ -38,11 +41,23 @@ public class RemoteShellImpl
 
     private final CommandLineExecutor executor;
 
+    private List<Completor> completers;
+
     private boolean opened = true;
 
     public RemoteShellImpl(final CommandLineExecutor executor) {
         assert executor != null;
         this.executor = executor;
+    }
+
+    public List<Completor> getCompleters() {
+        return completers;
+    }
+
+    public void setCompleters(final List<Completor> completers) {
+        assert completers != null;
+
+        this.completers = completers;
     }
 
     private void ensureOpened() {

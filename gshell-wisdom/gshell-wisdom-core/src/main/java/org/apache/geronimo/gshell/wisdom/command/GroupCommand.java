@@ -86,6 +86,15 @@ public class GroupCommand
             log.debug("Changing to group: {}", file);
             
             context.getVariables().parent().set(CommandResolver.GROUP, file);
+            // FIXME: remove this ugly hack
+            String location = file.getName().toString();
+            if (location.startsWith(CommandResolver.COMMANDS_ROOT)) {
+                location = location.substring(CommandResolver.COMMANDS_ROOT.length());
+            }
+            if (location.startsWith("/")) {
+                location = location.substring(1);
+            }
+            context.getVariables().parent().set(CommandResolver.GROUP_NAME, location);
 
             return Result.SUCCESS;
         }

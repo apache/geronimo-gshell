@@ -27,6 +27,7 @@ import org.apache.geronimo.gshell.remote.message.EchoMessage;
 import org.apache.geronimo.gshell.remote.message.ExecuteMessage;
 import org.apache.geronimo.gshell.remote.message.LoginMessage;
 import org.apache.geronimo.gshell.remote.message.OpenShellMessage;
+import org.apache.geronimo.gshell.remote.message.CompleteMessage;
 import org.apache.geronimo.gshell.security.crypto.CryptoContext;
 import org.apache.geronimo.gshell.whisper.message.Message;
 import org.apache.geronimo.gshell.whisper.message.MessageHandler;
@@ -179,6 +180,12 @@ public class RshClient
         //
 
         log.trace("Response: {}", resp);
+    }
+
+    public int complete(String buffer, int cursor, List<String> candidates) throws Exception {
+        CompleteMessage.Result result = (CompleteMessage.Result) session.request(new CompleteMessage(buffer, cursor));
+        candidates.addAll(result.getCandidates());
+        return result.getPosition();
     }
 
     private Object doExecute(final ExecuteMessage msg) throws Exception {

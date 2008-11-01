@@ -218,6 +218,8 @@ public class RemoteShellProxy
             }
         });
 
+        console.addCompleter(new RemoteCompleterProxy(client));
+
         //
         // TODO: What are we to do with history here?  Really should be history on the server...
         //

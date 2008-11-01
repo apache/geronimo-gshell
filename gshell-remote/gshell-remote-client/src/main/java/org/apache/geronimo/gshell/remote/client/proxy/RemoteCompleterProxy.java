@@ -17,34 +17,33 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.registry;
+package org.apache.geronimo.gshell.remote.client.proxy;
 
-import org.apache.geronimo.gshell.command.Command;
-import org.apache.geronimo.gshell.command.CommandException;
-import org.apache.geronimo.gshell.command.Variables;
+import java.util.List;
 
-import java.util.Collection;
+import jline.Completor;
+import org.apache.geronimo.gshell.remote.client.RshClient;
 
 /**
- * Resolves {@link Command} instances for a given path.
+ * ???
  *
- * @version $Rev$ $Date$
+ * @version $Rev: 580765 $ $Date: 2007-09-30 20:52:39 +0200 (Sun, 30 Sep 2007) $
  */
-public interface CommandResolver
-{
-    String PATH = "gshell.path";
+public class RemoteCompleterProxy implements Completor {
 
-    String PATH_SEPARATOR = ":";
+    private final RshClient client;
 
-    String GROUP = "gshell.group";
+    public RemoteCompleterProxy(RshClient client) {
+        assert client != null;
 
-    String GROUP_NAME = "gshell.group.name";
+        this.client = client;
+    }
 
-    String COMMANDS_ROOT = "meta:/commands";
-
-    String ALIASES_ROOT = "meta:/aliases";
-
-    Command resolveCommand(String name, Variables variables) throws CommandException;
-
-    Collection<Command> resolveCommands(String name, Variables variables) throws CommandException;
+    public int complete(String buffer, int cursor, List candidates) {
+        try {
+            return client.complete(buffer, cursor, candidates);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
 }
