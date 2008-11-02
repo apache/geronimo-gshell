@@ -182,7 +182,7 @@ public class RshClient
         log.trace("Response: {}", resp);
     }
 
-    public int complete(String buffer, int cursor, List<String> candidates) throws Exception {
+    public int complete(final String buffer, final int cursor, final List<String> candidates) throws Exception {
         CompleteMessage.Result result = (CompleteMessage.Result) session.request(new CompleteMessage(buffer, cursor));
         candidates.addAll(result.getCandidates());
         return result.getPosition();
