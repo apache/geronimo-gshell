@@ -29,20 +29,23 @@ import org.apache.geronimo.gshell.remote.client.RshClient;
  *
  * @version $Rev: 580765 $ $Date: 2007-09-30 20:52:39 +0200 (Sun, 30 Sep 2007) $
  */
-public class RemoteCompleterProxy implements Completor {
-
+public class RemoteCompleterProxy
+    implements Completor
+{
     private final RshClient client;
 
-    public RemoteCompleterProxy(RshClient client) {
+    public RemoteCompleterProxy(final RshClient client) {
         assert client != null;
 
         this.client = client;
     }
 
-    public int complete(String buffer, int cursor, List candidates) {
+    public int complete(final String buffer, final int cursor, final List candidates) {
         try {
+            //noinspection unchecked
             return client.complete(buffer, cursor, candidates);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return -1;
         }
     }

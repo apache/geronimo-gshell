@@ -29,12 +29,11 @@ import java.util.List;
 public class CompleteMessage 
     extends RshMessage
 {
-
     private final String buffer;
 
     private final int cursor;
 
-    public CompleteMessage(String buffer, int cursor) {
+    public CompleteMessage(final String buffer, final int cursor) {
         this.buffer = buffer;
         this.cursor = cursor;
     }
@@ -54,9 +53,10 @@ public class CompleteMessage
         extends RshMessage
     {
         private final List<String> candidates;
+        
         private final int position;
 
-        public Result(final List<String> candidates, int position) {
+        public Result(final List<String> candidates, final int position) {
             this.candidates = candidates;
             this.position = position;
         }

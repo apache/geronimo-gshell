@@ -19,27 +19,30 @@
 
 package org.apache.geronimo.gshell.remote.server.handler;
 
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
-
+import jline.Completor;
 import org.apache.geronimo.gshell.remote.message.CompleteMessage;
-import org.apache.geronimo.gshell.remote.message.CloseShellMessage;
 import org.apache.geronimo.gshell.remote.server.RemoteShellImpl;
-import org.apache.geronimo.gshell.whisper.transport.Session;
+import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellContextHolder;
-import org.apache.geronimo.gshell.shell.Shell;
-import jline.Completor;
+import org.apache.geronimo.gshell.whisper.transport.Session;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Server handler for {@link CompleteMessage} messages.
+ *
+ * @version $Rev: 706033 $ $Date: 2008-10-19 22:36:15 +0700 (Sun, 19 Oct 2008) $
+ */
 public class CompleteHandler
-    extends ServerMessageHandlerSupport<CompleteMessage> {
-
+    extends ServerMessageHandlerSupport<CompleteMessage>
+{
     public CompleteHandler() {
         super(CompleteMessage.class);
     }
 
-    public void handle(Session session, ServerSessionContext context, CompleteMessage message) throws Exception {
+    public void handle(final Session session, final ServerSessionContext context, final CompleteMessage message) throws Exception {
         assert session != null;
         assert context != null;
         assert message != null;
@@ -53,10 +56,9 @@ public class CompleteHandler
         try {
             Shell shell = context.shellContext.getShell();
             if (shell instanceof RemoteShellImpl) {
-                List<Completor> completors = ((RemoteShellImpl) shell).getCompleters();
-                for (Iterator i = completors.iterator(); i.hasNext();) {
-                    Completor comp = (Completor) i.next();
-                    if ((position = comp.complete(message.getBuffer(), message.getCursor(), candidates)) != -1) {
+                List<Completor> completors = ((RemoteShellImpl)shell).getCompleters();
+                for (Completor completor : completors) {
+                    if ((position = completor.complete(message.getBuffer(), message.getCursor(), candidates)) != -1) {
                         break;
                     }
                 }
