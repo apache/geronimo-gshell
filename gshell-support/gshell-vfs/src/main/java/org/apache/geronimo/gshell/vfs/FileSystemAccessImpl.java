@@ -150,4 +150,15 @@ public class FileSystemAccessImpl
             throw new FileSystemException(e);
         }
     }
+
+    public FileObject createVirtualFileSystem(final String rootUri) throws FileSystemException {
+        assert rootUri != null;
+        FileObject file = getManager().resolveFile(rootUri);
+        return getManager().createVirtualFileSystem(file);
+    }
+
+    public FileObject createVirtualFileSystem(final FileObject rootFile) throws FileSystemException {
+        assert rootFile != null;
+        return getManager().createVirtualFileSystem(rootFile);
+    }
 }

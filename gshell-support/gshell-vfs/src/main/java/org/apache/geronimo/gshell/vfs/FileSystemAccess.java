@@ -50,4 +50,8 @@ public interface FileSystemAccess
     boolean isLocalFile(FileObject file);
 
     File getLocalFile(FileObject file) throws FileSystemException;
+
+    FileObject createVirtualFileSystem(String rootUri) throws FileSystemException;
+
+    FileObject createVirtualFileSystem(FileObject rootFile) throws FileSystemException;
 }
