@@ -1,0 +1,29 @@
+FIMXE: gshell-artifact
+    -maven
+    -ivy
+    Create ArtifactResolver facade
+
+FIXME: Make the local ivy cache m2 compatible
+
+Integrate Jexl into gshell-parser
+
+Create single VFS configuration component, reduce the number of objects needed at boot
+
+default if no activation rules, activate all bundles
+
+namespace muck for application.xml
+
+add open command, only activate on osx
+
+add activation stuff to plugin parser
+
+how to extend URLClassLoader?
+
+Merge Application and Branding
+
+Better handling for Object arguments/return for commands and variable passing
+
+FIXME: CommandsCompleter doesn't complete in group
+
+Voodoo, something cool which will load a plugin, then cache the basic details for the shell
+    to function, so next time it won't need to load the plugin until a plugin command is executed
