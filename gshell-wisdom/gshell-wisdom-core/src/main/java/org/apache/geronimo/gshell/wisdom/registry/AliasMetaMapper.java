@@ -97,6 +97,10 @@ public class AliasMetaMapper
         metaRegistry.registerData(fileName, data);
     }
 
+    //
+    // FIXME: This seems to have problems, when adding/removing alias, first alias value keeps, probably due to the cached VFS FileObject
+    //
+    
     private void remove(final String name) throws Exception {
         assert name != null;
 

@@ -61,7 +61,7 @@ public class CommandResolverImpl
     
     private FileObject commandsDirectory;
 
-    private FileObject aliasesDirectory;
+    private FileObject aliasesRoot;
 
     private BeanContainer container;
 
@@ -117,6 +117,14 @@ public class CommandResolverImpl
         return command;
     }
 
+    private FileObject getAliasesRoot() throws FileSystemException {
+        if (aliasesRoot == null) {
+            aliasesRoot = fileSystemAccess.createVirtualFileSystem(ALIASES_ROOT);
+        }
+
+        return aliasesRoot;
+    }
+
     private AliasCommand resolveAliasCommand(final String name, final Variables variables) {
         assert name != null;
         assert variables != null;
@@ -126,23 +134,12 @@ public class CommandResolverImpl
         AliasCommand command = null;
 
         try {
-            FileObject file = fileSystemAccess.resolveFile(getAliasesDirectory(), name);
+            FileObject root = getAliasesRoot();
+            FileObject file = root.resolveFile(name);
 
             if (file != null && file.exists()) {
                 log.trace("Resolved file: {}", file);
-
-                // Make sure whatever file we resolved is actually a meta file
-                if (!isMetaFile(file)) {
-                    log.debug("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
-                    return null;
-                }
-
-                // Make sure we found a file in the meta:/commands tree
-                if (!file.getName().getPath().startsWith("/aliases")) {
-                    log.debug("Command name '{}' did not resolve under " + ALIASES_ROOT + "; found: {}", name, file);
-                    return null;
-                }
-
+                
                 command = createAliasCommand(file);
             }
         }
@@ -151,6 +148,14 @@ public class CommandResolverImpl
         }
 
         return command;
+    }
+
+    private FileObject getCommandsDirectory() throws FileSystemException {
+        if (commandsDirectory == null) {
+            commandsDirectory = fileSystemAccess.resolveFile(null, COMMANDS_ROOT);
+        }
+
+        return commandsDirectory;
     }
 
     private FileObject resolveCommandFile(final String name, final Variables variables) throws FileSystemException {
@@ -287,22 +292,6 @@ public class CommandResolverImpl
         assert file != null;
 
         return MetaFileName.SCHEME.equals(file.getName().getScheme());
-    }
-
-    private FileObject getCommandsDirectory() throws FileSystemException {
-        if (commandsDirectory == null) {
-            commandsDirectory = fileSystemAccess.resolveFile(null, COMMANDS_ROOT);
-        }
-
-        return commandsDirectory;
-    }
-
-    private FileObject getAliasesDirectory() throws FileSystemException {
-        if (aliasesDirectory == null) {
-            aliasesDirectory = fileSystemAccess.resolveFile(null, ALIASES_ROOT);
-        }
-
-        return aliasesDirectory;
     }
 
     private Command createCommand(final FileObject file) throws FileSystemException, CommandException {
