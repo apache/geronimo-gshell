@@ -25,6 +25,7 @@ import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,17 +39,7 @@ public class ConsoleErrorHandlerImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final EventManager eventManager;
-
-    private final Application application;
-
-    private AnsiRenderer renderer = new AnsiRenderer();
-
-    public ConsoleErrorHandlerImpl(final EventManager eventManager, final Application application) {
-        assert eventManager != null;
-        this.eventManager = eventManager;
-        assert application != null;
-        this.application = application;
+    public ConsoleErrorHandlerImpl() {
     }
 
     public Result handleError(final Throwable error) {
@@ -68,16 +59,7 @@ public class ConsoleErrorHandlerImpl
             cause = error.getCause();
         }
 
-        //
-        // FIXME: Really should be the ShellContext here
-        //
-        
-        assert application != null;
-        IO io = application.getIo();
-
-        //
-        // TODO: Use the Render API
-        //
+        IO io = ShellContextHolder.get().getIo();
 
         // Spit out the terse reason why we've failed
         io.err.print("@|bold,red ERROR| ");
