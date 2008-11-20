@@ -134,8 +134,7 @@ public class ShellImpl
         // HACK: Set the default prompt here for now, probably want to get this from branding
         vars.set("gshell.prompt", "@|bold %{application.userName}|@%{application.localHost.hostName}:@|bold %{branding.name}|> ");
         
-        vars.set(CommandResolver.GROUP, CommandResolver.COMMANDS_ROOT);
-        vars.set(CommandResolver.GROUP_NAME, "");
+        vars.set(CommandResolver.GROUP, "/");
 
         branding = application.getModel().getBranding();
 

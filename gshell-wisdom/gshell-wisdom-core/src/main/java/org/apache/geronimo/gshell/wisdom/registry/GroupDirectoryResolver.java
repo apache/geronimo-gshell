@@ -23,9 +23,8 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.registry.CommandResolver;
-import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
 import org.apache.geronimo.gshell.shell.ShellContextHolder;
+import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,39 +39,41 @@ public class GroupDirectoryResolver
 
     private final FileSystemAccess fileSystemAccess;
 
-    private FileObject commandsDirectory;
+    private FileObject commandsRoot;
 
     public GroupDirectoryResolver(final FileSystemAccess fileSystemAccess) {
         assert fileSystemAccess != null;
         this.fileSystemAccess = fileSystemAccess;
     }
 
+    private FileObject getCommandsRoot() throws FileSystemException {
+        if (commandsRoot == null) {
+            commandsRoot = fileSystemAccess.createVirtualFileSystem(CommandResolver.COMMANDS_ROOT);
+        }
+
+        return commandsRoot;
+    }
+
     public FileObject getGroupDirectory(final Variables vars) throws FileSystemException {
         assert vars != null;
 
-        FileObject dir;
+        FileObject root = getCommandsRoot();
+        FileObject dir = null;
 
         Object tmp = vars.get(CommandResolver.GROUP);
 
-        if (tmp == null) {
-            dir = getCommandsDirectory();
-        }
-        else if (tmp instanceof String) {
+        if (tmp instanceof String) {
             log.trace("Resolving group directory from string: {}", tmp);
-            dir = fileSystemAccess.resolveFile(null, (String)tmp);
+
+            dir = root.resolveFile((String)tmp);
         }
-        else if (tmp instanceof FileObject) {
-            dir = (FileObject)tmp;
-        }
-        else {
+        else if (tmp != null) {
             // Complain, then use the default so commands still work
-            log.error("Invalid type for variable '" + CommandResolver.GROUP + "'; expected String or FileObject; found: " + tmp.getClass());
-            dir = getCommandsDirectory();
+            log.error("Invalid type for variable '" + CommandResolver.GROUP + "'; expected String; found: " + tmp.getClass());
         }
 
-        if (!isMetaFile(dir)) {
-            log.error("Command group did not resolve to a meta-file: {}", dir);
-            dir = getCommandsDirectory();
+        if (dir == null) {
+            dir = root;
         }
 
         return dir;
@@ -81,19 +82,4 @@ public class GroupDirectoryResolver
     public FileObject getGroupDirectory() throws FileSystemException {
         return getGroupDirectory(ShellContextHolder.get().getVariables());
     }
-
-    private boolean isMetaFile(final FileObject file) {
-        assert file != null;
-
-        return MetaFileName.SCHEME.equals(file.getName().getScheme());
-    }
-
-    private FileObject getCommandsDirectory() throws FileSystemException {
-        if (commandsDirectory == null) {
-            commandsDirectory = fileSystemAccess.resolveFile(null, CommandResolver.COMMANDS_ROOT);
-        }
-
-        return commandsDirectory;
-    }
-
 }

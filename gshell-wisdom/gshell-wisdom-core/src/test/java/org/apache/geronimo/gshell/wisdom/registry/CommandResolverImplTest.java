@@ -70,14 +70,16 @@ public class CommandResolverImplTest
         super.tearDown();
     }
 
+    /*
     public void testResolveRoot() throws Exception {
         Command command = resolver.resolveCommand("/", vars);
         assertNotNull(command);
         assertTrue(command instanceof GroupCommand);
 
         GroupCommand group = (GroupCommand)command;
-        assertEquals("meta:/commands", group.getFile().getName().getURI());
+        assertEquals("/", group.getPath());
     }
+    */
 
     public void testResolveDefaultPath() throws Exception {
         Command command;
@@ -130,7 +132,7 @@ public class CommandResolverImplTest
     }
 
     public void testResolveCustomPathInGroup() throws Exception {
-        vars.set(CommandResolver.GROUP, "meta:/commands/group1");
+        vars.set(CommandResolver.GROUP, "group1");
         vars.set(CommandResolver.PATH, "/:.");
 
         Command command;
@@ -148,8 +150,9 @@ public class CommandResolverImplTest
         assertNotNull(command);
     }
 
+    /*
     public void testResolveInGroup() throws Exception {
-        vars.set(CommandResolver.GROUP, "meta:/commands/group1");
+        vars.set(CommandResolver.GROUP, "group1");
         vars.set(CommandResolver.PATH, "/:.");
 
         Command command;
@@ -163,7 +166,8 @@ public class CommandResolverImplTest
         command = resolver.resolveCommand("../test1", vars);
         assertNotNull(command);
     }
-
+    */
+    
     public void testResolveRelativeChecks() throws Exception {
        try {
             resolver.resolveCommand("../foo", vars);
@@ -181,7 +185,7 @@ public class CommandResolverImplTest
             // expected
         }
         
-        vars.set(CommandResolver.GROUP, "meta:/commands/a/b/c/d");
+        vars.set(CommandResolver.GROUP, "a/b/c/d");
 
         Command command;
 

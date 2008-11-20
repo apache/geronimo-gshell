@@ -51,6 +51,8 @@ public interface FileSystemAccess
 
     File getLocalFile(FileObject file) throws FileSystemException;
 
+    FileObject dereference(FileObject file) throws FileSystemException;
+
     FileObject createVirtualFileSystem(String rootUri) throws FileSystemException;
 
     FileObject createVirtualFileSystem(FileObject rootFile) throws FileSystemException;

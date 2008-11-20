@@ -30,7 +30,6 @@ import org.apache.geronimo.gshell.registry.NoSuchCommandException;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
 import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
 import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
 import org.slf4j.Logger;
@@ -55,11 +54,7 @@ public class CommandResolverImpl
 
     private final GroupDirectoryResolver groupDirResolver;
 
-    //
-    // TODO: Consider using FileSystemManager.createVirtualFileSystem() to chroot for resolving?
-    //
-    
-    private FileObject commandsDirectory;
+    private FileObject commandsRoot;
 
     private FileObject aliasesRoot;
 
@@ -144,18 +139,18 @@ public class CommandResolverImpl
             }
         }
         catch (FileSystemException e) {
-            log.warn("Failed to resolve alias command for name: " + name, e);
+            log.debug("Failed to resolve alias command for name: " + name, e);
         }
 
         return command;
     }
 
-    private FileObject getCommandsDirectory() throws FileSystemException {
-        if (commandsDirectory == null) {
-            commandsDirectory = fileSystemAccess.resolveFile(null, COMMANDS_ROOT);
+    private FileObject getCommandsRoot() throws FileSystemException {
+        if (commandsRoot == null) {
+            commandsRoot = fileSystemAccess.createVirtualFileSystem(COMMANDS_ROOT);
         }
 
-        return commandsDirectory;
+        return commandsRoot;
     }
 
     private FileObject resolveCommandFile(final String name, final Variables variables) throws FileSystemException {
@@ -164,9 +159,11 @@ public class CommandResolverImpl
 
         log.trace("Resolving command file: {}", name);
 
+        FileObject root = getCommandsRoot();
+
         // Special handling for root & group
         if (name.equals("/")) {
-            return getCommandsDirectory();
+            return root;
         }
         else if (name.equals(".")) {
             return groupDirResolver.getGroupDirectory(variables);
@@ -188,10 +185,10 @@ public class CommandResolverImpl
             FileObject dir;
             
             if (pathElement.equals("/")) {
-                dir = getCommandsDirectory();
+                dir = root;
             }
             else if (pathElement.startsWith("/")) {
-                dir = fileSystemAccess.resolveFile(getCommandsDirectory(), pathElement.substring(1, pathElement.length()));
+                dir = fileSystemAccess.resolveFile(root, pathElement.substring(1, pathElement.length()));
             }
             else {
                 dir = fileSystemAccess.resolveFile(groupDir, pathElement);
@@ -211,18 +208,6 @@ public class CommandResolverImpl
 
         if (file != null) {
             log.trace("Resolved file: {}", file);
-
-            // Make sure whatever file we resolved is actually a meta file
-            if (!isMetaFile(file)) {
-                log.debug("Command name '{}' did not resolve to a meta-file; found: {}", name, file);
-                return null;
-            }
-
-            // Make sure we found a file in the meta:/commands tree
-            if (!file.getName().getPath().startsWith("/commands")) {
-                log.debug("Command name '{}' did not resolve under " + COMMANDS_ROOT + "; found: {}", name, file);
-                return null;
-            }
         }
 
         return file;
@@ -288,16 +273,13 @@ public class CommandResolverImpl
         return commands;
     }
 
-    private boolean isMetaFile(final FileObject file) {
+    private Command createCommand(FileObject file) throws FileSystemException, CommandException {
         assert file != null;
 
-        return MetaFileName.SCHEME.equals(file.getName().getScheme());
-    }
+        // HACK: Must dereference to avoid problems with the DelegateFileObject impl
+        file = fileSystemAccess.dereference(file);
 
-    private Command createCommand(final FileObject file) throws FileSystemException, CommandException {
-        assert file != null;
-
-        log.trace("Creating command for file: {}", file);
+        log.trace("Creating command for file: {} ({})", file, file.getClass());
 
         Command command = null;
 
@@ -348,7 +330,7 @@ public class CommandResolverImpl
         log.trace("Creating command for group: {}", file);
 
         GroupCommand command = container.getBean(GroupCommand.class);
-        command.setFile(file);
+        command.setPath(file.getName().getBaseName());
         
         return command;
     }

@@ -19,10 +19,7 @@
 
 package org.apache.geronimo.gshell.wisdom.shell;
 
-import org.apache.geronimo.gshell.ansi.AnsiRenderer;
-import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.console.Console;
-import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ErrorNotification;
 import org.apache.geronimo.gshell.shell.ShellContextHolder;

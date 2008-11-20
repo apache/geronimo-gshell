@@ -23,6 +23,7 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.provider.local.LocalFile;
+import org.apache.commons.vfs.provider.DelegateFileObject;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.slf4j.Logger;
@@ -149,6 +150,35 @@ public class FileSystemAccessImpl
         catch (Exception e) {
             throw new FileSystemException(e);
         }
+    }
+
+    //
+    // HACK: dereference() is only here because the DelegateFileObject impl is kinda broken.
+    //
+    
+    public FileObject dereference(final FileObject file) throws FileSystemException {
+        assert file != null;
+
+        if (file instanceof DelegateFileObject) {
+            try {
+                file.refresh();
+                Field field = DelegateFileObject.class.getDeclaredField("file");
+
+                try {
+                    return (FileObject)field.get(file);
+                }
+                catch (IllegalAccessException ignore) {
+                    // try again
+                    field.setAccessible(true);
+                    return (FileObject)field.get(file);
+                }
+            }
+            catch (Exception e) {
+                throw new FileSystemException(e);
+            }
+        }
+
+        return file;
     }
 
     public FileObject createVirtualFileSystem(final String rootUri) throws FileSystemException {
