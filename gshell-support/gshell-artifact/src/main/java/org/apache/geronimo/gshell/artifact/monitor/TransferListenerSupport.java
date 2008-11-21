@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.ivy.monitor;
+package org.apache.geronimo.gshell.artifact.monitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

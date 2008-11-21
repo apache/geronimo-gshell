@@ -37,4 +37,11 @@
         Remote artifact resolution support.
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-io</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

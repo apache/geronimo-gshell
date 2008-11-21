@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.ivy.monitor;
+package org.apache.geronimo.gshell.artifact.monitor;
 
 /**
  * Provides a fancy text-based progress spinner w/optional informative message.
