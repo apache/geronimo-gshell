@@ -42,7 +42,7 @@
         <property name="rootUri"  value="file:${basedir}/target/xstore"/>
     </bean>
 
-    <bean id="ivy" class="org.apache.geronimo.gshell.ivy.IvyFactoryBean">
+    <bean id="ivy" class="org.apache.geronimo.gshell.artifact.ivy.IvyFactoryBean">
         <property name="settingsUrl" value="file:${basedir}/target/test-classes/ivysettings.xml"/>
     </bean>
 

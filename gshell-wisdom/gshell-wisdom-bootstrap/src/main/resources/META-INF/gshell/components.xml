@@ -30,7 +30,7 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <bean id="ivy" class="org.apache.geronimo.gshell.ivy.IvyFactoryBean" lazy-init="true">
+    <bean id="ivy" class="org.apache.geronimo.gshell.artifact.ivy.IvyFactoryBean" lazy-init="true">
         <property name="settingsUrl" value="file:${gshell.home}/etc/ivysettings.xml"/>
     </bean>
     

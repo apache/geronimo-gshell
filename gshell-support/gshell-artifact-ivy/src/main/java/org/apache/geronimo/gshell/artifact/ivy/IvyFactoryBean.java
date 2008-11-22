@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.ivy;
+package org.apache.geronimo.gshell.artifact.ivy;
 
 import org.apache.ivy.Ivy;
 import org.apache.ivy.core.settings.IvySettings;
