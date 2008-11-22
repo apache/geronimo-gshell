@@ -56,7 +56,7 @@ public class OpenShellHandler
         // Create a new container which will be the parent for our remote shells
         context.container = container.createChild();
         context.container.loadBeans(new String[] {
-            "classpath*:META-INF/spring/components.xml"
+            "classpath*:META-INF/gshell/components.xml"
         });
 
         // Setup the shell context and related components
