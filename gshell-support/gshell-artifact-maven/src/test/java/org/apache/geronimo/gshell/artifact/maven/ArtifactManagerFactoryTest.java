@@ -17,22 +17,21 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.artifact;
+package org.apache.geronimo.gshell.artifact.maven;
 
 import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.chronos.StopWatch;
+import org.apache.geronimo.gshell.artifact.maven.ArtifactManager;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.Artifact;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.LinkedHashSet;
 import java.io.File;
 
 /**
- * Unit tests for the {@link ArtifactManagerFactory} class.
+ * Unit tests for the {@link org.apache.geronimo.gshell.artifact.maven.ArtifactManagerFactory} class.
  *
  * @version $Rev$ $Date$
  */

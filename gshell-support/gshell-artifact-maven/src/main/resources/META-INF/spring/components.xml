@@ -25,6 +25,6 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="artifactManager" class="org.apache.geronimo.gshell.artifact.ArtifactManagerFactory"/>
+    <bean id="artifactManager" class="org.apache.geronimo.gshell.artifact.maven.ArtifactManagerFactory"/>
     
 </beans>

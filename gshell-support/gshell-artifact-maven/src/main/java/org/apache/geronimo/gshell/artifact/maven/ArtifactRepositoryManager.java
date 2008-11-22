@@ -17,31 +17,32 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.artifact;
+package org.apache.geronimo.gshell.artifact.maven;
+
+import org.apache.maven.artifact.repository.ArtifactRepository;
+
+import java.io.File;
+import java.net.URI;
+import java.util.List;
 
 /**
- * Thrown to indicate that a given repository is not valid.
+ * Provides a facade over the artifact + repository subsystem.
  *
  * @version $Rev$ $Date$
  */
-public class InvalidRepositoryException
-    extends ArtifactManagerException
+public interface ArtifactRepositoryManager
 {
-    private static final long serialVersionUID = 1;
+    ArtifactRepository getLocalRepository();
 
-    public InvalidRepositoryException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
+    void setLocalRepository(ArtifactRepository repository) throws InvalidRepositoryException;
 
-    public InvalidRepositoryException(final String msg) {
-        super(msg);
-    }
+    void setLocalRepository(File dir) throws InvalidRepositoryException;
 
-    public InvalidRepositoryException(final Throwable cause) {
-        super(cause);
-    }
+    List<ArtifactRepository> getRemoteRepositories();
 
-    public InvalidRepositoryException() {
-        super();
-    }
+    void addRemoteRepository(ArtifactRepository repository) throws InvalidRepositoryException;
+
+    void addRemoteRepository(String id, URI location) throws InvalidRepositoryException;
+
+    List<ArtifactRepository> selectRemoteRepositories(List<ArtifactRepository> repositories);
 }

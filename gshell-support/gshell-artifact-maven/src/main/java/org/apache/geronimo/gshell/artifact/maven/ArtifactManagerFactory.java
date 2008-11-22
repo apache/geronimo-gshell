@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.artifact;
+package org.apache.geronimo.gshell.artifact.maven;
 
-import org.apache.geronimo.gshell.artifact.Slf4jLoggingManager;
+import org.apache.geronimo.gshell.plexus.Slf4jLoggingManager;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;

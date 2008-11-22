@@ -23,8 +23,8 @@
 <component-set>
     <components>
         <component>
-            <role>org.apache.geronimo.gshell.artifact.ArtifactManager</role>
-            <implementation>org.apache.geronimo.gshell.artifact.DefaultArtifactManager</implementation>
+            <role>org.apache.geronimo.gshell.artifact.maven.ArtifactManager</role>
+            <implementation>org.apache.geronimo.gshell.artifact.maven.DefaultArtifactManager</implementation>
             <isolated-realm>false</isolated-realm>
             <requirements>
                 <requirement>
@@ -32,7 +32,7 @@
                     <field-name>artifactFactory</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+                    <role>org.apache.geronimo.gshell.artifact.maven.ArtifactRepositoryManager</role>
                     <field-name>repositoryManager</field-name>
                 </requirement>
                 <requirement>
@@ -52,8 +52,8 @@
         </component>
 
         <component>
-            <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
-            <implementation>org.apache.geronimo.gshell.artifact.DefaultArtifactRepositoryManager</implementation>
+            <role>org.apache.geronimo.gshell.artifact.maven.ArtifactRepositoryManager</role>
+            <implementation>org.apache.geronimo.gshell.artifact.maven.DefaultArtifactRepositoryManager</implementation>
             <isolated-realm>false</isolated-realm>
             <requirements>
                 <requirement>
@@ -66,7 +66,7 @@
         <component>
             <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
             <role-hint>gshell</role-hint>
-            <implementation>org.apache.geronimo.gshell.artifact.GShellArtifactMetadataSource</implementation>
+            <implementation>org.apache.geronimo.gshell.artifact.maven.GShellArtifactMetadataSource</implementation>
             <isolated-realm>false</isolated-realm>
             <requirements>
                 <requirement>
@@ -75,7 +75,7 @@
                     <field-name>delegate</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+                    <role>org.apache.geronimo.gshell.artifact.maven.ArtifactRepositoryManager</role>
                     <field-name>repositoryManager</field-name>
                 </requirement>
             </requirements>
@@ -84,7 +84,7 @@
         <component>
             <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
             <role-hint>gshell</role-hint>
-            <implementation>org.apache.geronimo.gshell.artifact.GShellArtifactResolver</implementation>
+            <implementation>org.apache.geronimo.gshell.artifact.maven.GShellArtifactResolver</implementation>
             <isolated-realm>false</isolated-realm>
             <requirements>
                 <requirement>
@@ -93,7 +93,7 @@
                     <field-name>delegate</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+                    <role>org.apache.geronimo.gshell.artifact.maven.ArtifactRepositoryManager</role>
                     <field-name>repositoryManager</field-name>
                 </requirement>
             </requirements>

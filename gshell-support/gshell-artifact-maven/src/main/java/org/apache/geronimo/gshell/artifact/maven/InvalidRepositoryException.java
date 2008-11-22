@@ -17,31 +17,31 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.artifact;
+package org.apache.geronimo.gshell.artifact.maven;
 
 /**
- * Thrown to indicate a problem with an {@link ArtifactManager} operation.
+ * Thrown to indicate that a given repository is not valid.
  *
  * @version $Rev$ $Date$
  */
-public class ArtifactManagerException
-    extends Exception
+public class InvalidRepositoryException
+    extends ArtifactManagerException
 {
     private static final long serialVersionUID = 1;
 
-    public ArtifactManagerException(final String msg, final Throwable cause) {
+    public InvalidRepositoryException(final String msg, final Throwable cause) {
         super(msg, cause);
     }
 
-    public ArtifactManagerException(final String msg) {
+    public InvalidRepositoryException(final String msg) {
         super(msg);
     }
 
-    public ArtifactManagerException(final Throwable cause) {
+    public InvalidRepositoryException(final Throwable cause) {
         super(cause);
     }
 
-    public ArtifactManagerException() {
+    public InvalidRepositoryException() {
         super();
     }
 }

@@ -29,7 +29,7 @@
         <component>
             <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.artifact.GShellArtifactResolver</implementation>
+            <implementation>org.apache.geronimo.gshell.artifact.maven.GShellArtifactResolver</implementation>
             <isolated-realm>false</isolated-realm>
             <requirements>
                 <requirement>
@@ -38,7 +38,7 @@
                     <field-name>delegate</field-name>
                 </requirement>
                 <requirement>
-                    <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+                    <role>org.apache.geronimo.gshell.artifact.maven.ArtifactRepositoryManager</role>
                     <field-name>repositoryManager</field-name>
                 </requirement>
             </requirements>

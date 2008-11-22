@@ -25,43 +25,23 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.apache.geronimo.gshell</groupId>
-        <artifactId>gshell</artifactId>
+        <groupId>org.apache.geronimo.gshell.support</groupId>
+        <artifactId>gshell-support</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.support</groupId>
-    <artifactId>gshell-support</artifactId>
-    <name>GShell Support</name>
-    <packaging>pom</packaging>
+    <artifactId>gshell-artifact-mercury</artifactId>
+    <name>GShell Support :: Artifact + Mercury</name>
     
     <description>
-        Support modules for GShell fluff.
+        Provides support for working with artifacts and repositories via Mercury.
     </description>
-    
-    <modules>
-        <module>gshell-yarn</module>
-        <module>gshell-chronos</module>
-        <module>gshell-terminal</module>
-        <module>gshell-ansi</module>
-        <module>gshell-clp</module>
-        <module>gshell-i18n</module>
-        <module>gshell-io</module>
-        <module>gshell-event</module>
-        <module>gshell-spring</module>
-        <module>gshell-interpolation</module>
-        <module>gshell-console</module>
-        <module>gshell-vfs</module>
-        <module>gshell-vfs-meta</module>
-        <module>gshell-vfs-truezip</module>
-        <module>gshell-security</module>
-        <module>gshell-plexus</module>
-        <module>gshell-artifact</module>
-        <module>gshell-artifact-maven</module>
-        <module>gshell-artifact-mercury</module>
-        <module>gshell-artifact-ivy</module>
-        <module>gshell-marshal</module>
-        <module>gshell-xstore</module>
-    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
