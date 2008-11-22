@@ -23,8 +23,8 @@
 <ivysettings>
     <settings defaultResolver="default"/>
 
-    <property name="ivy.m2local.default.root"             value="${user.home}/.m2/repository" override="false"/>
-	<property name="ivy.m2local.default.ivy.pattern"      value="[organisation]/[module]/[revision]/[module]-[revision].pom" override="false"/>
+    <property name="ivy.m2local.default.root" value="${user.home}/.m2/repository" override="false"/>
+	<property name="ivy.m2local.default.ivy.pattern" value="[organisation]/[module]/[revision]/[module]-[revision].pom" override="false"/>
 	<property name="ivy.m2local.default.artifact.pattern" value="[organisation]/[module]/[revision]/[module]-[revision].[ext]" override="false"/>
 
     <resolvers>
@@ -40,7 +40,10 @@
         </chain>
     </resolvers>
 
-    <caches defaultCacheDir="${gshell.home}/var/cache"
+    <caches defaultCacheDir="${gshell.home}/var/repository"
+            repositoryCacheDir="${gshell.home}/var/repository"
+            resolutionCacheDir="${gshell.home}/var/cache/ivy"
             ivyPattern="[organisation]/[module]/[revision]/[module]-[revision].pom"
             artifactPattern="[organisation]/[module]/[revision]/[module]-[revision].[ext]"/>
+
 </ivysettings>
