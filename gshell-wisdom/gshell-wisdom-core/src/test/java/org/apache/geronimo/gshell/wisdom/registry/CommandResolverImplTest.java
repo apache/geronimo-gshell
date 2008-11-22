@@ -19,14 +19,13 @@
 
 package org.apache.geronimo.gshell.wisdom.registry;
 
+import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.Variables;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
-import org.apache.geronimo.gshell.application.plugin.Plugin;
-import org.apache.geronimo.gshell.registry.NoSuchCommandException;
-import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
-import org.apache.geronimo.gshell.wisdom.command.GroupCommand;
+import org.apache.geronimo.gshell.registry.CommandResolver;
+import org.apache.geronimo.gshell.registry.NoSuchCommandException;
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.wisdom.command.AliasCommand;
 
 import java.util.Collection;
