@@ -368,7 +368,13 @@
                 <artifactId>gshell-log4j</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-            
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-ssh</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.geronimo.gshell.wisdom</groupId>
                 <artifactId>gshell-wisdom-bootstrap</artifactId>

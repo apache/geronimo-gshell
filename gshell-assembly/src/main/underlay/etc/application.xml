@@ -98,7 +98,7 @@
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-remote"/>
+                    <property name="artifact" value="gshell-ssh"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
             </list>
