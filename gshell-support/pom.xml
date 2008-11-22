@@ -55,8 +55,9 @@
         <module>gshell-vfs-meta</module>
         <module>gshell-vfs-truezip</module>
         <module>gshell-security</module>
+        <module>gshell-plexus</module>
         <module>gshell-artifact</module>
-        <!--<module>gshell-artifact-maven</module>-->
+        <module>gshell-artifact-maven</module>
         <module>gshell-artifact-ivy</module>
         <module>gshell-marshal</module>
         <module>gshell-xstore</module>
