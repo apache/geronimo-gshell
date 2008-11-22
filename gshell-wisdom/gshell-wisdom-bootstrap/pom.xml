@@ -55,7 +55,7 @@
 
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-ivy</artifactId>
+            <artifactId>gshell-artifact-ivy</artifactId>
         </dependency>
 
         <dependency>

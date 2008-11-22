@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<!-- $Rev$ $Date$ -->
+
+<component-set>
+    <components>
+        <component>
+            <role>org.apache.geronimo.gshell.artifact.ArtifactManager</role>
+            <implementation>org.apache.geronimo.gshell.artifact.DefaultArtifactManager</implementation>
+            <isolated-realm>false</isolated-realm>
+            <requirements>
+                <requirement>
+                    <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+                    <field-name>artifactFactory</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+                    <field-name>repositoryManager</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+                    <field-name>artifactResolver</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+                    <role-hint>gshell</role-hint>
+                    <field-name>artifactMetadataSource</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.maven.artifact.manager.WagonManager</role>
+                    <field-name>wagonManager</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <component>
+            <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+            <implementation>org.apache.geronimo.gshell.artifact.DefaultArtifactRepositoryManager</implementation>
+            <isolated-realm>false</isolated-realm>
+            <requirements>
+                <requirement>
+                    <role>org.apache.maven.artifact.repository.ArtifactRepositoryFactory</role>
+                    <field-name>repositoryFactory</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <component>
+            <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+            <role-hint>gshell</role-hint>
+            <implementation>org.apache.geronimo.gshell.artifact.GShellArtifactMetadataSource</implementation>
+            <isolated-realm>false</isolated-realm>
+            <requirements>
+                <requirement>
+                    <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+                    <role-hint>maven</role-hint>
+                    <field-name>delegate</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+                    <field-name>repositoryManager</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <component>
+            <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+            <role-hint>gshell</role-hint>
+            <implementation>org.apache.geronimo.gshell.artifact.GShellArtifactResolver</implementation>
+            <isolated-realm>false</isolated-realm>
+            <requirements>
+                <requirement>
+                    <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+                    <role-hint>delegate</role-hint>
+                    <field-name>delegate</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.apache.geronimo.gshell.artifact.ArtifactRepositoryManager</role>
+                    <field-name>repositoryManager</field-name>
+                </requirement>
+            </requirements>
+        </component>
+    </components>
+</component-set>

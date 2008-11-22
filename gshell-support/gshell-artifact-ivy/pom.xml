@@ -30,8 +30,8 @@
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gshell-ivy</artifactId>
-    <name>GShell Support :: Ivy</name>
+    <artifactId>gshell-artifact-ivy</artifactId>
+    <name>GShell Support :: Artifact + Ivy</name>
 
     <description>
         Ivy support.
