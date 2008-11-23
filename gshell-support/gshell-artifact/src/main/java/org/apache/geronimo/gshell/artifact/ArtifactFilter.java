@@ -19,62 +19,12 @@
 
 package org.apache.geronimo.gshell.artifact;
 
-import java.util.Collection;
-
 /**
  * ???
  *
  * @version $Rev$ $Date$
  */
-public interface ArtifactResolver
+public interface ArtifactFilter
 {
-    Result resolve(Request request) throws Failure;
-
-    //
-    // Request
-    //
-
-    class Request
-    {
-        public ArtifactFilter filter;
-
-        public Artifact artifact;
-
-        public Collection<Artifact> artifacts;
-    }
-
-    //
-    // Result
-    //
-
-    class Result
-    {
-        public Collection<Artifact> artifacts;
-    }
-
-    //
-    // Failure
-    //
-
-    class Failure
-        extends Exception
-    {
-        private static final long serialVersionUID = 1;
-
-        public Failure(final String msg) {
-            super(msg);
-        }
-
-        public Failure(final String msg, final Throwable cause) {
-            super(msg, cause);
-        }
-
-        public Failure(final Throwable cause) {
-            super(cause);
-        }
-
-        public Failure() {
-            super();
-        }
-    }
+    boolean accept(Artifact artifact);
 }

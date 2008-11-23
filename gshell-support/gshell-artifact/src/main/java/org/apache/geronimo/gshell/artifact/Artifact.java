@@ -28,7 +28,7 @@ import java.io.Serializable;
  * @version $Rev$ $Date$
  */
 public class Artifact
-    implements Serializable
+    implements Serializable, Cloneable
 {
     private static final long serialVersionUID = 1;
     
@@ -36,7 +36,7 @@ public class Artifact
 
     private String group;
 
-    private String artifact;
+    private String name;
 
     private String classifier;
 
@@ -58,12 +58,12 @@ public class Artifact
         this.group = group;
     }
 
-    public String getArtifact() {
-        return artifact;
+    public String getName() {
+        return name;
     }
 
-    public void setArtifact(final String artifact) {
-        this.artifact = artifact;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public String getClassifier() {
@@ -102,6 +102,21 @@ public class Artifact
     }
 
     public String getId() {
-        return getGroup() + ":" + getArtifact() + ":" + getVersion() + ":" + getType();
+        if (getClassifier() != null) {
+            return getGroup() + ":" + getName() + ":" + getClassifier() + ":" + getVersion() + ":" + getType();
+        }
+        else {
+            return getGroup() + ":" + getName() + ":" + getVersion() + ":" + getType();
+        }
+    }
+
+    @Override
+    protected Object clone() {
+        try {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            throw new InternalError();
+        }
     }
 }

@@ -22,11 +22,11 @@ package org.apache.geronimo.gshell.wisdom.application;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
-import org.apache.geronimo.gshell.wisdom.application.ApplicationSecurityManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.model.ApplicationModel;
-import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
+import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.shell.Shell;
@@ -34,15 +34,6 @@ import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
-import org.apache.ivy.Ivy;
-import org.apache.ivy.core.module.descriptor.Configuration;
-import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
-import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
-import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
-import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.apache.ivy.core.report.ArtifactDownloadReport;
-import org.apache.ivy.core.report.ResolveReport;
-import org.apache.ivy.core.resolve.ResolveOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,9 +43,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Default implementation of the {@link ApplicationManager} component.
@@ -68,15 +57,20 @@ public class ApplicationManagerImpl
 
     private final EventPublisher eventPublisher;
 
+    private ArtifactResolver artifactResolver;
+
     private BeanContainer container;
 
     private BeanContainer applicationContainer;
 
     private Application application;
 
-    public ApplicationManagerImpl(final EventPublisher eventPublisher) {
+    public ApplicationManagerImpl(final EventPublisher eventPublisher, final ArtifactResolver artifactResolver) {
         assert eventPublisher != null;
         this.eventPublisher = eventPublisher;
+
+        assert artifactResolver != null;
+        this.artifactResolver = artifactResolver;
     }
 
     public void setBeanContainer(final BeanContainer container) {
@@ -147,7 +141,7 @@ public class ApplicationManagerImpl
         ClassPath classPath = cache.get();
 
         if (classPath == null) {
-            Set<Artifact> artifacts = resolveArtifacts(model);
+            Collection<Artifact> artifacts = resolveArtifacts(model);
             classPath = new ClassPathImpl(artifacts);
             cache.set(classPath);
         }
@@ -163,72 +157,20 @@ public class ApplicationManagerImpl
         return classPath;
     }
 
-    private Set<Artifact> resolveArtifacts(final ApplicationModel model) throws Exception {
+    private Collection<Artifact> resolveArtifacts(final ApplicationModel model) throws Exception {
         assert model != null;
 
         log.debug("Resolving application artifacts");
 
-        Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
+        ArtifactResolver.Request request = new ArtifactResolver.Request();
 
-        ResolveOptions options = new ResolveOptions();
-        options.setOutputReport(true);
-        options.setTransitive(true);
-        options.setArtifactFilter(new ApplicationArtifactFilter());
+        request.filter = new ApplicationArtifactFilter();
+        request.artifact = model.getArtifact();
+        request.artifacts = model.getDependencies();
 
-        ModuleDescriptor md = createApplicationModuleDescriptor(model);
+        ArtifactResolver.Result result = artifactResolver.resolve(request);
 
-        StopWatch watch = new StopWatch(true);
-
-        Ivy ivy = container.getBean("ivy", Ivy.class);
-        
-        ResolveReport resolveReport = ivy.resolve(md, options);
-
-        log.debug("Resolve completed in: {}", watch);
-
-        if (resolveReport.hasError()) {
-            log.error("Report has errors:");
-            // noinspection unchecked
-            List<String> problems = resolveReport.getAllProblemMessages();
-            for (String problem : problems) {
-                log.error("    {}", problem);
-            }
-        }
-
-        log.debug("Application artifacts:");
-        for (ArtifactDownloadReport downloadReport : resolveReport.getAllArtifactsReports()) {
-            org.apache.ivy.core.module.descriptor.Artifact downloadedArtifact = downloadReport.getArtifact();
-            ModuleRevisionId id = downloadedArtifact.getModuleRevisionId();
-
-            Artifact resolved = new Artifact();
-            resolved.setGroup(id.getOrganisation());
-            resolved.setArtifact(id.getName());
-            resolved.setVersion(id.getRevision());
-            resolved.setType(downloadedArtifact.getType());
-            resolved.setFile(downloadReport.getLocalFile());
-            artifacts.add(resolved);
-
-            log.debug("    {}", resolved.getId());
-        }
-
-        return artifacts;
-    }
-
-    private ModuleDescriptor createApplicationModuleDescriptor(final ApplicationModel model) {
-        assert model != null;
-
-        ModuleRevisionId appId = ModuleRevisionId.newInstance("gshell.application-" + model.getGroupId(), model.getArtifactId(), model.getVersion());
-        DefaultModuleDescriptor md = new DefaultModuleDescriptor(appId, "integration", null, true);
-        md.addConfiguration(new Configuration("default"));
-        md.setLastModified(System.currentTimeMillis());
-
-        for (Artifact dep : model.getDependencies()) {
-            ModuleRevisionId depId = ModuleRevisionId.newInstance(dep.getGroup(), dep.getArtifact(), dep.getVersion());
-            DefaultDependencyDescriptor dd = new DefaultDependencyDescriptor(md, depId, /* force */ false, /* changing*/ false, /* transitive */ true);
-            dd.addDependencyConfiguration("default", "default");
-            md.addDependency(dd);
-        }
-
-        return md;
+        return result.artifacts;
     }
 
     //

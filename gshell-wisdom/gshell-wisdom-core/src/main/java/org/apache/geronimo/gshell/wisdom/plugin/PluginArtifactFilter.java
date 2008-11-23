@@ -21,7 +21,7 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationArtifactFilter;
-import org.apache.ivy.core.module.descriptor.Artifact;
+import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,18 +40,18 @@ public class PluginArtifactFilter
         assert application != null;
 
         // Filter out application artifacts, need to use gid:aid to make sure we don't clober anything which has the same artifactId, but different groupId
-        for (org.apache.geronimo.gshell.artifact.Artifact artifact : application.getClassPath().getArtifacts()) {
-            String id = artifact.getGroup() + ":" + artifact.getArtifact();
+        for (Artifact artifact : application.getClassPath().getArtifacts()) {
+            String id = artifact.getGroup() + ":" + artifact.getName();
             excludes.add(id);
         }
     }
 
-    public boolean accept(final Object target) {
-        if (super.accept(target)) {
-            Artifact artifact = (Artifact)target;
-            String id = artifact.getModuleRevisionId().getOrganisation() + ":" + artifact.getName();
-            return !excludes.contains(id);
+    @Override
+    public boolean accept(final Artifact artifact) {
+        if (super.accept(artifact)) {
+            return !excludes.contains(artifact.getId());
         }
+
         return false;
     }
 }

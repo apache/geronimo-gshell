@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.ivy.core.module.descriptor.Artifact;
-import org.apache.ivy.util.filter.Filter;
+import org.apache.geronimo.gshell.artifact.ArtifactFilter;
+import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,7 +32,7 @@ import java.util.Set;
  * @version $Rev$ $Date$
  */
 public class ApplicationArtifactFilter
-    implements Filter
+    implements ArtifactFilter
 {
     private static final String[] EXCLUDES = {
         "gshell-artifact",
@@ -70,12 +70,9 @@ public class ApplicationArtifactFilter
 
     }
 
-    public boolean accept(final Object target) {
-        if (!(target instanceof Artifact)) {
-            return false;
-        }
+    public boolean accept(final Artifact artifact) {
+        assert artifact != null;
 
-        Artifact artifact = (Artifact)target;
         String name = artifact.getName();
 
         return !excludes.contains(name);

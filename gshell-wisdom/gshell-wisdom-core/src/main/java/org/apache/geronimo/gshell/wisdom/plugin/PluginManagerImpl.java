@@ -23,6 +23,7 @@ import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.chronos.StopWatch;
@@ -34,23 +35,13 @@ import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.apache.geronimo.gshell.wisdom.application.ClassPathCache;
 import org.apache.geronimo.gshell.wisdom.application.ClassPathImpl;
-import org.apache.ivy.Ivy;
-import org.apache.ivy.core.module.descriptor.Configuration;
-import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
-import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
-import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
-import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.apache.ivy.core.report.ArtifactDownloadReport;
-import org.apache.ivy.core.report.ResolveReport;
-import org.apache.ivy.core.resolve.ResolveOptions;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Default implementation of the {@link PluginManager} component.
@@ -66,16 +57,21 @@ public class PluginManagerImpl
 
     private final EventManager eventManager;
 
+    private ArtifactResolver artifactResolver;
+
     private BeanContainer container;
 
     private Set<Plugin> plugins = new LinkedHashSet<Plugin>();
 
-    public PluginManagerImpl(final ApplicationManager applicationManager, final EventManager eventManager) {
+    public PluginManagerImpl(final ApplicationManager applicationManager, final EventManager eventManager, final ArtifactResolver artifactResolver) {
         assert applicationManager != null;
         this.applicationManager = applicationManager;
 
         assert eventManager != null;
         this.eventManager = eventManager;
+
+        assert artifactResolver != null;
+        this.artifactResolver = artifactResolver;
     }
 
     public void setBeanContainer(final BeanContainer container) {
@@ -160,11 +156,11 @@ public class PluginManagerImpl
         assert artifact != null;
 
         // FIXME: Get basedir from application
-        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/" + artifact.getGroup() + "/" + artifact.getArtifact() + "/classpath.ser"));
+        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/" + artifact.getGroup() + "/" + artifact.getName() + "/classpath.ser"));
         ClassPath classPath = cache.get();
 
         if (classPath == null) {
-            Set<Artifact> artifacts = resolveArtifacts(application, artifact);
+            Collection<Artifact> artifacts = resolveArtifacts(application, artifact);
             classPath = new ClassPathImpl(artifacts);
             cache.set(classPath);
         }
@@ -185,70 +181,20 @@ public class PluginManagerImpl
         loadPlugin(applicationManager.getApplication(), artifact);
     }
 
-    private Set<Artifact> resolveArtifacts(final Application application, final Artifact artifact) throws Exception {
+    private Collection<Artifact> resolveArtifacts(final Application application, final Artifact artifact) throws Exception {
         assert application != null;
         assert artifact != null;
 
         log.debug("Resolving plugin artifacts");
 
-        Set<Artifact> artifacts = new LinkedHashSet<Artifact>();
+        ArtifactResolver.Request request = new ArtifactResolver.Request();
 
-        ResolveOptions options = new ResolveOptions();
-        options.setOutputReport(true);
-        options.setTransitive(true);
-        options.setArtifactFilter(new PluginArtifactFilter(application));
+        request.filter = new PluginArtifactFilter(application);
+        request.artifact = application.getArtifact();
+        request.artifacts = Collections.singletonList(artifact);
 
-        ModuleDescriptor md = createPluginModuleDescriptor(artifact);
+        ArtifactResolver.Result result = artifactResolver.resolve(request);
 
-        StopWatch watch = new StopWatch(true);
-
-        Ivy ivy = container.getBean("ivy", Ivy.class);
-        
-        ResolveReport resolveReport = ivy.resolve(md, options);
-
-        log.debug("Resolve completed in: {}", watch);
-
-        if (resolveReport.hasError()) {
-            log.error("Report has errors:");
-            // noinspection unchecked
-            List<String> problems = resolveReport.getAllProblemMessages();
-            for (String problem : problems) {
-                log.error("    {}", problem);
-            }
-        }
-
-        log.debug("Plugin artifacts:");
-        for (ArtifactDownloadReport downloadReport : resolveReport.getAllArtifactsReports()) {
-            org.apache.ivy.core.module.descriptor.Artifact downloadedArtifact = downloadReport.getArtifact();
-            ModuleRevisionId id = downloadedArtifact.getModuleRevisionId();
-
-            Artifact resolved = new Artifact();
-            resolved.setGroup(id.getOrganisation());
-            resolved.setArtifact(id.getName());
-            resolved.setVersion(id.getRevision());
-            resolved.setType(downloadedArtifact.getType());
-            resolved.setFile(downloadReport.getLocalFile());
-            artifacts.add(resolved);
-            
-            log.debug("    {}", resolved.getId());
-        }
-
-        return artifacts;
-    }
-
-    private ModuleDescriptor createPluginModuleDescriptor(final Artifact artifact) {
-        assert artifact != null;
-
-        ModuleRevisionId pluginId = ModuleRevisionId.newInstance("gshell.plugin-" + artifact.getGroup(), artifact.getArtifact(), artifact.getVersion());
-        DefaultModuleDescriptor md = new DefaultModuleDescriptor(pluginId, "integration", null, true);
-        md.addConfiguration(new Configuration("default"));
-        md.setLastModified(System.currentTimeMillis());
-
-        ModuleRevisionId depId = ModuleRevisionId.newInstance(artifact.getGroup(), artifact.getArtifact(), artifact.getVersion());
-        DefaultDependencyDescriptor dd = new DefaultDependencyDescriptor(md, depId, /* force */ false, /* changing*/ false, /* transitive */ true);
-        dd.addDependencyConfiguration("default", "default");
-        md.addDependency(dd);
-
-        return md;
+        return result.artifacts;
     }
 }

@@ -91,6 +91,16 @@ public class ApplicationModel
         this.name = name;
     }
 
+    public Artifact getArtifact() {
+        Artifact artifact = new Artifact();
+
+        artifact.setGroup(getGroupId());
+        artifact.setName(getArtifactId());
+        artifact.setVersion(getVersion());
+
+        return artifact;
+    }
+
     public String getDescription() {
         return description;
     }

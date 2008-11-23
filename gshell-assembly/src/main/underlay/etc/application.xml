@@ -42,14 +42,14 @@
             <list>
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.wisdom"/>
-                    <property name="artifact" value="gshell-wisdom-core"/>
+                    <property name="name" value="gshell-wisdom-core"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
                 
                 <!--
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.support"/>
-                    <property name="artifact" value="gshell-vfs-truezip"/>
+                    <property name="name" value="gshell-vfs-truezip"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
                 -->
@@ -60,45 +60,45 @@
             <list>
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-builtins"/>
+                    <property name="name" value="gshell-builtins"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-vfs"/>
+                    <property name="name" value="gshell-vfs"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-admin"/>
+                    <property name="name" value="gshell-admin"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
                 <!--
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-optional"/>
+                    <property name="name" value="gshell-optional"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-log4j"/>
+                    <property name="name" value="gshell-log4j"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-bsf"/>
+                    <property name="name" value="gshell-bsf"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
                 -->
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="artifact" value="gshell-ssh"/>
+                    <property name="name" value="gshell-ssh"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
             </list>

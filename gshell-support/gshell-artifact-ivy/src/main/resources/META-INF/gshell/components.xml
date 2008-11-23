@@ -28,15 +28,14 @@
        default-init-method="init"
        default-destroy-method="destroy">
 
-    <bean id="eventManager" class="org.apache.geronimo.gshell.event.EventManagerImpl"/>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <bean id="applicationManager" class="org.apache.geronimo.gshell.wisdom.application.ApplicationManagerImpl">
-        <constructor-arg ref="eventManager"/>
-        <constructor-arg ref="artifactResolver"/>
+    <bean id="ivy" class="org.apache.geronimo.gshell.artifact.ivy.IvyFactoryBean" lazy-init="true">
+        <property name="settingsUrl" value="file:${gshell.home}/etc/ivysettings.xml"/>
     </bean>
-
-    <bean id="application" class="org.apache.geronimo.gshell.wisdom.application.ApplicationFactoryBean" lazy-init="true">
-        <constructor-arg ref="applicationManager"/>
+    
+    <bean id="artifactResolver" class="org.apache.geronimo.gshell.artifact.ivy.ArtifactResolverImpl" lazy-init="true">
+        <constructor-arg ref="ivy"/>
     </bean>
 
 </beans>

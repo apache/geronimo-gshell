@@ -60,7 +60,7 @@ public class InstallPluginAction
 
         Artifact artifact = new Artifact();
         artifact.setGroup(groupId);
-        artifact.setArtifact(artifactId);
+        artifact.setName(artifactId);
         artifact.setVersion(version);
 
         io.info("Loading plugin: {}", artifact.getId());

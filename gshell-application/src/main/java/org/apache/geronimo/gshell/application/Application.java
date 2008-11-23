@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.application.model.ApplicationModel;
+import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -34,6 +35,8 @@ import java.net.InetAddress;
 public interface Application
 {
     String getId();
+
+    Artifact getArtifact();
     
     IO getIo();
 
