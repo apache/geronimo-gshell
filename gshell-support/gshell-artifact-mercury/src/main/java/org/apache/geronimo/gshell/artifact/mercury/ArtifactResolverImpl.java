@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.artifact.mercury;
 import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 
 /**
- * ???
+ * <a href="http://maven.apache.org">Apache Maven (mercury)</a> based {@link ArtifactResolver}.
  *
  * @version $Rev$ $Date$
  */

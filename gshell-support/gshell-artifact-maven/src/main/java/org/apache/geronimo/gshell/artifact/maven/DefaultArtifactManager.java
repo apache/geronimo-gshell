@@ -48,10 +48,6 @@ public class DefaultArtifactManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    //
-    // TODO: Look at implementing this with mercury
-    //
-
     @Requirement
     private ArtifactFactory artifactFactory;
 
@@ -103,7 +99,7 @@ public class DefaultArtifactManager
         // If there is no artifact, then assume we want to do some full transitive resolve and install a dummy artifact
         Artifact artifact = request.getArtifact();
         if (artifact == null) {
-            artifact = artifactFactory.createArtifact("dummy", "dummy", "dummy", null, "jar");
+            artifact = artifactFactory.createArtifact("dummy", "dummy", "dummy", null, "dummy");
             request.setArtifact(artifact);
         }
 

@@ -87,8 +87,6 @@ public class ArtifactResolverImpl
                 Artifact resolved = createArtifact(downloadReport.getArtifact());
                 resolved.setFile(downloadReport.getLocalFile());
                 result.artifacts.add(resolved);
-
-                log.debug("    {}", resolved.getId());
             }
         }
         catch (Exception e) {

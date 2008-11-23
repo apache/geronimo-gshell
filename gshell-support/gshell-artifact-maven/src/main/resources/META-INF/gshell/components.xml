@@ -26,5 +26,9 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="artifactManager" class="org.apache.geronimo.gshell.artifact.maven.ArtifactManagerFactory"/>
+
+    <bean id="artifactResolver" class="org.apache.geronimo.gshell.artifact.maven.ArtifactResolverImpl">
+        <constructor-arg ref="artifactManager"/>
+    </bean>
     
 </beans>
