@@ -41,7 +41,6 @@
     
     <modules>
         <module>gshell-whisper</module>
-        <module>gshell-whisper-rfile</module>
         <module>gshell-remote-common</module>
         <module>gshell-remote-client</module>
         <module>gshell-remote-server</module>
