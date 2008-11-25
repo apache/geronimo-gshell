@@ -37,6 +37,23 @@
         SSH support.
     </description>
 
+    <repositories>
+        <repository>
+            <id>sshd.snapshots</id>
+            <name>SSHD Repository</name>
+            <url>http://sshd.googlecode.com/svn/m2-snapshot-repo/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell</groupId>
@@ -52,7 +69,12 @@
             <groupId>org.apache.geronimo.gshell.support</groupId>
             <artifactId>gshell-console</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.apache.geronimo.gshell.support</groupId>
+            <artifactId>gshell-security</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.google.code.sshd</groupId>
             <artifactId>sshd</artifactId>

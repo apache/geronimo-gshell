@@ -33,6 +33,10 @@
 
     <gshell:plugin name="gshell-ssh">
         <gshell:command-bundle name="default">
+            <gshell:command name="ssh">
+                <gshell:action class="org.apache.geronimo.gshell.commands.ssh.SshAction"/>
+            </gshell:command>
+
             <gshell:command name="ssh-server">
                 <gshell:action class="org.apache.geronimo.gshell.commands.ssh.SshServerAction"/>
             </gshell:command>
@@ -40,6 +44,9 @@
             <gshell:link name="sshd" target="ssh-server"/>
         </gshell:command-bundle>
     </gshell:plugin>
+
+    <bean name="sshClient" class="com.google.code.sshd.SshClient" factory-method="setUpDefaultClient" init-method="start" destroy-method="stop">
+    </bean>
 
     <bean name="sshServer" class="com.google.code.sshd.SshServer" factory-method="setUpDefaultServer" scope="prototype">
         <property name="shellFactory">
