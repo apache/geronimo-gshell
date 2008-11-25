@@ -28,6 +28,7 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
+    <!--
     <bean class="org.apache.geronimo.gshell.artifact.maven.ArtifactManagerConfigurator">
         <constructor-arg ref="artifactManager"/>
         <property name="localRepository" value="${gshell.home}/var/repository"/>
@@ -37,7 +38,8 @@
             </map>
         </property>
     </bean>
-
+    -->
+    
     <bean class="org.apache.geronimo.gshell.application.model.ApplicationModel">
         <property name="groupId" value="org.apache.geronimo.gshell"/>
         <property name="artifactId" value="gshell"/>
