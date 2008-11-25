@@ -124,7 +124,7 @@ public class RshAction
 
             if (password == null) {
                 text = messages.getMessage("prompt.password");
-                password = prompter.readLine(text + ": ", new UsernamePasswordValidator(text));
+                password = prompter.readPassword(text + ": ", new UsernamePasswordValidator(text));
             }
         }
         
