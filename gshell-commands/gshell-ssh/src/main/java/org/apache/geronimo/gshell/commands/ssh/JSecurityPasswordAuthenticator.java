@@ -20,10 +20,11 @@
 package org.apache.geronimo.gshell.commands.ssh;
 
 import com.google.code.sshd.server.PasswordAuthenticator;
-import org.jsecurity.SecurityUtils;
 import org.jsecurity.authc.AuthenticationException;
 import org.jsecurity.authc.UsernamePasswordToken;
 import org.jsecurity.subject.Subject;
+import org.jsecurity.mgt.SecurityManager;
+import org.jsecurity.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,25 +38,47 @@ public class JSecurityPasswordAuthenticator
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private final SecurityManager securityManager;
+
+    public JSecurityPasswordAuthenticator(final SecurityManager securityManager) {
+        // securityManager can be null
+        this.securityManager = securityManager;
+    }
+
+    public JSecurityPasswordAuthenticator() {
+        this(null);
+    }
+
     public Object authenticate(final String username, final String password) {
         assert username != null;
         assert password != null;
-        
-        Subject currentUser = SecurityUtils.getSubject();
 
-        if (!currentUser.isAuthenticated()) {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        log.debug("Authenticating: {}/{}", username, password);
 
-            try {
-                currentUser.login(token);
-                log.info("User [" + currentUser.getPrincipal() + "] logged in successfully");
-            }
-            catch (AuthenticationException e) {
-                log.error("Authentication failed: " + e, e);
-                return null;
-            }
+        Subject currentUser;
+
+        if (securityManager != null) {
+            currentUser = securityManager.getSubject();
+        }
+        else {
+            currentUser = SecurityUtils.getSubject();
         }
 
-        return currentUser.getPrincipal();
+        if (currentUser.isAuthenticated()) {
+            log.debug("Logging out current user: {}", currentUser.getPrincipal());
+            currentUser.logout();
+        }
+
+        try {
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            currentUser.login(token);
+            Object principal = currentUser.getPrincipal();
+            log.info("User [{}] logged in successfully", principal);
+            return principal;
+        }
+        catch (AuthenticationException e) {
+            log.error("Authentication failed: " + e, e);
+            return null;
+        }
     }
 }

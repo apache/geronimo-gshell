@@ -24,34 +24,30 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="no"
-       default-dependency-check="none"
-       default-init-method="init"
-       default-destroy-method="destroy">
+       default-dependency-check="none">
 
     <bean id="cryptoContext" class="org.apache.geronimo.gshell.security.crypto.CryptoContextImpl" lazy-init="true">
         <property name="transformation" value="RSA"/>
         <property name="provider" value="default"/>
     </bean>
+
+    <bean class="org.apache.geronimo.gshell.security.crypto.SecurityManagerInstaller" init-method="init">
+        <constructor-arg ref="securityManager"/>
+    </bean>
     
     <bean id="securityManager" class="org.jsecurity.mgt.DefaultSecurityManager" lazy-init="true">
+        <property name="cacheManager">
+            <bean class="org.jsecurity.cache.HashtableCacheManager"/>
+        </property>
         <property name="realms">
             <list>
-                <ref bean="bogusRealm"/>
+                <ref bean="localRealm"/>
             </list>
         </property>
     </bean>
 
-    <bean id="bogusRealm" class="org.jsecurity.realm.text.TextConfigurationRealm" lazy-init="true">
-        <property name="userDefinitions">
-            <value>
-                test=test
-            </value>
-        </property>
-        <property name="roleDefinitions">
-            <value>
-                foo=bar,baz
-            </value>
-        </property>
+    <bean id="localRealm" class="org.jsecurity.realm.text.PropertiesRealm" lazy-init="true">
+        <property name="resourcePath" value="classpath:security.properties"/>
     </bean>
 
     <!--
@@ -62,9 +58,7 @@
     <bean class="org.jsecurity.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>
     </bean>
-    -->
     
-    <!--
     <bean id="secureRemoteInvocationExecutor" class="org.jsecurity.spring.remoting.SecureRemoteInvocationExecutor">
         <property name="securityManager" ref="securityManager"/>
     </bean>
