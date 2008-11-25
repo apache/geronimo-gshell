@@ -82,9 +82,5 @@
     <bean name="passwordAuthenticator" class="org.apache.geronimo.gshell.commands.ssh.JSecurityPasswordAuthenticator">
         <constructor-arg ref="securityManager"/>
     </bean>
-
-    <!--
-    <bean name="passwordAuthenticator" class="org.apache.geronimo.gshell.commands.ssh.BogusPasswordAuthenticator"/>
-    -->
-
+    
 </beans>
