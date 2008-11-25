@@ -50,9 +50,9 @@
 
         <!--
         NOTE: The POM installed in central for this puppy are not valid, RC2 shows version is RC1
-              and both have the file named *.pom.xml instead *.pom.
+              and both have the file named *.pom.xml instead *.pom.  0.9.0 is out but artifacts are fucked.
         -->
-        
+
         <dependency>
             <groupId>org.jsecurity</groupId>
             <artifactId>jsecurity</artifactId>

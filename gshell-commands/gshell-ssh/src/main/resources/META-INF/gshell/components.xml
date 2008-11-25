@@ -81,4 +81,8 @@
 
     <bean name="passwordAuthenticator" class="org.apache.geronimo.gshell.commands.ssh.BogusPasswordAuthenticator"/>
 
+    <!--
+    <bean name="passwordAuthenticator" class="org.apache.geronimo.gshell.commands.ssh.JSecurityPasswordAuthenticator"/>
+    -->
+
 </beans>
