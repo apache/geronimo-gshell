@@ -41,7 +41,7 @@ public class SshServerAction
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Option(name="-p", aliases={ "--port" })
-    private int port;
+    private int port=8022;
 
     @Option(name="-b", aliases={ "--background"})
     private boolean background;
