@@ -46,21 +46,49 @@ public class ApplicationArtifactFilter
         "gshell-event",
         "gshell-i18n",
         "gshell-io",
-        "gshell-ivy",
         "gshell-model",
         "gshell-spring",
         "gshell-terminal",
         "gshell-wisdom-bootstrap",
         "gshell-yarn",
-        "ivy",
         "jcl-over-slf4j",
         "jline",
         "log4j",
-        "plexus-classworlds",
         "slf4j-api",
         "slf4j-log4j12",
         "spring-core",
-        "spring-beans"
+        "spring-beans",
+
+        //
+        // FIXME: Need to hook this filtering up in the ArtifactResolverImpls
+        //
+        
+        // gshell-artifact-ivy
+        "gshell-artifact-ivy",
+        "ivy",
+
+        // gshell-artifact-maven
+        "gshell-artifact-maven",
+        "aspectjrt",
+        "maven-artivact",
+        "maven-model",
+        "maven-plugin-registry",
+        "maven-profile",
+        "maven-project",
+        "maven-settings",
+        "plexus-classworlds",
+        "plexus-component-annotations",
+        "plexus-container-default",
+        "plexus-interpolation",
+        "plexus-utils",
+        "wagon-file",
+        "wagon-http-lightweight",
+        "wagon-http-shared",
+        "wagon-provider-api",
+        "xbean-reflect",
+        "xercesMinimal",
+        "nekohtml",
+
     };
 
     private final Set<String> excludes = new HashSet<String>();

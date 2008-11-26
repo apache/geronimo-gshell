@@ -38,13 +38,9 @@ public class ResolutionException
 
     public ResolutionException(final ArtifactResolutionRequest request, final ArtifactResolutionResult result) {
         assert request != null;
-        assert result != null;
-
         this.request = request;
+
+        assert result != null;
         this.result = result;
     }
-
-    //
-    // TODO: Add an API to query the results?
-    //
 }

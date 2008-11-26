@@ -27,7 +27,7 @@ import java.net.URI;
 import java.util.Map;
 
 /**
- * ???
+ * Component to configure the {@link ArtifactManager}.
  *
  * @version $Rev$ $Date$
  */
@@ -59,7 +59,8 @@ public class ArtifactManagerConfigurator
     // @PostConstruct
     public void init() throws Exception {
         ArtifactRepositoryManager repositoryManager = artifactManager.getRepositoryManager();
-
+        log.debug("Configuring artifact manager: {}", artifactManager);
+        
         if (localRepository != null) {
             repositoryManager.setLocalRepository(localRepository);
         }

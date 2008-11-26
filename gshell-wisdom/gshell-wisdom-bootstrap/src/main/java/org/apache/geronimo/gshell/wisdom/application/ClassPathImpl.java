@@ -62,17 +62,19 @@ public class ClassPathImpl
         if (urls == null) {
             List<URL> list = new ArrayList<URL>(artifacts.size());
 
-            for (Artifact artifact : artifacts) {
-                File file = artifact.getFile();
+            try {
+                for (Artifact artifact : artifacts) {
+                    File file = artifact.getFile();
 
-                if (file != null) {
-                    try {
-                        list.add(file.toURI().toURL());
+                    if (file == null) {
+                        throw new RuntimeException("Artifact missing file reference: " + artifact);
                     }
-                    catch (MalformedURLException e) {
-                        throw new RuntimeException(e);
-                    }
+
+                    list.add(file.toURI().toURL());
                 }
+            }
+            catch (MalformedURLException e) {
+                throw new RuntimeException(e);
             }
 
             this.urls = Collections.unmodifiableCollection(list);
