@@ -33,23 +33,23 @@
 
     <gshell:plugin name="gshell-optional">
         <gshell:command-bundle name="default">
-            <gshell:command name="optional/exec">
+            <gshell:command name="exec">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.ExecuteAction"/>
             </gshell:command>
 
-            <gshell:command name="optional/java">
+            <gshell:command name="java">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.JavaAction"/>
             </gshell:command>
 
-            <gshell:command name="optional/sleep">
+            <gshell:command name="sleep">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.SleepAction"/>
             </gshell:command>
 
-            <gshell:command name="optional/date">
+            <gshell:command name="date">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.DateAction"/>
             </gshell:command>
 
-            <gshell:command name="optional/hostname">
+            <gshell:command name="hostname">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.HostnameAction"/>
             </gshell:command>
         </gshell:command-bundle>
