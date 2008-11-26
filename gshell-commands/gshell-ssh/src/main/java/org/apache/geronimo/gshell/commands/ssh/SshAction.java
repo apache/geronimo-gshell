@@ -34,8 +34,6 @@ import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-
 /**
  * Connect to a SSH server.
  *
@@ -46,14 +44,17 @@ public class SshAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Option(name="-u", aliases={"--username"})
+    @Option(name="-l", aliases={"--username"})
     private String username;
 
-    @Option(name="-p", aliases={"--password"})
+    @Option(name="-P", aliases={"--password"})
     private String password;
 
-    @Argument(required=true, index=0)
-    private URI remote;
+    @Argument(required=true)
+    private String hostname;
+
+    @Option(name="-p", aliases={"--port"})
+    private int port = 22;
 
     private BeanContainer container;
 
@@ -100,7 +101,11 @@ public class SshAction
         IO io = context.getIo();
         MessageSource messages = context.getCommand().getMessages();
 
-        io.info(messages.format("info.connecting", remote.getHost(), remote.getPort()));
+        //
+        // TODO: Parse hostname for <username>@<hostname>
+        //
+        
+        io.info(messages.format("info.connecting", hostname, port));
 
         // If the username/password was not configured via cli, then prompt the user for the values
         if (username == null || password == null) {
@@ -124,7 +129,7 @@ public class SshAction
         SshClient client = container.getBean(SshClient.class);
         log.debug("Created client: {}", client);
 
-        ClientSession session = client.connect(remote.getHost(), remote.getPort());
+        ClientSession session = client.connect(hostname, port);
         io.info(messages.getMessage("info.connected"));
 
         session.authPassword(username, password);

@@ -60,13 +60,12 @@
         <module>gshell-builtins</module>
         <module>gshell-admin</module>
         <module>gshell-optional</module>
-        <!--
         <module>gshell-repository</module>
-        -->
         <module>gshell-bsf</module>
         <module>gshell-vfs</module>
         <module>gshell-log4j</module>
         <module>gshell-ssh</module>
+        <module>gshell-geronimo</module>
     </modules>
 
 </project>
