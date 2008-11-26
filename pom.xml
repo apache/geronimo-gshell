@@ -316,30 +316,6 @@
             </dependency>
             
             <dependency>
-                <groupId>org.apache.geronimo.gshell.remote</groupId>
-                <artifactId>gshell-whisper</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.remote</groupId>
-                <artifactId>gshell-remote-common</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.remote</groupId>
-                <artifactId>gshell-remote-client</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.remote</groupId>
-                <artifactId>gshell-remote-server</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-builtins</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
@@ -419,7 +395,6 @@
         <module>gshell-wisdom</module>
         <module>gshell-cli</module>
         <module>gshell-commands</module>
-        <module>gshell-remote</module>
         <module>gshell-assembly</module>
     </modules>
     

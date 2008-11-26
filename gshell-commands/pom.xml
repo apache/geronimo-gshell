@@ -65,7 +65,6 @@
         -->
         <module>gshell-bsf</module>
         <module>gshell-vfs</module>
-        <module>gshell-remote</module>
         <module>gshell-log4j</module>
         <module>gshell-ssh</module>
     </modules>
