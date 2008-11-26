@@ -17,57 +17,59 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.application;
+package org.apache.geronimo.gshell.artifact.maven;
 
-import org.apache.geronimo.gshell.artifact.ArtifactFilter;
-import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+import org.apache.maven.artifact.Artifact;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
 
 /**
- * Artifact filter for applications.
+ * Filters artifacts required for using Maven Artifact for resolution of artifacts.
  *
  * @version $Rev$ $Date$
  */
-public class ApplicationArtifactFilter
+public class MavenArtifactDependenciesFilter
     implements ArtifactFilter
 {
     private static final String[] EXCLUDES = {
-        "gshell-artifact",
-        "gshell-ansi",
-        "gshell-api",
-        "gshell-application",
-        "gshell-artifact",
-        "gshell-chronos",
-        "gshell-cli",
-        "gshell-clp",
-        "gshell-event",
-        "gshell-i18n",
-        "gshell-io",
-        "gshell-spring",
-        "gshell-terminal",
-        "gshell-wisdom-bootstrap",
-        "gshell-yarn",
-        "jcl-over-slf4j",
-        "jline",
-        "log4j",
-        "slf4j-api",
-        "slf4j-log4j12",
-        "spring-core",
-        "spring-beans"
+        "gshell-artifact-maven",
+        "gshell-plexus",
+        "aspectjrt",
+        "maven-artivact",
+        "maven-model",
+        "maven-plugin-registry",
+        "maven-profile",
+        "maven-project",
+        "maven-settings",
+        "plexus-classworlds",
+        "plexus-component-annotations",
+        "plexus-container-default",
+        "plexus-interpolation",
+        "plexus-utils",
+        "wagon-file",
+        "wagon-http-lightweight",
+        "wagon-http-shared",
+        "wagon-provider-api",
+        "xbean-reflect",
+        "xercesMinimal",
+        "nekohtml",
+
     };
 
     private final Set<String> excludes = new HashSet<String>();
 
-    public ApplicationArtifactFilter() {
+    public MavenArtifactDependenciesFilter() {
         excludes.addAll(Arrays.asList(EXCLUDES));
     }
 
-    public boolean accept(final Artifact artifact) {
+    public boolean include(final Artifact artifact) {
         assert artifact != null;
 
-        return !excludes.contains(artifact.getName());
+        String name = artifact.getArtifactId();
+
+        return !excludes.contains(name);
     }
 }

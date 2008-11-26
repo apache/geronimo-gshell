@@ -75,10 +75,14 @@ public class ArtifactResolverImpl
             _request.setArtifactDependencies(artifacts);
         }
 
-        // Always filter for runtime scope
         AndArtifactFilter filter = new AndArtifactFilter();
         _request.setFilter(filter);
+
+        // Always filter for runtime scope
         filter.add(new ScopeArtifactFilter(org.apache.maven.artifact.Artifact.SCOPE_RUNTIME));
+
+        // Filter deps needed for use of maven-artifact
+        filter.add(new MavenArtifactDependenciesFilter());
 
         if (request.filter != null) {
             log.debug("Filter: {}", request.filter);

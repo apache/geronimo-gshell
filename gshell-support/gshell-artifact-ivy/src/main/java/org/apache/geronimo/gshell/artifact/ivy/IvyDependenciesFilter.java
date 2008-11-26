@@ -17,57 +17,42 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.wisdom.application;
+package org.apache.geronimo.gshell.artifact.ivy;
 
-import org.apache.geronimo.gshell.artifact.ArtifactFilter;
-import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.ivy.core.module.descriptor.Artifact;
+import org.apache.ivy.util.filter.Filter;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artifact filter for applications.
+ * Filters artifacts required for using Apache Ivy for resolution of artifacts.
  *
  * @version $Rev$ $Date$
  */
-public class ApplicationArtifactFilter
-    implements ArtifactFilter
+public class IvyDependenciesFilter
+    implements Filter
 {
     private static final String[] EXCLUDES = {
-        "gshell-artifact",
-        "gshell-ansi",
-        "gshell-api",
-        "gshell-application",
-        "gshell-artifact",
-        "gshell-chronos",
-        "gshell-cli",
-        "gshell-clp",
-        "gshell-event",
-        "gshell-i18n",
-        "gshell-io",
-        "gshell-spring",
-        "gshell-terminal",
-        "gshell-wisdom-bootstrap",
-        "gshell-yarn",
-        "jcl-over-slf4j",
-        "jline",
-        "log4j",
-        "slf4j-api",
-        "slf4j-log4j12",
-        "spring-core",
-        "spring-beans"
+        "gshell-artifact-ivy",
+        "ivy",
     };
 
     private final Set<String> excludes = new HashSet<String>();
 
-    public ApplicationArtifactFilter() {
+    public IvyDependenciesFilter() {
         excludes.addAll(Arrays.asList(EXCLUDES));
     }
 
-    public boolean accept(final Artifact artifact) {
-        assert artifact != null;
+    public boolean accept(final Object obj) {
+        if (!(obj instanceof Artifact)) {
+            return false;
+        }
 
-        return !excludes.contains(artifact.getName());
+        Artifact artifact = (Artifact)obj;
+        String name = artifact.getName();
+
+        return !excludes.contains(name);
     }
 }

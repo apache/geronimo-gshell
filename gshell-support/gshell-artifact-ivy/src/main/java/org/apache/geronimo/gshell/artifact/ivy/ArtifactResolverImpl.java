@@ -61,8 +61,16 @@ public class ArtifactResolverImpl
         options.setOutputReport(true);
         options.setTransitive(true);
 
+        AndArtifactFilter filter = new AndArtifactFilter();
+        options.setArtifactFilter(filter);
+
+        // Filter deps needed for use of apache-ivy
+        filter.add(new IvyDependenciesFilter());
+
         if (request.filter != null) {
-            options.setArtifactFilter(new Filter() {
+            log.debug("Filter: {}", request.filter);
+
+            filter.add(new Filter() {
                 public boolean accept(final Object obj) {
                     if (!(obj instanceof org.apache.ivy.core.module.descriptor.Artifact)) {
                         return false;
@@ -80,13 +88,17 @@ public class ArtifactResolverImpl
 
         try {
             ResolveReport resolveReport = ivy.resolve(md, options);
-
             result.artifacts = new LinkedHashSet<Artifact>();
 
+            log.debug("Resolved:");
+
             for (ArtifactDownloadReport downloadReport : resolveReport.getAllArtifactsReports()) {
-                Artifact resolved = createArtifact(downloadReport.getArtifact());
-                resolved.setFile(downloadReport.getLocalFile());
-                result.artifacts.add(resolved);
+                Artifact artifact = createArtifact(downloadReport.getArtifact());
+                artifact.setFile(downloadReport.getLocalFile());
+
+                log.debug("    {}", artifact);
+
+                result.artifacts.add(artifact);
             }
         }
         catch (Exception e) {
@@ -113,13 +125,19 @@ public class ArtifactResolverImpl
     private ModuleDescriptor createModuleDescriptor(final Request request) {
         assert request != null;
 
+        log.debug("Artifact: {}", request.artifact);
+
         ModuleRevisionId id = ModuleRevisionId.newInstance(request.artifact.getGroup(), request.artifact.getName(), request.artifact.getVersion());
         DefaultModuleDescriptor md = new DefaultModuleDescriptor(id, "integration", null, true);
         md.addConfiguration(new Configuration("default"));
         md.setLastModified(System.currentTimeMillis());
 
         if (request.artifacts != null) {
+            log.debug("Dependencies:");
+
             for (Artifact artifact : request.artifacts) {
+                log.debug("    {}", artifact);
+
                 ModuleRevisionId depId = ModuleRevisionId.newInstance(artifact.getGroup(), artifact.getName(), artifact.getVersion());
                 DefaultDependencyDescriptor dd = new DefaultDependencyDescriptor(md, depId, false, false, true);
                 dd.addDependencyConfiguration("default", "default");
