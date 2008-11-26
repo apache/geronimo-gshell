@@ -19,7 +19,7 @@
 
 package org.apache.geronimo.gshell.commands.repository;
 
-import org.apache.geronimo.gshell.artifact.ArtifactManager;
+import org.apache.geronimo.gshell.artifact.maven.ArtifactManager;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;

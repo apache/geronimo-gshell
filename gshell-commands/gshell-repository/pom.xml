@@ -40,7 +40,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-artifact</artifactId>
+            <artifactId>gshell-artifact-maven</artifactId>
         </dependency>
     </dependencies>
     
