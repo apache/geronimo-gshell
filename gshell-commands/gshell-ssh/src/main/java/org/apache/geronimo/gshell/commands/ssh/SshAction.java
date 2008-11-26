@@ -145,6 +145,4 @@ public class SshAction
 
         return Result.SUCCESS;
     }
-
-
 }
