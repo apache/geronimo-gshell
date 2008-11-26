@@ -46,6 +46,10 @@ public class ResolveAction
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    //
+    // TODO: Use gshell-artifact API
+    //
+    
     @Autowired
     private ArtifactManager artifactManager;
 
