@@ -53,10 +53,6 @@ public class GShellArtifactResolver
     @Requirement
     private ArtifactRepositoryManager repositoryManager;
 
-    //
-    // ArtifactResolver
-    //
-
     @Deprecated
     public void resolve(final Artifact artifact, final List<ArtifactRepository> remoteRepositories, final ArtifactRepository localRepository) throws ArtifactResolutionException, ArtifactNotFoundException {
         assert delegate != null;

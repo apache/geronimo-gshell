@@ -28,7 +28,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
  * @version $Rev$ $Date$
  */
 public class ResolutionException
-    extends ArtifactManagerException
+    extends Exception
 {
     private static final long serialVersionUID = 1;
 

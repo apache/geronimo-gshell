@@ -22,6 +22,7 @@ package org.apache.geronimo.gshell.artifact.maven;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+import org.apache.maven.artifact.InvalidRepositoryException;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URI;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,13 +67,8 @@ public class DefaultArtifactRepositoryManager
     public void setLocalRepository(final File dir) throws InvalidRepositoryException {
         assert dir != null;
 
-        try {
-            ArtifactRepository repo = repositoryFactory.createLocalRepository(dir);
-            setLocalRepository(repo);
-        }
-        catch (Exception e) {
-            throw new InvalidRepositoryException(e);
-        }
+        ArtifactRepository repo = repositoryFactory.createLocalRepository(dir);
+        setLocalRepository(repo);
     }
 
     public List<ArtifactRepository> getRemoteRepositories() {
@@ -109,8 +106,8 @@ public class DefaultArtifactRepositoryManager
 
             addRemoteRepository(repo);
         }
-        catch (Exception e) {
-            throw new InvalidRepositoryException(e);
+        catch (MalformedURLException e) {
+            throw new InvalidRepositoryException(e.getMessage(), id, e);
         }
     }
 }
