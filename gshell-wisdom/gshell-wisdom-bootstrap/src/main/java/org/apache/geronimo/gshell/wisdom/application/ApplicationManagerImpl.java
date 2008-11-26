@@ -137,7 +137,9 @@ public class ApplicationManagerImpl
         assert model != null;
 
         // FIXME: Get basedir from application
-        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/classpath.ser"));
+        Artifact artifact = model.getArtifact();
+        ClassPathCache cache = new ClassPathCache(new File(new File(System.getProperty("gshell.home")), "var/" + artifact.getGroup() + "/" + artifact.getName() + "/classpath.ser"));
+                
         ClassPath classPath = cache.get();
 
         if (classPath == null) {
@@ -210,7 +212,7 @@ public class ApplicationManagerImpl
 
                 final SecurityManager prevSM = System.getSecurityManager();
                 System.setSecurityManager(sm);
-                
+
                 try {
                     return method.invoke(shell, args);
                 }
