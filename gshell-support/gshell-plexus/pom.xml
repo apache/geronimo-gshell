@@ -43,6 +43,10 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <!--
+        TODO: Test 1.0-beta-2
+        -->
+        
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-container-default</artifactId>
@@ -73,6 +77,12 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>1.5.6</version>
         </dependency>
 
     </dependencies>
