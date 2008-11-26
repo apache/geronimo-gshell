@@ -87,13 +87,13 @@
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
-                <!--
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
                     <property name="name" value="gshell-optional"/>
                     <property name="version" value="1.0-alpha-2-SNAPSHOT"/>
                 </bean>
 
+                <!--
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
                     <property name="name" value="gshell-log4j"/>
