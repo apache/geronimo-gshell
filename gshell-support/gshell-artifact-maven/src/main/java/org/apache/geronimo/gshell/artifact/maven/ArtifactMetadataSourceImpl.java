@@ -38,7 +38,7 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 @Component(role=ArtifactMetadataSource.class, hint="gshell")
-public class GShellArtifactMetadataSource
+public class ArtifactMetadataSourceImpl
     implements ArtifactMetadataSource
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

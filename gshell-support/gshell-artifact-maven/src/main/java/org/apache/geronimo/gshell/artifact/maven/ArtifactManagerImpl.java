@@ -43,7 +43,7 @@ import java.util.List;
  * @version $Rev$ $Date$
  */
 @Component(role=ArtifactManager.class)
-public class DefaultArtifactManager
+public class ArtifactManagerImpl
     implements ArtifactManager
 {
     private final Logger log = LoggerFactory.getLogger(getClass());

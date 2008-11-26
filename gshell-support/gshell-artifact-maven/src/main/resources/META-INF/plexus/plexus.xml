@@ -23,13 +23,13 @@
 <plexus>
     <components>
         <!--
-        Force our custom GShellArtifactResolver to be the default, and re-assign the default implementation as a delegate.
+        Force our custom RepositorySelectingArtifactResolver to be the default, and re-assign the default implementation as a delegate.
         -->
 
         <component>
             <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
             <role-hint>default</role-hint>
-            <implementation>org.apache.geronimo.gshell.artifact.maven.GShellArtifactResolver</implementation>
+            <implementation>org.apache.geronimo.gshell.artifact.maven.RepositorySelectingArtifactResolver</implementation>
             <isolated-realm>false</isolated-realm>
             <requirements>
                 <requirement>

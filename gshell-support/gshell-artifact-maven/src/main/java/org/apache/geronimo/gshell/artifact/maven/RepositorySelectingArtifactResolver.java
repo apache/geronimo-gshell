@@ -44,7 +44,7 @@ import java.util.Set;
  */
 @SuppressWarnings({"deprecation"})
 @Component(role=ArtifactResolver.class, hint="gshell")
-public class GShellArtifactResolver
+public class RepositorySelectingArtifactResolver
     implements ArtifactResolver
 {
     @Requirement(hint="delegate")
