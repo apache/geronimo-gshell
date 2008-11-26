@@ -32,7 +32,6 @@ public class ArtifactResolverImpl
     public Result resolve(final Request request) throws Failure {
         assert request != null;
 
-
         return null;
     }
 }

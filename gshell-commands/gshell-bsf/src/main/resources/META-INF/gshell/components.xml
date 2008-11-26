@@ -33,7 +33,7 @@
 
     <gshell:plugin name="gshell-bsf">
         <gshell:command-bundle name="default">
-            <gshell:command name="bsf/script">
+            <gshell:command name="script">
                 <gshell:action class="org.apache.geronimo.gshell.commands.bsf.ScriptAction">
                     <constructor-arg ref="bsfManager"/>
                     <constructor-arg ref="fileSystemAccess"/>

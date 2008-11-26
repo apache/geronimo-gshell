@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ???
+ * SSHD {@link ShellFactory} which provides access to GShell.
  *
  * @version $Rev$ $Date$
  */
