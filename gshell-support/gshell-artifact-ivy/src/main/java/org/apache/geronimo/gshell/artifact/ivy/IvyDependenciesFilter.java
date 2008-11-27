@@ -34,6 +34,28 @@ import java.util.Set;
 public class IvyDependenciesFilter
     implements Filter
 {
+    /*
+    [INFO] org.apache.geronimo.gshell.support:gshell-artifact-ivy:jar:1.0-alpha-2-SNAPSHOT
+    [INFO] +- org.apache.geronimo.gshell.support:gshell-io:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] |  +- org.slf4j:slf4j-api:jar:1.5.6:compile
+    [INFO] |  +- org.apache.geronimo.gshell.support:gshell-yarn:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] |  \- org.apache.geronimo.gshell.support:gshell-ansi:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] |     +- org.apache.geronimo.gshell.support:gshell-i18n:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] |     \- org.apache.geronimo.gshell.support:gshell-terminal:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] |        \- jline:jline:jar:0.9.94:compile
+    [INFO] +- org.apache.geronimo.gshell.support:gshell-spring:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.5.6:compile
+    [INFO] |  +- org.apache.geronimo.gshell.support:gshell-chronos:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] |  +- org.springframework:spring-core:jar:2.5.5:compile
+    [INFO] |  \- org.springframework:spring-beans:jar:2.5.5:compile
+    [INFO] +- org.apache.geronimo.gshell.support:gshell-artifact:jar:1.0-alpha-2-SNAPSHOT:compile
+    [INFO] +- org.apache.ivy:ivy:jar:2.0.0-rc2:compile
+    [INFO] +- org.slf4j:slf4j-log4j12:jar:1.5.6:test
+    [INFO] |  \- log4j:log4j:jar:1.2.15:test (version managed from 1.2.14)
+    [INFO] +- org.apache.geronimo.gshell.support:gshell-spring:jar:tests:1.0-alpha-2-SNAPSHOT:test
+    [INFO] \- junit:junit:jar:3.8.2:test
+    */
+
     private static final String[] EXCLUDES = {
         "gshell-artifact-ivy",
         "ivy",
