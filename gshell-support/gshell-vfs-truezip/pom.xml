@@ -31,7 +31,7 @@
     </parent>
 
     <artifactId>gshell-vfs-truezip</artifactId>
-    <name>GShell Support :: VFS TrueZIP</name>
+    <name>GShell Support :: VFS + TrueZIP</name>
 
     <description>
         TrueZIP VFS provider.

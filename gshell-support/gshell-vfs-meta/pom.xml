@@ -31,7 +31,7 @@
     </parent>
 
     <artifactId>gshell-vfs-meta</artifactId>
-    <name>GShell Support :: VFS Meta</name>
+    <name>GShell Support :: VFS + Meta</name>
 
     <description>
         Meta VFS provider.
