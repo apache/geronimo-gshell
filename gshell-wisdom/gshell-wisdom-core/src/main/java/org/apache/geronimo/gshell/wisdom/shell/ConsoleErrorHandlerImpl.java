@@ -105,5 +105,6 @@ public class ConsoleErrorHandlerImpl
                 buff.setLength(0);
             }
         }
+        io.err.flush();
     }
 }
