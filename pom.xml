@@ -386,7 +386,7 @@
     </dependencies>
 
     <modules>
-        <module>gshell-buildsupport</module>
+        <module>gshell-local-repository</module>
         <module>gshell-api</module>
         <module>gshell-support</module>
         <module>gshell-bootstrap</module>

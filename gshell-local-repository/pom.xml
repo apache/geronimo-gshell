@@ -21,50 +21,39 @@
 <!-- $Rev$ $Date$ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
     
-    <groupId>org.apache.geronimo.gshell.commands</groupId>
-    <artifactId>gshell-commands</artifactId>
-    <name>GShell Commands</name>
-    <packaging>pom</packaging>
+    <artifactId>gshell-local-repository</artifactId>
+    <name>GShell Local Repository</name>
     
     <description>
-        Collection of commands for GShell functionality.
+        GShell Local Repository
     </description>
-
+    
+    <repositories>
+        <repository>
+            <id>module-local</id>
+            <name>Local Repository</name>
+            <url>file://${project.basedir}/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    
     <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell.support</groupId>
-            <artifactId>gshell-clp</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.geronimo.gshell</groupId>
-            <artifactId>gshell-api</artifactId>
-        </dependency>
+        <!-- TODO: -->
     </dependencies>
-
-    <modules>
-        <module>gshell-builtins</module>
-        <module>gshell-admin</module>
-        <module>gshell-optional</module>
-        <module>gshell-repository</module>
-        <module>gshell-bsf</module>
-        <module>gshell-vfs</module>
-        <module>gshell-log4j</module>
-        <module>gshell-ssh</module>
-    </modules>
 
 </project>
