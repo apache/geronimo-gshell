@@ -43,6 +43,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-local-repository</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -87,7 +93,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-project</artifactId>
-            <version>2.1.0-r721111</version>
+            <version>2.1.0-M2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.maven</groupId>
