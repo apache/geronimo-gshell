@@ -47,6 +47,10 @@ enum Messages
                 bundle = ResourceBundle.getBundle(Messages.class.getName());
             }
 
+            //
+            // FIXME: Replace with String.format()
+            //
+
             return MessageFormat.format(bundle.getString(name()), args);
         }
     }

@@ -85,6 +85,10 @@ public class ResourceBundleMessageSource
 
         String pattern = getMessage(code);
 
+        //
+        // FIXME: Replace with String.format()
+        //
+
         return MessageFormat.format(pattern, args);
     }
 }
