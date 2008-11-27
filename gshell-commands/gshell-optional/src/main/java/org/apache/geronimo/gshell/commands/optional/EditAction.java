@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.Selectors;
@@ -26,6 +26,7 @@ import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.vfs.FileObjects;
+import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 
 import java.io.File;
 import java.util.Arrays;

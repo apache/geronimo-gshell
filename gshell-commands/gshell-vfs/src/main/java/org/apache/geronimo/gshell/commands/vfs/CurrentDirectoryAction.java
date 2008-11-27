@@ -23,6 +23,7 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.FileObjects;
+import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 
 /**
  * Displays the current directory.

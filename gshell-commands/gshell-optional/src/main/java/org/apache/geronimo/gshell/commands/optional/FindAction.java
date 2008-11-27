@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSelectInfo;
@@ -27,8 +27,10 @@ import org.apache.commons.vfs.FileType;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.FileObjects;
+import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 import org.apache.geronimo.gshell.vfs.selector.AggregateFileSelector;
 import org.apache.oro.text.GlobCompiler;
 import org.apache.oro.text.regex.MalformedPatternException;
@@ -80,7 +82,7 @@ public class FindAction
 
         FileObjects.close(root);
         
-        return Result.SUCCESS;
+        return CommandAction.Result.SUCCESS;
     }
 
     private void find(final CommandContext context, final FileObject file, final FileSelector selector) throws FileSystemException {

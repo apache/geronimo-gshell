@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.vfs.support;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
@@ -52,7 +52,7 @@ public abstract class VfsActionSupport
         assert fileSystemAccess != null;
         return fileSystemAccess;
     }
-    
+
     protected FileObject getCurrentDirectory(final CommandContext context) throws FileSystemException {
         assert context != null;
 
@@ -70,7 +70,7 @@ public abstract class VfsActionSupport
         assert path != null;
 
         log.trace("Resolving path: {}", path);
-        
+
         FileObject cwd = getCurrentDirectory(context);
         return getFileSystemAccess().resolveFile(cwd, path);
     }
@@ -78,7 +78,7 @@ public abstract class VfsActionSupport
     //
     // TODO: Make these more generally available to other plugins.  Maybe even to FileObjects?
     //
-    
+
     protected void ensureFileExists(final FileObject file) throws FileSystemException {
         assert file != null;
 

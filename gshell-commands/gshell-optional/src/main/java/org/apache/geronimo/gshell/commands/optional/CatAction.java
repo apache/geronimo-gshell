@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.optional;
 
 import org.apache.commons.vfs.FileContent;
 import org.apache.commons.vfs.FileContentInfo;
@@ -25,9 +25,11 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandContext;
+import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.FileObjects;
+import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,7 +83,7 @@ public class CatAction
 
         FileObjects.close(file);
         
-        return Result.SUCCESS;
+        return CommandAction.Result.SUCCESS;
     }
 
     private void cat(final BufferedReader reader, final IO io) throws IOException {

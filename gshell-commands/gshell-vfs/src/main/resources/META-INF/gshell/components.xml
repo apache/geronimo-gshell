@@ -80,48 +80,12 @@
 
             <gshell:link name="del" target="rm"/>
 
-            <gshell:command name="cat">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.CatAction" parent="vfsCommandActionTemplate"/>
-                <gshell:completers>
-                    <ref bean="fileObjectNameCompleter"/>
-                    <null/>
-                </gshell:completers>
-            </gshell:command>
-
-            <gshell:command name="edit">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.EditAction" parent="vfsCommandActionTemplate"/>
-                <gshell:completers>
-                    <ref bean="fileObjectNameCompleter"/>
-                    <null/>
-                </gshell:completers>
-            </gshell:command>
-
-            <gshell:command name="touch">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.TouchAction" parent="vfsCommandActionTemplate"/>
-                <gshell:completers>
-                    <ref bean="fileObjectNameCompleter"/>
-                    <null/>
-                </gshell:completers>
-            </gshell:command>
-
             <gshell:command name="fileinfo">
                 <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FileInfoAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
                 </gshell:completers>
-            </gshell:command>
-
-            <gshell:command name="find">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.FindAction" parent="vfsCommandActionTemplate"/>
-                <gshell:completers>
-                    <ref bean="fileObjectNameCompleter"/>
-                    <null/>
-                </gshell:completers>
-            </gshell:command>
-
-            <gshell:command name="grep">
-                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.GrepAction" parent="vfsCommandActionTemplate"/>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
