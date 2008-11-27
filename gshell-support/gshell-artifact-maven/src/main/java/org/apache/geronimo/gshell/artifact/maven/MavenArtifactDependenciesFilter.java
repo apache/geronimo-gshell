@@ -60,11 +60,11 @@ public class MavenArtifactDependenciesFilter
     [INFO] |  \- org.codehaus.plexus:plexus-utils:jar:1.5.6:compile
     [INFO] +- org.apache.maven.artifact:maven-artifact:jar:3.0-alpha-1:compile
     [INFO] |  \- aspectj:aspectjrt:jar:1.5.3:compile
-    [INFO] +- org.apache.maven:maven-project:jar:2.1.0-M2-SNAPSHOT:compile
-    [INFO] |  +- org.apache.maven:maven-settings:jar:2.1.0-M2-SNAPSHOT:compile
-    [INFO] |  +- org.apache.maven:maven-profile:jar:2.1.0-M2-SNAPSHOT:compile
-    [INFO] |  +- org.apache.maven:maven-model:jar:2.1.0-M2-SNAPSHOT:compile
-    [INFO] |  +- org.apache.maven:maven-plugin-registry:jar:2.1.0-M2-SNAPSHOT:compile
+    [INFO] +- org.apache.maven:maven-project:jar:2.1.0-r721111:compile
+    [INFO] |  +- org.apache.maven:maven-settings:jar:2.1.0-r721111:compile
+    [INFO] |  +- org.apache.maven:maven-profile:jar:2.1.0-r721111:compile
+    [INFO] |  +- org.apache.maven:maven-model:jar:2.1.0-r721111:compile
+    [INFO] |  +- org.apache.maven:maven-plugin-registry:jar:2.1.0-r721111:compile
     [INFO] |  \- org.codehaus.plexus:plexus-interpolation:jar:1.5:compile
     [INFO] +- org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-4:compile
     [INFO] +- org.apache.maven.wagon:wagon-file:jar:1.0-beta-4:runtime
