@@ -22,6 +22,8 @@ package org.apache.geronimo.gshell.commands.ssh;
 import com.google.code.sshd.ClientChannel;
 import com.google.code.sshd.ClientSession;
 import com.google.code.sshd.SshClient;
+import com.google.code.sshd.common.util.NoCloseInputStream;
+import com.google.code.sshd.common.util.NoCloseOutputStream;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -128,18 +130,32 @@ public class SshAction
         // Create the client from prototype
         SshClient client = container.getBean(SshClient.class);
         log.debug("Created client: {}", client);
+        client.start();;
 
-        ClientSession session = client.connect(hostname, port);
-        io.info(messages.getMessage("info.connected"));
+        try {
+            ClientSession session = client.connect(hostname, port);
+            try {
+                io.info(messages.getMessage("info.connected"));
 
-        session.authPassword(username, password);
+                session.authPassword(username, password);
+                int ret = session.waitFor(ClientSession.WAIT_AUTH | ClientSession.CLOSED | ClientSession.AUTHED, 0);
+                if ((ret & ClientSession.AUTHED) == 0) {
+                    io.err.println("Authentication failed");
+                    return Result.FAILURE;
+                }
 
-        ClientChannel channel = session.createChannel("shell");
-        channel.setIn(io.inputStream);
-        channel.setOut(io.outputStream);
-        channel.setErr(io.errorStream);
-        channel.open();
-        channel.waitFor(ClientChannel.CLOSED, 0);
+                ClientChannel channel = session.createChannel("shell");
+                channel.setIn(new NoCloseInputStream(io.inputStream));
+                channel.setOut(new NoCloseOutputStream(io.outputStream));
+                channel.setErr(new NoCloseOutputStream(io.errorStream));
+                channel.open();
+                channel.waitFor(ClientChannel.CLOSED, 0);
+            } finally {
+                session.close();
+            }
+        } finally {
+            client.stop();
+        }
 
         io.verbose(messages.getMessage("verbose.disconnected"));
 

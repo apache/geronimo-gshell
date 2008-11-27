@@ -45,7 +45,7 @@
         </gshell:command-bundle>
     </gshell:plugin>
 
-    <bean name="sshClient" class="com.google.code.sshd.SshClient" factory-method="setUpDefaultClient" init-method="start" destroy-method="stop">
+    <bean name="sshClient" class="com.google.code.sshd.SshClient" factory-method="setUpDefaultClient" scope="prototype">
     </bean>
 
     <bean name="sshServer" class="com.google.code.sshd.SshServer" factory-method="setUpDefaultServer" scope="prototype">
