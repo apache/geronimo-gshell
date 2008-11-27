@@ -114,6 +114,8 @@ public class ShellFactoryImpl
 
         private OutputStream err;
 
+        private ExitCallback callback;
+
         private IO io;
 
         private Variables variables;
@@ -132,21 +134,14 @@ public class ShellFactoryImpl
             this.err = err;
         }
 
+        public void setExitCallback(ExitCallback callback) {
+            this.callback = callback;
+        }
+
         public void start(final Map<String,String> env) throws IOException {
             this.io = new IO(in, out, err, false);
             this.variables = new Variables((Map)env);
             new Thread(this).start();
-        }
-
-        public boolean isAlive() {
-            return !closed;
-        }
-
-        public int exitValue() {
-            if (!closed) {
-                throw new IllegalThreadStateException();
-            }
-            return 0;
         }
 
         public void destroy() {
@@ -177,6 +172,7 @@ public class ShellFactoryImpl
         public void close() {
             closed = true;
             Closer.close(in, out, err);
+            callback.onExit(0);
         }
 
         public boolean isInteractive() {
