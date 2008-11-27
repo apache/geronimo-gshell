@@ -39,6 +39,18 @@
 
     <repositories>
         <repository>
+            <id>sshd.releases</id>
+            <name>SSHD Repository</name>
+            <url>http://sshd.googlecode.com/svn/m2-repo/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
             <id>sshd.snapshots</id>
             <name>SSHD Repository</name>
             <url>http://sshd.googlecode.com/svn/m2-snapshot-repo/</url>
@@ -78,7 +90,7 @@
         <dependency>
             <groupId>com.google.code.sshd</groupId>
             <artifactId>sshd</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
     </dependencies>
 
