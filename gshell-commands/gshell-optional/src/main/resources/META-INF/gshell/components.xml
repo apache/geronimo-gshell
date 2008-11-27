@@ -31,6 +31,10 @@
        default-init-method="init"
        default-destroy-method="destroy">
 
+    <bean id="vfsCommandActionTemplate" abstract="true">
+        <property name="fileSystemAccess" ref="fileSystemAccess"/>
+    </bean>
+    
     <gshell:plugin name="gshell-optional">
         <gshell:command-bundle name="default">
             <gshell:command name="exec">
