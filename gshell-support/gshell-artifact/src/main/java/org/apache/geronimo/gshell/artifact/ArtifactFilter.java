@@ -20,7 +20,7 @@
 package org.apache.geronimo.gshell.artifact;
 
 /**
- * ???
+ * Allows for filtering of resolved artifacts.
  *
  * @version $Rev$ $Date$
  */

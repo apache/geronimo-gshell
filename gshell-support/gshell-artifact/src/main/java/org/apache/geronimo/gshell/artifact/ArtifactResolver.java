@@ -22,7 +22,7 @@ package org.apache.geronimo.gshell.artifact;
 import java.util.Collection;
 
 /**
- * ???
+ * Provides resolution of artifacts.
  *
  * @version $Rev$ $Date$
  */
