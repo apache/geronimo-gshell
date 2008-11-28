@@ -195,8 +195,11 @@ public class ApplicationManagerImpl
             //
             // FIXME: This SM actually causes some icky problems when trying to shutdown thread pools, which makes for ugly crap when using ssh
             //
-            
-            private final ApplicationSecurityManager sm = new ApplicationSecurityManager();
+
+            //
+            // FIXME: Disable our custom security stuff for now, not sure how to make this work well... yet.
+            //
+            // private final ApplicationSecurityManager sm = new ApplicationSecurityManager();
 
             public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
                 assert proxy != null;
@@ -210,8 +213,8 @@ public class ApplicationManagerImpl
                 final ShellContext prevContext = ShellContextHolder.get(true);
                 ShellContextHolder.set(context);
 
-                final SecurityManager prevSM = System.getSecurityManager();
-                System.setSecurityManager(sm);
+                // final SecurityManager prevSM = System.getSecurityManager();
+                // System.setSecurityManager(sm);
 
                 try {
                     return method.invoke(shell, args);
@@ -220,7 +223,7 @@ public class ApplicationManagerImpl
                     throw e.getTargetException();
                 }
                 finally {
-                    System.setSecurityManager(prevSM);
+                    // System.setSecurityManager(prevSM);
                     ShellContextHolder.set(prevContext);
                 }
             }
