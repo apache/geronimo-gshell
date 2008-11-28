@@ -53,27 +53,13 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.apache.mina.filter.executor.ExecutorFilter">
-        <level value="INFO"/>
-    </logger>
-
     <logger name="org.springframework">
         <level value="WARN"/>
-    </logger>
-
-    <logger name="org.apache.geronimo.gshell.spring.LifecycleProcessor">
-        <level value="INFO"/>
     </logger>
 
     <logger name="org.apache.commons.vfs.cache">
         <level value="INFO"/>
     </logger>
-
-    <!--
-    <logger name="org.apache.ivy.Ivy">
-        <level value="DEBUG"/>
-    </logger>
-    -->
     
     <logger name="org.apache.maven">
         <level value="INFO"/>
