@@ -132,7 +132,7 @@ public class ShellImpl
         vars.set("SHELL.HISTORY", getHistory(), true);
 
         // HACK: Set the default prompt here for now, probably want to get this from branding
-        vars.set("gshell.prompt", "@|bold %{application.userName}|@%{application.localHost.hostName}:@|bold %{branding.name}|> ");
+        vars.set("gshell.prompt", "@|bold %{application.userName}|@%{application.localHost.hostName}:@|bold %{branding.name}:%{gshell.group}|> ");
         
         vars.set(CommandResolver.GROUP, "/");
 
@@ -141,7 +141,7 @@ public class ShellImpl
         opened = true;
 
         //
-        // TODO: Populate variables with some defaults, like the username/hostname/etc.
+        // TODO: Populate variables with some defaults, like the username/hostname/etc?
         //
 
         loadProfileScripts();

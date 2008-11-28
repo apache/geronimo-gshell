@@ -43,8 +43,32 @@ public class JLineConsole
 
         assert io != null;
 
-        // TODO: Expose bindings
-        
+        // TODO: Expose bindings, and/or setup the default to load from our configured ~/.gshell/ directory.
+        /*
+        This is what ConsoleReader is doing related to bindings...
+
+        if (bindings == null) {
+            try {
+                String bindingFile = System.getProperty("jline.keybindings",
+                    new File(System.getProperty("user.home",
+                        ".jlinebindings.properties")).getAbsolutePath());
+
+                if (new File(bindingFile).isFile()) {
+                    bindings = new FileInputStream(new File(bindingFile));
+                }
+            } catch (Exception e) {
+                // swallow exceptions with option debugging
+                if (debugger != null) {
+                    e.printStackTrace(debugger);
+                }
+            }
+        }
+
+        if (bindings == null) {
+            bindings = terminal.getDefaultBindings();
+        }
+        */
+
         reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, io.getTerminal());
         reader.setUsePagination(true);
         reader.setCompletionHandler(new CandidateListCompletionHandler());

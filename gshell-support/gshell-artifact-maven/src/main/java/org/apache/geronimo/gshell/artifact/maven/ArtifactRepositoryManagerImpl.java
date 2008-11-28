@@ -99,8 +99,6 @@ public class ArtifactRepositoryManagerImpl
                 id,
                 location.toURL().toExternalForm(),
                 ArtifactRepositoryFactory.DEFAULT_LAYOUT_ID,
-
-                // FIXME: Expose more configuration to user API
                 new ArtifactRepositoryPolicy(),  // snapshots
                 new ArtifactRepositoryPolicy()); // releases
 

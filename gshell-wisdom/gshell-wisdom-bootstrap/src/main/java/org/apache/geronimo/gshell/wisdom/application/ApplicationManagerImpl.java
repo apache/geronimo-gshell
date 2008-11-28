@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.model.ApplicationModel;
-import org.apache.geronimo.gshell.application.plugin.PluginManager;
 import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.chronos.StopWatch;
@@ -98,9 +97,6 @@ public class ApplicationManagerImpl
         application = loadApplication(config);
 
         log.debug("Application configured");
-
-        // HACK: Force the plugin manager to boot up before we fire the event
-        applicationContainer.getBean(PluginManager.class);
         
         eventPublisher.publish(new ApplicationConfiguredEvent(application));
     }
@@ -196,6 +192,10 @@ public class ApplicationManagerImpl
             //        the right approache at all :-(
             //
 
+            //
+            // FIXME: This SM actually causes some icky problems when trying to shutdown thread pools, which makes for ugly crap when using ssh
+            //
+            
             private final ApplicationSecurityManager sm = new ApplicationSecurityManager();
 
             public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {

@@ -51,6 +51,10 @@ public class ArtifactManagerConfigurator
         this.localRepository = dir;
     }
 
+    //
+    // TODO: Allow repository policies and such to be configured here too.
+    //
+    
     public void setRemoteRepositories(final Map<String,URI> repositories) {
         assert repositories != null;
         this.remoteRepositories = repositories;

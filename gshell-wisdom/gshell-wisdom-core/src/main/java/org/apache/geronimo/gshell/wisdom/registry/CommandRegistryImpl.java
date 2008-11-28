@@ -55,6 +55,7 @@ public class CommandRegistryImpl
         assert command != null;
 
         // TODO: add a method on the CommandLocation to avoid using toString()
+
         String name = command.getLocation().getFullPath();
 
         log.debug("Registering command: {} -> {}", name, command);
@@ -72,6 +73,7 @@ public class CommandRegistryImpl
         assert command != null;
 
         // TODO: add a method on the CommandLocation to avoid using toString()
+
         String name = command.getLocation().getFullPath();
 
         log.debug("Removing command: {}", name);

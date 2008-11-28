@@ -521,7 +521,7 @@ public abstract class BeanContainerContextSupport
 		reader.setEntityResolver(new ResourceEntityResolver(this));
         reader.setNamespaceAware(true);
         
-        // TODO: Make this configurable via system properties, default to VALIDATION_NONE
+        // TODO: Make this configurable via system properties, default to VALIDATION_NONE, disabling validation speeds things up a lot
         reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
 
 		loadBeanDefinitions(reader);

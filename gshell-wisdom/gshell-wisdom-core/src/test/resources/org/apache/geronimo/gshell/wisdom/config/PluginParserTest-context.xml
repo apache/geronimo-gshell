@@ -120,9 +120,7 @@
             </gshell:command>
         </gshell:command-bundle>
 
-        <gshell:bundle name="customBundle" class="org.apache.geronimo.gshell.wisdom.config.DummyBundle">
-            <!-- TODO -->
-        </gshell:bundle>
+        <gshell:bundle name="customBundle" class="org.apache.geronimo.gshell.wisdom.config.DummyBundle"/>
     </gshell:plugin>
 
     <!--

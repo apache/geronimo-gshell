@@ -174,7 +174,7 @@ public class ApplicationModel
     public void setBranding(final Branding branding) {
         this.branding = branding;
 
-        // HACK: Hookup parent
+        // HACK: Hookup parent, this should eventually go away
         branding.setParent(this);
     }
 }
