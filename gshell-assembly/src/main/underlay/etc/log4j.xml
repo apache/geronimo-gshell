@@ -69,10 +69,12 @@
         <level value="INFO"/>
     </logger>
 
+    <!--
     <logger name="org.apache.ivy.Ivy">
         <level value="DEBUG"/>
     </logger>
-
+    -->
+    
     <logger name="org.apache.maven">
         <level value="INFO"/>
     </logger>
