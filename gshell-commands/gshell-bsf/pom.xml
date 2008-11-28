@@ -49,7 +49,7 @@
         </dependency>
 
         <!--
-        TODO: Update to use Apache BSF 3.0
+        TODO: Update to use Apache BSF 3.0, this may required Java 6?
 
         <dependency>
             <groupId>org.apache.bsf</groupId>

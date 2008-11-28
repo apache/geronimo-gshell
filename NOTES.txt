@@ -34,3 +34,11 @@ Add gshell-maven-plugin, to launch a gshell application from Maven, execute comm
 
 Add custom plugin components.xml loading, say from <gshell.home>/etc/<plugin.group>/<plugin.name>/components.xml
     optional of course, but will allow for customization of the default components in the correct container
+
+Add more fileutils commands:
+    df?
+    du?
+    mkdir
+    mv
+    rmdir
+    sync?

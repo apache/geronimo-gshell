@@ -68,6 +68,10 @@ public class Main
     // TODO: Add --file <file>, which will run: source <file> 
     //
 
+    //
+    // FIXME: Really need to allow the location of the application.xml to be passed in!
+    //
+
     @Option(name="-h", aliases={"--help"}, requireOverride=true)
     private boolean help;
 

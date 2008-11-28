@@ -99,7 +99,6 @@
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
-                <!--
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
                     <property name="name" value="gshell-log4j"/>
@@ -111,7 +110,6 @@
                     <property name="name" value="gshell-bsf"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
-                -->
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
