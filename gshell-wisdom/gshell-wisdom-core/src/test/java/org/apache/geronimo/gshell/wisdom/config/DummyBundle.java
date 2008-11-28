@@ -19,15 +19,10 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.apache.geronimo.gshell.spring.LoggingProcessor;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
-import org.apache.geronimo.gshell.command.CommandAction;
-import org.apache.geronimo.gshell.command.CommandContext;
-import org.apache.geronimo.gshell.notification.Notification;
 import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
 
 /**
- * ???
+ * Dummy {@link Bundle}.
  *
  * @version $Rev$ $Date$
  */
@@ -41,7 +36,6 @@ public class DummyBundle
     }
 
     public void disable() throws Exception {
-
     }
 
     public void enable() throws Exception {

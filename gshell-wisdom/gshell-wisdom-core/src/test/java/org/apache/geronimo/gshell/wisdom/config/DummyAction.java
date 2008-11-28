@@ -19,14 +19,12 @@
 
 package org.apache.geronimo.gshell.wisdom.config;
 
-import org.apache.geronimo.gshell.spring.LoggingProcessor;
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.notification.Notification;
 
 /**
- * ???
+ * Dummy {@link CommandAction}.
  *
  * @version $Rev$ $Date$
  */
