@@ -29,6 +29,8 @@ import org.springframework.beans.FatalBeanException;
 public class BeanContainerException
     extends FatalBeanException
 {
+    private static final long serialVersionUID = 1;
+
 	public BeanContainerException(final String msg) {
 		super(msg);
 	}

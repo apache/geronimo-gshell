@@ -27,6 +27,8 @@ package org.apache.geronimo.gshell.spring;
 public class BeanContainerContextException
     extends BeanContainerException
 {
+    private static final long serialVersionUID = 1;
+
 	public BeanContainerContextException(final String msg) {
 		super(msg);
 	}
