@@ -29,3 +29,8 @@ Voodoo, something cool which will load a plugin, then cache the basic details fo
     to function, so next time it won't need to load the plugin until a plugin command is executed
     
 Add dynamic cached conversion of spring xml into fastinfoset2, just like classpath building
+
+Add gshell-maven-plugin, to launch a gshell application from Maven, execute commands, etc.
+
+Add custom plugin components.xml loading, say from <gshell.home>/etc/<plugin.group>/<plugin.name>/components.xml
+    optional of course, but will allow for customization of the default components in the correct container
