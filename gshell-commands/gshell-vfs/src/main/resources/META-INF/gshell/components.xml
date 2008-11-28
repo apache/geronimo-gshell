@@ -87,6 +87,14 @@
                     <null/>
                 </gshell:completers>
             </gshell:command>
+
+            <gshell:command name="touch">
+                <gshell:action class="org.apache.geronimo.gshell.commands.vfs.TouchAction" parent="vfsCommandActionTemplate"/>
+                <gshell:completers>
+                    <ref bean="fileObjectNameCompleter"/>
+                    <null/>
+                </gshell:completers>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 

@@ -77,14 +77,6 @@
                 </gshell:completers>
             </gshell:command>
 
-            <gshell:command name="touch">
-                <gshell:action class="org.apache.geronimo.gshell.commands.optional.TouchAction" parent="vfsCommandActionTemplate"/>
-                <gshell:completers>
-                    <ref bean="fileObjectNameCompleter"/>
-                    <null/>
-                </gshell:completers>
-            </gshell:command>
-
             <gshell:command name="find">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.FindAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
