@@ -340,12 +340,6 @@
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
-                <artifactId>gshell-optional</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-repository</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
@@ -361,7 +355,25 @@
                 <artifactId>gshell-fileutils</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
-            
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-netutils</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-shellutils</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.gshell.commands</groupId>
+                <artifactId>gshell-textutils</artifactId>
+                <version>1.0-alpha-2-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-log4j</artifactId>

@@ -83,19 +83,32 @@
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="name" value="gshell-shellutils"/>
+                    <property name="version" value="${gshell.version}"/>
+                </bean>
+
+                <bean class="org.apache.geronimo.gshell.artifact.Artifact">
+                    <property name="group" value="org.apache.geronimo.gshell.commands"/>
                     <property name="name" value="gshell-fileutils"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="name" value="gshell-admin"/>
+                    <property name="name" value="gshell-textutils"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="name" value="gshell-optional"/>
+                    <property name="name" value="gshell-netutils"/>
+                    <property name="version" value="${gshell.version}"/>
+                </bean>
+
+
+                <bean class="org.apache.geronimo.gshell.artifact.Artifact">
+                    <property name="group" value="org.apache.geronimo.gshell.commands"/>
+                    <property name="name" value="gshell-admin"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
