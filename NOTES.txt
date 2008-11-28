@@ -42,5 +42,3 @@ Add more fileutils commands:
     mv
     rmdir
     sync?
-
-Make gshell-optional go away, its like the command bitbucket, create gshell-textutils and gshell-shellutils
