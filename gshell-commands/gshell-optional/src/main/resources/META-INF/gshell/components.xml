@@ -37,6 +37,10 @@
     
     <gshell:plugin name="gshell-optional">
         <gshell:command-bundle name="default">
+            <gshell:command name="printf">
+                <gshell:action class="org.apache.geronimo.gshell.commands.optional.PrintfAction"/>
+            </gshell:command>
+            
             <gshell:command name="exec">
                 <gshell:action class="org.apache.geronimo.gshell.commands.optional.ExecuteAction"/>
             </gshell:command>

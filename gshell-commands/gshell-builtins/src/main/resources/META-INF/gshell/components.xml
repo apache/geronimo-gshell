@@ -68,10 +68,6 @@
 
             <gshell:link name="print" target="echo"/>
 
-            <gshell:command name="printf">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.PrintfAction"/>
-            </gshell:command>
-
             <gshell:command name="clear" type="stateless">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ClearAction"/>
             </gshell:command>
