@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.clp.setter;
 
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
@@ -37,7 +36,7 @@ enum Messages
 
     private static ResourceBundle bundle;
 
-    String format(Object... args) {
+    String format(final Object... args) {
         assert args != null;
 
         synchronized (Messages.class) {
@@ -45,7 +44,7 @@ enum Messages
                 bundle = ResourceBundle.getBundle(Messages.class.getName());
             }
 
-            return MessageFormat.format(bundle.getString(name()), args);
+            return String.format(bundle.getString(name()), args);
         }
     }
 }

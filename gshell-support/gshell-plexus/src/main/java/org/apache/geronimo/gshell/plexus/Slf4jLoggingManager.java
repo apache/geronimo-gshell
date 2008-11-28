@@ -32,10 +32,6 @@ import org.slf4j.LoggerFactory;
 public class Slf4jLoggingManager
     extends BaseLoggerManager
 {
-    //
-    // FIXME: Probably need to change this to avoid picking up the BaseLoggerManager, just implement everything ourselves
-    //        Might be able to use AbstractLoggerManager
-
     protected org.codehaus.plexus.logging.Logger createLogger(final String key) {
         return new LoggerImpl(getThreshold(), LoggerFactory.getLogger(key));
     }
