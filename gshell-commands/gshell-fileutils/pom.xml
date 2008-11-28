@@ -30,19 +30,11 @@
         <version>1.0-alpha-2-SNAPSHOT</version>
     </parent>
 
-    <!--
-    TODO: Rename to gshell-fileutils or gshell-coreutils to match up the linux rpm equiv?
-    
-    SEE:
-        http://www.gnu.org/software/coreutils/
-        http://www.gnu.org/software/coreutils/manual/coreutils.html
-    -->
-    
-    <artifactId>gshell-vfs</artifactId>
-    <name>GShell Commands :: VFS</name>
+    <artifactId>gshell-fileutils</artifactId>
+    <name>GShell Commands :: File Utils</name>
 
     <description>
-        Provides integration with Jakarta Commons VFS.
+        File utilities.
     </description>
 
     <dependencies>

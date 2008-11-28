@@ -17,31 +17,44 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.fileutils;
 
 import org.apache.commons.vfs.FileObject;
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 
 /**
- * Displays the current directory.
+ * Changes the current directory.
  *
  * @version $Rev$ $Date$
  */
-public class CurrentDirectoryAction
+public class ChangeDirectoryAction
     extends VfsActionSupport
 {
+    @Argument
+    private String path;
+
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
-        FileObject dir = getCurrentDirectory(context);
-        io.info(dir.getName().getURI());
+        if (path == null) {
+            // TODO: May need to ask the Application for this, as it might be different depending on the context (ie. remote user, etc)
+            path = System.getProperty("user.home");
+        }
 
-        FileObjects.close(dir);
+        FileObject file = resolveFile(context, path);
 
+        ensureFileExists(file);
+        ensureFileHasChildren(file);
+
+        setCurrentDirectory(context, file);
+
+        FileObjects.close(file);
+        
         return Result.SUCCESS;
     }
 }

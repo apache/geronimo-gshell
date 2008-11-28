@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.fileutils;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.clp.Argument;

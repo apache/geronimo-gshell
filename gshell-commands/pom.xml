@@ -62,7 +62,7 @@
         <module>gshell-optional</module>
         <module>gshell-repository</module>
         <module>gshell-bsf</module>
-        <module>gshell-vfs</module>
+        <module>gshell-fileutils</module>
         <module>gshell-log4j</module>
         <module>gshell-ssh</module>
     </modules>

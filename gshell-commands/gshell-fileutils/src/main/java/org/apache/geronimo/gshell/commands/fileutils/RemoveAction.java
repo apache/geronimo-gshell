@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.fileutils;
 
 import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.Selectors;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
@@ -27,34 +28,35 @@ import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 
 /**
- * Changes the current directory.
+ * Remove a file or directory.
  *
  * @version $Rev$ $Date$
  */
-public class ChangeDirectoryAction
+public class RemoveAction
     extends VfsActionSupport
 {
-    @Argument
+    @Argument(required=true)
     private String path;
+
+    // TODO: Add --recursive support
+
+    // TODO: Add --verbose support
 
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
-        if (path == null) {
-            // TODO: May need to ask the Application for this, as it might be different depending on the context (ie. remote user, etc)
-            path = System.getProperty("user.home");
-        }
-
         FileObject file = resolveFile(context, path);
 
         ensureFileExists(file);
-        ensureFileHasChildren(file);
 
-        setCurrentDirectory(context, file);
+        try {
+            file.delete(Selectors.SELECT_SELF);
+        }
+        finally {
+            FileObjects.close(file);
+        }
 
-        FileObjects.close(file);
-        
         return Result.SUCCESS;
     }
 }

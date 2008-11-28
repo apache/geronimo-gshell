@@ -17,55 +17,31 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.commands.vfs;
+package org.apache.geronimo.gshell.commands.fileutils;
 
 import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.Selectors;
-import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 
 /**
- * Copies a file or directory.
+ * Displays the current directory.
  *
  * @version $Rev$ $Date$
  */
-public class CopyAction
+public class CurrentDirectoryAction
     extends VfsActionSupport
 {
-    @Argument(index=0, required=true)
-    private String sourcePath;
-
-    @Argument(index=1, required=true)
-    private String targetPath;
-
-    // TODO: Add --recursive suport
-
-    // TODO: Add --verbose support
-    
     public Object execute(final CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
-        FileObject source = resolveFile(context, sourcePath);
-        FileObject target = resolveFile(context, targetPath);
+        FileObject dir = getCurrentDirectory(context);
+        io.info(dir.getName().getURI());
 
-        ensureFileExists(source);
+        FileObjects.close(dir);
 
-        // TODO: Validate more
-
-        if (target.exists() && target.getType().hasChildren()) {
-            target = target.resolveFile(source.getName().getBaseName());
-        }
-
-        log.info("Copying {} -> {}", source, target);
-
-        target.copyFrom(source, Selectors.SELECT_ALL);
-
-        FileObjects.closeAll(source, target);
-        
         return Result.SUCCESS;
     }
 }

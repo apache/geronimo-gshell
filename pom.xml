@@ -358,7 +358,7 @@
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
-                <artifactId>gshell-vfs</artifactId>
+                <artifactId>gshell-fileutils</artifactId>
                 <version>1.0-alpha-2-SNAPSHOT</version>
             </dependency>
             
