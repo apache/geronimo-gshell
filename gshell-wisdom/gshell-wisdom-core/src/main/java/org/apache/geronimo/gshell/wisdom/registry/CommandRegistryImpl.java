@@ -54,8 +54,6 @@ public class CommandRegistryImpl
     public void registerCommand(final Command command) throws DuplicateCommandException {
         assert command != null;
 
-        // TODO: add a method on the CommandLocation to avoid using toString()
-
         String name = command.getLocation().getFullPath();
 
         log.debug("Registering command: {} -> {}", name, command);
@@ -71,8 +69,6 @@ public class CommandRegistryImpl
 
     public void removeCommand(final Command command) throws NoSuchCommandException {
         assert command != null;
-
-        // TODO: add a method on the CommandLocation to avoid using toString()
 
         String name = command.getLocation().getFullPath();
 
@@ -106,9 +102,4 @@ public class CommandRegistryImpl
     public Collection<String> getCommandNames() {
         return Collections.unmodifiableSet(commands.keySet());
     }
-
-    //
-    // CommandLocationImpl
-    //
-
 }
