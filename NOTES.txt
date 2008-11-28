@@ -9,6 +9,10 @@ Integrate Jexl into gshell-parser
 
 Create single VFS configuration component, reduce the number of objects needed at boot
 
+Create a repo:// filesystem
+
+Add VFS authentication support
+
 default if no activation rules, activate all bundles
 
 namespace muck for application.xml
@@ -23,7 +27,9 @@ Merge Application and Branding
 
 Better handling for Object arguments/return for commands and variable passing
 
-FIXME: CommandsCompleter doesn't complete in group
+FIXME: CommandsCompleter doesn't complete in group, implement CommandPathCompleter
 
 Voodoo, something cool which will load a plugin, then cache the basic details for the shell
     to function, so next time it won't need to load the plugin until a plugin command is executed
+    
+Add dynamic cached conversion of spring xml into fastinfoset2, just like classpath building

@@ -92,45 +92,6 @@
         </property>
     </bean>
 
-    <!--
-    TODO: Setup repo:// to access the local repository.
-    -->
-
-    <!--
-    TODO: Setup authentication support.
-    -->
-
-    <!--
-    TODO: Roll up this configuration into one bean for ext another for mime,
-          or maybe just one bean for both.  This is too verbose.
-    -->
-
-    <!--
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
-        <property name="extention" value="bz2"/>
-        <property name="scheme" value="bz2"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
-        <property name="extention" value="gz"/>
-        <property name="scheme" value="gz"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
-        <property name="extention" value="tgz"/>
-        <property name="scheme" value="tar"/>
-    </bean>
-
-    <bean class="org.apache.geronimo.gshell.vfs.config.ExtensionMapConfigurer">
-        <property name="extention" value="tar"/>
-        <property name="scheme" value="tbz2"/>
-    </bean>
-    <bean class="org.apache.geronimo.gshell.vfs.config.MimeTypeMapConfigurer">
-        <property name="mimeType" value="application/x-gzip"/>
-        <property name="scheme" value="gz"/>
-    </bean>
-    -->
-
     <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl" lazy-init="true">
         <constructor-arg ref="applicationManager"/>
         <constructor-arg ref="fileSystemManager"/>
