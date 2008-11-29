@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.artifact.monitor;
+package org.apache.geronimo.gshell.artifact.transfer.monitor;
 
 import org.apache.geronimo.gshell.io.IO;
+import org.apache.geronimo.gshell.artifact.transfer.TransferListenerSupport;
 
 import java.io.IOException;
 

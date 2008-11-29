@@ -17,53 +17,36 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.artifact.monitor;
+package org.apache.geronimo.gshell.artifact.transfer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Support for Wagon {@link TransferListener} implementations.
+ * Support for {@link TransferListener} implementations.
  *
  * @version $Rev$ $Date$
  */
 public class TransferListenerSupport
-    // implements TransferListener
+    implements TransferListener
 {
     protected final Logger log = LoggerFactory.getLogger(getClass());
-
-    /*
-    public void transferInitiated(final TransferEvent event) {
-        log.trace("Transfer initiated: {}", event);
-    }
 
     public void transferStarted(final TransferEvent event) {
         log.trace("Transfer started: {}", event);
     }
 
-    public void transferProgress(final TransferEvent event, final byte[] buffer, final int length) {
-        log.trace("Transfer progress: {}, {}, {}", new Object[] { event, buffer, length });
+    public void transferProgress(final TransferEvent event) {
+        log.trace("Transfer progress: {}", event);
     }
 
     public void transferCompleted(final TransferEvent event) {
         log.trace("Transfer completed: {}", event);
     }
 
-    public void transferError(final TransferEvent event) {
+    public void transferFailed(final TransferEvent event) {
         log.trace("Transfer error: {}", event);
 
-        assert event != null;
-
-        Throwable cause = event.getException();
-        assert cause != null;
-        
-        log.error("Transfer failure: " + cause, cause);
+        log.error("Transfer failure: {}", event);
     }
-
-    public void debug(final String message) {
-        assert message != null;
-        
-        log.debug(message);
-    }
-    */
 }

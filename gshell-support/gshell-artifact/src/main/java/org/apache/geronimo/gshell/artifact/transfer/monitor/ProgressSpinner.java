@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.geronimo.gshell.artifact.monitor;
+package org.apache.geronimo.gshell.artifact.transfer.monitor;
 
 /**
  * Provides a fancy text-based progress spinner w/optional informative message.
