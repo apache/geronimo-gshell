@@ -21,8 +21,10 @@ package org.apache.geronimo.gshell.artifact.transfer.monitor;
 
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.artifact.transfer.TransferListenerSupport;
+import org.apache.geronimo.gshell.artifact.transfer.TransferEvent;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * A download monitor providing a simple spinning progress interface.
@@ -61,39 +63,28 @@ public class ProgressSpinnerMonitor
         }
     }
 
-    //
-    // TODO: May actually want to use a little timmer thread to make this spin more often for better user feedback
-    //       that we are still working, then use the event to update the message.  Or really, put the timer in
-    //       the spinner impl, and then just update the status message
-    //
-
-    /*
     public void transferStarted(final TransferEvent event) {
         assert event != null;
-
-        super.transferStarted(event);
 
         complete = 0;
 
         spinner.reset();
 
-        String type = event.getRequestType() == REQUEST_PUT ? "Uploading" : "Downloading";
-        String url = event.getWagon().getRepository().getUrl();
+        String type = event.getType() == TransferEvent.Type.UPLOAD ? "Uploading" : "Downloading";
+        URL url = event.getUrl();
 
-        String message = type + ": " + url + "/" + event.getResource().getName();
+        String message = type + ": " + url;
 
         log.debug(message);
 
         println(message);
     }
 
-    public void transferProgress(final TransferEvent event, final byte[] buffer, final int length) {
+    public void transferProgress(final TransferEvent event) {
         assert event != null;
 
-        super.transferProgress(event, buffer, length);
-
-        long total = event.getResource().getContentLength();
-        complete += length;
+        long total = event.getContentLength();
+        complete += event.getLength();
 
         String message;
 
@@ -114,12 +105,11 @@ public class ProgressSpinnerMonitor
 
         super.transferCompleted(event);
 
-        long length = event.getResource().getContentLength();
-        String type = event.getRequestType() == REQUEST_PUT ? "Uploaded" : "Downloaded";
+        long length = event.getLength();
+        String type = event.getType() == TransferEvent.Type.UPLOAD ? "Uploaded" : "Downloaded";
         String bytes = length >= 1024 ? ( length / 1024 ) + "K" : length + "b";
 
         // pad at end just incase, should really blank the reset of the line
         print(type + " " + bytes + "          ");
     }
-    */
 }

@@ -214,9 +214,11 @@ public class Main
             builder.setClassLoader(getClass().getClassLoader());
             builder.setIo(io);
 
-            // Configure the download monitor
-            ArtifactResolver artifactResolver = builder.getContainer().getBean(ArtifactResolver.class);
-            artifactResolver.setTransferListener(new ProgressSpinnerMonitor(io));
+            if (!io.isQuiet() && !io.isSilent()) {
+                // Configure the download monitor
+                ArtifactResolver artifactResolver = builder.getContainer().getBean(ArtifactResolver.class);
+                artifactResolver.setTransferListener(new ProgressSpinnerMonitor(io));
+            }
 
             // --help and --version need access to the application's information, so we have to handle these options late
             if (help|version) {

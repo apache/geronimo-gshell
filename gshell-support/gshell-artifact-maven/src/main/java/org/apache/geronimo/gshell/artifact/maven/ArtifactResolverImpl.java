@@ -53,8 +53,32 @@ public class ArtifactResolverImpl
 
     public void setTransferListener(final TransferListener listener) {
         assert listener != null;
-        
-        // TODO: Hookup adapter to wagon manager
+
+        artifactManager.setDownloadMonitor(new org.apache.maven.wagon.events.TransferListener() {
+            public void transferInitiated(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
+                // ignore
+            }
+
+            public void transferStarted(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
+                // TODO:
+            }
+
+            public void transferProgress(final org.apache.maven.wagon.events.TransferEvent transferEvent, final byte[] buffer, final int length) {
+                // TODO:
+            }
+
+            public void transferCompleted(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
+                // TODO:
+            }
+
+            public void transferError(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
+                // TODO:
+            }
+
+            public void debug(final String message) {
+                log.trace(message);
+            }
+        });
     }
 
     public Result resolve(final Request request) throws Failure {

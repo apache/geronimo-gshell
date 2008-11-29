@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.artifact.transfer;
 
+import java.net.URL;
+
 /**
  * Artifact transfer event.
  *
@@ -26,5 +28,23 @@ package org.apache.geronimo.gshell.artifact.transfer;
  */
 public interface TransferEvent
 {
-    // ???
+    enum Type {
+        UPLOAD, DOWNLOAD
+    }
+
+    Type getType();
+
+    URL getUrl();
+
+    /**
+     * The maximum length of the content.
+     */
+    long getContentLength();
+
+    /**
+     * The length of bytes received for this event.
+     */
+    long getLength();
+
+    Throwable getCause();
 }

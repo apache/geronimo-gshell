@@ -45,8 +45,6 @@ public class TransferListenerSupport
     }
 
     public void transferFailed(final TransferEvent event) {
-        log.trace("Transfer error: {}", event);
-
-        log.error("Transfer failure: {}", event);
+        log.trace("Transfer failure: {}", event);
     }
 }
