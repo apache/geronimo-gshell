@@ -20,6 +20,9 @@
 package org.apache.geronimo.gshell.cli;
 
 import org.apache.geronimo.gshell.ansi.Ansi;
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
+import org.apache.geronimo.gshell.artifact.ArtifactResolver;
+import org.apache.geronimo.gshell.artifact.transfer.monitor.ProgressSpinnerMonitor;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
@@ -35,7 +38,6 @@ import org.apache.geronimo.gshell.terminal.UnsupportedTerminal;
 import org.apache.geronimo.gshell.terminal.WindowsTerminal;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilder;
 import org.apache.geronimo.gshell.wisdom.builder.ShellBuilderImpl;
-import org.apache.geronimo.gshell.application.model.ApplicationModel;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -211,6 +213,10 @@ public class Main
             ShellBuilder builder = new ShellBuilderImpl();
             builder.setClassLoader(getClass().getClassLoader());
             builder.setIo(io);
+
+            // Configure the download monitor
+            ArtifactResolver artifactResolver = builder.getContainer().getBean(ArtifactResolver.class);
+            artifactResolver.setTransferListener(new ProgressSpinnerMonitor(io));
 
             // --help and --version need access to the application's information, so we have to handle these options late
             if (help|version) {

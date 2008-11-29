@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.shell.ShellFactory;
+import org.apache.geronimo.gshell.spring.BeanContainer;
 
 /**
  * Builds {@link org.apache.geronimo.gshell.shell.Shell} instanes.
@@ -33,6 +34,8 @@ import org.apache.geronimo.gshell.shell.ShellFactory;
 public interface ShellBuilder
     extends ShellFactory
 {
+    BeanContainer getContainer();
+
     ClassLoader getClassLoader();
 
     void setClassLoader(ClassLoader classLoader);

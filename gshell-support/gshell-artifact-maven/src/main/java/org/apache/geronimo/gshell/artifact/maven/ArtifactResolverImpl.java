@@ -52,8 +52,9 @@ public class ArtifactResolverImpl
     }
 
     public void setTransferListener(final TransferListener listener) {
+        assert listener != null;
+        
         // TODO: Hookup adapter to wagon manager
-        throw new Error();
     }
 
     public Result resolve(final Request request) throws Failure {

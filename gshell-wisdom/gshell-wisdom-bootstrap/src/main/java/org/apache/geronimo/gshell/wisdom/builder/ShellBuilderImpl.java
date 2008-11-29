@@ -60,7 +60,7 @@ public class ShellBuilderImpl
         return container;
     }
 
-    private BeanContainer getContainer() {
+    public BeanContainer getContainer() {
         if (container == null) {
             try {
                 container = createContainer();
