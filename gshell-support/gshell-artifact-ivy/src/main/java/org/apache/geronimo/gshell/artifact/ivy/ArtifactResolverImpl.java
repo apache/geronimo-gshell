@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.artifact.ivy;
 
 import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.transfer.TransferListener;
 import org.apache.ivy.Ivy;
 import org.apache.ivy.util.filter.Filter;
 import org.apache.ivy.core.resolve.ResolveOptions;
@@ -52,6 +53,10 @@ public class ArtifactResolverImpl
         assert ivy != null;
 
         this.ivy = ivy;
+    }
+
+    public void setTransferListener(final TransferListener listener) {
+        // Ignore for now
     }
 
     public Result resolve(final Request request) throws Failure {

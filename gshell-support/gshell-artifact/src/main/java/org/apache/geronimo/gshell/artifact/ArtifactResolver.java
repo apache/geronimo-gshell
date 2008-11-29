@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.artifact;
 
+import org.apache.geronimo.gshell.artifact.transfer.TransferListener;
+
 import java.util.Collection;
 
 /**
@@ -28,6 +30,8 @@ import java.util.Collection;
  */
 public interface ArtifactResolver
 {
+    void setTransferListener(TransferListener listener);
+    
     Result resolve(Request request) throws Failure;
 
     //

@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.artifact.maven;
 
 import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.transfer.TransferListener;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -48,6 +49,11 @@ public class ArtifactResolverImpl
     public ArtifactResolverImpl(final ArtifactManager artifactManager) {
         assert artifactManager != null;
         this.artifactManager = artifactManager;
+    }
+
+    public void setTransferListener(final TransferListener listener) {
+        // TODO: Hookup adapter to wagon manager
+        throw new Error();
     }
 
     public Result resolve(final Request request) throws Failure {
