@@ -26,11 +26,23 @@ package org.apache.geronimo.gshell.artifact.transfer;
  */
 public interface TransferListener
 {
+    /**
+     * Signal the start of a transfer.
+     */
     void transferStarted(TransferEvent event);
 
+    /**
+     * Siginal transfer progress.
+     */
     void transferProgress(TransferEvent event);
 
+    /**
+     * Signal the end of a transfer.
+     */
     void transferCompleted(TransferEvent event);
 
+    /**
+     * Signal that a transfer has failed.
+     */
     void transferFailed(TransferEvent event);
 }

@@ -30,14 +30,19 @@ import java.util.Collection;
  */
 public interface ArtifactResolver
 {
+    /**
+     * Install a transfer listener.
+     */
     void setTransferListener(TransferListener listener);
-    
+
+    /**
+     * Resolve a request.
+     */
     Result resolve(Request request) throws Failure;
 
-    //
-    // Request
-    //
-
+    /**
+     * Artifact resolution request.
+     */
     class Request
     {
         public ArtifactFilter filter;
@@ -47,19 +52,17 @@ public interface ArtifactResolver
         public Collection<Artifact> artifacts;
     }
 
-    //
-    // Result
-    //
-
+    /**
+     * Artifact resolution result.
+     */
     class Result
     {
         public Collection<Artifact> artifacts;
     }
 
-    //
-    // Failure
-    //
-
+    /**
+     * Artifact resolution failure.
+     */
     class Failure
         extends Exception
     {

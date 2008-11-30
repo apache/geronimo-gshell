@@ -26,5 +26,8 @@ package org.apache.geronimo.gshell.artifact;
  */
 public interface ArtifactFilter
 {
+    /**
+     * Return {@link true} if the given artifact should be included in results.
+     */
     boolean accept(Artifact artifact);
 }
