@@ -71,7 +71,7 @@ public class ProgressSpinnerMonitor
 
         spinner.reset();
 
-        String type = event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploading" : "Downloading";
+        String type = renderRequestType(event);
         String location = event.getLocation();
 
         String message = type + ": " + location;
@@ -106,7 +106,7 @@ public class ProgressSpinnerMonitor
         super.transferCompleted(event);
 
         long total = event.getContentLength();
-        String type = event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploaded" : "Downloaded";
+        String type = renderRequestTypeFinished(event);
         String bytes = total >= 1024 ? ( total / 1024 ) + "K" : total + "b";
 
         // HACK: pad at end just incase, should really blank the reset of the line

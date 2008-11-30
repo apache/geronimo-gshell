@@ -47,4 +47,16 @@ public class TransferListenerSupport
     public void transferFailed(final TransferEvent event) {
         log.trace("Transfer failure: {}", event);
     }
+
+    protected String renderRequestType(final TransferEvent event) {
+        assert event != null;
+
+        return event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploading" : "Downloading";
+    }
+
+    protected String renderRequestTypeFinished(final TransferEvent event) {
+        assert event != null;
+
+        return event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploaded" : "Downloaded";
+    }
 }

@@ -53,7 +53,7 @@ public class SimpleMonitor
 
         super.transferStarted(event);
 
-        String type = event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploading" : "Downloading";
+        String type = renderRequestType(event);
         String location = event.getLocation();
 
         String message = type + ": " + location;
@@ -69,7 +69,7 @@ public class SimpleMonitor
         super.transferCompleted(event);
 
         long total = event.getContentLength();
-        String type = event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploaded" : "Downloaded";
+        String type = renderRequestTypeFinished(event);
         String bytes = total >= 1024 ? ( total / 1024 ) + "K" : total + "b";
 
         println(type + " " + bytes);
