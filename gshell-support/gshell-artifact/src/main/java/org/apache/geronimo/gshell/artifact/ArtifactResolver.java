@@ -45,10 +45,19 @@ public interface ArtifactResolver
      */
     class Request
     {
+        /**
+         * Artifact filter.
+         */
         public ArtifactFilter filter;
 
+        /**
+         * Originating artifact.
+         */
         public Artifact artifact;
 
+        /**
+         * Dependency artifacts.
+         */
         public Collection<Artifact> artifacts;
     }
 
@@ -57,6 +66,9 @@ public interface ArtifactResolver
      */
     class Result
     {
+        /**
+         * Resolved artifacts.
+         */
         public Collection<Artifact> artifacts;
     }
 
