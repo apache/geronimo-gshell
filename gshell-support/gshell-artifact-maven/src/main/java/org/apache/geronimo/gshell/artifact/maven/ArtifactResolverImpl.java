@@ -53,32 +53,7 @@ public class ArtifactResolverImpl
 
     public void setTransferListener(final TransferListener listener) {
         assert listener != null;
-
-        artifactManager.setDownloadMonitor(new org.apache.maven.wagon.events.TransferListener() {
-            public void transferInitiated(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
-                // ignore
-            }
-
-            public void transferStarted(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
-                // TODO:
-            }
-
-            public void transferProgress(final org.apache.maven.wagon.events.TransferEvent transferEvent, final byte[] buffer, final int length) {
-                // TODO:
-            }
-
-            public void transferCompleted(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
-                // TODO:
-            }
-
-            public void transferError(final org.apache.maven.wagon.events.TransferEvent transferEvent) {
-                // TODO:
-            }
-
-            public void debug(final String message) {
-                log.trace(message);
-            }
-        });
+        artifactManager.setDownloadMonitor(new TransferListenerAdapter(listener));
     }
 
     public Result resolve(final Request request) throws Failure {
@@ -149,6 +124,9 @@ public class ArtifactResolverImpl
         return result;
     }
 
+    /**
+     * Creates a GShell Artifact from a Maven Artifact.
+     */
     private Artifact createArtifact(final org.apache.maven.artifact.Artifact source) {
         assert source != null;
 
@@ -163,6 +141,9 @@ public class ArtifactResolverImpl
         return artifact;
     }
 
+    /**
+     * Creates a Maven Artifact from a GShell Artifact.
+     */
     private org.apache.maven.artifact.Artifact createArtifact(final Artifact source) {
         assert source != null;
 

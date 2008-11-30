@@ -70,10 +70,10 @@ public class ProgressSpinnerMonitor
 
         spinner.reset();
 
-        String type = event.getType() == TransferEvent.Type.UPLOAD ? "Uploading" : "Downloading";
-        URL url = event.getUrl();
+        String type = event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploading" : "Downloading";
+        String location = event.getLocation();
 
-        String message = type + ": " + url;
+        String message = type + ": " + location;
 
         log.debug(message);
 
@@ -89,10 +89,10 @@ public class ProgressSpinnerMonitor
         String message;
 
         if (total >= 1024) {
-            message = complete / 1024 + "/" + (total == UNKNOWN_LENGTH ? "?" : total / 1024 + "K");
+            message = complete / 1024 + "/" + (total == TransferEvent.UNKNOWN_LENGTH ? "?" : total / 1024 + "K");
         }
         else {
-            message = complete + "/" + (total == UNKNOWN_LENGTH ? "?" : total + "b");
+            message = complete + "/" + (total == TransferEvent.UNKNOWN_LENGTH ? "?" : total + "b");
         }
 
         log.trace(message);
@@ -105,11 +105,11 @@ public class ProgressSpinnerMonitor
 
         super.transferCompleted(event);
 
-        long length = event.getLength();
-        String type = event.getType() == TransferEvent.Type.UPLOAD ? "Uploaded" : "Downloaded";
-        String bytes = length >= 1024 ? ( length / 1024 ) + "K" : length + "b";
+        long total = event.getContentLength();
+        String type = event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploaded" : "Downloaded";
+        String bytes = total >= 1024 ? ( total / 1024 ) + "K" : total + "b";
 
-        // pad at end just incase, should really blank the reset of the line
+        // HACK: pad at end just incase, should really blank the reset of the line
         print(type + " " + bytes + "          ");
     }
 }

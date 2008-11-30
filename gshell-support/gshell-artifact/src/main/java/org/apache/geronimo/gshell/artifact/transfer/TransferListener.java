@@ -26,8 +26,6 @@ package org.apache.geronimo.gshell.artifact.transfer;
  */
 public interface TransferListener
 {
-    int UNKNOWN_LENGTH = -1;
-    
     void transferStarted(TransferEvent event);
 
     void transferProgress(TransferEvent event);

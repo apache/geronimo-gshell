@@ -28,13 +28,27 @@ import java.net.URL;
  */
 public interface TransferEvent
 {
-    enum Type {
+    /**
+     * Constant to be used when the content-length is not known.
+     */
+    int UNKNOWN_LENGTH = -1;
+
+    /**
+     * Transfer request type.
+     */
+    enum RequestType {
         UPLOAD, DOWNLOAD
     }
 
-    Type getType();
+    /**
+     * Transfer request type.
+     */
+    RequestType getRequestType();
 
-    URL getUrl();
+    /**
+     * Content location.
+     */
+    String getLocation();
 
     /**
      * The maximum length of the content.
@@ -46,5 +60,8 @@ public interface TransferEvent
      */
     long getLength();
 
-    Throwable getCause();
+    /**
+     * Failure cause.
+     */
+    Throwable getFailureCause();
 }
