@@ -26,7 +26,7 @@ import org.apache.geronimo.gshell.io.IO;
 import java.io.IOException;
 
 /**
- * A simple download monitor.
+ * A simple transfer monitor.
  *
  * @version $Rev$ $Date$
  */
