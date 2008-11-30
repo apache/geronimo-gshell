@@ -53,14 +53,7 @@ public class SimpleMonitor
 
         super.transferStarted(event);
 
-        String type = renderRequestType(event);
-        String location = event.getLocation();
-
-        String message = type + ": " + location;
-
-        log.debug(message);
-
-        println(message);
+        println(renderRequestType(event) + ": " + event.getLocation());
     }
 
     public void transferCompleted(final TransferEvent event) {
@@ -68,10 +61,6 @@ public class SimpleMonitor
 
         super.transferCompleted(event);
 
-        long total = event.getContentLength();
-        String type = renderRequestTypeFinished(event);
-        String bytes = total >= 1024 ? ( total / 1024 ) + "K" : total + "b";
-
-        println(type + " " + bytes);
+        println(renderRequestTypeFinished(event) + " " + renderBytes(event.getContentLength()));
     }
 }

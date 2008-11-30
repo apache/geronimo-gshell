@@ -59,4 +59,22 @@ public class TransferListenerSupport
 
         return event.getRequestType() == TransferEvent.RequestType.UPLOAD ? "Uploaded" : "Downloaded";
     }
+
+    protected String renderProgressBytes(final long length, final long total) {
+        if (total > 1024) {
+            return length / 1024 + "/" + (total == TransferEvent.UNKNOWN_LENGTH ? "?" : total / 1024 + "K");
+        }
+        else {
+            return length + "/" + (total == TransferEvent.UNKNOWN_LENGTH ? "?" : total + "b");
+        }
+    }
+
+    protected String renderBytes(final long length) {
+        if (length > 1024) {
+            return length / 1024 + "K";
+        }
+        else {
+            return length + "b";
+        }
+    }
 }

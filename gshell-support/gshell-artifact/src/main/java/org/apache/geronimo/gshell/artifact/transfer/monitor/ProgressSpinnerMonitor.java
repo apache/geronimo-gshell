@@ -73,7 +73,6 @@ public class ProgressSpinnerMonitor
 
         String type = renderRequestType(event);
         String location = event.getLocation();
-
         String message = type + ": " + location;
 
         println(message);
@@ -87,16 +86,8 @@ public class ProgressSpinnerMonitor
         long total = event.getContentLength();
         complete += event.getLength();
 
-        String message;
+        String message = renderProgressBytes(complete, total);
 
-        if (total >= 1024) {
-            message = complete / 1024 + "/" + (total == TransferEvent.UNKNOWN_LENGTH ? "?" : total / 1024 + "K");
-        }
-        else {
-            message = complete + "/" + (total == TransferEvent.UNKNOWN_LENGTH ? "?" : total + "b");
-        }
-
-        
         print(spinner.spin(message));
     }
 
@@ -107,7 +98,7 @@ public class ProgressSpinnerMonitor
 
         long total = event.getContentLength();
         String type = renderRequestTypeFinished(event);
-        String bytes = total >= 1024 ? ( total / 1024 ) + "K" : total + "b";
+        String bytes = renderBytes(total);
 
         // HACK: pad at end just incase, should really blank the reset of the line
         print(type + " " + bytes + "          ");
