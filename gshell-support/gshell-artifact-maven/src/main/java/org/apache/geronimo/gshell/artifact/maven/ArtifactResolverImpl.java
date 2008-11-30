@@ -19,20 +19,20 @@
 
 package org.apache.geronimo.gshell.artifact.maven;
 
-import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.artifact.transfer.TransferListener;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
-import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * <a href="http://maven.apache.org">Apache Maven (maven-artifact)</a> based {@link ArtifactResolver}.

@@ -22,9 +22,9 @@ package org.apache.geronimo.gshell.artifact.ivy;
 import org.apache.ivy.core.module.descriptor.Artifact;
 import org.apache.ivy.util.filter.Filter;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * AND artifact filter.

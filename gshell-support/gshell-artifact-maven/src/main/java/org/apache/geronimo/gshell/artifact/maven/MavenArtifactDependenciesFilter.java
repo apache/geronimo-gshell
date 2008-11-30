@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.artifact.maven;
 
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Filters artifacts required for using Maven Artifact for resolution of artifacts.

@@ -19,19 +19,19 @@
 
 package org.apache.geronimo.gshell.artifact.maven;
 
+import org.apache.geronimo.gshell.chronos.StopWatch;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.CyclicDependencyException;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

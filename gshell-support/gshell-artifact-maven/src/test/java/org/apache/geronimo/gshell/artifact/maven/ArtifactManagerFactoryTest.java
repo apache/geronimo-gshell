@@ -19,16 +19,15 @@
 
 package org.apache.geronimo.gshell.artifact.maven;
 
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.chronos.StopWatch;
-import org.apache.geronimo.gshell.artifact.maven.ArtifactManager;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 
-import java.util.Set;
-import java.util.LinkedHashSet;
 import java.io.File;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Unit tests for the {@link org.apache.geronimo.gshell.artifact.maven.ArtifactManagerFactory} class.

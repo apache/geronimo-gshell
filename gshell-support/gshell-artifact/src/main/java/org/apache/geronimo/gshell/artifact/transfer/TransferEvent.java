@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.artifact.transfer;
 
-import java.net.URL;
-
 /**
  * Artifact transfer event.
  *

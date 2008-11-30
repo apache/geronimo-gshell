@@ -19,19 +19,19 @@
 
 package org.apache.geronimo.gshell.artifact.ivy;
 
-import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.artifact.transfer.TransferListener;
 import org.apache.ivy.Ivy;
-import org.apache.ivy.util.filter.Filter;
-import org.apache.ivy.core.resolve.ResolveOptions;
-import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
-import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
 import org.apache.ivy.core.module.descriptor.Configuration;
 import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
+import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
+import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.apache.ivy.core.report.ResolveReport;
 import org.apache.ivy.core.report.ArtifactDownloadReport;
+import org.apache.ivy.core.report.ResolveReport;
+import org.apache.ivy.core.resolve.ResolveOptions;
+import org.apache.ivy.util.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -19,12 +19,11 @@
 
 package org.apache.geronimo.gshell.artifact.transfer.monitor;
 
-import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.artifact.transfer.TransferListenerSupport;
 import org.apache.geronimo.gshell.artifact.transfer.TransferEvent;
+import org.apache.geronimo.gshell.artifact.transfer.TransferListenerSupport;
+import org.apache.geronimo.gshell.io.IO;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * A download monitor providing a simple spinning progress interface.

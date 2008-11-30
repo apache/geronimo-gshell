@@ -19,21 +19,21 @@
 
 package org.apache.geronimo.gshell.artifact.ivy;
 
-import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.geronimo.gshell.chronos.StopWatch;
+import org.apache.geronimo.gshell.spring.SpringTestSupport;
 import org.apache.ivy.Ivy;
-import org.apache.ivy.util.Message;
-import org.apache.ivy.util.DefaultMessageLogger;
-import org.apache.ivy.core.settings.IvySettings;
-import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
+import org.apache.ivy.core.cache.ResolutionCacheManager;
+import org.apache.ivy.core.module.descriptor.Artifact;
 import org.apache.ivy.core.module.descriptor.Configuration;
 import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
-import org.apache.ivy.core.module.descriptor.Artifact;
-import org.apache.ivy.core.report.ResolveReport;
+import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
+import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.apache.ivy.core.report.ArtifactDownloadReport;
+import org.apache.ivy.core.report.ResolveReport;
 import org.apache.ivy.core.resolve.ResolveOptions;
-import org.apache.ivy.core.cache.ResolutionCacheManager;
+import org.apache.ivy.core.settings.IvySettings;
+import org.apache.ivy.util.DefaultMessageLogger;
+import org.apache.ivy.util.Message;
 
 import java.io.File;
 import java.net.URL;

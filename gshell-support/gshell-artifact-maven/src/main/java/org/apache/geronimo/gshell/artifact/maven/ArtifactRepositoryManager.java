@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.artifact.maven;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.InvalidRepositoryException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 
 import java.io.File;
 import java.net.URI;
