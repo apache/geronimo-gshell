@@ -138,13 +138,12 @@ public class ShellImpl
 
         branding = application.getModel().getBranding();
 
-        opened = true;
-
-        //
-        // TODO: Populate variables with some defaults, like the username/hostname/etc?
-        //
-
+        vars.set("USERNAME", application.getUserName());
+        vars.set("HOSTNAME", application.getLocalHost());
+        
         loadProfileScripts();
+
+        opened = true;
     }
 
     public synchronized void close() {
