@@ -427,7 +427,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>javacc-maven-plugin</artifactId>
-                    <version>2.5-SNAPSHOT</version>
+                    <version>2.5</version>
                 </plugin>
 
                 <!--
