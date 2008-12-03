@@ -19,6 +19,10 @@
 
 package org.apache.geronimo.gshell.clp.handler;
 
+import org.apache.geronimo.gshell.clp.Descriptor;
+import org.apache.geronimo.gshell.clp.IllegalAnnotationError;
+import org.apache.geronimo.gshell.clp.setter.Setter;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -26,10 +30,6 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.geronimo.gshell.clp.Descriptor;
-import org.apache.geronimo.gshell.clp.IllegalAnnotationError;
-import org.apache.geronimo.gshell.clp.setter.Setter;
 
 /**
  * Provides access to handlers.

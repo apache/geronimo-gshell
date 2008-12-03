@@ -33,9 +33,9 @@ import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ExitNotification;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.shell.Shell;
 import org.apache.geronimo.gshell.shell.ShellContext;
-import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

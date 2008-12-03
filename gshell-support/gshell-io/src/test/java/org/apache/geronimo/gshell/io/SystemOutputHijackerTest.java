@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.io;
 
+import junit.framework.TestCase;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
-import junit.framework.TestCase;
 
 /**
  * Tests for the {@link SystemOutputHijacker} class.

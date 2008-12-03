@@ -19,6 +19,14 @@
 
 package org.apache.geronimo.gshell.clp;
 
+import org.apache.geronimo.gshell.clp.handler.Handler;
+import org.apache.geronimo.gshell.clp.handler.Handlers;
+import org.apache.geronimo.gshell.clp.handler.Parameters;
+import org.apache.geronimo.gshell.clp.setter.CollectionFieldSetter;
+import org.apache.geronimo.gshell.clp.setter.FieldSetter;
+import org.apache.geronimo.gshell.clp.setter.MethodSetter;
+import org.apache.geronimo.gshell.clp.setter.Setter;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,14 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import org.apache.geronimo.gshell.clp.handler.Handler;
-import org.apache.geronimo.gshell.clp.handler.Handlers;
-import org.apache.geronimo.gshell.clp.handler.Parameters;
-import org.apache.geronimo.gshell.clp.setter.CollectionFieldSetter;
-import org.apache.geronimo.gshell.clp.setter.FieldSetter;
-import org.apache.geronimo.gshell.clp.setter.MethodSetter;
-import org.apache.geronimo.gshell.clp.setter.Setter;
 
 /**
  * Processes an object for command-line configuration annotations.

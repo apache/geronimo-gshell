@@ -20,8 +20,8 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.Application;
-import org.apache.geronimo.gshell.wisdom.application.ApplicationArtifactFilter;
 import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.wisdom.application.ApplicationArtifactFilter;
 
 import java.util.HashSet;
 import java.util.Set;

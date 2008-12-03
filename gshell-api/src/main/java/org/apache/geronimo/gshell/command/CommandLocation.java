@@ -19,9 +19,6 @@
 
 package org.apache.geronimo.gshell.command;
 
-import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.apache.geronimo.gshell.shell.ShellContext;
-
 /**
  * Provides information about the location of a {@link Command}.
  *

@@ -21,6 +21,7 @@ package org.apache.geronimo.gshell.wisdom.completer;
 
 import jline.ArgumentCompletor;
 import jline.Completor;
+import org.apache.commons.vfs.FileName;
 import org.apache.geronimo.gshell.command.Command;
 import org.apache.geronimo.gshell.command.CommandCompleter;
 import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
@@ -29,11 +30,8 @@ import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
 import org.apache.geronimo.gshell.event.EventManager;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRegisteredEvent;
-import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaDataRemovedEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRegisteredEvent;
 import org.apache.geronimo.gshell.wisdom.registry.CommandRemovedEvent;
-import org.apache.commons.vfs.FileName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

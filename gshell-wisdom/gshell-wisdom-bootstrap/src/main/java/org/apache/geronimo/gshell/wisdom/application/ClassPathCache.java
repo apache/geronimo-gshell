@@ -24,14 +24,14 @@ import org.apache.geronimo.gshell.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.ObjectOutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 
 /**
  * Helper to manage caching of {@link ClassPath} instances.

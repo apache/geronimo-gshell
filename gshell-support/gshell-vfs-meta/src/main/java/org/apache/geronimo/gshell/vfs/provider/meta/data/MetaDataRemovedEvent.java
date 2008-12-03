@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.vfs.provider.meta.data;
 
-import org.apache.geronimo.gshell.event.Event;
 import org.apache.commons.vfs.FileName;
+import org.apache.geronimo.gshell.event.Event;
 
 /**
  * Event fired when some {@link MetaData} has been removed.

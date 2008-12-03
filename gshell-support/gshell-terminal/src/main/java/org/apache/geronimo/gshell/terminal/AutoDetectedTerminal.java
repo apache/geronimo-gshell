@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.terminal;
 
-import jline.Terminal;
 import jline.ConsoleReader;
+import jline.Terminal;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Auto-detected terminal.

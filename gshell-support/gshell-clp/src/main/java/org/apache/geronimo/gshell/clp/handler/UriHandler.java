@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.clp.handler;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import org.apache.geronimo.gshell.clp.Descriptor;
 import org.apache.geronimo.gshell.clp.ProcessingException;
 import org.apache.geronimo.gshell.clp.setter.Setter;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Handler for file types.

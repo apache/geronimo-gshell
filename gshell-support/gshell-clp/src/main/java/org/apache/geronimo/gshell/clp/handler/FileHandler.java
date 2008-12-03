@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.clp.handler;
 
-import java.io.File;
-
 import org.apache.geronimo.gshell.clp.Descriptor;
 import org.apache.geronimo.gshell.clp.ProcessingException;
 import org.apache.geronimo.gshell.clp.setter.Setter;
+
+import java.io.File;
 
 /**
  * Handler for file types.

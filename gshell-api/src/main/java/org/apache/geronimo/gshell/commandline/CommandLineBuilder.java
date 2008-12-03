@@ -19,8 +19,6 @@
 
 package org.apache.geronimo.gshell.commandline;
 
-import org.apache.geronimo.gshell.shell.ShellContext;
-
 /**
  * Builds {@link CommandLine} instances ready for executing.
  *

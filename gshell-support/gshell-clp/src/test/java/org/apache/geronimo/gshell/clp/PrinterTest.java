@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.clp;
 
+import junit.framework.TestCase;
+
 import java.io.StringWriter;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 /**
  * Tests for the {@link Printer} class.

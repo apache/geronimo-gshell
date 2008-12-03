@@ -19,26 +19,25 @@
 
 package org.apache.geronimo.gshell.vfs.provider.truezip;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.apache.commons.vfs.impl.DefaultFileSystemManager;
-import org.apache.commons.vfs.provider.AbstractFileObject;
-import org.apache.commons.vfs.provider.UriParser;
-import org.apache.commons.vfs.provider.LayeredFileName;
-import org.apache.commons.vfs.util.RandomAccessMode;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.VFS;
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.RandomAccessContent;
-
 import de.schlichtherle.io.ArchiveDetector;
 import de.schlichtherle.io.File;
 import de.schlichtherle.io.FileInputStream;
 import de.schlichtherle.io.FileOutputStream;
+import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.RandomAccessContent;
+import org.apache.commons.vfs.VFS;
+import org.apache.commons.vfs.impl.DefaultFileSystemManager;
+import org.apache.commons.vfs.provider.AbstractFileObject;
+import org.apache.commons.vfs.provider.LayeredFileName;
+import org.apache.commons.vfs.provider.UriParser;
+import org.apache.commons.vfs.util.RandomAccessMode;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * <h href="https://truezip.dev.java.net">TrueZIP</a> file object.

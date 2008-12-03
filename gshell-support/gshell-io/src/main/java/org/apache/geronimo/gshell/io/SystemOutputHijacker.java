@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.io;
 
-import java.io.PrintStream;
-import java.io.IOException;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 //
 // FIXME: Probably need to add some support to hijack System.in too

@@ -20,11 +20,11 @@
 package org.apache.geronimo.gshell.commands.ssh;
 
 import com.google.code.sshd.server.PasswordAuthenticator;
+import org.jsecurity.SecurityUtils;
 import org.jsecurity.authc.AuthenticationException;
 import org.jsecurity.authc.UsernamePasswordToken;
-import org.jsecurity.subject.Subject;
 import org.jsecurity.mgt.SecurityManager;
-import org.jsecurity.SecurityUtils;
+import org.jsecurity.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

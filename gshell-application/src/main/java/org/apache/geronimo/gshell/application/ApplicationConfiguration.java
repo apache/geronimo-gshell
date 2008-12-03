@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.application;
 
+import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.yarn.Yarn;
 
 /**

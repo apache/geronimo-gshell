@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.commands.log4j;
 
+import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.log4j.NDC;
 
 /**

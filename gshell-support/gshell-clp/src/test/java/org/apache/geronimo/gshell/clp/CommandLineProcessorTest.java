@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.clp;
 
-import java.util.List;
-
 import junit.framework.TestCase;
+
+import java.util.List;
 
 /**
  * Tests for the {@link CommandLineProcessor} class.

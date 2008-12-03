@@ -19,12 +19,12 @@
 
 package org.apache.geronimo.gshell.clp.handler;
 
-import java.util.List;
-
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
+
+import java.util.List;
 
 /**
  * Tests for the {@link StopHandler} class.

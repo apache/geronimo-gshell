@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.security.crypto;
 
-import org.jsecurity.mgt.SecurityManager;
 import org.jsecurity.SecurityUtils;
+import org.jsecurity.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

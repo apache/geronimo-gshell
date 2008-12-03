@@ -22,10 +22,10 @@ package org.apache.geronimo.gshell.wisdom.plugin;
 import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.artifact.Artifact;
-import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
+import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.ArtifactResolver;
 import org.apache.geronimo.gshell.chronos.StopWatch;
 import org.apache.geronimo.gshell.event.Event;
 import org.apache.geronimo.gshell.event.EventListener;
@@ -35,13 +35,16 @@ import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.wisdom.application.ApplicationConfiguredEvent;
 import org.apache.geronimo.gshell.wisdom.application.ClassPathCache;
 import org.apache.geronimo.gshell.wisdom.application.ClassPathImpl;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Default implementation of the {@link PluginManager} component.

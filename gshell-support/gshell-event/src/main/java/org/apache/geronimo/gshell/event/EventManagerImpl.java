@@ -22,8 +22,8 @@ package org.apache.geronimo.gshell.event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * The default {@link EventManager} and {@link EventPublisher} components.

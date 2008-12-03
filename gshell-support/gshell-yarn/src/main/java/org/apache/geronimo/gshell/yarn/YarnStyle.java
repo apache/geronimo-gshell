@@ -20,9 +20,9 @@
 package org.apache.geronimo.gshell.yarn;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.Retention;
 
 /**
  * Annotates objects with stying information which is interpreted by {@link Yarn} when rendering.

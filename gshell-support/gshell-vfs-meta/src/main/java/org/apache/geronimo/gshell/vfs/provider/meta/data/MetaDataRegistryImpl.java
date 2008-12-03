@@ -22,9 +22,9 @@ package org.apache.geronimo.gshell.vfs.provider.meta.data;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
+import org.apache.geronimo.gshell.event.EventPublisher;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileName;
 import org.apache.geronimo.gshell.vfs.provider.meta.MetaFileNameParser;
-import org.apache.geronimo.gshell.event.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

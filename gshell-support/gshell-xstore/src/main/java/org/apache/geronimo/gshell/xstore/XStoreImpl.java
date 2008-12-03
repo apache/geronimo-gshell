@@ -19,17 +19,17 @@
 
 package org.apache.geronimo.gshell.xstore;
 
-import org.apache.geronimo.gshell.vfs.FileSystemAccess;
-import org.apache.geronimo.gshell.marshal.Marshaller;
-import org.apache.geronimo.gshell.marshal.MarshallerSupport;
+import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystem;
 import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileObject;
+import org.apache.geronimo.gshell.marshal.Marshaller;
+import org.apache.geronimo.gshell.marshal.MarshallerSupport;
+import org.apache.geronimo.gshell.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link XStore} component.

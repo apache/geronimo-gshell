@@ -19,9 +19,8 @@
 
 package org.apache.geronimo.gshell.vfs.provider.truezip;
 
-import java.io.FilePermission;
-import java.util.Collection;
-
+import de.schlichtherle.io.ArchiveException;
+import de.schlichtherle.io.File;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSelector;
@@ -30,8 +29,8 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemOptions;
 import org.apache.commons.vfs.provider.AbstractFileSystem;
 
-import de.schlichtherle.io.ArchiveException;
-import de.schlichtherle.io.File;
+import java.io.FilePermission;
+import java.util.Collection;
 
 /**
  * <h href="https://truezip.dev.java.net">TrueZIP</a> file system.

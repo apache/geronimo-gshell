@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.clp.setter;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.apache.geronimo.gshell.clp.IllegalAnnotationError;
 import org.apache.geronimo.gshell.clp.ProcessingException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Setter for methods.

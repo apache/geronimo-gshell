@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.application;
 
 import org.apache.geronimo.gshell.artifact.Artifact;
 
-import java.util.Collection;
 import java.net.URL;
+import java.util.Collection;
 
 /**
  * Provides details about a classpath configuration.

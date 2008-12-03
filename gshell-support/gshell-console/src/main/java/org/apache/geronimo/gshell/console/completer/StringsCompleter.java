@@ -21,11 +21,11 @@ package org.apache.geronimo.gshell.console.completer;
 
 import jline.Completor;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Arrays;
 
 /**
  * Completer for a set of strings.

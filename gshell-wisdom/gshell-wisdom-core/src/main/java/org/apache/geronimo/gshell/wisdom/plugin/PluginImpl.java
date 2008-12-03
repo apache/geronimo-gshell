@@ -20,15 +20,15 @@
 package org.apache.geronimo.gshell.wisdom.plugin;
 
 import org.apache.geronimo.gshell.application.ClassPath;
-import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.application.plugin.Plugin;
-import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
-import org.apache.geronimo.gshell.spring.BeanContainer;
-import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.apache.geronimo.gshell.application.plugin.activation.ActivationContext;
 import org.apache.geronimo.gshell.application.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.application.plugin.activation.ActivationTask;
+import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
 import org.apache.geronimo.gshell.application.plugin.bundle.NoSuchBundleException;
+import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.spring.BeanContainer;
+import org.apache.geronimo.gshell.spring.BeanContainerAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.clp.handler;
 
-import java.net.URI;
-
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
+
+import java.net.URI;
 
 /**
  * Tests for the {@link UriHandler} class.

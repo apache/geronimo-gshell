@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.clp.handler;
 
-import java.io.File;
-
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
 import org.apache.geronimo.gshell.clp.Option;
+
+import java.io.File;
 
 /**
  * Tests for the {@link FileHandler} class.

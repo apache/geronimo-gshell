@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.commands.admin;
 
-import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.application.plugin.PluginManager;
+import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;

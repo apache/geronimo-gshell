@@ -23,9 +23,9 @@ import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.application.ApplicationConfiguration;
 import org.apache.geronimo.gshell.application.ClassPath;
 import org.apache.geronimo.gshell.application.model.ApplicationModel;
+import org.apache.geronimo.gshell.artifact.Artifact;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.io.IO;
-import org.apache.geronimo.gshell.artifact.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

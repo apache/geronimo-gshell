@@ -21,8 +21,8 @@ package org.apache.geronimo.gshell.commands.file;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.geronimo.gshell.clp.Argument;
-import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.command.CommandAction;
+import org.apache.geronimo.gshell.command.CommandContext;
 import org.apache.geronimo.gshell.vfs.FileObjects;
 import org.apache.geronimo.gshell.vfs.support.VfsActionSupport;
 

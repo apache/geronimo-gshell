@@ -19,11 +19,11 @@
 
 package org.apache.geronimo.gshell.clp.setter;
 
-import java.util.List;
-
 import junit.framework.TestCase;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.CommandLineProcessor;
+
+import java.util.List;
 
 /**
  * Tests for the {@link CollectionFieldSetter} class.

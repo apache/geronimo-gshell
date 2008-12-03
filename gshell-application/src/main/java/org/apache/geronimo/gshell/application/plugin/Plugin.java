@@ -20,9 +20,9 @@
 package org.apache.geronimo.gshell.application.plugin;
 
 import org.apache.geronimo.gshell.application.ClassPath;
+import org.apache.geronimo.gshell.application.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.application.plugin.bundle.Bundle;
 import org.apache.geronimo.gshell.application.plugin.bundle.NoSuchBundleException;
-import org.apache.geronimo.gshell.application.plugin.activation.ActivationRule;
 import org.apache.geronimo.gshell.artifact.Artifact;
 
 import java.util.Collection;

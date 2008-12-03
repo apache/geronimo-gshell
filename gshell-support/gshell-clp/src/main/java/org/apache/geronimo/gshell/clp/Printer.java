@@ -19,17 +19,17 @@
 
 package org.apache.geronimo.gshell.clp;
 
+import org.apache.geronimo.gshell.clp.handler.Handler;
+import org.apache.geronimo.gshell.i18n.MessageSource;
+import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
+import org.apache.geronimo.gshell.i18n.ResourceNotFoundException;
+
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.apache.geronimo.gshell.clp.handler.Handler;
-import org.apache.geronimo.gshell.i18n.MessageSource;
-import org.apache.geronimo.gshell.i18n.ResourceNotFoundException;
-import org.apache.geronimo.gshell.i18n.ResourceBundleMessageSource;
 
 /**
  * Helper to print formatted help and usage text.

@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.wisdom.application;
 
-import org.apache.geronimo.gshell.artifact.ArtifactFilter;
 import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.ArtifactFilter;
 
 import java.util.Arrays;
 import java.util.HashSet;

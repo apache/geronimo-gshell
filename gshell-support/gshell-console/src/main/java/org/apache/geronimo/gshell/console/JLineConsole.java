@@ -19,10 +19,10 @@
 
 package org.apache.geronimo.gshell.console;
 
+import jline.CandidateListCompletionHandler;
+import jline.Completor;
 import jline.ConsoleReader;
 import jline.History;
-import jline.Completor;
-import jline.CandidateListCompletionHandler;
 import org.apache.geronimo.gshell.io.IO;
 
 import java.io.IOException;

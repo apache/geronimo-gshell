@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.shell;
 
-import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.io.IO;
 
 /**
  * Provides the execution context of a shell.

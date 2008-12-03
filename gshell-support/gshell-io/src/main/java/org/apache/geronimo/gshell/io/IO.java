@@ -19,8 +19,8 @@
 
 package org.apache.geronimo.gshell.io;
 
-import jline.Terminal;
 import jline.ConsoleReader;
+import jline.Terminal;
 import org.apache.geronimo.gshell.ansi.AnsiRenderWriter;
 import org.apache.geronimo.gshell.yarn.Yarn;
 import org.slf4j.helpers.MessageFormatter;
