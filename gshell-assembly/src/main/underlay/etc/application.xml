@@ -77,31 +77,31 @@
             <list>
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="name" value="gshell-builtins"/>
+                    <property name="name" value="gshell-builtin"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="name" value="gshell-shellutils"/>
+                    <property name="name" value="gshell-shell"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="name" value="gshell-fileutils"/>
+                    <property name="name" value="gshell-file"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="name" value="gshell-textutils"/>
+                    <property name="name" value="gshell-text"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
                 <bean class="org.apache.geronimo.gshell.artifact.Artifact">
                     <property name="group" value="org.apache.geronimo.gshell.commands"/>
-                    <property name="name" value="gshell-netutils"/>
+                    <property name="name" value="gshell-network"/>
                     <property name="version" value="${gshell.version}"/>
                 </bean>
 
