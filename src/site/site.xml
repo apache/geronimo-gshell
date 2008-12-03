@@ -21,13 +21,13 @@
 <!-- $Rev$ $Date$ -->
 
 <project name="${project.name}">
-    
+
     <body>
+        <menu ref="parent"/>
         
-        ${modules}
+        <menu ref="modules"/>
         
-        ${reports}
-        
+        <menu ref="reports"/>
     </body>
 
 </project>
