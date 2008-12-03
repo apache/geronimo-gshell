@@ -1,4 +1,7 @@
 #!/bin/sh
 
-rm -rf gshell-*-SNAPSHOT && gunzip -c ./gshell-assembly/target/gshell-*-bin.tar.gz | tar xf -
+rm -rf target/gshell-*-SNAPSHOT
+mkdir target
+cd target
+gunzip -c ../gshell-assembly/target/gshell-*-bin.tar.gz | tar xf -
 
