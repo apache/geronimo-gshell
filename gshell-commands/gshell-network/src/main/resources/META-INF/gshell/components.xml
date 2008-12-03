@@ -34,7 +34,7 @@
     <gshell:plugin name="gshell-network">
         <gshell:command-bundle name="default">
             <gshell:command name="hostname">
-                <gshell:action class="org.apache.geronimo.gshell.commands.netutils.HostnameAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.network.HostnameAction"/>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>

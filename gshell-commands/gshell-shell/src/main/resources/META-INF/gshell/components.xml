@@ -38,23 +38,23 @@
     <gshell:plugin name="gshell-shell">
         <gshell:command-bundle name="default">
             <gshell:command name="exec">
-                <gshell:action class="org.apache.geronimo.gshell.commands.shellutils.ExecuteAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.shell.ExecuteAction"/>
             </gshell:command>
 
             <gshell:command name="java">
-                <gshell:action class="org.apache.geronimo.gshell.commands.shellutils.JavaAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.shell.JavaAction"/>
             </gshell:command>
 
             <gshell:command name="sleep">
-                <gshell:action class="org.apache.geronimo.gshell.commands.shellutils.SleepAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.shell.SleepAction"/>
             </gshell:command>
 
             <gshell:command name="date">
-                <gshell:action class="org.apache.geronimo.gshell.commands.shellutils.DateAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.shell.DateAction"/>
             </gshell:command>
 
             <gshell:command name="edit">
-                <gshell:action class="org.apache.geronimo.gshell.commands.shellutils.EditAction" parent="vfsCommandActionTemplate"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.shell.EditAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -62,7 +62,7 @@
             </gshell:command>
 
             <gshell:command name="find">
-                <gshell:action class="org.apache.geronimo.gshell.commands.shellutils.FindAction" parent="vfsCommandActionTemplate"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.shell.FindAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>

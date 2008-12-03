@@ -34,13 +34,13 @@
     <gshell:plugin name="gshell-builtin">
         <gshell:command-bundle name="default">
             <gshell:command name="about">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.AboutAction">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.AboutAction">
                     <constructor-arg ref="applicationManager"/>
                 </gshell:action>
             </gshell:command>
 
             <gshell:command name="help">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.HelpAction">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.HelpAction">
                     <constructor-arg ref="commandResolver"/>
                 </gshell:action>
                 <gshell:completers>
@@ -57,23 +57,23 @@
             </gshell:command>
 
             <gshell:command name="exit">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ExitAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.ExitAction"/>
             </gshell:command>
 
             <gshell:link name="quit" target="exit"/>
 
             <gshell:command name="echo">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.EchoAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.EchoAction"/>
             </gshell:command>
 
             <gshell:link name="print" target="echo"/>
 
             <gshell:command name="clear" type="stateless">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.ClearAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.ClearAction"/>
             </gshell:command>
 
             <gshell:command name="source">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SourceAction">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.SourceAction">
                     <constructor-arg ref="commandLineExecutor"/>
                     <constructor-arg ref="fileSystemAccess"/>
                 </gshell:action>
@@ -84,11 +84,11 @@
             </gshell:command>
             
             <gshell:command name="set">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.SetAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.SetAction"/>
             </gshell:command>
 
             <gshell:command name="unset">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnsetAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.UnsetAction"/>
                 <gshell:completers>
                     <ref bean="variableNameCompleter"/>
                     <null/>
@@ -96,13 +96,13 @@
             </gshell:command>
 
             <gshell:command name="alias">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.AliasAction">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.AliasAction">
                     <constructor-arg ref="aliasRegistry"/>
                 </gshell:action>
             </gshell:command>
 
             <gshell:command name="unalias">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.UnaliasAction">
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.UnaliasAction">
                     <constructor-arg ref="aliasRegistry"/>
                 </gshell:action>
                 <gshell:completers>
@@ -112,7 +112,7 @@
             </gshell:command>
             
             <gshell:command name="history">
-                <gshell:action class="org.apache.geronimo.gshell.commands.builtins.HistoryAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.builtin.HistoryAction"/>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>

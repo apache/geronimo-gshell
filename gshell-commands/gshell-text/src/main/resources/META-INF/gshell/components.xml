@@ -38,11 +38,11 @@
     <gshell:plugin name="gshell-text">
         <gshell:command-bundle name="default">
             <gshell:command name="printf">
-                <gshell:action class="org.apache.geronimo.gshell.commands.textutils.PrintfAction"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.text.PrintfAction"/>
             </gshell:command>
 
             <gshell:command name="cat">
-                <gshell:action class="org.apache.geronimo.gshell.commands.textutils.CatAction" parent="vfsCommandActionTemplate"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.text.CatAction" parent="vfsCommandActionTemplate"/>
                 <gshell:completers>
                     <ref bean="fileObjectNameCompleter"/>
                     <null/>
@@ -50,7 +50,7 @@
             </gshell:command>
 
             <gshell:command name="grep">
-                <gshell:action class="org.apache.geronimo.gshell.commands.textutils.GrepAction" parent="vfsCommandActionTemplate"/>
+                <gshell:action class="org.apache.geronimo.gshell.commands.text.GrepAction" parent="vfsCommandActionTemplate"/>
             </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
