@@ -205,8 +205,10 @@ public class SystemOutputHijacker
      * Returns the currently registered streams.
      */
     private static synchronized StreamPair current() {
-        StreamRegistration reg = registration(true);
-        
+        StreamRegistration reg = registration(false);
+        if (reg == null) {
+            return previous;
+        }
         return reg.streams;
     }
     
