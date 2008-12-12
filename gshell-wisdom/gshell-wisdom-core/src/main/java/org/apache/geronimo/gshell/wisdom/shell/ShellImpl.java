@@ -100,24 +100,18 @@ public class ShellImpl
 
         assert application != null;
 
-        // Dereference some bits from the applciation context
-        final IO io = application.getIo();
+        // Each shell gets its own variables, using application variables for defaults
+        final Variables vars = new Variables(application.getVariables());
 
-        //
-        // TODO: Each shell should really have its own variables, using the apps vars as its parents
-        //       but before we do that we need to implement a general ShellContextHolder to allow
-        //       detached components access in the threads context.
-        //
-        final Variables vars = application.getVariables();
-
-        context = new ShellContext() {
-
+        context = new ShellContext()
+        {
             public Shell getShell() {
                 return ShellImpl.this;
             }
 
             public IO getIo() {
-                return io;
+                // Shells inherit the application's IO
+                return application.getIo();
             }
 
             public Variables getVariables() {
