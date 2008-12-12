@@ -70,6 +70,7 @@ public class XStoreRecordImpl
         }
     }
     
+    @SuppressWarnings({"unchecked"})
     public void set(final Object value) {
         assert value != null;
 
@@ -79,7 +80,6 @@ public class XStoreRecordImpl
         try {
             Marshaller marshaller = xstore.getMarshaller(value.getClass());
             output = new BufferedOutputStream(file.getContent().getOutputStream());
-            // noinspection unchecked
             marshaller.marshal(value, output);
         }
         catch (FileSystemException e) {
