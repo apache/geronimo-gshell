@@ -304,7 +304,6 @@ public abstract class CommandSupport
 
             log.trace("Result: {}", value);
 
-            // Save the result to the shell's context under "gshell.result"
             context.getVariables().set("gshell.result", value);
 
             result = new CommandResult.ValueResult(value);

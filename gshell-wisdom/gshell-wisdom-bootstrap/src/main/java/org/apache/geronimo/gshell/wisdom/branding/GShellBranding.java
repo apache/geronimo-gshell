@@ -149,4 +149,9 @@ public class GShellBranding
     public void setWelcomeMessage(String welcomeMessage) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String getPrompt() {
+        return "@|bold %{application.userName}|@%{application.localHost.hostName}:@|bold %{branding.name}:%{gshell.group}|> ";
+    }
 }

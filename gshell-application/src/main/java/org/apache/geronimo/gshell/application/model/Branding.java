@@ -63,6 +63,8 @@ public class Branding
 
     private String goodbyeMessage;
 
+    private String prompt;
+
     public String toString() {
         return Yarn.render(this);
     }
@@ -219,6 +221,14 @@ public class Branding
 
     public void setGoodbyeMessage(final String goodbyeMessage) {
         this.goodbyeMessage = goodbyeMessage;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(final String prompt) {
+        this.prompt = prompt;
     }
 
     public Properties getProperties() {
