@@ -21,6 +21,9 @@ package org.apache.geronimo.gshell.bootstrap;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.List;
 
 /**
  * Bootstrap launcher.
@@ -29,53 +32,74 @@ import java.lang.reflect.Modifier;
  */
 public class Launcher
 {
-    private static final int SUCCESS_EXIT_CODE = 0;
+    private final Configuration config;
 
-    private static final int FAILURE_EXIT_CODE = 100;
-
-    private static final String MAIN_CLASS = "org.apache.geronimo.gshell.cli.Main";
+    public Launcher() {
+        this.config = new ConfigurationImpl();
+    }
 
     public static void main(final String[] args) {
         assert args != null;
 
+        Launcher launcher = new Launcher();
+        launcher.run(args);
+    }
+
+    public void run(final String[] args) {
+        assert args != null;
+
         try {
+            config.configure();
+
             launch(args);
 
             Log.debug("Exiting");
 
-            System.exit(SUCCESS_EXIT_CODE);
+            System.exit(config.getSuccessExitCode());
         }
         catch (Throwable t) {
             Log.debug("Failure: " + t);
             
             t.printStackTrace(System.err);
             System.err.flush();
-            System.exit(FAILURE_EXIT_CODE);
+
+            System.exit(config.getFailureExitCode());
         }
     }
 
-    public static void launch(final String[] args) throws Exception {
+    public void launch(final String[] args) throws Exception {
         assert args != null;
 
-        Log.debug("Configuring");
+        Log.debug("Launching");
 
-        Configuration config = new Configuration();
-        config.configure();
+        ClassLoader cl = getClassLoader();
 
-        ClassLoader cl = config.getClassLoader();
-        Class type = cl.loadClass(MAIN_CLASS);
+        Class type = cl.loadClass(config.getMainClass());
         Method method = getMainMethod(type);
 
         Thread.currentThread().setContextClassLoader(cl);
 
         if (Log.DEBUG) {
-            Log.debug("Launching: " + method);
+            Log.debug("Invoking: " + method);
         }
-
+        
         method.invoke(null, new Object[] { args });
     }
 
-    private static Method getMainMethod(final Class type) throws Exception {
+    private ClassLoader getClassLoader() throws Exception {
+        List<URL> classPath = config.getClassPath();
+        if (Log.DEBUG) {
+            Log.debug("Classpath:");
+            for (URL url : classPath) {
+                Log.debug("    " + url);
+            }
+        }
+
+        ClassLoader parent = getClass().getClassLoader();
+        return new URLClassLoader(classPath.toArray(new URL[classPath.size()]), parent);
+    }
+
+    private Method getMainMethod(final Class type) throws Exception {
         assert type != null;
 
         Method method = type.getMethod("main", String[].class);
