@@ -36,6 +36,8 @@ import java.util.Properties;
 public class ConfigurationImpl
     implements Configuration
 {
+    private static final String DEFAULT_PROPERTIES = "default.properties";
+    
     private static final int SUCCESS_EXIT_CODE = 0;
 
     private static final int FAILURE_EXIT_CODE = 100;
@@ -66,7 +68,7 @@ public class ConfigurationImpl
     private Properties loadProperties() throws Exception {
         Properties props = new Properties();
 
-        URL defaults = getClass().getResource("default.properties");
+        URL defaults = getClass().getResource(DEFAULT_PROPERTIES);
         assert defaults != null;
 
         if (Log.DEBUG) {
