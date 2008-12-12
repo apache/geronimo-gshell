@@ -119,17 +119,17 @@ public class ShellImpl
             }
         };
 
+        branding = application.getModel().getBranding();
+
         // HACK: Add ourself to variables so commands can get to us.  Maybe need to add to ^^^ and expose in CommandContent
         vars.set("SHELL", this, true);
 
         // HACK: Add history for the 'history' command, since its not part of the Shell interf it can't really access it easy, resolve with ^^^
         vars.set("SHELL.HISTORY", getHistory(), true);
 
-        vars.set("gshell.prompt", application.getModel().getBranding().getPrompt());
+        vars.set("gshell.prompt", branding.getPrompt());
 
         vars.set(CommandResolver.GROUP, "/");
-
-        branding = application.getModel().getBranding();
 
         vars.set("USERNAME", application.getUserName());
         vars.set("HOSTNAME", application.getLocalHost());
