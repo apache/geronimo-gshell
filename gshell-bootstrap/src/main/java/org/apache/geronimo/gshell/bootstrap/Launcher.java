@@ -48,6 +48,8 @@ public class Launcher
     public void run(final String[] args) {
         assert args != null;
 
+        Log.debug("Running");
+
         try {
             config.configure();
 
@@ -88,6 +90,7 @@ public class Launcher
 
     private ClassLoader getClassLoader() throws Exception {
         List<URL> classPath = config.getClassPath();
+        
         if (Log.DEBUG) {
             Log.debug("Classpath:");
             for (URL url : classPath) {
