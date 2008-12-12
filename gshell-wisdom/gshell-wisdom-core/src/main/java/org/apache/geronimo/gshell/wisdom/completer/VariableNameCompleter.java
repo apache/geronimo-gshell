@@ -21,9 +21,9 @@ package org.apache.geronimo.gshell.wisdom.completer;
 
 import jline.Completor;
 import org.apache.geronimo.gshell.application.Application;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.completer.StringsCompleter;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -37,15 +37,8 @@ import java.util.List;
 public class VariableNameCompleter
     implements Completor
 {
-    private final ApplicationManager applicationManager;
-
-    public VariableNameCompleter(final ApplicationManager applicationManager) {
-        assert applicationManager != null;
-        this.applicationManager = applicationManager;
-    }
-
     public int complete(final String buffer, final int cursor, final List candidates) {
-        Variables vars = applicationManager.getApplication().getVariables();
+        Variables vars = ShellContextHolder.get().getVariables();
 
         // There are no events for variables muck, so each time we have to rebuild the list.
         StringsCompleter delegate = new StringsCompleter();

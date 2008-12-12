@@ -93,7 +93,6 @@
     </bean>
 
     <bean id="fileSystemAccess" class="org.apache.geronimo.gshell.vfs.FileSystemAccessImpl" lazy-init="true">
-        <constructor-arg ref="applicationManager"/>
         <constructor-arg ref="fileSystemManager"/>
     </bean>
 
@@ -220,9 +219,7 @@
         <constructor-arg ref="commandRegistry"/>
     </bean>
 
-    <bean id="variableNameCompleter" class="org.apache.geronimo.gshell.wisdom.completer.VariableNameCompleter" lazy-init="true">
-        <constructor-arg ref="applicationManager"/>
-    </bean>
+    <bean id="variableNameCompleter" class="org.apache.geronimo.gshell.wisdom.completer.VariableNameCompleter" lazy-init="true"/>
 
     <bean class="org.apache.geronimo.gshell.vfs.provider.meta.data.support.MetaDataInstaller">
         <constructor-arg ref="metaDataRegistry"/>

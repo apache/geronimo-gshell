@@ -24,8 +24,8 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.provider.DelegateFileObject;
 import org.apache.commons.vfs.provider.local.LocalFile;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.command.Variables;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,13 +42,9 @@ public class FileSystemAccessImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final ApplicationManager applicationManager;
-
     private final FileSystemManager fileSystemManager;
 
-    public FileSystemAccessImpl(final ApplicationManager applicationManager, final FileSystemManager fileSystemManager) {
-        assert applicationManager != null;
-        this.applicationManager = applicationManager;
+    public FileSystemAccessImpl(final FileSystemManager fileSystemManager) {
         assert fileSystemManager != null;
         this.fileSystemManager = fileSystemManager;
     }
@@ -89,7 +85,7 @@ public class FileSystemAccessImpl
     public FileObject getCurrentDirectory() throws FileSystemException {
         log.trace("Resolving CWD from application variables");
 
-        return getCurrentDirectory(applicationManager.getApplication().getVariables());
+        return getCurrentDirectory(ShellContextHolder.get().getVariables());
     }
 
     public void setCurrentDirectory(final Variables vars, final FileObject dir) throws FileSystemException {
@@ -114,7 +110,7 @@ public class FileSystemAccessImpl
 
         log.trace("Setting CWD to application variables");
 
-        setCurrentDirectory(applicationManager.getApplication().getVariables(), dir);
+        setCurrentDirectory(ShellContextHolder.get().getVariables(), dir);
     }
 
     public FileObject resolveFile(final FileObject baseFile, final String name) throws FileSystemException {
