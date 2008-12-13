@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -84,6 +85,13 @@ public class ConfigurationImpl
         }
 
         // TODO: Resolve properties, merge in system?
+
+        if (Log.DEBUG) {
+            Log.debug("Properties:");
+            for (Map.Entry entry : props.entrySet()) {
+                Log.debug("    " + entry.getKey() + "=" + entry.getValue());    
+            }
+        }
 
         return props;
     }
