@@ -68,6 +68,10 @@
     <logger name="org.apache.maven.artifact.manager.WagonManager:default">
         <level value="ERROR"/>
     </logger>
+
+    <logger name="org.apache.commons.jexl.ExpressionFactory">
+        <level value="INFO"/>
+    </logger>
     
     <root>
         <level value="${gshell.log.console.level}"/>
