@@ -24,6 +24,7 @@ import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.console.Console;
 import org.apache.geronimo.gshell.interpolation.VariablesValueSource;
+import org.apache.geronimo.gshell.shell.ShellContextHolder;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.Interpolator;
 import org.codehaus.plexus.interpolation.PrefixedObjectValueSource;
@@ -41,33 +42,29 @@ public class ConsolePrompterImpl
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Application application;
-
     private final Interpolator interp = new StringSearchInterpolator("%{", "}");
 
     private final VariablesValueSource variablesValueSource = new VariablesValueSource();
 
     private final AnsiRenderer renderer = new AnsiRenderer();
 
+    private final String defaultPrompt;
+
     public ConsolePrompterImpl(final Application application) {
         assert application != null;
-        this.application = application;
-    }
-
-    // @PostConstruct
-    public void init() {
-        assert application != null;
+        
         interp.addValueSource(new PrefixedObjectValueSource("application", application));
         interp.addValueSource(new PrefixedObjectValueSource("branding", application.getModel().getBranding()));
         interp.addValueSource(variablesValueSource);
+
+        defaultPrompt = application.getModel().getBranding().getPrompt();
     }
 
     public String prompt() {
         String prompt = null;
 
-        assert application != null;
-        Variables vars = application.getVariables();
-        String pattern = (String) vars.get("gshell.prompt");
+        Variables vars = ShellContextHolder.get().getVariables();
+        String pattern = vars.get("gshell.prompt", String.class);
 
         if (pattern != null) {
             assert variablesValueSource != null;
@@ -84,7 +81,7 @@ public class ConsolePrompterImpl
 
         // Use a default prompt if we don't have anything here
         if (prompt == null) {
-            prompt = defaultPrompt();
+            prompt = defaultPrompt;
         }
 
         // Encode ANSI muck if it looks like there are codes encoded
@@ -93,10 +90,5 @@ public class ConsolePrompterImpl
         }
 
         return prompt;
-    }
-
-    private String defaultPrompt() {
-        assert application != null;
-        return application.getModel().getBranding().getName() + "> ";
     }
 }
