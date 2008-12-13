@@ -45,7 +45,7 @@ public class HistoryAction
         IO io = context.getIo();
 
         // HACK: Get at the shell's history from our variables
-        History history = (History) context.getVariables().get("SHELL.HISTORY");
+        History history = context.getVariables().get("gshell.internal.history", History.class);
         assert history != null;
 
         // noinspection unchecked

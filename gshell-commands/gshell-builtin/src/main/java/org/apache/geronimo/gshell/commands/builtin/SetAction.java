@@ -123,7 +123,7 @@ public class SetAction
                     String name = iter.next();
 
                     // HACK: Hide some internal muck for now
-                    if (name.startsWith("SHELL")) {
+                    if (name.startsWith("gshell.internal")) {
                         continue;
                     }
 

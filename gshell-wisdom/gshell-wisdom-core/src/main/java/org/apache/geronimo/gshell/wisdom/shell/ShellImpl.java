@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.wisdom.shell;
 import jline.Completor;
 import jline.History;
 import org.apache.geronimo.gshell.application.Application;
-import org.apache.geronimo.gshell.application.model.Branding;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -64,8 +63,6 @@ public class ShellImpl
     private List<Completor> completers;
 
     private ShellContext context;
-
-    private Branding branding;
 
     private Prompter prompter;
 
@@ -119,21 +116,14 @@ public class ShellImpl
             }
         };
 
-        branding = application.getModel().getBranding();
-
-        // HACK: Add ourself to variables so commands can get to us.  Maybe need to add to ^^^ and expose in CommandContent
-        vars.set("SHELL", this, true);
-
-        // HACK: Add history for the 'history' command, since its not part of the Shell interf it can't really access it easy, resolve with ^^^
-        vars.set("SHELL.HISTORY", getHistory(), true);
-
-        vars.set("gshell.prompt", branding.getPrompt());
-
+        vars.set("gshell.prompt", application.getModel().getBranding().getPrompt());
         vars.set(CommandResolver.GROUP, "/");
+        vars.set("gshell.username", application.getUserName());
+        vars.set("gshell.hostname", application.getLocalHost());
 
-        vars.set("USERNAME", application.getUserName());
-        vars.set("HOSTNAME", application.getLocalHost());
-        
+        // HACK: Add history for the 'history' command, since its not part of the Shell intf it can't really access it
+        vars.set("gshell.internal.history", getHistory(), true);
+
         loadProfileScripts();
 
         opened = true;
@@ -203,8 +193,7 @@ public class ShellImpl
 
         log.debug("Starting interactive console; args: {}", args);
 
-        assert branding != null;
-        loadUserScript(branding.getInteractiveScriptName());
+        loadUserScript(application.getModel().getBranding().getInteractiveScriptName());
 
         // Setup 2 final refs to allow our executor to pass stuff back to us
         final AtomicReference<ExitNotification> exitNotifHolder = new AtomicReference<ExitNotification>();
@@ -246,7 +235,7 @@ public class ShellImpl
 
         // Unless the user wants us to shut up, then display a nice welcome banner
         if (!io.isQuiet()) {
-            String message = branding.getWelcomeMessage();
+            String message = application.getModel().getBranding().getWelcomeMessage();
             if (message != null) {
                 io.out.print(message);
                 io.out.println(repeat("-", io.getTerminal().getTerminalWidth() - 1));
@@ -304,13 +293,11 @@ public class ShellImpl
     //
 
     private void loadProfileScripts() throws Exception {
-        assert branding != null;
-
         log.debug("Loading profile scripts");
         
         // Load profile scripts if they exist
-        loadSharedScript(branding.getProfileScriptName());
-        loadUserScript(branding.getProfileScriptName());
+        loadSharedScript(application.getModel().getBranding().getProfileScriptName());
+        loadUserScript(application.getModel().getBranding().getProfileScriptName());
     }
 
     private void loadScript(final File file) throws Exception {
@@ -333,7 +320,7 @@ public class ShellImpl
     private void loadUserScript(final String fileName) throws Exception {
         assert fileName != null;
 
-        File file = new File(branding.getUserDirectory(), fileName);
+        File file = new File(application.getModel().getBranding().getUserDirectory(), fileName);
 
         if (file.exists()) {
             log.debug("Loading user-script: {}", file);
@@ -348,7 +335,7 @@ public class ShellImpl
     private void loadSharedScript(final String fileName) throws Exception {
         assert fileName != null;
 
-        File file = new File(branding.getUserDirectory(), fileName);
+        File file = new File(application.getModel().getBranding().getUserDirectory(), fileName);
 
         if (file.exists()) {
             log.debug("Loading shared-script: {}", file);
