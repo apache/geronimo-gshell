@@ -44,8 +44,6 @@ public class ApplicationModel
 
     private String name;
 
-    private String description;
-
     private List<Artifact> dependencies;
 
     private List<Artifact> plugins;
@@ -100,14 +98,6 @@ public class ApplicationModel
         artifact.setVersion(getVersion());
 
         return artifact;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
     }
 
     // Dependencies
