@@ -29,6 +29,8 @@ import java.util.List;
  */
 public interface Configuration
 {
+    String GSHELL_HOME_DETECTED = "gshell.home.detected";
+
     String GSHELL_HOME = "gshell.home";
 
     String GSHELL_ETC = "gshell.etc";
@@ -36,6 +38,8 @@ public interface Configuration
     String GSHELL_LIB = "gshell.lib";
 
     String GSHELL_PROGRAM = "gshell.program";
+
+    String GSHELL_PROPERTIES = "gshell.properties";
 
     void configure() throws Exception;
 

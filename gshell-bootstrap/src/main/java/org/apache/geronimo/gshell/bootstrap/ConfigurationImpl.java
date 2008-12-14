@@ -84,11 +84,10 @@ public class ConfigurationImpl
             input.close();
         }
 
-        // HACK: Should probably have gshell.home.detected property and pre-set gshell.home=${gshell.home.detected}
-        props.setProperty(GSHELL_HOME, detectHomeDir().getAbsolutePath());
+        props.setProperty(GSHELL_HOME_DETECTED, detectHomeDir().getAbsolutePath());
 
         //
-        // TODO: Load user configuration properties as configured via gshell.properties
+        // TODO: Load user configuration properties as configured via GSHELL_PROPERTIES
         //
         
         if (Log.DEBUG) {
