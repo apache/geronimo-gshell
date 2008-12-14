@@ -20,7 +20,6 @@
 package org.apache.geronimo.gshell.commands.builtin;
 
 import org.apache.geronimo.gshell.application.Application;
-import org.apache.geronimo.gshell.application.ApplicationManager;
 import org.apache.geronimo.gshell.application.model.ApplicationModel;
 import org.apache.geronimo.gshell.application.model.Branding;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -35,22 +34,21 @@ import org.apache.geronimo.gshell.io.IO;
 public class AboutAction
     implements CommandAction
 {
-    private final ApplicationManager applicationManager;
+    private final Application application;
 
-    public AboutAction(final ApplicationManager applicationManager) {
-        assert applicationManager != null;
-        this.applicationManager = applicationManager;
+    public AboutAction(final Application application) {
+        assert application != null;
+        this.application = application;
     }
 
     public Object execute(CommandContext context) throws Exception {
         assert context != null;
         IO io = context.getIo();
 
-        Application app = applicationManager.getApplication();
-        ApplicationModel model = app.getModel();
-        Branding branding = app.getModel().getBranding();
+        ApplicationModel model = application.getModel();
+        Branding branding = application.getModel().getBranding();
         
-        String id = app.getId();
+        String id = application.getId();
         String name = model.getName();
 
         if (name == null) {

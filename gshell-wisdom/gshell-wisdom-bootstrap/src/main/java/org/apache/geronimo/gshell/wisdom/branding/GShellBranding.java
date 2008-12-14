@@ -43,28 +43,8 @@ public class GShellBranding
     }
 
     @Override
-    public void setName(String name) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return "GShell";
-    }
-
-    @Override
-    public void setDisplayName(String displayName) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String getProgramName() {
         return "gsh";
-    }
-    
-    @Override
-    public void setProgramName(String programName) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -77,11 +57,6 @@ public class GShellBranding
         out.flush();
 
         return writer.toString();
-    }
-
-    @Override
-    public void setAboutMessage(final String aboutMessage) {
-        throw new UnsupportedOperationException();
     }
 
     /*
@@ -143,11 +118,6 @@ public class GShellBranding
         out.flush();
 
         return writer.toString();
-    }
-
-    @Override
-    public void setWelcomeMessage(String welcomeMessage) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

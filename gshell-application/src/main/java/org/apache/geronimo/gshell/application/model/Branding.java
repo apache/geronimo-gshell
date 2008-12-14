@@ -36,17 +36,15 @@ public class Branding
     
     private transient ApplicationModel parent;
 
-    private String name;
-
-    private String displayName;
+    // private String displayName;
 
     private String programName;
 
     private String userDirectory;
 
-    private String sharedDirectory;
+    // private String sharedDirectory;
 
-    // TODO: Need stateDirectory (${gshell.home}/var/<name>
+    // private String stateDirectory;
 
     private String profileScriptName;
 
@@ -58,7 +56,7 @@ public class Branding
 
     private String welcomeMessage;
 
-    private String goodbyeMessage;
+    // private String goodbyeMessage;
 
     private String prompt;
 
@@ -79,54 +77,15 @@ public class Branding
     }
 
     public String getName() {
-        if (name == null) {
-            return getParent().getArtifactId();
-        }
-
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getDisplayName() {
-        if (displayName == null) {
-            return capitalise(getName());
-        }
-
-        return displayName;
-    }
-
-    private static String capitalise(final String str) {
-        if (str == null) {
-            return null;
-        }
-        else if (str.length() == 0) {
-            return "";
-        }
-        else {
-            return new StringBuilder(str.length())
-                    .append(Character.toTitleCase(str.charAt(0)))
-                    .append(str.substring(1))
-                    .toString();
-        }
-    }
-
-    public void setDisplayName(final String displayName) {
-        this.displayName = displayName;
+        return getParent().getArtifactId();
     }
 
     public String getProgramName() {
         if (programName == null) {
-            return System.getProperty("program.name", getName());
+            return System.getProperty("gshell.program", getName());
         }
         
         return programName;
-    }
-
-    public void setProgramName(final String programName) {
-        this.programName = programName;
     }
 
     public String getUserDirectory() {
@@ -140,32 +99,12 @@ public class Branding
         return userDirectory;
     }
 
-    public void setUserDirectory(final String userDirectory) {
-        this.userDirectory = userDirectory;
-    }
-
-    public String getSharedDirectory() {
-        //
-        // TODO: Default this to root under the application's directory
-        //
-
-        return sharedDirectory;
-    }
-
-    public void setSharedDirectory(final String sharedDirectory) {
-        this.sharedDirectory = sharedDirectory;
-    }
-
     public String getProfileScriptName() {
         if (profileScriptName == null) {
             return getName() + ".profile";
         }
 
         return profileScriptName;
-    }
-
-    public void setProfileScriptName(final String profileScriptName) {
-        this.profileScriptName = profileScriptName;
     }
 
     public String getHistoryFileName() {
@@ -179,10 +118,6 @@ public class Branding
     public File getHistoryFile() {
         return new File(getUserDirectory(), getHistoryFileName());
     }
-    
-    public void setHistoryFileName(final String historyFileName) {
-        this.historyFileName = historyFileName;
-    }
 
     public String getInteractiveScriptName() {
         if (interactiveScriptName == null) {
@@ -192,39 +127,15 @@ public class Branding
         return interactiveScriptName;
     }
 
-    public void setInteractiveScriptName(final String interactiveScriptName) {
-        this.interactiveScriptName = interactiveScriptName;
-    }
-
     public String getAboutMessage() {
         return aboutMessage;
-    }
-
-    public void setAboutMessage(final String aboutMessage) {
-        this.aboutMessage = aboutMessage;
     }
 
     public String getWelcomeMessage() {
         return welcomeMessage;
     }
 
-    public void setWelcomeMessage(final String welcomeMessage) {
-        this.welcomeMessage = welcomeMessage;
-    }
-
-    public String getGoodbyeMessage() {
-        return goodbyeMessage;
-    }
-
-    public void setGoodbyeMessage(final String goodbyeMessage) {
-        this.goodbyeMessage = goodbyeMessage;
-    }
-
     public String getPrompt() {
         return prompt;
-    }
-
-    public void setPrompt(final String prompt) {
-        this.prompt = prompt;
     }
 }

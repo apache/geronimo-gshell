@@ -34,6 +34,10 @@ import java.net.InetAddress;
  */
 public interface Application
 {
+    //
+    // FIXME: Merge with Branding + ApplicationModel
+    //
+    
     String getId();
 
     Artifact getArtifact();

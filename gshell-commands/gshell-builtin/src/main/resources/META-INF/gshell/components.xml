@@ -35,7 +35,7 @@
         <gshell:command-bundle name="default">
             <gshell:command name="about">
                 <gshell:action class="org.apache.geronimo.gshell.commands.builtin.AboutAction">
-                    <constructor-arg ref="applicationManager"/>
+                    <constructor-arg ref="application"/>
                 </gshell:action>
             </gshell:command>
 
