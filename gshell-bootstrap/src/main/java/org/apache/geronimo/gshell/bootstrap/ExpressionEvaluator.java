@@ -21,6 +21,10 @@ package org.apache.geronimo.gshell.bootstrap;
 
 import java.util.Properties;
 
+//
+// NOTE: Most of this stuff came from org.apache.log4j.helpers.OptionConverter.
+//
+
 /**
  * Simple expression evaluator for handling <tt>${variable}</tt> expansion.
  *
