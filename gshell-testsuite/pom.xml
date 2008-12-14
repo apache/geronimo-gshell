@@ -38,4 +38,12 @@
         GShell Testsuite.
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.gshell</groupId>
+            <artifactId>gshell-maven-plugin</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>

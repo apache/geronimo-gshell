@@ -24,14 +24,14 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
- * Execute GShell commands non-interactivly.
+ * Launch an interactive GShell console.
  *
- * @goal execute
+ * @goal console
  * @since 1.0-alpha-2
  *
  * @version $Rev$ $Date$
  */
-public class ExecuteMojo
+public class ConsoleMojo
     extends AbstractMojo
 {
     public void execute() throws MojoExecutionException, MojoFailureException {
