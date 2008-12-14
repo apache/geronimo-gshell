@@ -24,7 +24,6 @@ import org.apache.geronimo.gshell.yarn.Yarn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Application model root element.
@@ -33,6 +32,10 @@ import java.util.Properties;
  */
 public class ApplicationModel
 {
+    //
+    // FIXME: Merge with Application
+    //
+
     private String groupId;
 
     private String artifactId;
@@ -42,8 +45,6 @@ public class ApplicationModel
     private String name;
 
     private String description;
-
-    private Properties properties;
 
     private List<Artifact> dependencies;
 
@@ -109,19 +110,7 @@ public class ApplicationModel
         this.description = description;
     }
 
-    public Properties getProperties() {
-        if (properties == null) {
-            properties = new Properties();
-        }
-
-        return properties;
-    }
-
-    public void setProperties(final Properties properties) {
-        this.properties = properties;
-    }
-
-    // DependencyArtifact
+    // Dependencies
 
     public List<Artifact> getDependencies() {
         if (dependencies == null) {
@@ -141,7 +130,7 @@ public class ApplicationModel
         getDependencies().add(dependency);
     }
 
-    // PluginArtifact
+    // Plugins
 
     public List<Artifact> getPlugins() {
         if (plugins == null) {

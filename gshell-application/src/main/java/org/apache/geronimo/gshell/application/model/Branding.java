@@ -22,7 +22,6 @@ package org.apache.geronimo.gshell.application.model;
 import org.apache.geronimo.gshell.yarn.Yarn;
 
 import java.io.File;
-import java.util.Properties;
 
 /**
  * Branding configuration element.
@@ -31,14 +30,12 @@ import java.util.Properties;
  */
 public class Branding
 {
-    private transient ApplicationModel parent;
-
-    private Properties properties;
-
     //
-    // FIXME: Probably need to move some of these up to the Application descriptor?
+    // FIXME: Merge with Application
     //
     
+    private transient ApplicationModel parent;
+
     private String name;
 
     private String displayName;
@@ -229,17 +226,5 @@ public class Branding
 
     public void setPrompt(final String prompt) {
         this.prompt = prompt;
-    }
-
-    public Properties getProperties() {
-        if (properties == null) {
-            properties = new Properties();
-        }
-        
-        return properties;
-    }
-
-    public void setProperties(final Properties properties) {
-        this.properties = properties;
     }
 }
