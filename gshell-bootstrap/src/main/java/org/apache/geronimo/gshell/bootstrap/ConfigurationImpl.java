@@ -84,8 +84,13 @@ public class ConfigurationImpl
             input.close();
         }
 
-        // TODO: Resolve properties, merge in system?
+        // HACK: Should probably have gshell.home.detected property and pre-set gshell.home=${gshell.home.detected}
+        props.setProperty(GSHELL_HOME, detectHomeDir().getAbsolutePath());
 
+        //
+        // TODO: Load user configuration properties as configured via gshell.properties
+        //
+        
         if (Log.DEBUG) {
             Log.debug("Properties:");
             for (Map.Entry entry : props.entrySet()) {
@@ -94,45 +99,6 @@ public class ConfigurationImpl
         }
 
         return props;
-    }
-
-    private String getProperty(final String name) {
-        assert name != null;
-        assert props != null;
-        return props.getProperty(name);
-    }
-
-    public void configure() throws Exception {
-        Log.debug("Configuring");
-        
-        this.props = loadProperties();
-
-        // Export some configuration
-
-        setSystemProperty(GSHELL_HOME, getHomeDir().getAbsolutePath());
-
-        setSystemProperty(GSHELL_PROGRAM, getProgramName());
-    }
-
-    private void ensureConfigured() {
-        if (props == null) {
-            throw new IllegalStateException("Not configured");
-        }
-    }
-
-    public File getHomeDir() {
-        ensureConfigured();
-
-        if (homeDir == null) {
-            try {
-                homeDir = detectHomeDir();
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return homeDir;
     }
 
     /**
@@ -149,12 +115,58 @@ public class ConfigurationImpl
         return file.getParentFile().getParentFile().getParentFile().getCanonicalFile();
     }
 
+    /**
+     * Get the value of a property, checking system properties, then configuration properties and evaluating the result.
+     */
+    private String getProperty(final String name) {
+        assert name != null;
+        assert props != null;
+
+        String value = ExpressionEvaluator.getSystemProperty(name, props.getProperty(name));
+
+        return ExpressionEvaluator.evaluate(value, props);
+    }
+
+    private File getPropertyAsFile(final String name) {
+        String path = getProperty(name);
+        if (path != null) {
+            return new File(path);
+        }
+        return null;
+    }
+
+    public void configure() throws Exception {
+        Log.debug("Configuring");
+        
+        this.props = loadProperties();
+
+        // Export some configuration
+        setSystemProperty(GSHELL_HOME, getHomeDir().getAbsolutePath());
+        setSystemProperty(GSHELL_PROGRAM, getProgramName());
+    }
+
+    private void ensureConfigured() {
+        if (props == null) {
+            throw new IllegalStateException("Not configured");
+        }
+    }
+
+    public File getHomeDir() {
+        ensureConfigured();
+
+        if (homeDir == null) {
+            homeDir = getPropertyAsFile(GSHELL_HOME);
+        }
+
+        return homeDir;
+    }
+
     public File getLibDir() {
         ensureConfigured();
 
         if (libDir == null) {
-            // FIXME: Check for gshell.lib property
-            libDir = new File(getHomeDir(), "lib");
+            libDir = getPropertyAsFile(GSHELL_LIB);
+            // TODO: If relative root under homeDir?
         }
 
         return libDir;
@@ -164,8 +176,8 @@ public class ConfigurationImpl
         ensureConfigured();
 
         if (etcDir == null) {
-            // FIXME: Check for gshell.etc property
-            etcDir = new File(getHomeDir(), "etc");
+            etcDir = getPropertyAsFile(GSHELL_ETC);
+            // TODO: If relative root under homeDir?
         }
 
         return etcDir;
@@ -186,6 +198,10 @@ public class ConfigurationImpl
         List<URL> classPath = new ArrayList<URL>();
 
         classPath.add(getEtcDir().toURI().toURL());
+
+        if (Log.DEBUG) {
+            Log.debug("Finding jars under: " + getLibDir());
+        }
 
         File[] files = getLibDir().listFiles(new FileFilter() {
             public boolean accept(final File file) {
