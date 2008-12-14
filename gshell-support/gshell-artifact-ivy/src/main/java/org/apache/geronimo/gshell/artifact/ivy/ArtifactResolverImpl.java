@@ -56,7 +56,9 @@ public class ArtifactResolverImpl
     }
 
     public void setTransferListener(final TransferListener listener) {
-        // Ignore for now
+        assert listener != null;
+        
+        // TODO: Figure out how to adapt/install into Ivy
     }
 
     public Result resolve(final Request request) throws Failure {

@@ -35,7 +35,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * <a href="http://maven.apache.org">Apache Maven (maven-artifact)</a> based {@link ArtifactResolver}.
+ * <a href="http://maven.apache.org">Apache Maven (maven-artifact)</a>-based {@link ArtifactResolver}.
  *
  * @version $Rev$ $Date$
  */

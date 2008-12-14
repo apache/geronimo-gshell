@@ -20,18 +20,76 @@
 package org.apache.geronimo.gshell.artifact.mercury;
 
 import org.apache.geronimo.gshell.artifact.ArtifactResolver;
+import org.apache.geronimo.gshell.artifact.Artifact;
+import org.apache.geronimo.gshell.artifact.transfer.TransferListener;
+import org.apache.maven.mercury.metadata.DependencyBuilderFactory;
+import org.apache.maven.mercury.artifact.ArtifactBasicMetadata;
+import org.apache.maven.mercury.artifact.DefaultArtifact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * <a href="http://maven.apache.org">Apache Maven (mercury)</a> based {@link ArtifactResolver}.
+ * <a href="http://maven.apache.org/mercury">Apache Maven Mercury</a>-based {@link ArtifactResolver}.
  *
  * @version $Rev$ $Date$
  */
 public class ArtifactResolverImpl
     implements ArtifactResolver
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
+    public void setTransferListener(final TransferListener listener) {
+        assert listener != null;
+
+        // TODO: Figure out how to install into Mercury
+    }
+
     public Result resolve(final Request request) throws Failure {
         assert request != null;
 
-        return null;
+        // TODO: Setup MercuryDependenciesFilter
+        
+        DependencyBuilderFactory factory = new DependencyBuilderFactory();
+
+        // TODO:
+
+        throw new Error("Not implemented");
+    }
+
+    /**
+     * Creates a GShell Artifact from a Mercury Artifact.
+     */
+    private Artifact createArtifact(final org.apache.maven.mercury.artifact.Artifact source) {
+        assert source != null;
+
+        Artifact artifact = new Artifact();
+        artifact.setGroup(source.getGroupId());
+        artifact.setName(source.getArtifactId());
+        artifact.setVersion(source.getVersion());
+        artifact.setClassifier(source.getClassifier());
+        artifact.setType(source.getType());
+        artifact.setFile(source.getFile());
+
+        return artifact;
+    }
+
+    /**
+     * Creates a Mercury Artifact from a GShell Artifact.
+     */
+    private org.apache.maven.mercury.artifact.Artifact createArtifact(final Artifact source) {
+        assert source != null;
+
+        ArtifactBasicMetadata md = new ArtifactBasicMetadata();
+        md.setGroupId(source.getGroup());
+        md.setArtifactId(source.getName());
+        md.setVersion(source.getVersion());
+        md.setClassifier(source.getClassifier());
+        md.setType(source.getType());
+
+        org.apache.maven.mercury.artifact.Artifact artifact = new DefaultArtifact(md);
+
+        artifact.setFile(source.getFile());
+
+        return artifact;
     }
 }
