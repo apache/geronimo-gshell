@@ -210,7 +210,7 @@ public class ConfigurationImpl
         });
 
         if (files == null) {
-            throw new Error("No jars found under: " + libDir);
+            throw new Error("No jars found under: " + getLibDir());
         }
 
         for (File file : files) {
