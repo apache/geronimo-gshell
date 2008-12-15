@@ -1,26 +1,26 @@
+@REM
+@REM Licensed to the Apache Software Foundation (ASF) under one
+@REM or more contributor license agreements.  See the NOTICE file
+@REM distributed with this work for additional information
+@REM regarding copyright ownership.  The ASF licenses this file
+@REM to you under the Apache License, Version 2.0 (the
+@REM "License"); you may not use this file except in compliance
+@REM with the License.  You may obtain a copy of the License at
+@REM
+@REM   http://www.apache.org/licenses/LICENSE-2.0
+@REM
+@REM Unless required by applicable law or agreed to in writing,
+@REM software distributed under the License is distributed on an
+@REM "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+@REM KIND, either express or implied.  See the License for the
+@REM specific language governing permissions and limitations
+@REM under the License.
+@REM
 @if "%DEBUG%" == "" @echo off
-rem 
-rem Licensed to the Apache Software Foundation (ASF) under one
-rem or more contributor license agreements.  See the NOTICE file
-rem distributed with this work for additional information
-rem regarding copyright ownership.  The ASF licenses this file
-rem to you under the Apache License, Version 2.0 (the
-rem "License"); you may not use this file except in compliance
-rem with the License.  You may obtain a copy of the License at
-rem 
-rem  http://www.apache.org/licenses/LICENSE-2.0
-rem 
-rem Unless required by applicable law or agreed to in writing,
-rem software distributed under the License is distributed on an
-rem "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-rem KIND, either express or implied.  See the License for the
-rem specific language governing permissions and limitations
-rem under the License.
-rem 
 
-rem 
-rem $Rev$ $Date$
-rem 
+@REM 
+@REM $Rev$ $Date$
+@REM 
 
 if "%OS%"=="Windows_NT" setlocal enableextensions
 set ERRORLEVEL=0
@@ -46,16 +46,16 @@ goto check_GSHELL_HOME
 if "%GSHELL_HOME%" == "" set GSHELL_HOME=%DIRNAME%..
 
 :init
-rem Get command-line arguments, handling Windowz variants
+@REM Get command-line arguments, handling Windowz variants
 if not "%OS%" == "Windows_NT" goto win9xME_args
 if "%eval[2+2]" == "4" goto 4NT_args
 
-rem Regular WinNT shell
+@REM Regular WinNT shell
 set ARGS=%*
 goto execute
 
 :win9xME_args
-rem Slurp the command line arguments.  This loop allows for an unlimited number
+@REM Slurp the command line arguments.  This loop allows for an unlimited number
 set ARGS=
 
 :win9xME_args_slurp
@@ -65,14 +65,14 @@ shift
 goto win9xME_args_slurp
 
 :4NT_args
-rem Get arguments from the 4NT Shell from JP Software
+@REM Get arguments from the 4NT Shell from JP Software
 set ARGS=%$
 
 :execute
 
 set BOOTJAR=%GSHELL_HOME%\lib\boot\gshell-bootstrap.jar
 
-rem Start the JVM
+@REM Start the JVM
 "%JAVACMD%" %JAVA_OPTS% -jar "%BOOTJAR%" %ARGS%
 
 :end
