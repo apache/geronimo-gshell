@@ -21,8 +21,12 @@ package org.apache.geronimo.gshell.wisdom.config;
 
 import org.apache.geronimo.gshell.wisdom.command.ConfigurableCommandCompleter;
 import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
+import org.apache.geronimo.gshell.wisdom.command.AliasImpl;
+import org.apache.geronimo.gshell.wisdom.command.LinkImpl;
 import org.apache.geronimo.gshell.wisdom.plugin.bundle.CommandBundle;
 import org.apache.geronimo.gshell.wisdom.registry.CommandLocationImpl;
+import org.apache.geronimo.gshell.command.Alias;
+import org.apache.geronimo.gshell.command.Link;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
@@ -102,6 +106,8 @@ public class PluginParser
     private static final String ALIASES = "aliases";
 
     private static final String LINK = "link";
+
+    private static final String LINKS = "links";
 
     private static final String TARGET = "target";
 
@@ -387,13 +393,16 @@ public class PluginParser
             ManagedList commands = new ManagedList();
             // noinspection unchecked
             commands.addAll(parseCommands(element));
-            // noinspection unchecked
-            commands.addAll(parseLinks(element));
             bundle.addPropertyValue(COMMANDS, commands);
 
-            ManagedMap aliases = new ManagedMap();
+            ManagedList links = new ManagedList();
             // noinspection unchecked
-            aliases.putAll(parseAliases(element));
+            links.addAll(parseLinks(element));
+            bundle.addPropertyValue(LINKS, links);
+
+            ManagedList aliases = new ManagedList();
+            // noinspection unchecked
+            aliases.addAll(parseAliases(element));
             bundle.addPropertyValue(ALIASES, aliases);
 
             return bundle;
@@ -543,27 +552,20 @@ public class PluginParser
         // <gshell:link>
         //
 
-        private List<BeanDefinition> parseLinks(final Element element) {
+        private List<Link> parseLinks(final Element element) {
             assert element != null;
 
             log.trace("Parse links; element; {}", element);
 
-            List<BeanDefinition> links = new ArrayList<BeanDefinition>();
+            List<Link> links = new ArrayList<Link>();
 
             List<Element> children = getChildElements(element, LINK);
 
             for (Element child : children) {
-                BeanDefinitionBuilder link = BeanDefinitionBuilder.rootBeanDefinition(LinkCommand.class);
-                link.addConstructorArgReference("commandRegistry");
-                link.addConstructorArgValue(child.getAttribute(TARGET));
-
                 String name = child.getAttribute(NAME);
-                BeanDefinition def = new GenericBeanDefinition();
-                def.setBeanClassName(CommandLocationImpl.class.getName());
-                def.getConstructorArgumentValues().addGenericArgumentValue(name);
-                link.addPropertyValue(LOCATION, def);
+                String target = child.getAttribute(TARGET);
 
-                links.add(link.getBeanDefinition());
+                links.add(new LinkImpl(name, target));
             }
 
             return links;
@@ -573,12 +575,12 @@ public class PluginParser
         // <gshell:alias>
         //
 
-        private Map<String,String> parseAliases(final Element element) {
+        private List<Alias> parseAliases(final Element element) {
             assert element != null;
 
             log.trace("Parse aliases; element; {}", element);
 
-            Map<String,String> aliases = new LinkedHashMap<String,String>();
+            List<Alias> aliases = new ArrayList<Alias>();
 
             List<Element> children = getChildElements(element, ALIAS);
 
@@ -586,7 +588,7 @@ public class PluginParser
                 String name = child.getAttribute(NAME);
                 String alias = child.getAttribute(ALIAS);
 
-                aliases.put(name, alias);
+                aliases.add(new AliasImpl(name, alias));
             }
 
             return aliases;

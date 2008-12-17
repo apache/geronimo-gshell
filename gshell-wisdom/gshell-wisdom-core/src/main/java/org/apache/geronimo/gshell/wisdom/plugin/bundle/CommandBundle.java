@@ -20,11 +20,16 @@
 package org.apache.geronimo.gshell.wisdom.plugin.bundle;
 
 import org.apache.geronimo.gshell.command.Command;
+import org.apache.geronimo.gshell.command.Alias;
+import org.apache.geronimo.gshell.command.Link;
 import org.apache.geronimo.gshell.registry.AliasRegistry;
 import org.apache.geronimo.gshell.registry.CommandRegistry;
+import org.apache.geronimo.gshell.wisdom.command.LinkCommand;
+import org.apache.geronimo.gshell.wisdom.registry.CommandLocationImpl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * A bundle of {@link Command} instances.
@@ -40,7 +45,11 @@ public class CommandBundle
 
     private List<Command> commands;
 
-    private Map<String,String> aliases;
+    private List<Link> links;
+
+    private List<Alias> aliases;
+
+    private List<Command> linkCommands;
 
     public CommandBundle(final CommandRegistry commandRegistry, final AliasRegistry aliasRegistry, final String name) {
         super(name);
@@ -60,23 +69,47 @@ public class CommandBundle
         this.commands = commands;
     }
 
-    public Map<String, String> getAliases() {
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        assert links != null;
+
+        this.links = links;
+    }
+
+    public List<Alias> getAliases() {
         return aliases;
     }
 
-    public void setAliases(final Map<String,String> aliases) {
+    public void setAliases(final List<Alias> aliases) {
         assert aliases != null;
 
         this.aliases = aliases;
     }
 
     protected void doEnable() throws Exception {
+        // Create links commands
+        if (linkCommands == null) {
+            linkCommands = new ArrayList<Command>();
+            for (Link link : links) {
+                LinkCommand cmd = new LinkCommand(commandRegistry, link.getTarget());
+                cmd.setLocation(new CommandLocationImpl(link.getName()));
+                linkCommands.add(cmd);
+            }
+        }
+
         for (Command command : commands) {
             commandRegistry.registerCommand(command);
         }
 
-        for (String name : aliases.keySet()) {
-            aliasRegistry.registerAlias(name, aliases.get(name));
+        for (Command command : linkCommands) {
+            commandRegistry.registerCommand(command);
+        }
+
+        for (Alias alias : aliases) {
+            aliasRegistry.registerAlias(alias.getName(), alias.getAlias());
         }
     }
 
@@ -85,8 +118,12 @@ public class CommandBundle
             commandRegistry.removeCommand(command);
         }
 
-        for (String name : aliases.keySet()) {
-            aliasRegistry.removeAlias(name);
+        for (Command command : linkCommands) {
+            commandRegistry.removeCommand(command);
+        }
+
+        for (Alias alias : aliases) {
+            aliasRegistry.removeAlias(alias.getName());
         }
     }
 }
