@@ -27,13 +27,18 @@ import org.apache.geronimo.gshell.command.Alias;
  *
  * @version $Rev: 706889 $ $Date: 2008-10-22 10:12:04 +0200 (Wed, 22 Oct 2008) $
  */
-public class AliasImpl implements Alias {
+public class AliasImpl
+    implements Alias
+{
+    private final String name;
 
-    private String name;
-    private String alias;
+    private final String alias;
 
-    public AliasImpl(String name, String alias) {
+    public AliasImpl(final String name, final String alias) {
+        assert name != null;
         this.name = name;
+
+        assert alias != null;
         this.alias = alias;
     }
 

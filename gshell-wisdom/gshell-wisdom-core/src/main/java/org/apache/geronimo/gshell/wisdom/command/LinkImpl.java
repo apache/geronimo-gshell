@@ -26,13 +26,18 @@ import org.apache.geronimo.gshell.command.Link;
  *
  * @version $Rev: 706889 $ $Date: 2008-10-22 10:12:04 +0200 (Wed, 22 Oct 2008) $
  */
-public class LinkImpl implements Link {
+public class LinkImpl
+    implements Link
+{
+    private final String name;
 
-    private String name;
-    private String target;
+    private final String target;
 
-    public LinkImpl(String name, String target) {
+    public LinkImpl(final String name, final String target) {
+        assert name != null;
         this.name = name;
+        
+        assert target != null;
         this.target = target;
     }
 

@@ -24,10 +24,9 @@ package org.apache.geronimo.gshell.command;
  *
  * @version $Rev: 705507 $ $Date: 2008-10-17 10:22:12 +0200 (Fri, 17 Oct 2008) $
  */
-public interface Link {
-
+public interface Link
+{
     String getName();
 
     String getTarget();
-
 }
