@@ -51,6 +51,7 @@
     <bean name="sshServer" class="com.google.code.sshd.SshServer" factory-method="setUpDefaultServer" scope="prototype">
         <property name="shellFactory">
             <bean class="org.apache.geronimo.gshell.commands.ssh.ShellFactoryImpl">
+                <property name="application" ref="application" />
                 <property name="completers">
                     <list>
                         <ref bean="commandsCompleter"/>

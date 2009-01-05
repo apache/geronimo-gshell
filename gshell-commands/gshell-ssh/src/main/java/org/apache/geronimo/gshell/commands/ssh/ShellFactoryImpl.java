@@ -32,6 +32,8 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ExitNotification;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellContextHolder;
+import org.apache.geronimo.gshell.registry.CommandResolver;
+import org.apache.geronimo.gshell.application.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +52,8 @@ public class ShellFactoryImpl
     implements ShellFactory
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private Application application;
 
     private Console.Prompter prompter;
 
@@ -101,6 +105,14 @@ public class ShellFactoryImpl
         this.errorHandler = errorHandler;
     }
 
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
     public Shell createShell() {
         return new ShellImpl();
     }
@@ -140,7 +152,21 @@ public class ShellFactoryImpl
 
         public void start(final Map<String,String> env) throws IOException {
             this.io = new IO(in, out, err, false);
-            this.variables = new Variables((Map)env);
+
+            // Create variables, inheriting the application ones
+            this.variables = new Variables(application.getVariables());
+            // Set up additional env
+            if (env != null) {
+                for (Map.Entry<String,String> entry : env.entrySet()) {
+                    this.variables.set(entry.getKey(), entry.getValue());
+                }
+            }
+            this.variables.set("gshell.prompt", application.getModel().getBranding().getPrompt());
+            this.variables.set(CommandResolver.GROUP, "/");
+            this.variables.set("gshell.username", env.get("USER"));
+            this.variables.set("gshell.hostname", application.getLocalHost());
+            // HACK: Add history for the 'history' command, since its not part of the Shell intf it can't really access it
+            this.variables.set("gshell.internal.history", getHistory(), true);
             new Thread(this).start();
         }
 
