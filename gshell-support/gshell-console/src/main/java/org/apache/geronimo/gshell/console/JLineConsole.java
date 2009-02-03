@@ -71,6 +71,9 @@ public class JLineConsole
 
         reader = new ConsoleReader(io.inputStream, new PrintWriter(io.outputStream, true), /*bindings*/null, io.getTerminal());
         reader.setUsePagination(true);
+        if (Boolean.getBoolean("jline.nobell")) {
+            reader.setBellEnabled(false);
+        }
         reader.setCompletionHandler(new CandidateListCompletionHandler());
     }
 
