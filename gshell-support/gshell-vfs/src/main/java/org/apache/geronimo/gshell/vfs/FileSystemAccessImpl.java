@@ -114,11 +114,21 @@ public class FileSystemAccessImpl
     }
 
     public FileObject resolveFile(final FileObject baseFile, final String name) throws FileSystemException {
-        return getManager().resolveFile(baseFile, name);
+        FileObject f = getManager().resolveFile(baseFile, name);
+        FileObject d = dereference(f);
+        if (d != null) {
+            d.refresh();
+        }
+        return f;
     }
 
     public FileObject resolveFile(final String name) throws FileSystemException {
-        return getManager().resolveFile(getCurrentDirectory(), name);
+        FileObject f = getManager().resolveFile(getCurrentDirectory(), name);
+        FileObject d = dereference(f);
+        if (d != null) {
+            d.refresh();
+        }
+        return f;
     }
 
     public boolean isLocalFile(final FileObject file) {
@@ -187,4 +197,5 @@ public class FileSystemAccessImpl
         assert rootFile != null;
         return getManager().createVirtualFileSystem(rootFile);
     }
+
 }

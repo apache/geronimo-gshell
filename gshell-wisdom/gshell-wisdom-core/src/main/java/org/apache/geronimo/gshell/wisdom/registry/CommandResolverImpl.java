@@ -114,7 +114,7 @@ public class CommandResolverImpl
 
     private FileObject getAliasesRoot() throws FileSystemException {
         if (aliasesRoot == null) {
-            aliasesRoot = fileSystemAccess.resolveFile(null, ALIASES_ROOT);
+            aliasesRoot = fileSystemAccess.createVirtualFileSystem(ALIASES_ROOT);
         }
 
         return aliasesRoot;
@@ -147,7 +147,7 @@ public class CommandResolverImpl
 
     private FileObject getCommandsRoot() throws FileSystemException {
         if (commandsRoot == null) {
-            commandsRoot = fileSystemAccess.resolveFile(null, COMMANDS_ROOT);
+            commandsRoot = fileSystemAccess.createVirtualFileSystem(COMMANDS_ROOT);
         }
 
         return commandsRoot;
