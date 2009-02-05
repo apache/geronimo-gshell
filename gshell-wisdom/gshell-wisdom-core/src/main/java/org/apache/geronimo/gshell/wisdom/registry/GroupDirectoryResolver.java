@@ -48,7 +48,7 @@ public class GroupDirectoryResolver
 
     private FileObject getCommandsRoot() throws FileSystemException {
         if (commandsRoot == null) {
-            commandsRoot = fileSystemAccess.createVirtualFileSystem(CommandResolver.COMMANDS_ROOT);
+            commandsRoot = fileSystemAccess.resolveFile(null, CommandResolver.COMMANDS_ROOT);
         }
 
         return commandsRoot;
