@@ -330,7 +330,11 @@ public class CommandResolverImpl
         log.trace("Creating command for group: {}", file);
 
         GroupCommand command = container.getBean(GroupCommand.class);
-        command.setPath(file.getName().getBaseName());
+        String path = fileSystemAccess.dereference(commandsRoot).getName().getRelativeName(file.getName());
+        if (".".equals(path)) {
+            path = "/";
+        }
+        command.setPath(path);
         
         return command;
     }
