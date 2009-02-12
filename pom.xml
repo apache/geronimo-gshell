@@ -35,7 +35,7 @@
     <name>GShell</name>
     <packaging>pom</packaging>
 
-    <version>1.0-alpha-2-SNAPSHOT</version>
+    <version>1.0-alpha-2</version>
     
     <description>
         GShell is a framework for building rich command-line applications.
@@ -45,9 +45,9 @@
     <inceptionYear>2006</inceptionYear>
     
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/gshell/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/gshell/trunk</developerConnection>
-        <url>http://svn.apache.org/viewvc/geronimo/geronimo/gshell/trunk</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/geronimo/gshell/tags/gshell-1.0-alpha-2</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/gshell/tags/gshell-1.0-alpha-2</developerConnection>
+        <url>http://svn.apache.org/viewvc/geronimo/geronimo/gshell/tags/gshell-1.0-alpha-2</url>
     </scm>
 
     <properties>
@@ -139,254 +139,254 @@
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-yarn</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-chronos</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-i18n</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-terminal</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-ansi</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-clp</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-spring</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-spring</artifactId>
                 <classifier>tests</classifier>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-io</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-console</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-interpolation</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-event</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-vfs</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-vfs-meta</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-vfs-truezip</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-security</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-artifact</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-artifact-maven</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-artifact-mercury</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-artifact-ivy</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-marshal</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-plexus</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.support</groupId>
                 <artifactId>gshell-xstore</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-api</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-parser</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-application</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-bootstrap</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-cli</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-builtin</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-admin</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-repository</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-bsf</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-file</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-network</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-shell</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-text</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-log4j</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.commands</groupId>
                 <artifactId>gshell-ssh</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.geronimo.gshell.wisdom</groupId>
                 <artifactId>gshell-wisdom-bootstrap</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell.wisdom</groupId>
                 <artifactId>gshell-wisdom-core</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-maven-plugin</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apache.geronimo.gshell</groupId>
                 <artifactId>gshell-testsuite</artifactId>
-                <version>1.0-alpha-2-SNAPSHOT</version>
+                <version>1.0-alpha-2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
