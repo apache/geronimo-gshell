@@ -238,7 +238,11 @@ public class ShellImpl
             String message = application.getModel().getBranding().getWelcomeMessage();
             if (message != null) {
                 io.out.print(message);
-                io.out.println(repeat("-", io.getTerminal().getTerminalWidth() - 1));
+                int width = io.getTerminal().getTerminalWidth() - 1;
+                if (width <= 0) {
+                    width = 80;
+                }
+                io.out.println(repeat("-", width));
                 io.out.flush();
             }
         }
