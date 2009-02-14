@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.gshell.commands</groupId>
         <artifactId>gshell-commands</artifactId>
-        <version>1.0-alpha-2-SNAPSHOT</version>
+        <version>1.0-alpha-2</version>
     </parent>
     
     <artifactId>gshell-ssh</artifactId>
