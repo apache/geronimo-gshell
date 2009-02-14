@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.apache.geronimo.gshell</groupId>
         <artifactId>gshell</artifactId>
-        <version>1.0-alpha-2</version>
+        <version>1.0-alpha-3-SNAPSHOT</version>
     </parent>
     
     <groupId>org.apache.geronimo.gshell.support</groupId>
