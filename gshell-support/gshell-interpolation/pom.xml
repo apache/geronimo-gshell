@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-interpolation</artifactId>
-            <version>1.6</version>
+            <version>1.8.1</version>
         </dependency>
         
         <dependency>
