@@ -103,20 +103,20 @@
         <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-provider-api</artifactId>
-            <version>1.0-beta-4</version>
+            <version>1.0-beta-5</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-file</artifactId>
-            <version>1.0-beta-4</version>
+            <version>1.0-beta-5</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-http-lightweight</artifactId>
-            <version>1.0-beta-4</version>
+            <version>1.0-beta-5</version>
             <exclusions>
                 <exclusion>
                     <groupId>jtidy</groupId>
