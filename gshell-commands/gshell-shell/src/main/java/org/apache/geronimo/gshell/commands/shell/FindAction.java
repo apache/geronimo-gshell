@@ -19,6 +19,8 @@
 
 package org.apache.geronimo.gshell.commands.shell;
 
+import java.net.URI;
+
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSelectInfo;
 import org.apache.commons.vfs.FileSelector;
@@ -81,7 +83,7 @@ public class FindAction
         find(context, root, selector);
 
         FileObjects.close(root);
-        
+
         return CommandAction.Result.SUCCESS;
     }
 
@@ -94,21 +96,23 @@ public class FindAction
 
         if (files != null && files.length != 0) {
             for (FileObject child : files) {
-                display(context, child);
-
-                if (child.getType().hasChildren()) {
-                    find(context, child, selector);
-                }
+                display(context, child, file);
             }
         }
     }
 
-    private void display(final CommandContext context, final FileObject file) throws FileSystemException {
+    private void display(final CommandContext context, final FileObject file, final FileObject root) throws FileSystemException {
         assert context != null;
         assert file != null;
 
+        String path;
+        try {
+            path = new URI(this.path).resolve(root.getURL().toURI().relativize(file.getURL().toURI())).toString();
+        } catch (Exception e) {
+            path = file.getName().getPath();
+        }
         IO io = context.getIo();
-        io.info(file.getName().getPath());
+        io.info(path);
     }
 
     //
@@ -128,7 +132,7 @@ public class FindAction
 
         public TypeSelector(final Type type) {
             assert type != null;
-            
+
             this.type = type;
 
             log.trace("Type: {}", type);
@@ -161,7 +165,7 @@ public class FindAction
     //
     // NameSelector
     //
-    
+
     private class NameSelector
         implements FileSelector
     {
@@ -187,7 +191,7 @@ public class FindAction
         }
 
         public NameSelector(final String name) throws MalformedPatternException {
-            this(name, false);    
+            this(name, false);
         }
 
         public boolean includeFile(final FileSelectInfo selection) throws Exception {
