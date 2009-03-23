@@ -22,7 +22,10 @@ package org.apache.geronimo.gshell.vfs.provider.meta;
 import org.apache.commons.vfs.FileContentInfoFactory;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileType;
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.provider.AbstractFileObject;
+import org.apache.commons.vfs.provider.DefaultFileContent;
 import org.apache.geronimo.gshell.vfs.provider.meta.data.MetaData;
 
 import java.io.ByteArrayInputStream;
@@ -40,6 +43,7 @@ public class MetaFileObject
     private final MetaFileSystem fileSystem;
 
     private MetaData data;
+    private FileContent content;
 
     public MetaFileObject(final FileName fileName, final MetaFileSystem fileSystem) {
         super(fileName, fileSystem);
@@ -52,7 +56,7 @@ public class MetaFileObject
         if (data == null) {
             throw new IllegalStateException("Meta data has not been attached");
         }
-        
+
         return data;
     }
 
@@ -121,10 +125,18 @@ public class MetaFileObject
         if (data == null) {
             data = fileSystem.lookupData(this);
         }
+        content = new DefaultFileContent(this, getFileContentInfoFactory());
     }
 
     @Override
     protected void doDetach() throws Exception {
         data = null;
+        content = null;
+    }
+
+    @Override
+    public FileContent getContent() throws FileSystemException {
+        super.getContent();
+        return content;
     }
 }
