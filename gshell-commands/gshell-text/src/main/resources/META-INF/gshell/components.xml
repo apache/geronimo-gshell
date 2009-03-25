@@ -52,6 +52,10 @@
             <gshell:command name="grep">
                 <gshell:action class="org.apache.geronimo.gshell.commands.text.GrepAction" parent="vfsCommandActionTemplate"/>
             </gshell:command>
+
+            <gshell:command name="sort">
+                <gshell:action class="org.apache.geronimo.gshell.commands.text.SortAction" parent="vfsCommandActionTemplate"/>
+            </gshell:command>
         </gshell:command-bundle>
     </gshell:plugin>
 
