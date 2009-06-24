@@ -19,11 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.ssh;
 
-import com.google.code.sshd.ClientChannel;
-import com.google.code.sshd.ClientSession;
-import com.google.code.sshd.SshClient;
-import com.google.code.sshd.common.util.NoCloseInputStream;
-import com.google.code.sshd.common.util.NoCloseOutputStream;
 import org.apache.geronimo.gshell.clp.Argument;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
@@ -33,6 +28,13 @@ import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.io.PromptReader;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.sshd.SshClient;
+import org.apache.sshd.ClientSession;
+import org.apache.sshd.ClientChannel;
+import org.apache.sshd.client.future.ConnectFuture;
+import org.apache.sshd.common.util.NoCloseInputStream;
+import org.apache.sshd.common.util.NoCloseOutputStream;
+import org.apache.sshd.common.future.CloseFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,10 +132,13 @@ public class SshAction
         // Create the client from prototype
         SshClient client = container.getBean(SshClient.class);
         log.debug("Created client: {}", client);
-        client.start();;
+        client.start();
 
         try {
-            ClientSession session = client.connect(hostname, port);
+            ConnectFuture future = client.connect(hostname, port);
+            future.await();
+            ClientSession session = future.getSession();
+
             try {
                 io.info(messages.getMessage("info.connected"));
 
@@ -151,7 +156,8 @@ public class SshAction
                 channel.open();
                 channel.waitFor(ClientChannel.CLOSED, 0);
             } finally {
-                session.close();
+                session.close(false);
+
             }
         } finally {
             client.stop();

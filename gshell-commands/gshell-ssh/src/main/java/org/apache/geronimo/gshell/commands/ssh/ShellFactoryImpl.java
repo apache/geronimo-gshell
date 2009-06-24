@@ -19,9 +19,9 @@
 
 package org.apache.geronimo.gshell.commands.ssh;
 
-import com.google.code.sshd.server.ShellFactory;
 import jline.Completor;
 import jline.History;
+import org.apache.geronimo.gshell.application.Application;
 import org.apache.geronimo.gshell.command.Variables;
 import org.apache.geronimo.gshell.commandline.CommandLineExecutor;
 import org.apache.geronimo.gshell.console.Console;
@@ -30,10 +30,10 @@ import org.apache.geronimo.gshell.console.completer.AggregateCompleter;
 import org.apache.geronimo.gshell.io.Closer;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.notification.ExitNotification;
+import org.apache.geronimo.gshell.registry.CommandResolver;
 import org.apache.geronimo.gshell.shell.ShellContext;
 import org.apache.geronimo.gshell.shell.ShellContextHolder;
-import org.apache.geronimo.gshell.registry.CommandResolver;
-import org.apache.geronimo.gshell.application.Application;
+import org.apache.sshd.server.ShellFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,7 +118,7 @@ public class ShellFactoryImpl
     }
 
     public class ShellImpl
-        implements ShellFactory.DirectShell, org.apache.geronimo.gshell.shell.Shell, ShellContext, Runnable
+        implements ShellFactory.Shell, org.apache.geronimo.gshell.shell.Shell, ShellContext, Runnable
     {
         private InputStream in;
 
@@ -146,24 +146,26 @@ public class ShellFactoryImpl
             this.err = err;
         }
 
-        public void setExitCallback(ExitCallback callback) {
+        public void setExitCallback(final ExitCallback callback) {
             this.callback = callback;
         }
 
-        public void start(final Map<String,String> env) throws IOException {
+        public void start(final Environment env) throws IOException {
             this.io = new IO(in, out, err, false);
 
             // Create variables, inheriting the application ones
             this.variables = new Variables(application.getVariables());
             // Set up additional env
             if (env != null) {
-                for (Map.Entry<String,String> entry : env.entrySet()) {
+                for (Map.Entry<String,String> entry : env.getEnv().entrySet()) {
                     this.variables.set(entry.getKey(), entry.getValue());
                 }
             }
             this.variables.set("gshell.prompt", application.getModel().getBranding().getPrompt());
             this.variables.set(CommandResolver.GROUP, "/");
-            this.variables.set("gshell.username", env.get("USER"));
+            if (env != null) {
+                this.variables.set("gshell.username", env.getEnv().get("USER"));
+            }
             this.variables.set("gshell.hostname", application.getLocalHost());
             // HACK: Add history for the 'history' command, since its not part of the Shell intf it can't really access it
             this.variables.set("gshell.internal.history", getHistory(), true);
@@ -179,7 +181,6 @@ public class ShellFactoryImpl
         }
 
         public Object execute(final String line) throws Exception {
-
             return executor.execute(getContext(), line);
         }
 
@@ -196,9 +197,11 @@ public class ShellFactoryImpl
         }
 
         public void close() {
-            closed = true;
-            Closer.close(in, out, err);
-            callback.onExit(0);
+            if (!closed) {
+                closed = true;
+                Closer.close(in, out, err);
+                callback.onExit(0);
+            }
         }
 
         public boolean isInteractive() {

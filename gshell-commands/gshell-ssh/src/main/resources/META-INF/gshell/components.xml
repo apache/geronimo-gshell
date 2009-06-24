@@ -45,10 +45,10 @@
         </gshell:command-bundle>
     </gshell:plugin>
 
-    <bean name="sshClient" class="com.google.code.sshd.SshClient" factory-method="setUpDefaultClient" scope="prototype">
+    <bean name="sshClient" class="org.apache.sshd.SshClient" factory-method="setUpDefaultClient" scope="prototype">
     </bean>
 
-    <bean name="sshServer" class="com.google.code.sshd.SshServer" factory-method="setUpDefaultServer" scope="prototype">
+    <bean name="sshServer" class="org.apache.sshd.SshServer" factory-method="setUpDefaultServer" scope="prototype">
         <property name="shellFactory">
             <bean class="org.apache.geronimo.gshell.commands.ssh.ShellFactoryImpl">
                 <property name="application" ref="application" />
@@ -78,7 +78,7 @@
         <property name="passwordAuthenticator" ref="passwordAuthenticator"/>
     </bean>
 
-    <bean name="keyPairProvider" class="com.google.code.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider"/>
+    <bean name="keyPairProvider" class="org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider"/>
 
     <bean name="passwordAuthenticator" class="org.apache.geronimo.gshell.commands.ssh.JSecurityPasswordAuthenticator">
         <constructor-arg ref="securityManager"/>

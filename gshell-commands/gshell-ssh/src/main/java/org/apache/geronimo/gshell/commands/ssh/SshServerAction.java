@@ -19,7 +19,6 @@
 
 package org.apache.geronimo.gshell.commands.ssh;
 
-import com.google.code.sshd.SshServer;
 import org.apache.geronimo.gshell.clp.Option;
 import org.apache.geronimo.gshell.command.CommandAction;
 import org.apache.geronimo.gshell.command.CommandContext;
@@ -27,6 +26,7 @@ import org.apache.geronimo.gshell.i18n.MessageSource;
 import org.apache.geronimo.gshell.io.IO;
 import org.apache.geronimo.gshell.spring.BeanContainer;
 import org.apache.geronimo.gshell.spring.BeanContainerAware;
+import org.apache.sshd.SshServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

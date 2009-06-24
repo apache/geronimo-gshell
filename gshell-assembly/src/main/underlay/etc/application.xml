@@ -29,7 +29,10 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="properties">
             <props>
-                <prop key="gshell.version">1.0-alpha-2-SNAPSHOT</prop>
+                <!--
+                FIXME: Use filtering to automatically keep this updated.
+                -->
+                <prop key="gshell.version">1.0-alpha-3-SNAPSHOT</prop>
             </props>
         </property>
     </bean>
