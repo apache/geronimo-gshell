@@ -48,7 +48,8 @@ public class CryptoContextImpl
 
     public CryptoContextImpl() throws Exception {
         KeyPairGenerator keyGen = createKeyPairGenerator();
-        keyGen.initialize(1024);
+        keyGen.initialize(2048);
+        //keyGen.initialize(1024);
 
         keyPair = keyGen.genKeyPair();
     }
